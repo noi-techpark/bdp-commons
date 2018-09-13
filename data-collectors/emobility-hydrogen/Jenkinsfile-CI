@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-               sh 'cd data-collectors/eChargingPoints && mvn clean test'
+               sh 'cd data-collectors/emobility-hydrogen && mvn clean test'
             }
         }
     }
