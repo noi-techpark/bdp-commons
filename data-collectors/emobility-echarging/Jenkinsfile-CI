@@ -1,0 +1,14 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Test') {
+            steps {
+		
+	       sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/eChargingPoints/src/main/resources/log4j.properties'
+	       sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/datacollectors/emobility-dc.log%" data-collectors/eChargingPoints/src/main/resources/log4j.properties'
+               sh 'cd data-collectors/eChargingPoints && mvn clean test'
+            }
+        }
+    }
+}

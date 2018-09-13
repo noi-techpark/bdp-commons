@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+    environment {
+       ALPERIA_CONFIG = credentials('alperia_charging_config')
+       DRIWE_CONFIG = credentials('driwe_charging_config')
+       ROUTE220_CONFIG = credentials('route220_charging_config')
+       NEVICAM_CONFIG = credentials('nevicam_charging_config')
+    }
+    stages {
+        stage('Test') {
+            steps {
+               sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" data-collectors/eChargingPoints/src/test/resources/log4j.properties'
+               sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-utests.log%" data-collectors/eChargingPoints/src/test/resources/log4j.properties' 
+               sh 'cd data-collectors/eChargingPoints && mvn clean test'
+
+               sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-alperia-itests.log%" data-collectors/eChargingPoints/src/test/resources/log4j.properties' 
+               sh 'cp "$ALPERIA_CONFIG" data-collectors/eChargingPoints/src/test/resources/META-INF/spring/'
+               sh 'cd data-collectors/eChargingPoints && mvn -DfinalName=dc-emobility-alperia integration-test'
+
+               sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-driwe-itests.log%" data-collectors/eChargingPoints/src/test/resources/log4j.properties' 
+               sh 'cp "$DRIWE_CONFIG" data-collectors/eChargingPoints/src/test/resources/META-INF/spring/'
+               sh 'cd data-collectors/eChargingPoints && mvn -DfinalName=dc-emobility-driwe integration-test'
+
+               sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-route220-itests.log%" data-collectors/eChargingPoints/src/test/resources/log4j.properties' 
+               sh 'cp "$ROUTE220_CONFIG" data-collectors/eChargingPoints/src/test/resources/META-INF/spring/'
+               sh 'cd data-collectors/eChargingPoints && mvn -DfinalName=dc-emobility-route220 integration-test'
+
+               sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-nevicam-itests.log%" data-collectors/eChargingPoints/src/test/resources/log4j.properties' 
+               sh 'cp "$NEVICAM_CONFIG" data-collectors/eChargingPoints/src/test/resources/META-INF/spring/'
+               sh 'cd data-collectors/eChargingPoints && mvn -DfinalName=dc-emobility-nevicam integration-test'
+            }
+        }
+        stage('Build&Archive') {
+            steps {
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" data-collectors/eChargingPoints/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-alperia.log%" data-collectors/eChargingPoints/src/main/resources/log4j.properties' 
+                sh 'cp "$ALPERIA_CONFIG" data-collectors/eChargingPoints/src/main/resources/META-INF/spring/'
+                sh 'cd data-collectors/eChargingPoints && mvn -DfinalName=dc-emobility-alperia clean package'
+                sh 'cp data-collectors/eChargingPoints/target/dc-emobility-alperia.war /var/builds/prod-server-dc/'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-driwe.log%" data-collectors/eChargingPoints/src/main/resources/log4j.properties' 
+                sh 'cp "$DRIWE_CONFIG" data-collectors/eChargingPoints/src/main/resources/META-INF/spring/'
+                sh 'cd data-collectors/eChargingPoints && mvn -DfinalName=dc-emobility-driwe clean package'
+                sh 'cp data-collectors/eChargingPoints/target/dc-emobility-driwe.war /var/builds/prod-server-dc/'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-route220.log%" data-collectors/eChargingPoints/src/main/resources/log4j.properties' 
+                sh 'cp "$ROUTE220_CONFIG" data-collectors/eChargingPoints/src/main/resources/META-INF/spring/'
+                sh 'cd data-collectors/eChargingPoints && mvn -DfinalName=dc-emobility-route220 clean package'
+                sh 'cp data-collectors/eChargingPoints/target/dc-emobility-route220.war /var/builds/prod-server-dc/'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-nevicam.log%" data-collectors/eChargingPoints/src/main/resources/log4j.properties' 
+                sh 'cp "$NEVICAM_CONFIG" data-collectors/eChargingPoints/src/main/resources/META-INF/spring/'
+                sh 'cd data-collectors/eChargingPoints && mvn -DfinalName=dc-emobility-nevicam clean package'
+                sh 'cp data-collectors/eChargingPoints/target/dc-emobility-nevicam.war /var/builds/prod-server-dc/'
+            }
+        }
+    }
+}
