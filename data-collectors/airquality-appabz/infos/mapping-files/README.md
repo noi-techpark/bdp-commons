@@ -6,7 +6,7 @@ that end with `.dat`.
 Secondly, we need 3 mapping files to explain the contents of the input files, which should be zipped into a single
 archive named `mapping.zip` and put in the `uploads` folder of the FTP server as well.
 
-Documentation refers to "BrennerLEC ch4.2.3 - [180117_DA11_Part2.pdf](https://github.com/idm-suedtirol/bdp-air-quality/blob/master/infos/180117_DA11_Part2.pdf)" (DOC).
+Documentation refers to "BrennerLEC ch4.2.3 - [180117_DA11_Part2.pdf](https://github.com/idm-suedtirol/bdp-commons/blob/master/data-collectors/airquality-appabz/infos/180117_DA11_Part2.pdf)" (DOC).
 
 Files are...
  - All files are csv-files with UTF-8 encoding and a comma as separator
@@ -39,4 +39,4 @@ Coordinates (lat/lon) override data coming from rete-civica.
 
 
 Refers to:
-https://github.com/idm-suedtirol/bdp-air-quality/tree/master/data-collectors/appabz-sftp/infos/mapping-files/README.md
+https://github.com/idm-suedtirol/bdp-commons/tree/master/data-collectors/airquality-appabz/infos/mapping-files/README.md
