@@ -1,0 +1,30 @@
+[
+	{
+		"_t": "it.bz.idm.bdp.dto.StationDto",
+		"id": "STATION A",
+		"name": "Cool non-unique name for ID STATION A",
+		"origin": "BIG-COMPANY",
+		"stationType": "Teststation"
+	},
+	{
+		"_t": "it.bz.idm.bdp.dto.StationDto",
+		"id": "STATION A",
+		"name": "Cool non-unique name for ID STATION A",
+		"origin": "BIG-COMPANY",
+		"stationType": "Teststation"
+	},
+	{
+		"_t": "it.bz.idm.bdp.dto.StationDto",
+		"id": "STATION B",
+		"name": "Cool non-unique name for ID STATION B",
+		"origin": "BIG-COMPANY",
+		"stationType": "Teststation"
+	},
+	{
+		"_t": "it.bz.idm.bdp.dto.StationDto",
+		"id": "STATION B",
+		"name": "Cool non-unique name for ID STATION B",
+		"origin": "BIG-COMPANY",
+		"stationType": "Teststation"
+	}
+]
