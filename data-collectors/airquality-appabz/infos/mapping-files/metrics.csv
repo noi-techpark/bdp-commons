@@ -1,0 +1,11 @@
+metric,desc
+A,Instant Value
+B,Mean
+C,Min
+D,Max
+E,Measurement Count
+F,Standard Deviation
+G,Variance
+H,Sum
+R,Error
+I,% of Invalidation

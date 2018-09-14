@@ -1,0 +1,115 @@
+parameter,metric,name,type,desc,unit
+2,B,NOX_mean,Mean,Ossidi di azoto (media),ppb
+2,C,NOX_min,Min,Ossidi di azoto (minimo),ppb
+2,D,NOX_max,Max,Ossidi di azoto (massimo),ppb
+2,G,NOX_variance,Variance,Ossidi di azoto (varianza),ppb
+2,R,NOX_error,Flag,Ossidi di azoto (cod.errore),
+2,I,NOX_invalidazione,Flag,Ossidi di azoto (nr. misure valide / nr. misure totali),%
+3,B,NO_mean,Mean,Monossido di azoto (media),ppb
+3,C,NO_min,Min,Monossido di azoto (minimo),ppb
+3,D,NO_max,Max,Monossido di azoto (massimo),ppb
+3,G,NO_variance,Variance,Monossido di azoto (varianza),ppb
+3,R,NO_error,Flag,Monossido di azoto (cod.errore),
+3,I,NO_invalidazione,Flag,Monossido di azoto (nr. misure valide / nr. misure totali),%
+4,B,O3_mean_ppb,Mean,Ozono (media),ppb
+,,O3_mean_µgm3,Mean,Ozono (media),µg/m³
+4,C,O3_min,Min,Ozono (minimo),ppb
+4,D,O3_max,Max,Ozono (massimo),ppb
+4,G,O3_variance,Variance,Ozono (varianza),ppb
+4,R,O3_error,Flag,Ozono (cod.errore),
+4,I,O3_invalidazione,Flag,Ozono (nr. misure valide / nr. misure totali),%
+5,B,CO_mean_ppm,Mean,Monossido di carbonio (media),ppm
+,,CO_mean_mgm3,Mean,Monossido di carbonio (media),mg/m³
+5,C,CO_min,Min,Monossido di carbonio (minimo),ppm
+5,D,CO_max,Max,Monossido di carbonio (massimo),ppm
+5,G,CO_variance,Variance,Monossido di carbonio (varianza),ppm
+5,R,CO_error,Flag,Monossido di carbonio (cod.errore),
+5,I,CO_invalidazione,Flag,Monossido di carbonio (nr. misure valide / nr. misure totali),%
+9,B,NO2_mean_ppb,Mean,Biossido di azoto (media),ppb
+,,NO2_mean_µgm3,Mean,Biossido di azoto (media),µg/m³
+9,C,NO2_min,Min,Biossido di azoto (minimo),ppb
+9,D,NO2_max,Max,Biossido di azoto (massimo),ppb
+9,G,NO2_variance,Variance,Biossido di azoto (varianza),ppb
+9,R,NO2_error,Flag,Biossido di azoto (cod.errore),
+9,I,NO2_invalidazione,Flag,Biossido di azoto (nr. misure valide / nr. misure totali),%
+10,B,T_EST_mean,Mean,Temperatura esterna dell’aria (media),°C
+10,C,T_EST_min,Min,Temperatura esterna dell’aria (minimo),°C
+10,D,T_EST_max,Max,Temperatura esterna dell’aria (massimo),°C
+10,G,T_EST_variance,Variance,Temperatura esterna dell’aria (varianza),°C
+10,R,T_EST_error,Flag,Temperatura esterna dell’aria (cod.errore),
+10,I,T_EST_invalidazione,Flag,Temperatura esterna dell’aria (nr. misure valide / nr. misure totali),%
+12,B,SRH_mean,Mean,Umidità relativa (media),%
+12,C,SRH_min,Min,Umidità relativa (minimo),%
+12,D,SRH_max,Max,Umidità relativa (massimo),%
+12,G,SRH_variance,Variance,Umidità relativa (varianza),%
+12,R,SRH_error,Flag,Umidità relativa (cod.errore),
+12,I,SRH_invalidazione,Flag,Umidità relativa (nr. misure valide / nr. misure totali),%
+13,B,BAR_mean,Mean,Pressione atmosferica (media),hPa
+13,C,BAR_min,Min,Pressione atmosferica (minimo),hPa
+13,D,BAR_max,Max,Pressione atmosferica (massimo),hPa
+13,G,BAR_variance,Variance,Pressione atmosferica (varianza),hPa
+13,R,BAR_error,Flag,Pressione atmosferica (cod.errore),
+13,I,BAR_invalidazione,Flag,Pressione atmosferica (nr. misure valide / nr. misure totali),%
+14,B,RAD_mean,Mean,Radiazione solare (media),W/m2
+14,C,RAD_min,Min,Radiazione solare (minimo),W/m2
+14,D,RAD_max,Max,Radiazione solare (massimo),W/m2
+14,G,RAD_variance,Variance,Radiazione solare (varianza),W/m2
+14,R,RAD_error,Flag,Radiazione solare (cod.errore),
+14,I,RAD_invalidazione,Flag,Radiazione solare (nr. misure valide / nr. misure totali),%
+15,B,DIR_V_mean,Mean,Direzione del vento (media),°
+15,R,DIR_V_error,Flag,Direzione del vento (cod.errore),
+15,I,DIR_V_invalidazione,Flag,Direzione del vento (nr. misure valide / nr. misure totali),%
+21,B,VEL_V_mean,Mean,Velocità del vento (media),m/sec
+21,C,VEL_V_min,Min,Velocità del vento (minimo),m/sec
+21,D,VEL_V_max,Max,Velocità del vento (massimo),m/sec
+21,G,VEL_V_variance,Variance,Velocità del vento (varianza),m/sec
+21,R,VEL_V_error,Flag,Velocità del vento (cod.errore),
+21,I,VEL_V_invalidazione,Flag,Velocità del vento (nr. misure valide / nr. misure totali),%
+22,B,PRECI_mean,Mean,Intensità di precipitazione (media),mm
+22,C,PRECI_min,Min,Intensità di precipitazione (minimo),mm
+22,D,PRECI_max,Max,Intensità di precipitazione (massimo),mm
+22,G,PRECI_variance,Variance,Intensità di precipitazione (varianza),mm
+22,R,PRECI_error,Flag,Intensità di precipitazione (cod.errore),
+22,I,PRECI_invalidazione,Flag,Intensità di precipitazione (nr. misure valide / nr. misure totali),%
+27,B,PM10_mean,Mean,Particolato inferiore a 10 µm (media),µg/m³
+27,C,PM10_min,Min,Particolato inferiore a 10 µm (minimo),µg/m³
+27,D,PM10_max,Max,Particolato inferiore a 10 µm (massimo),µg/m³
+27,G,PM10_variance,Variance,Particolato inferiore a 10 µm (varianza),µg/m³
+27,R,PM10_error,Flag,Particolato inferiore a 10 µm (cod.errore),
+27,I,PM10_invalidazione,Flag,Particolato inferiore a 10 µm (nr. misure valide / nr. misure totali),%
+80,B,PM 2_5_mean,Mean,Particolato inferiore a 2.5 µm (media),µg/m³
+80,C,PM 2_5_min,Min,Particolato inferiore a 2.5 µm (minimo),µg/m³
+80,D,PM 2_5_max,Max,Particolato inferiore a 2.5 µm (massimo),µg/m³
+80,G,PM 2_5_variance,Variance,Particolato inferiore a 2.5 µm (varianza),µg/m³
+80,R,PM 2_5_error,Flag,Particolato inferiore a 2.5 µm (cod.errore),
+80,I,PM 2_5_invalidazione,Flag,Particolato inferiore a 2.5 µm (nr. misure valide / nr. misure totali),%
+91,B,BC6_mean,Mean,?? (media),ng/m³
+91,C,BC6_min,Min,?? (minimo),ng/m³
+91,D,BC6_max,Max,?? (massimo),ng/m³
+91,G,BC6_variance,Variance,?? (varianza),ng/m³
+91,R,BC6_error,Flag,?? (cod.errore),
+91,I,BC6_invalidazione,Flag,?? (nr. misure valide / nr. misure totali),%
+94,B,BC7_mean,Mean,?? (media),ng/m³
+94,C,BC7_min,Min,?? (minimo),ng/m³
+94,D,BC7_max,Max,?? (massimo),ng/m³
+94,G,BC7_variance,Variance,?? (varianza),ng/m³
+94,R,BC7_error,Flag,?? (cod.errore),
+94,I,BC7_invalidazione,Flag,?? (nr. misure valide / nr. misure totali),%
+93,B,BC2_mean,Mean,?? (media),ng/m³
+93,C,BC2_min,Min,?? (minimo),ng/m³
+93,D,BC2_max,Max,?? (massimo),ng/m³
+93,G,BC2_variance,Variance,?? (varianza),ng/m³
+93,R,BC2_error,Flag,?? (cod.errore),
+93,I,BC2_invalidazione,Flag,?? (nr. misure valide / nr. misure totali),%
+911,B,BC_bb_mean,Mean,?? (media),ng/m³
+911,C,BC_bb_min,Min,?? (minimo),ng/m³
+911,D,BC_bb_max,Max,?? (massimo),ng/m³
+911,G,BC_bb_variance,Variance,?? (varianza),ng/m³
+911,R,BC_bb_error,Flag,?? (cod.errore),
+911,I,BC_bb_invalidazione,Flag,?? (nr. misure valide / nr. misure totali),%
+912,B,BC_ff_mean,Mean,?? (media),ng/m³
+912,C,BC_ff_min,Min,?? (minimo),ng/m³
+912,D,BC_ff_max,Max,?? (massimo),ng/m³
+912,G,BC_ff_variance,Variance,?? (varianza),ng/m³
+912,R,BC_ff_error,Flag,?? (cod.errore),
+912,I,BC_ff_invalidazione,Flag,?? (nr. misure valide / nr. misure totali),%

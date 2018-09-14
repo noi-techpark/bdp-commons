@@ -1,0 +1,8 @@
+error,desc
+0,No error
+1,Error of Acquisition
+2,Out of monitoring
+4,Out of scale
+8,Digital invalidation
+16,Analog invalidation
+32,Calibration error

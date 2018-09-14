@@ -1,0 +1,11 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Test') {
+            steps {
+               sh 'cd data-collectors/environment-appa && mvn clean test'
+            }
+        }
+    }
+}
