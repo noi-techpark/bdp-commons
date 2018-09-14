@@ -1,0 +1,58 @@
+pipeline {
+	agent any
+
+	environment {
+		KEYFILE = credentials('bdp-airquality-datacollector-appabz-sftp-key-testserver')
+		HOSTS = credentials('bdp-airquality-datacollector-appabz-sftp-knownhosts')
+		SSHFOLDER = 'data-collectors/appabz-sftp/src/main/resources/META-INF/.ssh'
+		PASS = credentials('bdp-airquality-datacollector-appabz-sftp-passphrase-testserver')
+	}
+
+	stages {
+		stage('Configure') {
+			steps {
+				// Defined in log4j2.properties and application.properties, change this on servers directly!
+				sh 'test -w /var/log/opendatahub/data-collectors/'
+
+				// Check if the ssh folder exists, create one if not and put needed files with correct permissions
+				sh '''
+					mkdir -p "${SSHFOLDER}"
+					rm -f "${SSHFOLDER}/id_rsa_sftp" "${SSHFOLDER}/known_hosts"
+					cp "${KEYFILE}" "${SSHFOLDER}/id_rsa_sftp"
+					cp "${HOSTS}" "${SSHFOLDER}/known_hosts"
+					chmod 400 "${SSHFOLDER}/id_rsa_sftp"
+					chmod 644 "${SSHFOLDER}/known_hosts"
+					'''
+
+				/*
+				 * Configure application.properties and inject the correct pass-phrase for the test server.
+				 * Security: set +x turns echoing off (otherwise password would be printed to logs)
+				 */
+				sh '''
+					set +x
+					export PASSX="$(echo ${PASS} | sed -e "s/[\\\\/&]/\\\\\\\\&/g")"
+					sed -ie '/ftp\\.pass=/ s/=.*/='$PASSX'/' data-collectors/appabz-sftp/src/main/resources/META-INF/spring/application.properties
+					set -x
+					'''
+
+				sh 'sed -ie "/ftp\\.folder\\.remote=/ s/=.*/=uploads/" data-collectors/appabz-sftp/src/main/resources/META-INF/spring/application.properties'
+			}
+		}
+		stage('Test') {
+			steps {
+				sh 'cd data-collectors/appabz-sftp/ && mvn clean integration-test'
+			}
+		}
+		stage('Build - APPABZ-SFTP Datacollector') {
+			steps {
+				sh 'cd data-collectors/appabz-sftp/ && mvn package'
+			}
+		}
+		stage('Archive') {
+			steps {
+				sh 'mkdir -p /var/builds/prod-server-dc'
+				sh 'cp -f data-collectors/appabz-sftp/target/dc-airquality-appabz.war /var/builds/prod-server-dc/'
+			}
+		}
+	}
+}
