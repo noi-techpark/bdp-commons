@@ -1,0 +1,11 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Test') {
+            steps {
+               sh 'cd data-collectors/traffic-a22 && mvn clean test'
+            }
+        }
+    }
+}
