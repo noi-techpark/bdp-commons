@@ -1,0 +1,16 @@
+pipeline {
+    agent any
+    stages {
+        stage('Test') {
+            steps {
+              sh 'cd data-collectors/zrx2json && mvn clean test'
+            }
+        }
+        stage('Archive') {
+            steps {
+              sh 'cd data-collectors/zrx2json && mvn install'
+            }
+        }
+    }
+}
+
