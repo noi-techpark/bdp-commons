@@ -158,7 +158,7 @@ public class MeteoUtil {
 				params.putAll(optionalParametersFromComments);
 				
 				StationDto dto = new StationDto();
-				dto.getMetaData().put("area", params.get(AREA));
+				dto.getMetaData().put("place", params.get(AREA));
 				dto.setId(params.get(ZEUS_ID));
 				Double latitude = null,longitude = null;
 				try {
