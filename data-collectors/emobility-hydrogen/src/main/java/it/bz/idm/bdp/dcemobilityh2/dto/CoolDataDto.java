@@ -1,9 +1,10 @@
-package it.bz.idm.bdp.myfirstdatacollector.dto;
+package it.bz.idm.bdp.dcemobilityh2.dto;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class CoolDataDto implements Serializable {
+
 	private static final long serialVersionUID = 8642860252556395832L;
 
 	/*
