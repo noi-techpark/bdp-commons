@@ -29,15 +29,16 @@ public class HydrogenDataPusherIT extends AbstractJUnit4SpringContextTests {
     @Autowired
     private HydrogenDataRetriever reader;
 
-    private boolean doTests = true;
+    private boolean doTests = false;
 
     @Test
     public void testSchedulerPush() {
+        if ( !doTests ) {
+            return;
+        }
         try {
-            if ( doTests ) {
-                scheduler.pushStations();
-                scheduler.pushData();
-            }
+            scheduler.pushStations();
+            scheduler.pushData();
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
@@ -46,11 +47,15 @@ public class HydrogenDataPusherIT extends AbstractJUnit4SpringContextTests {
 
     @Test
     public void testPush() {
+        if ( !doTests ) {
+            return;
+        }
+
         List<String> errors = new ArrayList<String>();
         List<HydrogenDto> data = null;
 
         try {
-            String responseString = HydrogenDataRetrievalTest.TEST_RESPONSE_STRING;
+            String responseString = HydrogenDataRetrieverTest.TEST_RESPONSE_STRING;
             data = reader.convertResponseToInternalDTO(responseString);
         } catch (Exception e) {
             e.printStackTrace();
