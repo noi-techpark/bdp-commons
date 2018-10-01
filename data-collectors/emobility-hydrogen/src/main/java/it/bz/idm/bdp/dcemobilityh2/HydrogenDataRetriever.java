@@ -36,10 +36,8 @@ import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class HydrogenDataRetriever {
 
-    /** Logging your efforts */
     private static final Logger LOG = LogManager.getLogger(HydrogenDataRetriever.class.getName());
 
-    /** If you need to fetch application property values, otherwise please delete */
     @Autowired
     private Environment env;
 
@@ -48,8 +46,6 @@ public class HydrogenDataRetriever {
 
     private HttpClientBuilder builder = HttpClients.custom();
     private CloseableHttpClient client;
-//    private HttpClientContext localContext;
-//    private HttpHost endPoint;
     private XmlMapper mapper = new XmlMapper();
 
     private String endpointMethod;
@@ -108,15 +104,22 @@ public class HydrogenDataRetriever {
             endpointPort = DCUtils.convertStringToInteger(DCUtils.defaultNulls(strEndpointPort, "443"));
             serviceUrl = endpointProtocol + "://" + endpointHost + ":" + endpointPort + "/" + endpointPath;
 
-//            endPoint = new HttpHost(strEndpointHost, port , strEndpointProtocol);
-//            localContext = HttpClientContext.create();
             client = builder.build();
 
             LOG.debug("Http Client created");
         }
     }
 
+    /**
+     * Performs the call to IIT service and returns exactly the response String without particular processing or formatting
+     * 
+     * @return
+     * @throws Exception
+     */
     private String callRemoteService() throws Exception {
+        LOG.debug("Start call to service: " + serviceUrl);
+
+        // In our case it is not necessary to set particular headers
 //        String xcallerHeader = env.getProperty("app.callerId");
 //        String apikey = env.getProperty("app.apikey");
 //        if (xcallerHeader != null)
@@ -125,32 +128,43 @@ public class HydrogenDataRetriever {
 //            get.setHeader("apikey",apikey);
 //        get.setHeader("Accept","application/json");
 
-        LOG.debug("Start call to service: " + serviceUrl);
-
-        try {
-            HttpRequestBase request = null;
-            if ( "GET".equalsIgnoreCase(endpointMethod) ) {
-                request = new HttpGet(serviceUrl);
-            } else {
-                request = new HttpPost(serviceUrl);
-            }
-            URI uri = new URIBuilder(request.getURI()).addParameters(endpointParams).build();
-            request.setURI(uri);
-
-            CloseableHttpResponse response = client.execute(request); //client.execute(endPoint, get, localContext);
-            InputStream entity = response.getEntity().getContent();
-            StringWriter writer = new StringWriter();
-            IOUtils.copy(entity, writer);
-            String responseData = writer.toString();
-            response.close();
-
-            LOG.debug("End call responseData = '" + responseData + "'");
- 
-            return responseData;
-        } catch (Exception ex) {
-            LOG.error(ex);
-            throw ex;
+        HttpRequestBase request = null;
+        if ( "GET".equalsIgnoreCase(endpointMethod) ) {
+            request = new HttpGet(serviceUrl);
+        } else {
+            request = new HttpPost(serviceUrl);
         }
+        URI uri = new URIBuilder(request.getURI()).addParameters(endpointParams).build();
+        request.setURI(uri);
+
+        CloseableHttpResponse response = client.execute(request); //client.execute(endPoint, get, localContext);
+        InputStream entity = response.getEntity().getContent();
+        StringWriter writer = new StringWriter();
+        IOUtils.copy(entity, writer);
+        String responseData = writer.toString();
+        response.close();
+
+        LOG.debug("End call responseData = '" + responseData + "'");
+        return responseData;
+    }
+
+    /**
+     * Converts the string returned by the IIT service in a more useful internal representation
+     * 
+     * @param responseString
+     * @return
+     * @throws Exception
+     */
+    public List<HydrogenDto> convertResponseToInternalDTO(String responseString) throws Exception {
+        List<Map<String, String>> dataMap = mapper.readValue(responseString, new TypeReference<List<Map<String, String>>>() {});
+        LOG.debug("dataMap: "+dataMap);
+        if ( dataMap == null ) {
+            return null;
+        }
+        List<HydrogenDto> dtoList = converter.convertToInternalDTO(dataMap);
+
+        LOG.debug("dtoList: "+dtoList);
+        return dtoList;
     }
 
     /**
@@ -162,30 +176,17 @@ public class HydrogenDataRetriever {
      *             on error propagate exception to caller
      */
     public List<HydrogenDto> fetchData() throws Exception {
+        LOG.debug("START.fetchData");
+        List<HydrogenDto> dtoList = null;
         try {
             String responseString = callRemoteService();
-            List<HydrogenDto> dtoList = convertResponseToInternalDTO(responseString);
-            return dtoList;
+            dtoList = convertResponseToInternalDTO(responseString);
         } catch (Exception ex) {
-            LOG.error("ERROR: " + ex.getMessage(), ex);
-            throw ex; // always throw errors, we do not want to fail silently!
+            LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
+            throw ex;
         }
-    }
-
-    public List<HydrogenDto> convertResponseToInternalDTO(String responseString) throws Exception {
-        try {
-            List<Map<String, String>> dataMap = mapper.readValue(responseString, new TypeReference<List<Map<String, String>>>() {});
-            LOG.debug("dataMap: "+dataMap);
-            if ( dataMap == null ) {
-                return null;
-            }
-            List<HydrogenDto> dtoList = converter.convertToInternalDTO(dataMap);
-            LOG.debug("dtoList: "+dtoList);
-            return dtoList;
-        } catch (Exception ex) {
-            LOG.error("ERROR: " + ex.getMessage(), ex);
-            throw ex; // always throw errors, we do not want to fail silently!
-        }
+        LOG.debug("END.fetchData");
+        return dtoList;
     }
 
 }

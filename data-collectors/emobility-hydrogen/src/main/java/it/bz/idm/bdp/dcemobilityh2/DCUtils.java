@@ -166,4 +166,12 @@ public class DCUtils {
         return retval;
     }
 
+    public static String trunc(String inval, int maxlen) {
+        String retval = inval;
+        if ( inval!=null && inval.length()>maxlen ) {
+            retval = inval.substring(0, maxlen);
+        }
+        return retval;
+    }
+
 }

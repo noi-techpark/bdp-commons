@@ -10,6 +10,9 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
@@ -32,51 +35,73 @@ public class HydrogenDataPusher extends JSONPusher {
     private Environment env;
 
     public HydrogenDataPusher() {
-        LOG.debug("EXECUTE.constructor.");
+        LOG.debug("START.constructor.");
+        LOG.debug("END.constructor.");
+    }
+
+    @PostConstruct
+    private void init() {
+        LOG.debug("START.init.");
+        //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTP 415 error)
+        //this must be done because we added dependencies to com.fasterxml.jackson.dataformat.xml.XmlMapper to read data from IIT web service!
+        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
+        List<HttpMessageConverter<?>> newMessageConverters = new ArrayList<HttpMessageConverter<?>>();
+        for (HttpMessageConverter<?> converter : messageConverters) {
+            if ( converter instanceof MappingJackson2XmlHttpMessageConverter || converter instanceof Jaxb2RootElementHttpMessageConverter ) {
+                LOG.debug("REMOVE   converter: " + converter.getClass().getName());
+            } else {
+                LOG.debug("PRESERVE converter: " + converter.getClass().getName());
+                newMessageConverters.add(converter);
+            }
+        }
+        restTemplate.setMessageConverters(newMessageConverters);
+        LOG.debug("END.init.");
     }
 
     @Override
     public String initIntegreenTypology() {
+        LOG.debug("START.initIntegreenTypology");
         String stationType = "EChargingStation";
-        LOG.debug("EXECUTE.initIntegreenTypology. Station-type=" + stationType);
+        LOG.debug("END.initIntegreenTypology. Station-type=" + stationType);
         return stationType;
     }
 
     @Override
     public Object syncStations(StationList data) {
-        LOG.info("START.syncStations");
+        LOG.debug("START.syncStations");
         Object stations = super.syncStations(data);
-        LOG.info("END.syncStations");
+        LOG.debug("END.syncStations");
         return stations;
     }
 
     @Override
     public Object syncDataTypes(List<DataTypeDto> data) {
-        LOG.info("START.syncDataTypes");
+        LOG.debug("START.syncDataTypes");
         Object dataTypes = super.syncDataTypes(data);
-        LOG.info("END.syncDataTypes");
+        LOG.debug("END.syncDataTypes");
         return dataTypes;
     }
 
     @Override
     public Object pushData(DataMapDto<? extends RecordDtoImpl> dto) {
-        LOG.info("START.pushData");
+        LOG.debug("START.pushData");
         Object retval = super.pushData(dto);
-        LOG.info("END.pushData");
+        LOG.debug("END.pushData");
         return retval;
     }
 
     @Override
     public Object pushData(String datasourceName, DataMapDto<? extends RecordDtoImpl> dto) {
-        LOG.info("START.pushData");
+        LOG.debug("START.pushData("+datasourceName+")");
         Object retval = super.pushData(datasourceName, dto);
-        LOG.info("END.pushData");
+        LOG.debug("END.pushData("+datasourceName+")");
         return retval;
     }
 
     @Override
     public <T> DataMapDto<RecordDtoImpl> mapData(T rawData) {
-        LOG.info("START.mapData");
+        LOG.debug("START.mapData");
+
         @SuppressWarnings("unchecked")
         List<HydrogenDto> data = (List<HydrogenDto>) rawData;
         if (data == null) {
@@ -107,11 +132,15 @@ public class HydrogenDataPusher extends JSONPusher {
             }
             map.getBranch().put(stationDto.getId(), recordsByType);
         }
-        LOG.info("END.mapData");
+
+        LOG.debug("map: "+map);
+        LOG.debug("END.mapData");
         return map;
     }
 
     public DataMapDto<RecordDtoImpl> mapPlugData2Bdp(List<HydrogenDto> data) {
+        LOG.debug("START.mapPlugData2Bdp");
+
         if (data == null) {
             return null;
         }
@@ -139,42 +168,54 @@ public class HydrogenDataPusher extends JSONPusher {
                 map.getBranch().put(id, recordsByType);
             }
         }
+
+        LOG.debug("map: "+map);
+        LOG.debug("END.mapPlugData2Bdp");
         return map;
     }
 
     public StationList mapStations2Bdp(List<HydrogenDto> data) {
+        LOG.debug("START.mapStations2Bdp");
         if (data == null) {
             return null;
         }
+
         StationList stations = new StationList();
         for (HydrogenDto dto : data) {
             EchargingStationDto stationDto = dto.getStation();
             stations.add(stationDto);
         }
+        LOG.debug("stations: "+stations);
+        LOG.debug("END.mapStations2Bdp");
         return stations;
     }
 
     public StationList mapPlugs2Bdp(List<HydrogenDto> data) {
+        LOG.debug("START.mapPlugs2Bdp");
         if (data == null) {
             return null;
         }
+
         StationList plugs = new StationList();
         for (HydrogenDto dto : data) {
             List<EchargingPlugDto> plugList = dto.getPlugList();
             plugs.addAll(plugList);
         }
+
+        LOG.debug("plugs: "+plugs);
+        LOG.debug("END.mapPlugs2Bdp");
         return plugs;
     }
 
     @Override
     public String toString() {
-        String str1 = "http://" + config.getString(HOST_KEY)+":"+config.getString(PORT_KEY)+config.getString("json_endpoint");
+        String str1 = "http://" + config.getString(HOST_KEY) + ":" + config.getString(PORT_KEY) + config.getString("json_endpoint");
         String str2 = 
-                "integreenTypology=" + this.integreenTypology	+ "  " +
-                        "DEFAULT_HOST="      + DEFAULT_HOST		+ "  " +
-                        "DEFAULT_PORT="      + DEFAULT_PORT		+ "  " +
-                        "DEFAULT_ENDPOINT="  + DEFAULT_ENDPOINT	+ "  " +
-                        "";
+                "integreenTypology=" + this.integreenTypology   + "  " +
+                "DEFAULT_HOST="      + DEFAULT_HOST     + "  " +
+                "DEFAULT_PORT="      + DEFAULT_PORT     + "  " +
+                "DEFAULT_ENDPOINT="  + DEFAULT_ENDPOINT + "  " +
+                "";
         return str2 + " ---> " + str1;
     }
 }
