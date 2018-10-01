@@ -31,7 +31,7 @@ public class HydrogenDataPusherTest extends AbstractJUnit4SpringContextTests {
     @Autowired
     private HydrogenDataRetriever reader;
 
-    private boolean doPush = true;
+    private boolean doPush = false;
 
     @Test
     public void testSchedulerPush() {
