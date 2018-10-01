@@ -49,10 +49,12 @@ catch (Exception e) {
       <option value=""></option>
 <%
 String[] names = new String[] {
-         "it.bz.idm.bdp.myfirstdatacollector"
+         "it.bz.idm.bdp.dcemobilityh2"
         ,"it.bz.idm.bdp.reader"
         ,"it.bz.idm.bdp.writer"
         ,"it.bz.idm.bdp"
+        ,"org.springframework.http.client"
+        ,"org.springframework"
         ,"ROOT"
 };
 for ( int i=0 ; i<names.length ; i++ ) {

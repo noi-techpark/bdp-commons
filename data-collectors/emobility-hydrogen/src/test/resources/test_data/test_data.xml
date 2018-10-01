@@ -1,6 +1,6 @@
 <ceemes version="1.0">
 	<fuelstation>
-		<idx>326</idx>
+		<idx>TEST_326</idx>
 		<name>Bozen (H2 Center)</name>
 		<operatorname>iit – Institut für innovative Technologien
 		</operatorname>
@@ -36,12 +36,12 @@
 		</comments>
 	</fuelstation>
 	<fuelstation>
-		<idx>326</idx>
-		<name>Bozen (H2 Center)</name>
+		<idx>TEST_327</idx>
+		<name>Bozen (Test 327)</name>
 		<operatorname>iit – Institut für innovative Technologien
 		</operatorname>
 		<hostname>iit – Institut für innovative Technologien</hostname>
-		<street>Via Enrico Mattei</street>
+		<street>Via Roma</street>
 		<streetnr>1</streetnr>
 		<zip>39100</zip>
 		<city>Bozen</city>
