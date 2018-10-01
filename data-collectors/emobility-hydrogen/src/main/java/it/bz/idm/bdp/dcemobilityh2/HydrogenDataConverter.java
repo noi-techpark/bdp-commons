@@ -92,7 +92,7 @@ public class HydrogenDataConverter {
             return fetchedData;
         } catch (Exception ex) {
             LOG.error("ERROR: " + ex.getMessage(), ex);
-            throw ex; // always throw errors, we do not want to fail silently!
+            throw ex;
         }
     }
 
@@ -103,27 +103,27 @@ public class HydrogenDataConverter {
 
             //From StationDTO
             station.setId(map.get("idx"));
-            station.setName(map.get("name"));
+            station.setName(DCUtils.trunc(map.get("name"), 255));
             station.setLongitude(DCUtils.convertStringToDouble(map.get("longitude")));
             station.setLatitude(DCUtils.convertStringToDouble(map.get("latitude")));
             //OMITTED: protected String crs;
-            station.setOrigin(env.getProperty(ORIGIN_KEY));
-            station.setMunicipality(map.get("city"));
+            station.setOrigin(DCUtils.trunc(env.getProperty(ORIGIN_KEY), 255));
+            station.setMunicipality(DCUtils.trunc(map.get("city"), 255));
             station.setStationType(env.getProperty(STATION_TYPE_KEY));
 
             //From EchargingStationDto
             //OMITTED: s.setCapacity(dto.getChargingPoints().size());
-            station.setProvider(map.get("hostname"));
-            station.setCity(map.get("city"));
+            station.setProvider(DCUtils.trunc(map.get("hostname"), 255));
+            station.setCity(DCUtils.trunc(map.get("city"), 255));
             //The value of "combinedstatus" must be remapped to the corresponding value of the attribute "state"
             station.setState(mapAttribute("app.station.WS.combinedstatus", map.get("combinedstatus"))); 
-            station.setPaymentInfo(env.getProperty(STATION_PAYMENT_INFO_KEY));
-            station.setAccessInfo(map.get("comments"));
+            station.setPaymentInfo(DCUtils.trunc(env.getProperty(STATION_PAYMENT_INFO_KEY), 255));
+            station.setAccessInfo(DCUtils.trunc(map.get("comments"), 255));
             station.setAccessType(env.getProperty(STATION_ACCESS_TYPE_KEY));
             //OMITTED: private String[] categories;
             //OMITTED: private String flashInfo;
             //OMITTED: private String locationServiceInfo;
-            station.setAddress(map.get("street") + " " + map.get("streetnr") + " - " + map.get("zip") + " " + map.get("city") + " - " + map.get("countryshortname"));
+            station.setAddress(DCUtils.trunc(map.get("street") + " " + map.get("streetnr") + " - " + map.get("zip") + " " + map.get("city") + " - " + map.get("countryshortname"), 255));
             station.setReservable(DCUtils.convertStringToBoolean(env.getProperty(STATION_RESERVABLE_KEY)));
         }
 
@@ -138,9 +138,9 @@ public class HydrogenDataConverter {
             plug.setId(map.get("idx") + "-" + env.getProperty(PLUG_ID_KEY));
             plug.setLongitude(DCUtils.convertStringToDouble(map.get("longitude")));
             plug.setLatitude(DCUtils.convertStringToDouble(map.get("latitude")));
-            plug.setName(map.get("name")+" - " + env.getProperty(PLUG_NAME_KEY));
+            plug.setName(DCUtils.trunc(map.get("name")+" - " + env.getProperty(PLUG_NAME_KEY), 255));
             plug.setParentStation(map.get("idx"));
-            plug.setOrigin(env.getProperty(ORIGIN_KEY));
+            plug.setOrigin(DCUtils.trunc(env.getProperty(ORIGIN_KEY), 255));
             plug.setStationType(env.getProperty(PLUG_TYPE_KEY));
 
             //For each Plug we create an Outlet
