@@ -9,8 +9,7 @@ pipeline {
             steps {
 	       sh 'sed -i -e "s%\\(__TOKEN_PARAMETER__\\).*\\$%${ACCESS_TOKEN}%" data-collectors/emobility-hydrogen/src/main/resources/META-INF/spring/application.properties'
 	       sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/emobility-hydrogen.log%" data-collectors/emobility-hydrogen/src/main/resources/log4j.properties'
-	       sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO, stdout, R%" data-collectors/emobility-hydrogen/src/main/resources/log4j.properties'
-	       sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO, stdout, R%" data-collectors/emobility-hydrogen/src/main/resources/log4j.properties'
+	       sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG, stdout, R%" data-collectors/emobility-hydrogen/src/main/resources/log4j.properties'
             }
         }
         stage('Test') {
