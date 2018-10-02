@@ -20,7 +20,7 @@ import it.bz.idm.bdp.dto.StationList;
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class HydrogenDataPusherIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(HydrogenDataPusherTest.class.getName());
+    private static final Logger LOG = LogManager.getLogger(HydrogenDataPusherIT.class.getName());
 
     @Autowired
     private HydrogenJobScheduler scheduler;
