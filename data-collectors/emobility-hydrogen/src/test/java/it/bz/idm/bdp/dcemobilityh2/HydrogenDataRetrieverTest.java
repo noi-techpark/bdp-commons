@@ -1,6 +1,7 @@
 package it.bz.idm.bdp.dcemobilityh2;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,11 +39,19 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
     @Test
     public void testFetchData() {
         try {
+            //Fetch data from source origin
             List<HydrogenDto> fetchData = reader.fetchData();
-            assertEquals(4, fetchData.size());
+
+            //Check there is at least one item in the list
+            assertNotNull("Fetched data IS NULL", fetchData);
+            if ( fetchData.size() == 0 ) {
+                Assert.fail("Fetched data IS EMPTY");
+            }
+
         } catch (Exception e) {
-            LOG.error("Exception in testFetchData: "+e, e);
-            Assert.fail();
+            String msg = "Exception in testFetchData: " + e;
+            LOG.error(msg, e);
+            Assert.fail(msg);
         }
     }
 
@@ -59,12 +68,14 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
             DataMapDto<RecordDtoImpl> map = pusher.mapData(data);
             DataMapDto<RecordDtoImpl> plugRec = pusher.mapPlugData2Bdp(data);
 
+            //Test data contains 2 stations, check the DTOs are correctly converted
             assertEquals(2, stations.size());
             assertEquals(2, plugs.size());
 
         } catch (Exception e) {
-            LOG.error("Exception in testConvertData: "+e, e);
-            Assert.fail();
+            String msg = "Exception in testConvertData: " + e;
+            LOG.error(msg, e);
+            Assert.fail(msg);
         }
 
     }
