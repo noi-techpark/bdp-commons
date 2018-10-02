@@ -18,7 +18,7 @@ pipeline {
                sh 'cd data-collectors/emobility-hydrogen && mvn clean test'
             }
         }
-	staget('Deploy'){
+	stage('Deploy'){
 	   steps {
 	       sh 'cd data-collectors/emobility-hydrogen && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/hydrogen'
 	   }
