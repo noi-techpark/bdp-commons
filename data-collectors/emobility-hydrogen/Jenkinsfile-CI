@@ -2,13 +2,14 @@ pipeline {
     agent {
         dockerfile {
             filename 'dockerfile'
-            args '-v $PWD/tmp/.m2:~/.m2'
+            args '-v $PWD/tmp/.m2:/root/.m2'
         }
     }
 
     stages {
         stage('Temporary Folder') {
             steps {
+                sh 'cd ~ && pwd'
                 sh 'rm  -rf tmp && mkdir -p tmp'
                 sh 'cd tmp && git clone https://github.com/idm-suedtirol/bdp-core.git'
             }
