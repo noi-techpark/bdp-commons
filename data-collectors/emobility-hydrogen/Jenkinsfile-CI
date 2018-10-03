@@ -2,7 +2,7 @@ pipeline {
     agent {
         dockerfile {
             filename 'dockerfile'
-            args '-v $PWD/tmp/.m2:/root/.m2'
+            args '-v $PWD/tmp/.m2:/root/.m2:rw,z'
         }
     }
 
