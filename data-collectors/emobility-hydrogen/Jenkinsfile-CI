@@ -12,25 +12,25 @@ pipeline {
         }
         stage('Dependencies') {
             agent {
-                dockerfile {
-                    filename 'dockerfile'
+                docker {
+                    image 'maven:3.5-jdk-8'
                     args '-v $PWD/tmp/.m2:/root/.m2'
                 }
             }
             steps {
-                sh 'cd tmp/bdp-core/dto && mvn install'
-                sh 'cd tmp/bdp-core/dc-interface && mvn install'
+                sh 'bash -c "cd tmp/bdp-core/dto && mvn install"'
+                sh 'bash -c "cd tmp/bdp-core/dc-interface && mvn install"'
             }
         }
         stage('Test') {
             agent {
-                dockerfile {
-                    filename 'dockerfile'
+                docker {
+                    image 'maven:3.5-jdk-8'
                     args '-v $PWD/tmp/.m2:/root/.m2'
                 }
             }
             steps {
-                sh 'mvn clean compile'
+                sh 'bash -c "cd data-collectors/emobility-hydrogen && mvn clean compile"'
             }
         }
     }
