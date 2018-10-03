@@ -21,7 +21,7 @@ pipeline {
                 sh 'mvn install'
             }
         }
-        stage('Dependencies - bdp-core (dto)') {
+        stage('Dependencies - bdp-core (dc-interface)') {
             agent {
                 docker {
                     image 'maven:3.5-jdk-8'
