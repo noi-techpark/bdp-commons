@@ -5,7 +5,7 @@ pipeline {
         stage('Dependencies') {
             steps {
                 sh 'rm -rf tmp && mkdir -p tmp'
-                sh 'cd tmp && git clone git@github.com:idm-suedtirol/bdp-core.git'
+                sh 'cd tmp && git clone https://github.com/idm-suedtirol/bdp-core.git'
                 sh 'cd tmp/bdp-core/dto && mvn install'
                 sh 'cd tmp/bdp-core/dc-interface && mvn install'
             }
