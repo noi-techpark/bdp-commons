@@ -1,46 +1,18 @@
 pipeline {
-    agent none
+    agent any
 
     stages {
-        stage('Temporary Folder') {
-            agent any
+        stage('Dependencies') {
             steps {
-                sh 'mkdir -p tmp'
-                sh 'cd tmp && test -e "bdp-core" || git clone https://github.com/idm-suedtirol/bdp-core.git'
-                sh 'cd tmp/bdp-core && git pull'
-            }
-        }
-        stage('Dependencies - bdp-core (dto)') {
-            agent {
-                docker {
-                    image 'maven:3.5-jdk-8'
-                    args '-v $PWD/tmp/.m2:/root/.m2 -v $PWD/tmp/bdp-core:/var/src -w /var/src/dto'
-                }
-            }
-            steps {
-                sh 'mvn install'
-            }
-        }
-        stage('Dependencies - bdp-core (dc-interface)') {
-            agent {
-                docker {
-                    image 'maven:3.5-jdk-8'
-                    args '-v $PWD/tmp/.m2:/root/.m2 -v $PWD/tmp/bdp-core:/var/src -w /var/src/dc-interface'
-                }
-            }
-            steps {
-                sh 'mvn install'
+                sh 'rm -rf tmp && mkdir -p tmp'
+                sh 'cd tmp && git clone https://github.com/idm-suedtirol/bdp-core.git'
+                sh 'cd tmp/bdp-core/dto && mvn install'
+                sh 'cd tmp/bdp-core/dc-interface && mvn install'
             }
         }
         stage('Test') {
-            agent {
-                docker {
-                    image 'maven:3.5-jdk-8'
-                    args '-v $PWD/tmp/.m2:/root/.m2 -v $PWD/data-collectors/emobility-hydrogen:/var/src -w /var/src'
-                }
-            }
             steps {
-                sh 'mvn clean compile'
+                sh 'cd data-collectors/emobility-hydrogen && mvn clean compile'
             }
         }
     }
