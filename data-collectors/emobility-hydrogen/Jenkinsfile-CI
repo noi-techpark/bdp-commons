@@ -1,9 +1,13 @@
 pipeline {
-    agent none
+    agent {
+        dockerfile {
+            filename 'dockerfile'
+            args '-v $PWD/tmp/.m2:/root/.m2'
+        }
+    }
 
     stages {
         stage('Temporary Folder') {
-            agent any
             steps {
                 sh 'mkdir -p tmp'
                 sh 'cd tmp && test -e "bdp-core" || git clone https://github.com/idm-suedtirol/bdp-core.git'
@@ -11,24 +15,12 @@ pipeline {
             }
         }
         stage('Dependencies') {
-            agent {
-                dockerfile {
-                    filename 'dockerfile'
-                    args '-v $PWD/tmp/.m2:/root/.m2'
-                }
-            }
             steps {
                 sh 'cd tmp/bdp-core/dto && mvn install'
                 sh 'cd tmp/bdp-core/dc-interface && mvn install'
             }
         }
         stage('Test') {
-            agent {
-                dockerfile {
-                    filename 'dockerfile'
-                    args '-v $PWD/tmp/.m2:/root/.m2'
-                }
-            }
             steps {
                 sh 'data-collectors/emobility-hydrogen && mvn clean compile'
             }
