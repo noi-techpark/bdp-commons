@@ -2,9 +2,17 @@ pipeline {
     agent any
 
     stages {
+        stage('Dependencies') {
+            steps {
+                sh 'rm -rf tmp && mkdir -p tmp'
+                sh 'cd tmp && git clone git@github.com:idm-suedtirol/bdp-core.git'
+                sh 'cd tmp/bdp-core/dto && mvn install'
+                sh 'cd tmp/bdp-core/dc-interface && mvn install'
+            }
+        }
         stage('Test') {
             steps {
-               sh 'cd data-collectors/emobility-hydrogen && mvn clean compile'
+                sh 'cd data-collectors/emobility-hydrogen && mvn clean compile'
             }
         }
     }
