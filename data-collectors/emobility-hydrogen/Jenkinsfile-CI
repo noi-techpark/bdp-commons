@@ -2,7 +2,7 @@ pipeline {
     agent {
         dockerfile {
             filename 'dockerfile'
-            args '-v $PWD/tmp/.m2:/root/.m2 -v $PWD/tmp/.m2:/.m2'
+            args '-v $PWD/tmp/.m2:/root/.m2'
         }
     }
 
@@ -15,14 +15,13 @@ pipeline {
         }
         stage('Dependencies') {
             steps {
-                sh 'cd tmp/bdp-core/dto && pwd'
-                sh 'cd tmp/bdp-core/dto && mvn install'
-                sh 'cd tmp/bdp-core/dc-interface && mvn install'
+                sh 'cd tmp/bdp-core/dto && mvn --global-settings "/settings.xml" install'
+                sh 'cd tmp/bdp-core/dc-interface && mvn --global-settings "/settings.xml" install'
             }
         }
         stage('Test') {
             steps {
-                sh 'data-collectors/emobility-hydrogen && mvn clean compile'
+                sh 'data-collectors/emobility-hydrogen && mvn --global-settings "/settings.xml" clean compile'
             }
         }
     }
