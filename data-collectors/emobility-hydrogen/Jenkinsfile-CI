@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Dependencies') {
             steps {
-                sh 'cd tmp/bdp-core/dto && mvn install'
+                sh 'cd tmp/bdp-core/dto && mvn -X install'
                 sh 'cd tmp/bdp-core/dc-interface && mvn install'
             }
         }
