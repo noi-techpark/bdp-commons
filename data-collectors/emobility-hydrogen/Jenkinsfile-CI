@@ -9,9 +9,8 @@ pipeline {
     stages {
         stage('Temporary Folder') {
             steps {
-                sh 'mkdir -p tmp'
-                sh 'cd tmp && test -e "bdp-core" || git clone https://github.com/idm-suedtirol/bdp-core.git'
-                sh 'cd tmp/bdp-core && git pull'
+                sh 'rm  -rf && mkdir -p tmp'
+                sh 'cd tmp && git clone https://github.com/idm-suedtirol/bdp-core.git'
             }
         }
         stage('Dependencies') {
