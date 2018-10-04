@@ -5,8 +5,9 @@ pipeline {
         stage('Temporary Folder') {
             agent any
             steps {
-                sh 'ls -la tmp'
-                sh 'rm  -rf tmp && mkdir -p tmp'
+                sh 'rm  -rf tmp'
+                sh 'mkdir -p tmp'
+                sh 'cd tmp && mkdir -p .m2'
                 sh 'cd tmp && git clone https://github.com/idm-suedtirol/bdp-core.git'
             }
         }
@@ -14,12 +15,11 @@ pipeline {
             agent {
                 dockerfile {
                     filename 'dockerfile'
-                    args '-v $PWD/tmp/.m2:/var/maven/.m2:rw,z'
+                    args '-v $PWD/tmp/.m2:/.m2:rw,z'
                 }
             }
             steps {
-                sh 'ls -la /var/maven'
-                sh 'ls -la /var/maven/.m2'
+                sh 'ls -la /.m2'
                 sh 'cd tmp/bdp-core/dto && mvn --global-settings "/settings.xml" install'
                 sh 'cd tmp/bdp-core/dc-interface && mvn --global-settings "/settings.xml" install'
             }
