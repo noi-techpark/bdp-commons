@@ -10,6 +10,8 @@ pipeline {
         stage('Temporary Folder') {
             steps {
                 sh 'id'
+                sh 'cat /etc/passwd'
+                sh 'cat /etc/group'
                 sh 'ls -la /var/maven'
                 sh 'ls -la /var/maven/.m2'
                 sh 'mkdir -p /var/maven/.m2/test'
