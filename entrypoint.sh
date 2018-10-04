@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "Hallo"
 echo "<settings><localRepository>$PWD/tmp/.m2</localRepository></settings>" > /settings.xml
 chmod 755 /settings.xml
 
