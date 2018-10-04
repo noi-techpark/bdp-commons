@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    environment{
+      ZRX_ENDPOINT = credentials('smg_zrx_endpoint')
+      PARKING_PROPS = credentials('parking-datacollector.properties')
+    }
+    stages {
+	stage('Configure'){
+	    steps{
+              sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" data-collectors/parkingDataCollector/src/main/resources/log4j.properties'
+              sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/parkingDataCollector/src/main/resources/log4j.properties'
+	      sh 'cat "${PARKING_PROPS}" > data-collectors/parkingDataCollector/src/main/resources/META-INF/spring/app.properties'
+	    }
+	}
+        stage('Test') {
+            steps {
+              sh 'cd data-collectors/parkingDataCollector && mvn clean test && mvn -Dit.test=ThirdPartyIT verify'
+            }
+        }
+	stage('Build'){
+	    steps{
+		sh 'cd data-collectors/parkingDataCollector && mvn package'
+	    }
+	}
+	stage('Archive'){
+	    steps{
+		sh 'cp data-collectors/parkingDataCollector/target/dc-parking-famas.war /var/builds/prod-server-dc/'
+	    }
+	}
+    }
+}
