@@ -1,7 +1,7 @@
 FROM debian:9
 
-RUN groupadd --gid 113 jenkins && \
-    useradd --uid 109 --gid 113 jenkins && \
+RUN groupadd --gid $JENKINS_GROUP_ID jenkins && \
+    useradd --uid $JENKINS_USER_ID --gid $JENKINS_GROUP_ID jenkins && \
     mkdir -p /home/jenkins && \
     chown -R jenkins:jenkins /home/jenkins && \
     chmod -R 750 /home/jenkins
