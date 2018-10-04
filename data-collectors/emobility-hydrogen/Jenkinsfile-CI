@@ -24,6 +24,7 @@ pipeline {
             steps {
                 sh 'id'
                 sh 'ls -la /.m2'
+                sh 'ls -la tmp/.m2'
                 sh 'cd tmp/bdp-core/dto && mvn --global-settings "/settings.xml" install'
                 sh 'cd tmp/bdp-core/dc-interface && mvn --global-settings "/settings.xml" install'
             }
