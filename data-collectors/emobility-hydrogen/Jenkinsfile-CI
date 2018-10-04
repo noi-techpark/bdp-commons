@@ -9,6 +9,9 @@ pipeline {
                 sh 'mkdir -p tmp'
                 sh 'cd tmp && mkdir -p .m2'
                 sh 'cd tmp && git clone https://github.com/idm-suedtirol/bdp-core.git'
+
+                sh 'ls -la tmp'
+                sh 'ls -la tmp/.m2'
             }
         }
         stage('Dependencies') {
