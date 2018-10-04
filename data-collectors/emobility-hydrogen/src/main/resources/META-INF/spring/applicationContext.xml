@@ -15,7 +15,7 @@
 
     <context:component-scan base-package="it.bz.idm.bdp"/>
 
-    <bean class="it.bz.idm.bdp.dcemobilityh2.JobScheduler" id="jobScheduler"/>
+    <bean class="it.bz.idm.bdp.dcemobilityh2.HydrogenJobScheduler" id="jobScheduler"/>
     <task:scheduler id="Scheduler" pool-size="10" />
     <task:scheduled-tasks scheduler="Scheduler">
         <!--

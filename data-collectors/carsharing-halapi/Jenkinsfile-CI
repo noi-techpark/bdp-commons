@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+    environment{
+      CARSHARING_PROPS = credentials('dc-carsharing.properties')
+    }
+    stages {
+	stage('Configure'){
+	    steps{
+	      sh 'cat "${CARSHARING_PROPS}" > data-collectors/carsharingbz/src/main/resources/app.properties'
+	    }
+	}
+        stage('Test') {
+            steps {
+              sh 'cd data-collectors/carsharingbz/ && mvn clean test && mvn integration-test'
+            }
+        }
+    }
+}
