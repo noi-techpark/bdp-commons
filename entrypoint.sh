@@ -1,7 +1,6 @@
 #!/bin/bash
 
-echo "Hallo"
-echo "<settings><localRepository>$PWD/tmp/.m2</localRepository></settings>" > /settings.xml
-chmod 755 /settings.xml
+echo "<settings><localRepository>$PWD/tmp/.m2</localRepository></settings>" > $PWD/tmp/settings.xml
+chmod 755 $PWD/tmp/settings.xml
 
 /bin/bash -c "$@"

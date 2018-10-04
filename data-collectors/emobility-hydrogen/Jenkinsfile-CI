@@ -20,10 +20,9 @@ pipeline {
                 sh 'id'
                 sh 'ls -la .'
                 sh 'ls -la tmp'
-                sh 'ls -la /'
-                sh 'cat /entrypoint.sh'
-                sh 'cd tmp/bdp-core/dto && mvn --global-settings "/settings.xml" install'
-                sh 'cd tmp/bdp-core/dc-interface && mvn --global-settings "/settings.xml" install'
+                sh 'ls -la ~'
+                sh 'cd tmp/bdp-core/dto && mvn install'
+                sh 'cd tmp/bdp-core/dc-interface && mvn install'
             }
         }
         stage('Test') {
@@ -33,7 +32,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'data-collectors/emobility-hydrogen && mvn --global-settings "/settings.xml" clean compile'
+                sh 'data-collectors/emobility-hydrogen && mvn clean compile'
             }
         }
     }
