@@ -15,7 +15,7 @@ pipeline {
             agent {
                 dockerfile {
                     filename 'dockerfile'
-                    args '-v $PWD/tmp/.m2:/.m2:rw,z'
+                    args '-v $PWD/tmp/.m2:/.m2'
                 }
             }
             steps {
@@ -28,7 +28,7 @@ pipeline {
             agent {
                 dockerfile {
                     filename 'dockerfile'
-                    args '-v $PWD/tmp/.m2:/var/maven/.m2:rw,z'
+                    args '-v $PWD/tmp/.m2:/var/maven/.m2'
                 }
             }
             steps {
