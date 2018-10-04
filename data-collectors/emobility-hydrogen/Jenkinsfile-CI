@@ -7,25 +7,19 @@ pipeline {
             steps {
                 sh 'rm  -rf tmp'
                 sh 'mkdir -p tmp'
-                sh 'cd tmp && mkdir -p .m2'
                 sh 'cd tmp && git clone https://github.com/idm-suedtirol/bdp-core.git'
-
-                sh 'ls -la tmp'
-                sh 'ls -la tmp/.m2'
             }
         }
         stage('Dependencies') {
             agent {
                 dockerfile {
                     filename 'dockerfile'
-                    args '-v $PWD/tmp/.m2:/.m2'
                 }
             }
             steps {
                 sh 'id'
-                sh 'ls -la /.m2'
-                sh 'ls -la tmp/.m2'
                 sh 'ls -la .'
+                sh 'ls -la tmp'
                 sh 'cd tmp/bdp-core/dto && mvn --global-settings "/settings.xml" install'
                 sh 'cd tmp/bdp-core/dc-interface && mvn --global-settings "/settings.xml" install'
             }
@@ -34,7 +28,6 @@ pipeline {
             agent {
                 dockerfile {
                     filename 'dockerfile'
-                    args '-v $PWD/tmp/.m2:/var/maven/.m2'
                 }
             }
             steps {
