@@ -1,34 +1,25 @@
 pipeline {
-    agent none
+    agent {
+        dockerfile {
+            filename 'dockerfile'
+            additionalBuildArgs  '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
+    }
 
     stages {
         stage('Temporary Folder') {
-            agent any
             steps {
-                sh 'rm  -rf tmp'
                 sh 'mkdir -p tmp'
-                sh 'cd tmp && git clone https://github.com/idm-suedtirol/bdp-core.git'
+                sh 'cd tmp && test -e "bdp-core" || git clone https://github.com/idm-suedtirol/bdp-core.git'
             }
         }
         stage('Dependencies') {
-            agent {
-                dockerfile {
-                    filename 'dockerfile'
-                    additionalBuildArgs  '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
-                }
-            }
             steps {
                 sh 'cd tmp/bdp-core/dto && mvn install'
                 sh 'cd tmp/bdp-core/dc-interface && mvn install'
             }
         }
         stage('Test') {
-            agent {
-                dockerfile {
-                    filename 'dockerfile'
-                    additionalBuildArgs  '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
-                }
-            }
             steps {
                 sh 'cd data-collectors/emobility-hydrogen && mvn clean compile'
             }
