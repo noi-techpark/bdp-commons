@@ -10,6 +10,8 @@ pipeline {
         stage('Temporary Folder') {
             steps {
                 sh 'id'
+                sh 'ls -la /var/maven'
+                sh 'ls -la /var/maven/.m2'
                 sh 'mkdir -p /var/maven/.m2/test'
                 sh 'rm  -rf tmp && mkdir -p tmp'
                 sh 'cd tmp && git clone https://github.com/idm-suedtirol/bdp-core.git'
