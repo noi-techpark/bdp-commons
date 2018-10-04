@@ -21,6 +21,7 @@ pipeline {
                 sh 'ls -la .'
                 sh 'ls -la tmp'
                 sh 'ls -la /'
+                sh 'cat /entrypoint.sh'
                 sh 'cd tmp/bdp-core/dto && mvn --global-settings "/settings.xml" install'
                 sh 'cd tmp/bdp-core/dc-interface && mvn --global-settings "/settings.xml" install'
             }
