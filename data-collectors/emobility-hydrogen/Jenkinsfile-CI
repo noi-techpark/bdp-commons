@@ -17,10 +17,6 @@ pipeline {
                 }
             }
             steps {
-                sh 'id'
-                sh 'ls -la .'
-                sh 'ls -la tmp'
-                sh 'ls -la ~'
                 sh 'cd tmp/bdp-core/dto && mvn install'
                 sh 'cd tmp/bdp-core/dc-interface && mvn install'
             }
@@ -32,7 +28,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'data-collectors/emobility-hydrogen && mvn clean compile'
+                sh 'cd data-collectors/emobility-hydrogen && mvn clean compile'
             }
         }
     }
