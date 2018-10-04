@@ -1,7 +1,7 @@
 FROM debian:9
 
-RUN echo $JENKINS_GROUP_ID && \
-    echo $JENKINS_USER_ID
+ARG JENKINS_GROUP_ID
+ARG JENKINS_USER_ID
 
 RUN groupadd --gid $JENKINS_GROUP_ID jenkins && \
     useradd --uid $JENKINS_USER_ID --gid $JENKINS_GROUP_ID jenkins && \
