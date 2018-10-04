@@ -1,31 +1,34 @@
 pipeline {
-    agent {
-        dockerfile {
-            filename 'dockerfile'
-            args '-v $PWD/tmp/.m2:/var/maven/.m2:rw,z'
-        }
-    }
+    agent none
 
     stages {
         stage('Temporary Folder') {
+            agent any
             steps {
-                sh 'id'
-                sh 'cat /etc/passwd'
-                sh 'cat /etc/group'
-                sh 'ls -la /var/maven'
-                sh 'ls -la /var/maven/.m2'
-                sh 'mkdir -p /var/maven/.m2/test'
+                sh 'ls -la tmp'
                 sh 'rm  -rf tmp && mkdir -p tmp'
                 sh 'cd tmp && git clone https://github.com/idm-suedtirol/bdp-core.git'
             }
         }
         stage('Dependencies') {
+            agent {
+                dockerfile {
+                    filename 'dockerfile'
+                    args '-v $PWD/tmp/.m2:/var/maven/.m2:rw,z'
+                }
+            }
             steps {
                 sh 'cd tmp/bdp-core/dto && mvn --global-settings "/settings.xml" install'
                 sh 'cd tmp/bdp-core/dc-interface && mvn --global-settings "/settings.xml" install'
             }
         }
         stage('Test') {
+            agent {
+                dockerfile {
+                    filename 'dockerfile'
+                    args '-v $PWD/tmp/.m2:/var/maven/.m2:rw,z'
+                }
+            }
             steps {
                 sh 'data-collectors/emobility-hydrogen && mvn --global-settings "/settings.xml" clean compile'
             }
