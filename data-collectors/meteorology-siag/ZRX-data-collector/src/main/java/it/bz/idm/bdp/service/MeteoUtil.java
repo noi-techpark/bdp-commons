@@ -46,7 +46,7 @@ import it.bz.tis.zrx2json.Zrx2json;
 @PropertySource({"classpath:/META-INF/spring/types.properties","classpath:/META-INF/spring/application.properties"})
 public class MeteoUtil {
 	private static final String GEOMTRY_CRS = "geometry_crs";
-	private static final String ZRX_ENDPOINT_KEY = "zrx_endpoint"; 
+	private static final String ZRX_ENDPOINT_KEY = "zrx_endpoint";
 	private static final String[] CUSTOM_PROVINCE_BZ_PARAMETER = new String[] {"SRW","SHW","SEINZUG6926","SLAGE0","SPNP","SFGEBIET","DAYSTART"};
 	private static final String AREA = "SFGEBIET";
 	private static final String ZEUS_ID = "SANR";
@@ -61,11 +61,11 @@ public class MeteoUtil {
 
 
 	private static NumberFormat numberFormatter = NumberFormat.getInstance(Locale.GERMAN);
-	private static final DateFormat dateFormatter = new SimpleDateFormat("yyyyMMddHHmmss"); 
+	private static final DateFormat dateFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	@Autowired
 	private MeteoPusher pusher;
-	
+
 	@Autowired
 	private Environment environment;
 
@@ -88,7 +88,7 @@ public class MeteoUtil {
 				return json;
 			}
 			bufferedReader.close();
-			
+
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -96,9 +96,9 @@ public class MeteoUtil {
 		}
 		return null;
 	}
-	
+
 	public List<SegmentDto> getSegmentDtosFromJson(String json){
-		List<SegmentDto> segments = new ArrayList<SegmentDto>(); 
+		List<SegmentDto> segments = new ArrayList<SegmentDto>();
 		List<Meteostation> stations = parseJson(json);
 		if (stations!=null)
 			for (Meteostation station : stations){
@@ -152,19 +152,18 @@ public class MeteoUtil {
 		Set<StationDto> stations = new HashSet<StationDto>();
 		if (data != null)
 			for (Meteostation station:data){
-				
+
 				Map<String, String> optionalParametersFromComments = getOptionalParametersFromComments(station.getComments());
 				Map<String, String> params = station.getMetaData();
 				params.putAll(optionalParametersFromComments);
-				
+
 				StationDto dto = new StationDto();
-				dto.getMetaData().put("place", params.get(AREA));
+				dto.getMetaData().put("area", params.get(AREA));
 				dto.setId(params.get(ZEUS_ID));
 				Double latitude = null,longitude = null;
 				try {
 					longitude = numberFormatter.parse(params.get(X)).doubleValue();
 					latitude = numberFormatter.parse(params.get(Y)).doubleValue();
-
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -183,7 +182,7 @@ public class MeteoUtil {
 		DataMapDto<RecordDtoImpl> typesByStation = new DataMapDto<>();
 		List<Meteostation> data = parseJson(json);
 		for (Meteostation station : data){
-			//TODO get timezone dynamically with station coordinates 
+			//TODO get timezone dynamically with station coordinates
 			dateFormatter.setTimeZone(TimeZone.getTimeZone(environment.getProperty("default_timezone"))); //set the timezone in which your station is currently located (not defined in zrx)
 			Map<String, String> params = station.getMetaData();
 			String stationId = params.get(ZEUS_ID);
