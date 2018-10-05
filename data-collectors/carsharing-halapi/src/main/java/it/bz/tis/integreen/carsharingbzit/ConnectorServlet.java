@@ -50,7 +50,6 @@ import it.bz.tis.integreen.carsharingbzit.tis.CarSharingPusher;
 public class ConnectorServlet extends HttpServlet implements Runnable
 {
    private static final long serialVersionUID = 2317521315923271535L;
-
    static final Logger       logger       = LogManager.getLogger(ConnectorServlet.class);
 
    Thread                    backgroundTask;
