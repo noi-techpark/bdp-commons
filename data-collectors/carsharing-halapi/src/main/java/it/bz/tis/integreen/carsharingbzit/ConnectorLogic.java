@@ -53,7 +53,7 @@ import it.bz.tis.integreen.carsharingbzit.api.ListVehiclesByStationsResponse;
 import it.bz.tis.integreen.carsharingbzit.api.ListVehiclesByStationsResponse.StationAndVehicles;
 
 /**
- * 
+ *
  * @author Davide Montesin <d@vide.bz>
  */
 public class ConnectorLogic
@@ -110,7 +110,7 @@ public class ConnectorLogic
 		GetStationResponse responseGetStation = apiClient.callWebService(requestGetStation, GetStationResponse.class);
 
 		///////////////////////////////////////////////////////////////
-		// Vehicles by stations 
+		// Vehicles by stations
 		///////////////////////////////////////////////////////////////
 
 		ListVehiclesByStationsRequest vehicles = new ListVehiclesByStationsRequest(stationIds);
@@ -118,7 +118,7 @@ public class ConnectorLogic
 				ListVehiclesByStationsResponse.class);
 
 		///////////////////////////////////////////////////////////////
-		// Vehicles details 
+		// Vehicles details
 		///////////////////////////////////////////////////////////////
 
 		HashMap<String, String[]> vehicleIdsByStationIds = new HashMap<>();
@@ -213,7 +213,7 @@ public class ConnectorLogic
 			castedDto.setName(dto.getName());
 			castedDto.setOrigin(dto.getOrigin());
 			castedDto.setBrand(dto.getBrand());
-			castedDto.setCrs(dto.getCrs());
+			castedDto.setCoordinateReferenceSystem(dto.getCrs());
 			castedDto.setLicensePlate(dto.getLicensePlate());
 			castedDto.setModel(dto.getModel());
 			castedDto.setShowType(dto.getShowType());
@@ -231,7 +231,7 @@ public class ConnectorLogic
 			castedDto.setAccess(dto.getAccess());
 			castedDto.setBookMode(dto.getBookMode());
 			castedDto.setCompany(dto.getCompany());
-			castedDto.setCrs(dto.getCrs());
+			castedDto.setCoordinateReferenceSystem(dto.getCrs());
 			castedDto.setHasFixedParking(dto.isHasFixedParking());
 			castedDto.setId(dto.getId());
 			castedDto.setLatitude(dto.getLatitude());
@@ -280,7 +280,7 @@ public class ConnectorLogic
 						ListVehicleOccupancyByStationResponse.class);
 
 				VehicleAndOccupancies[] occupancies = responseOccupancy.getVehicleAndOccupancies();
-				if (occupancies== null) 
+				if (occupancies== null)
 					continue;
 				if (occupancies.length != vehicleIds.length) // Same number of responses as the number to requests
 				{

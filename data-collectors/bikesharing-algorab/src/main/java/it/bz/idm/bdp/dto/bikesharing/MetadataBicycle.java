@@ -3,6 +3,7 @@ package it.bz.idm.bdp.dto.bikesharing;
 import java.util.List;
 
 public class MetadataBicycle extends BikeResponseEntity {
+	private static final long serialVersionUID = 790807023651641383L;
 	private List<StationParameter> result;
 	private String value;
 
@@ -21,7 +22,7 @@ public class MetadataBicycle extends BikeResponseEntity {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	
-	
+
+
+
 }

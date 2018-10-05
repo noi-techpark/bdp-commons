@@ -30,7 +30,7 @@ import it.bz.idm.bdp.json.JSONPusher;
 public class CarSharingPusher extends JSONPusher
 {
 	@Override
-	public Object pushData(String datasourceName, DataMapDto dto) {
+	public Object pushData(String datasourceName, DataMapDto<?> dto) {
 		return super.pushData(datasourceName, dto);
 	}
 
