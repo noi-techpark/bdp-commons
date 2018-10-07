@@ -6,8 +6,9 @@ import java.util.*;
 import org.json.simple.*;
 
 /**
+ * A22 connector.
  *
- * @author chris@1006.org
+ * @author chris
  */
 public class Connector {
 
@@ -18,7 +19,7 @@ public class Connector {
     private String url = null;
 
     /**
-     * get authentication token and store it
+     * Get authentication token and store it.
      *
      * @param url - the A22 web service URL
      * @param auth_json - the authentication String with user/pass in JSON
@@ -81,8 +82,9 @@ public class Connector {
     }
 
     /**
-     * release authentication token
+     * Release authentication token.
      *
+     * @throws java.net.MalformedURLException, IOException
      */
     public void close() throws MalformedURLException, IOException {
 
@@ -125,7 +127,7 @@ public class Connector {
             // null pointer or cast exception in case the json hasn't the expected form
             throw new RuntimeException("de-authentication failure (could not parse response)");
         }
-        if (result == null || result.booleanValue() != true) {
+        if (result == null || result != true) {
             throw new RuntimeException("de-authentication failure (de-authentication was not confirmed)");
         }
 
@@ -140,6 +142,9 @@ public class Connector {
     /**
      * Retrieve the list of traffic sensors.
      *
+     * @return an ArrayList of HashMaps with the sensor info
+     *
+     * @throws java.net.MalformedURLException, IOException
      */
     public ArrayList<HashMap<String, String>> getTrafficSensors() throws MalformedURLException, IOException {
 
@@ -190,7 +195,7 @@ public class Connector {
                     h.put("name", coil.get("descrizione") + " (" + getLaneText((Long) sensor.get("idcorsia") + "", (Long) sensor.get("iddirezione") + "") + ")");
                     h.put("pointprojection", "" + coil.get("latitudine") + "," + coil.get("longitudine"));
                     output.add(h);
-                    
+
                 }
             }
         } catch (Exception e) {
@@ -207,8 +212,16 @@ public class Connector {
     }
 
     /**
-     * Retrieve the list of vehicle transit events.
+     * Retrieve the list of vehicle transit events for all known sensors.
      *
+     * @param fromTS search events from this timestamp in the format understood
+     * by the A22 server (ex. 1515740400000+0100)
+     * @param toTS search events up to this timestamp in the format understood
+     * by the A22 server (ex. 1515740400000+0100)
+     *
+     * @return an ArrayList of HashMaps with the vehicle transit event info
+     *
+     * @throws java.net.MalformedURLException, IOException
      */
     public ArrayList<HashMap<String, String>> getVehicles(String fromTS, String toTS) throws MalformedURLException, IOException {
 
@@ -216,59 +229,101 @@ public class Connector {
             throw new RuntimeException("there is no authenticated session");
         }
 
-        // make de-authentication request
-        HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/traffico/transiti")).openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", "IDM/traffic_a22");
-        conn.setRequestProperty("Accept", "*/*");
-        conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
-        conn.setDoOutput(true);
-        OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
-        os.write("{\"request\":{\"sessionId\":\"" + token + "\",\"idspira\":678,\"fromData\":\"/Date(" + fromTS + ")/\",\"toData\":\"/Date(" + toTS + ")/\"}}\n");
-        os.flush();
-        int status = conn.getResponseCode();
-        if (status != 200) {
-            throw new RuntimeException("could not retrieve vehicle transit events list (response code was " + status + ")");
-        }
-
-        // get response
-        BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-        StringBuilder response = new StringBuilder();
-        String s;
-        while ((s = br.readLine()) != null) {
-            response.append(s);
-        }
-        os.close();
-        conn.disconnect();
-
-        // parse response 
         ArrayList<HashMap<String, String>> output = new ArrayList<>();
-        try {
-            JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
-            JSONArray event_list = (JSONArray) response_json.get("Traffico_GetTransitiResult");
-            int i, j;
-            for (i = 0; i < event_list.size(); i++) {
-                JSONObject event = (JSONObject) event_list.get(i);
-                HashMap<String, String> h = new HashMap<>();
-                h.put("stationcode", "A22:" + event.get("idspira") + ":" + event.get("idsensore"));
-                h.put("distance", "" + (Long)event.get("distanza"));
-                h.put("headway", "" + (Long)event.get("avanzamento"));
-                h.put("speed", "" + (Long)event.get("velocita"));
-                h.put("length", "" + (Long)event.get("lunghezza"));
-                h.put("axles", "" + (Long)event.get("assi"));
-                h.put("class", "" + (Long)event.get("classe"));
-                h.put("direction", "" + (Long)event.get("direzione"));
-                h.put("against-traffic", "" + (Boolean)event.get("controsenso"));
-                output.add(h);
+
+        // retrieve the list of sensors and get unique coil IDs
+        ArrayList<HashMap<String, String>> sensors = getTrafficSensors();
+        HashMap<String, Integer> coils = new HashMap<>();
+        int sid;
+        for (sid = 0; sid < sensors.size(); sid++) {
+            // stationcode = A22:coilid:sensorid
+            String split[] = sensors.get(sid).get("stationcode").split(":");
+            if (split.length != 3) {
+                throw new RuntimeException("stationcode does not have the expected format");
             }
-        } catch (Exception e) {
-            // null pointer or cast exception in case the json hasn't the expected form
-            throw new RuntimeException("could not parse vehicle transit events");
+            coils.put(split[1], 1);
         }
+        if (coils.isEmpty()) {
+            return output;
+        }
+
+        // loop over the coil IDs and retrieve transit events for each coil ID, adding to the output list
+        for (String coilid : coils.keySet()) {
+            if (DEBUG) {
+                System.out.println("getVehicles is retrieving vehicle transit events for coil ID " + coilid);
+            }
+            // make de-authentication request
+            HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/traffico/transiti")).openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("User-Agent", "IDM/traffic_a22");
+            conn.setRequestProperty("Accept", "*/*");
+            conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
+            conn.setDoOutput(true);
+            OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
+            os.write("{\"request\":{\"sessionId\":\"" + token + "\",\"idspira\":" + coilid + ",\"fromData\":\"/Date(" + fromTS + ")/\",\"toData\":\"/Date(" + toTS + ")/\"}}\n");
+            os.flush();
+            int status = conn.getResponseCode();
+            if (status != 200) {
+                // as of today (2018-10-07) there are combinations of timestamps and coil IDs that will trigger a 500 response;
+                // to work around this problem, we ignore non-200 responses
+                if (DEBUG) {
+                    System.out.println("    +- skipping (response status was " + status + ")");
+                }
+                // throw new RuntimeException("could not retrieve vehicle transit events list (response code was " + status + ")");
+                continue;
+            }
+
+            // get response
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            StringBuilder response = new StringBuilder();
+            String s;
+            while ((s = br.readLine()) != null) {
+                response.append(s);
+            }
+            os.close();
+            conn.disconnect();
+
+            // parse response 
+            try {
+                JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
+                JSONArray event_list = (JSONArray) response_json.get("Traffico_GetTransitiResult");
+
+                if (DEBUG) {
+                    System.out.println("    +- got " + event_list.size() + " events");
+                }
+
+                int i, j;
+                for (i = 0; i < event_list.size(); i++) {
+                    JSONObject event = (JSONObject) event_list.get(i);
+                    HashMap<String, String> h = new HashMap<>();
+                    h.put("stationcode", "A22:" + event.get("idspira") + ":" + event.get("idsensore"));
+                    h.put("distance",    "" + event.get("distanza"));
+                    h.put("headway",     "" + event.get("avanzamento"));
+                    h.put("speed",       "" + event.get("velocita"));
+                    h.put("length",      "" + event.get("lunghezza"));
+                    h.put("axles",       "" + event.get("assi"));
+                    h.put("class",       "" + event.get("classe"));
+                    h.put("direction",   "" + event.get("direzione"));
+                    h.put("timestamp",   "" + event.get("data"));
+                    h.put("against-traffic", "" + (Boolean) event.get("controsenso"));
+                    output.add(h);
+                }
+            } catch (Exception e) {
+                // null pointer or cast exception in case the json hasn't the expected form
+                e.printStackTrace();
+                throw new RuntimeException("could not parse vehicle transit events");
+            }
+
+            try {
+                Thread.sleep(100); // sleep a bit to avoid overloading the server
+            } catch (InterruptedException ex) {
+            }
+
+        } // for coilid 
 
         if (DEBUG) {
-            System.out.println("getTrafficSensors - got list of " + output.size() + " vehicle transit events");
+            System.out.println("getVehicles summary - coils: " + coils.keySet().size() + ", sensors: " + sensors.size() + ", transit events: " + output.size());
         }
 
         return output;
