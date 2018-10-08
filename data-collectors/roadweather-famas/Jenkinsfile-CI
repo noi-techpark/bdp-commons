@@ -22,13 +22,13 @@ pipeline {
         }
         stage('Configure'){
             steps{
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/roadweatherTN/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/roadweatherTN/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/roadweather-famas/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/roadweather-famas/src/main/resources/log4j.properties'
             }
         }
         stage('Test') {
             steps {
-                sh 'cd data-collectors/roadweatherTN && mvn clean test'
+                sh 'cd data-collectors/roadweather-famas && mvn clean test'
             }
         }
     }
