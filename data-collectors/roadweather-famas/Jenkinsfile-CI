@@ -1,15 +1,34 @@
 pipeline {
-    agent any
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile'
+            additionalBuildArgs  '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
+    }
+
     stages {
-	stage('Configure'){
-	    steps{
-              sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/roadweatherTN/src/main/resources/log4j.properties'
-              sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/roadweatherTN/src/main/resources/log4j.properties'
-	    }
-	}
+        stage('Temporary Folder') {
+            steps {
+                sh 'mkdir -p tmp'
+                sh 'cd tmp && test -e "bdp-core" || git clone https://github.com/idm-suedtirol/bdp-core.git'
+                sh 'cd tmp/bdp-core && git pull'
+            }
+        }
+        stage('Dependencies') {
+            steps {
+                sh 'cd tmp/bdp-core/dto && mvn install'
+                sh 'cd tmp/bdp-core/dc-interface && mvn install'
+            }
+        }
+        stage('Configure'){
+            steps{
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/roadweatherTN/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/roadweatherTN/src/main/resources/log4j.properties'
+            }
+        }
         stage('Test') {
             steps {
-              sh 'cd data-collectors/roadweatherTN && mvn clean test'
+                sh 'cd data-collectors/roadweatherTN && mvn clean test'
             }
         }
     }
