@@ -3,6 +3,7 @@ package it.bz.idm.bdp.dto.bikesharing;
 import java.util.List;
 
 public class TypesResult extends BikeResponseEntity{
+	private static final long serialVersionUID = -6081459170216023741L;
 	private List<TypeParameter> result;
 
 	public List<TypeParameter> getResult() {
@@ -13,5 +14,5 @@ public class TypesResult extends BikeResponseEntity{
 		this.result = result;
 	}
 
-	
+
 }

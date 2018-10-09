@@ -116,7 +116,7 @@ public class HydrogenDataConverter {
             station.setProvider(DCUtils.trunc(map.get("hostname"), 255));
             station.setCity(DCUtils.trunc(map.get("city"), 255));
             //The value of "combinedstatus" must be remapped to the corresponding value of the attribute "state"
-            station.setState(mapAttribute("app.station.WS.combinedstatus", map.get("combinedstatus"))); 
+            station.setState(mapAttribute("app.station.WS.combinedstatus", map.get("combinedstatus")));
             station.setPaymentInfo(DCUtils.trunc(env.getProperty(STATION_PAYMENT_INFO_KEY), 255));
             station.setAccessInfo(DCUtils.trunc(map.get("comments"), 255));
             station.setAccessType(env.getProperty(STATION_ACCESS_TYPE_KEY));

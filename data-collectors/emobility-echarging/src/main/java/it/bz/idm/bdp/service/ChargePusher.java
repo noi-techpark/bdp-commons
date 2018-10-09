@@ -23,7 +23,7 @@ import it.bz.idm.bdp.service.dto.ChargerDtoV2;
 public class ChargePusher extends JSONPusher {
 
 	private static final String ORIGIN_KEY = "app.dataOrigin";
-	
+
 	@Autowired
 	private Environment env;
 	@Override
@@ -33,6 +33,7 @@ public class ChargePusher extends JSONPusher {
 
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T rawData) {
+		@SuppressWarnings("unchecked")
 		List<ChargerDtoV2> data = (List<ChargerDtoV2>) rawData;
 		if (data == null)
 			return null;

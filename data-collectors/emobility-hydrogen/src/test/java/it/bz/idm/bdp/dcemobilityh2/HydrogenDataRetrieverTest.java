@@ -19,8 +19,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
-import it.bz.idm.bdp.dto.DataMapDto;
-import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationList;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
@@ -65,8 +63,8 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
 
             StationList stations = pusher.mapStations2Bdp(data);
             StationList plugs    = pusher.mapPlugs2Bdp(data);
-            DataMapDto<RecordDtoImpl> map = pusher.mapData(data);
-            DataMapDto<RecordDtoImpl> plugRec = pusher.mapPlugData2Bdp(data);
+            pusher.mapData(data);
+            pusher.mapPlugData2Bdp(data);
 
             //Test data contains 2 stations, check the DTOs are correctly converted
             assertEquals(2, stations.size());

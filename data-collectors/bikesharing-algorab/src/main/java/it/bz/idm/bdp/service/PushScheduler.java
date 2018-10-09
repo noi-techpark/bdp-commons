@@ -3,7 +3,6 @@ package it.bz.idm.bdp.service;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +16,14 @@ import it.bz.idm.bdp.dto.StationList;
 
 @Service
 public class PushScheduler{
-	
-	
+
+
 	@Autowired
 	private DataRetriever retriever;
-	
+
 	@Autowired
 	private BikesharingPusher pusher;
-	
+
 	private static final String BICYCLE_DS = "Bicycle";
 
 	public void syncStations(){
@@ -54,7 +53,7 @@ public class PushScheduler{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 	public void pushStationData(){
 		try {

@@ -50,12 +50,12 @@ public class Zrx2json {
 			buffer.append("\n");
 		}
 		reader.close();
-		
+
 		return parse(buffer.toString());
 	}
 	private static String parseJavaObject(List<Meteostation> stations) throws JsonGenerationException, JsonMappingException, IOException{
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.writeValueAsString(stations);
 	}
-	
+
 }

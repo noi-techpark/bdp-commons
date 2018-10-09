@@ -22,11 +22,12 @@ package it.bz.tis.integreen.carsharingbzit.api;
 import java.io.Serializable;
 
 /**
- * 
+ *
  * @author Davide Montesin <d@vide.bz>
  */
 public class GeoPos implements Serializable
 {
+   private static final long serialVersionUID = -2858566542786324052L;
    String lat;
    String lon;
 

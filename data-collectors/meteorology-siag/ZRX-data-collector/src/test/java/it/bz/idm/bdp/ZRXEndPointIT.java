@@ -19,7 +19,7 @@ import it.bz.idm.bdp.service.MeteoUtil;
 
 @ContextConfiguration(locations = { "/META-INF/spring/applicationContext.xml" })
 public class ZRXEndPointIT extends AbstractJUnit4SpringContextTests{
-	
+
 	@Autowired
 	private MeteoUtil util;
 
