@@ -7,6 +7,7 @@ pipeline {
 		HOSTS = credentials('bdp-airquality-datacollector-appabz-sftp-knownhosts')
 		SSHFOLDER = "$ROOTFOLDER/src/main/resources/META-INF/.ssh"
 		PASS = credentials('bdp-airquality-datacollector-appabz-sftp-passphrase-testserver')
+		TESTSERVER_TOMCAT_ENDPOINT = credentials('testserver-tomcat8-url')
 	}
 
 	stages {
@@ -42,16 +43,10 @@ pipeline {
 				sh 'cd $ROOTFOLDER && mvn clean integration-test'
 			}
 		}
-		stage('Build - APPABZ-SFTP Datacollector') {
-			steps {
-				sh 'cd $ROOTFOLDER && mvn package'
-			}
-		}
-		stage('Archive') {
-			steps {
-				sh 'mkdir -p /var/builds/test-server'
-				sh 'cp -f $ROOTFOLDER/target/dc-airquality-appabz.war /var/builds/test-server/'
-			}
-		}
+		stage('Deploy') {
+            steps {
+                sh 'cd $ROOTFOLDER && mvn tomcat:redeploy -Dmaven.test.skip=true -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+            }
+        }
 	}
 }
