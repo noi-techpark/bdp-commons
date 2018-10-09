@@ -57,6 +57,7 @@ pipeline {
                 }
                 stage('meteorology-siag (ZRX-data-collector)') {
                     steps {
+                        sh 'cd data-collectors/meteorology-siag/zrx2json && mvn install'
                         sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn clean compile'
                     }
                 }
