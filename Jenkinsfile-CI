@@ -24,17 +24,17 @@ pipeline {
             parallel {
                 stage('airquality-appabz') {
                     steps {
-                        sh 'cd data-collectors/airquality-appabz && mvn clean compile'
+                        sh 'cd data-collectors/airquality-appabz && mvn clean compile test'
                     }
                 }
                 stage('bikesharing-algorab') {
                     steps {
-                        sh 'cd data-collectors/bikesharing-algorab && mvn clean compile'
+                        sh 'cd data-collectors/bikesharing-algorab && mvn clean compile test'
                     }
                 }
                 stage('carsharing-halapi') {
                     steps {
-                        sh 'cd data-collectors/carsharing-halapi && mvn clean compile'
+                        sh 'cd data-collectors/carsharing-halapi && mvn clean compile test'
                     }
                 }
                 stage('emobility-echarging') {
@@ -46,24 +46,24 @@ pipeline {
                 }
                 stage('emobility-hydrogen') {
                     steps {
-                        sh 'cd data-collectors/emobility-hydrogen && mvn clean compile'
+                        sh 'cd data-collectors/emobility-hydrogen && mvn clean compile test'
                     }
                 }
                 stage('environment-appa') {
                     steps {
                         sh 'true'
-                        // sh 'cd data-collectors/environment-appa && mvn clean compile'
+                        // sh 'cd data-collectors/environment-appa && mvn clean compile test'
                     }
                 }
                 stage('meteorology-siag (ZRX-data-collector)') {
                     steps {
                         sh 'cd data-collectors/meteorology-siag/zrx2json && mvn install'
-                        sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn clean compile'
+                        sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn clean compile test'
                     }
                 }
                 stage('meteorology-siag (zrx2json)') {
                     steps {
-                        sh 'cd data-collectors/meteorology-siag/zrx2json && mvn clean compile'
+                        sh 'cd data-collectors/meteorology-siag/zrx2json && mvn clean compile test'
                     }
                 }
                 stage('parking-MeBo') {
