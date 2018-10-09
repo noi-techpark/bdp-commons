@@ -5,7 +5,7 @@ pipeline {
 		ROOTFOLDER = 'data-collectors/airquality-appabz'
 		KEYFILE = credentials('bdp-airquality-datacollector-appabz-sftp-key-testserver')
 		HOSTS = credentials('bdp-airquality-datacollector-appabz-sftp-knownhosts')
-		SSHFOLDER = '$ROOTFOLDER/src/main/resources/META-INF/.ssh'
+		SSHFOLDER = "$ROOTFOLDER/src/main/resources/META-INF/.ssh"
 		PASS = credentials('bdp-airquality-datacollector-appabz-sftp-passphrase-testserver')
 	}
 
