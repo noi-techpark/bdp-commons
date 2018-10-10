@@ -44,7 +44,6 @@ import it.bz.tis.integreen.carsharingbzit.api.ApiClient;
 import it.bz.tis.integreen.carsharingbzit.tis.CarSharingPusher;
 
 /**
- *
  * @author Davide Montesin <d@vide.bz>
  */
 public class ConnectorServlet extends HttpServlet implements Runnable
@@ -67,7 +66,7 @@ public class ConnectorServlet extends HttpServlet implements Runnable
    String                    serviceStartedAt;
    ArrayList<ActivityLog>    activityLogs = new ArrayList<ActivityLog>();
 
-	private Properties props = new Properties();
+	private Properties props = new Properties(); 
 
    @Override
    public void init(ServletConfig config) throws ServletException
@@ -89,7 +88,6 @@ public class ConnectorServlet extends HttpServlet implements Runnable
          logger.error(msg);
          throw new ServletException(msg);
       }
-
       String user = props.getProperty("user");
       String password = props.getProperty("password");
       String initCityUIDs = props.getProperty("cityUIDs");

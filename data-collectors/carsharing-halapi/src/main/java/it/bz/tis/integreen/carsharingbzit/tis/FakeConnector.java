@@ -34,7 +34,6 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.StationList;
 
 /**
- *
  * @author Davide Montesin <d@vide.bz>
  */
 public class FakeConnector implements IXMLRPCPusher
