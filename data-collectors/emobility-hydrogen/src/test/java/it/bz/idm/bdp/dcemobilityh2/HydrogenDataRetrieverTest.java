@@ -34,7 +34,11 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
     @Autowired
     private HydrogenDataRetriever reader;
 
-    private static final String TEST_FILE   = "/test_data/test_data.xml";
+    private static final String TEST_FILE_FETCH = "/test_data/test_data_fetch.xml";
+    private static final String TEST_FILE_PUSH  = "/test_data/test_data_push.xml";
+
+    public static final String DATA_FETCH = "FETCH";
+    public static final String DATA_PUSH  = "PUSH";
 
     @Test
     public void testFetchData() {
@@ -59,7 +63,7 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
     public void testConvertData() {
 
         try {
-            String responseString = getTestData();
+            String responseString = getTestData(DATA_FETCH);
 
             List<HydrogenDto> data = reader.convertResponseToInternalDTO(responseString);
 
@@ -80,7 +84,7 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
 
     }
 
-    public static String getTestData() {
+    public static String getTestData(String dataType) {
         StringBuffer retval = new StringBuffer();
 
         Reader rr = null;
@@ -88,7 +92,11 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
 
         try {
             LOG.debug("START read test data");
-            String URL = HydrogenDataRetrieverTest.class.getResource(TEST_FILE).getFile();
+            String fileName =
+                    DATA_PUSH.equals(dataType) ? TEST_FILE_PUSH :
+                    DATA_FETCH.equals(dataType) ? TEST_FILE_FETCH :
+                    TEST_FILE_FETCH;
+            String URL = HydrogenDataRetrieverTest.class.getResource(fileName).getFile();
             File file = new File(URL);
             String testFilePath = file.getAbsolutePath();
             rr = new FileReader(testFilePath);
