@@ -146,7 +146,7 @@ public class HydrogenDataConverter {
             //For each Plug we create an Outlet
             OutletDtoV2 outlet = new OutletDtoV2();
             outlet.setId(plug.getId());
-            outlet.setOutletTypeCode(map.get(env.getProperty(OUTLET_TYPE_KEY)));
+            outlet.setOutletTypeCode(env.getProperty(OUTLET_TYPE_KEY));
             List<OutletDtoV2> outlets = new ArrayList<OutletDtoV2>();
             outlets.add(outlet);
             plug.setOutlets(outlets);
