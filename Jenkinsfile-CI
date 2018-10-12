@@ -88,8 +88,12 @@ pipeline {
                 }
                 stage('xxx') {
                     steps {
-                        sh 'echo "Testing"'
-                        sh 'false'
+                        if (fileExists 'xxx') {
+                            echo 'Yes'
+                        } else {
+                            echo 'No'
+                        }
+                        // sh 'if [ -d "/test" ]; then echo "Hallo"; else true; fi'
                     }
                 }
             }
