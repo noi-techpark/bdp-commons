@@ -88,7 +88,7 @@ pipeline {
                 }
                 stage('xxx') {
                     steps {
-                        sh 'if [ -d "xxx" ]; then echo "Testing xxx"; else true; fi'
+                        sh 'if [ -d "xxx" ]; then echo "Testing xxx" && false; else true; fi'
                     }
                 }
             }
