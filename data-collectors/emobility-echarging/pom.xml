@@ -5,10 +5,10 @@
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>emobility-dc</artifactId>
 	<packaging>war</packaging>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>EMobility datacollector</name>
 	<properties>
-		<java.version>7</java.version>
+		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.3.RELEASE</spring.version>
 		<!-- This property must be overwritten by Maven environment variables, i.e., -DfinalName=... -->

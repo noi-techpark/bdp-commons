@@ -36,6 +36,7 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
+import it.bz.idm.bdp.dto.meteo.MeteoStationDto;
 import it.bz.idm.bdp.dto.meteo.SegmentDataPointDto;
 import it.bz.idm.bdp.dto.meteo.SegmentDto;
 import it.bz.tis.zrx2json.MeteoStationDataPoint;
@@ -157,8 +158,8 @@ public class MeteoUtil {
 				Map<String, String> params = station.getMetaData();
 				params.putAll(optionalParametersFromComments);
 
-				StationDto dto = new StationDto();
-				dto.getMetaData().put("area", params.get(AREA));
+				MeteoStationDto dto = new MeteoStationDto();
+				dto.setArea(params.get(AREA));
 				dto.setId(params.get(ZEUS_ID));
 				Double latitude = null,longitude = null;
 				try {

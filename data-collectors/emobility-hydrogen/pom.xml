@@ -8,7 +8,7 @@
 	<packaging>war</packaging>
 	<name>Emobility Hydrogen Data Collector</name>
 	<properties>
-		<java.version>7</java.version>
+		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.3.RELEASE</spring.version>
 	</properties>

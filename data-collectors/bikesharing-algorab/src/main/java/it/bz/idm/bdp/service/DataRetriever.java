@@ -73,7 +73,7 @@ public class DataRetriever{
 	private HttpHost target;
 	private ObjectMapper mapper = new ObjectMapper();
 	private final static DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
+	
 	@Autowired
 	public Environment environment;
 
@@ -117,7 +117,7 @@ public class DataRetriever{
 			return deserializedEntity.getResponse().getResult();
 		return new ArrayList<String>();
 	}
-
+	
 	public StationList retrieveStations() throws JsonParseException, JsonMappingException, IllegalStateException, IOException{
 		List<String> stationIds = retrieveStationIds();
 		StationList dtos = new StationList();
@@ -141,7 +141,7 @@ public class DataRetriever{
 			}
 		}
 		return dtos;
-
+			
 	}
 	public StationList retrieveBicycles() throws JsonParseException, JsonMappingException, IllegalStateException, IOException{
 		StationList dtos = new StationList();
@@ -153,13 +153,13 @@ public class DataRetriever{
 				String metaResponse = getResponseEntity("/TIS/ws/get_metadata_bicycle?ID="+identifier);
 				MetaDataBicylceR deserializedResponse = mapper.readValue(metaResponse, MetaDataBicylceR.class);
 				if (deserializedResponse != null && deserializedResponse.getResponse()!= null && deserializedResponse.getResponse().getResult()!=null){
-
+					
 					List<StationParameter> result = deserializedResponse.getResponse().getResult();
 					if (result.isEmpty())
 						throw new IllegalStateException("Bicycle '"+identifier+"' returned no metadata");
 					String italianName = result.get(1).getValue().toString();
 					String type = environment.getProperty(italianName.replace(" ",""),italianName);
-
+					
 					String name = type+"("+identifier+")";
 					Integer state = Integer.valueOf(result.get(2).getValue().toString());
 					Integer inStoreHouse = Integer.valueOf(result.get(3).getValue().toString());
@@ -254,7 +254,7 @@ public class DataRetriever{
 						}
 					}
 				}
-
+				
 				String key = BIKESTATION_ABBR+station;
 				if (dtos.getBranch().get(key) == null)
 					dtos.getBranch().put(key, typeBranch);
@@ -281,7 +281,7 @@ public class DataRetriever{
 		}
 		throw new IllegalStateException("Unable to get Response data");
 	}
-
+	
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
 		return new PropertySourcesPlaceholderConfigurer();

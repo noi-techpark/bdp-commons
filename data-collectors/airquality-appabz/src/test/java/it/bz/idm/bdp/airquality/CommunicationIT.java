@@ -1,7 +1,6 @@
 package it.bz.idm.bdp.airquality;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -30,7 +29,7 @@ public class CommunicationIT extends AbstractJUnit4SpringContextTests {
 	private DataCom com;
 
 	@Test
-	public void testRemoveFiles() {
+	public void testRemoveFiles() throws Exception {
 		FtpTools ftp = null;
 		try {
 			String knownHostsFile = FileTools.expandPath(env.getRequiredProperty("ftp.ssh.knownhosts"));
@@ -86,9 +85,6 @@ public class CommunicationIT extends AbstractJUnit4SpringContextTests {
 			/* File 1 should not be found anymore, whereas file 2 should still be present. */
 			assertEquals(found1, false);
 			assertEquals(found2, true);
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail();
 		} finally {
 			if (ftp != null)
 				ftp.close();

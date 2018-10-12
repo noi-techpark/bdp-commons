@@ -44,12 +44,13 @@ import it.bz.tis.integreen.carsharingbzit.api.ApiClient;
 import it.bz.tis.integreen.carsharingbzit.tis.CarSharingPusher;
 
 /**
- *
+ * 
  * @author Davide Montesin <d@vide.bz>
  */
 public class ConnectorServlet extends HttpServlet implements Runnable
 {
    private static final long serialVersionUID = 2317521315923271535L;
+
    static final Logger       logger       = LogManager.getLogger(ConnectorServlet.class);
 
    Thread                    backgroundTask;
@@ -88,7 +89,6 @@ public class ConnectorServlet extends HttpServlet implements Runnable
          logger.error(msg);
          throw new ServletException(msg);
       }
-
       String user = props.getProperty("user");
       String password = props.getProperty("password");
       String initCityUIDs = props.getProperty("cityUIDs");
