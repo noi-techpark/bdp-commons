@@ -95,10 +95,10 @@ public class HydrogenDataConverter {
         }
     }
 
-    public StationDto convertMapToStationDto(Map<String, String> map) {
-        StationDto station = null;
+    public EchargingStationDto convertMapToStationDto(Map<String, String> map) {
+        EchargingStationDto station = null;
         if ( map!=null && map.containsKey("idx") ) {
-            station = new StationDto();
+            station = new EchargingStationDto();
 
             //From StationDTO
             station.setId(map.get("idx"));
@@ -106,7 +106,7 @@ public class HydrogenDataConverter {
             station.setLongitude(DCUtils.convertStringToDouble(map.get("longitude")));
             station.setLatitude(DCUtils.convertStringToDouble(map.get("latitude")));
             //OMITTED: protected String crs;
-            station.setOrigin(DCUtils.trunc(map.get("operatorname") /*env.getProperty(ORIGIN_KEY)*/, 255));
+            station.setOrigin(DCUtils.trunc(env.getProperty(ORIGIN_KEY), 255));
             station.getMetaData().put("municipality", DCUtils.trunc(map.get("city"), 255));
             station.setStationType(env.getProperty(STATION_TYPE_KEY));
 
