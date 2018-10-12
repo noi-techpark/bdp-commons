@@ -88,7 +88,7 @@ pipeline {
                 }
                 stage('xxx') {
                     steps {
-                        if (fileExists 'xxx') {
+                        if (fileExists('xxx')) {
                             echo 'Yes'
                         } else {
                             echo 'No'
