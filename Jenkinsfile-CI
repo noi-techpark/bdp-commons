@@ -11,7 +11,7 @@ pipeline {
             steps {
                 sh 'mkdir -p tmp'
                 sh 'cd tmp && test -e "bdp-core" || git clone https://github.com/idm-suedtirol/bdp-core.git'
-                sh 'cd tmp/bdp-core && git pull'
+                sh 'cd tmp/bdp-core && git checkout jsonmetadata && git pull'
             }
         }
         stage('Dependencies') {
