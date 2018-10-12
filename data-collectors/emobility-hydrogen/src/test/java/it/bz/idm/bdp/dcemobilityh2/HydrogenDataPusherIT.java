@@ -96,7 +96,6 @@ public class HydrogenDataPusherIT extends AbstractJUnit4SpringContextTests {
             StationList tmp = new StationList();
             for (StationDto stationDto : plugs) {
                 LOG.debug(stationDto);
-                stationDto.setStationType(null);
                 if ( tmp.size()==0 ) {
                     tmp.add(stationDto);
                 }

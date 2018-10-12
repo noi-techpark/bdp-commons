@@ -11,6 +11,8 @@
 		<java.version>7</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.3.RELEASE</spring.version>
+		<!-- This property must be overwritten by Maven environment variables, i.e., -DfinalName=... -->
+		<finalName>dc-should-not-happen</finalName>
 	</properties>
 	<dependencies>
 		<!-- General dependencies for standard applications -->
