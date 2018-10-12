@@ -45,9 +45,8 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.bikesharing.BikeSharingBikeDto;
-import it.bz.idm.bdp.dto.bikesharing.BikeSharingStationDto;
 import it.bz.idm.bdp.dto.bikesharing.DataResult;
 import it.bz.idm.bdp.dto.bikesharing.DataResultR;
 import it.bz.idm.bdp.dto.bikesharing.MetaDataBicylceR;
@@ -73,7 +72,7 @@ public class DataRetriever{
 	private HttpHost target;
 	private ObjectMapper mapper = new ObjectMapper();
 	private final static DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	
+
 	@Autowired
 	public Environment environment;
 
@@ -117,7 +116,7 @@ public class DataRetriever{
 			return deserializedEntity.getResponse().getResult();
 		return new ArrayList<String>();
 	}
-	
+
 	public StationList retrieveStations() throws JsonParseException, JsonMappingException, IllegalStateException, IOException{
 		List<String> stationIds = retrieveStationIds();
 		StationList dtos = new StationList();
@@ -130,18 +129,20 @@ public class DataRetriever{
 					if (result.isEmpty())
 						throw new IllegalStateException("Bikestation '"+identifier+"' returned no metadata");
 					@SuppressWarnings("unchecked")
-					List<String> coordinates =(List<String>) result.get(2).getValue();
-					Integer status =Integer.valueOf(result.get(3).getValue().toString());
+					List<String> coordinates = (List<String>) result.get(2).getValue();
+					Integer status = Integer.valueOf(result.get(3).getValue().toString());
 					Double lon = Double.valueOf(coordinates.get(0));
 					Double lat = Double.valueOf(coordinates.get(1));
-					BikeSharingStationDto dto = new BikeSharingStationDto(BIKESTATION_ABBR+identifier,result.get(1).getValue().toString(), lon,lat,status,null);
+					StationDto dto = new StationDto(BIKESTATION_ABBR+identifier, result.get(1).getValue().toString(), lon, lat);
+					dto.setStationType("BikeSharingStation");
+					dto.getMetaData().put("status", status);
 					dto.setOrigin(environment.getProperty(DATA_PROVIDER_KEY));
 					dtos.add(dto);
 				}
 			}
 		}
 		return dtos;
-			
+
 	}
 	public StationList retrieveBicycles() throws JsonParseException, JsonMappingException, IllegalStateException, IOException{
 		StationList dtos = new StationList();
@@ -153,19 +154,26 @@ public class DataRetriever{
 				String metaResponse = getResponseEntity("/TIS/ws/get_metadata_bicycle?ID="+identifier);
 				MetaDataBicylceR deserializedResponse = mapper.readValue(metaResponse, MetaDataBicylceR.class);
 				if (deserializedResponse != null && deserializedResponse.getResponse()!= null && deserializedResponse.getResponse().getResult()!=null){
-					
+
 					List<StationParameter> result = deserializedResponse.getResponse().getResult();
 					if (result.isEmpty())
 						throw new IllegalStateException("Bicycle '"+identifier+"' returned no metadata");
 					String italianName = result.get(1).getValue().toString();
 					String type = environment.getProperty(italianName.replace(" ",""),italianName);
-					
+
 					String name = type+"("+identifier+")";
 					Integer state = Integer.valueOf(result.get(2).getValue().toString());
 					Integer inStoreHouse = Integer.valueOf(result.get(3).getValue().toString());
 					String bikestation =BIKESTATION_ABBR+result.get(4).getValue().toString();
-					BikeSharingBikeDto dto = new BikeSharingBikeDto(BIKE_ABBR+identifier,bikestation,name,state,inStoreHouse,type);
+					StationDto dto = new StationDto();
+					dto.setParentId(bikestation);
+					dto.setId(BIKE_ABBR+identifier);
+					dto.setName(name);
+					dto.setStationType("BikeSharingBike");
 					dto.setOrigin(environment.getProperty(DATA_PROVIDER_KEY));
+					dto.getMetaData().put("state", state);
+					dto.getMetaData().put("instorehouse", inStoreHouse);
+					dto.getMetaData().put("type", type);
 					dtos.add(dto);
 				}
 			}
@@ -254,7 +262,7 @@ public class DataRetriever{
 						}
 					}
 				}
-				
+
 				String key = BIKESTATION_ABBR+station;
 				if (dtos.getBranch().get(key) == null)
 					dtos.getBranch().put(key, typeBranch);
@@ -281,7 +289,7 @@ public class DataRetriever{
 		}
 		throw new IllegalStateException("Unable to get Response data");
 	}
-	
+
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
 		return new PropertySourcesPlaceholderConfigurer();
