@@ -75,7 +75,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
 			<version>${spring.version}</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
