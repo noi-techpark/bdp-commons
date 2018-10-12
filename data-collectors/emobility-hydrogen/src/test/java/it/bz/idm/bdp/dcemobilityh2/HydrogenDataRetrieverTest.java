@@ -78,9 +78,6 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
             List<HydrogenDto> data = reader.convertResponseToInternalDTO(responseString);
 
             StationList stations = pusher.mapStations2Bdp(data);
-//            StationList plugs    = pusher.mapPlugs2Bdp(data);
-//            DataMapDto<RecordDtoImpl> map = pusher.mapData(data);
-//            DataMapDto<RecordDtoImpl> plugRec = pusher.mapPlugData2Bdp(data);
 
             //Test data contains 2 stations
             assertEquals(2, stations.size());
