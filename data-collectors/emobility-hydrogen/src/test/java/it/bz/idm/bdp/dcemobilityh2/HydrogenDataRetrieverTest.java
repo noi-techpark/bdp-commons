@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -19,6 +20,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.idm.bdp.dto.emobility.EchargingPlugDto;
 import it.bz.idm.bdp.dto.emobility.EchargingStationDto;
@@ -40,6 +44,8 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
 
     private static final String TEST_STATION_ID = "TEST_IDX";
     private static final String TEST_PLUG_ID    = "TEST_IDX-1";
+    private static final String TEST_STATION_DATA_TYPE = "number-available";
+    private static final String TEST_PLUG_DATA_TYPE = "echarging-plug-status";
 
     public static final String DATA_FETCH = "FETCH";
     public static final String DATA_PUSH  = "PUSH";
@@ -110,7 +116,7 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
             }
 
         } catch (Exception e) {
-            String msg = "Exception in testConvertData: " + e;
+            String msg = "Exception in testConvertStationData: " + e;
             LOG.error(msg, e);
             Assert.fail(msg);
         }
@@ -164,7 +170,91 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
             }
 
         } catch (Exception e) {
-            String msg = "Exception in testConvertData: " + e;
+            String msg = "Exception in testConvertPlugData: " + e;
+            LOG.error(msg, e);
+            Assert.fail(msg);
+        }
+
+    }
+
+    @Test
+    public void testConvertStationMeasurements() {
+
+        try {
+            String responseString = getTestData(DATA_FETCH);
+
+            List<HydrogenDto> data = reader.convertResponseToInternalDTO(responseString);
+
+            DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(data);
+
+            //Check that there is a branch for TEST_IDX station that contains a measurement for "number-available" Type
+            Map<String, DataMapDto<RecordDtoImpl>> branch1 = stationRec.getBranch();
+            assertNotNull("StationMeasurements: Branch Level 1 is null", branch1);
+
+            DataMapDto<RecordDtoImpl> dataMapDto1 = branch1.get(TEST_STATION_ID);
+            assertNotNull("StationMeasurements: DataMapDTO for station "+TEST_STATION_ID+" is null", dataMapDto1);
+
+            Map<String, DataMapDto<RecordDtoImpl>> branch2 = dataMapDto1.getBranch();
+            assertNotNull("StationMeasurements: Branch Level 2 is null", branch2);
+
+            DataMapDto<RecordDtoImpl> dataMapDto2 = branch2.get(TEST_STATION_DATA_TYPE);
+            assertNotNull("StationMeasurements: DataMapDTO for DataType "+TEST_STATION_DATA_TYPE+" is null", dataMapDto2);
+
+            List<RecordDtoImpl> data2 = dataMapDto2.getData();
+            assertNotNull("StationMeasurements: Records for DataType "+TEST_STATION_DATA_TYPE+" is null", data2);
+
+            if ( data2.size() > 0 ) {
+                SimpleRecordDto record = (SimpleRecordDto) data2.get(0);
+                Object value = record.getValue();
+                assertEquals("StationMeasurements: measurement value is wrong", 1D, value);
+            } else {
+                Assert.fail("No StationMeasurements found");
+            }
+
+        } catch (Exception e) {
+            String msg = "Exception in testConvertStationMeasurements: " + e;
+            LOG.error(msg, e);
+            Assert.fail(msg);
+        }
+
+    }
+
+    @Test
+    public void testConvertPlugMeasurements() {
+
+        try {
+            String responseString = getTestData(DATA_FETCH);
+
+            List<HydrogenDto> data = reader.convertResponseToInternalDTO(responseString);
+
+            DataMapDto<RecordDtoImpl> plugRec = pusher.mapPlugData2Bdp(data);
+
+            //Check that there is a branch for TEST_IDX-1 plug that contains a measurement for "available-state" Type
+            Map<String, DataMapDto<RecordDtoImpl>> branch1 = plugRec.getBranch();
+            assertNotNull("PlugMeasurements: Branch Level 1 is null", branch1);
+
+            DataMapDto<RecordDtoImpl> dataMapDto1 = branch1.get(TEST_PLUG_ID);
+            assertNotNull("PlugMeasurements: DataMapDTO for plug "+TEST_PLUG_ID+" is null", dataMapDto1);
+
+            Map<String, DataMapDto<RecordDtoImpl>> branch2 = dataMapDto1.getBranch();
+            assertNotNull("PlugMeasurements: Branch Level 2 is null", branch2);
+
+            DataMapDto<RecordDtoImpl> dataMapDto2 = branch2.get(TEST_PLUG_DATA_TYPE);
+            assertNotNull("PlugMeasurements: DataMapDTO for DataType "+TEST_PLUG_DATA_TYPE+" is null", dataMapDto2);
+
+            List<RecordDtoImpl> data2 = dataMapDto2.getData();
+            assertNotNull("PlugMeasurements: Records for DataType "+TEST_PLUG_DATA_TYPE+" is null", data2);
+
+            if ( data2.size() > 0 ) {
+                SimpleRecordDto record = (SimpleRecordDto) data2.get(0);
+                Object value = record.getValue();
+                assertEquals("PlugMeasurements: measurement value is wrong", 1D, value);
+            } else {
+                Assert.fail("No PlugMeasurements found");
+            }
+
+        } catch (Exception e) {
+            String msg = "Exception in testConvertPlugMeasurements: " + e;
             LOG.error(msg, e);
             Assert.fail(msg);
         }
