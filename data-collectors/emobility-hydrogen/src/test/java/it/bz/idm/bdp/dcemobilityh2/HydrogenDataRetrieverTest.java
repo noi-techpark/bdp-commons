@@ -51,25 +51,6 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
     public static final String DATA_PUSH  = "PUSH";
 
     @Test
-    public void testFetchData() {
-        try {
-            //Fetch data from source origin
-            List<HydrogenDto> fetchData = reader.fetchData();
-
-            //Check there is at least one item in the list
-            assertNotNull("Fetched data IS NULL", fetchData);
-            if ( fetchData.size() == 0 ) {
-                Assert.fail("Fetched data IS EMPTY");
-            }
-
-        } catch (Exception e) {
-            String msg = "Exception in testFetchData: " + e;
-            LOG.error(msg, e);
-            Assert.fail(msg);
-        }
-    }
-
-    @Test
     public void testConvertStationData() {
 
         try {
