@@ -3,6 +3,11 @@ Hydrogen datacollector
 
 Datacollector which takes data from IIT, parses it and sends it to the opendatahub.
 
+## Analysis:
+
+For details regarding mapping from data provided by the service and the data used by the opendatahub, please see this analysis document:
+  `documentation/180820_SpecificheIntegrazioneH2_IDM.pdf`
+
 ## Configuration:
   - See `src/main/resources/META-INF/spring/applicationContext.xml`
 
