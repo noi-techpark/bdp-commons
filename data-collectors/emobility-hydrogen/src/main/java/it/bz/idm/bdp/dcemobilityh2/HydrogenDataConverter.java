@@ -116,7 +116,7 @@ public class HydrogenDataConverter {
             station.setProvider(DCUtils.trunc(map.get("hostname"), 255));
             station.setCity(DCUtils.trunc(map.get("city"), 255));
             //The value of "combinedstatus" must be remapped to the corresponding value of the attribute "state"
-            station.setState(mapAttribute("app.station.WS.combinedstatus", map.get("combinedstatus")));
+            station.setState(mapAttribute("app.station.WS.combinedstatus", map.get("combinedstatus"))); 
             station.setPaymentInfo(DCUtils.trunc(env.getProperty(STATION_PAYMENT_INFO_KEY), 255));
             station.setAccessInfo(DCUtils.trunc(map.get("comments"), 255));
             station.setAccessType(env.getProperty(STATION_ACCESS_TYPE_KEY));
@@ -146,7 +146,7 @@ public class HydrogenDataConverter {
             //For each Plug we create an Outlet
             OutletDtoV2 outlet = new OutletDtoV2();
             outlet.setId(plug.getId());
-            outlet.setOutletTypeCode(map.get(env.getProperty(OUTLET_TYPE_KEY)));
+            outlet.setOutletTypeCode(env.getProperty(OUTLET_TYPE_KEY));
             List<OutletDtoV2> outlets = new ArrayList<OutletDtoV2>();
             outlets.add(outlet);
             plug.setOutlets(outlets);
