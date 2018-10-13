@@ -107,7 +107,7 @@ public class HydrogenDataConverter {
             station.setLongitude(DCUtils.convertStringToDouble(map.get("longitude")));
             station.setLatitude(DCUtils.convertStringToDouble(map.get("latitude")));
             //OMITTED: protected String crs;
-            station.setOrigin(DCUtils.trunc(env.getProperty(ORIGIN_KEY), 255));
+            station.setOrigin(DCUtils.trunc(map.get("operatorname") /*env.getProperty(ORIGIN_KEY)*/, 255));
             station.setMunicipality(DCUtils.trunc(map.get("city"), 255));
             station.setStationType(env.getProperty(STATION_TYPE_KEY));
 
@@ -140,7 +140,7 @@ public class HydrogenDataConverter {
             plug.setLatitude(DCUtils.convertStringToDouble(map.get("latitude")));
             plug.setName(DCUtils.trunc(map.get("name")+" - " + env.getProperty(PLUG_NAME_KEY), 255));
             plug.setParentStation(map.get("idx"));
-            plug.setOrigin(DCUtils.trunc(env.getProperty(ORIGIN_KEY), 255));
+            plug.setOrigin(DCUtils.trunc(map.get("operatorname") /*env.getProperty(ORIGIN_KEY)*/, 255));
             plug.setStationType(env.getProperty(PLUG_TYPE_KEY));
 
             //For each Plug we create an Outlet
