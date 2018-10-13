@@ -2,6 +2,7 @@ package it.bz.idm.bdp.airquality.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -26,13 +27,14 @@ public class FileTools {
 		}
 	}
 
-	public static String expandPath(String path) {
+	public static String expandPath(String path) throws FileNotFoundException {
 		if (path.startsWith("~" + File.separator)) {
 			return System.getProperty("user.home") + path.substring(1);
 		}
 		if (!path.startsWith(File.separator)) {
-			ClassLoader classLoader = FileTools.class.getClassLoader();
-			URL resource = classLoader.getResource(path);
+			URL resource = FileTools.class.getClassLoader().getResource(path);
+			if (resource == null)
+				throw new FileNotFoundException("Path '" + path + "' not found.");
 			File file = new File(resource.getFile());
 			return file.getAbsolutePath();
 		}

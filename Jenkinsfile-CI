@@ -1,0 +1,92 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile'
+            additionalBuildArgs  '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
+    }
+
+    stages {
+        stage('Temporary Folder') {
+            steps {
+                sh 'mkdir -p tmp'
+                sh 'cd tmp && test -e "bdp-core" || git clone https://github.com/idm-suedtirol/bdp-core.git'
+                sh 'cd tmp/bdp-core && git pull'
+            }
+        }
+        stage('Dependencies') {
+            steps {
+                sh 'cd tmp/bdp-core/dto && mvn install'
+                sh 'cd tmp/bdp-core/dc-interface && mvn install'
+            }
+        }
+        stage('Test') {
+            parallel {
+                stage('airquality-appabz') {
+                    steps {
+                        sh 'cd data-collectors/airquality-appabz && mvn clean compile test'
+                    }
+                }
+                stage('bikesharing-algorab') {
+                    steps {
+                        sh 'cd data-collectors/bikesharing-algorab && mvn clean compile test'
+                    }
+                }
+                stage('carsharing-halapi') {
+                    steps {
+                        sh 'cd data-collectors/carsharing-halapi && mvn clean compile test'
+                    }
+                }
+                stage('emobility-echarging') {
+                    steps {
+                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/emobility-echarging/src/main/resources/log4j.properties'
+                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/datacollectors/emobility-dc.log%" data-collectors/emobility-echarging/src/main/resources/log4j.properties'
+                        sh 'cd data-collectors/emobility-echarging && mvn clean compile test'
+                    }
+                }
+                stage('emobility-hydrogen') {
+                    steps {
+                        sh 'cd data-collectors/emobility-hydrogen && mvn clean compile test'
+                    }
+                }
+                stage('environment-appa') {
+                    steps {
+                        sh 'true'
+                        // sh 'cd data-collectors/environment-appa && mvn clean compile test'
+                    }
+                }
+                stage('meteorology-siag (ZRX-data-collector)') {
+                    steps {
+                        sh 'cd data-collectors/meteorology-siag/zrx2json && mvn install'
+                        sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn clean compile test'
+                    }
+                }
+                stage('meteorology-siag (zrx2json)') {
+                    steps {
+                        sh 'cd data-collectors/meteorology-siag/zrx2json && mvn clean compile test'
+                    }
+                }
+                stage('parking-MeBo') {
+                    steps {
+                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/parking-MeBo/src/main/resources/log4j.properties'
+                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/parking-MeBo/src/main/resources/log4j.properties'
+                        sh 'cd data-collectors/parking-MeBo && mvn clean compile test'
+                    }
+                }
+                stage('roadweather-famas') {
+                    steps {
+                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/roadweather-famas/src/main/resources/log4j.properties'
+                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/roadweather-famas/src/main/resources/log4j.properties'
+                        sh 'cd data-collectors/roadweather-famas && mvn clean compile test'
+                    }
+                }
+                stage('traffic-a22') {
+                    steps {
+                        sh 'true'
+                        // sh 'cd data-collectors/traffic-a22 && mvn clean compile test'
+                    }
+                }
+            }
+        }
+    }
+}

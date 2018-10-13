@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+
+	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
+	<context:spring-configured />
+	<context:component-scan base-package="it.bz.idm.bdp">
+		<context:exclude-filter expression=".*_Roo_.*"
+			type="regex" />
+		<context:exclude-filter expression="org.springframework.stereotype.Controller"
+			type="annotation" />
+	</context:component-scan>
+
+	<bean class="it.bz.idm.bdp.JobScheduler" id="jobScheduler"/>
+	<task:scheduler id="Scheduler" pool-size="10" />
+	<task:scheduled-tasks scheduler="Scheduler">
+		<task:scheduled ref="jobScheduler" method="parkingStations" cron="0	0 * * * *" /> 
+ 		<task:scheduled ref="jobScheduler" method="currentSlots"    cron="10 */5 * * * *" />
+ 		<task:scheduled ref="jobScheduler" method="pushPredictions" cron="0 5-59/30 * * * *" />
+	</task:scheduled-tasks> 
+</beans>

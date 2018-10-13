@@ -1,0 +1,74 @@
+<ceemes version="1.0">
+	<fuelstation>
+		<idx>TEST_326</idx>
+		<name>Bozen (H2 Center)</name>
+		<operatorname>iit – Institut für innovative Technologien
+		</operatorname>
+		<hostname>iit – Institut für innovative Technologien</hostname>
+		<street>Via Enrico Mattei</street>
+		<streetnr>1</streetnr>
+		<zip>39100</zip>
+		<city>Bozen</city>
+		<countryshortname>IT</countryshortname>
+		<latitude>46.475093</latitude>
+		<longitude>11.318306</longitude>
+		<has_shop>f</has_shop>
+		<image>697</image>
+		<maintenance_start>2018-06-05 08:30:00</maintenance_start>
+		<maintenance_end>2018-06-12 17:00:00</maintenance_end>
+		<has_350_large>f</has_350_large>
+		<has_350_small>f</has_350_small>
+		<operatorhotline>+39 366 578 46 02</operatorhotline>
+		<operatorlogo>700</operatorlogo>
+		<hostlogo>700</hostlogo>
+		<combinedstatus>OPEN</combinedstatus>
+		<opening_hours>24 Stunden täglich geöffnet</opening_hours>
+		<fundingpage />
+		<comments>24 Stunden Betrieb für Selbstbetankung nach Registrierung
+			&amp; Schulung&#13;
+			Bediente Betankung Mo-Fr. 8-18 Uhr (kurze
+			telefonischer Ankündigung
+			erwünscht) &#13;
+			Spezielle Tankzeiten &amp;
+			Besichtigung H2 Zentrum auf Anfrage.&#13;
+			&#13;
+			+39 366 578 46 02
+		</comments>
+	</fuelstation>
+	<fuelstation>
+		<idx>TEST_327</idx>
+		<name>Bozen (Test 327)</name>
+		<operatorname>iit – Institut für innovative Technologien
+		</operatorname>
+		<hostname>iit – Institut für innovative Technologien</hostname>
+		<street>Via Roma</street>
+		<streetnr>1</streetnr>
+		<zip>39100</zip>
+		<city>Bozen</city>
+		<countryshortname>IT</countryshortname>
+		<latitude>46.475093</latitude>
+		<longitude>11.318306</longitude>
+		<has_shop>f</has_shop>
+		<image>697</image>
+		<maintenance_start>2018-06-05 08:30:00</maintenance_start>
+		<maintenance_end>2018-06-12 17:00:00</maintenance_end>
+		<has_350_large>f</has_350_large>
+		<has_350_small>f</has_350_small>
+		<operatorhotline>+39 366 578 46 02</operatorhotline>
+		<operatorlogo>700</operatorlogo>
+		<hostlogo>700</hostlogo>
+		<combinedstatus>OPEN</combinedstatus>
+		<opening_hours>Open 24 hours a day</opening_hours>
+		<fundingpage />
+		<comments>24 hours self-service operation after registration &amp;
+			training&#13;
+			Assisted refueling Mo-Fr. 8-18 o'clock (short telephone
+			announcement
+			required)&#13;
+			Special refilling times &amp; sightseeing
+			H2 center on request.&#13;
+			&#13;
+			+39 366 578 46 02
+		</comments>
+	</fuelstation>
+</ceemes>

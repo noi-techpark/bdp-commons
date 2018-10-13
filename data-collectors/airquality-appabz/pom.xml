@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>bdp-airquality</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>war</packaging>
 	<name>AirQuality data collector</name>
 	<properties>
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>1.0.2</version>
+			<version>1.2.0</version>
 		</dependency>
 		<!-- Apache dependencies -->
 		<dependency>
@@ -65,7 +65,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
 			<version>${spring.version}</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -108,13 +107,8 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat8-maven-plugin</artifactId>
-				<version>3.0-r1756463</version>
-				<configuration>
-					<url>http://localhost:8080/manager/text</url>
-					<server>TomcatServer</server>
-					<path>/bdp-airquality</path>
-				</configuration>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
 			</plugin>
 		</plugins>
 	</build>

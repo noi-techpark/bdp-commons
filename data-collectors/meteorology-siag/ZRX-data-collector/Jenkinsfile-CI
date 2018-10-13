@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    environment{
+      ZRX_ENDPOINT = credentials('smg_zrx_endpoint')
+    }
+    stages {
+	stage('Configure'){
+	    steps{
+              sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/ZRX-data-collector/src/main/resources/log4j.properties'
+              sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/meteorology-siag.log%" data-collectors/ZRX-data-collector/src/main/resources/log4j.properties'
+	    }
+	}
+        stage('Test') {
+            steps {
+              sh 'cd data-collectors/ZRX-data-collector && mvn clean test'
+              sh 'sed -i -e "s%\\(zrx_endpoint=\\).*\\$%\\1${ZRX_ENDPOINT}%" data-collectors/ZRX-data-collector/src/main/resources/META-INF/spring/application.properties'
+              sh 'cd data-collectors/ZRX-data-collector && mvn integration-test'
+            }
+        }
+    }
+}
