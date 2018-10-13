@@ -71,19 +71,19 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
                 String id = station.getId();
                 if ( TEST_STATION_ID.equals(id) ) {
                     stationFound = true;
-                    checkEquals(TEST_STATION_ID   , station.getId()            , errs, "ID is INCORRECT");
-                    checkEquals("TEST_NAME"       , station.getName()          , errs, "NAME is INCORRECT");
-                    checkEquals(11D               , station.getLongitude()     , errs, "LONGITUDE is INCORRECT");
-                    checkEquals(46D               , station.getLatitude()      , errs, "LATITUDE is INCORRECT");
-                    checkEquals("TEST_CITY"       , station.getMunicipality()  , errs, "MUNICIPALITY is INCORRECT");
-                    checkEquals("TEST_HOSTNAME"   , station.getProvider()      , errs, "PROVIDER is INCORRECT");
-                    checkEquals("TEST_CITY"       , station.getCity()          , errs, "CITY is INCORRECT");
-                    checkEquals("AVAILABLE"       , station.getState()         , errs, "STATE is INCORRECT");
-                    checkEquals("TEST_COMMENTS"   , station.getAccessInfo()    , errs, "ACCESS_INFO is INCORRECT");
-                    checkEquals("IIT"             , station.getOrigin()        , errs, "ORIGIN is INCORRECT");
-                    checkEquals("EChargingStation", station.getStationType()   , errs, "STATION_TYPE is INCORRECT");
-                    checkEquals(Boolean.TRUE      , station.getReservable()    , errs, "RESERVABLE is INCORRECT");
-                    checkEquals("PUBLIC"          , station.getAccessType()    , errs, "ACCESS_TYPE is INCORRECT");
+                    checkEquals(TEST_STATION_ID      , station.getId()            , errs, "ID is INCORRECT");
+                    checkEquals("TEST_NAME"          , station.getName()          , errs, "NAME is INCORRECT");
+                    checkEquals(11D                  , station.getLongitude()     , errs, "LONGITUDE is INCORRECT");
+                    checkEquals(46D                  , station.getLatitude()      , errs, "LATITUDE is INCORRECT");
+                    checkEquals("TEST_CITY"          , station.getMunicipality()  , errs, "MUNICIPALITY is INCORRECT");
+                    checkEquals("TEST_HOSTNAME"      , station.getProvider()      , errs, "PROVIDER is INCORRECT");
+                    checkEquals("TEST_CITY"          , station.getCity()          , errs, "CITY is INCORRECT");
+                    checkEquals("AVAILABLE"          , station.getState()         , errs, "STATE is INCORRECT");
+                    checkEquals("TEST_COMMENTS"      , station.getAccessInfo()    , errs, "ACCESS_INFO is INCORRECT");
+                    checkEquals("TEST_OPERATOR_NAME" , station.getOrigin()        , errs, "ORIGIN is INCORRECT");
+                    checkEquals("EChargingStation"   , station.getStationType()   , errs, "STATION_TYPE is INCORRECT");
+                    checkEquals(Boolean.TRUE         , station.getReservable()    , errs, "RESERVABLE is INCORRECT");
+                    checkEquals("PUBLIC"             , station.getAccessType()    , errs, "ACCESS_TYPE is INCORRECT");
                 }
             }
             if ( !stationFound ) {
@@ -122,13 +122,13 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
                 String id = plug.getId();
                 if ( TEST_PLUG_ID.equals(id) ) {
                     plugFound = true;
-                    checkEquals(TEST_PLUG_ID      , plug.getId()            , errs, "ID is INCORRECT");
+                    checkEquals(TEST_PLUG_ID         , plug.getId()            , errs, "ID is INCORRECT");
                     checkEquals("TEST_NAME - Punto di rifornimento", plug.getName(), errs, "NAME is INCORRECT");
-                    checkEquals(11D               , plug.getLongitude()     , errs, "LONGITUDE is INCORRECT");
-                    checkEquals(46D               , plug.getLatitude()      , errs, "LATITUDE is INCORRECT");
-                    checkEquals(TEST_STATION_ID   , plug.getParentStation() , errs, "PARENT_STATION is INCORRECT");
-                    checkEquals("IIT"             , plug.getOrigin()        , errs, "ORIGIN is INCORRECT");
-                    checkEquals("EChargingPlug"   , plug.getStationType()   , errs, "PLUG_TYPE is INCORRECT");
+                    checkEquals(11D                  , plug.getLongitude()     , errs, "LONGITUDE is INCORRECT");
+                    checkEquals(46D                  , plug.getLatitude()      , errs, "LATITUDE is INCORRECT");
+                    checkEquals(TEST_STATION_ID      , plug.getParentStation() , errs, "PARENT_STATION is INCORRECT");
+                    checkEquals("TEST_OPERATOR_NAME" , plug.getOrigin()        , errs, "ORIGIN is INCORRECT");
+                    checkEquals("EChargingPlug"      , plug.getStationType()   , errs, "PLUG_TYPE is INCORRECT");
 
                     List<OutletDtoV2> outlets = plug.getOutlets();
                     if ( outlets!=null && outlets.size()>0 ) {
