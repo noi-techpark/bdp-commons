@@ -20,11 +20,6 @@ pipeline {
 	      sh 'cd data-collectors/carsharing-halapi/ && mvn clean package'
 	    }
 	}
-	stage('Archive'){
-	    steps{
-	      sh 'cp data-collectors/carsharing-halapi/target/dc-carsharing-bz.war /var/builds/test-server'
-	    }
-	}
 	stage('Deploy') {
             steps{
                 sh 'cd data-collectors/carsharing-halapi && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
