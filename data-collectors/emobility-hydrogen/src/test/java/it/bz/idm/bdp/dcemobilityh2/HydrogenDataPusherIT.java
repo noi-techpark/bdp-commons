@@ -19,6 +19,7 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
@@ -61,7 +62,7 @@ public class HydrogenDataPusherIT extends AbstractJUnit4SpringContextTests {
         List<HydrogenDto> data = null;
 
         try {
-            String responseString = HydrogenDataRetrieverTest.getTestData(HydrogenDataRetrieverTest.DATA_PUSH);
+            String responseString = HydrogenDataRetrieverIT.getTestData(HydrogenDataRetrieverIT.DATA_PUSH);
             data = reader.convertResponseToInternalDTO(responseString);
         } catch (Exception e) {
             LOG.error("Exception in testPush: "+e, e);
