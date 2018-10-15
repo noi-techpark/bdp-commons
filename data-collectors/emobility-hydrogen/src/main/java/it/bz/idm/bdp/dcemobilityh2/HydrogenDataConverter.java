@@ -107,15 +107,15 @@ public class HydrogenDataConverter {
             station.setLongitude(DCUtils.convertStringToDouble(map.get("longitude")));
             station.setLatitude(DCUtils.convertStringToDouble(map.get("latitude")));
             //OMITTED: protected String crs;
-            station.setOrigin(DCUtils.trunc(env.getProperty(ORIGIN_KEY), 255));
+            station.setOrigin(DCUtils.trunc(map.get("operatorname") /*env.getProperty(ORIGIN_KEY)*/, 255));
             station.getMetaData().put("municipality", DCUtils.trunc(map.get("city"), 255));
-
+            station.setStationType(env.getProperty(STATION_TYPE_KEY));
             //From EchargingStationDto
             //OMITTED: s.setCapacity(dto.getChargingPoints().size());
             station.setProvider(DCUtils.trunc(map.get("hostname"), 255));
             station.setCity(DCUtils.trunc(map.get("city"), 255));
             //The value of "combinedstatus" must be remapped to the corresponding value of the attribute "state"
-            station.setState(mapAttribute("app.station.WS.combinedstatus", map.get("combinedstatus")));
+            station.setState(mapAttribute("app.station.WS.combinedstatus", map.get("combinedstatus"))); 
             station.setPaymentInfo(DCUtils.trunc(env.getProperty(STATION_PAYMENT_INFO_KEY), 255));
             station.setAccessInfo(DCUtils.trunc(map.get("comments"), 255));
             station.setAccessType(env.getProperty(STATION_ACCESS_TYPE_KEY));
@@ -139,12 +139,13 @@ public class HydrogenDataConverter {
             plug.setLatitude(DCUtils.convertStringToDouble(map.get("latitude")));
             plug.setName(DCUtils.trunc(map.get("name")+" - " + env.getProperty(PLUG_NAME_KEY), 255));
             plug.setParentStation(map.get("idx"));
-            plug.setOrigin(DCUtils.trunc(env.getProperty(ORIGIN_KEY), 255));
+            plug.setOrigin(DCUtils.trunc(map.get("operatorname") /*env.getProperty(ORIGIN_KEY)*/, 255));
+            plug.setStationType(env.getProperty(PLUG_TYPE_KEY));
 
             //For each Plug we create an Outlet
             OutletDtoV2 outlet = new OutletDtoV2();
             outlet.setId(plug.getId());
-            outlet.setOutletTypeCode(map.get(env.getProperty(OUTLET_TYPE_KEY)));
+            outlet.setOutletTypeCode(env.getProperty(OUTLET_TYPE_KEY));
             List<OutletDtoV2> outlets = new ArrayList<OutletDtoV2>();
             outlets.add(outlet);
             plug.setOutlets(outlets);

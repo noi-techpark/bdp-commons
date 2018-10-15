@@ -42,7 +42,7 @@ public class HydrogenDataPusher extends JSONPusher {
     @PostConstruct
     private void init() {
         LOG.debug("START.init.");
-        //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTP 415 error)
+        //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTTP 415 error)
         //this must be done because we added dependencies to com.fasterxml.jackson.dataformat.xml.XmlMapper to read data from IIT web service!
         List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
         List<HttpMessageConverter<?>> newMessageConverters = new ArrayList<HttpMessageConverter<?>>();
@@ -60,42 +60,8 @@ public class HydrogenDataPusher extends JSONPusher {
 
     @Override
     public String initIntegreenTypology() {
-        LOG.debug("START.initIntegreenTypology");
         String stationType = "EChargingStation";
-        LOG.debug("END.initIntegreenTypology. Station-type=" + stationType);
         return stationType;
-    }
-
-    @Override
-    public Object syncStations(StationList data) {
-        LOG.debug("START.syncStations");
-        Object stations = super.syncStations(data);
-        LOG.debug("END.syncStations");
-        return stations;
-    }
-
-    @Override
-    public Object syncDataTypes(List<DataTypeDto> data) {
-        LOG.debug("START.syncDataTypes");
-        Object dataTypes = super.syncDataTypes(data);
-        LOG.debug("END.syncDataTypes");
-        return dataTypes;
-    }
-
-    @Override
-    public Object pushData(DataMapDto<? extends RecordDtoImpl> dto) {
-        LOG.debug("START.pushData");
-        Object retval = super.pushData(dto);
-        LOG.debug("END.pushData");
-        return retval;
-    }
-
-    @Override
-    public Object pushData(String datasourceName, DataMapDto<? extends RecordDtoImpl> dto) {
-        LOG.debug("START.pushData("+datasourceName+")");
-        Object retval = super.pushData(datasourceName, dto);
-        LOG.debug("END.pushData("+datasourceName+")");
-        return retval;
     }
 
     @Override
@@ -117,7 +83,6 @@ public class HydrogenDataPusher extends JSONPusher {
             DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<RecordDtoImpl>();
             Integer availableStations=0;
             EchargingStationDto stationDto = dto.getStation();
-            //List<EchargingPlugDto> plugList = dto.getPlugList();
             List<ChargingPointsDtoV2> pointList = dto.getPointList();
             for (ChargingPointsDtoV2 point : pointList){
                 List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
@@ -151,8 +116,6 @@ public class HydrogenDataPusher extends JSONPusher {
         Integer period = env.getProperty(HydrogenDataConverter.PERIOD_KEY, Integer.class);
 
         for(HydrogenDto dto: data) {
-            //EchargingStationDto stationDto = dto.getStation();
-            //List<EchargingPlugDto> plugList = dto.getPlugList();
             List<ChargingPointsDtoV2> pointList = dto.getPointList();
             for (ChargingPointsDtoV2 point : pointList){
                 DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<RecordDtoImpl>();
