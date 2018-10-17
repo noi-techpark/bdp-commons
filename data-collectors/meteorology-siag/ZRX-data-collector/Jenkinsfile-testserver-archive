@@ -22,12 +22,6 @@ pipeline {
               sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn package'
 	    }
 	}
-        stage('Archive') {
-            steps {
-		sh 'mkdir -p /var/builds/test-server'
-		sh 'cp -f data-collectors/meteorology-siag/ZRX-data-collector/target/dc-meteo-bz.war /var/builds/test-server/'
-	    }
-	}
 	stage('Deploy') {
             steps{
                 sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
