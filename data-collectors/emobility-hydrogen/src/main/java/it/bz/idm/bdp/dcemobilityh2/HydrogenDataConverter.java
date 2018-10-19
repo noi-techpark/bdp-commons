@@ -95,10 +95,10 @@ public class HydrogenDataConverter {
         }
     }
 
-    public EchargingStationDto convertMapToStationDto(Map<String, String> map) {
-        EchargingStationDto station = null;
+    public StationDto convertMapToStationDto(Map<String, String> map) {
+        StationDto station = null;
         if ( map!=null && map.containsKey("idx") ) {
-            station = new EchargingStationDto();
+            station = new StationDto();
 
             //From StationDTO
             station.setId(map.get("idx"));
@@ -109,7 +109,6 @@ public class HydrogenDataConverter {
             station.setOrigin(DCUtils.trunc(env.getProperty(ORIGIN_KEY), 255));
             station.getMetaData().put("municipality", DCUtils.trunc(map.get("city"), 255));
             station.setStationType(env.getProperty(STATION_TYPE_KEY));
-
             //From EchargingStationDto
             //OMITTED: s.setCapacity(dto.getChargingPoints().size());
             station.getMetaData().put("provider",DCUtils.trunc(map.get("hostname"), 255));
@@ -154,8 +153,7 @@ public class HydrogenDataConverter {
         return plug;
     }
 
-
-	public ChargingPointsDtoV2 getPointDto(StationDto station, StationDto plug) {
+    public ChargingPointsDtoV2 getPointDto(StationDto station, StationDto plug) {
         ChargingPointsDtoV2 point = null;
         if ( station!=null && plug!=null ) {
             //For each station we create a Point with id = station.id-1
