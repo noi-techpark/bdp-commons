@@ -44,16 +44,16 @@ public class ParkingMeranoClient {
 		return ret;
 	}
 
-	public static ParkingStationDto[] convert(ParkingMeranoStationDto[] dtos) {
-		ParkingStationDto[] ret = null;
+	public static StationDto[] convert(ParkingMeranoStationDto[] dtos) {
+		StationDto[] ret = null;
 		if (dtos != null && dtos.length > 0) {
-			ret = new ParkingStationDto[dtos.length];
+			ret = new StationDto[dtos.length];
 			for (int i = 0; i < dtos.length; i++) {
 				ret[i] = new ParkingStationDto();
 				ret[i].setId(ID_NAME_SPACE + dtos[i].getAreaName());
 				ret[i].setName(dtos[i].getAreaName());
 				ret[i].setOrigin(ORIGIN);
-				ret[i].setSlots(dtos[i].getTotalParkingSpaces());
+				ret[i].getMetaData().put("slots",dtos[i].getTotalParkingSpaces());
 			}
 		}
 		return ret;
@@ -80,10 +80,10 @@ public class ParkingMeranoClient {
 	public void insertParkingMetaDataInto(List<StationDto> stations) {
 		ParkingMeranoStationDto[] parkingStations = this.getParkingStations();
 		for (ParkingMeranoStationDto dto:parkingStations) {
-			ParkingStationDto stationDto = new ParkingStationDto();
+			StationDto stationDto = new StationDto();
 			stationDto.setId("me:"+dto.getAreaName().toLowerCase().replaceAll("\\s+",""));
 			stationDto.setName(dto.getAreaName());
-			stationDto.setSlots(dto.getTotalParkingSpaces());
+			stationDto.getMetaData().put("slots", dto.getTotalParkingSpaces());
 			stationDto.setOrigin("Municipality Merano");
 			stations.add(stationDto);
 		}

@@ -52,10 +52,10 @@ public class ThirdPartyIT extends AbstractJUnit4SpringContextTests {
 		}
 
 		// merano
-		ParkingStationDto[] parkingStations = ParkingMeranoClient.convert(parkingMeranoClient.getParkingStations());
+		StationDto[] parkingStations = ParkingMeranoClient.convert(parkingMeranoClient.getParkingStations());
 		assertNotNull(parkingStations);
 		assertTrue(parkingStations.length == PARKING_MERANO_SIZE);
-		for (ParkingStationDto stationDto : parkingStations) {
+		for (StationDto stationDto : parkingStations) {
 			assertNotNull(stationDto);
 			assertNotNull(stationDto.getId());
 		}

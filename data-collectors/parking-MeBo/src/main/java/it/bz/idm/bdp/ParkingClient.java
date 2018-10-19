@@ -93,7 +93,7 @@ public class ParkingClient {
 	}
 
 	public StationDto getParkingMetaData(Integer identifier) {
-		ParkingStationDto stationDto = new ParkingStationDto();
+		StationDto stationDto = new StationDto();
 		List<Object> pParams = new ArrayList<Object>();
 		pParams.add(identifier);
 		List<Object> metaDataParkingPlace = null;
@@ -101,7 +101,7 @@ public class ParkingClient {
 			metaDataParkingPlace = Arrays.asList(getArray(P_GUIDE_GET_PARKING_METADATA, pParams));
 			stationDto.setId(metaDataParkingPlace.get(0).toString());
 			stationDto.setName(metaDataParkingPlace.get(1).toString());
-			stationDto.setSlots(Integer.valueOf(metaDataParkingPlace.get(2).toString()));
+			stationDto.getMetaData().put("slots",Integer.valueOf(metaDataParkingPlace.get(2).toString()));
 			stationDto.setOrigin(origin);
 		} catch (XmlRpcException e) {
 			e.printStackTrace();
