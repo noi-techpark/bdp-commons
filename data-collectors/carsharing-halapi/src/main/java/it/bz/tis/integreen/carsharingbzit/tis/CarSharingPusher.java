@@ -36,7 +36,7 @@ public class CarSharingPusher extends JSONPusher
 
 	@Override
 	public String initIntegreenTypology() {
-		return "Carsharingstation";
+		return "CarsharingStation";
 	}
 
 	@Override

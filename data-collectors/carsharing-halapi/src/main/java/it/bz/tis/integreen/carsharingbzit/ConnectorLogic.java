@@ -34,6 +34,7 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.idm.bdp.dto.carsharing.CarsharingStationDto;
 import it.bz.idm.bdp.dto.carsharing.CarsharingVehicleDto;
@@ -60,8 +61,8 @@ public class ConnectorLogic
 {
 	final static long             INTERVALL                    = 10L * 60L * 1000L;
 
-	public static final String    CARSHARINGSTATION_DATASOURCE = "Carsharingstation";
-	public static final String    CARSHARINGCAR_DATASOURCE     = "Carsharingcar";
+	public static final String    CARSHARINGSTATION_DATASOURCE = "CarsharingStation";
+	public static final String    CARSHARINGCAR_DATASOURCE     = "CarsharingCar";
 
 	static final SimpleDateFormat SIMPLE_DATE_FORMAT           = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); // 2014-09-15T12:00:00
 
@@ -206,18 +207,18 @@ public class ConnectorLogic
 			it.bz.tis.integreen.carsharingbzit.api.CarsharingVehicleDto[] vehicles) {
 		StationList dtos = new StationList();
 		for (it.bz.tis.integreen.carsharingbzit.api.CarsharingVehicleDto dto : vehicles){
-			CarsharingVehicleDto castedDto = new CarsharingVehicleDto();
+			StationDto castedDto = new StationDto();
 			castedDto.setId(dto.getId());
 			castedDto.setLatitude(dto.getLatitude());
 			castedDto.setLongitude(dto.getLongitude());
 			castedDto.setName(dto.getName());
 			castedDto.setOrigin(dto.getOrigin());
-			castedDto.setBrand(dto.getBrand());
+			castedDto.getMetaData().put("brand",dto.getBrand());
 			castedDto.setCoordinateReferenceSystem(dto.getCrs());
-			castedDto.setLicensePlate(dto.getLicensePlate());
-			castedDto.setModel(dto.getModel());
-			castedDto.setShowType(dto.getShowType());
-			castedDto.setStation(dto.getStationId());
+			castedDto.getMetaData().put("licensePlate",dto.getLicensePlate());
+			castedDto.getMetaData().put("model",dto.getModel());
+			castedDto.getMetaData().put("showType",dto.getShowType());
+			castedDto.setParentId(dto.getStationId());
 			dtos.add(castedDto);
 		}
 		return dtos;
@@ -227,12 +228,12 @@ public class ConnectorLogic
 			it.bz.tis.integreen.carsharingbzit.api.CarsharingStationDto[] stations) {
 		StationList dtos = new StationList();
 		for (it.bz.tis.integreen.carsharingbzit.api.CarsharingStationDto dto : stations){
-			CarsharingStationDto castedDto = new CarsharingStationDto();
-			castedDto.setAccess(dto.getAccess());
-			castedDto.setBookMode(dto.getBookMode());
-			castedDto.setCompany(dto.getCompany());
+			StationDto castedDto = new StationDto();
+			castedDto.getMetaData().put("access",dto.getAccess());
+			castedDto.getMetaData().put("bookMode",dto.getBookMode());
+			castedDto.getMetaData().put("company",dto.getCompany());
 			castedDto.setCoordinateReferenceSystem(dto.getCrs());
-			castedDto.setHasFixedParking(dto.isHasFixedParking());
+			castedDto.getMetaData().put("hasFixedParking",dto.isHasFixedParking());
 			castedDto.setId(dto.getId());
 			castedDto.setLatitude(dto.getLatitude());
 			castedDto.setLongitude(dto.getLongitude());
