@@ -12,10 +12,9 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.idm.bdp.dto.emobility.ChargingPointsDtoV2;
-import it.bz.idm.bdp.dto.emobility.EchargingPlugDto;
-import it.bz.idm.bdp.dto.emobility.EchargingStationDto;
 import it.bz.idm.bdp.json.JSONPusher;
 import it.bz.idm.bdp.service.dto.ChargerDtoV2;
 
@@ -60,23 +59,23 @@ public class ChargePusher extends JSONPusher {
 	public StationList map2bdp(List<ChargerDtoV2> fetchedSations) {
 		StationList stations = new StationList();
 		for (ChargerDtoV2 dto : fetchedSations){
-			EchargingStationDto s = new EchargingStationDto();
+			StationDto s = new StationDto();
 			s.setId(dto.getId());
 			s.setLongitude(dto.getLongitude());
 			s.setLatitude(dto.getLatitude());
 			s.setName(dto.getName());
-			s.setCity(dto.getPosition().getCity());
-			s.setProvider(dto.getProvider());
-			s.setCapacity(dto.getChargingPoints().size());
-			s.setState(dto.getState());
-			s.setAccessInfo(dto.getAccessInfo());
-			s.setFlashInfo(dto.getFlashInfo());
-			s.setLocationServiceInfo(dto.getLocationServiceInfo());
-			s.setPaymentInfo(dto.getPaymentInfo());
-			s.setAddress(dto.getAddress());
-			s.setReservable(dto.getIsReservable());
-			s.setAccessType(dto.getAccessType());
-			s.setCategories(dto.getCategories());
+			s.getMetaData().put("city", dto.getPosition().getCity());
+			s.getMetaData().put("provider",dto.getProvider());
+			s.getMetaData().put("capacity",dto.getChargingPoints().size());
+			s.getMetaData().put("state",dto.getState());
+			s.getMetaData().put("accessInfo",dto.getAccessInfo());
+			s.getMetaData().put("flashInfo",dto.getFlashInfo());
+			s.getMetaData().put("locationServiceInfo",dto.getLocationServiceInfo());
+			s.getMetaData().put("paymentInfo",dto.getPaymentInfo());
+			s.getMetaData().put("address",dto.getAddress());
+			s.getMetaData().put("reservable",dto.getIsReservable());
+			s.getMetaData().put("accessType",dto.getAccessType());
+			s.getMetaData().put("categories",dto.getCategories());
 			s.setOrigin(env.getProperty(ORIGIN_KEY));
 			stations.add(s);
 		}
@@ -89,13 +88,13 @@ public class ChargePusher extends JSONPusher {
 		StationList stations = new StationList();
 		for (ChargerDtoV2 dto : fetchedStations){
 			for(ChargingPointsDtoV2 point:dto.getChargingPoints()){
-				EchargingPlugDto s = new EchargingPlugDto();
+				StationDto s = new StationDto();
 				s.setId(dto.getId()+ "-" + point.getOutlets().get(0).getId());
 				s.setLongitude(dto.getLongitude());;
 				s.setLatitude(dto.getLatitude());
 				s.setName(dto.getName()+"-"+point.getId());
-				s.setParentStation(dto.getCode());
-				s.setOutlets(point.getOutlets());
+				s.setParentId(dto.getCode());
+				s.getMetaData().put("outlets",point.getOutlets());
 				s.setOrigin(env.getProperty(ORIGIN_KEY));
 				stations.add(s);
 			}
