@@ -20,6 +20,7 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.idm.bdp.dto.emobility.ChargingPointsDtoV2;
 import it.bz.idm.bdp.dto.emobility.EchargingPlugDto;
@@ -82,7 +83,7 @@ public class HydrogenDataPusher extends JSONPusher {
         for(HydrogenDto dto: data){
             DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<RecordDtoImpl>();
             Integer availableStations=0;
-            EchargingStationDto stationDto = dto.getStation();
+            StationDto stationDto = dto.getStation();
             List<ChargingPointsDtoV2> pointList = dto.getPointList();
             for (ChargingPointsDtoV2 point : pointList){
                 List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
@@ -145,7 +146,7 @@ public class HydrogenDataPusher extends JSONPusher {
 
         StationList stations = new StationList();
         for (HydrogenDto dto : data) {
-            EchargingStationDto stationDto = dto.getStation();
+            StationDto stationDto = dto.getStation();
             stations.add(stationDto);
         }
         LOG.debug("stations: "+stations);
@@ -161,7 +162,7 @@ public class HydrogenDataPusher extends JSONPusher {
 
         StationList plugs = new StationList();
         for (HydrogenDto dto : data) {
-            List<EchargingPlugDto> plugList = dto.getPlugList();
+            List<StationDto> plugList = dto.getPlugList();
             plugs.addAll(plugList);
         }
 
