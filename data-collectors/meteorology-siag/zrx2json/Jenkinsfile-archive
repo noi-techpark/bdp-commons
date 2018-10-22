@@ -3,12 +3,12 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-              sh 'cd data-collectors/zrx2json && mvn clean test'
+              sh 'cd data-collectors/meteorology-siag/zrx2json && mvn clean test'
             }
         }
         stage('Archive') {
             steps {
-              sh 'cd data-collectors/zrx2json && mvn install'
+              sh 'cd data-collectors/meteorology-siag/zrx2json && mvn install'
             }
         }
     }

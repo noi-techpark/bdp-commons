@@ -82,8 +82,7 @@ pipeline {
                 }
                 stage('traffic-a22') {
                     steps {
-                        sh 'true'
-                        // sh 'cd data-collectors/traffic-a22 && mvn clean compile test'
+			sh 'cd data-collectors/traffic-a22/A22Connector/ && mvn clean compile test'
                     }
                 }
             }

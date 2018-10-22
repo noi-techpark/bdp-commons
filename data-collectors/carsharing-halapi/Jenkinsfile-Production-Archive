@@ -6,22 +6,22 @@ pipeline {
     stages {
 	stage('Configure'){
 	    steps{
-	      sh 'cat "${CARSHARING_PROPS}" > data-collectors/carsharingbz/src/main/resources/app.properties'
+	      sh 'cat "${CARSHARING_PROPS}" > data-collectors/carsharing-halapi/src/main/resources/app.properties'
 	    }
 	}
         stage('Test') {
             steps {
-              sh 'cd data-collectors/carsharingbz/ && mvn clean test && mvn integration-test'
+              sh 'cd data-collectors/carsharing-halapi/ && mvn clean test && mvn integration-test'
             }
         }
 	stage('Build'){
 	    steps{
-	      sh 'cd data-collectors/carsharingbz/ && mvn clean package'
+	      sh 'cd data-collectors/carsharing-halapi/ && mvn clean package'
 	    }
 	}
 	stage('Archive'){
 	    steps{
-	      sh 'cp data-collectors/carsharingbz/target/dc-carsharing-bz.war /var/builds/prod-server-dc/'
+	      sh 'cp data-collectors/carsharing-halapi/target/dc-carsharing-bz.war /var/builds/prod-server-dc/'
 	    }
 	}
     }
