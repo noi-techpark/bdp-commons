@@ -112,7 +112,7 @@ public class HydrogenDataConverter {
             station.setStationType(env.getProperty(STATION_TYPE_KEY));
 
             //From EchargingStationDto
-            //OMITTED: s.setCapacity(dto.getChargingPoints().size());
+            station.setCapacity(1);
             station.setProvider(DCUtils.trunc(map.get("hostname"), 255));
             station.setCity(DCUtils.trunc(map.get("city"), 255));
             //The value of "combinedstatus" must be remapped to the corresponding value of the attribute "state"
