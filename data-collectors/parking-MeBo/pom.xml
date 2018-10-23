@@ -11,7 +11,7 @@
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<slf4j.version>1.7.5</slf4j.version>
-		<spring.version>4.3.17.RELEASE</spring.version>
+		<spring.version>4.3.20.RELEASE</spring.version>
 		<xmlrpc.version>3.1.2</xmlrpc.version>
 	</properties>
 	<dependencies>
