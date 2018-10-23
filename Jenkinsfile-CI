@@ -24,11 +24,8 @@ pipeline {
         stage('Test') {
             parallel {
                 stage('airquality-appabz') {
-                    steps {
-                        catchError {
-                            sh 'false'           
-                            sh 'cd data-collectors/airquality-appabz && mvn clean compile test'
-                        }
+                    steps {        
+                        sh 'cd data-collectors/airquality-appabz && mvn clean compile test'
                     }
                 }
                 stage('bikesharing-algorab') {
