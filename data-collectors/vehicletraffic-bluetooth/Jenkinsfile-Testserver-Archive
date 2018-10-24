@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    environment{
+	TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
+    }
+    stages {
+        stage('Test') {
+            steps {
+	       sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
+	       sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/bluetooth-endpoint.log%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
+               sh 'cd data-collectors/vehicletraffic-bluetooth && mvn clean test verify'
+            }
+        }
+        stage('Build') {
+            steps {
+	        sh 'cd data-collectors/vehicletraffic-bluetooth && mvn clean package'
+            }
+        }
+	stage('Deploy') {
+            steps{
+                sh 'cd  data-collectors/vehicletraffic-bluetooth && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+            }
+        }
+    }
+}
