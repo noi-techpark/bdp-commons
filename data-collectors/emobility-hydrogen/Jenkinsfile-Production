@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    environment {
+       ACCESS_TOKEN = credentials('hydrogen-access-token')
+    }
+    stages {
+        stage('Configure') {
+            steps {
+	       sh 'sed -i -e "s%\\(__TOKEN_PARAMETER__\\).*\\$%${ACCESS_TOKEN}%" data-collectors/emobility-hydrogen/src/main/resources/META-INF/spring/application.properties'
+	       sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/emobility-hydrogen.log%" data-collectors/emobility-hydrogen/src/main/resources/log4j.properties'
+	       sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO, stdout, R%" data-collectors/emobility-hydrogen/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Test') {
+            steps {
+               sh 'cd data-collectors/emobility-hydrogen && mvn clean compile test'
+            }
+        }
+	stage('Build'){
+	   steps {
+	       sh 'cd data-collectors/emobility-hydrogen && mvn package'
+	   }
+	}
+	stage('Archive'){
+	   steps {
+	       sh 'cp data-collectors/emobility-hydrogen/target/dc-emobility-hydrogen.war /var/builds/prod-server-dc'
+	   }
+	}
+    }
+}
