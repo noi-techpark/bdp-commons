@@ -26,11 +26,6 @@ pipeline {
 		       sh 'cd data-collectors/traffic-bz && mvn package' 
 		    }
 		}
-		stage('Archive'){
-		    steps {
-		       sh 'cp data-collectors/traffic-bz/target/dc-traffic-bz.war /var/builds/test-server/' 
-		    }
-		}
 		stage('Deploy') {
 		    steps{
                 sh 'cd data-collectors/traffic-bz/ && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
