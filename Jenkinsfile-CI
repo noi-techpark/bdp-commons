@@ -52,8 +52,7 @@ pipeline {
                 }
                 stage('environment-appa') {
                     steps {
-                        sh 'true'
-                        // sh 'cd data-collectors/environment-appa && mvn clean compile test'
+                        sh 'cd data-collectors/environment-appa && mvn clean compile test'
                     }
                 }
                 stage('meteorology-siag (ZRX-data-collector)') {

@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>it.bz.tis.zrx2json</groupId>
 			<artifactId>zrx2json</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.codehaus.jackson</groupId>
