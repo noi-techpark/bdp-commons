@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment{
       ZRX_ENDPOINT = credentials('smg_zrx_endpoint')
+      TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
     }
     stages {
 	stage('Configure'){
