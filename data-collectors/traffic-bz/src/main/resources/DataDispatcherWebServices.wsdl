@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s1="CleanRoadsWebServices.CleanRoadsDataType" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import namespace="CleanRoadsWebServices.CleanRoadsDataType" />
+      <s:element name="get_station_ID">
+        <s:complexType />
+      </s:element>
+      <s:element name="get_station_IDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="get_station_IDResult" type="tns:ArrayOfInt" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="get_metadata_station">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_metadata_stationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_metadata_stationResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_types">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_typesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_data_typesResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_classif_config">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_classif_configResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_classif_configResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="data_type_list" type="tns:ArrayOfInt" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_dataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_dataResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_historical">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="data_type_list" type="tns:ArrayOfInt" />
+            <s:element minOccurs="1" maxOccurs="1" name="utcTimeFrom" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="utcTimeTo" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_historicalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_data_historicalResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_test">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_testResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_data_testResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_historical_test">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_historical_testResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_data_historical_testResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_diagnostic_data">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_diagnostic_dataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_diagnostic_dataResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_diagnostic_data_historical">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="utcTime" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_diagnostic_data_historicalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_diagnostic_data_historicalResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="CleanRoadsWebServices.CleanRoadsDataType">
+      <s:element name="get_metadata_stationResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Longit" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="Latit" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsWebCam" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="StationTypeList" type="s1:ArrayOfXmlImAnagraficaStazioneStationType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfXmlImAnagraficaStazioneStationType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="StationType">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="1" maxOccurs="1" name="type" type="s:int" />
+                <s:element minOccurs="0" maxOccurs="1" name="typeName" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="get_data_typesResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="unbounded" name="XmlDataType">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Corsia" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Descr" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Um" type="s:string" />
+                  <s:element minOccurs="1" maxOccurs="1" name="AcqInterv" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Classificazioni" type="s1:ArrayOfXmlImDataTypesXmlDataTypeClassifiSpec" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfXmlImDataTypesXmlDataTypeClassifiSpec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ClassifiSpec">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="1" maxOccurs="1" name="IdClassific" type="s:int" />
+                <s:element minOccurs="0" maxOccurs="1" name="TipoClassificDescr" type="s:string" />
+                <s:element minOccurs="1" maxOccurs="1" name="IdGruppo" type="s:int" />
+                <s:element minOccurs="0" maxOccurs="1" name="GruppoDescr" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="get_classif_configResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="unbounded" name="XmlClassificazione">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Descr" type="s:string" />
+                  <s:element minOccurs="1" maxOccurs="1" name="IdGruppo" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="GruppoDescr" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="XmlClassi" type="s1:ArrayOfXmlImClassConfigXmlClassificazioneClasse" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfXmlImClassConfigXmlClassificazioneClasse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Classe">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="1" maxOccurs="1" name="Nr" type="s:int" />
+                <s:element minOccurs="0" maxOccurs="1" name="Descr" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="UpperBound" type="s:int" />
+                <s:element minOccurs="0" maxOccurs="1" name="LowerBound" type="s:int" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="get_dataResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IdSito" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="unbounded" name="XmlRwData">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Ts" type="s:dateTime" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Corsia" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Dir" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Um" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Valore" type="s:double" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Dst" nillable="true" type="s:double" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Accur" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="ClassifDataList">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="IdClassif" type="s:int" />
+                        <s:element minOccurs="0" maxOccurs="unbounded" name="ClassifData">
+                          <s:complexType>
+                            <s:sequence>
+                              <s:element minOccurs="1" maxOccurs="1" name="Classe" type="s:int" />
+                              <s:element minOccurs="1" maxOccurs="1" name="Valore" type="s:double" />
+                              <s:element minOccurs="0" maxOccurs="1" name="Dst" nillable="true" type="s:double" />
+                            </s:sequence>
+                          </s:complexType>
+                        </s:element>
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_historicalResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IdSito" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="unbounded" name="XmlRwData">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Ts" type="s:dateTime" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Corsia" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Dir" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Um" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Valore" type="s:double" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Dst" nillable="true" type="s:double" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Accur" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="ClassifDataList">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="IdClassif" type="s:int" />
+                        <s:element minOccurs="0" maxOccurs="unbounded" name="ClassifData">
+                          <s:complexType>
+                            <s:sequence>
+                              <s:element minOccurs="1" maxOccurs="1" name="Classe" type="s:int" />
+                              <s:element minOccurs="1" maxOccurs="1" name="Valore" type="s:double" />
+                              <s:element minOccurs="0" maxOccurs="1" name="Dst" nillable="true" type="s:double" />
+                            </s:sequence>
+                          </s:complexType>
+                        </s:element>
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_testResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IdSito" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="unbounded" name="XmlRwData">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Ts" type="s:dateTime" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Corsia" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Dir" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Um" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Valore" type="s:double" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Dst" nillable="true" type="s:double" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Accur" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="ClassifDataList">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="IdClassif" type="s:int" />
+                        <s:element minOccurs="0" maxOccurs="unbounded" name="ClassifData">
+                          <s:complexType>
+                            <s:sequence>
+                              <s:element minOccurs="1" maxOccurs="1" name="Classe" type="s:int" />
+                              <s:element minOccurs="1" maxOccurs="1" name="Valore" type="s:double" />
+                              <s:element minOccurs="0" maxOccurs="1" name="Dst" nillable="true" type="s:double" />
+                            </s:sequence>
+                          </s:complexType>
+                        </s:element>
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_historical_testResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IdSito" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="unbounded" name="XmlRwData">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Ts" type="s:dateTime" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Corsia" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Dir" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Um" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Valore" type="s:double" />
+                  <s:element minOccurs="0" maxOccurs="1" name="Dst" nillable="true" type="s:double" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Accur" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="ClassifDataList">
+                    <s:complexType>
+                      <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="IdClassif" type="s:int" />
+                        <s:element minOccurs="0" maxOccurs="unbounded" name="ClassifData">
+                          <s:complexType>
+                            <s:sequence>
+                              <s:element minOccurs="1" maxOccurs="1" name="Classe" type="s:int" />
+                              <s:element minOccurs="1" maxOccurs="1" name="Valore" type="s:double" />
+                              <s:element minOccurs="0" maxOccurs="1" name="Dst" nillable="true" type="s:double" />
+                            </s:sequence>
+                          </s:complexType>
+                        </s:element>
+                      </s:sequence>
+                    </s:complexType>
+                  </s:element>
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_diagnostic_dataResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Ts" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="StationStatus" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Modules" type="s1:ArrayOfXmlImDiagnosticaStazioneXmlModuleStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfXmlImDiagnosticaStazioneXmlModuleStatus">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="XmlModuleStatus">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="1" maxOccurs="1" name="type" type="s:int" />
+                <s:element minOccurs="0" maxOccurs="1" name="typeName" type="s:string" />
+                <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="get_diagnostic_data_historicalResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Ts" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="StationStatus" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Modules" type="s1:ArrayOfXmlImDiagnosticaStazioneXmlModuleStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="get_station_IDSoapIn">
+    <wsdl:part name="parameters" element="tns:get_station_ID" />
+  </wsdl:message>
+  <wsdl:message name="get_station_IDSoapOut">
+    <wsdl:part name="parameters" element="tns:get_station_IDResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_metadata_stationSoapIn">
+    <wsdl:part name="parameters" element="tns:get_metadata_station" />
+  </wsdl:message>
+  <wsdl:message name="get_metadata_stationSoapOut">
+    <wsdl:part name="parameters" element="tns:get_metadata_stationResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_data_typesSoapIn">
+    <wsdl:part name="parameters" element="tns:get_data_types" />
+  </wsdl:message>
+  <wsdl:message name="get_data_typesSoapOut">
+    <wsdl:part name="parameters" element="tns:get_data_typesResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_classif_configSoapIn">
+    <wsdl:part name="parameters" element="tns:get_classif_config" />
+  </wsdl:message>
+  <wsdl:message name="get_classif_configSoapOut">
+    <wsdl:part name="parameters" element="tns:get_classif_configResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_dataSoapIn">
+    <wsdl:part name="parameters" element="tns:get_data" />
+  </wsdl:message>
+  <wsdl:message name="get_dataSoapOut">
+    <wsdl:part name="parameters" element="tns:get_dataResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_data_historicalSoapIn">
+    <wsdl:part name="parameters" element="tns:get_data_historical" />
+  </wsdl:message>
+  <wsdl:message name="get_data_historicalSoapOut">
+    <wsdl:part name="parameters" element="tns:get_data_historicalResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_data_testSoapIn">
+    <wsdl:part name="parameters" element="tns:get_data_test" />
+  </wsdl:message>
+  <wsdl:message name="get_data_testSoapOut">
+    <wsdl:part name="parameters" element="tns:get_data_testResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_data_historical_testSoapIn">
+    <wsdl:part name="parameters" element="tns:get_data_historical_test" />
+  </wsdl:message>
+  <wsdl:message name="get_data_historical_testSoapOut">
+    <wsdl:part name="parameters" element="tns:get_data_historical_testResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_diagnostic_dataSoapIn">
+    <wsdl:part name="parameters" element="tns:get_diagnostic_data" />
+  </wsdl:message>
+  <wsdl:message name="get_diagnostic_dataSoapOut">
+    <wsdl:part name="parameters" element="tns:get_diagnostic_dataResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_diagnostic_data_historicalSoapIn">
+    <wsdl:part name="parameters" element="tns:get_diagnostic_data_historical" />
+  </wsdl:message>
+  <wsdl:message name="get_diagnostic_data_historicalSoapOut">
+    <wsdl:part name="parameters" element="tns:get_diagnostic_data_historicalResponse" />
+  </wsdl:message>
+  <wsdl:portType name="DataDispatcherWebServicesSoap">
+    <wsdl:operation name="get_station_ID">
+      <wsdl:input message="tns:get_station_IDSoapIn" />
+      <wsdl:output message="tns:get_station_IDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_metadata_station">
+      <wsdl:input message="tns:get_metadata_stationSoapIn" />
+      <wsdl:output message="tns:get_metadata_stationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_data_types">
+      <wsdl:input message="tns:get_data_typesSoapIn" />
+      <wsdl:output message="tns:get_data_typesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_classif_config">
+      <wsdl:input message="tns:get_classif_configSoapIn" />
+      <wsdl:output message="tns:get_classif_configSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_data">
+      <wsdl:input message="tns:get_dataSoapIn" />
+      <wsdl:output message="tns:get_dataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_data_historical">
+      <wsdl:input message="tns:get_data_historicalSoapIn" />
+      <wsdl:output message="tns:get_data_historicalSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_data_test">
+      <wsdl:input message="tns:get_data_testSoapIn" />
+      <wsdl:output message="tns:get_data_testSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_data_historical_test">
+      <wsdl:input message="tns:get_data_historical_testSoapIn" />
+      <wsdl:output message="tns:get_data_historical_testSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_diagnostic_data">
+      <wsdl:input message="tns:get_diagnostic_dataSoapIn" />
+      <wsdl:output message="tns:get_diagnostic_dataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_diagnostic_data_historical">
+      <wsdl:input message="tns:get_diagnostic_data_historicalSoapIn" />
+      <wsdl:output message="tns:get_diagnostic_data_historicalSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DataDispatcherWebServicesSoap" type="tns:DataDispatcherWebServicesSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="get_station_ID">
+      <soap:operation soapAction="http://tempuri.org/get_station_ID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_metadata_station">
+      <soap:operation soapAction="http://tempuri.org/get_metadata_station" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data_types">
+      <soap:operation soapAction="http://tempuri.org/get_data_types" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_classif_config">
+      <soap:operation soapAction="http://tempuri.org/get_classif_config" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data">
+      <soap:operation soapAction="http://tempuri.org/get_data" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data_historical">
+      <soap:operation soapAction="http://tempuri.org/get_data_historical" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data_test">
+      <soap:operation soapAction="http://tempuri.org/get_data_test" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data_historical_test">
+      <soap:operation soapAction="http://tempuri.org/get_data_historical_test" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_diagnostic_data">
+      <soap:operation soapAction="http://tempuri.org/get_diagnostic_data" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_diagnostic_data_historical">
+      <soap:operation soapAction="http://tempuri.org/get_diagnostic_data_historical" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="DataDispatcherWebServicesSoap12" type="tns:DataDispatcherWebServicesSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="get_station_ID">
+      <soap12:operation soapAction="http://tempuri.org/get_station_ID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_metadata_station">
+      <soap12:operation soapAction="http://tempuri.org/get_metadata_station" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data_types">
+      <soap12:operation soapAction="http://tempuri.org/get_data_types" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_classif_config">
+      <soap12:operation soapAction="http://tempuri.org/get_classif_config" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data">
+      <soap12:operation soapAction="http://tempuri.org/get_data" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data_historical">
+      <soap12:operation soapAction="http://tempuri.org/get_data_historical" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data_test">
+      <soap12:operation soapAction="http://tempuri.org/get_data_test" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data_historical_test">
+      <soap12:operation soapAction="http://tempuri.org/get_data_historical_test" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_diagnostic_data">
+      <soap12:operation soapAction="http://tempuri.org/get_diagnostic_data" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_diagnostic_data_historical">
+      <soap12:operation soapAction="http://tempuri.org/get_diagnostic_data_historical" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DataDispatcherWebServices">
+    <wsdl:port name="DataDispatcherWebServicesSoap" binding="tns:DataDispatcherWebServicesSoap">
+      <soap:address location="http://5.97.32.102:5001/DataDispatcherWebServices.asmx" />
+    </wsdl:port>
+    <wsdl:port name="DataDispatcherWebServicesSoap12" binding="tns:DataDispatcherWebServicesSoap12">
+      <soap12:address location="http://5.97.32.102:5001/DataDispatcherWebServices.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

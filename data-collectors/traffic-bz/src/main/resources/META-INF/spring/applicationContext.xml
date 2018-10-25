@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-4.2.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd        
+	 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd         
+	 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd         
+	 http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.2.xsd         
+	 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd 
+	 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd 
+	 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+    <context:spring-configured/>
+   	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
+    <context:component-scan base-package="it.bz.idm.bdp"/>
+ 	<bean class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory" id="messageFactory">
+        <property name="soapVersion">
+            <util:constant static-field="org.springframework.ws.soap.SoapVersion.SOAP_12"/>
+        </property>
+    </bean>    
+    <oxm:jaxb2-marshaller id="marshaller" context-path="org.tempuri"/>
+    <bean class="org.springframework.ws.client.core.WebServiceTemplate" id="webServiceTemplate">
+        <constructor-arg ref="messageFactory"/>
+        <property name="marshaller" ref="marshaller"/>
+        <property name="unmarshaller" ref="marshaller"/>
+        <property name="messageSender">
+            <bean class="it.bz.idm.bdp.NonPersistentConnectionHttpComponentsMessageSender">
+            	<property name="connectionTimeout" value="1200000" />
+            	<property name="readTimeout" value="1200000" />
+            </bean>
+        </property>
+        <property name="defaultUri" value="${endpoint.defaultUri}"/>
+    </bean>
+    
+    <task:scheduler id="Scheduler" pool-size="10"/>
+    <task:scheduled-tasks scheduler="Scheduler">
+        <task:scheduled method="syncStations" ref="jobScheduler" cron="0 0 * * * *"/>
+        <task:scheduled method="syncDataTypes" ref="jobScheduler" cron="0 0 * * * *"/>
+<!--       <task:scheduled method="pushRecords" ref="jobScheduler" cron="0 1,6,11,16,21,26,31,36,41,46,51,56 * * * *"/>-->
+        <task:scheduled method="getLatestHistory" ref="jobScheduler"  cron="0 */5 * * * *"/>
+    </task:scheduled-tasks>
+</beans>
