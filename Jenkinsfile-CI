@@ -85,6 +85,20 @@ pipeline {
                         sh 'cd data-collectors/traffic-a22/A22Connector/ && mvn clean compile test'
                     }
                 }
+		stage('vehicletraffic-bluetooth'){
+		   steps {
+			 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
+                         sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/bluetooth-endpoint.log%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
+			sh 'cd data-collectors/vehicletraffic-bluetooth && mvn clean compile test'
+		   }
+		}
+                stage('traffic-bz') {
+                    steps {
+			sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
+                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/traffic-sensors-dc.log%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
+                        sh 'cd data-collectors/traffic-bz/ && mvn clean compile test verify'
+                    }
+                }
             }
         }
     }
