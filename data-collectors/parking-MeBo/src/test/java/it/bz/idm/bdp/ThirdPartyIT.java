@@ -1,21 +1,19 @@
 package it.bz.idm.bdp;
 
-import it.bz.idm.bdp.ParkingClient;
-import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.parking.ParkingStationDto;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.apache.xmlrpc.XmlRpcException;
-
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import it.bz.idm.bdp.dto.StationDto;
 
 @ContextConfiguration(locations = { "/META-INF/spring/applicationContext.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)

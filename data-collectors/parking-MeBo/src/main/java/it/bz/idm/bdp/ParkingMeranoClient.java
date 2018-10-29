@@ -16,7 +16,6 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.parking.ParkingStationDto;
 
 @Component
 public class ParkingMeranoClient {
@@ -49,7 +48,7 @@ public class ParkingMeranoClient {
 		if (dtos != null && dtos.length > 0) {
 			ret = new StationDto[dtos.length];
 			for (int i = 0; i < dtos.length; i++) {
-				ret[i] = new ParkingStationDto();
+				ret[i] = new StationDto();
 				ret[i].setId(ID_NAME_SPACE + dtos[i].getAreaName());
 				ret[i].setName(dtos[i].getAreaName());
 				ret[i].setOrigin(ORIGIN);
