@@ -23,6 +23,9 @@ import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
+import it.bz.idm.bdp.dto.emobility.OutletDtoV2;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class HydrogenDataRetrieverIT extends AbstractJUnit4SpringContextTests {
@@ -52,6 +55,7 @@ public class HydrogenDataRetrieverIT extends AbstractJUnit4SpringContextTests {
             LOG.error(msg, e);
             Assert.fail(msg);
         }
+
     }
 
     private static final String TEST_FILE_FETCH = "/test_data/test_data_fetch.xml";
@@ -65,7 +69,6 @@ public class HydrogenDataRetrieverIT extends AbstractJUnit4SpringContextTests {
     public static final String DATA_FETCH = "FETCH";
     public static final String DATA_PUSH  = "PUSH";
 
-  
 
     @Test
     public void testConvertStationMeasurements() {
