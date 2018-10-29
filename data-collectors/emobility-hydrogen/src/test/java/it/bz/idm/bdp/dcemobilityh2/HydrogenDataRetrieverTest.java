@@ -23,9 +23,8 @@ import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.emobility.EchargingPlugDto;
-import it.bz.idm.bdp.dto.emobility.EchargingStationDto;
 import it.bz.idm.bdp.dto.emobility.OutletDtoV2;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
@@ -67,7 +66,7 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
             StringBuffer errs = new StringBuffer();
             boolean stationFound = false;
             for ( int i=0 ; !stationFound && i<stations.size() ; i++ ) {
-                EchargingStationDto station = (EchargingStationDto) stations.get(i);
+                StationDto station =  stations.get(i);
                 String id = station.getId();
                 if ( TEST_STATION_ID.equals(id) ) {
                     stationFound = true;
@@ -75,15 +74,15 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
                     checkEquals("TEST_NAME"          , station.getName()          , errs, "NAME is INCORRECT");
                     checkEquals(11D                  , station.getLongitude()     , errs, "LONGITUDE is INCORRECT");
                     checkEquals(46D                  , station.getLatitude()      , errs, "LATITUDE is INCORRECT");
-                    checkEquals("TEST_CITY"          , station.getMunicipality()  , errs, "MUNICIPALITY is INCORRECT");
-                    checkEquals("TEST_HOSTNAME"      , station.getProvider()      , errs, "PROVIDER is INCORRECT");
-                    checkEquals("TEST_CITY"          , station.getCity()          , errs, "CITY is INCORRECT");
-                    checkEquals("AVAILABLE"          , station.getState()         , errs, "STATE is INCORRECT");
-                    checkEquals("TEST_COMMENTS"      , station.getAccessInfo()    , errs, "ACCESS_INFO is INCORRECT");
+                    checkEquals("TEST_CITY"          , station.getMetaData().get("municipality"), errs, "MUNICIPALITY is INCORRECT");
+                    checkEquals("TEST_HOSTNAME"      , station.getMetaData().get("provider")      , errs, "PROVIDER is INCORRECT");
+                    checkEquals("TEST_CITY"          , station.getMetaData().get("city")          , errs, "CITY is INCORRECT");
+                    checkEquals("AVAILABLE"          , station.getMetaData().get("state")         , errs, "STATE is INCORRECT");
+                    checkEquals("TEST_COMMENTS"      , station.getMetaData().get("accessInfo")    , errs, "ACCESS_INFO is INCORRECT");
                     checkEquals("TEST_OPERATOR_NAME" , station.getOrigin()        , errs, "ORIGIN is INCORRECT");
                     checkEquals("EChargingStation"   , station.getStationType()   , errs, "STATION_TYPE is INCORRECT");
-                    checkEquals(Boolean.TRUE         , station.getReservable()    , errs, "RESERVABLE is INCORRECT");
-                    checkEquals("PUBLIC"             , station.getAccessType()    , errs, "ACCESS_TYPE is INCORRECT");
+                    checkEquals(Boolean.TRUE         , station.getMetaData().get("reservable")    , errs, "RESERVABLE is INCORRECT");
+                    checkEquals("PUBLIC"             , station.getMetaData().get("accessType")    , errs, "ACCESS_TYPE is INCORRECT");
                 }
             }
             if ( !stationFound ) {
@@ -118,7 +117,7 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
             StringBuffer errs = new StringBuffer();
             boolean plugFound = false;
             for ( int i=0 ; !plugFound && i<plugs.size() ; i++ ) {
-                EchargingPlugDto plug = (EchargingPlugDto) plugs.get(i);
+                StationDto plug = plugs.get(i);
                 String id = plug.getId();
                 if ( TEST_PLUG_ID.equals(id) ) {
                     plugFound = true;
@@ -126,11 +125,11 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
                     checkEquals("TEST_NAME - Punto di rifornimento", plug.getName(), errs, "NAME is INCORRECT");
                     checkEquals(11D                  , plug.getLongitude()     , errs, "LONGITUDE is INCORRECT");
                     checkEquals(46D                  , plug.getLatitude()      , errs, "LATITUDE is INCORRECT");
-                    checkEquals(TEST_STATION_ID      , plug.getParentStation() , errs, "PARENT_STATION is INCORRECT");
+                    checkEquals(TEST_STATION_ID      , plug.getParentId() , errs, "PARENT_STATION is INCORRECT");
                     checkEquals("TEST_OPERATOR_NAME" , plug.getOrigin()        , errs, "ORIGIN is INCORRECT");
                     checkEquals("EChargingPlug"      , plug.getStationType()   , errs, "PLUG_TYPE is INCORRECT");
 
-                    List<OutletDtoV2> outlets = plug.getOutlets();
+                    List<OutletDtoV2> outlets = (List<OutletDtoV2>) plug.getMetaData().get("outlets");
                     if ( outlets!=null && outlets.size()>0 ) {
                         OutletDtoV2 outlet = outlets.get(0);
                         checkEquals(TEST_PLUG_ID              , outlet.getId()            , errs, "OUTLET ID is INCORRECT");
