@@ -2,35 +2,30 @@ pipeline {
     agent any
     environment{
       ZRX_ENDPOINT = credentials('smg_zrx_endpoint')
+      TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
     }
     stages {
 	stage('Configure'){
 	  steps{
-              sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/meteorology-siag.log%" data-collectors/ZRX-data-collector/src/main/resources/log4j.properties'
+              sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/meteorology-siag/meteorology-siag.log%" data-collectors/meteorology-siag/ZRX-data-collector/src/main/resources/log4j.properties'
               sh 'echo "${ZRX_ENDPOINT}"'
-              sh 'cd data-collectors/ZRX-data-collector && mvn clean test'
-              sh 'sed -i -e "s%\\(zrx_endpoint=\\).*\\$%\\1"${ZRX_ENDPOINT}"%" data-collectors/ZRX-data-collector/src/main/resources/META-INF/spring/application.properties'
+              sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn clean test'
+              sh 'sed -i -e "s%\\(zrx_endpoint=\\).*\\$%\\1"${ZRX_ENDPOINT}"%" data-collectors/meteorology-siag/ZRX-data-collector/src/main/resources/META-INF/spring/application.properties'
 	  }
 	}
         stage('Test') {
             steps {
-              sh 'cd data-collectors/ZRX-data-collector && mvn integration-test'
+              sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn integration-test'
             }
         }
         stage('Build') {
             steps {
-              sh 'cd data-collectors/ZRX-data-collector && mvn package'
-	    }
-	}
-        stage('Archive') {
-            steps {
-		sh 'mkdir -p /var/builds/test-server'
-		sh 'cp -f data-collectors/ZRX-data-collector/target/dc-meteo-bz.war /var/builds/test-server/'
+              sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn package'
 	    }
 	}
 	stage('Deploy') {
             steps{
-                sh 'cd data-collectors/ZRX-data-collector && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+                sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
             }
         }
     }

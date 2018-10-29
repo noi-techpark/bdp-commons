@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.emobility.ChargingPointsDtoV2;
+import it.bz.idm.bdp.dto.emobility.EchargingPlugDto;
+import it.bz.idm.bdp.dto.emobility.EchargingStationDto;
 import it.bz.idm.bdp.dto.emobility.OutletDtoV2;
 
 @Service
@@ -109,6 +111,7 @@ public class HydrogenDataConverter {
             station.setOrigin(DCUtils.trunc(map.get("operatorname") /*env.getProperty(ORIGIN_KEY)*/, 255));
             station.getMetaData().put("municipality", DCUtils.trunc(map.get("city"), 255));
             station.setStationType(env.getProperty(STATION_TYPE_KEY));
+
             //From EchargingStationDto
             //OMITTED: s.setCapacity(dto.getChargingPoints().size());
             station.getMetaData().put("provider",DCUtils.trunc(map.get("hostname"), 255));
