@@ -9,16 +9,16 @@ pipeline {
     stages {
         stage('Temporary Folder') {
             steps {
-                sh 'mkdir -p tmp'
-                sh 'cd tmp && test -e "bdp-core" || git clone https://github.com/idm-suedtirol/bdp-core.git'
-                sh 'cd tmp/bdp-core && git fetch --all --tags --prune'
-                sh 'cd tmp/bdp-core && git checkout tags/1.2.1'
+                sh 'mkdir -p docker/tmp'
+                sh 'cd docker/tmp && test -e "bdp-core" || git clone https://github.com/idm-suedtirol/bdp-core.git'
+                sh 'cd docker/tmp/bdp-core && git fetch --all --tags --prune'
+                sh 'cd docker/tmp/bdp-core && git checkout tags/1.2.1'
             }
         }
         stage('Dependencies') {
             steps {
-                sh 'cd tmp/bdp-core/dto && mvn install'
-                sh 'cd tmp/bdp-core/dc-interface && mvn install'
+                sh 'cd docker/tmp/bdp-core/dto && mvn install'
+                sh 'cd docker/tmp/bdp-core/dc-interface && mvn install'
             }
         }
         stage('Test') {
@@ -85,16 +85,16 @@ pipeline {
                         sh 'cd data-collectors/traffic-a22/A22Connector/ && mvn clean compile test'
                     }
                 }
-		stage('vehicletraffic-bluetooth'){
-		   steps {
-			 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
-                         sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/bluetooth-endpoint.log%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
-			sh 'cd data-collectors/vehicletraffic-bluetooth && mvn clean compile test'
-		   }
-		}
+                stage('vehicletraffic-bluetooth') {
+                    steps {
+                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
+                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/bluetooth-endpoint.log%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
+                        sh 'cd data-collectors/vehicletraffic-bluetooth && mvn clean compile test'
+                    }
+                }
                 stage('traffic-bz') {
                     steps {
-			sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
+			            sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
                         sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/traffic-sensors-dc.log%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
                         sh 'cd data-collectors/traffic-bz/ && mvn clean compile test'
                     }
