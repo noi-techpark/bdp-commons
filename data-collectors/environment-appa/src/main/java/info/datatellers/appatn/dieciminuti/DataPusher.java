@@ -42,7 +42,6 @@ public class DataPusher extends JSONPusher {
 	 * @return	The DataMapDto with data filled into sensors as values, ready to be pushed
 	 */
 	@SuppressWarnings("unchecked") // checked with try/catch
-	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
 		try {
 			this.rootMap = (DataMapDto<RecordDtoImpl>) data;
