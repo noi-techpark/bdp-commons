@@ -22,8 +22,8 @@ pipeline {
                sh 'cd data-collectors/emobility-echarging && mvn -DfinalName=dc-emobility-driwe verify'
 
                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-route220-itests.log%" data-collectors/emobility-echarging/src/test/resources/log4j.properties' 
-               sh 'cp "$ROUTE220_CONFIG" data-collectors/emobility-echarging/src/test/resources/META-INF/spring/'
-               sh 'cd data-collectors/emobility-echarging && mvn -DfinalName=dc-emobility-route220 verify'
+               //sh 'cp "$ROUTE220_CONFIG" data-collectors/emobility-echarging/src/test/resources/META-INF/spring/'
+               //sh 'cd data-collectors/emobility-echarging && mvn -DfinalName=dc-emobility-route220 verify'
 
                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-nevicam-itests.log%" data-collectors/emobility-echarging/src/test/resources/log4j.properties' 
                sh 'cp "$NEVICAM_CONFIG" data-collectors/emobility-echarging/src/test/resources/META-INF/spring/'

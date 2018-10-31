@@ -22,7 +22,6 @@ import it.bz.idm.bdp.dto.StationDto;
 public class ParkingClient {
 	private String origin;
 	private static final String PROTOCOLL = "http://";
-	private static final String P_GUIDE_GET_NUMBER_OF_PARKINGPLACES = "pGuide.getNumeroParcheggi";
 	private static final String P_GUIDE_GET_PARKING_METADATA = "pGuide.getCaratteristicheParcheggio";
 	private static final String P_GUIDE_GET_FREE_SLOTS = "pGuide.getPostiLiberiParcheggio";
 	private static final String P_GUIDE_GET_VERSION = "pGuide.getVersion";
@@ -109,11 +108,6 @@ public class ParkingClient {
 		return stationDto;
 	}
 
-
-	public Integer getNumberOfConfiguredParkinPlaces() throws XmlRpcException {
-		return getInteger(P_GUIDE_GET_NUMBER_OF_PARKINGPLACES);
-	}
-
 	public Integer[] getIdentifiersOfParkingPlaces() throws XmlRpcException {
 		return getArrayOfInteger("pGuide.getElencoIdentificativiParcheggi");
 	}
@@ -151,12 +145,8 @@ public class ParkingClient {
 		return null;
 	}
 	public Integer[] getIdentifers() {
-		Integer numberOfConfiguredParkinPlaces;
 		try {
-			numberOfConfiguredParkinPlaces = this.getNumberOfConfiguredParkinPlaces();
-			Integer[] identifiersOfParkinPlaces = this.getIdentifiersOfParkingPlaces();
-			if (identifiersOfParkinPlaces != null && identifiersOfParkinPlaces.length == numberOfConfiguredParkinPlaces)
-				return identifiersOfParkinPlaces;
+			return this.getIdentifiersOfParkingPlaces();
 
 		} catch (XmlRpcException e) {
 			e.printStackTrace();
