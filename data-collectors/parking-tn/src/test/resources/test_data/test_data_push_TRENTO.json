@@ -1,0 +1,254 @@
+[
+	{
+		"name": "Autosilo Buonconsiglio - P3",
+		"description": "Via F. Petrarca, 1/5",
+		"slotsTotal": 669,
+		"slotsAvailable": 57,
+		"position": [
+			46.073612,
+			11.124208
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Piazza Fiera - P4",
+		"description": "Piazza Fiera",
+		"slotsTotal": 460,
+		"slotsAvailable": 268,
+		"position": [
+			46.065635,
+			11.125044
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Duomo - P5",
+		"description": "Piazza Ezio Mosna, 1/A",
+		"slotsTotal": 200,
+		"slotsAvailable": 105,
+		"position": [
+			46.067219,
+			11.115151
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Circonvallazione Nuova, Ponte S. Lorenzo",
+		"description": "Circonvallazione Nuova, Ponte S. Lorenzo",
+		"slotsTotal": 60,
+		"slotsAvailable": -2,
+		"position": [
+			46.07,
+			11.1139
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Via Roggia Grande",
+		"description": "Via Roggia Grande, 16",
+		"slotsTotal": 100,
+		"slotsAvailable": -2,
+		"position": [
+			46.0676,
+			11.1247
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Via Torre Verde",
+		"description": "Via Torre Verde, 40",
+		"slotsTotal": 60,
+		"slotsAvailable": -2,
+		"position": [
+			46.071129,
+			11.123749
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Piazzale Sanseverino - P7",
+		"description": "Piazzale Roberto da Sanseverino",
+		"slotsTotal": 342,
+		"slotsAvailable": 0,
+		"position": [
+			46.0657,
+			11.1145
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Centro Europa - P2",
+		"description": "Via G. Segantini, 7",
+		"slotsTotal": 480,
+		"slotsAvailable": 245,
+		"position": [
+			46.073551,
+			11.121393
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Via Valentina Zambra",
+		"description": "Via valentina Zambra",
+		"slotsTotal": 170,
+		"slotsAvailable": -2,
+		"position": [
+			46.091592,
+			11.116965
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "CTE via Bomporto - P6",
+		"description": "Via Bomporto",
+		"slotsTotal": 250,
+		"slotsAvailable": 178,
+		"position": [
+			46.065,
+			11.1163
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Via Maccani",
+		"description": "Via Maccani",
+		"slotsTotal": 64,
+		"slotsAvailable": -2,
+		"position": [
+			46.080279,
+			11.117952
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Area ex SIT via Canestrini - P1",
+		"description": "Lung'Adige Monte Grappa",
+		"slotsTotal": 300,
+		"slotsAvailable": 69,
+		"position": [
+			46.0691,
+			11.1162
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Via Asiago, Stazione FS Villazzano",
+		"description": "Via Asiago, Stazione FS Villazzano",
+		"slotsTotal": 96,
+		"slotsAvailable": -2,
+		"position": [
+			46.0448,
+			11.1393
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": true
+		}
+	},
+	{
+		"name": "Ex-Zuffo",
+		"description": "ex-Zuffo",
+		"slotsTotal": 1050,
+		"slotsAvailable": -2,
+		"position": [
+			46.076342,
+			11.111087
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": true
+		}
+	},
+	{
+		"name": "Monte Baldo",
+		"description": "Monte Baldo",
+		"slotsTotal": 295,
+		"slotsAvailable": -2,
+		"position": [
+			46.057374,
+			11.112651
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": true
+		}
+	},
+	{
+		"name": "Via Lidorno",
+		"description": "Via Lidorno",
+		"slotsTotal": 159,
+		"slotsAvailable": -2,
+		"position": [
+			46.03366,
+			11.125592
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": true
+		}
+	},
+	{
+		"name": "Ghiaie via Fersina",
+		"description": "Via Fersina",
+		"slotsTotal": 351,
+		"slotsAvailable": -2,
+		"position": [
+			46.038424,
+			11.124129
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": true
+		}
+	},
+	{
+		"name": "Via Ragazzi del '99",
+		"description": "Via Ragazzi del '99",
+		"slotsTotal": 145,
+		"slotsAvailable": -2,
+		"position": [
+			46.034658,
+			11.127158
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": true
+		}
+	}
+]
