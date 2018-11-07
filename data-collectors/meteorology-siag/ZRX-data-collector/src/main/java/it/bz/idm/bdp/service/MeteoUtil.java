@@ -36,8 +36,6 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.meteo.SegmentDataPointDto;
-import it.bz.idm.bdp.dto.meteo.SegmentDto;
 import it.bz.tis.zrx2json.MeteoStationDataPoint;
 import it.bz.tis.zrx2json.Meteostation;
 import it.bz.tis.zrx2json.Zrx2json;
