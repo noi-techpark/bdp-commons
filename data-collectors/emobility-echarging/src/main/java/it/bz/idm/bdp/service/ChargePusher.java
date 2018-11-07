@@ -25,6 +25,7 @@ public class ChargePusher extends JSONPusher {
 
 	@Autowired
 	private Environment env;
+
 	@Override
 	public String initIntegreenTypology() {
 		return "EChargingStation";
@@ -32,13 +33,19 @@ public class ChargePusher extends JSONPusher {
 
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T rawData) {
+		if (rawData == null)
+			return null;
+
 		@SuppressWarnings("unchecked")
 		List<ChargerDtoV2> data = (List<ChargerDtoV2>) rawData;
-		if (data == null)
-			return null;
 		DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
 		Date now = new Date();
-		for(ChargerDtoV2 dto: data ){
+
+		for(ChargerDtoV2 dto : data) {
+
+			if ("REMOVED".equals(dto.getState()))
+				continue;
+
 			DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<RecordDtoImpl>();
 			Integer availableStations=0;
 			for (ChargingPointsDtoV2 point:dto.getChargingPoints()){
@@ -58,7 +65,11 @@ public class ChargePusher extends JSONPusher {
 
 	public StationList map2bdp(List<ChargerDtoV2> fetchedSations) {
 		StationList stations = new StationList();
-		for (ChargerDtoV2 dto : fetchedSations){
+		for (ChargerDtoV2 dto : fetchedSations) {
+
+			if ("REMOVED".equals(dto.getState()))
+				continue;
+
 			StationDto s = new StationDto();
 			s.setId(dto.getId());
 			s.setLongitude(dto.getLongitude());
