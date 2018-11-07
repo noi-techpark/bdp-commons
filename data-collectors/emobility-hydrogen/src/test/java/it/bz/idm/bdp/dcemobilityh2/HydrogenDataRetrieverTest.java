@@ -20,12 +20,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
+import it.bz.idm.bdp.dcemobilityh2.dto.OutletDtoV2;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.emobility.OutletDtoV2;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests {
@@ -62,7 +62,7 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
             //Test data contains 2 stations
             assertEquals(2, stations.size());
 
-            //Check that station list contains a station with ID=TEST_IDX and that input data is converted correctly 
+            //Check that station list contains a station with ID=TEST_IDX and that input data is converted correctly
             StringBuffer errs = new StringBuffer();
             boolean stationFound = false;
             for ( int i=0 ; !stationFound && i<stations.size() ; i++ ) {
@@ -113,7 +113,7 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
             //Test data contains 2 plugs
             assertEquals(2, plugs.size());
 
-            //Check that plug list contains a plug with ID=TEST_IDX-1 and that input data is converted correctly 
+            //Check that plug list contains a plug with ID=TEST_IDX-1 and that input data is converted correctly
             StringBuffer errs = new StringBuffer();
             boolean plugFound = false;
             for ( int i=0 ; !plugFound && i<plugs.size() ; i++ ) {
@@ -287,7 +287,7 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
     public static void checkEquals(Object o1, Object o2, StringBuffer sb, String errMsg) {
         if ( o1 == o2 ) {
             return;
-        } 
+        }
         if ( o1!=null && o2==null ) {
             sb.append(" - "+errMsg);
             return;
