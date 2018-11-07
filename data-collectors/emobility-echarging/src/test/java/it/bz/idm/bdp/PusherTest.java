@@ -21,20 +21,20 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.emobility.ChargingPointsDtoV2;
-import it.bz.idm.bdp.dto.emobility.ChargingPositionDto;
-import it.bz.idm.bdp.dto.emobility.OutletDtoV2;
 import it.bz.idm.bdp.service.ChargePusher;
 import it.bz.idm.bdp.service.dto.ChargerDtoV2;
+import it.bz.idm.bdp.service.dto.ChargingPointsDtoV2;
+import it.bz.idm.bdp.service.dto.ChargingPositionDto;
+import it.bz.idm.bdp.service.dto.OutletDtoV2;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class PusherTest extends AbstractJUnit4SpringContextTests{
 
 	@Autowired
 	private ChargePusher pusher;
-	
+
 	private List<ChargerDtoV2> charger = null;
-	
+
 	@Before
 	public void setup() {
 		charger = new ArrayList<ChargerDtoV2>();
@@ -75,7 +75,7 @@ public class PusherTest extends AbstractJUnit4SpringContextTests{
 		chargingPoints.add(cp);
 		o.setChargingPoints(chargingPoints);
 		charger.add(o);
-		
+
 	}
 	@Test
 	public void testMappingData(){
@@ -101,10 +101,10 @@ public class PusherTest extends AbstractJUnit4SpringContextTests{
 		assertNotNull(stationList.get(0));
 		assertTrue(stationList.get(0) instanceof StationDto);
 		StationDto eStation=  stationList.get(0);
-		
+
 		assertEquals(new Double(42.2313) , eStation.getLongitude());
 		assertEquals(new Double(45.2313) , eStation.getLatitude());
 		assertEquals("thisisacode",eStation.getId());
-		
+
 	}
 }

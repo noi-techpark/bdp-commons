@@ -14,9 +14,9 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.emobility.ChargingPointsDtoV2;
 import it.bz.idm.bdp.json.JSONPusher;
 import it.bz.idm.bdp.service.dto.ChargerDtoV2;
+import it.bz.idm.bdp.service.dto.ChargingPointsDtoV2;
 
 @Service
 public class ChargePusher extends JSONPusher {

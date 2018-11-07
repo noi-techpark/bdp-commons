@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import it.bz.idm.bdp.dcemobilityh2.dto.ChargingPointsDtoV2;
 import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
+import it.bz.idm.bdp.dcemobilityh2.dto.OutletDtoV2;
 import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.emobility.ChargingPointsDtoV2;
-import it.bz.idm.bdp.dto.emobility.OutletDtoV2;
 
 @Service
 public class HydrogenDataConverter {
@@ -115,7 +115,7 @@ public class HydrogenDataConverter {
             station.getMetaData().put("provider",DCUtils.trunc(map.get("hostname"), 255));
             station.getMetaData().put("city",DCUtils.trunc(map.get("city"), 255));
             //The value of "combinedstatus" must be remapped to the corresponding value of the attribute "state"
-            station.getMetaData().put("state",mapAttribute("app.station.WS.combinedstatus", map.get("combinedstatus"))); 
+            station.getMetaData().put("state",mapAttribute("app.station.WS.combinedstatus", map.get("combinedstatus")));
             station.getMetaData().put("paymentInfo",DCUtils.trunc(env.getProperty(STATION_PAYMENT_INFO_KEY), 255));
             station.getMetaData().put("accessInfo",DCUtils.trunc(map.get("comments"), 255));
             station.getMetaData().put("accessType",env.getProperty(STATION_ACCESS_TYPE_KEY));
@@ -154,7 +154,8 @@ public class HydrogenDataConverter {
         return plug;
     }
 
-    public ChargingPointsDtoV2 getPointDto(StationDto station, StationDto plug) {
+
+	public ChargingPointsDtoV2 getPointDto(StationDto station, StationDto plug) {
         ChargingPointsDtoV2 point = null;
         if ( station!=null && plug!=null ) {
             //For each station we create a Point with id = station.id-1

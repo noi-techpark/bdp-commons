@@ -5,12 +5,10 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import it.bz.idm.bdp.dto.emobility.ChargingPointsDtoV2;
-import it.bz.idm.bdp.dto.emobility.ChargingPositionDto;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ChargerDtoV2 implements Serializable{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -8562182298961356540L;
 	protected String id;
@@ -31,8 +29,8 @@ public class ChargerDtoV2 implements Serializable{
 	private String[] categories;
 	private String flashInfo;
 	private String locationServiceInfo;
-	private Boolean isReservable; 
-	private ChargingPositionDto position; 
+	private Boolean isReservable;
+	private ChargingPositionDto position;
 	private List<ChargingPointsDtoV2> chargingPoints;
 	public String getProvider() {
 		return provider;
