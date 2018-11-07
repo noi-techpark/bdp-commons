@@ -203,7 +203,7 @@ public class HydrogenDataRetrieverIT extends AbstractJUnit4SpringContextTests {
     public static void checkEquals(Object o1, Object o2, StringBuffer sb, String errMsg) {
         if ( o1 == o2 ) {
             return;
-        } 
+        }
         if ( o1!=null && o2==null ) {
             sb.append(" - "+errMsg);
             return;
