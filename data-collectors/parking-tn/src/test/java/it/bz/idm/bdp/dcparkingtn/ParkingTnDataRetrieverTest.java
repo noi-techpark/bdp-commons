@@ -43,13 +43,14 @@ public class ParkingTnDataRetrieverTest extends AbstractJUnit4SpringContextTests
     private static final String TEST_FILE_FETCH = "/test_data/test_data_fetch.json";
     private static final String TEST_FILE_PUSH  = "/test_data/test_data_push_TRENTO.json";
 
-    private static final String TEST_STATION_ID_1 = "4E414D452031";
-    private static final String TEST_STATION_ID_2 = "4E414D452032";
+    private static final String TEST_STATION_ID_1 = "FETCH_PREFIX:name1";
+    private static final String TEST_STATION_ID_2 = "FETCH_PREFIX:name2";
     private static final String TEST_STATION_DATA_TYPE = "number-available";
 
     public static final String DATA_FETCH = "FETCH";
     public static final String DATA_PUSH  = "PUSH";
     public static final String MUNICIPALITY = "FETCH_MUNICIPALITY";
+    public static final String CODE_PREFIX = "FETCH_PREFIX:";
 
     @Test
     public void testConvertStationData() {
@@ -57,7 +58,7 @@ public class ParkingTnDataRetrieverTest extends AbstractJUnit4SpringContextTests
         try {
             String responseString = getTestData(DATA_FETCH);
 
-            List<ParkingTnDto> data = reader.convertResponseToInternalDTO(responseString, MUNICIPALITY);
+            List<ParkingTnDto> data = reader.convertResponseToInternalDTO(responseString, MUNICIPALITY, CODE_PREFIX);
 
             StationList stations = pusher.mapStations2Bdp(data);
 
@@ -78,7 +79,7 @@ public class ParkingTnDataRetrieverTest extends AbstractJUnit4SpringContextTests
                 if ( TEST_STATION_ID_1.equals(id) ) {
                     station1Found = true;
                     checkEquals(TEST_STATION_ID_1    , station.getId()            , errs, "STATION_1: ID is INCORRECT");
-                    checkEquals("NAME 1"             , station.getName()          , errs, "STATION_1: NAME is INCORRECT");
+                    checkEquals("NAME - 1"           , station.getName()          , errs, "STATION_1: NAME is INCORRECT");
                     checkEquals(11D                  , station.getLongitude()     , errs, "STATION_1: LONGITUDE is INCORRECT");
                     checkEquals(46D                  , station.getLatitude()      , errs, "STATION_1: LATITUDE is INCORRECT");
                     checkEquals("FETCH_MUNICIPALITY" , station.getMunicipality()  , errs, "STATION_1: MUNICIPALITY is INCORRECT");
@@ -121,7 +122,7 @@ public class ParkingTnDataRetrieverTest extends AbstractJUnit4SpringContextTests
         try {
             String responseString = getTestData(DATA_FETCH);
 
-            List<ParkingTnDto> data = reader.convertResponseToInternalDTO(responseString, MUNICIPALITY);
+            List<ParkingTnDto> data = reader.convertResponseToInternalDTO(responseString, MUNICIPALITY, CODE_PREFIX);
 
             DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(data);
 
@@ -132,19 +133,13 @@ public class ParkingTnDataRetrieverTest extends AbstractJUnit4SpringContextTests
             DataMapDto<RecordDtoImpl> dataMapDto1 = branch1.get(TEST_STATION_ID_1);
             assertNotNull("StationMeasurements: DataMapDTO for station "+TEST_STATION_ID_1+" is null", dataMapDto1);
 
-            Map<String, DataMapDto<RecordDtoImpl>> branch2 = dataMapDto1.getBranch();
-            assertNotNull("StationMeasurements: Branch Level 2 is null", branch2);
+            List<RecordDtoImpl> data1 = dataMapDto1.getData();
+            assertNotNull("StationMeasurements: Records for DataType "+TEST_STATION_DATA_TYPE+" is null", data1);
 
-            DataMapDto<RecordDtoImpl> dataMapDto2 = branch2.get(TEST_STATION_DATA_TYPE);
-            assertNotNull("StationMeasurements: DataMapDTO for DataType "+TEST_STATION_DATA_TYPE+" is null", dataMapDto2);
-
-            List<RecordDtoImpl> data2 = dataMapDto2.getData();
-            assertNotNull("StationMeasurements: Records for DataType "+TEST_STATION_DATA_TYPE+" is null", data2);
-
-            if ( data2.size() > 0 ) {
-                SimpleRecordDto record = (SimpleRecordDto) data2.get(0);
+            if ( data1.size() > 0 ) {
+                SimpleRecordDto record = (SimpleRecordDto) data1.get(0);
                 Object value = record.getValue();
-                assertEquals("StationMeasurements: measurement value is wrong", 50D, value);
+                assertEquals("StationMeasurements: measurement value is wrong", 50, value);
             } else {
                 Assert.fail("No StationMeasurements found");
             }

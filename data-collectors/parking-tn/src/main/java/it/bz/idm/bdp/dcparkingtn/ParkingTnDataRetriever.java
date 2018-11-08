@@ -4,7 +4,9 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -51,7 +53,7 @@ public class ParkingTnDataRetriever {
     private String endpointHost;
     private Integer endpointPort;
     private String endpointPath;
-    private List<String> cityKeys;
+    private List<Map<String, String>> cityProps;
     private String serviceUrl;
 
     public ParkingTnDataRetriever() {
@@ -70,14 +72,18 @@ public class ParkingTnDataRetriever {
             String strEndpointPort     = env.getProperty("endpoint.port");
             String strEndpointPath     = env.getProperty("endpoint.path");
 
-            cityKeys = new ArrayList<String>();
+            cityProps = new ArrayList<Map<String, String>>();
             boolean hasNext = true;
 
             int i=0;
             while ( hasNext ) {
-                String key = DCUtils.allowNulls(env.getProperty("endpoint.city."+i+".key"));
+                String key = DCUtils.allowNulls(env.getProperty("endpoint.city."+i+"."+ParkingTnDataConverter.STATION_KEY_PARAM)).trim();
+                String codePrefix = DCUtils.allowNulls(env.getProperty("endpoint.city."+i+"."+ParkingTnDataConverter.STATION_CODE_PREFIX_PARAM)).trim();
                 if ( DCUtils.paramNotNull(key) ) {
-                    cityKeys.add(key);
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put(ParkingTnDataConverter.STATION_KEY_PARAM, key);
+                    map.put(ParkingTnDataConverter.STATION_CODE_PREFIX_PARAM, codePrefix);
+                    cityProps.add(map);
                     i++;
                 } else {
                     hasNext = false;
@@ -86,7 +92,7 @@ public class ParkingTnDataRetriever {
 
             LOG.debug("Read config:"+
                     "  endpoint.protocol='"+strEndpointProtocol+"'  endpoint.method='"+strEndpointMethod+"'  endpoint.host='"+strEndpointHost+"+"+
-                    "  endpoint.port='"+strEndpointPort+"'  endpoint.path='"+strEndpointPath+"'  endpoint.cityKeys='"+cityKeys+"'");
+                    "  endpoint.port='"+strEndpointPort+"'  endpoint.path='"+strEndpointPath+"'  endpoint.cityProps='"+cityProps+"'");
 
             //Create HTTP Client
             endpointMethod   = DCUtils.allowNulls(strEndpointMethod).trim();
@@ -148,14 +154,14 @@ public class ParkingTnDataRetriever {
      * @return
      * @throws Exception
      */
-    public List<ParkingTnDto> convertResponseToInternalDTO(String responseString, String municipality) throws Exception {
+    public List<ParkingTnDto> convertResponseToInternalDTO(String responseString, String municipality, String codePrefix) throws Exception {
         List<ParkingAreaServiceDto> dataList = mapper.readValue(responseString, new TypeReference<List<ParkingAreaServiceDto>>() {});
         LOG.debug("dataList: "+dataList);
         if ( dataList == null ) {
             return null;
         }
         List<ParkingTnDto> dtoList = new ArrayList<ParkingTnDto>();
-        dtoList = converter.convertToInternalDTO(dataList, municipality);
+        dtoList = converter.convertToInternalDTO(dataList, municipality, codePrefix);
 
         LOG.debug("dtoList: "+dtoList); 
         return dtoList;
@@ -176,11 +182,13 @@ public class ParkingTnDataRetriever {
         List<ParkingTnDto> dtoList = new ArrayList<ParkingTnDto>();
         try {
             StringBuffer err = new StringBuffer();
-            for (String key : cityKeys) {
+            for (Map<String, String> city : cityProps) {
+                String key = city.get(ParkingTnDataConverter.STATION_KEY_PARAM);
+                String codePrefix = city.get(ParkingTnDataConverter.STATION_CODE_PREFIX_PARAM);
                 //We do not stop execution if one call goes in exception.
                 //All exceptions are collected in a StringBuffer
                 try {
-                    List<ParkingTnDto> dataByCity = fetchDataByCity(key);
+                    List<ParkingTnDto> dataByCity = fetchDataByCity(key, codePrefix);
                     dtoList.addAll(dataByCity);
                 } catch (Exception ex) {
                     LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
@@ -206,12 +214,12 @@ public class ParkingTnDataRetriever {
      * @return
      * @throws Exception
      */
-    public List<ParkingTnDto> fetchDataByCity(String cityKey) throws Exception {
+    public List<ParkingTnDto> fetchDataByCity(String cityKey, String codePrefix) throws Exception {
         LOG.debug("START.fetchData("+cityKey+")");
         List<ParkingTnDto> dtoList = null;
         try {
             String responseString = callRemoteService(cityKey);
-            dtoList = convertResponseToInternalDTO(responseString, cityKey);
+            dtoList = convertResponseToInternalDTO(responseString, cityKey, codePrefix);
             int size = dtoList!=null ? dtoList.size() : -1;
             LOG.debug("Data fetched for city "+cityKey+": "+size);
         } catch (Exception ex) {

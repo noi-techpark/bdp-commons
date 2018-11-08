@@ -81,6 +81,9 @@ public class ParkingTnDataPusher extends JSONPusher {
         Long timestamp = now.getTime();
         Integer period = env.getProperty(ParkingTnDataConverter.PERIOD_KEY, Integer.class);
 
+        int countBranches = 0;
+        int countMeasures = 0;
+
         for (ParkingTnDto dto: data) {
 //            DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<RecordDtoImpl>();
 
@@ -102,14 +105,20 @@ public class ParkingTnDataPusher extends JSONPusher {
                     map.getBranch().put(stationDto.getId(), recordsByType);
                     List<RecordDtoImpl> dataList = new ArrayList<RecordDtoImpl>();
                     recordsByType.setData(dataList);
+                    countBranches++;
+                    countMeasures++;
                 }
 
                 //Add the measure in the list
                 List<RecordDtoImpl> records = recordsByType.getData();
                 records.add(record);
+                LOG.debug("ADD  MEASURE:  id="+stationDto.getId()+", slotsAvailable="+slotsAvailable);
+            } else {
+                LOG.debug("SKIP MEASURE:  id="+stationDto.getId()+", slotsAvailable="+slotsAvailable);
             }
         }
 
+        LOG.debug("countBranches="+countBranches+", countMeasures="+countMeasures);
         LOG.debug("map: "+map);
         LOG.debug("END.mapData");
         return map;
@@ -121,6 +130,7 @@ public class ParkingTnDataPusher extends JSONPusher {
             return null;
         }
 
+        int countStations = 0;
         StationList stations = new StationList();
         for (ParkingTnDto dto : data) {
             ParkingStationDto stationDto = dto.getStation();
@@ -129,9 +139,13 @@ public class ParkingTnDataPusher extends JSONPusher {
             //Exclude Stations having slotsAvailable==-2 (i.e. does not provide real time measurements, see Analysis doc)
             if ( slotsAvailable != null && slotsAvailable != -2 ) {
                 stations.add(stationDto);
+                countStations++;
+                LOG.debug("ADD  STATION:  id="+stationDto.getId()+", slotsAvailable="+slotsAvailable);
+            } else {
+                LOG.debug("SKIP STATION:  id="+stationDto.getId()+", slotsAvailable="+slotsAvailable);
             }
         }
-        LOG.debug("stations: "+stations);
+        LOG.debug("countStations="+countStations+"  stations: "+stations);
         LOG.debug("END.mapStations2Bdp");
         return stations;
     }
