@@ -61,7 +61,7 @@ public class ParkingTnJobScheduler {
 
     /** JOB 2 */
     public void pushData() throws Exception {
-        LOG.debug("START.pushStations");
+        LOG.debug("START.pushData");
 
         try {
             List<ParkingTnDto> data = retrieval.fetchData();
@@ -76,6 +76,6 @@ public class ParkingTnJobScheduler {
             LOG.error(pusher + " - " + e, e);
             throw e;
         }
-        LOG.debug("END.pushStations");
+        LOG.debug("END.pushData");
     }
 }

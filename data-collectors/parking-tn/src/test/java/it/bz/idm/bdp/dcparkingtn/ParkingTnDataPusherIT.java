@@ -67,7 +67,7 @@ public class ParkingTnDataPusherIT extends AbstractJUnit4SpringContextTests {
 
         try {
             String responseString = ParkingTnDataRetrieverTest.getTestData(ParkingTnDataRetrieverTest.DATA_PUSH);
-            data = reader.convertResponseToInternalDTO(responseString, ParkingTnDataRetrieverTest.MUNICIPALITY);
+            data = reader.convertResponseToInternalDTO(responseString, ParkingTnDataRetrieverTest.MUNICIPALITY, ParkingTnDataRetrieverTest.CODE_PREFIX);
         } catch (Exception e) {
             LOG.error("Exception in testPush: "+e, e);
             Assert.fail();

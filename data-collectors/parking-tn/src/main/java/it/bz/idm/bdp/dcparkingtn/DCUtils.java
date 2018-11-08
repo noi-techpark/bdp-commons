@@ -193,4 +193,40 @@ public class DCUtils {
         }
     }
 
+    public static String removeUnexpectedChars(String s, String allowedChars) {
+        StringBuffer ret = new StringBuffer();
+        for ( int i=0 ; s!=null && i<s.length() ; i++ ) {
+            char c = s.charAt(i);
+            if ( allowedChars.indexOf(c) >= 0 ) {
+                ret.append(c);
+            }
+        }
+        return ret.toString();
+    }
+
+    public static String toHexString(String s) {
+        StringBuffer ret = new StringBuffer();
+        for ( int i=0 ; s!=null && i<s.length() ; i++ ) {
+            char c = s.charAt(i);
+            String hex = (Long.toHexString( 0x100 | c).substring(1).toUpperCase());
+            ret.append(hex);
+        }
+        return ret.toString();
+    }
+
+    public static String fromHexString(String s) {
+        StringBuffer ret = new StringBuffer();
+        for ( int i=0 ; s!=null && i<s.length() ; i++ ) {
+            String hex = s.substring(i,i+1);
+            i++;
+            if ( i<s.length() ) {
+                hex += s.substring(i,i+1);
+            }
+            long l = Long.parseLong(hex, 16);
+            char c = (char) l;
+            ret.append(c);
+        }
+        return ret.toString();
+    }
+
 }

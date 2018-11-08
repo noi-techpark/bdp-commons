@@ -18,10 +18,15 @@ public class ParkingTnDataConverter {
 
     private static final Logger LOG = LogManager.getLogger(ParkingTnDataConverter.class.getName());
 
-    public static final String ORIGIN_KEY               = "app.origin";
-    public static final String PERIOD_KEY               = "app.period";
+    public static final String ORIGIN_KEY                = "app.origin";
+    public static final String PERIOD_KEY                = "app.period";
 
-    public static final String STATION_TYPE_KEY         = "app.station.type";
+    public static final String STATION_TYPE_KEY          = "app.station.type";
+
+    public static final String STATION_KEY_PARAM         = "key";
+    public static final String STATION_CODE_PREFIX_PARAM = "code-prefix";
+
+    public static final String ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
 
     @Autowired
     private Environment env;
@@ -59,7 +64,7 @@ public class ParkingTnDataConverter {
         return this.stationType;
     }
 
-    public List<ParkingTnDto> convertToInternalDTO(List<ParkingAreaServiceDto> dataList, String municipality) throws Exception {
+    public List<ParkingTnDto> convertToInternalDTO(List<ParkingAreaServiceDto> dataList, String municipality, String codePrefix) throws Exception {
         try {
             LOG.debug("dataList: "+dataList);
             if ( dataList == null ) {
@@ -67,7 +72,7 @@ public class ParkingTnDataConverter {
             }
             List<ParkingTnDto> fetchedData = new ArrayList<ParkingTnDto>();
             for (ParkingAreaServiceDto extDto : dataList) {
-                ParkingStationDto stationDto = convertExternalDtoToStationDto(extDto, municipality);
+                ParkingStationDto stationDto = convertExternalDtoToStationDto(extDto, municipality, codePrefix);
                 ParkingTnDto intDto = new ParkingTnDto(extDto, stationDto, municipality);
                 fetchedData.add(intDto);
             }
@@ -79,13 +84,13 @@ public class ParkingTnDataConverter {
         }
     }
 
-    public ParkingStationDto convertExternalDtoToStationDto(ParkingAreaServiceDto extDto, String municipality) {
+    public ParkingStationDto convertExternalDtoToStationDto(ParkingAreaServiceDto extDto, String municipality, String codePrefix) {
         ParkingStationDto station = null;
         if ( extDto!=null ) {
             station = new ParkingStationDto();
 
             //From StationDTO
-            String id = toHexString(extDto.getName());
+            String id = calculateId(extDto.getName(), codePrefix);
             Double longitude = null;
             Double latitude = null;
             if ( extDto.getPosition() != null ) {
@@ -153,29 +158,13 @@ public class ParkingTnDataConverter {
 //        return station;
 //    }
 
-    public static String toHexString(String s) {
-        StringBuffer ret = new StringBuffer();
-        for ( int i=0 ; s!=null && i<s.length() ; i++ ) {
-            char c = s.charAt(i);
-            String hex = (Long.toHexString( 0x100 | c).substring(1).toUpperCase());
-            ret.append(hex);
+    private String calculateId(String name, String prefix) {
+        String retval = null;
+        if ( name != null ) {
+            String tmpName = DCUtils.removeUnexpectedChars(name.toLowerCase().trim(), ALLOWED_CHARS);
+            retval = DCUtils.allowNulls(prefix).trim() + tmpName;
         }
-        return ret.toString();
-    }
-
-    public static String fromHexString(String s) {
-        StringBuffer ret = new StringBuffer();
-        for ( int i=0 ; s!=null && i<s.length() ; i++ ) {
-            String hex = s.substring(i,i+1);
-            i++;
-            if ( i<s.length() ) {
-                hex += s.substring(i,i+1);
-            }
-            long l = Long.parseLong(hex, 16);
-            char c = (char) l;
-            ret.append(c);
-        }
-        return ret.toString();
+        return retval;
     }
 
 }
