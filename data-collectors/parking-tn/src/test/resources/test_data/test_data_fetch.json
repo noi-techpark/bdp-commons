@@ -1,0 +1,58 @@
+[
+	{
+		"name": "SLOTS -1",
+		"description": "Via NAME 1, 1/5",
+		"slotsTotal": 100,
+		"slotsAvailable": -1,
+		"position": [
+			46.0,
+			11.0
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "SLOTS -2",
+		"description": "Piazza Fiera",
+		"slotsTotal": 460,
+		"slotsAvailable": -2,
+		"position": [
+			46.065635,
+			11.125044
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "NAME - 1",
+		"description": "DESC 1",
+		"slotsTotal": 100,
+		"slotsAvailable": 50,
+		"position": [
+			46.0,
+			11.0
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": true
+		}
+	},
+	{
+		"name": "NAME 2",
+		"description": "DESC 2",
+		"slotsTotal": 200,
+		"slotsAvailable": 150,
+		"position": [
+			46.0,
+			11.0
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	}
+]
