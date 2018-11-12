@@ -73,6 +73,11 @@ pipeline {
                         sh 'cd data-collectors/parking-MeBo && mvn clean compile test'
                     }
                 }
+                stage('parking-tn') {
+                    steps {
+                        sh 'test -d data-collectors/parking-tn && { cd data-collectors/parking-tn; mvn clean compile test; } || true'
+                    }
+                }
                 stage('roadweather-famas') {
                     steps {
                         sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/roadweather-famas/src/main/resources/log4j.properties'
@@ -94,7 +99,7 @@ pipeline {
                 }
                 stage('traffic-bz') {
                     steps {
-			            sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
+                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
                         sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/traffic-sensors-dc.log%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
                         sh 'cd data-collectors/traffic-bz/ && mvn clean compile test'
                     }
