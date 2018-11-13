@@ -18,7 +18,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import info.datatellers.appatn.helpers.APPADataFormatException;
-import info.datatellers.appatn.helpers.CoordinateHelper;
+// import info.datatellers.appatn.helpers.CoordinateHelper;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
@@ -129,14 +129,14 @@ public class DataPusher extends JSONPusher {
 									records.add(measure);
 									recordsInv.add(measureInv);
 								} else {
-									throw new APPADataFormatException("Expected, non-negative data, received "
-											+ measureValue + " and " + measureAvailability);
+									throw new APPADataFormatException("Expected non-negative data, received "
+											+ measureValue + " and " + measureAvailability + " from sensor " + measureMap.getName());
 								}
 
 							} catch (ParseException e) {
 								LOG.error("Unexpected date format, {}", e.getMessage());
 							} catch (NumberFormatException | APPADataFormatException e) {
-								LOG.error("Unexpected sensor value, {}", e.getMessage());
+								LOG.warn("Unexpected sensor value, {}", e.getMessage());
 							}
 						}
 
@@ -232,21 +232,32 @@ public class DataPusher extends JSONPusher {
 			String longitude = ((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0))
 					.get("properties")).get("lon").getAsString();
 
-			CoordinateHelper converter = new CoordinateHelper();
-
-			double[] coordinates = converter.UTMtoDecimal(32, Double.parseDouble(longitude),
-					Double.parseDouble(latitude));
-
+// The following part is needed if pre-insertion coordinate conversion has to be made
+			
+//			CoordinateHelper converter = new CoordinateHelper();
+//
+//			double[] coordinates = converter.UTMtoDecimal(32, Double.parseDouble(longitude),
+//					Double.parseDouble(latitude));
+//
+//			StationDto station = new StationDto(
+//					rb.getString("odh.station.origin") + "_"
+//							+ ((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0))
+//									.get("properties")).get("id").getAsString(),
+//					((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0)).get("properties"))
+//							.get("name").getAsString(),
+//					coordinates[1], coordinates[0]);
+			
 			StationDto station = new StationDto(
 					rb.getString("odh.station.origin") + "_"
 							+ ((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0))
 									.get("properties")).get("id").getAsString(),
 					((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0)).get("properties"))
 							.get("name").getAsString(),
-					coordinates[1], coordinates[0]);
+					Double.parseDouble(latitude), Double.parseDouble(longitude));
 
 			station.setStationType(rb.getString("odh.station.type"));
 			station.setOrigin(rb.getString("odh.station.origin"));
+			station.setCrs(rb.getString("odh.station.projection"));
 
 			return station;
 		} catch (NumberFormatException e) {

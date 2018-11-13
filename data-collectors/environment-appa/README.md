@@ -17,6 +17,8 @@ It is to be distributed in form of a WAR package for Tomcat and it consists of f
 
 It is the entry point of the project, and has the purpose of calling the components in the specific order. It is managed by the Spring Scheduler and can be configured in `src/main/resources/META-INF/spring/applicationContext.xml` using CRON-like timing syntax.
 
+In the same xml file it is possible to edit the init function, which in this case takes care of collecting **historic data**, from `odp.data.history.from.10minuti` (found in `src/main/resources/config.properties`) up unitil the present day (in a 31-days-per-call fashion, required by the source api).
+
 #### DataFetcher
 
 This is the class that takes care of managing API requests to the source of the data. Strongly relies on the ResourceBundle configuration file that can be found in `src/main/resources/config.properties`.
@@ -59,7 +61,7 @@ Before compiling and packaging a few steps must be executed:
 	##### already set, leave as-is or know what you're changing
 	- `odh.station.type=Environmentstation`
 	- `odh.station.origin=APPATN`
-	- `odh.station.projection=EPSG:4326`
+	- `odh.station.projection=EPSG:25832`
 	- `odp.unit.description.10minuti=Valori a 10 minuti`
 	- `odp.unit.rtype.10minuti=Mean`
 	- `odp.unit.availability.10minuti=\ - invalidazione`
@@ -79,7 +81,7 @@ Before compiling and packaging a few steps must be executed:
     cd root_folder_of_this_project
     mvn test
     ```
-    It is advised to run tests separately so that it is easier to distinguish between the output log if more configuration has to be done based on errors in the tests. If no errors are raised, we can procede:
+    It is advised to run tests separately so that it is easier to distinguish between the output log if more configuration has to be done based on errors in the tests. **Be aware that no test are performed on the specific historic data collection**, that is because its components are already tested and shared with the main execution, and history collection takes way more time than normal periodic execution. If no errors are raised, we can procede:
     ```
 	  mvn clean package
     ```
