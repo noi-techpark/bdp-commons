@@ -13,6 +13,12 @@
 		<!-- This property must be overwritten by Maven environment variables, i.e., -DfinalName=... -->
 		<finalName>dc-should-not-happen</finalName>
 	</properties>
+	<repositories>
+		<repository>
+			<id>maven-repo.opendatahub.bz.it</id>
+			<url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<!-- General dependencies for standard applications -->
 		<dependency>
