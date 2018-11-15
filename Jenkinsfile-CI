@@ -7,20 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Temporary Folder') {
-            steps {
-                sh 'mkdir -p docker/tmp'
-                sh 'cd docker/tmp && test -e "bdp-core" || git clone https://github.com/idm-suedtirol/bdp-core.git'
-                sh 'cd docker/tmp/bdp-core && git fetch --all --tags --prune'
-                sh 'cd docker/tmp/bdp-core && git checkout tags/1.2.1'
-            }
-        }
-        stage('Dependencies') {
-            steps {
-                sh 'cd docker/tmp/bdp-core/dto && mvn install'
-                sh 'cd docker/tmp/bdp-core/dc-interface && mvn install'
-            }
-        }
         stage('Test') {
             parallel {
                 stage('airquality-appabz') {
