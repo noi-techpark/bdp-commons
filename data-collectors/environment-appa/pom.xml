@@ -11,7 +11,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.20.RELEASE</spring.version>
 	</properties>
-
+	<repositories>
+		<repository>
+			<id>maven-repo.opendatahub.bz.it</id>
+			<url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<!-- JSON Handling -->
 		<dependency>
