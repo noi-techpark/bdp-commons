@@ -1,4 +1,4 @@
-package info.datatellers.appatn.dieciminuti;
+package info.datatellers.appatn.tenminutes;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -12,16 +12,16 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 public class ConfigTest extends AbstractJUnit4SpringContextTests {
 	
 	private final String[] resources = {
-			"odp.url.stations.10minuti",
-			"odp.url.stations.10minuti.key",
+			"odp.url.stations.tenminutes",
+			"odp.url.stations.tenminutes.key",
 			"odh.station.type",
 			"odh.station.origin",
 			"odh.station.projection",
-			"odp.unit.description.10minuti",
-			"odp.unit.rtype.10minuti",
-			"odp.unit.availability.10minuti",
-			"odp.unit.description.10minuti.availability",
-			"odp.unit.rtype.10minuti.availability"
+			"odp.unit.description.tenminutes",
+			"odp.unit.rtype.tenminutes",
+			"odp.unit.availability.tenminutes",
+			"odp.unit.description.tenminutes.availability",
+			"odp.unit.rtype.tenminutes.availability"
 	};
 	
 	private ResourceBundle rb;

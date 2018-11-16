@@ -1,4 +1,4 @@
-package info.datatellers.appatn.dieciminuti;
+package info.datatellers.appatn.tenminutes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,13 +23,13 @@ public class DataFetcher {
 
 	private static final Logger LOG = LogManager.getLogger(DataFetcher.class.getName());
 
-	private final String endpoint = rb.getString("odp.url.stations.10minuti");
-	private final String stations_endpoint = endpoint + "stations?key=" + rb.getString("odp.url.stations.10minuti.key");
+	private final String endpoint = rb.getString("odp.url.stations.tenminutes");
+	private final String stations_endpoint = endpoint + "stations?key=" + rb.getString("odp.url.stations.tenminutes.key");
 
 	private final String observations_endpoint = endpoint + "observations?key="
-			+ rb.getString("odp.url.stations.10minuti.key");
+			+ rb.getString("odp.url.stations.tenminutes.key");
 
-	private final String sensors_endpoint = endpoint + "sensors?key=" + rb.getString("odp.url.stations.10minuti.key");
+	private final String sensors_endpoint = endpoint + "sensors?key=" + rb.getString("odp.url.stations.tenminutes.key");
 
 	/**
 	 * fetches measurements from observations_endpoint getting station_ID, type_ID,

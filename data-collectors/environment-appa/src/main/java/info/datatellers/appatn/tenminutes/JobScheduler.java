@@ -1,8 +1,9 @@
-package info.datatellers.appatn.dieciminuti;
+package info.datatellers.appatn.tenminutes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Date;
 import java.util.Calendar;
@@ -34,10 +35,11 @@ public class JobScheduler {
 	private ResourceBundle rb = ResourceBundle.getBundle("config");
 
 	/**
-	 * Takes care of historic data pushing, called once when launched (see applicationContext.xml)
+	 * Takes care of historic data pushing, called once when launched (see
+	 * applicationContext.xml)
 	 */
 	public void init() {
-		LOG.info("Starting APPATN 10 minuti history collection");
+		LOG.info("Starting APPATN ten minutes history collection");
 
 		DataMapDto<RecordDtoImpl> rootMap;
 		DataPusher pusher = new DataPusher();
@@ -47,32 +49,39 @@ public class JobScheduler {
 		Date from;
 		try {
 			// set initial date from configuration file
-			from = format.parse(rb.getString("odp.data.history.from.10minuti"));
+			from = format.parse(rb.getString("odp.data.history.from.tenminutes"));
 
 			Date now = new Date();
-			//construct base structure
+			// construct base structure
 			rootMap = constructRootMap();
-			
+
 			while (from.compareTo(now) < 0) {
-				
+
 				// set final date
 				Calendar c = Calendar.getInstance();
 				c.setTime(from);
 				c.add(Calendar.DATE, 31);
 				Date to = c.getTime();
-				
-				//clone base data structure
+
+				// clone base data structure
 				DataMapDto<RecordDtoImpl> historicMap = new DataMapDto<RecordDtoImpl>();
 				historicMap.setName(rootMap.getName());
 				historicMap.setData(rootMap.getData());
 				for (String stationKey : rootMap.getBranch().keySet()) {
 					DataMapDto<RecordDtoImpl> station = historicMap.upsertBranch(stationKey);
 					station.setName(rootMap.upsertBranch(stationKey).getName());
-					station.setData(rootMap.upsertBranch(stationKey).getData());
 					for (String sensorKey : rootMap.upsertBranch(stationKey).getBranch().keySet()) {
 						DataMapDto<RecordDtoImpl> sensor = station.upsertBranch(sensorKey);
 						sensor.setName(rootMap.upsertBranch(stationKey).upsertBranch(sensorKey).getName());
-						sensor.setData(rootMap.upsertBranch(stationKey).upsertBranch(sensorKey).getData());
+					}
+				}
+
+				for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry : historicMap.getBranch().entrySet()) {
+					LOG.info("historicMap Station: " + entry.getKey());
+					for (Map.Entry<String, DataMapDto<RecordDtoImpl>> typeEntry : entry.getValue().getBranch()
+							.entrySet()) {
+						LOG.info("\tDatatype: " + typeEntry.getKey() + " records:"
+								+ typeEntry.getValue().getData().size());
 					}
 				}
 
@@ -85,13 +94,14 @@ public class JobScheduler {
 				from = to;
 			}
 		} catch (ParseException e) {
-			LOG.error("Unknown value in odp.data.history.from.10minuti. Format should be yyyy-MM-dd, {}",
+			LOG.error("Unknown value in odp.data.history.from.tenminutes. Format should be yyyy-MM-dd, {}",
 					e.getMessage());
 		}
 	}
 
 	/**
 	 * Takes care of repetitive data pushing
+	 * 
 	 * @throws Exception
 	 */
 	public void pushData() throws Exception {
@@ -99,7 +109,7 @@ public class JobScheduler {
 		DataMapDto<RecordDtoImpl> rootMap;
 		DataPusher pusher = new DataPusher();
 
-		LOG.info("Scheduled APPATN 10 minuti execution started");
+		LOG.info("Scheduled APPATN ten minutes execution started");
 
 		rootMap = constructRootMap();
 
@@ -107,12 +117,13 @@ public class JobScheduler {
 
 		pusher.pushData(rb.getString("odh.station.type"), rootMap);
 
-		LOG.info("Scheduled APPATN 10 minuti execution completed");
+		LOG.info("Scheduled APPATN ten minutes execution completed");
 	}
 
 	/**
 	 * Constructs the DataMapDto with the basic structure root -> station -> sensor
-	 * @return	The basic structure for data pushing
+	 * 
+	 * @return The basic structure for data pushing
 	 */
 	private DataMapDto<RecordDtoImpl> constructRootMap() {
 		JsonElement station;
@@ -123,7 +134,7 @@ public class JobScheduler {
 		// ADAPTATION)
 		try {
 			station = new JsonParser().parse(fetcher.fetchStations());
-			LOG.debug("Parsed JsonElement {}", station);
+			LOG.debug("Parsed JsonElement (station) {}", station);
 		} catch (JsonParseException e) {
 			LOG.error("Failed to parse JSON, {}", e.getMessage());
 			e.printStackTrace();
@@ -140,7 +151,10 @@ public class JobScheduler {
 		DataMapDto<RecordDtoImpl> map = new DataMapDto<RecordDtoImpl>();
 
 		for (StationDto singleStation : stations) {
-			JsonArray sensors = ((JsonArray) new JsonParser().parse(fetcher.fetchSensors(singleStation.getId())));
+			JsonArray sensors = ((JsonArray) new JsonParser().parse(fetcher
+					.fetchSensors(singleStation.getId().substring(rb.getString("odh.station.origin").length() + 1))));
+
+			LOG.debug("Parsed JsonArray (sensors) {}", sensors);
 
 			DataMapDto<RecordDtoImpl> stationMap = map.upsertBranch(singleStation.getId());
 
@@ -164,6 +178,13 @@ public class JobScheduler {
 				syncSensorList.add(sensorHashMap.get(phenomenon.getAsString() + "_I"));
 			}
 			pusher.syncDataTypes(syncSensorList);
+		}
+
+		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry : map.getBranch().entrySet()) {
+			LOG.info("rootMap (constructRootMap()) Station: " + entry.getKey());
+			for (Map.Entry<String, DataMapDto<RecordDtoImpl>> typeEntry : entry.getValue().getBranch().entrySet()) {
+				LOG.info("\tDatatype: " + typeEntry.getKey() + " records:" + typeEntry.getValue().getData().size());
+			}
 		}
 
 		return map;

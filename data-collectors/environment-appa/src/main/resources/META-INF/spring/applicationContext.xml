@@ -13,9 +13,9 @@
 	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd " profile="execute">
 	<context:spring-configured/>
 
-	<context:component-scan base-package="info.datatellers.appatn.dieciminuti"/>
+	<context:component-scan base-package="info.datatellers.appatn.tenminutes"/>
 
-	<bean class="info.datatellers.appatn.dieciminuti.JobScheduler" id="jobScheduler" init-method="init" lazy-init="true"/>
+	<bean class="info.datatellers.appatn.tenminutes.JobScheduler" id="jobScheduler" init-method="init" lazy-init="true"/>
 
 	<task:scheduler id="Scheduler" pool-size="10" />
 	<task:scheduled-tasks scheduler="Scheduler">
