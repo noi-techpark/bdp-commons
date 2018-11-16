@@ -1,4 +1,4 @@
-package info.datatellers.appatn.dieciminuti;
+package info.datatellers.appatn.tenminutes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +15,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import info.datatellers.appatn.helpers.CoordinateHelper;
+import info.datatellers.appatn.tenminutes.DataFetcher;
+import info.datatellers.appatn.tenminutes.DataPusher;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.StationDto;
 
@@ -56,14 +58,26 @@ public class DataPusherTest extends AbstractJUnit4SpringContextTests {
 			
 			Assert.assertEquals(station.getId(), stationId);
 			Assert.assertEquals(station.getName(), stationName);
-			Assert.assertEquals(
-					station.getLatitude(),
-					Double.valueOf(new CoordinateHelper().UTMtoDecimal(32, easting, northing)[1])
-			);
-			Assert.assertEquals(
-					station.getLongitude(),
-					Double.valueOf(new CoordinateHelper().UTMtoDecimal(32, easting, northing)[0])
-			);
+			try {
+				Assert.assertEquals(
+						station.getLatitude(),
+						Double.valueOf(new CoordinateHelper().UTMtoDecimal(32, easting, northing)[1])
+				);
+				Assert.assertEquals(
+						station.getLongitude(),
+						Double.valueOf(new CoordinateHelper().UTMtoDecimal(32, easting, northing)[0])
+				);
+			} catch (AssertionError e) { // if coordinates are stored in the original format and not converted to EPSG:4326 by the datacollector
+				Assert.assertEquals(
+						station.getLatitude(),
+						Double.valueOf(northing)
+				);
+				Assert.assertEquals(
+						station.getLongitude(),
+						Double.valueOf(easting)
+				);
+			}
+			
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
@@ -79,14 +93,14 @@ public class DataPusherTest extends AbstractJUnit4SpringContextTests {
 					HashMap<String, DataTypeDto> sensorMap = pusher.mapDataType((JsonObject) sensor);
 					for(Map.Entry<String, DataTypeDto> mappedSensor : sensorMap.entrySet()){
 						if(mappedSensor.getKey().contains("_I")) {
-							Assert.assertEquals(mappedSensor.getValue().getName(), sensor.get("description").getAsString() + rb.getString("odp.unit.availability.10minuti"));
-							Assert.assertEquals(mappedSensor.getValue().getDescription(), rb.getString("odp.unit.description.10minuti.availability"));
-							Assert.assertEquals(mappedSensor.getValue().getRtype(), rb.getString("odp.unit.rtype.10minuti.availability"));
+							Assert.assertEquals(mappedSensor.getValue().getName(), sensor.get("description").getAsString() + rb.getString("odp.unit.availability.tenminutes"));
+							Assert.assertEquals(mappedSensor.getValue().getDescription(), rb.getString("odp.unit.description.tenminutes.availability"));
+							Assert.assertEquals(mappedSensor.getValue().getRtype(), rb.getString("odp.unit.rtype.tenminutes.availability"));
 							Assert.assertEquals(mappedSensor.getValue().getUnit(), "%");
 						} else {
 							Assert.assertEquals(mappedSensor.getValue().getName(), sensor.get("description").getAsString());
-							Assert.assertEquals(mappedSensor.getValue().getDescription(), rb.getString("odp.unit.description.10minuti"));
-							Assert.assertEquals(mappedSensor.getValue().getRtype(), rb.getString("odp.unit.rtype.10minuti"));
+							Assert.assertEquals(mappedSensor.getValue().getDescription(), rb.getString("odp.unit.description.tenminutes"));
+							Assert.assertEquals(mappedSensor.getValue().getRtype(), rb.getString("odp.unit.rtype.tenminutes"));
 							Assert.assertEquals(mappedSensor.getValue().getUnit(), sensor.get("uom").getAsString());
 						}
 					}

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>info.datatellers.appatn</groupId>
 	<artifactId>bdp-appatn-airquality</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.5</version>
 	<packaging>war</packaging>
 	<name>AppaTN AirQuality data collector</name>
 	<properties>
@@ -28,7 +28,16 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
+<<<<<<< HEAD
 			<version>[1.2.4,2.0.0)</version>
+=======
+			<version>1.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>it.bz.idm.bdp</groupId>
+			<artifactId>dto</artifactId>
+			<version>1.2.4</version>
+>>>>>>> [DEBUG] added verbose logging for rootMap and historicMap structure, [QUALITY] removed now unused statements
 		</dependency>
 		<!-- Log4j for logging -->
 		<dependency>
@@ -122,6 +131,14 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

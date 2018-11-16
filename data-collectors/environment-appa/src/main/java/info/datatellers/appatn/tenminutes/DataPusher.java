@@ -1,4 +1,4 @@
-package info.datatellers.appatn.dieciminuti;
+package info.datatellers.appatn.tenminutes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -134,13 +134,13 @@ public class DataPusher extends JSONPusher {
 									recordsInv.add(measureInv);
 								} else {
 									throw new APPADataFormatException("Expected non-negative data, received "
-											+ measureValue + " and " + measureAvailability + " from sensor " + measureMap.getName());
+											+ measureValue + " and " + measureAvailability + " from sensor " + measureMap.getName() + " at timestamp " + key);
 								}
 
 							} catch (ParseException e) {
 								LOG.error("Unexpected date format, {}", e.getMessage());
 							} catch (NumberFormatException | APPADataFormatException e) {
-								LOG.warn("Unexpected sensor value, {}", e.getMessage());
+								LOG.warn("Unexpected sensor value. {}", e.getMessage());
 							}
 						}
 
@@ -201,14 +201,14 @@ public class DataPusher extends JSONPusher {
 		try {
 			dataType.setName(rawDataType.get("description").getAsString());
 			dataType.setUnit(rawDataType.get("uom").getAsString());
-			dataType.setDescription(rb.getString("odp.unit.description.10minuti"));
-			dataType.setRtype(rb.getString("odp.unit.rtype.10minuti"));
+			dataType.setDescription(rb.getString("odp.unit.description.tenminutes"));
+			dataType.setRtype(rb.getString("odp.unit.rtype.tenminutes"));
 
 			dataTypeAvailability.setName(
-					rawDataType.get("description").getAsString() + rb.getString("odp.unit.availability.10minuti"));
+					rawDataType.get("description").getAsString() + rb.getString("odp.unit.availability.tenminutes"));
 			dataTypeAvailability.setUnit("%");
-			dataTypeAvailability.setDescription(rb.getString("odp.unit.description.10minuti.availability"));
-			dataTypeAvailability.setRtype(rb.getString("odp.unit.rtype.10minuti.availability"));
+			dataTypeAvailability.setDescription(rb.getString("odp.unit.description.tenminutes.availability"));
+			dataTypeAvailability.setRtype(rb.getString("odp.unit.rtype.tenminutes.availability"));
 		} catch (JsonParseException e) {
 			LOG.error("ERROR: Data type parsing error, {}", e.getMessage());
 			e.printStackTrace();
