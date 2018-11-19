@@ -1,0 +1,170 @@
+[
+	{
+		"name": "Park Magazol",
+		"description": "Via Magazol - Rovereto",
+		"slotsTotal": 30,
+		"slotsAvailable": -2,
+		"position": [
+			45.89976680932436,
+			11.038395166397095
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Brione",
+		"description": "Piazza della Pace - Via L. Perosi - Rovereto",
+		"slotsTotal": 102,
+		"slotsAvailable": -2,
+		"position": [
+			45.90403815286093,
+			11.044092178344727
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Ex Manifattura",
+		"description": "Viale Della Vittoria - Rovereto",
+		"slotsTotal": 68,
+		"slotsAvailable": -2,
+		"position": [
+			45.8847996,
+			11.0236012
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Parcheggio Centro",
+		"description": "Via Alessandro Manzoni - Rovereto",
+		"slotsTotal": 194,
+		"slotsAvailable": -1,
+		"position": [
+			45.892242816291905,
+			11.039151549339294
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": true
+		}
+	},
+	{
+		"name": "Centro Storico",
+		"description": "Viale dei Colli - Rovereto",
+		"slotsTotal": 143,
+		"slotsAvailable": -1,
+		"position": [
+			45.89030611816176,
+			11.04500412940979
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "A.S.M.",
+		"description": "Piazzale ex-A.S.M - Via Manzoni - Rovereto",
+		"slotsTotal": 145,
+		"slotsAvailable": -1,
+		"position": [
+			45.893593,
+			11.036507
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Stazione",
+		"description": "Stazione - Via Via Brigata Acqui - Rovereto",
+		"slotsTotal": 110,
+		"slotsAvailable": -1,
+		"position": [
+			45.889441,
+			11.034458
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Mart",
+		"description": "Mart - Via Sticcotta - Rovereto",
+		"slotsTotal": 224,
+		"slotsAvailable": -1,
+		"position": [
+			45.894705,
+			11.044661
+		],
+		"monitored": true,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Stadio",
+		"description": "Stadio - Via Magazol - Rovereto",
+		"slotsTotal": 110,
+		"slotsAvailable": -2,
+		"position": [
+			45.900559,
+			11.03641
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "P.le A.Leoni",
+		"description": "Piazzale Leoni - Via Achille Leoni - Rovereto",
+		"slotsTotal": 370,
+		"slotsAvailable": -2,
+		"position": [
+			45.888179,
+			11.037827
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Parcheggio Ronchi",
+		"description": "Via Ronchi - Rovereto",
+		"slotsTotal": 65,
+		"slotsAvailable": -2,
+		"position": [
+			45.88138259999999,
+			11.034560100000022
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": false
+		}
+	},
+	{
+		"name": "Parcheggio Municipio",
+		"description": "Parcheggio Municipio - Rovereto",
+		"slotsTotal": 76,
+		"slotsAvailable": -2,
+		"position": [
+			45.886156,
+			11.043893
+		],
+		"monitored": false,
+		"extra": {
+			"parkAndRide": true
+		}
+	}
+]
