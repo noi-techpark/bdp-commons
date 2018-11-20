@@ -19,7 +19,7 @@
 
 	<task:scheduler id="Scheduler" pool-size="10" />
 	<task:scheduled-tasks scheduler="Scheduler">
-		<task:scheduled ref="jobScheduler" method="pushData" cron="0 * * * * *" />
+		<task:scheduled ref="jobScheduler" method="pushData" cron="0 0 * * * *" />
 	</task:scheduled-tasks>
 
 </beans>
