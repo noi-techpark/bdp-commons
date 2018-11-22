@@ -12,7 +12,7 @@ For it to work you just need to fill out the configuration file you find unser `
 There you basically do 2 things:
 1. Point the module to the reader which was setup previously
 
-	[Default]
+		[Default]
 		host=localhost
 		port=8080
 		ssl=false
@@ -34,7 +34,7 @@ Each module(and also each stationtype) will have the same api-structure. If you 
 The available stationtypes and childstationtypes are:
 
 | Stationtype   	|      Childstationtype | Childstationpath
-|----------	|:-------------:
+|----------	|:-------------:|---
 | BikesharingStation | Bicycle | bikes
 | Bluetoothstation | / | /
 | Carpoolinghub | / | /
