@@ -28,11 +28,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-<<<<<<< HEAD
 			<version>[1.2.4,2.0.0)</version>
-=======
-			<version>1.2.4</version>
->>>>>>> [MINOR][OPTIMIZATION] remove unused pom requirement
 		</dependency>
 		<!-- Log4j for logging -->
 		<dependency>
