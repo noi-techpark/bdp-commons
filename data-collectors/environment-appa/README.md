@@ -1,4 +1,4 @@
-# APPATN 10 minuti Data Collector
+# APPATN ten minutes Data Collector
 
 ## Table of contents
 
@@ -16,6 +16,8 @@ It is to be distributed in form of a WAR package for Tomcat and it consists of f
 #### JobScheduler
 
 It is the entry point of the project, and has the purpose of calling the components in the specific order. It is managed by the Spring Scheduler and can be configured in `src/main/resources/META-INF/spring/applicationContext.xml` using CRON-like timing syntax.
+
+In the same xml file it is possible to edit the init function, which in this case takes care of collecting **historic data**, from `odp.data.history.from.tenminutes` (found in `src/main/resources/config.properties`) up unitil the present day (in a 31-days-per-call fashion, required by the source api).
 
 #### DataFetcher
 
@@ -54,17 +56,17 @@ Before compiling and packaging a few steps must be executed:
 	The one file that contains variables that are actively used at runtime from the data collector itself is `src/main/resources/config.properties`. Such file contains both sensitive and non-sensitive information. A list follows:
 
 	##### to be set
-	- `odp.url.stations.10minuti=` endpoint of the BrennerLEC API (ending in brennerlec/)
-	- `odp.url.stations.10minuti.key=` the API key
+	- `odp.url.stations.tenminutes=` endpoint of the BrennerLEC API (ending in brennerlec/)
+	- `odp.url.stations.tenminutes.key=` the API key
 	##### already set, leave as-is or know what you're changing
 	- `odh.station.type=Environmentstation`
 	- `odh.station.origin=APPATN`
-	- `odh.station.projection=EPSG:4326`
-	- `odp.unit.description.10minuti=Valori a 10 minuti`
-	- `odp.unit.rtype.10minuti=Mean`
-	- `odp.unit.availability.10minuti=\ - invalidazione`
-	- `odp.unit.description.10minuti.availability=Nr. di misure valide / Nr. di misure totali`
-	- `odp.unit.rtype.10minuti.availability=Flag`
+	- `odh.station.projection=EPSG:25832`
+	- `odp.unit.description.tenminutes=Valori a 10 minuti`
+	- `odp.unit.rtype.tenminutes=Mean`
+	- `odp.unit.availability.tenminutes=\ - invalidazione`
+	- `odp.unit.description.tenminutes.availability=Nr. di misure valide / Nr. di misure totali`
+	- `odp.unit.rtype.tenminutes.availability=Flag`
 
 3. Check Scheduling CRON repetition
 
@@ -79,7 +81,7 @@ Before compiling and packaging a few steps must be executed:
     cd root_folder_of_this_project
     mvn test
     ```
-    It is advised to run tests separately so that it is easier to distinguish between the output log if more configuration has to be done based on errors in the tests. If no errors are raised, we can procede:
+    It is advised to run tests separately so that it is easier to distinguish between the output log if more configuration has to be done based on errors in the tests. **Be aware that no test are performed on the specific historic data collection**, that is because its components are already tested and shared with the main execution, and history collection takes way more time than normal periodic execution. If no errors are raised, we can procede:
     ```
 	  mvn clean package
     ```

@@ -1,4 +1,4 @@
-package info.datatellers.appatn.dieciminuti;
+package info.datatellers.appatn.tenminutes;
 
 import java.util.Arrays;
 
@@ -12,6 +12,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+
+import info.datatellers.appatn.tenminutes.DataFetcher;
 
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
