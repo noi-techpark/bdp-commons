@@ -23,9 +23,6 @@ import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
-import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.emobility.OutletDtoV2;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class HydrogenDataRetrieverIT extends AbstractJUnit4SpringContextTests {

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.emobility.ChargingPointsDtoV2;
 
 public class HydrogenDto implements Serializable {
 
