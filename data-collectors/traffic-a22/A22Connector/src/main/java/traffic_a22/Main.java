@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * A22 connector integration test.
+ * A22 traffic API connector integration test.
  *
  * @author chris@1006.org
  */
@@ -17,8 +17,7 @@ public class Main {
      * Please note that the web service URL and the authentication JSON string
      * must be provided in a properties file $HOME/A22Connector.properties:
      *
-     * URL=xxx 
-     * AUTH_JSON={"request":{"username":"xxx","password":"xxx"}}
+     * URL=xxx AUTH_JSON={"request":{"username":"xxx","password":"xxx"}}
      *
      * @param args - ignored
      * @throws MalformedURLException, IOException
@@ -39,32 +38,13 @@ public class Main {
         ArrayList<HashMap<String, String>> res;
 
         Connector conn = new Connector(url, auth_json);
+        // 1 minute from Fri Nov 23 07:00:00 UTC 2018
+        res = conn.getVehicles("1542956400", "1542956460");
+        int i;
 
-        res = conn.getTrafficSensors();
-        
-        System.out.println("response size was " + res.size());
-        System.out.println("first hashmap was " + res.get(0));
-        
-        /*
-
-        the A22 server expect date Strings as what appears to be unix time stamps times 1000
-        with an added time zone
-        
-        the following dates in UTC would be given as
-        
-        date --date='2018-09-01 12:00:00' +"%s"
-        1535803200
-        # becomes 1535803200000+0000
-        date --date='2018-09-01 12:10:00' +"%s"
-        1535803800
-        # becomes 1535803800000+0000
-        
-        */
-        
-        res = conn.getVehicles("1535803200000+0000", "1535803800000+0000");
-
-        System.out.println("response size was " + res.size());
-        System.out.println("first hashmap was " + res.get(0));
+        for (i = 0; i < res.size(); i++) {
+            System.out.println(res.get(i));
+        }
 
         conn.close();
 

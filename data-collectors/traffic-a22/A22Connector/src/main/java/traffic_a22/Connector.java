@@ -6,14 +6,14 @@ import java.util.*;
 import org.json.simple.*;
 
 /**
- * A22 connector.
+ * A22 traffic API connector.
  *
  * @author chris
  */
 public class Connector {
 
     private static final int WS_CONN_TIMEOUT_MSEC = 5000;
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private String token = null;
     private String url = null;
@@ -214,20 +214,24 @@ public class Connector {
     /**
      * Retrieve the list of vehicle transit events for all known sensors.
      *
-     * @param fromTS search events from this timestamp in the format understood
-     * by the A22 server (ex. 1515740400000+0100)
-     * @param toTS search events up to this timestamp in the format understood
-     * by the A22 server (ex. 1515740400000+0100)
+     * @param frTS search events from this timestamp (Unix epoch in UTC)
+     *
+     * @param toTS search events up to *and* *including* this timestamp (Unix epoch in UTC)
      *
      * @return an ArrayList of HashMaps with the vehicle transit event info
      *
      * @throws java.net.MalformedURLException, IOException
      */
-    public ArrayList<HashMap<String, String>> getVehicles(String fromTS, String toTS) throws MalformedURLException, IOException {
+    public ArrayList<HashMap<String, String>> getVehicles(String frTS, String toTS) throws MalformedURLException, IOException {
 
         if (url == null || token == null) {
             throw new RuntimeException("there is no authenticated session");
         }
+
+        // convert to format used by A22
+        // (see the comment "Reverse engineering the A22 timestamp format" at the end of the file)
+        frTS = frTS + "000+0000";
+        toTS = toTS + "000+0000";
 
         ArrayList<HashMap<String, String>> output = new ArrayList<>();
 
@@ -261,7 +265,7 @@ public class Connector {
             conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
             conn.setDoOutput(true);
             OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
-            os.write("{\"request\":{\"sessionId\":\"" + token + "\",\"idspira\":" + coilid + ",\"fromData\":\"/Date(" + fromTS + ")/\",\"toData\":\"/Date(" + toTS + ")/\"}}\n");
+            os.write("{\"request\":{\"sessionId\":\"" + token + "\",\"idspira\":" + coilid + ",\"fromData\":\"/Date(" + frTS + ")/\",\"toData\":\"/Date(" + toTS + ")/\"}}\n");
             os.flush();
             int status = conn.getResponseCode();
             if (status != 200) {
@@ -298,14 +302,15 @@ public class Connector {
                     JSONObject event = (JSONObject) event_list.get(i);
                     HashMap<String, String> h = new HashMap<>();
                     h.put("stationcode", "A22:" + event.get("idspira") + ":" + event.get("idsensore"));
-                    h.put("distance",    "" + event.get("distanza"));
-                    h.put("headway",     "" + event.get("avanzamento"));
-                    h.put("speed",       "" + event.get("velocita"));
-                    h.put("length",      "" + event.get("lunghezza"));
-                    h.put("axles",       "" + event.get("assi"));
-                    h.put("class",       "" + event.get("classe"));
-                    h.put("direction",   "" + event.get("direzione"));
-                    h.put("timestamp",   "" + event.get("data"));
+                    h.put("distance", "" + event.get("distanza"));
+                    h.put("headway", "" + event.get("avanzamento"));
+                    h.put("speed", "" + event.get("velocita"));
+                    h.put("length", "" + event.get("lunghezza"));
+                    h.put("axles", "" + event.get("assi"));
+                    h.put("class", "" + event.get("classe"));
+                    h.put("direction", "" + event.get("direzione"));
+                    // substring -> see the comment "Reverse engineering the A22 timestamp format" at the end of the file)
+                    h.put("timestamp", ("" + event.get("data")).substring(6, 16));
                     h.put("against-traffic", "" + (Boolean) event.get("controsenso"));
                     output.add(h);
                 }
@@ -388,4 +393,47 @@ public class Connector {
         return s;
 
     }
+
+    /*
+    
+    Reverse engineering the A22 timestamp format
+    --------------------------------------------
+
+    In CET we have daylight saving change from +2 to +1
+    on 28 oct 2018 (the clock goes from 3:00 to 2:00).
+
+    These are events from one sensor around the daylight change:
+
+    [...]
+    /Date(1540688331000+0200)/
+    /Date(1540688331000+0200)/
+    /Date(1540688358000+0200)/
+    /Date(1540688358000+0200)/
+    /Date(1540688390000+0200)/
+    /Date(1540688560000+0100)/
+    /Date(1540688645000+0100)/
+    /Date(1540688645000+0100)/
+    /Date(1540688648000+0100)/
+    /Date(1540688656000+0100)/
+    [...]
+    
+    /Date(1540688390000+0200)/
+
+        $ date --date='@1540688390'
+        Sun Oct 28 00:59:50 UTC 2018
+
+        00:59 UTC would be 02:59 CET ~ 03 CET
+
+
+    /Date(1540688560000+0100)/
+
+        $ date --date='@1540688560'
+        Sun Oct 28 01:02:40 UTC 2018
+
+        01:02 UTC would be 02:02 CET ~ 02 CET
+
+    That means the first part of this string *is* the correct timestamp 
+    in unix epoch / UTC. 
+
+     */
 }
