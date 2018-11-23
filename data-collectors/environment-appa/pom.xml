@@ -29,15 +29,21 @@
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<version>[1.2.4,2.0.0)</version>
 =======
+=======
+>>>>>>> f8b8aaec260ee5f2189c079684a5f06a4bf5f67d
 			<version>1.2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dto</artifactId>
 			<version>1.2.4</version>
+<<<<<<< HEAD
 >>>>>>> [DEBUG] added verbose logging for rootMap and historicMap structure, [QUALITY] removed now unused statements
+=======
+>>>>>>> f8b8aaec260ee5f2189c079684a5f06a4bf5f67d
 		</dependency>
 		<!-- Log4j for logging -->
 		<dependency>

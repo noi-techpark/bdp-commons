@@ -47,9 +47,12 @@ public class DataPusher extends JSONPusher {
 	 *         pushed
 	 */
 	@SuppressWarnings("unchecked") // checked with try/catch
+<<<<<<< HEAD:data-collectors/environment-appa/src/main/java/info/datatellers/appatn/tenminutes/DataPusher.java
 <<<<<<< HEAD
 	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
 =======
+=======
+>>>>>>> f8b8aaec260ee5f2189c079684a5f06a4bf5f67d:data-collectors/environment-appa/src/main/java/info/datatellers/appatn/tenminutes/DataPusher.java
 	public <T> DataMapDto<RecordDtoImpl> mapDataWithDates(T data, Date from, Date to) {
 
 		boolean historic = false;
@@ -58,7 +61,10 @@ public class DataPusher extends JSONPusher {
 			historic = true;
 		}
 
+<<<<<<< HEAD:data-collectors/environment-appa/src/main/java/info/datatellers/appatn/tenminutes/DataPusher.java
 >>>>>>> [FUNC] Added historic data collection [FUNC] check if received data is negative and refuse it [DOC] added JavaDoc for remaining classes and methods [MISC] refactoring
+=======
+>>>>>>> f8b8aaec260ee5f2189c079684a5f06a4bf5f67d:data-collectors/environment-appa/src/main/java/info/datatellers/appatn/tenminutes/DataPusher.java
 		try {
 			this.rootMap = (DataMapDto<RecordDtoImpl>) data;
 		} catch (ClassCastException e) {
@@ -175,6 +181,7 @@ public class DataPusher extends JSONPusher {
 	/**
 	 * Creates the necessary structure to push data via JSONPusher pushData(String,
 	 * DataMapDto<? extends RecordDtoImpl>) method.
+<<<<<<< HEAD:data-collectors/environment-appa/src/main/java/info/datatellers/appatn/tenminutes/DataPusher.java
 	 * 
 	 * @param data The already constructed DataMapDto to the levels of stations and
 	 *             sensors.
@@ -191,6 +198,24 @@ public class DataPusher extends JSONPusher {
 	 * data type that can be used for the API calls but is not needed while pushing
 	 * data to the writer
 	 * 
+=======
+	 * 
+	 * @param data The already constructed DataMapDto to the levels of stations and
+	 *             sensors.
+	 * @return The DataMapDto with data filled into sensors as values, ready to be
+	 *         pushed
+	 */
+	@Override
+	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
+		return mapDataWithDates(data, null, null);
+	}
+
+	/**
+	 * Maps a JsonObject into a HashMap that contains as key the original id of the
+	 * data type that can be used for the API calls but is not needed while pushing
+	 * data to the writer
+	 * 
+>>>>>>> f8b8aaec260ee5f2189c079684a5f06a4bf5f67d:data-collectors/environment-appa/src/main/java/info/datatellers/appatn/tenminutes/DataPusher.java
 	 * @param rawDataType Gson result of the API call to /sensors
 	 * @return data types mapped as DataTypeDto with their source id as key
 	 */
