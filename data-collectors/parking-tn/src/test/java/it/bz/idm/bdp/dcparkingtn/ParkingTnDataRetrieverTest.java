@@ -24,9 +24,6 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.emobility.EchargingPlugDto;
-import it.bz.idm.bdp.dto.emobility.EchargingStationDto;
-import it.bz.idm.bdp.dto.emobility.OutletDtoV2;
 import it.bz.idm.bdp.dto.parking.ParkingStationDto;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
@@ -79,7 +76,7 @@ public class ParkingTnDataRetrieverTest extends AbstractJUnit4SpringContextTests
                 if ( TEST_STATION_ID_1.equals(id) ) {
                     station1Found = true;
                     checkEquals(TEST_STATION_ID_1    , station.getId()            , errs, "STATION_1: ID is INCORRECT");
-                    checkEquals("NAME - 1"           , station.getName()          , errs, "STATION_1: NAME is INCORRECT");
+                    checkEquals("NAME ?-.,/ 1"       , station.getName()          , errs, "STATION_1: NAME is INCORRECT");
                     checkEquals(11D                  , station.getLongitude()     , errs, "STATION_1: LONGITUDE is INCORRECT");
                     checkEquals(46D                  , station.getLatitude()      , errs, "STATION_1: LATITUDE is INCORRECT");
                     checkEquals("FETCH_MUNICIPALITY" , station.getMunicipality()  , errs, "STATION_1: MUNICIPALITY is INCORRECT");
@@ -198,24 +195,24 @@ public class ParkingTnDataRetrieverTest extends AbstractJUnit4SpringContextTests
         }
     }
 
-    public static void checkEquals(Object o1, Object o2, StringBuffer sb, String errMsg) {
-        if ( o1 == o2 ) {
+    private void checkEquals(Object expected, Object actual, StringBuffer sb, String errMsg) {
+        if ( expected == actual ) {
             return;
         } 
-        if ( o1!=null && o2==null ) {
-            sb.append(" - "+errMsg);
+        if ( expected!=null && actual==null ) {
+            sb.append(" - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
             return;
         }
-        if ( o1==null && o2!=null ) {
-            sb.append(" - "+errMsg);
+        if ( expected==null && actual!=null ) {
+            sb.append(" - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
             return;
         }
-        if ( o1.getClass() != o2.getClass() ) {
-            sb.append(" - "+errMsg);
+        if ( expected.getClass() != actual.getClass() ) {
+            sb.append(" - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
             return;
         }
-        if ( !o1.equals(o2) ) {
-            sb.append(" - "+errMsg+" ("+o2+")");
+        if ( !expected.equals(actual) ) {
+            sb.append(" - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
             return;
         }
     }

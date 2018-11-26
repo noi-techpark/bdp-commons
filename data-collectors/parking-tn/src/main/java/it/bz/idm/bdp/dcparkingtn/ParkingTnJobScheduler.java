@@ -22,25 +22,11 @@ public class ParkingTnJobScheduler {
 
     private static final Logger LOG = LogManager.getLogger(ParkingTnJobScheduler.class.getName());
 
-//    @Autowired
-//    private Environment env;
-
     @Autowired
     private ParkingTnDataPusher pusher;
 
     @Autowired
     private ParkingTnDataRetriever retrieval;
-
-//    private String plugTypeName;
-
-//    @PostConstruct
-//    private void init() {
-//        LOG.debug("START.");
-//
-//        plugTypeName    = env.getProperty(ParkingTnDataConverter.PLUG_TYPE_KEY);
-//
-//        LOG.debug("END.");
-//    }
 
     /** JOB 1 */
     public void pushStations() throws Exception {
