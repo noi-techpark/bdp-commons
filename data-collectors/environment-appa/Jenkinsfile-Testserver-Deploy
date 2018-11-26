@@ -10,8 +10,8 @@ pipeline {
 	  steps{
               sh 'sed -i -e "s%\\(property.basePath =\\).*\\$%\\1/var/log/opendatahub/data-collectors/%" data-collectors/environment-appa/src/main/resources/log4j2.properties'
               sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1DEBUG%" data-collectors/environment-appa/src/main/resources/log4j2.properties'
-              sh 'sed -i -e "s%\\(odp.url.stations.10minuti=\\).*\\$%\\1"${DATA_ENDPOINT}"%" data-collectors/environment-appa/src/main/resources/config.properties'
-              sh 'sed -i -e "s%\\(odp.url.stations.10minuti.key=\\).*\\$%\\1"${AUTH_TOKEN}"%" data-collectors/environment-appa/src/main/resources/config.properties'
+              sh 'sed -i -e "s%\\(odp.url.stations.tenminutes=\\).*\\$%\\1"${DATA_ENDPOINT}"%" data-collectors/environment-appa/src/main/resources/config.properties'
+              sh 'sed -i -e "s%\\(odp.url.stations.tenminutes.key=\\).*\\$%\\1"${AUTH_TOKEN}"%" data-collectors/environment-appa/src/main/resources/config.properties'
 	  }
 	}
         stage('Test') {
