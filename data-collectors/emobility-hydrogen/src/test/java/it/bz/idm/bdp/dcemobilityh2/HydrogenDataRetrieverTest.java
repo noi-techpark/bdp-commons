@@ -134,7 +134,7 @@ public class HydrogenDataRetrieverTest extends AbstractJUnit4SpringContextTests 
                     if ( outlets!=null && outlets.size()>0 ) {
                         OutletDtoV2 outlet = outlets.get(0);
                         checkEquals(TEST_PLUG_ID              , outlet.getId()            , errs, "OUTLET ID is INCORRECT");
-                        checkEquals("700 bar, small vehicles" , outlet.getOutletTypeCode(), errs, "OUTLET_TYPE_CODE is INCORRECT");
+                        checkEquals("700 bar small vehicles" , outlet.getOutletTypeCode(), errs, "OUTLET_TYPE_CODE is INCORRECT");
                     } else {
                         errs.append(" - Plug with EMPTY OUTLET LIST");
                     }

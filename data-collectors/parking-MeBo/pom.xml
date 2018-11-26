@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>parking-dc</artifactId>
@@ -14,11 +13,17 @@
 		<spring.version>4.3.20.RELEASE</spring.version>
 		<xmlrpc.version>3.1.2</xmlrpc.version>
 	</properties>
+	<repositories>
+		<repository>
+			<id>maven-repo.opendatahub.bz.it</id>
+			<url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>1.2.0</version>
+			<version>[1.2.4,2.0.0)</version>
 		</dependency>
 		<!-- General dependencies for standard applications -->
 		<dependency>
@@ -132,6 +137,14 @@
 					<target>${java.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.21.0</version>
+				<configuration>
+					<useSystemClassLoader>false</useSystemClassLoader>
+		                </configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

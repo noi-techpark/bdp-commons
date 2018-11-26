@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    environment{
+	SENSORS_CONFIG=credentials('sensors-config.properties')
+	SENSORS_WSDL=credentials('sensors-wsdl')
+        TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
+    }
+    stages {
+        stage('Configure') {
+            steps {
+		       sh 'cat "${SENSORS_CONFIG}" > data-collectors/traffic-bz/src/main/resources/META-INF/spring/application.properties'
+		       sh 'cat "${SENSORS_CONFIG}" > data-collectors/traffic-bz/src/test/resources/META-INF/spring/application.properties'
+		       sh 'cp "${SENSORS_WSDL}" data-collectors/traffic-bz/src/main/resources/DataDispatcherWebServices.wsdl'
+		       sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
+		       sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/traffic-sensors-dc.log%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
+		    }
+		}
+		stage('Test') {
+		    steps {
+		       sh 'cd data-collectors/traffic-bz && mvn clean test' 
+		    }
+		}
+		stage('Build'){
+		    steps {
+		       sh 'cd data-collectors/traffic-bz && mvn package' 
+		    }
+		}
+		stage('Deploy') {
+		    steps{
+                sh 'cd data-collectors/traffic-bz/ && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+            }
+        }
+    }
+}

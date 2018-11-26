@@ -4,7 +4,7 @@ pipeline {
 	environment {
 		KEYFILE = credentials('bdp-airquality-datacollector-appabz-sftp-key-testserver')
 		HOSTS = credentials('bdp-airquality-datacollector-appabz-sftp-knownhosts')
-		SSHFOLDER = 'data-collectors/appabz-sftp/src/main/resources/META-INF/.ssh'
+		SSHFOLDER = 'data-collectors/airquality-appabz/src/main/resources/META-INF/.ssh'
 		PASS = credentials('bdp-airquality-datacollector-appabz-sftp-passphrase-testserver')
 	}
 
@@ -31,27 +31,27 @@ pipeline {
 				sh '''
 					set +x
 					export PASSX="$(echo ${PASS} | sed -e "s/[\\\\/&]/\\\\\\\\&/g")"
-					sed -ie '/ftp\\.pass=/ s/=.*/='$PASSX'/' data-collectors/appabz-sftp/src/main/resources/META-INF/spring/application.properties
+					sed -ie '/ftp\\.pass=/ s/=.*/='$PASSX'/' data-collectors/airquality-appabz/src/main/resources/META-INF/spring/application.properties
 					set -x
 					'''
 
-				sh 'sed -ie "/ftp\\.folder\\.remote=/ s/=.*/=uploads/" data-collectors/appabz-sftp/src/main/resources/META-INF/spring/application.properties'
+				sh 'sed -ie "/ftp\\.folder\\.remote=/ s/=.*/=uploads/" data-collectors/airquality-appabz/src/main/resources/META-INF/spring/application.properties'
 			}
 		}
 		stage('Test') {
 			steps {
-				sh 'cd data-collectors/appabz-sftp/ && mvn clean integration-test'
+				sh 'cd data-collectors/airquality-appabz/ && mvn clean integration-test'
 			}
 		}
 		stage('Build - APPABZ-SFTP Datacollector') {
 			steps {
-				sh 'cd data-collectors/appabz-sftp/ && mvn package'
+				sh 'cd data-collectors/airquality-appabz/ && mvn package'
 			}
 		}
 		stage('Archive') {
 			steps {
 				sh 'mkdir -p /var/builds/prod-server-dc'
-				sh 'cp -f data-collectors/appabz-sftp/target/dc-airquality-appabz.war /var/builds/prod-server-dc/'
+				sh 'cp -f data-collectors/airquality-appabz/target/dc-airquality-appabz.war /var/builds/prod-server-dc/'
 			}
 		}
 	}
