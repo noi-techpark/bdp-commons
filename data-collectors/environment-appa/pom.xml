@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>info.datatellers.appatn</groupId>
 	<artifactId>bdp-appatn-airquality</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.5</version>
 	<packaging>war</packaging>
 	<name>AppaTN AirQuality data collector</name>
 	<properties>
@@ -122,6 +122,14 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
