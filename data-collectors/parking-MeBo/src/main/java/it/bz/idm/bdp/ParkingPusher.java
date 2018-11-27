@@ -3,6 +3,7 @@ package it.bz.idm.bdp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -68,7 +69,8 @@ public class ParkingPusher extends JSONPusher{
 				DataMapDto<RecordDtoImpl> typeMap = new DataMapDto<>();
 				DataMapDto<RecordDtoImpl> recordMap = new DataMapDto<>();
 				recordMap.setData(records);
-				typeMap.getBranch().put("parking-forecast", recordMap);
+				if (typeMap.getBranch().get("parking-forecast") == null)
+					typeMap.getBranch().put("parking-forecast", recordMap);
 				dataMap.getBranch().put(stationIdentifier, typeMap);
 			}
 			pushData(dataMap);
@@ -82,6 +84,13 @@ public class ParkingPusher extends JSONPusher{
 		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<RecordDtoImpl>();
 		parkingClient.insertDataInto(dataMap);
 		parkingMeranoClient.insertDataInto(dataMap);
+		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry : dataMap.getBranch().entrySet()) {
+            System.out.println("Station: "+entry.getKey());
+            for (Map.Entry<String, DataMapDto<RecordDtoImpl>> typeEntry : entry.getValue().getBranch().entrySet()) {
+                System.out.println("\tDatatype: "+typeEntry.getKey()+" records:"+typeEntry.getValue().getData().size());
+            }
+ }
+		System.out.println();
 		pushData(dataMap);
 	}
 

@@ -61,6 +61,7 @@ public class ParkingMeranoClient {
 	public void insertDataInto(DataMapDto<RecordDtoImpl> sMap) {
 		for (ParkingMeranoStationDto e : this.getParkingStations()) {
 			DataMapDto<RecordDtoImpl> dMap = new DataMapDto<>();
+			DataMapDto<RecordDtoImpl> tMap = new DataMapDto<>();
 			List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
 			SimpleRecordDto record = new SimpleRecordDto();
 			record.setValue(e.getFreeParkingSpaces());
@@ -68,12 +69,18 @@ public class ParkingMeranoClient {
 			try {
 				date = format.parse(e.getCurrentDateTime());
 				record.setTimestamp(date.getTime());
+				record.setPeriod(600);
 			} catch (ParseException e1) {
 				e1.printStackTrace();
 			}
 			records.add(record);
 			dMap.setData(records);
-			sMap.getBranch().put("me:"+e.getAreaName().toLowerCase().replaceAll("\\s+",""), dMap);
+			if (tMap.getBranch().get("free") == null)
+				tMap.getBranch().put("free", dMap);
+			
+			String stationKey = "me:"+e.getAreaName().toLowerCase().replaceAll("\\s+","");
+			if (sMap.getBranch().get(stationKey) == null)
+				sMap.getBranch().put(stationKey, tMap);
 		}
 	}
 	public void insertParkingMetaDataInto(List<StationDto> stations) {

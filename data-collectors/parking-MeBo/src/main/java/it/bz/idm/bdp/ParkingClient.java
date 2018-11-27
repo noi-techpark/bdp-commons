@@ -158,6 +158,7 @@ public class ParkingClient {
 		if (identifers!=null){
 			for (Integer identifier:identifers){
 				List<Object> objects = this.getData(identifier);
+				DataMapDto<RecordDtoImpl> typeMap = new DataMapDto<>();
 				DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
 				List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
 				SimpleRecordDto record = new SimpleRecordDto();
@@ -170,9 +171,13 @@ public class ParkingClient {
 					if(!communicationState && !controlUnit && !totalChangeAllarm && !inactiveAllarm && !occupiedSlotsAllarm) {
 						record.setValue(objects.get(5));
 						record.setTimestamp((Integer) objects.get(6)*1000l);
+						record.setPeriod(600);
 						records.add(record);
 						dataMap.setData(records);
-						sMap.getBranch().put(identifier.toString(), dataMap);
+						if (typeMap.getBranch().get("free") == null)
+							typeMap.getBranch().put("free", dataMap);
+						if (sMap.getBranch().get("free") == null)
+							sMap.getBranch().put(identifier.toString(),typeMap);
 					}
 				}
 
