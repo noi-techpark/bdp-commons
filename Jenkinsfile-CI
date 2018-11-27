@@ -7,18 +7,10 @@ pipeline {
     }
 
     stages {
-
-
         stage('Test - webservices') {
             parallel {
                 stage('bdp-api') {
                     steps {
-                        sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1BikesharingStation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                        sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1Bicycle%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                        sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1bikes%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-
-                        sh 'cat webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-
                         sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
                         sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/bdp-api.log%" webservices/bdp-api/src/main/resources/log4j.properties'
                         sh 'cd webservices/bdp-api/ && mvn clean compile test'
