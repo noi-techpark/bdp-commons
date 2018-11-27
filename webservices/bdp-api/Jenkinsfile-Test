@@ -35,7 +35,7 @@ pipeline {
         }
         stage('Build - bikesharingstation') {
             steps {
-               sh 'cd webservices/bdp-api && mvn package -Dwar.finalName=webservice-bikesharingstation -U'
+               sh 'cd webservices/bdp-api && mvn package -Dwebservice=webservice-bikesharingstation -U'
                sh 'cd webservices/bdp-api && ls target'
             }
         }

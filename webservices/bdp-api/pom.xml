@@ -12,6 +12,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>8</java.version>
+		<webservice>${artifactId}-${version}</webservice>
 	</properties>
 	<repositories>
 		<repository>
@@ -38,7 +39,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>bdp-api</finalName>
+		<finalName>${webservice}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
