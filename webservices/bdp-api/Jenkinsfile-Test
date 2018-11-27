@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Deploy - bikesharing') {
             steps {
-                sh 'cd cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=bikesharing'
+                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=bikesharing'
             }
         }
     }
