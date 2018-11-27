@@ -7,7 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('Test') {
+        stage('Test - data-collectors') {
             parallel {
                 stage('airquality-appabz') {
                     steps {
@@ -88,6 +88,18 @@ pipeline {
                         sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
                         sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/traffic-sensors-dc.log%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
                         sh 'cd data-collectors/traffic-bz/ && mvn clean compile test'
+                    }
+                }
+            }
+        }
+
+        stage('Test - webservices') {
+            parallel {
+                stage('bdp-api') {
+                    steps {
+                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/bdp-api.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                        sh 'cd webservices/bdp-api/ && mvn clean compile test'
                     }
                 }
             }
