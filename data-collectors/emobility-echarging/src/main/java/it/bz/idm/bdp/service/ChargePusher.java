@@ -30,6 +30,13 @@ public class ChargePusher extends JSONPusher {
 	public String initIntegreenTypology() {
 		return "EChargingStation";
 	}
+	private static final List<DataTypeDto> EMOBILTYTYPES = new ArrayList<DataTypeDto>() {
+		private static final long serialVersionUID = 1L;
+
+	{
+	    add(new DataTypeDto("number-available","","number of available vehicles / charging points","Instantaneous"));
+	    add(new DataTypeDto("echarging-plug-status","","the state can either be 0, which means that the plug is currently not available, or it can be 1 which means it is",""));
+	}};;
 
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T rawData) {
@@ -132,5 +139,9 @@ public class ChargePusher extends JSONPusher {
 			}
 		}
 		return map;
+	}
+
+	public List<DataTypeDto> getDataTypes(){
+		return EMOBILTYTYPES;
 	}
 }

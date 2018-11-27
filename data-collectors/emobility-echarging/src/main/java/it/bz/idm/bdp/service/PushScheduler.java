@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.idm.bdp.service.dto.ChargerDtoV2;
@@ -34,6 +35,12 @@ public class PushScheduler{
 		if (map != null && plugRec != null){
 			pusher.pushData(map);
 			pusher.pushData("EChargingPlug",plugRec);
+		}
+	}
+	public void syncDataTypes(){
+		List<DataTypeDto> types = pusher.getDataTypes();
+		if (types != null && types != null){
+			pusher.syncDataTypes("EChargingPlug",types);
 		}
 	}
 }
