@@ -13,7 +13,7 @@ pipeline {
                     steps {
                         sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
                         sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/bdp-api.log%" webservices/bdp-api/src/main/resources/log4j.properties'
-                        sh 'cd webservices/bdp-api/ && mvn clean compile test'
+                        sh 'cd webservices/bdp-api/ && mvn clean compile test -U'
                     }
                 }
             }
