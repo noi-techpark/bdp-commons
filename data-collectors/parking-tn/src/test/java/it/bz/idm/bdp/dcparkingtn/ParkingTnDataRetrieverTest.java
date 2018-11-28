@@ -23,8 +23,8 @@ import it.bz.idm.bdp.dcparkingtn.dto.ParkingTnDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.parking.ParkingStationDto;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class ParkingTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {
@@ -71,15 +71,15 @@ public class ParkingTnDataRetrieverTest extends AbstractJUnit4SpringContextTests
             boolean station2Found = false;
             boolean allFound = false;
             for ( int i=0 ; !allFound && i<stations.size() ; i++ ) {
-                ParkingStationDto station = (ParkingStationDto) stations.get(i);
+                StationDto station =  stations.get(i);
                 String id = station.getId();
                 if ( TEST_STATION_ID_1.equals(id) ) {
                     station1Found = true;
                     checkEquals(TEST_STATION_ID_1    , station.getId()            , errs, "STATION_1: ID is INCORRECT");
-                    checkEquals("NAME ?-.,/ 1"       , station.getName()          , errs, "STATION_1: NAME is INCORRECT");
+                    checkEquals("NAME - 1"           , station.getName()          , errs, "STATION_1: NAME is INCORRECT");
                     checkEquals(11D                  , station.getLongitude()     , errs, "STATION_1: LONGITUDE is INCORRECT");
                     checkEquals(46D                  , station.getLatitude()      , errs, "STATION_1: LATITUDE is INCORRECT");
-                    checkEquals("FETCH_MUNICIPALITY" , station.getMunicipality()  , errs, "STATION_1: MUNICIPALITY is INCORRECT");
+                    checkEquals("FETCH_MUNICIPALITY" , station.getMetaData().get("municipality"), errs, "STATION_1: MUNICIPALITY is INCORRECT");
                     checkEquals("FBK"                , station.getOrigin()        , errs, "STATION_1: ORIGIN is INCORRECT");
                     checkEquals("ParkingStation"     , station.getStationType()   , errs, "STATION_1: STATION_TYPE is INCORRECT");
                 }
@@ -89,7 +89,7 @@ public class ParkingTnDataRetrieverTest extends AbstractJUnit4SpringContextTests
                     checkEquals("NAME 2"             , station.getName()          , errs, "STATION_2: NAME is INCORRECT");
                     checkEquals(11D                  , station.getLongitude()     , errs, "STATION_2: LONGITUDE is INCORRECT");
                     checkEquals(46D                  , station.getLatitude()      , errs, "STATION_2: LATITUDE is INCORRECT");
-                    checkEquals("FETCH_MUNICIPALITY" , station.getMunicipality()  , errs, "STATION_2: MUNICIPALITY is INCORRECT");
+                    checkEquals("FETCH_MUNICIPALITY" , station.getMetaData().get("municipality")  , errs, "STATION_2: MUNICIPALITY is INCORRECT");
                     checkEquals("FBK"                , station.getOrigin()        , errs, "STATION_2: ORIGIN is INCORRECT");
                     checkEquals("ParkingStation"     , station.getStationType()   , errs, "STATION_2: STATION_TYPE is INCORRECT");
                 }

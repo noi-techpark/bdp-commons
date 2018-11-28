@@ -2,20 +2,20 @@ package it.bz.idm.bdp.dcparkingtn.dto;
 
 import java.io.Serializable;
 
-import it.bz.idm.bdp.dto.parking.ParkingStationDto;
+import it.bz.idm.bdp.dto.StationDto;
 
 public class ParkingTnDto implements Serializable {
 
     private static final long serialVersionUID = 8642860252556395832L;
 
     private ParkingAreaServiceDto parkingArea;
-    private ParkingStationDto station;
+    private StationDto station;
     private String municipality;
 
     public ParkingTnDto() {
     }
 
-    public ParkingTnDto(ParkingAreaServiceDto parkingArea, ParkingStationDto station, String municipality) {
+    public ParkingTnDto(ParkingAreaServiceDto parkingArea, StationDto station, String municipality) {
         this.parkingArea = parkingArea;
         this.station = station;
         this.municipality = municipality;
@@ -29,11 +29,11 @@ public class ParkingTnDto implements Serializable {
         this.parkingArea = parkingArea;
     }
 
-    public ParkingStationDto getStation() {
+    public StationDto getStation() {
         return station;
     }
 
-    public void setStation(ParkingStationDto station) {
+    public void setStation(StationDto station) {
         this.station = station;
     }
 

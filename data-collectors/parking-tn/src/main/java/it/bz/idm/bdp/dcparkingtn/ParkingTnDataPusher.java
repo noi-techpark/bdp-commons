@@ -24,8 +24,8 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.parking.ParkingStationDto;
 import it.bz.idm.bdp.json.JSONPusher;
 
 @Service
@@ -86,7 +86,7 @@ public class ParkingTnDataPusher extends JSONPusher {
 
         for (ParkingTnDto dto: data) {
 
-            ParkingStationDto stationDto = dto.getStation();
+            StationDto stationDto = dto.getStation();
             ParkingAreaServiceDto extDto = dto.getParkingArea();
             Integer slotsAvailable = extDto.getSlotsAvailable();
 
@@ -132,7 +132,7 @@ public class ParkingTnDataPusher extends JSONPusher {
         int countStations = 0;
         StationList stations = new StationList();
         for (ParkingTnDto dto : data) {
-            ParkingStationDto stationDto = dto.getStation();
+            StationDto stationDto = dto.getStation();
             ParkingAreaServiceDto extDto = dto.getParkingArea();
             Integer slotsAvailable = extDto.getSlotsAvailable();
             //Exclude Stations having slotsAvailable==-2 (i.e. does not provide real time measurements, see Analysis doc)

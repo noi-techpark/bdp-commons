@@ -52,7 +52,7 @@ public class ParkingMeranoClient {
 				ret[i].setId(ID_NAME_SPACE + dtos[i].getAreaName());
 				ret[i].setName(dtos[i].getAreaName());
 				ret[i].setOrigin(ORIGIN);
-				ret[i].getMetaData().put("slots",dtos[i].getTotalParkingSpaces());
+				ret[i].getMetaData().put("capacity",dtos[i].getTotalParkingSpaces());
 			}
 		}
 		return ret;
@@ -89,7 +89,7 @@ public class ParkingMeranoClient {
 			StationDto stationDto = new StationDto();
 			stationDto.setId("me:"+dto.getAreaName().toLowerCase().replaceAll("\\s+",""));
 			stationDto.setName(dto.getAreaName());
-			stationDto.getMetaData().put("slots", dto.getTotalParkingSpaces());
+			stationDto.getMetaData().put("capacity", dto.getTotalParkingSpaces());
 			stationDto.setOrigin("Municipality Merano");
 			stations.add(stationDto);
 		}
