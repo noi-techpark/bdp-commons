@@ -21,20 +21,24 @@ public class ParkingTnDataConverter {
     public static final String ORIGIN_KEY                = "app.origin";
     public static final String PERIOD_KEY                = "app.period";
 
-    public static final String STATION_TYPE_KEY          = "app.station.type";
+    public static final String STATION_TYPE_KEY               = "app.station.type";
+    public static final String STATION_CODE_ALLOWED_CHARS_KEY = "app.station.code.allowed_chars";
 
     public static final String STATION_KEY_PARAM         = "key";
     public static final String STATION_CODE_PREFIX_PARAM = "code-prefix";
 
-    public static final String ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
-
     @Autowired
     private Environment env;
 
+    //This must be initialized in application.properties file (for example FBK)
     private String origin;
+    //This must be initialized in application.properties file (for example ParkingStation)
     private String stationType;
+    //This must be initialized in application.properties file (for example abcdefghijklmnopqrstuvwxyz0123456789)
+    private String stationCodeAllowedChars;
 
 /*
+ *  Example of json provided by the service
     {
         "name": "Autosilo Buonconsiglio - P3",
         "description": "Via F. Petrarca, 1/5",
@@ -62,6 +66,12 @@ public class ParkingTnDataConverter {
             this.stationType = env.getProperty(STATION_TYPE_KEY);
         }
         return this.stationType;
+    }
+    public String getStationCodeAllowedChars() {
+        if ( this.stationCodeAllowedChars == null ) {
+            this.stationCodeAllowedChars = env.getProperty(STATION_CODE_ALLOWED_CHARS_KEY);
+        }
+        return this.stationCodeAllowedChars;
     }
 
     public List<ParkingTnDto> convertToInternalDTO(List<ParkingAreaServiceDto> dataList, String municipality, String codePrefix) throws Exception {
@@ -161,7 +171,7 @@ public class ParkingTnDataConverter {
     private String calculateId(String name, String prefix) {
         String retval = null;
         if ( name != null ) {
-            String tmpName = DCUtils.removeUnexpectedChars(name.toLowerCase().trim(), ALLOWED_CHARS);
+            String tmpName = DCUtils.removeUnexpectedChars(name.toLowerCase().trim(), getStationCodeAllowedChars());
             retval = DCUtils.allowNulls(prefix).trim() + tmpName;
         }
         return retval;

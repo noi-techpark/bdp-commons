@@ -1,10 +1,7 @@
 package it.bz.idm.bdp.dcparkingtn;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -18,7 +15,6 @@ import it.bz.idm.bdp.dcparkingtn.dto.ParkingTnDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationList;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
