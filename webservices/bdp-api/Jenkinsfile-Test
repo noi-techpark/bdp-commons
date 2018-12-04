@@ -57,8 +57,8 @@ pipeline {
         stage('Configure - carsharing') {
             steps {
                 sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1Carsharingstation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1Carsharingcar/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1cars/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1Carsharingcar%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1cars%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/carsharing.log%" webservices/bdp-api/src/main/resources/log4j.properties'
@@ -73,8 +73,8 @@ pipeline {
         stage('Configure - emobility') {
             steps {
                 sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1EChargingStation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1EChargingPlug/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1plugs/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1EChargingPlug%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1plugs%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/emobility.log%" webservices/bdp-api/src/main/resources/log4j.properties'
@@ -89,8 +89,8 @@ pipeline {
         stage('Configure - environment') {
             steps {
                 sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1Environmentstation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/environment.log%" webservices/bdp-api/src/main/resources/log4j.properties'
@@ -105,8 +105,8 @@ pipeline {
         stage('Configure - origin-destination') {
             steps {
                 sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1Linkstation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/origin-destination.log%" webservices/bdp-api/src/main/resources/log4j.properties'
@@ -121,8 +121,8 @@ pipeline {
         stage('Configure - meteorology') {
             steps {
                 sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1Meteostation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/meteorology.log%" webservices/bdp-api/src/main/resources/log4j.properties'
@@ -137,8 +137,8 @@ pipeline {
         stage('Configure - parking') {
             steps {
                 sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1ParkingStation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/parking.log%" webservices/bdp-api/src/main/resources/log4j.properties'
@@ -153,8 +153,8 @@ pipeline {
         stage('Configure - roadweather') {
             steps {
                 sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1RWISstation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/roadweather.log%" webservices/bdp-api/src/main/resources/log4j.properties'
@@ -169,8 +169,8 @@ pipeline {
         stage('Configure - street') {
             steps {
                 sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1Streetstation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/street.log%" webservices/bdp-api/src/main/resources/log4j.properties'
@@ -185,8 +185,8 @@ pipeline {
         stage('Configure - sensors') {
             steps {
                 sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1TrafficSensor%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1//%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/sensors.log%" webservices/bdp-api/src/main/resources/log4j.properties'
