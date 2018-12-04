@@ -85,7 +85,6 @@ public class ParkingTnDataPusher extends JSONPusher {
         int countMeasures = 0;
 
         for (ParkingTnDto dto: data) {
-//            DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<RecordDtoImpl>();
 
             ParkingStationDto stationDto = dto.getStation();
             ParkingAreaServiceDto extDto = dto.getParkingArea();
