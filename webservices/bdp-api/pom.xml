@@ -12,7 +12,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>8</java.version>
-		<webservice>${project.artifactId}-${project.version}</webservice>
+		<webservice>api</webservice>
 	</properties>
 	<repositories>
 		<repository>
