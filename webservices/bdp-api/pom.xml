@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
-	<artifactId>api</artifactId>
+	<artifactId>${webservice}</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.0</version>
 	<name>Webservice api</name>
@@ -12,6 +12,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>8</java.version>
+		<webservice>${project.artifactId}-${project.version}</webservice>
 	</properties>
 	<repositories>
 		<repository>
@@ -38,6 +39,7 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<finalName>${webservice}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
