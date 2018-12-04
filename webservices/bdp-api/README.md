@@ -33,24 +33,24 @@ Each module(and also each stationtype) will have the same api-structure. If you 
 
 The available stationtypes and childstationtypes are:
 
-| Stationtype   	|      Childstationtype | Childstationpath
-|----------	|:-------------:|---
-| BikesharingStation | Bicycle | bikes
-| Bluetoothstation | / | /
-| Carpoolinghub | / | /
-| Carpoolingservice | / | /
-| CarpoolingUser | / | /
-| Carsharingstation | Carsharingcar | cars
-| EChargingStation | EChargingPlug | plugs
-| Environmentstation | / | /
-| Linkstation | / | /
-| Meteostation | / | /
-| Mobilestation | / | /
-| ParkingStation | / | /
-| RWISstation | / | /
-| Streetstation | / | /
-| TrafficSensor | / | /
-| Trafficstation | / | /
+| Stationtype   	|      Childstationtype | Childstationpath | Endpoint
+|----------	|:-------------:|--- | ----------
+| BikesharingStation | Bicycle | bikes | bikesharing
+| Bluetoothstation | / | / | bluetooth
+| Carpoolinghub | / | / | [put on hold]
+| Carpoolingservice | / | / | [put on hold]
+| CarpoolingUser | / | / | [put on hold]
+| Carsharingstation | Carsharingcar | cars | carsharing
+| EChargingStation | EChargingPlug | plugs | emobility
+| Environmentstation | / | / | environment
+| Linkstation | / | / | origin-destination 
+| Meteostation | / | / | meteorology
+| Mobilestation | / | / | [not-needed]
+| ParkingStation | / | / | parking
+| RWISstation | / | / | roadweather
+| Streetstation | / | / | street
+| TrafficSensor | / | / | sensors
+| Trafficstation | / | / | [not-needed]
 
 TODO: Further development will provide this mapping through the reader API which should make it dynamic and maintainable
 
