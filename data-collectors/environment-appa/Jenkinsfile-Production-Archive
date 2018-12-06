@@ -23,9 +23,8 @@ pipeline {
               sh 'cd data-collectors/environment-appa && mvn package'
 	    }
 	}
-	stage('Deploy') {
+	stage('Archive') {
             steps{
-                sh 'cd data-collectors/environment-appa/ && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
 		sh 'cp data-collectors/environment-appa/target/dc-airquality-appatn.war /var/builds/prod-server-dc/'
             }
         }
