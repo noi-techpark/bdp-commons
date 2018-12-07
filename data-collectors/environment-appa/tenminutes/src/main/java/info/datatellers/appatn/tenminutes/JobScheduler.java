@@ -40,6 +40,7 @@ public class JobScheduler {
 	 */
 	public void init() {
 		LOG.info("Starting APPATN ten minutes history collection");
+		LOG.debug("Started at {}", new Date());
 
 		DataMapDto<RecordDtoImpl> rootMap;
 		DataPusher pusher = new DataPusher();
@@ -100,7 +101,7 @@ public class JobScheduler {
 	}
 
 	/**
-	 * Takes care of repetitive data pushing
+	 * Takes care of repetitive data pushing and filling possible data gaps
 	 * 
 	 * @throws Exception
 	 */
@@ -110,14 +111,61 @@ public class JobScheduler {
 		DataPusher pusher = new DataPusher();
 
 		LOG.info("Scheduled APPATN ten minutes execution started");
+		LOG.debug("Started at {}", new Date());
 
 		rootMap = constructRootMap();
+		
+		// get date of last record for most outdated sensor
+		
+		Date from = null;
 
-		rootMap = pusher.mapData(rootMap);
+		for (String stationIndex : rootMap.getBranch().keySet()) {
+			for (String sensorIndex : rootMap.upsertBranch(stationIndex).getBranch().keySet()) {
+				Date lastRecord = (Date) pusher.getDateOfLastRecord(stationIndex, sensorIndex, 600);
+				if (from == null || from.compareTo(lastRecord) > 0)
+					from = lastRecord;
+			}
+		}
 
-		pusher.pushData(rb.getString("odh.station.type"), rootMap);
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, 1);
+		Date now = c.getTime();
+		
+		c.setTime(from);
+		// start from next 10 minutes (skips a day if the last record is at 23:50, saves computation)
+		c.add(Calendar.MINUTE, 10);
+		from = c.getTime();
+
+		// only one station is available so it is not possible to predict the format for
+		// multiple stations
+		// in case of more stations the next part may need adaptation
+
+		// if the interval of the last record is more than one hour, we need to gather
+		// the interval of data missing.
+		if ((now.getTime() - from.getTime()) > 3600000) {
+			LOG.info("There seems to be missing data from {}, recollecting", from);
+			
+			c.add(Calendar.DATE, 31);
+			Date to = c.getTime().compareTo(now) >= 0 ? now : c.getTime();
+
+			while (from.compareTo(now) < 0) {
+				LOG.debug("Collecting from {} to {}", from, to);
+				rootMap = pusher.mapDataWithDates(rootMap, from, to);
+				pusher.pushData(rb.getString("odh.station.type"), rootMap);
+				rootMap = constructRootMap();
+				from = to;
+				c.add(Calendar.DATE, 31);
+				to = c.getTime().compareTo(now) >= 0 ? now : c.getTime();
+			}
+
+		} else {
+			LOG.debug("All records are up to date, executing as usual");
+			rootMap = pusher.mapData(rootMap);
+			pusher.pushData(rb.getString("odh.station.type"), rootMap);
+		}
 
 		LOG.info("Scheduled APPATN ten minutes execution completed");
+		LOG.debug("Completed at {}", new Date());
 	}
 
 	/**
