@@ -4,19 +4,19 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-	       sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
-	       sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/bluetooth-endpoint.log%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
-               sh 'cd data-collectors/vehicletraffic-bluetooth && mvn clean test verify'
+	            sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
+	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/bluetooth-endpoint.log%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
+                sh 'cd data-collectors/vehicletraffic-bluetooth && mvn clean test verify'
             }
         }
         stage('Build') {
             steps {
-	        sh 'cd data-collectors/vehicletraffic-bluetooth && mvn clean package'
+	            sh 'cd data-collectors/vehicletraffic-bluetooth && mvn clean package'
             }
         }
         stage('Archive') {
             steps {
-	        sh 'cp data-collectors/vehicletraffic-bluetooth/target/dc-bluetooth.war /var/builds/prod-server-dc/'
+	            sh 'cp data-collectors/vehicletraffic-bluetooth/target/dc-bluetooth.war /var/builds/prod-server-dc/'
             }
         }
     }

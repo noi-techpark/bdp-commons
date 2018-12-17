@@ -2,10 +2,11 @@ pipeline {
     agent any
 
     environment{
-	SENSORS_CONFIG=credentials('sensors-config.properties')
-	SENSORS_WSDL=credentials('sensors-wsdl')
+		SENSORS_CONFIG=credentials('sensors-config.properties')
+		SENSORS_WSDL=credentials('sensors-wsdl')
         TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
     }
+
     stages {
         stage('Configure') {
             steps {
