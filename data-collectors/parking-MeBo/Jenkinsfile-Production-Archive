@@ -8,7 +8,7 @@ pipeline {
 	stage('Configure'){
 	    steps{
               sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" data-collectors/parking-MeBo/src/main/resources/log4j.properties'
-              sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/parking-MeBo/src/main/resources/log4j.properties'
+              sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking-mebo.log%" data-collectors/parking-MeBo/src/main/resources/log4j.properties'
 	      sh 'cat "${PARKING_PROPS}" > data-collectors/parking-MeBo/src/main/resources/META-INF/spring/app.properties'
 	    }
 	}

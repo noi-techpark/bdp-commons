@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    environment{
+      DATA_ENDPOINT = credentials('environment-appa-endpoint')
+      AUTH_TOKEN = credentials('environment-appa-authtoken')
+    }
+    stages {
+	stage('Configure'){
+	  steps{
+              sh 'sed -i -e "s%\\(property.basePath =\\).*\\$%\\1/var/log/opendatahub/data-collectors/%" data-collectors/environment-appa/tenminutes/src/main/resources/log4j2.properties'
+              sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1INFO%" data-collectors/environment-appa/tenminutes/src/main/resources/log4j2.properties'
+              sh 'sed -i -e "s%\\(odp.url.stations.tenminutes=\\).*\\$%\\1"${DATA_ENDPOINT}"%" data-collectors/environment-appa/tenminutes/src/main/resources/config.properties'
+              sh 'sed -i -e "s%\\(odp.url.stations.tenminutes.key=\\).*\\$%\\1"${AUTH_TOKEN}"%" data-collectors/environment-appa/tenminutes/src/main/resources/config.properties'
+	  }
+	}
+        stage('Test') {
+            steps {
+              sh 'cd data-collectors/environment-appa/tenminutes && mvn clean test verify'
+            }
+        }
+        stage('Build') {
+            steps {
+              sh 'cd data-collectors/environment-appa/tenminutes && mvn package'
+	    }
+	}
+	stage('Archive') {
+            steps{
+		sh 'cp data-collectors/environment-appa/tenminutes/target/dc-airquality-appatn.war /var/builds/prod-server-dc/'
+            }
+        }
+    }
+}
