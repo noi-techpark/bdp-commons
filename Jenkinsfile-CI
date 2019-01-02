@@ -52,6 +52,11 @@ pipeline {
                         sh 'cd data-collectors/meteorology-siag/zrx2json && mvn clean compile test -U'
                     }
                 }
+                stage('meteorology-provincetrento') {
+                    steps {
+                        sh 'cd data-collectors/meteo-tn/ && mvn clean compile test -U'
+                    }
+                }
                 stage('parking-MeBo') {
                     steps {
                         sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/parking-MeBo/src/main/resources/log4j.properties'
