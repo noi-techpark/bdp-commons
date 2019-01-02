@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    environment {
+        TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
+    }
+    stages {
+        stage('Configure') {
+            steps {
+                  sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/meteo-tn/src/main/resources/log4j.properties'
+                  sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/meteo-tn.log%" data-collectors/meteo-tn/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'cd data-collectors/meteo-tn && mvn clean test && mvn verify'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'cd data-collectors/meteo-tn && mvn package'
+            }
+        }
+        stage('Deploy') {
+            steps{
+                sh 'cd data-collectors/meteo-tn && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+            }
+        }
+    }
+}
