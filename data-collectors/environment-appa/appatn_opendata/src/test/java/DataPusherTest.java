@@ -1,14 +1,19 @@
-import info.datatellers.appatn.helpers.DateHelper;
-import info.datatellers.appatn.opendata.DataPusher;
-import info.datatellers.appatn.opendata.Tester;
-import it.bz.idm.bdp.dto.*;
+import java.util.HashMap;
+import java.util.ResourceBundle;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import info.datatellers.appatn.helpers.DateHelper;
+import info.datatellers.appatn.opendata.DataPusher;
+import info.datatellers.appatn.opendata.Tester;
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
 
 /**
  * @author Nicolò Molinari, Datatellers.
@@ -120,43 +125,43 @@ public class DataPusherTest
                     |-- Record (timestamp = __; value =__; period = ____;)
         */
 
-        DataMapDto<RecordDtoImpl> rootMap = Tester.constructRootMap();
-        dataPusher.mapData(rootMap, new DateHelper().getTestDate(), new DateHelper().getTestDate(), true);
-
-        LOG.debug("Checking that each polluter branch contains 1 element, as the mapping method calling specifies only one day.");
-        String[] stationsIDs = rb.getString("odh.station.test.IDs").replace("{", "").replace("}", "").split(",");
-        for (int looper = 0; looper < rootMap.getBranch().keySet().size(); looper++)
-        {
-            String[] specificStationPolluters = rb.getString("odh.station.test." + stationsIDs[looper]).
-                    replace("{", "").replace("}", "").split(",");
-
-            for (String specificStationPolluter : specificStationPolluters)
-            {
-                try {
+//        DataMapDto<RecordDtoImpl> rootMap = Tester.constructRootMap();
+//        dataPusher.mapData(rootMap, new DateHelper().getTestDate(), new DateHelper().getTestDate(), true);
+//
+//        LOG.debug("Checking that each polluter branch contains 1 element, as the mapping method calling specifies only one day.");
+//        String[] stationsIDs = rb.getString("odh.station.test.IDs").replace("{", "").replace("}", "").split(",");
+//        for (int looper = 0; looper < rootMap.getBranch().keySet().size(); looper++)
+//        {
+//            String[] specificStationPolluters = rb.getString("odh.station.test." + stationsIDs[looper]).
+//                    replace("{", "").replace("}", "").split(",");
+//
+//            for (String specificStationPolluter : specificStationPolluters)
+//            {
+//                try {
                     //Checking that each station branch contains between 3 and 6 elements.
-                    Assert.assertFalse(rootMap.getBranch().get("APPATN_" + stationsIDs[looper]).getBranch().size() < 3);
-                    Assert.assertFalse(rootMap.getBranch().get("APPATN_" + stationsIDs[looper]).getBranch().size() > 5);
+//                    Assert.assertFalse(rootMap.getBranch().get("APPATN_" + stationsIDs[looper]).getBranch().size() < 3);
+//                    Assert.assertFalse(rootMap.getBranch().get("APPATN_" + stationsIDs[looper]).getBranch().size() > 5);
                     //Checking that each polluter branch contain not-null data.
-                    Assert.assertNotNull(rootMap.getBranch().get("APPATN_" + stationsIDs[looper]).getBranch().get(specificStationPolluter.trim()).getData());
-
-                }catch (NullPointerException | AssertionError e)
-                {
+//                    Assert.assertNotNull(rootMap.getBranch().get("APPATN_" + stationsIDs[looper]).getBranch().get(specificStationPolluter.trim()).getData());
+//
+//                }catch (NullPointerException | AssertionError e)
+//                {
                     /*
                     Some measurements are not collected in some hours, for some unknown reason.
                     I guess there's a minimum tolerance to be satisfied in order for the measurement
                     to be collected. Same in DataFetcherTest, see lines 92-96.
                      */
-                    if (e.getClass().getName().equals("java.lang.AssertionError"))
-                    {
-                        LOG.info(e.getClass().getName() + " thrown. There are less than expected minimum polluters branches on date: " + new DateHelper().getTestDate() + " at station: "
-                        + stationsIDs[looper] + ".");
-                    }else{
-                    LOG.info("NullPointerException thrown. Polluter: " + "--> \"" + specificStationPolluter + "\": [missing data] <--" + " field in json is missing: value was not collected on date: "
-                            + new DateHelper().getTestDate() + " at station: " + stationsIDs[looper] + ".");
-                    }
-                }
-            }
-        }
-        LOG.debug("fillRootMapTest execution terminated.");
+//                    if (e.getClass().getName().equals("java.lang.AssertionError"))
+//                    {
+//                        LOG.info(e.getClass().getName() + " thrown. There are less than expected minimum polluters branches on date: " + new DateHelper().getTestDate() + " at station: "
+//                        + stationsIDs[looper] + ".");
+//                    }else{
+//                    LOG.info("NullPointerException thrown. Polluter: " + "--> \"" + specificStationPolluter + "\": [missing data] <--" + " field in json is missing: value was not collected on date: "
+//                            + new DateHelper().getTestDate() + " at station: " + stationsIDs[looper] + ".");
+//                    }
+//                }
+//            }
+//        }
+//        LOG.debug("fillRootMapTest execution terminated.");
     }
 }
