@@ -6,12 +6,8 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import info.datatellers.appatn.helpers.DateHelper;
 import info.datatellers.appatn.opendata.DataPusher;
-import info.datatellers.appatn.opendata.Tester;
-import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
-import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
