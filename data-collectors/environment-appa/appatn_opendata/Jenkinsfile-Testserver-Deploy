@@ -12,7 +12,7 @@ pipeline {
 	}
         stage('Test') {
             steps {
-              sh 'cd data-collectors/environment-appa/appatn_opendata && mvn clean test verify'
+              sh 'cd data-collectors/environment-appa/appatn_opendata && mvn clean test'
             }
         }
         stage('Build') {
