@@ -88,7 +88,8 @@ public class CSVHandler {
 		InputStream stream = getResourceAsInputStream(rb.getString("odh.types.metadata.csv"));
 		scanner = new Scanner(stream);
 		scanner.nextLine();
-		for (int index = 0; index < getPollutersIDsSize(); index++) {
+		int pollutersIDsSize = getPollutersIDsSize();
+		for (int index = 0; index < pollutersIDsSize; index++) {
 			LOG.debug("Scanning lines...");
 			String scanned = "";
 			if (scanner != null) {
