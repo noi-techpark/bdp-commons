@@ -16,10 +16,10 @@ import java.util.ResourceBundle;
  * Test class for ../src/main/java/info/datatellers/appatn/DataFetcher.java
  * Detailed information can be found in comments and log.
  */
-public class DataFetcherTest {
+public class DataFetcherIT {
 
     private ResourceBundle rb = ResourceBundle.getBundle("test");
-    private static final Logger LOG = LogManager.getLogger(DataFetcherTest.class.getName());
+    private static final Logger LOG = LogManager.getLogger(DataFetcherIT.class.getName());
 
     @Test
     public void fetchTest()

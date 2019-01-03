@@ -16,11 +16,11 @@ import it.bz.idm.bdp.dto.StationList;
  * Test class for ../src/main/java/info/datatellers/appatn/DataPusher.java
  * Detailed information can be found in comments and log.
  */
-public class DataPusherTest
+public class DataPusherIT
 {
     private DataPusher dataPusher = new DataPusher();
     private ResourceBundle rb = ResourceBundle.getBundle("test");
-    private static final Logger LOG = LogManager.getLogger(DataPusherTest.class.getName());
+    private static final Logger LOG = LogManager.getLogger(DataPusherIT.class.getName());
 
     @Test
     public void mapStationTest()

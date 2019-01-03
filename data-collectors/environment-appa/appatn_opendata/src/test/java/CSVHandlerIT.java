@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
  * Test class for ../src/main/java/helpers/CSVHandler.java
  * Detailed information can be found inside comments and log.
  */
-public class CSVHandlerTest {
+public class CSVHandlerIT {
 
     private ResourceBundle rb = ResourceBundle.getBundle("test");
     private static final Logger LOG = LogManager.getLogger(CSVHandler.class.getName());
