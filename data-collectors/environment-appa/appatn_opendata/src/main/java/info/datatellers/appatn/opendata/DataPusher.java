@@ -18,7 +18,8 @@ import java.util.*;
  * This class will map stations, sensors and measurements data into a many levels deep DataMapDto map and return it.
  */
 public class DataPusher extends JSONPusher {
-    private final ResourceBundle rb = ResourceBundle.getBundle("config");
+    private static final String SEPARATOR = "_";
+	private final ResourceBundle rb = ResourceBundle.getBundle("config");
     private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
     private ArrayList<JsonElement> stations;
     private ArrayList<String> pollutersNames = new CSVHandler().getPollutersNames();
@@ -47,7 +48,7 @@ public class DataPusher extends JSONPusher {
             ArrayList<String> stationMetadata = metadata.get(keys[index]);
             StationDto station = new StationDto();
 
-            station.setId(origin + "_" + stationMetadata.get(0));
+            station.setId(origin + SEPARATOR + stationMetadata.get(0));
             station.setName(stationMetadata.get(1));
             station.setLatitude(Double.valueOf(stationMetadata.get(2)));
             station.setLongitude(Double.valueOf(stationMetadata.get(3)));
@@ -185,7 +186,7 @@ public class DataPusher extends JSONPusher {
                     //Getting polluters codes as array
                     LOG.debug("Station selected. Filling branches...");
                     String date = getLastRetrievedDate((JsonObject)stations.get(looper));
-                    LOG.info("Starting to fill station branch with data for station: " + rootMap.getBranch().get(origin + "_" + stationIds[looper]).getName()
+                    LOG.info("Starting to fill station branch with data for station: " + rootMap.getBranch().get(origin + SEPARATOR + stationIds[looper]).getName()
                         + ". Date requested: " + date);
                     fillSensorsBranches(rootMap, date, pollutersAcronyms, stationIds, looper);
                     LOG.info("Station branch filled correctly. Moving to next station...");
@@ -280,7 +281,7 @@ public class DataPusher extends JSONPusher {
             missingValuesInfo.append("\n").append("No ").append(polluter).append(" data were collected at station ")
                     .append(stationIds[looper]).append(" for ").append(date).append(" at hour ").append(hour).append(".");
         } else {
-            rootMap.getBranch().get(origin + "_" + (stationIds[looper])).getBranch().get(pollutersNames.get(index)).getData().add(recordDto);
+            rootMap.getBranch().get(origin + SEPARATOR + (stationIds[looper])).getBranch().get(pollutersNames.get(index)).getData().add(recordDto);
             LOG.debug("Record added correctly.");
         }
         return consistencyChecker;
@@ -443,14 +444,14 @@ public class DataPusher extends JSONPusher {
 
         for(int looper = 0; looper < stations.size(); looper++)
         {
-            String[] polluters = rootMap.getBranch().get(origin + "_" + (stationIds[looper])).getBranch().keySet().toString().replace("[", "")
+            String[] polluters = rootMap.getBranch().get(origin + SEPARATOR + (stationIds[looper])).getBranch().keySet().toString().replace("[", "")
                     .replace("]", "").split(",");
 
             for (String polluter : polluters)
             {
-                if (rootMap.getBranch().get(origin + "_" + (stationIds[looper])).getBranch().get(polluter.trim()).getData().size() == 0)
+                if (rootMap.getBranch().get(origin + SEPARATOR + (stationIds[looper])).getBranch().get(polluter.trim()).getData().size() == 0)
                 {
-                    rootMap.getBranch().get(origin + "_" + (stationIds[looper])).getBranch().remove(polluter.trim());
+                    rootMap.getBranch().get(origin + SEPARATOR + (stationIds[looper])).getBranch().remove(polluter.trim());
                     LOG.debug("Unused branch removal...");
                 }
             }
@@ -467,9 +468,8 @@ public class DataPusher extends JSONPusher {
     {
         String[] rawStationIds = rootMap.getBranch().keySet().toString().replace("[", "").replace("]", "").replace(" ", "").split(",");
         int[] stationIds = new int[rawStationIds.length];
-
         for (int index = 0; index < stationIds.length; index++) {
-            int stationId = Integer.valueOf(rawStationIds[index].substring(7));
+            int stationId = Integer.valueOf(rawStationIds[index].substring(origin.length()+SEPARATOR.length()));
             stationIds[index] = stationId;
         }
         return stationIds;
