@@ -29,7 +29,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1bikes%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/bikesharing.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/bikesharing2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
             }
         }
         stage('Deploy - bikesharing') {
@@ -45,7 +45,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/bluetooth.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/bluetooth2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
             }
         }
         stage('Deploy - bluetooth') {
@@ -61,7 +61,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1cars%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/carsharing.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/carsharing2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
             }
         }
         stage('Deploy - carsharing') {
@@ -77,7 +77,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1plugs%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/emobility.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/emobility2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
             }
         }
         stage('Deploy - emobility') {
@@ -93,7 +93,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/environment.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/environment2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
             }
         }
         stage('Deploy - environment') {
@@ -109,7 +109,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/origin-destination.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/origin-destination2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
             }
         }
         stage('Deploy - origin-destination') {
@@ -125,7 +125,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/meteorology.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/meteorology2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
             }
         }
         stage('Deploy - meteorology') {
@@ -141,7 +141,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/parking.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/parking2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
             }
         }
         stage('Deploy - parking') {
@@ -157,7 +157,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/roadweather.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/roadweather2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
             }
         }
         stage('Deploy - roadweather') {
@@ -173,7 +173,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/street.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/street2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
             }
         }
         stage('Deploy - street') {
@@ -189,7 +189,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/sensors.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/sensors2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
             }
         }
         stage('Deploy - sensors') {
