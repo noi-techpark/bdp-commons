@@ -11,12 +11,13 @@ import it.bz.idm.bdp.ws.RestController;
 @Controller
 @RequestMapping("/rest/")
 public class EntityController extends RestController{
-	
+
 	@Autowired
 	private RestClient retriever;
-	
+
 	@Override
 	public DataRetriever initDataRetriever() {
+		retriever.connect();
 		return retriever;
 	}
 }

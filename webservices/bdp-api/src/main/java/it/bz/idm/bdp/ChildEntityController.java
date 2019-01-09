@@ -16,15 +16,14 @@ import it.bz.idm.bdp.ws.RestController;
 @RequestMapping("/rest/${bdp.childrenpath}")
 @PropertySource("classpath:META-INF/spring/application.properties")
 public class ChildEntityController extends RestController{
-	
+
 	@Autowired
 	private RestClient childrenRetriever;
-	
+
 	@Value("${bdp.childstationtype}")
 	private String childStationType;
 	@Override
 	public DataRetriever initDataRetriever() {
-		childrenRetriever.setIntegreenTypology(childStationType);
 		return childrenRetriever;
 	}
 }
