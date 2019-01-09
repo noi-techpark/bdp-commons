@@ -303,7 +303,7 @@ public class DataPusher extends JSONPusher {
         int[] stationIds = new int[rawStationIds.length];
 
         for (int looper = 0; looper < stationIds.length; looper++) {
-            int stationId = Integer.valueOf(rawStationIds[looper].substring(7));
+            int stationId = Integer.valueOf(rawStationIds[looper].substring(origin.length()+SEPARATOR.length()));
             stationIds[looper] = stationId;
 
             for (String polluterName : pollutersNames)
