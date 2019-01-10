@@ -31,7 +31,7 @@ public class JobScheduler {
     {
         LOG.info("Starting Data Collector execution...");
         DataMapDto<RecordDtoImpl> rootMap = constructRootMap();
-        String fromDate = String.valueOf(new DataPusher().getDateOfLastRecord("APPATN_2","co2",3600));
+        String fromDate = String.valueOf(new DataPusher().getDateOfLastRecord(rb.getString("odh.station.origin")+DataPusher.SEPARATOR+"2","co2",3600));
         String toDate = String.valueOf(new DataPusher().getLastRetrievedDate());
         if (fromDate.contains("1970"))
         {

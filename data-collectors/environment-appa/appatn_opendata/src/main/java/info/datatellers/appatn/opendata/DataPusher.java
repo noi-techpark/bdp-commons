@@ -18,12 +18,12 @@ import java.util.*;
  * This class will map stations, sensors and measurements data into a many levels deep DataMapDto map and return it.
  */
 public class DataPusher extends JSONPusher {
-    private static final String SEPARATOR = "_";
+    public static final String SEPARATOR = "_";
 	private final ResourceBundle rb = ResourceBundle.getBundle("config");
     private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
     private ArrayList<JsonElement> stations;
     private ArrayList<String> pollutersNames = new CSVHandler().getPollutersNames();
-    private final String origin = rb.getString("odh.station.origin");
+    public final String origin = rb.getString("odh.station.origin");
     private static int dayCounter = 0;
 
     public DataPusher() {}
