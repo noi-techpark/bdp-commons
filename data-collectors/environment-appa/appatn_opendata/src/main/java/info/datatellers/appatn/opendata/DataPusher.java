@@ -309,10 +309,10 @@ public class DataPusher extends JSONPusher {
             for (String polluterName : pollutersNames)
             {
                 //rootMap is emptied every 30 days so that the data syncing doesn't take too much time.
-                JobScheduler.numberOfRecords += rootMap.getBranch().get("APPATN_" + stationIds[looper]).getBranch().get(polluterName).getData().size();
+                JobScheduler.numberOfRecords += rootMap.getBranch().get(origin+SEPARATOR + stationIds[looper]).getBranch().get(polluterName).getData().size();
                 List<RecordDtoImpl> measurements = new ArrayList<>();
                 try {
-                    rootMap.getBranch().get("APPATN_" + stationIds[looper]).getBranch().get(polluterName).setData(measurements);
+                    rootMap.getBranch().get(origin+SEPARATOR + stationIds[looper]).getBranch().get(polluterName).setData(measurements);
                 } catch (NullPointerException e)
                 {
                     LOG.debug("Non existing branch hasn't been emptied. " + stationIds[looper] + " has no data for the given period for " + polluterName + ".");
