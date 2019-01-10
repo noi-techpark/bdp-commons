@@ -41,7 +41,7 @@ pipeline {
         }
         stage('Deploy - bikesharing') {
             steps {
-                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=bikesharing2'
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=bikesharing2'
             }
         }
 
@@ -57,7 +57,7 @@ pipeline {
         }
         stage('Deploy - bluetooth') {
             steps {
-                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=bluetooth2'
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=bluetooth2'
             }
         }
 
@@ -73,7 +73,7 @@ pipeline {
         }
         stage('Deploy - carsharing') {
             steps {
-                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=carsharing2'
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=carsharing2'
             }
         }
 
@@ -89,7 +89,7 @@ pipeline {
         }
         stage('Deploy - emobility') {
             steps {
-                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=emobility2'
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=emobility2'
             }
         }
 
@@ -105,7 +105,7 @@ pipeline {
         }
         stage('Deploy - environment') {
             steps {
-                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=environment2'
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=environment2'
             }
         }
 
@@ -121,7 +121,7 @@ pipeline {
         }
         stage('Deploy - origin-destination') {
             steps {
-                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=origin-destination2'
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=origin-destination2'
             }
         }
 
@@ -137,7 +137,7 @@ pipeline {
         }
         stage('Deploy - meteorology') {
             steps {
-                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=meteorology2'
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=meteorology2'
             }
         }
 
@@ -153,7 +153,7 @@ pipeline {
         }
         stage('Deploy - parking') {
             steps {
-                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=parking2'
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=parking2'
             }
         }
 
@@ -169,7 +169,7 @@ pipeline {
         }
         stage('Deploy - roadweather') {
             steps {
-                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=roadweather2'
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=roadweather2'
             }
         }
 
@@ -185,7 +185,7 @@ pipeline {
         }
         stage('Deploy - street') {
             steps {
-                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=street2'
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=street2'
             }
         }
 
@@ -201,7 +201,7 @@ pipeline {
         }
         stage('Deploy - sensors') {
             steps {
-                sh 'cd webservices/bdp-api && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=sensors2'
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=sensors2'
             }
         }
     }
