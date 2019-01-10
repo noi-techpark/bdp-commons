@@ -23,8 +23,10 @@ pipeline {
         }
 
         stage('Configure General Things') {
-            sh 'sed -i -e "s%\\(bdp.endpoint=\\).*\\$%\\1http://localhost:8080/reader2%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
-            sh 'sed -i -e "s%\\(bdp.requestTimeoutInSeconds=\\).*\\$%\\120%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+            steps {
+                sh 'sed -i -e "s%\\(bdp.endpoint=\\).*\\$%\\1http://localhost:8080/reader2%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.requestTimeoutInSeconds=\\).*\\$%\\120%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+            }
         }
 
         stage('Configure - bikesharing') {
