@@ -36,9 +36,14 @@ pipeline {
                         sh 'cd data-collectors/emobility-hydrogen && mvn clean compile test -U'
                     }
                 }
-                stage('environment-appa') {
+                stage('environment-appa-tenminutes') {
                     steps {
-                        sh 'cd data-collectors/environment-appa/tenminutes && mvn clean compile'
+                        sh 'cd data-collectors/environment-appa/appatn_tenminutes && mvn clean compile'
+                    }
+                }
+                stage('environment-appa-opendata') {
+                    steps {
+                        sh 'cd data-collectors/environment-appa/appatn_opendata && mvn clean compile'
                     }
                 }
                 stage('meteorology-siag (ZRX-data-collector)') {
@@ -50,6 +55,11 @@ pipeline {
                 stage('meteorology-siag (zrx2json)') {
                     steps {
                         sh 'cd data-collectors/meteorology-siag/zrx2json && mvn clean compile test -U'
+                    }
+                }
+                stage('meteorology-provincetrento') {
+                    steps {
+                        sh 'cd data-collectors/meteo-tn/ && mvn clean compile test -U'
                     }
                 }
                 stage('parking-MeBo') {

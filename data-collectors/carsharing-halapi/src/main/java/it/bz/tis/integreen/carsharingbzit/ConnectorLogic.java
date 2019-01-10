@@ -57,21 +57,14 @@ import it.bz.tis.integreen.carsharingbzit.api.ListVehiclesByStationsResponse.Sta
  */
 public class ConnectorLogic
 {
+	private static final String CARSHARING_ORIGIN = "HAL-API";
+
 	final static long             INTERVALL                    = 10L * 60L * 1000L;
 
 	public static final String    CARSHARINGSTATION_DATASOURCE = "CarsharingStation";
 	public static final String    CARSHARINGCAR_DATASOURCE     = "CarsharingCar";
 
 	static final SimpleDateFormat SIMPLE_DATE_FORMAT           = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); // 2014-09-15T12:00:00
-
-	private static final List<DataTypeDto> CARSHARINGTYPES = new ArrayList<DataTypeDto>() {
-		private static final long serialVersionUID = 1L;
-
-	{
-	    add(new DataTypeDto("number-available","","number of available vehicles / charging points","Instantaneous"));
-	    add(new DataTypeDto("availability","","Indicates if a vehicle is available for rental","Instantaneous"));
-	    add(new DataTypeDto("future-availability","","Indicates if a vehicle is already booked","Instantaneous"));
-	}};;
 
 	static HashMap<String, String[]> process(ApiClient apiClient,
 			String[] cityUIDs,
@@ -154,7 +147,6 @@ public class ConnectorLogic
 		it.bz.tis.integreen.carsharingbzit.api.CarsharingStationDto[] stations = responseGetStation.getStation();
 		StationList castedStations = castToBDP(stations);
 		Object result = xmlrpcPusher.syncStations(CARSHARINGSTATION_DATASOURCE, castedStations);
-		xmlrpcPusher.syncDataTypes(CARSHARINGCAR_DATASOURCE, CARSHARINGTYPES);
 		if (result instanceof IntegreenException)
 		{
 			throw new IOException("IntegreenException");
@@ -220,7 +212,7 @@ public class ConnectorLogic
 			castedDto.setLatitude(dto.getLatitude());
 			castedDto.setLongitude(dto.getLongitude());
 			castedDto.setName(dto.getName());
-			castedDto.setOrigin(dto.getOrigin());
+			castedDto.setOrigin(CARSHARING_ORIGIN);
 			castedDto.getMetaData().put("brand",dto.getBrand());
 			castedDto.setCoordinateReferenceSystem(dto.getCrs());
 			castedDto.getMetaData().put("licensePlate",dto.getLicensePlate());
@@ -246,7 +238,7 @@ public class ConnectorLogic
 			castedDto.setLatitude(dto.getLatitude());
 			castedDto.setLongitude(dto.getLongitude());
 			castedDto.setName(dto.getName());
-			castedDto.setOrigin(dto.getOrigin());
+			castedDto.setOrigin(CARSHARING_ORIGIN);
 			dtos.add(castedDto);
 		}
 		return dtos;

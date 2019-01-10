@@ -1,0 +1,57 @@
+<lastData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.meteotrentino.it/">
+	<temperature_list>
+		<air_temperature UM="°C">
+			<date>2018-12-19T00:00:00+01</date>
+			<value>-7.9</value>
+		</air_temperature>
+		<air_temperature UM="°C">
+			<date>2018-12-19T00:15:00+01</date>
+			<value>-8.5</value>
+		</air_temperature>
+	</temperature_list>
+	<precipitation_list>
+		<precipitation UM="mm">
+			<date>2018-12-19T00:00:00+01</date>
+			<value>0</value>
+		</precipitation>
+		<precipitation UM="mm">
+			<date>2018-12-19T00:15:00+01</date>
+			<value>0</value>
+		</precipitation>
+	</precipitation_list>
+	<wind_list>
+		<wind10m UM_speed="m/s" UM_direction="gN">
+			<date>2018-12-19T00:00:00+01</date>
+			<speed_value>0.7</speed_value>
+			<direction_value>108</direction_value>
+		</wind10m>
+		<wind10m UM_speed="m/s" UM_direction="gN">
+			<date>2018-12-19T00:15:00+01</date>
+			<speed_value>0.5</speed_value>
+			<direction_value>298</direction_value>
+		</wind10m>
+	</wind_list>
+	<global_radiation_list>
+		<global_radiation UM="W/mq">
+			<date>2018-12-19T00:00:00+01</date>
+			<value>0</value>
+		</global_radiation>
+		<global_radiation UM="W/mq">
+			<date>2018-12-19T00:15:00+01</date>
+			<value>0</value>
+		</global_radiation>
+	</global_radiation_list>
+	<relative_humidity_list>
+		<relative_humidity UM="%">
+			<date>2018-12-19T00:00:00+01</date>
+			<value>76</value>
+		</relative_humidity>
+		<relative_humidity UM="%">
+			<date>2018-12-19T00:15:00+01</date>
+			<value>77</value>
+		</relative_humidity>
+	</relative_humidity_list>
+	<snow_depth_list />
+</lastData>
