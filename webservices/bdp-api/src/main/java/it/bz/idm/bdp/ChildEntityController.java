@@ -24,6 +24,7 @@ public class ChildEntityController extends RestController{
 	private String childStationType;
 	@Override
 	public DataRetriever initDataRetriever() {
+		childrenRetriever.connect();
 		return childrenRetriever;
 	}
 }
