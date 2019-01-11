@@ -15,15 +15,17 @@ import it.bz.idm.bdp.ws.RestController;
 @Conditional(ChildCondition.class)
 @RequestMapping("/rest/${bdp.childrenpath}")
 @PropertySource("classpath:META-INF/spring/application.properties")
-public class ChildEntityController extends RestController{
+public class ChildEntityController extends RestController {
 
 	@Autowired
 	private RestClient childrenRetriever;
 
 	@Value("${bdp.childstationtype}")
-	private String childStationType;
+	protected String stationType;
+
 	@Override
 	public DataRetriever initDataRetriever() {
+		childrenRetriever.setStationType(stationType);
 		childrenRetriever.connect();
 		return childrenRetriever;
 	}
