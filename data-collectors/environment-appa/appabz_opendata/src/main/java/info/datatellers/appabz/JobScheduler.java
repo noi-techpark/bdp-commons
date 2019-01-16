@@ -1,20 +1,26 @@
 package info.datatellers.appabz;
 
-import it.bz.idm.bdp.dto.*;
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Nicolò Molinari, Datatellers.
  *
  * This is the starting point of the Data Collector.
+ * See Tester class for documentation.
  */
 
-public class Tester {
+@Component("jobScheduler")
+public class JobScheduler {
 
-    private static final Logger LOG = LogManager.getLogger(Tester.class.getName());
+    private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
 
-    public static void main(String[] args)
+    public void pushData()
     {
         LOG.info("Data Collector execution started.");
         DataMapDto rootMap = constructRootMap();
@@ -22,12 +28,13 @@ public class Tester {
         LOG.info("Data Collector execution terminated.");
     }
 
+    @SuppressWarnings("Duplicates")
     private static DataMapDto<RecordDtoImpl> constructRootMap()
     {
         LOG.info("Starting to construct rootMap.");
         DataPusher pusher = new DataPusher();
-        StationList stationList = pusher.mapStations();
-        String[] pollutersName = pusher.mapTypes().keySet().toArray(new String[0]);
+        StationList stationList = pusher.mapStations(false);
+        String[] pollutersName = pusher.mapTypes(false).keySet().toArray(new String[0]);
 
         DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
         for (StationDto station : stationList)

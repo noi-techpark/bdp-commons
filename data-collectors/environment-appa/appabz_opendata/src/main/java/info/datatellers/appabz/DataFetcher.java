@@ -30,6 +30,12 @@ public class DataFetcher {
     private final String measurementsEndpoint = rb.getString("odh.url.polluters.measurements");
     private ArrayList<JsonElement> rawStations = new ArrayList<>();
 
+    /**
+     * This method connects to the endpoint for station metadata retrieval, using the value stored inside
+     * the config.properties file. The main logic of data retrieval is handled inside fetchStationsHandler
+     * and is pretty trivial. See code for more info.
+     * @return the return value of fetchStationsHandler, which is an ArrayList filled with Json Elements.
+     */
     public ArrayList<JsonElement> fetchStations()
     {
             LOG.debug("Endpoint requested: " + stationsEndpoint);
@@ -46,6 +52,13 @@ public class DataFetcher {
             }
     }
 
+    /**
+     * This method connects to the endpoint for polluters metadata retrieval, using the value stored inside
+     * the config.properties file. The main logic of data retrieval is handled inside fetchPollutersHandler
+     * and is pretty trivial. See code for more info.
+     * @return the return value of fetchPollutersHandler, which is an HashMap with ID's equals to endpoint's
+     * DESC_I and values consisting in endpoint's UNIT.
+     */
     public HashMap<String, String> fetchPolluters()
     {
             LOG.debug("Endpoint requested: " + pollutersEndpoint);
@@ -62,6 +75,11 @@ public class DataFetcher {
             }
     }
 
+    /**
+     * @param connection already initialized URLConnection object, connected to station's metadata endpoint.
+     * @param builder already initialized StringBuilder object.
+     * @return an ArrayList filled with Json Elements.
+     */
     private ArrayList<JsonElement> fetchStationsHandler(URLConnection connection, StringBuilder builder)
     {
         JsonElement parsedStations;
@@ -84,6 +102,11 @@ public class DataFetcher {
         return rawStations;
     }
 
+    /**
+     * @param connection already initialized URLConnection object, connected to polluters' metadata endpoint.
+     * @param builder already initialized StringBuilder object.
+     * @return an HashMap with ID's equals to endpoint's DESC_I and values consisting in endpoint's UNIT.
+     */
     private HashMap<String,String> fetchPollutersHandler(URLConnection connection, StringBuilder builder)
     {
         ArrayList<String> rawPolluters = new ArrayList<>();
@@ -114,11 +137,55 @@ public class DataFetcher {
         return pollutersMap;
     }
 
+    /**
+     * This method parses the json returned when the measurement request is made,
+     * and isolates the field containing the measurement's date.
+     * @return the said date, in form of a String.
+     */
+    @SuppressWarnings("Duplicates")
+    public String getDateOfRecord()
+    {
+        try {
+            URL website = new URL(measurementsEndpoint);
+            URLConnection connection;
+            StringBuilder builder = new StringBuilder();
+            connection = website.openConnection();
+            JsonArray parsed;
+
+            if (connection.getHeaderFields().get(null).get(0).contains("200"))
+            {
+                connect(connection, builder);
+
+                parsed = new JsonParser().parse(builder.toString()).getAsJsonArray();
+
+                LOG.debug("Extracting polluters metadata...");
+
+                JsonElement polluter = parsed.get(0);
+                return polluter.getAsJsonObject().get("DATE").getAsString().split("T")[0];
+            } else {
+                LOG.debug("Problems encountered while connecting to endpoint.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Helper method used to partially avoid code duplication.
+     * @param connection already initialized URLConnection object.
+     * @param builder already initialized StringBuilder object.
+     */
     private void connect(URLConnection connection, StringBuilder builder) {
         LOG.debug("Connection established.");
         parseInputJson(connection, builder);
     }
 
+    /**
+     * Helper method used to partially avoid code duplication.
+     * @param connection already initialized URLConnection object.
+     * @param builder already initialized StringBuilder object.
+     */
     private void parseInputJson(URLConnection connection, StringBuilder builder) {
         BufferedReader in;
         String inputLine;
@@ -137,6 +204,31 @@ public class DataFetcher {
         }
     }
 
+    /**
+     * This method interrogates the endpoints in the way specified inside the requirements PDF file at pp.4:
+     *
+     * "[...] è possibile fare richieste mirate per stazione e tipo misurato, ad es.:
+     * http://dati.retecivica.bz.it/services/airquality/timeseries?meas_code=PM10&type=1&station_code=BZ6
+     * ritorna i valori di PM10 rilevati nelle ultime 24 ore dalla stazione Bolzano 6 – Via Amba Alagi
+     * Probabilmente conviene interrogare il servizio con questa modalità per semplicità e leggibilità nel
+     * codice del data collector. In questo caso il web-service non consente di accedere ai dati storici. [...]"
+     *
+     * that is, every day for every polluter of every station a request is made to the endpoint.
+     * @param polluterID used to correctly struct the url used for the request.
+     * @param stationID used to correctly struct the url used for the request.
+     * @return A TreeMap, containing the actual data measurements, with keys equals
+     * to two-digits hours (e.g. midnight --> "00", 1 A.M. --> "01" etc.) containing
+     * an ArrayList of String of length 2, with the date (e.g. "2019-01-11T00:00:00")
+     * and the value (e.g. "0.1343"), with the following structure:
+     * -- key (00)
+     *     |--> date (2019-01-11T00:00:00)
+     *     |--> value (0.1343)
+     * -- key (01)
+     *     |--> date (...)
+     *     |--> value(...)
+     * and so on.
+     */
+    @SuppressWarnings("Duplicates")
     TreeMap<String, ArrayList<String>> interrogateEndpoint(String polluterID, String stationID)
     {
         String specificEndpoint = measurementsEndpoint + "?meas_code=" + polluterID + "&type=1&station_code=" + stationID.split("[_]")[1];

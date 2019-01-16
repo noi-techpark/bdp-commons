@@ -28,7 +28,7 @@ public class DataPusher extends JSONPusher {
      *
      * @return stations, a StationList object filled with stations metadata.
      */
-    public StationList mapStations() {
+    public StationList mapStations(boolean test) {
         LOG.info("Mapping stations.");
         ArrayList<JsonElement> rawStations = new DataFetcher().fetchStations();
         StationList stations = new StationList();
@@ -53,7 +53,10 @@ public class DataPusher extends JSONPusher {
             stations.add(station);
         }
         LOG.info("Stations mapped.");
-        this.syncStations(stations);
+        if(!test)
+        {
+            this.syncStations(stations);
+        }
         LOG.debug("Station synced into database.");
         return stations;
     }
@@ -66,7 +69,7 @@ public class DataPusher extends JSONPusher {
      * @return typesMap, an HashMap object filled with DataTypeDto object. The key to access
      * such objects inside the map is the polluter acronym.
      */
-    public HashMap<String, DataTypeDto> mapTypes() {
+    public HashMap<String, DataTypeDto> mapTypes(boolean test) {
         LOG.info("Mapping polluters.");
 
         DataFetcher fetcher = new DataFetcher();
@@ -89,7 +92,10 @@ public class DataPusher extends JSONPusher {
         }
 
         LOG.info("Polluters mapped.");
-        this.syncDataTypes(typesDto);
+        if (!test)
+        {
+            this.syncDataTypes(typesDto);
+        }
         LOG.debug("Polluters synced into database.");
         return typesMap;
     }
@@ -130,7 +136,7 @@ public class DataPusher extends JSONPusher {
                     String[] dates = dataMap.keySet().toArray(new String[0]);
                     for (String date : dates) {
                         if (!dataMap.get(date).get(1).equals(String.valueOf(-1))){
-                            SimpleRecordDto record = new SimpleRecordDto(dateHelper.getTimeStamp(dataMap.get(date).get(0)), dataMap.get(date).get(1), 3600);
+                            SimpleRecordDto record = new SimpleRecordDto(dateHelper.getTimeStamp(dataMap.get(date).get(0)), Double.valueOf(dataMap.get(date).get(1)), 3600);
                             stationMeasurements++;
                             recordDtoList.add(record);
                             LOG.debug("Record set.");
@@ -213,7 +219,7 @@ public class DataPusher extends JSONPusher {
     }
 
     @SuppressWarnings("unchecked")
-    <T> void mapData(T data, boolean test){
+    public <T> void mapData(T data, boolean test){
         this.fillRootMap((DataMapDto<RecordDtoImpl>) data, test);
     }
 }

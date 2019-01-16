@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>groupId</groupId>
-    <artifactId>bdp-appabz-pollution-airquality - Medie Orarie</artifactId>
+    <artifactId>bdp-appabz-pollution-airquality</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>AppaBZ AirQuality data collector - Medie Orarie</name>
@@ -104,6 +104,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
+                <configuration>
+                    <webXml>src\main\webapp\WEB-INF\web.xml</webXml>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
