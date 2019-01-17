@@ -111,7 +111,7 @@ public class ChargePusher extends JSONPusher {
 				s.setLongitude(dto.getLongitude());;
 				s.setLatitude(dto.getLatitude());
 				s.setName(dto.getName()+"-"+point.getId());
-				s.setParentId(dto.getCode());
+				s.setParentStation(dto.getCode());
 				s.getMetaData().put("outlets",point.getOutlets());
 				s.setOrigin(env.getProperty(ORIGIN_KEY));
 				stations.add(s);

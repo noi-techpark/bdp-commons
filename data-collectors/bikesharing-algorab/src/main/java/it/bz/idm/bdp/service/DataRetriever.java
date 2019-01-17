@@ -166,7 +166,7 @@ public class DataRetriever{
 					Integer inStoreHouse = Integer.valueOf(result.get(3).getValue().toString());
 					String bikestation =BIKESTATION_ABBR+result.get(4).getValue().toString();
 					StationDto dto = new StationDto();
-					dto.setParentId(bikestation);
+					dto.setParentStation(bikestation);
 					dto.setId(BIKE_ABBR+identifier);
 					dto.setName(name);
 					dto.setStationType("BikeSharingBike");
