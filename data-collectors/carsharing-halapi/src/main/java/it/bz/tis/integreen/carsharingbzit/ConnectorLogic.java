@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import it.bz.idm.bdp.IntegreenPushable;
@@ -57,6 +58,8 @@ import it.bz.tis.integreen.carsharingbzit.api.ListVehiclesByStationsResponse.Sta
  */
 public class ConnectorLogic
 {
+	private static final String AVAILABLE_VEHICLES_FIELD_NAME = "availableVehicles";
+
 	private static final String CARSHARING_ORIGIN = "HAL-API";
 
 	final static long             INTERVALL                    = 10L * 60L * 1000L;
@@ -146,6 +149,12 @@ public class ConnectorLogic
 
 		it.bz.tis.integreen.carsharingbzit.api.CarsharingStationDto[] stations = responseGetStation.getStation();
 		StationList castedStations = castToBDP(stations);
+
+		it.bz.tis.integreen.carsharingbzit.api.CarsharingVehicleDto[] vehiclesDtos = responseVehicleDetails.getVehicle();
+		StationList castedVehicles = castToBDP(vehiclesDtos);
+		
+		countVehiclesPerStation(castedStations,castedVehicles);
+		
 		Object result = xmlrpcPusher.syncStations(CARSHARINGSTATION_DATASOURCE, castedStations);
 		if (result instanceof IntegreenException)
 		{
@@ -160,8 +169,6 @@ public class ConnectorLogic
 					+ stations.length
 					+ "\n";
 		}
-		it.bz.tis.integreen.carsharingbzit.api.CarsharingVehicleDto[] vehiclesDtos = responseVehicleDetails.getVehicle();
-		StationList castedVehicles = castToBDP(vehiclesDtos);
 		result = xmlrpcPusher.syncStations(CARSHARINGCAR_DATASOURCE, castedVehicles);
 		if (result instanceof IntegreenException)
 		{
@@ -177,6 +184,23 @@ public class ConnectorLogic
 					+ "\n";
 		}
 		return vehicleIdsByStationIds;
+	}
+
+	public static void countVehiclesPerStation(StationList stations, StationList vehicles) {
+		Map<String,Integer> temp = new HashMap<>();
+		for (StationDto v: vehicles) {
+			String parentStation = v.getParentStation();
+			Integer currentCount = temp.get(parentStation);
+			if (currentCount != null) {
+				 temp.put(parentStation, currentCount+1);
+			}
+			else
+				temp.put(parentStation, 1);
+		}
+		for (StationDto s : stations) {
+			Integer count = temp.get(s.getId());
+			s.getMetaData().put(AVAILABLE_VEHICLES_FIELD_NAME, count);
+		}
 	}
 
 	public static Set<String> fetchStations(ApiClient apiClient) throws IOException {
@@ -218,7 +242,7 @@ public class ConnectorLogic
 			castedDto.getMetaData().put("licensePlate",dto.getLicensePlate());
 			castedDto.getMetaData().put("model",dto.getModel());
 			castedDto.getMetaData().put("showType",dto.getShowType());
-			castedDto.setParentId(dto.getStationId());
+			castedDto.setParentStation(dto.getStationId());
 			dtos.add(castedDto);
 		}
 		return dtos;
@@ -230,10 +254,11 @@ public class ConnectorLogic
 		for (it.bz.tis.integreen.carsharingbzit.api.CarsharingStationDto dto : stations){
 			StationDto castedDto = new StationDto();
 			castedDto.getMetaData().put("access",dto.getAccess());
-			castedDto.getMetaData().put("bookMode",dto.getBookMode());
+			castedDto.getMetaData().put("bookahead",dto.getBookMode().isCanBookAhead());
 			castedDto.getMetaData().put("company",dto.getCompany());
+			castedDto.getMetaData().put("spontaneously",dto.getBookMode().isSpontaneously());
 			castedDto.setCoordinateReferenceSystem(dto.getCrs());
-			castedDto.getMetaData().put("hasFixedParking",dto.isHasFixedParking());
+			castedDto.getMetaData().put("fixedParking",dto.isHasFixedParking());
 			castedDto.setId(dto.getId());
 			castedDto.setLatitude(dto.getLatitude());
 			castedDto.setLongitude(dto.getLongitude());
