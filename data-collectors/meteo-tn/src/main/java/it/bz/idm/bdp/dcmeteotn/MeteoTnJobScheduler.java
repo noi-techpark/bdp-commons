@@ -45,6 +45,10 @@ public class MeteoTnJobScheduler {
             }
         } catch (HttpClientErrorException e) {
             LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
+            throw e;
+        } catch (Exception e) {
+            LOG.error(pusher + " - " + e, e);
+            throw e;
         }
         LOG.debug("END.pushStations");
     }
@@ -62,6 +66,9 @@ public class MeteoTnJobScheduler {
                 pusher.syncDataTypes(dataTypes);
             }
 
+        } catch (HttpClientErrorException e) {
+            LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
+            throw e;
         } catch (Exception e) {
             LOG.error(pusher + " - " + e, e);
             throw e;
@@ -80,6 +87,7 @@ public class MeteoTnJobScheduler {
 
             //Send measurements separately for each station
             for (MeteoTnDto meteoTnDto : data) {
+                //Consider only the valid stations, in this way we also avoid to fetch data for invalid stations
                 boolean valid = meteoTnDto.isValid();
                 if ( valid ) {
                     Map<String, String> stationAttributes = meteoTnDto.getStationAttributes();
@@ -100,6 +108,9 @@ public class MeteoTnJobScheduler {
 //                pusher.pushData(stationRec);
 //            }
 
+        } catch (HttpClientErrorException e) {
+            LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
+            throw e;
         } catch (Exception e) {
             LOG.error(pusher + " - " + e, e);
             throw e;
