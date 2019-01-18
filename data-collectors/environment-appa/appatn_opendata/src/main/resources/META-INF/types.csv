@@ -1,0 +1,7 @@
+ID,NOME,SIGLA,UNITA_MISURA
+2,sulphur dioxide,so2,ug/mc
+4,ozone,o3,ug/mc
+6,carbon-monoxide,co,mg/mc
+9,nitrogen-dioxide,no2,ug/mc
+48,particulate-matter10,pm10,ug/mc
+53,particulate-matter2.5,pm25,ug/mc

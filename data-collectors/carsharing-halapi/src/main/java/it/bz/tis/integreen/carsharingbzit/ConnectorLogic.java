@@ -58,6 +58,8 @@ import it.bz.tis.integreen.carsharingbzit.api.ListVehiclesByStationsResponse.Sta
  */
 public class ConnectorLogic
 {
+	private static final String CARSHARING_ORIGIN = "HAL-API";
+
 	final static long             INTERVALL                    = 10L * 60L * 1000L;
 
 	public static final String    CARSHARINGSTATION_DATASOURCE = "Carsharingstation";
@@ -211,7 +213,7 @@ public class ConnectorLogic
 			castedDto.setLatitude(dto.getLatitude());
 			castedDto.setLongitude(dto.getLongitude());
 			castedDto.setName(dto.getName());
-			castedDto.setOrigin(dto.getOrigin());
+			castedDto.setOrigin(CARSHARING_ORIGIN);
 			castedDto.setBrand(dto.getBrand());
 			castedDto.setCrs(dto.getCrs());
 			castedDto.setLicensePlate(dto.getLicensePlate());
@@ -237,7 +239,7 @@ public class ConnectorLogic
 			castedDto.setLatitude(dto.getLatitude());
 			castedDto.setLongitude(dto.getLongitude());
 			castedDto.setName(dto.getName());
-			castedDto.setOrigin(dto.getOrigin());
+			castedDto.setOrigin(CARSHARING_ORIGIN);
 			dtos.add(castedDto);
 		}
 		return dtos;
