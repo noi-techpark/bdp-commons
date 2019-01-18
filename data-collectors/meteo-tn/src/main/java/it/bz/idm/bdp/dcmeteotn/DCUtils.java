@@ -193,7 +193,7 @@ public class DCUtils {
     public static Date convertStringTimezoneToDate(String inval) {
         Date retval = null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
             retval = sdf.parse(inval);
         } catch (Exception e1) {
             LOG.debug("Exception parsing date "+inval+": "+e1);
