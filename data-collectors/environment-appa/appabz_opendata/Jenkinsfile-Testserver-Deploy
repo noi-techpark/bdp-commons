@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    environment{
+      TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
+    }
+    stages {
+	stage('Configure'){
+	  steps{
+              sh 'sed -i -e "s%\\(property.basePath =\\).*\\$%\\1/var/log/opendatahub/data-collectors/%" data-collectors/environment-appa/appatn_opendata/src/main/resources/log4j2.properties'
+              sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1DEBUG%" data-collectors/environment-appa/appatn_opendata/src/main/resources/log4j2.properties'
+	  }
+	}
+        stage('Test') {
+            steps {
+              sh 'cd data-collectors/environment-appa/appatbz_opendata && mvn clean test'
+            }
+        }
+        stage('Build') {
+            steps {
+              sh 'cd data-collectors/environment-appa/appabz_opendata && mvn package'
+	    }
+	}
+	stage('Deploy') {
+            steps{
+                sh 'cd data-collectors/environment-appa/appabz_opendata/ && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+            }
+        }
+    }
+}
