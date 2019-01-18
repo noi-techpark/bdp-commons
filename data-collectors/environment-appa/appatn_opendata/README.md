@@ -1,4 +1,4 @@
-# APPATN ten minutes Data Collector
+# APPATN Opendata Data Collector
 
 ## Table of contents
 
