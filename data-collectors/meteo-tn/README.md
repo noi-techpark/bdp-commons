@@ -8,7 +8,7 @@ Data are provided by Meteotrentino (http://dati.meteotrentino.it/service.asmx).
 ## Analysis:
 
 For details regarding mapping from data provided by the service and the data used by the opendatahub, please see this analysis document:
-[181126_SpecificheIntegrazione_IDM.pdf](documentation/181126_SpecificheIntegrazione_IDM.pdf)
+[190118_SpecificheIntegrazione_IDM.pdf](documentation/190118_SpecificheIntegrazione_IDM.pdf)
 
 
 ## Configuration:
