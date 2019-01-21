@@ -6,8 +6,8 @@ pipeline {
     stages {
 	stage('Configure'){
 	  steps{
-              sh 'sed -i -e "s%\\(property.basePath =\\).*\\$%\\1/var/log/opendatahub/data-collectors/%" data-collectors/environment-appa/appatn_opendata/src/main/resources/log4j2.properties'
-              sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1DEBUG%" data-collectors/environment-appa/appatn_opendata/src/main/resources/log4j2.properties'
+              sh 'sed -i -e "s%\\(property.basePath =\\).*\\$%\\1/var/log/opendatahub/data-collectors/%" data-collectors/environment-appa/appabz_opendata/src/main/resources/log4j2.properties'
+              sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1DEBUG%" data-collectors/environment-appa/appabz_opendata/src/main/resources/log4j2.properties'
 	  }
 	}
         stage('Test') {
