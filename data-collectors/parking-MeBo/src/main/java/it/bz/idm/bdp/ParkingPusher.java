@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationList;
@@ -18,6 +19,18 @@ import it.bz.idm.bdp.json.JSONPusher;
 
 @Component
 public class ParkingPusher extends JSONPusher{
+
+	private static final String STATION_TYPE = "ParkingStation";
+
+	private static final String PARKINGSLOT_TYPEIDENTIFIER = "free";
+
+	private static final String PARKINGSLOT_METRIC = "Instantaneous";
+
+	private static final String TYPE_UNIT = "";
+
+	private static final String FORECAST_METRIC = "Forecast";
+
+	private static final String TYPEDESCRIPTION_SUFFIX = " minutes forecast";
 
 	public static final String FORECAST_PREFIX = "parking-forecast-";
 
@@ -89,11 +102,11 @@ public class ParkingPusher extends JSONPusher{
 		parkingClient.insertDataInto(dataMap);
 		parkingMeranoClient.insertDataInto(dataMap);
 		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry : dataMap.getBranch().entrySet()) {
-            System.out.println("Station: "+entry.getKey());
-            for (Map.Entry<String, DataMapDto<RecordDtoImpl>> typeEntry : entry.getValue().getBranch().entrySet()) {
-                System.out.println("\tDatatype: "+typeEntry.getKey()+" records:"+typeEntry.getValue().getData().size());
-            }
- }
+			System.out.println("Station: "+entry.getKey());
+			for (Map.Entry<String, DataMapDto<RecordDtoImpl>> typeEntry : entry.getValue().getBranch().entrySet()) {
+				System.out.println("\tDatatype: "+typeEntry.getKey()+" records:"+typeEntry.getValue().getData().size());
+			}
+		}
 		System.out.println();
 		pushData(dataMap);
 	}
@@ -103,14 +116,21 @@ public class ParkingPusher extends JSONPusher{
 
 	@Override
 	public String initIntegreenTypology() {
-		return "ParkingStation";
+		return STATION_TYPE;
 	}
 
 
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+
+	public static List<DataTypeDto> getDataTypeList() {
+		List<DataTypeDto> dataTypes = new ArrayList<>();
+		dataTypes.add(new DataTypeDto(PARKINGSLOT_TYPEIDENTIFIER,TYPE_UNIT,TYPE_UNIT,PARKINGSLOT_METRIC));
+		for (int minutesForecast:PREDICTION_FORECAST_TIMES_IN_MINUTES)
+			dataTypes.add(new DataTypeDto(FORECAST_PREFIX+ minutesForecast,TYPE_UNIT,minutesForecast+TYPEDESCRIPTION_SUFFIX,FORECAST_METRIC));
+		return dataTypes;
+	}
 }

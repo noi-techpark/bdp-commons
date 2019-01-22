@@ -1,7 +1,6 @@
 package it.bz.idm.bdp;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +12,6 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 @Component
 public class JobScheduler {
 
-	private static final List<DataTypeDto> dataTypes = new ArrayList<DataTypeDto>() {
-		private static final long serialVersionUID = -6024748755532284647L;
-
-	{
-		add(new DataTypeDto("parking-forecast","","60m","Forecast"));
-		add(new DataTypeDto("free","","","Instantaneous"));
-	}};
 	@Autowired
 	private ParkingPusher pusher;
 
@@ -47,9 +39,11 @@ public class JobScheduler {
 	}
 	public void syncDataTypes(){
 		try {
-			pusher.syncDataTypes(dataTypes);
+			List<DataTypeDto> dataTypeList = ParkingPusher.getDataTypeList();
+			pusher.syncDataTypes(dataTypeList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 }
