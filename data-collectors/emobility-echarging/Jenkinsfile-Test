@@ -37,7 +37,7 @@ pipeline {
             }
         }
 
-        stage('Test - alperia') {c
+        stage('Test - alperia') {
             steps {
                 sh 'cp "${ALPERIA_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
                 sh 'cd ${FOLDER} && mvn -B -DfinalName=emobility-echarging-alperia clean verify'
