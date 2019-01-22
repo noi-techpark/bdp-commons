@@ -10,7 +10,7 @@ pipeline {
         TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
         TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
         SRC_FOLDER = 'data-collectors/vehicletraffic-bluetooth'
-        LOG_FILE = '/var/log/opendatahub/data-collectors/bluetooth-endpoint.log'
+        LOG_FILE = '/var/log/opendatahub/data-collectors/vehicletraffic-bluetooth.log'
     }
 
     stages {
