@@ -9,7 +9,7 @@ pipeline {
     environment {
 		TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
         TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
-        SRC_FOLDER = 'data-collectors/traffic-bz'
+        FOLDER = 'data-collectors/traffic-bz'
         LOG_FILE = '/var/log/opendatahub/data-collectors/traffic-bz.log'
 		SENSORS_CONFIG=credentials('sensors-config.properties')
 		SENSORS_WSDL=credentials('sensors-wsdl')
@@ -24,24 +24,24 @@ pipeline {
                 sh 'echo "    </servers>" >> ~/.m2/settings.xml'
                 sh 'echo "</settings>" >> ~/.m2/settings.xml'
 
-		        sh 'cat "${SENSORS_CONFIG}" > ${SRC_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-		        sh 'cat "${SENSORS_CONFIG}" > ${SRC_FOLDER}/src/test/resources/META-INF/spring/application.properties'
-		        sh 'cp "${SENSORS_WSDL}" ${SRC_FOLDER}/src/main/resources/DataDispatcherWebServices.wsdl'
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${FOLDER}/src/main/resources/log4j.properties'
+	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE}%" ${FOLDER}/src/main/resources/log4j.properties'
 
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${SRC_FOLDER}/src/main/resources/log4j.properties'
-	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE}%" ${SRC_FOLDER}/src/main/resources/log4j.properties'
+				sh 'cat "${SENSORS_CONFIG}" > ${FOLDER}/src/main/resources/META-INF/spring/application.properties'
+		        sh 'cat "${SENSORS_CONFIG}" > ${FOLDER}/src/test/resources/META-INF/spring/application.properties'
+		        sh 'cp "${SENSORS_WSDL}" ${FOLDER}/src/main/resources/DataDispatcherWebServices.wsdl'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'cd ${SRC_FOLDER} && mvn -B clean test verify'
+                sh 'cd ${FOLDER} && mvn -B clean test verify'
             }
         }
 
 	    stage('Deploy') {
             steps {
-                sh 'cd ${SRC_FOLDER} && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -X'
+                sh 'cd ${FOLDER} && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -X'
             }
         }
     }
