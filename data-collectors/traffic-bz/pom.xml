@@ -165,7 +165,6 @@
 				<version>2.21.0</version>
 				<configuration>
 					<useSystemClassLoader>false</useSystemClassLoader>
-					<forkCount>0</forkCount>
 		        </configuration>
 			</plugin>
 			<plugin>
