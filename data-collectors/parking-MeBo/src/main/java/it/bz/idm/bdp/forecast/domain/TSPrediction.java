@@ -7,11 +7,23 @@ public class TSPrediction{
 	private double lowerConfidenceLevel;
 	private String status;
 
+	public TSPrediction() {
+		super();
+	}
+
+	public TSPrediction(Integer predictedFreeSlots, double upperConfidenceLevel, double lowerConfidenceLevel,
+			String status) {
+		super();
+		this.predictedFreeSlots = predictedFreeSlots;
+		this.upperConfidenceLevel = upperConfidenceLevel;
+		this.lowerConfidenceLevel = lowerConfidenceLevel;
+		this.status = status;
+	}
+
 	public Integer getPredictedFreeSlots() {
 		return predictedFreeSlots;
 	}
 
-	
 	public String getStatus() {
 		return this.status;
 	}
@@ -23,4 +35,5 @@ public class TSPrediction{
 	public double getLowerConfidenceLevel() {
 		return lowerConfidenceLevel;
 	}
+
 }
