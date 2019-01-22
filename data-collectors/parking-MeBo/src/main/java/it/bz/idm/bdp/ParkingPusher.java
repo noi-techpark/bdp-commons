@@ -19,6 +19,8 @@ import it.bz.idm.bdp.json.JSONPusher;
 @Component
 public class ParkingPusher extends JSONPusher{
 
+	public static final String FORECAST_PREFIX = "parking-forecast-";
+
 	public static final int[] PREDICTION_FORECAST_TIMES_IN_MINUTES = {30,60,90,120,150,180,210,240};
 
 	@Autowired
@@ -54,30 +56,12 @@ public class ParkingPusher extends JSONPusher{
 			DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
 			for (String stationIdentifier:identifers){
 				ParkingForecasts predictions = predictionRetriever.predict(stationIdentifier);
-				List<RecordDtoImpl> records = new ArrayList<>();
-				if (predictions != null){
-					for (Integer period : ParkingPusher.PREDICTION_FORECAST_TIMES_IN_MINUTES){
-						ParkingForecast prediction = predictions.findByTime(period);
-
-						Date date = new Date(prediction.getStartDate().getTime());
-						Double value = new Double(prediction.getPrediction().getPredictedFreeSlots().doubleValue());
-						SimpleRecordDto dto = new SimpleRecordDto(date.getTime(), value);
-						dto.setPeriod(period*60);
-						records.add(dto);
-					}
-				}
-				DataMapDto<RecordDtoImpl> typeMap = new DataMapDto<>();
-				DataMapDto<RecordDtoImpl> recordMap = new DataMapDto<>();
-				recordMap.setData(records);
-				if (typeMap.getBranch().get("parking-forecast") == null)
-					typeMap.getBranch().put("parking-forecast", recordMap);
+				DataMapDto<RecordDtoImpl> typeMap = generateTypeMap(predictions);
 				dataMap.getBranch().put(stationIdentifier, typeMap);
 			}
 			pushData(dataMap);
 		}
-
 	}
-
 
 	public DataMapDto<RecordDtoImpl> generateTypeMap(ParkingForecasts predictions) {
 		DataMapDto<RecordDtoImpl> typeMap = new DataMapDto<>();
@@ -92,7 +76,7 @@ public class ParkingPusher extends JSONPusher{
 				records.add(dto);
 				DataMapDto<RecordDtoImpl> recordMap = new DataMapDto<>();
 				recordMap.setData(records);
-				typeMap.getBranch().put("parking-forecast("+period+" minutes)", recordMap);
+				typeMap.getBranch().put(FORECAST_PREFIX+period, recordMap);
 			}
 		}
 		return typeMap;

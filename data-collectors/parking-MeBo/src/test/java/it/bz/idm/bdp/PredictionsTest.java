@@ -79,7 +79,7 @@ public class PredictionsTest extends AbstractJUnit4SpringContextTests{
 		assertNotNull(typeMap);
 		assertEquals(ParkingPusher.PREDICTION_FORECAST_TIMES_IN_MINUTES.length, typeMap.getBranch().entrySet().size());
 		for (Entry<String, DataMapDto<RecordDtoImpl>> entry: typeMap.getBranch().entrySet()) {
-			assertTrue(entry.getKey().startsWith("parking-forecast"));
+			assertTrue(entry.getKey().startsWith(ParkingPusher.FORECAST_PREFIX));
 			assertEquals(1,entry.getValue().getData().size());
 			RecordDtoImpl recordDtoImpl = entry.getValue().getData().get(0);
 			assertNotNull(recordDtoImpl);
