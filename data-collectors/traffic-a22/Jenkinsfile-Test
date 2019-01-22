@@ -1,0 +1,42 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile-java'
+            additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
+    }
+    
+    environment {
+        TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
+        TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
+        SRC_FOLDER = 'data-collectors/traffic-a22/A22Connector'
+        LOG_FILE = '/var/log/opendatahub/data-collectors/traffic-a22.log'
+    }
+
+    stages {
+        stage('Configure') {
+            steps {
+                sh 'sed -i -e "s/<\\/settings>$//g\" ~/.m2/settings.xml'
+                sh 'echo "    <servers>" >> ~/.m2/settings.xml'
+                sh 'echo "        ${TESTSERVER_TOMCAT_CREDENTIALS}" >> ~/.m2/settings.xml'
+                sh 'echo "    </servers>" >> ~/.m2/settings.xml'
+                sh 'echo "</settings>" >> ~/.m2/settings.xml'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${SRC_FOLDER}/src/main/resources/log4j.properties'
+	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE}%" ${SRC_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'cd ${SRC_FOLDER} && mvn -B clean test verify'
+            }
+        }
+
+	    stage('Deploy') {
+            steps {
+                sh 'cd ${SRC_FOLDER} && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -X'
+            }
+        }
+    }
+}
