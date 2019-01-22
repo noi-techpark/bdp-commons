@@ -29,12 +29,13 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'cd $SRC_FOLDER && mvn clean test verify'
+                sh 'cd $SRC_FOLDER && mvn -B clean test verify'
             }
         }
+
 	    stage('Deploy') {
             steps {
-                sh 'cd $SRC_FOLDER && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+                sh 'cd $SRC_FOLDER && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -X'
             }
         }
     }
