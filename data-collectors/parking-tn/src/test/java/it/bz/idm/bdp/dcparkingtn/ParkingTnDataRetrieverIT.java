@@ -179,7 +179,7 @@ public class ParkingTnDataRetrieverIT extends AbstractJUnit4SpringContextTests {
                     DATA_PUSH.equals(dataType) ? TEST_FILE_PUSH :
                     DATA_FETCH.equals(dataType) ? TEST_FILE_FETCH :
                     TEST_FILE_FETCH;
-            String URL = ParkingTnDataRetrieverTest.class.getResource(fileName).getFile();
+            String URL = ParkingTnDataRetrieverIT.class.getResource(fileName).getFile();
             File file = new File(URL);
             String testFilePath = file.getAbsolutePath();
             rr = new FileReader(testFilePath);
