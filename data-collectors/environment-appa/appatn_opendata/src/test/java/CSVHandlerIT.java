@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 public class CSVHandlerIT {
 
     private ResourceBundle rb = ResourceBundle.getBundle("test");
-    private static final Logger LOG = LogManager.getLogger(CSVHandler.class.getName());
+    private static final Logger LOG = LogManager.getLogger(CSVHandlerIT.class.getName());
 
     @Test
     public void parseStationsCSVTest()

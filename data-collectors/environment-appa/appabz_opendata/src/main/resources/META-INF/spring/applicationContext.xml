@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd">
+
+<context:component-scan base-package="info.datatellers.appabz"/>
+
+<task:scheduler id="Scheduler" pool-size="10" />
+<task:scheduled-tasks scheduler="Scheduler">
+	<task:scheduled ref="jobScheduler" method="pushData" cron="0 0 10 * * ?" />
+</task:scheduled-tasks>
+
+</beans>
