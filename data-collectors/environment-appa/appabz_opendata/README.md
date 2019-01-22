@@ -48,8 +48,8 @@ Before compiling and packaging a few steps must be executed:
 
 	Log4j manages the logging of the whole data collector, being it information, error or debug messages. Thus, it should be correctly configured. To do so, edit `src/main/resources/log4j2.properties` to match your desired configuration.
 
-    Minimal configuration is provided, given that you set `property.basePath` (use absolute paths).
-    
+    Minimal configuration is provided, given that you set `property.logFileFolder` (use absolute paths) and `property.logFileName`.
+
 2. Edit ResourceBundle config file
 
 	The one file that contains variables that are actively used at runtime from the data collector itself is `src/main/resources/config.properties`. Such file contains both sensitive and non-sensitive information. A list follows:

@@ -10,7 +10,8 @@ pipeline {
         TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
         TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
         FOLDER = 'data-collectors/meteo-tn'
-        LOG_FILE = '/var/log/opendatahub/data-collectors/meteo-tn.log'
+        LOG_FILE_FOLDER = '/var/log/opendatahub/data-collectors'
+        LOG_FILE_NAME = 'meteo-tn'
     }
 
     stages {
@@ -23,7 +24,7 @@ pipeline {
                 sh 'echo "</settings>" >> ~/.m2/settings.xml'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${FOLDER}/src/main/resources/log4j.properties'
-	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE}%" ${FOLDER}/src/main/resources/log4j.properties'
+	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
             }
         }
 
