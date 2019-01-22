@@ -1,60 +1,112 @@
 pipeline {
-    agent any
-    environment {
-       TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
-       ALPERIA_CONFIG = credentials('alperia_charging_config')
-       DRIWE_CONFIG = credentials('driwe_charging_config')
-       ROUTE220_CONFIG = credentials('route220_charging_config')
-       NEVICAM_CONFIG = credentials('nevicam_charging_config')
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile-java'
+            additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
     }
+    
+    environment {
+        TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
+        TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
+        FOLDER = 'data-collectors/emobility-echarging'
+        LOG_FILE_FOLDER = '/var/log/opendatahub/data-collectors'
+        LOG_FILE_NAME = 'emobility-echarging'
+        ALPERIA_CONFIG = credentials('alperia_charging_config')
+        DRIWE_CONFIG = credentials('driwe_charging_config')
+        ROUTE220_CONFIG = credentials('route220_charging_config')
+        NEVICAM_CONFIG = credentials('nevicam_charging_config')
+    }
+
     stages {
+        stage('Configure') {
+            steps {
+                sh 'sed -i -e "s/<\\/settings>$//g\" ~/.m2/settings.xml'
+                sh 'echo "    <servers>" >> ~/.m2/settings.xml'
+                sh 'echo "        ${TESTSERVER_TOMCAT_CREDENTIALS}" >> ~/.m2/settings.xml'
+                sh 'echo "    </servers>" >> ~/.m2/settings.xml'
+                sh 'echo "</settings>" >> ~/.m2/settings.xml'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+
         stage('Test') {
             steps {
-               sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/emobility-echarging/src/test/resources/log4j.properties'
-               sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-utests.log%" data-collectors/emobility-echarging/src/test/resources/log4j.properties'
-               sh 'cd data-collectors/emobility-echarging && mvn clean test'
-
-               sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-alperia-itests.log%" data-collectors/emobility-echarging/src/test/resources/log4j.properties' 
-               sh 'cp "$ALPERIA_CONFIG" data-collectors/emobility-echarging/src/test/resources/META-INF/spring/'
-               sh 'cd data-collectors/emobility-echarging && mvn -DfinalName=dc-emobility-alperia verify'
-
-               sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-driwe-itests.log%" data-collectors/emobility-echarging/src/test/resources/log4j.properties' 
-               sh 'cp "$DRIWE_CONFIG" data-collectors/emobility-echarging/src/test/resources/META-INF/spring/'
-               sh 'cd data-collectors/emobility-echarging && mvn -DfinalName=dc-emobility-driwe verify'
-
-               sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-route220-itests.log%" data-collectors/emobility-echarging/src/test/resources/log4j.properties'
-               sh 'cp "$ROUTE220_CONFIG" data-collectors/emobility-echarging/src/test/resources/META-INF/spring/'
-               sh 'cd data-collectors/emobility-echarging && mvn -DfinalName=dc-emobility-route220 verify'
-
-               sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-nevicam-itests.log%" data-collectors/emobility-echarging/src/test/resources/log4j.properties'
-               sh 'cp "$NEVICAM_CONFIG" data-collectors/emobility-echarging/src/test/resources/META-INF/spring/'
-               sh 'cd data-collectors/emobility-echarging && mvn -DfinalName=dc-emobility-nevicam verify'
+                sh 'cd ${FOLDER} && mvn -B clean test'
             }
         }
-        stage('Build&Deploy') {
+
+        stage('Test - alperia') {c
             steps {
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/emobility-echarging/src/main/resources/log4j.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-alperia.log%" data-collectors/emobility-echarging/src/main/resources/log4j.properties' 
-                sh 'cp "$ALPERIA_CONFIG" data-collectors/emobility-echarging/src/main/resources/META-INF/spring/'
-                sh 'cd data-collectors/emobility-echarging && mvn -DfinalName=dc-emobility-alperia clean package'
-                sh 'cd data-collectors/emobility-echarging && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/dc-emobility-alperia'
-
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-driwe.log%" data-collectors/emobility-echarging/src/main/resources/log4j.properties' 
-                sh 'cp "$DRIWE_CONFIG" data-collectors/emobility-echarging/src/main/resources/META-INF/spring/'
-                sh 'cd data-collectors/emobility-echarging && mvn -DfinalName=dc-emobility-driwe clean package'
-                sh 'cd data-collectors/emobility-echarging && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/dc-emobility-driwe'
-
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-route220.log%" data-collectors/emobility-echarging/src/main/resources/log4j.properties' 
-                sh 'cp "$ROUTE220_CONFIG" data-collectors/emobility-echarging/src/main/resources/META-INF/spring/'
-                sh 'cd data-collectors/emobility-echarging && mvn -DfinalName=dc-emobility-route220 clean package'
-                sh 'cd data-collectors/emobility-echarging && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/dc-emobility-alperia'
-
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/dc-emobility-nevicam.log%" data-collectors/emobility-echarging/src/main/resources/log4j.properties'
-                sh 'cp "$NEVICAM_CONFIG" data-collectors/emobility-echarging/src/main/resources/META-INF/spring/'
-                sh 'cd data-collectors/emobility-echarging && mvn -DfinalName=dc-emobility-nevicam clean package'
-                sh 'cd data-collectors/emobility-echarging && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/dc-emobility-nevicam'
+                sh 'cp "${ALPERIA_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'cd ${FOLDER} && mvn -B -DfinalName=emobility-echarging-alperia clean verify'
             }
         }
 
+        stage('Test - driwe') {
+            steps {
+                sh 'cp "${DRIWE_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'cd ${FOLDER} && mvn -B -DfinalName=emobility-echarging-driwe clean verify'
+            }
+        }
+
+        stage('Test - route220') {
+            steps {
+                sh 'cp "${ROUTE220_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'cd ${FOLDER} && mvn -B -DfinalName=emobility-echarging-route220 clean verify'
+            }
+        }
+
+        stage('Test - nevicam') {
+            steps {
+                sh 'cp "${NEVICAM_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'cd ${FOLDER} && mvn -B -DfinalName=emobility-echarging-nevicam clean verify'
+            }
+        }
+
+        stage('Deploy - alperia') {
+            environment {
+                LOG_FILE_NAME = 'emobility-echarging-alperia'
+            }
+            steps {
+                sh 'cp "${ALPERIA_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
+                sh 'cd ${FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=emobility-echarging-alperia'
+            }
+        }
+
+        stage('Deploy - driwe') {
+            environment {
+                LOG_FILE_NAME = 'emobility-echarging-driwe'
+            }
+            steps {
+                sh 'cp "${DRIWE_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
+                sh 'cd ${FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=emobility-echarging-driwe'
+            }
+        }
+
+        stage('Deploy - route220') {
+            environment {
+                LOG_FILE_NAME = 'emobility-echarging-route220'
+            }
+            steps {
+                sh 'cp "${ROUTE220_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
+                sh 'cd ${FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=emobility-echarging-route220'
+            }
+        }
+
+        stage('Deploy - nevicam') {
+            environment {
+                LOG_FILE_NAME = 'emobility-echarging-nevicam'
+            }
+            steps {
+                sh 'cp "${NEVICAM_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
+                sh 'cd ${FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=emobility-echarging-nevicam'
+            }
+        }
     }
 }
