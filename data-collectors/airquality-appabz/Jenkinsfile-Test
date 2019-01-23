@@ -9,9 +9,9 @@ pipeline {
     environment {
         TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
         TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
-        FOLDER = 'data-collectors/vehicletraffic-bluetooth'
+        FOLDER = 'data-collectors/airquality-appabz'
         LOG_FILE_FOLDER = '/var/log/opendatahub/data-collectors'
-        LOG_FILE_NAME = 'vehicletraffic-bluetooth'
+        LOG_FILE_NAME = 'airquality-appabz'
         FTP_KEYFILE = credentials('bdp-airquality-datacollector-appabz-sftp-key-testserver')
 		FTP_KNOWN_HOSTS = credentials('bdp-airquality-datacollector-appabz-sftp-knownhosts')
 		FTP_PASS = credentials('bdp-airquality-datacollector-appabz-sftp-passphrase-testserver')
