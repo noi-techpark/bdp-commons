@@ -7,8 +7,6 @@ pipeline {
     }
     
     environment {
-        TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
-        TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
         FOLDER = "data-collectors/vehicletraffic-bluetooth"
         ARTIFACT_NAME = "vehicletraffic-bluetooth"
         LOG_FILE_FOLDER = "/var/log/opendatahub/data-collectors"
@@ -18,26 +16,20 @@ pipeline {
     stages {
         stage('Configure') {
             steps {
-                sh 'sed -i -e "s/<\\/settings>$//g\" ~/.m2/settings.xml'
-                sh 'echo "    <servers>" >> ~/.m2/settings.xml'
-                sh 'echo "        ${TESTSERVER_TOMCAT_CREDENTIALS}" >> ~/.m2/settings.xml'
-                sh 'echo "    </servers>" >> ~/.m2/settings.xml'
-                sh 'echo "</settings>" >> ~/.m2/settings.xml'
-
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${FOLDER}/src/main/resources/log4j.properties'
 	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
             }
         }
 
-        stage('Test') {
+        stage('Build') {
             steps {
-                sh 'cd ${FOLDER} && mvn -B -U clean test verify'
+                sh 'cd ${FOLDER} && mvn -B -U clean package'
             }
         }
 
-	    stage('Deploy') {
+	    stage('Archive') {
             steps {
-                sh 'cd ${FOLDER} && mvn -B -U tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+                archiveArtifacts artifacts: "${FOLDER}/target/dc-${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
     }
