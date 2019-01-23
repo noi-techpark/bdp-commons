@@ -31,7 +31,9 @@ import it.bz.idm.bdp.json.JSONPusher;
 @Service
 public class ParkingTnDataPusher extends JSONPusher {
 
-    private static final Logger LOG = LogManager.getLogger(ParkingTnDataPusher.class.getName());
+    public static final String PARKING_TYPE_IDENTIFIER = "free";
+
+	private static final Logger LOG = LogManager.getLogger(ParkingTnDataPusher.class.getName());
 
     @Autowired
     private Environment env;
@@ -85,7 +87,6 @@ public class ParkingTnDataPusher extends JSONPusher {
         int countMeasures = 0;
 
         for (ParkingTnDto dto: data) {
-
             StationDto stationDto = dto.getStation();
             ParkingAreaServiceDto extDto = dto.getParkingArea();
             Integer slotsAvailable = extDto.getSlotsAvailable();
@@ -98,10 +99,12 @@ public class ParkingTnDataPusher extends JSONPusher {
                 record.setPeriod(period);
 
                 //Check if we already treated this station (branch), if not found create the map and the list of records
-                DataMapDto<RecordDtoImpl> recordsByType = map.getBranch().get(stationDto.getId());
-                if ( recordsByType == null ) {
-                    recordsByType = new DataMapDto<RecordDtoImpl>();
-                    map.getBranch().put(stationDto.getId(), recordsByType);
+                DataMapDto<RecordDtoImpl> typeMap = map.getBranch().get(stationDto.getId());
+                if ( typeMap  == null ) {
+                    typeMap  = new DataMapDto<RecordDtoImpl>();
+                    map.getBranch().put(stationDto.getId(), typeMap);
+                    DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<>();
+                    typeMap.getBranch().put(PARKING_TYPE_IDENTIFIER, recordsByType);
                     List<RecordDtoImpl> dataList = new ArrayList<RecordDtoImpl>();
                     recordsByType.setData(dataList);
                     countBranches++;
@@ -109,7 +112,7 @@ public class ParkingTnDataPusher extends JSONPusher {
                 }
 
                 //Add the measure in the list
-                List<RecordDtoImpl> records = recordsByType.getData();
+                List<RecordDtoImpl> records = typeMap.getBranch().get(PARKING_TYPE_IDENTIFIER).getData();
                 records.add(record);
                 LOG.debug("ADD  MEASURE:  id="+stationDto.getId()+", slotsAvailable="+slotsAvailable);
             } else {

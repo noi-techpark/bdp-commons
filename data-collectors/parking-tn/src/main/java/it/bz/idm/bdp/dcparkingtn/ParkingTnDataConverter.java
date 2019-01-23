@@ -122,8 +122,8 @@ public class ParkingTnDataConverter {
             station.setStationType(getStationType());
 
             //From ParkingStationDto
-            station.getMetaData().put("slots",extDto.getSlotsTotal());
-            station.getMetaData().put("address",extDto.getDescription());
+            station.getMetaData().put("capacity",extDto.getSlotsTotal());
+            station.getMetaData().put("mainaddress",extDto.getDescription());
             //OMITTED: station.setPhone(phone);
         }
 
