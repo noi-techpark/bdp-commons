@@ -18,6 +18,10 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
 <Configuration>
+	<Properties>
+    	<Property name="logFileFolder"></property>
+    	<Property name="logFileName"></property>
+  	</Properties>
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="LOGENTRY %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
