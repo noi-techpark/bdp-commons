@@ -33,14 +33,14 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'cd ${FOLDER} && mvn -B clean test'
+                sh 'cd ${FOLDER} && mvn -B -U clean test'
             }
         }
 
         stage('Test - alperia') {
             steps {
                 sh 'cp "${ALPERIA_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'cd ${FOLDER} && mvn -B -DfinalName=emobility-echarging-alperia clean verify'
+                sh 'cd ${FOLDER} && mvn -B -U -DfinalName=emobility-echarging-alperia clean verify'
             }
         }
 

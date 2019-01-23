@@ -36,13 +36,13 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'cd ${FOLDER} && mvn -B clean test'
+                sh 'cd ${FOLDER} && mvn -B -U clean test'
             }
         }
 
 	    stage('Deploy') {
             steps {
-                sh 'cd ${FOLDER} && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+                sh 'cd ${FOLDER} && mvn -B -U tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
             }
         }
     }
