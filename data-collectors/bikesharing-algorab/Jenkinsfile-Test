@@ -9,9 +9,9 @@ pipeline {
     environment {
         TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
         TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
-        FOLDER = 'data-collectors/parking-tn'
+        FOLDER = 'data-collectors/bikesharing-algorab'
         LOG_FILE_FOLDER = '/var/log/opendatahub/data-collectors'
-        LOG_FILE_NAME = 'parking-tn'
+        LOG_FILE_NAME = 'bikesharing-algorab'
     }
 
     stages {

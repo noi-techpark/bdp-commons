@@ -9,9 +9,11 @@ pipeline {
     environment {
         TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
         TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
-        FOLDER = 'data-collectors/parking-tn'
+        FOLDER = 'data-collectors/parking-MeBo'
         LOG_FILE_FOLDER = '/var/log/opendatahub/data-collectors'
-        LOG_FILE_NAME = 'parking-tn'
+        LOG_FILE_NAME = 'parking-MeBo'
+        ZRX_ENDPOINT = credentials('smg_zrx_endpoint')
+        PARKING_PROPS = credentials('parking-datacollector.properties')
     }
 
     stages {
@@ -25,12 +27,14 @@ pipeline {
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${FOLDER}/src/main/resources/log4j.properties'
 	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
+
+                sh 'cat "${PARKING_PROPS}" > ${FOLDER}/src/main/resources/META-INF/spring/app.properties'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'cd ${FOLDER} && mvn -B clean test verify'
+                sh 'cd ${FOLDER} && mvn -B -Dit.test=ThirdPartyIT clean test verify'
             }
         }
 

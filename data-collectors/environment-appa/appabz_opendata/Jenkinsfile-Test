@@ -9,9 +9,9 @@ pipeline {
     environment {
         TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
         TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
-        FOLDER = 'data-collectors/parking-tn'
+        FOLDER = 'data-collectors/environment-appa/appabz_opendata'
         LOG_FILE_FOLDER = '/var/log/opendatahub/data-collectors'
-        LOG_FILE_NAME = 'parking-tn'
+        LOG_FILE_NAME = 'appabz-opendata'
     }
 
     stages {
@@ -23,8 +23,9 @@ pipeline {
                 sh 'echo "    </servers>" >> ~/.m2/settings.xml'
                 sh 'echo "</settings>" >> ~/.m2/settings.xml'
 
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${FOLDER}/src/main/resources/log4j.properties'
-	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(property.logFileFolder =\\).*\\$%\\1${LOG_FILE_FOLDER}%" ${FOLDER}/src/main/resources/log4j2.properties'
+                sh 'sed -i -e "s%\\(property.logFileName =\\).*\\$%\\1${LOG_FILE_NAME}%" ${FOLDER}/src/main/resources/log4j2.properties'
+                sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1DEBUG%" ${FOLDER}/src/main/resources/log4j2.properties'
             }
         }
 
