@@ -27,7 +27,6 @@ pipeline {
                 sh 'echo "    </servers>" >> ~/.m2/settings.xml'
                 sh 'echo "</settings>" >> ~/.m2/settings.xml'
 
-                sh 'mkdir -p ${LOG_FILE_FOLDER}'
                 sh 'sed -i -e "s%\\(property.logFileFolder =\\).*\\$%\\1${LOG_FILE_FOLDER}%" ${FOLDER}/src/main/resources/log4j2.properties'
                 sh 'sed -i -e "s%\\(property.logFileName =\\).*\\$%\\1${LOG_FILE_NAME}%" ${FOLDER}/src/main/resources/log4j2.properties'
                 sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1DEBUG%" ${FOLDER}/src/main/resources/log4j2.properties'
