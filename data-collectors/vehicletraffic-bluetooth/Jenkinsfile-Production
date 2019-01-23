@@ -7,29 +7,29 @@ pipeline {
     }
     
     environment {
-        FOLDER = "data-collectors/vehicletraffic-bluetooth"
-        ARTIFACT_NAME = "vehicletraffic-bluetooth"
-        LOG_FILE_FOLDER = "/var/log/opendatahub/data-collectors"
-        LOG_FILE_NAME = "dc-${ARTIFACT_NAME}"
+        PROJECT = "vehicletraffic-bluetooth"
+        PROJECT_FOLDER = "data-collectors/${PROJECT}"
+        LOG_FOLDER = "/var/log/opendatahub/data-collectors"
+        ARTIFACT_NAME = "dc-${PROJECT}"
     }
 
     stages {
         stage('Configure') {
             steps {
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${FOLDER}/src/main/resources/log4j.properties'
-	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'cd ${FOLDER} && mvn -B -U clean package'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean package'
             }
         }
 
 	    stage('Archive') {
             steps {
-                archiveArtifacts artifacts: "${FOLDER}/target/dc-${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
     }
