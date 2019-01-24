@@ -1,8 +1,5 @@
 package it.bz.idm.bdp.dcmeteotn;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -23,9 +20,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.meteo.MeteoStationDto;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class MeteoTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {

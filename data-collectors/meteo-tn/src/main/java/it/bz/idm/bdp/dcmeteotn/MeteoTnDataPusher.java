@@ -25,8 +25,8 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.meteo.MeteoStationDto;
 import it.bz.idm.bdp.json.JSONPusher;
 
 @Service
@@ -88,7 +88,7 @@ public class MeteoTnDataPusher extends JSONPusher {
 
         for (MeteoTnDto dto : data) {
 
-            MeteoStationDto stationDto = dto.getStation();
+            StationDto stationDto = dto.getStation();
 
             //Exclude Stations having endDate<today
             if ( dto.isValid() ) {
@@ -176,7 +176,7 @@ public class MeteoTnDataPusher extends JSONPusher {
         int countStations = 0;
         StationList stations = new StationList();
         for (MeteoTnDto dto : data) {
-            MeteoStationDto stationDto = dto.getStation();
+            StationDto stationDto = dto.getStation();
             Map<String, String> stationAttributes = dto.getStationAttributes();
             Object endDate = stationAttributes.get("enddate");
 

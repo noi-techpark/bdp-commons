@@ -1,6 +1,5 @@
 package it.bz.idm.bdp.dcmeteotn;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,6 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.meteo.MeteoStationDto;
 
 /**
  * Cronjob configuration can be found under src/main/resources/META-INF/spring/applicationContext.xml
