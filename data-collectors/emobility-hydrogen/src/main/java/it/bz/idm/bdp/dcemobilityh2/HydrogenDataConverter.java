@@ -122,7 +122,7 @@ public class HydrogenDataConverter {
             //OMITTED: private String flashInfo;
             //OMITTED: private String locationServiceInfo;
             station.getMetaData().put("address",DCUtils.trunc(map.get("street") + " " + map.get("streetnr") + " - " + map.get("zip") + " " + map.get("city") + " - " + map.get("countryshortname"), 255));
-            station.getMetaData().put("resservable",DCUtils.convertStringToBoolean(env.getProperty(STATION_RESERVABLE_KEY)));
+            station.getMetaData().put("reservable",DCUtils.convertStringToBoolean(env.getProperty(STATION_RESERVABLE_KEY)));
         }
 
         return station;
