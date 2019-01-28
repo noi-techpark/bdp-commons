@@ -26,8 +26,6 @@ pipeline {
                 }
                 stage('emobility-echarging') {
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/emobility-echarging/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/datacollectors/emobility-dc.log%" data-collectors/emobility-echarging/src/main/resources/log4j.properties'
                         sh 'cd data-collectors/emobility-echarging && mvn clean compile test -U'
                     }
                 }
@@ -36,9 +34,19 @@ pipeline {
                         sh 'cd data-collectors/emobility-hydrogen && mvn clean compile test -U'
                     }
                 }
-                stage('environment-appa') {
+                stage('environment-appa-tenminutes') {
                     steps {
-                        sh 'cd data-collectors/environment-appa/tenminutes && mvn clean compile'
+                        sh 'cd data-collectors/environment-appa/appatn_tenminutes && mvn clean compile'
+                    }
+                }
+                stage('environment-appa-opendata') {
+                    steps {
+                        sh 'cd data-collectors/environment-appa/appatn_opendata && mvn clean compile'
+                    }
+                }
+                stage('environment-appa-bz') {
+                    steps {
+                        sh 'cd data-collectors/environment-appa/appabz_opendata && mvn clean compile'
                     }
                 }
                 stage('meteorology-siag (ZRX-data-collector)') {
@@ -52,10 +60,13 @@ pipeline {
                         sh 'cd data-collectors/meteorology-siag/zrx2json && mvn clean compile test -U'
                     }
                 }
+                stage('meteorology-provincetrento') {
+                    steps {
+                        sh 'cd data-collectors/meteo-tn/ && mvn clean compile test -U'
+                    }
+                }
                 stage('parking-MeBo') {
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/parking-MeBo/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/parking-MeBo/src/main/resources/log4j.properties'
                         sh 'cd data-collectors/parking-MeBo && mvn clean compile test -U'
                     }
                 }
@@ -66,8 +77,6 @@ pipeline {
                 }
                 stage('roadweather-famas') {
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/roadweather-famas/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/roadweather-famas/src/main/resources/log4j.properties'
                         sh 'cd data-collectors/roadweather-famas && mvn clean compile test -U'
                     }
                 }
@@ -78,15 +87,11 @@ pipeline {
                 }
                 stage('vehicletraffic-bluetooth') {
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/bluetooth-endpoint.log%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
                         sh 'cd data-collectors/vehicletraffic-bluetooth && mvn clean compile test -U'
                     }
                 }
                 stage('traffic-bz') {
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/traffic-sensors-dc.log%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
                         sh 'cd data-collectors/traffic-bz/ && mvn clean compile test -U'
                     }
                 }
@@ -97,8 +102,6 @@ pipeline {
             parallel {
                 stage('bdp-api') {
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/bdp-api.log%" webservices/bdp-api/src/main/resources/log4j.properties'
                         sh 'cd webservices/bdp-api/ && mvn clean compile test -U'
                     }
                 }

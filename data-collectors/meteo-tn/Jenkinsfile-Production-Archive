@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    stages {
+        stage('Configure'){
+            steps{
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" data-collectors/meteo-tn/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/meteo-tn.log%" data-collectors/meteo-tn/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'cd data-collectors/meteo-tn && mvn clean test && mvn verify'
+            }
+        }
+        stage('Build'){
+            steps{
+                sh 'cd data-collectors/meteo-tn && mvn package'
+            }
+        }
+        stage('Archive'){
+            steps{
+                sh 'cp data-collectors/meteo-tn/target/dc-meteo-tn.war /var/builds/prod-server-dc/'
+            }
+        }
+    }
+}
