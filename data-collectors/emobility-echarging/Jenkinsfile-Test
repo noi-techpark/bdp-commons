@@ -9,9 +9,10 @@ pipeline {
     environment {
         TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
         TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
-        FOLDER = 'data-collectors/emobility-echarging'
-        LOG_FILE_FOLDER = '/var/log/opendatahub/data-collectors'
-        LOG_FILE_NAME = 'emobility-echarging'
+        PROJECT = "emobility-echarging"
+        PROJECT_FOLDER = "data-collectors/${PROJECT}"
+        LOG_FOLDER = "/var/log/opendatahub/data-collectors"
+        ARTIFACT_NAME = "dc-${PROJECT}"
         ALPERIA_CONFIG = credentials('alperia_charging_config')
         DRIWE_CONFIG = credentials('driwe_charging_config')
         ROUTE220_CONFIG = credentials('route220_charging_config')
@@ -27,85 +28,105 @@ pipeline {
                 sh 'echo "    </servers>" >> ~/.m2/settings.xml'
                 sh 'echo "</settings>" >> ~/.m2/settings.xml'
 
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'cd ${FOLDER} && mvn -B -U clean test'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test'
             }
         }
 
         stage('Test - alperia') {
+            environment {
+                VENDOR = "alperia"
+                CONFIG = "${ALPERIA_CONFIG}"
+            }
             steps {
-                sh 'cp "${ALPERIA_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'cd ${FOLDER} && mvn -B -U -DfinalName=emobility-echarging-alperia clean verify'
+                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
             }
         }
 
         stage('Test - driwe') {
+            environment {
+                VENDOR = "driwe"
+                CONFIG = "${DRIWE_CONFIG}"
+            }
             steps {
-                sh 'cp "${DRIWE_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'cd ${FOLDER} && mvn -B -DfinalName=emobility-echarging-driwe clean verify'
+                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
             }
         }
 
         stage('Test - route220') {
+            environment {
+                VENDOR = "route220"
+                CONFIG = "${ROUTE220_CONFIG}"
+            }
             steps {
-                sh 'cp "${ROUTE220_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'cd ${FOLDER} && mvn -B -DfinalName=emobility-echarging-route220 clean verify'
+                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
             }
         }
 
         stage('Test - nevicam') {
+            environment {
+                VENDOR = "nevicam"
+                CONFIG = "${NEVICAM_CONFIG}"
+            }
             steps {
-                sh 'cp "${NEVICAM_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'cd ${FOLDER} && mvn -B -DfinalName=emobility-echarging-nevicam clean verify'
+                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
             }
         }
 
         stage('Deploy - alperia') {
             environment {
-                LOG_FILE_NAME = 'emobility-echarging-alperia'
+                VENDOR = "alperia"
+                CONFIG = "${ALPERIA_CONFIG}"
             }
             steps {
-                sh 'cp "${ALPERIA_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
-                sh 'cd ${FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=emobility-echarging-alperia'
+                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=${ARTIFACT_NAME}-${VENDOR}'
             }
         }
 
         stage('Deploy - driwe') {
             environment {
-                LOG_FILE_NAME = 'emobility-echarging-driwe'
+                VENDOR = "driwe"
+                CONFIG = "${DRIWE_CONFIG}"
             }
             steps {
-                sh 'cp "${DRIWE_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
-                sh 'cd ${FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=emobility-echarging-driwe'
+                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=${ARTIFACT_NAME}-${VENDOR}'
             }
         }
 
         stage('Deploy - route220') {
             environment {
-                LOG_FILE_NAME = 'emobility-echarging-route220'
+                VENDOR = "route220"
+                CONFIG = "${ROUTE220_CONFIG}"
             }
             steps {
-                sh 'cp "${ROUTE220_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
-                sh 'cd ${FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=emobility-echarging-route220'
+                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=${ARTIFACT_NAME}-${VENDOR}'
             }
         }
 
         stage('Deploy - nevicam') {
             environment {
-                LOG_FILE_NAME = 'emobility-echarging-nevicam'
+                VENDOR = "nevicam"
+                CONFIG = "${NEVICAM_CONFIG}"
             }
             steps {
-                sh 'cp "${NEVICAM_CONFIG}" ${FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FILE_FOLDER}/${LOG_FILE_NAME}.log%" ${FOLDER}/src/main/resources/log4j.properties'
-                sh 'cd ${FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=emobility-echarging-nevicam'
+                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -DfinalName=${ARTIFACT_NAME}-${VENDOR}'
             }
         }
     }

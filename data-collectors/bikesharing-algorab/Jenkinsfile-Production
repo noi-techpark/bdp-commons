@@ -7,12 +7,10 @@ pipeline {
     }
     
     environment {
-        PROJECT = "traffic-bz"
+        PROJECT = "bikesharing-algorab"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
         ARTIFACT_NAME = "dc-${PROJECT}"
-        SENSORS_CONFIG=credentials('sensors-config.properties')
-	    SENSORS_WSDL=credentials('sensors-wsdl')
     }
 
     stages {
@@ -20,10 +18,6 @@ pipeline {
             steps {
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
 	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
-
-                sh 'cat "${SENSORS_CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-		        sh 'cat "${SENSORS_CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
-		        sh 'cp "${SENSORS_WSDL}" ${PROJECT_FOLDER}/src/main/resources/DataDispatcherWebServices.wsdl'
             }
         }
 

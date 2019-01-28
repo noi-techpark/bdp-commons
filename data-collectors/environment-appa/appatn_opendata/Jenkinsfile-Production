@@ -7,8 +7,8 @@ pipeline {
     }
     
     environment {
-        PROJECT = "roadweather-famas"
-        PROJECT_FOLDER = "data-collectors/${PROJECT}"
+        PROJECT = "appatn-opendata"
+        PROJECT_FOLDER = "data-collectors/environment-appa/appatn_opendata"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
         ARTIFACT_NAME = "dc-${PROJECT}"
     }
@@ -16,8 +16,9 @@ pipeline {
     stages {
         stage('Configure') {
             steps {
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
-	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(property.logFileFolder =\\).*\\$%\\1${LOG_FOLDER}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+                sh 'sed -i -e "s%\\(property.logFileName =\\).*\\$%\\1${ARTIFACT_NAME}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+                sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1DEBUG%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
             }
         }
 

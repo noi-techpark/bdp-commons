@@ -26,7 +26,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean package'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify package'
             }
         }
 

@@ -7,8 +7,6 @@ pipeline {
     }
     
     environment {
-        TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
-        TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
         PROJECT = "airquality-appabz"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
@@ -22,12 +20,6 @@ pipeline {
     stages {
         stage('Configure') {
             steps {
-                sh 'sed -i -e "s/<\\/settings>$//g\" ~/.m2/settings.xml'
-                sh 'echo "    <servers>" >> ~/.m2/settings.xml'
-                sh 'echo "        ${TESTSERVER_TOMCAT_CREDENTIALS}" >> ~/.m2/settings.xml'
-                sh 'echo "    </servers>" >> ~/.m2/settings.xml'
-                sh 'echo "</settings>" >> ~/.m2/settings.xml'
-
                 sh 'sed -i -e "s%\\(property.logFileFolder =\\).*\\$%\\1${LOG_FOLDER}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
                 sh 'sed -i -e "s%\\(property.logFileName =\\).*\\$%\\1${ARTIFACT_NAME}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
                 sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1DEBUG%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
@@ -44,7 +36,7 @@ pipeline {
 					chmod 644 "${SSH_FOLDER}/known_hosts"
 					'''
 
-				/*
+                /*
 				 * Configure application.properties and inject the correct pass-phrase for the test server.
 				 * Security: set +x turns echoing off (otherwise password would be printed to logs)
 				 */
@@ -54,18 +46,20 @@ pipeline {
 					sed -ie '/ftp\\.pass=/ s/=.*/='$PASSX'/' ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties
 					set -x
 					'''
+
+                sh 'sed -ie "/ftp\\.folder\\.remote=/ s/=.*/=uploads/" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
             }
         }
 
-        stage('Test') {
+        stage('Build') {
             steps {
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify package'
             }
         }
 
-	    stage('Deploy') {
+	    stage('Archive') {
             steps {
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -U tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
     }
