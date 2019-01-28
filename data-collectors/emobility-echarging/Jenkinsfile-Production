@@ -42,6 +42,15 @@ pipeline {
             }
         }
 
+        stage('Archiv - alperia') {
+            environment {
+                VENDOR = "alperia"
+            }
+            steps {
+                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
+            }
+        }
+
         stage('Build - driwe') {
             environment {
                 VENDOR = "driwe"
@@ -51,6 +60,15 @@ pipeline {
                 sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify package'
+            }
+        }
+
+        stage('Archiv - driwe') {
+            environment {
+                VENDOR = "driwe"
+            }
+            steps {
+                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
         }
 
@@ -66,6 +84,15 @@ pipeline {
             }
         }
 
+        stage('Archiv - route220') {
+            environment {
+                VENDOR = "route220"
+            }
+            steps {
+                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
+            }
+        }
+
         stage('Build - nevicam') {
             environment {
                 VENDOR = "nevicam"
@@ -75,33 +102,6 @@ pipeline {
                 sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify package'
-            }
-        }
-
-        stage('Archiv - alperia') {
-            environment {
-                VENDOR = "alperia"
-            }
-            steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
-            }
-        }
-
-        stage('Archiv - driwe') {
-            environment {
-                VENDOR = "driwe"
-            }
-            steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
-            }
-        }
-
-        stage('Archiv - route220') {
-            environment {
-                VENDOR = "route220"
-            }
-            steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
         }
 
