@@ -28,7 +28,7 @@ import it.bz.idm.bdp.dto.StationList;
 @Component("jobScheduler")
 public class JobScheduler {
 
-	private static final Logger LOG = LogManager.getLogger(Tester.class.getName());
+	private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
 
 	public void collectData() {
 		try {
