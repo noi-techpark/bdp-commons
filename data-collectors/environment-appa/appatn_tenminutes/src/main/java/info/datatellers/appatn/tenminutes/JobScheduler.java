@@ -28,14 +28,13 @@ import it.bz.idm.bdp.dto.StationList;
 @Component("jobScheduler")
 public class JobScheduler {
 
-	private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
+	private static final Logger LOG = LogManager.getLogger(Tester.class.getName());
 
 	public void collectData() {
 		try {
 			pushData();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error(e.getMessage());
 		}
 	}
 
@@ -55,10 +54,12 @@ public class JobScheduler {
 		String startDate = rb.getString("odp.data.history.from.tenminutes");
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date from = format.parse(startDate);
+		Date lastDatabaseEntryDate = format.parse("1970-01-01");
 
 		for (String stationIndex : rootMap.getBranch().keySet()) {
 			for (String sensorIndex : rootMap.upsertBranch(stationIndex).getBranch().keySet()) {
 				Date lastRecord = (Date) pusher.getDateOfLastRecord(stationIndex, sensorIndex, 600);
+				lastDatabaseEntryDate = lastRecord;
 				if (!lastRecord.toString().contains("1970"))
 				{
 					from = lastRecord;
@@ -67,8 +68,7 @@ public class JobScheduler {
 		}
 
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DATE, -1);
-		Date yesterday = c.getTime();
+		Date today = c.getTime();
 
 		c.setTime(from);
 		// start from next 10 minutes (skips a day if the last record is at 23:50, saves computation)
@@ -81,25 +81,38 @@ public class JobScheduler {
 
 		// if the interval of the last record is more than one hour, we need to gather
 		// the interval of data missing.
-		if ((yesterday.getTime() - from.getTime()) > 3600000) {
+		if ((today.getTime() - from.getTime()) > 3600000) {
 			LOG.info("There seems to be missing data from {}, recollecting", from);
 
 			c.add(Calendar.DATE, 31);
-			Date to = c.getTime().compareTo(yesterday) >= 0 ? yesterday : c.getTime();
+			Date to = c.getTime().compareTo(today) >= 0 ? today : c.getTime();
 
-			while (from.compareTo(yesterday) < 0) {
+			while (from.compareTo(today) < 0) {
 				LOG.debug("Collecting from {} to {}", from, to);
-				rootMap = pusher.mapDataWithDates(rootMap, from, to);
+
+				if (dateComparison(from, to, today))
+				{
+					c.setTime(to);
+					c.add(Calendar.DATE, 1);
+					to = c.getTime();
+					rootMap = pusher.mapDataWithDates(rootMap, from, to);
+				}else{
+					rootMap = pusher.mapDataWithDates(rootMap, from, to);
+				}
+
 				pusher.pushData(rb.getString("odh.station.type"), rootMap);
 				rootMap = constructRootMap();
 				from = to;
-				c.add(Calendar.DATE, 31);
-				to = c.getTime().compareTo(yesterday) >= 0 ? yesterday : c.getTime();
+				c.add(Calendar.DATE, 30);
+				to = c.getTime();
 			}
 
 		} else {
 			LOG.debug("All records are up to date, executing as usual");
-			rootMap = pusher.mapDataWithDates(rootMap,yesterday, yesterday);
+			c.setTime(today);
+			c.add(Calendar.DATE, 1);
+			Date tomorrow = c.getTime();
+			rootMap = pusher.mapDataWithDates(rootMap, lastDatabaseEntryDate, tomorrow);
 			pusher.pushData(rb.getString("odh.station.type"), rootMap);
 		}
 
@@ -174,5 +187,10 @@ public class JobScheduler {
 		}
 
 		return map;
+	}
+
+	private static boolean dateComparison(Date from, Date to, Date target)
+	{
+		return (from.before(target) && to.after(target));
 	}
 }
