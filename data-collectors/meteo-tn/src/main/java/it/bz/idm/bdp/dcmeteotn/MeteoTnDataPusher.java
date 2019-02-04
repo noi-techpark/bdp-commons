@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
@@ -34,8 +33,11 @@ public class MeteoTnDataPusher extends JSONPusher {
 
     private static final Logger LOG = LogManager.getLogger(MeteoTnDataPusher.class.getName());
 
+//    @Autowired
+//    private Environment env;
+
     @Autowired
-    private Environment env;
+    private MeteoTnDataConverter converter;
 
     public MeteoTnDataPusher() {
         LOG.debug("START.constructor.");
@@ -80,7 +82,8 @@ public class MeteoTnDataPusher extends JSONPusher {
         DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
         Date now = new Date();
         Long nowTimestamp = now.getTime();
-        Integer period = env.getProperty(MeteoTnDataConverter.PERIOD_KEY, Integer.class);
+        //Integer period = env.getProperty(MeteoTnDataConverter.PERIOD_KEY, Integer.class);
+        Integer period = converter.getPeriod();
 
         int countStations = 0;
         int countBranches = 0;
@@ -153,10 +156,28 @@ public class MeteoTnDataPusher extends JSONPusher {
         return map;
     }
 
-    public <T> DataMapDto<RecordDtoImpl> mapSingleStationData2Bdp(MeteoTnDto data) {
+    public <T> DataMapDto<RecordDtoImpl> mapSingleStationData2Bdp(MeteoTnDto data, Date lastSavedRecord) {
         LOG.debug("START.mapSingleStationData2Bdp");
         if (data == null) {
             return null;
+        }
+
+        if ( lastSavedRecord != null ) {
+            // Remove measurements older than lastSavedRecord in order to have less data to send to the Data Hub
+            List<MeteoTnMeasurementListDto> measurementTypes = data.getMeasurementTypes();
+            for ( int i=0 ; measurementTypes!=null && i<measurementTypes.size() ; i++ ) {
+                MeteoTnMeasurementListDto measurementListDto = measurementTypes.get(i);
+                List<MeteoTnMeasurementDto> measurements = measurementListDto.getMeasurements();
+                List<MeteoTnMeasurementDto> filteredList = new ArrayList<MeteoTnMeasurementDto>();
+                for ( int j=0 ; measurements!=null && j<measurements.size() ; j++ ) {
+                    MeteoTnMeasurementDto measurementDto = measurements.get(j);
+                    Date date = measurementDto.getDate();
+                    if ( date.compareTo(lastSavedRecord) >= 0 ) {
+                        filteredList.add(measurementDto);
+                    }
+                }
+                measurementListDto.setMeasurements(filteredList);
+            }
         }
 
         List<MeteoTnDto> list = new ArrayList<MeteoTnDto>();
@@ -268,6 +289,25 @@ public class MeteoTnDataPusher extends JSONPusher {
         LOG.debug("dataTypeList: "+dataTypeList);
         LOG.debug("END.mapdataTypes2Bdp");
         return dataTypeList;
+    }
+
+    public Date getLastSavedRecordForStation(MeteoStationDto station) {
+        LOG.debug("START.getLastSavedRecordForStation");
+        if (station == null) {
+            return null;
+        }
+
+        Date lastSavedRecord = null;
+        Integer period = converter.getPeriod();
+        String stationCode = station.getId();
+        Object dateOfLastRecord = super.getDateOfLastRecord(stationCode, null, period);
+        if ( dateOfLastRecord instanceof Date ) {
+            lastSavedRecord = (Date) dateOfLastRecord;
+        }
+
+        LOG.debug("stationCode="+stationCode+"  lastSavedRecord="+lastSavedRecord);
+        LOG.debug("END.getLastSavedRecordForStation");
+        return lastSavedRecord;
     }
 
     @Override
