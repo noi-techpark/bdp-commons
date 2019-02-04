@@ -442,7 +442,7 @@ public class MeteoTnDataRetriever {
      *             on error propagate exception to caller
      */
     public List<MeteoTnDto> fetchData() throws Exception {
-        LOG.debug("START.fetchData");
+        LOG.info("START.fetchData");
         List<MeteoTnDto> dtoList = new ArrayList<MeteoTnDto>();
         try {
             StringBuffer err = new StringBuffer();
@@ -479,7 +479,7 @@ public class MeteoTnDataRetriever {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
             throw ex;
         }
-        LOG.debug("END.fetchData");
+        LOG.info("END.fetchData");
         return dtoList;
     }
 
@@ -490,7 +490,7 @@ public class MeteoTnDataRetriever {
      * @throws Exception
      */
     public List<MeteoTnDto> fetchStations() throws Exception {
-        LOG.debug("START.fetchStations");
+        LOG.info("START.fetchStations");
         List<MeteoTnDto> dtoList = new ArrayList<MeteoTnDto>();
         try {
             StringBuffer err = new StringBuffer();
@@ -507,7 +507,7 @@ public class MeteoTnDataRetriever {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
             throw ex;
         }
-        LOG.debug("END.fetchStations");
+        LOG.info("END.fetchStations");
         return dtoList;
     }
 

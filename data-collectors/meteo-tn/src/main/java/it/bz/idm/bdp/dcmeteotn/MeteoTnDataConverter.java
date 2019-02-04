@@ -18,10 +18,10 @@ public class MeteoTnDataConverter {
 
     private static final Logger LOG = LogManager.getLogger(MeteoTnDataConverter.class.getName());
 
-    public static final String ORIGIN_KEY                     = "app.origin";
-    public static final String PERIOD_KEY                     = "app.period";
-    public static final String CHECK_DATE_LAST_REC_KEY        = "app.checkDateOfLastRecord";
-    public static final String CHECK_PUSH_DATA_SINGLE_STATION = "app.pushDataSingleStation";
+    public static final String ORIGIN_KEY                = "app.origin";
+    public static final String PERIOD_KEY                = "app.period";
+    public static final String CHECK_DATE_LAST_REC_KEY   = "app.checkDateOfLastRecord";
+    public static final String PUSH_DATA_SINGLE_STATION  = "app.pushDataSingleStation";
 
     public static final String STATION_TYPE_KEY          = "app.station.type";
 
@@ -60,7 +60,7 @@ public class MeteoTnDataConverter {
     public boolean isCheckDateOfLastRecord() {
         boolean check = true;
         if ( this.checkDateOfLastRecord == null ) {
-            this.checkDateOfLastRecord = env.getProperty(PERIOD_KEY);
+            this.checkDateOfLastRecord = env.getProperty(CHECK_DATE_LAST_REC_KEY);
         }
         if ( "false".equalsIgnoreCase(this.checkDateOfLastRecord) ) {
             check = false;
@@ -70,7 +70,7 @@ public class MeteoTnDataConverter {
     public boolean isPushDataSingleStation() {
         boolean check = false;
         if ( this.pushDataSingleStation == null ) {
-            this.pushDataSingleStation = env.getProperty(PERIOD_KEY);
+            this.pushDataSingleStation = env.getProperty(PUSH_DATA_SINGLE_STATION);
         }
         check = "true".equalsIgnoreCase(this.pushDataSingleStation);
         return check;
