@@ -1,13 +1,14 @@
-FROM debian:9
+FROM maven:3-jdk-8-alpine
 
-ARG JENKINS_GROUP_ID=200
-ARG JENKINS_USER_ID=200
+ARG JENKINS_GROUP_ID=1000
+ARG JENKINS_USER_ID=1000
 
-RUN groupadd --gid $JENKINS_GROUP_ID jenkins && \
-    useradd --uid $JENKINS_USER_ID --gid $JENKINS_GROUP_ID --create-home jenkins
+RUN addgroup -g $JENKINS_GROUP_ID jenkins && \
+    adduser -D -u $JENKINS_USER_ID -G jenkins jenkins
 
-RUN apt-get update && \
-    apt-get install -y git openjdk-8-jdk maven
+RUN mkdir -p /var/log/opendatahub && \
+    mkdir -p /var/log/opendatahub/data-collectors && \
+    chmod -R 777 /var/log/opendatahub
 
 COPY docker/entrypoint-java.sh /entrypoint-java.sh
 

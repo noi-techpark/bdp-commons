@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * @author Nicolò Molinari, Datatellers.
  *
- * This helper class handles everything related to dates and Date objects.
+ * This helper class handles everything related to Date objects.
  */
 public class DateHelper
 {
@@ -76,7 +76,7 @@ public class DateHelper
         String year;
         String month;
         String day;
-
+        
         String[] tokens = inputDate.split(" ");
 
         year = tokens[5];
