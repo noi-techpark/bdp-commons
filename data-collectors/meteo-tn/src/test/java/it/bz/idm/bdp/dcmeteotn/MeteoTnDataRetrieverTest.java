@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +53,16 @@ public class MeteoTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {
     public static final String DATA_PUSH_MEASUREMENTS = "PUSH_MEASUREMENTS";
 
     public static final String MUNICIPALITY = "FETCH_MUNICIPALITY";
-    private static final String TEST_STATION_ID_1 = "ST_001";
+    private static final String TEST_STATION_ID_1 = "T0437";
     private static final String TEST_STATION_ID_2 = "ST_002";
+    private static final Date TEST_DATE_LAST_RECORD = DCUtils.convertStringTimezoneToDate("2019-01-18T14:00:00+01");
+
+    private static final String TEST_STATION_DATA_TYPE_1 = "temperature_list";
+    private static final String TEST_STATION_DATA_TYPE_2 = "precipitation_list";
+    private static final String TEST_STATION_DATA_TYPE_3 = "wind_list";
+    private static final String TEST_STATION_DATA_TYPE_4 = "global_radiation_list";
+    private static final String TEST_STATION_DATA_TYPE_5 = "relative_humidity_list";
+    private static final String TEST_STATION_DATA_TYPE_6 = "snow_depth_list";
 
     @Test
     public void testConvertStationData() {
@@ -130,7 +139,25 @@ public class MeteoTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {
 
             MeteoTnDto data = reader.convertMeasurementsResponseToInternalDTO(responseString, stationAttrs);
 
-            DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(data);
+            DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(data, TEST_DATE_LAST_RECORD);
+
+            //Check that there is a branch for TEST_IDX station
+            Map<String, DataMapDto<RecordDtoImpl>> branch1 = stationRec.getBranch();
+            assertNotNull("StationMeasurements: Branch Level 1 is null", branch1);
+
+            DataMapDto<RecordDtoImpl> dataMapDto1 = branch1.get(TEST_STATION_ID_1);
+            assertNotNull("StationMeasurements: DataMapDTO for station "+TEST_STATION_ID_1+" is null", dataMapDto1);
+
+            List<RecordDtoImpl> data1 = dataMapDto1.getData();
+            Map<String, DataMapDto<RecordDtoImpl>> branch2_1 = dataMapDto1.getBranch();
+            DataMapDto<RecordDtoImpl> dataMapDto2_1 = branch2_1.get(TEST_STATION_DATA_TYPE_1);
+            DataMapDto<RecordDtoImpl> dataMapDto2_2 = branch2_1.get(TEST_STATION_DATA_TYPE_2);
+            DataMapDto<RecordDtoImpl> dataMapDto2_3 = branch2_1.get(TEST_STATION_DATA_TYPE_3);
+            DataMapDto<RecordDtoImpl> dataMapDto2_4 = branch2_1.get(TEST_STATION_DATA_TYPE_4);
+            DataMapDto<RecordDtoImpl> dataMapDto2_5 = branch2_1.get(TEST_STATION_DATA_TYPE_5);
+            DataMapDto<RecordDtoImpl> dataMapDto2_6 = branch2_1.get(TEST_STATION_DATA_TYPE_6);
+
+            assertNotNull("StationMeasurements: Records for DataType "+TEST_STATION_DATA_TYPE_1+" is null", data1);
 
             //TODO: implement tests
 //            //Check that there is a branch for TEST_IDX station that contains a measurement for "number-available" Type
