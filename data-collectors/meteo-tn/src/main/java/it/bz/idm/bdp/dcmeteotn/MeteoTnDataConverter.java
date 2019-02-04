@@ -18,20 +18,26 @@ public class MeteoTnDataConverter {
 
     private static final Logger LOG = LogManager.getLogger(MeteoTnDataConverter.class.getName());
 
-    public static final String ORIGIN_KEY                = "app.origin";
-    public static final String PERIOD_KEY                = "app.period";
+    public static final String ORIGIN_KEY                     = "app.origin";
+    public static final String PERIOD_KEY                     = "app.period";
+    public static final String CHECK_DATE_LAST_REC_KEY        = "app.checkDateOfLastRecord";
+    public static final String CHECK_PUSH_DATA_SINGLE_STATION = "app.pushDataSingleStation";
 
     public static final String STATION_TYPE_KEY          = "app.station.type";
 
     @Autowired
     private Environment env;
 
-    //This must be initialized in application.properties file (for example Meteotrentino)
+    //This must be initialized in application.properties file (for example "Meteotrentino")
     private String origin;
-    //This must be initialized in application.properties file (for example Meteostation)
+    //This must be initialized in application.properties file (for example "Meteostation")
     private String stationType;
     //This must be initialized in application.properties file (for example 900)
     private Integer period;
+    //This must be initialized in application.properties file (for example "true")
+    private String checkDateOfLastRecord;
+    //This must be initialized in application.properties file (for example "false")
+    private String pushDataSingleStation;
 
     public String getOrigin() {
         if ( this.origin == null ) {
@@ -51,27 +57,24 @@ public class MeteoTnDataConverter {
         }
         return this.period;
     }
-
-//    public List<MeteoTnDto> convertToInternalDTO(List<MeteoTnMeasurementListDto> dataList, String municipality, String codePrefix) throws Exception {
-//        try {
-//            LOG.debug("dataList: "+dataList);
-//            if ( dataList == null ) {
-//                return null;
-//            }
-//            List<MeteoTnDto> fetchedData = new ArrayList<MeteoTnDto>();
-//            for (MeteoTnMeasurementListDto extDto : dataList) {
-//                Map<String, String> stationAttributes = new HashMap<String, String>();
-//                MeteoStationDto stationDto = convertExternalDtoToStationDto(stationAttributes);
-//                MeteoTnDto intDto = new MeteoTnDto(stationDto, stationAttributes);
-//                fetchedData.add(intDto);
-//            }
-//            LOG.debug("fetchedData: "+fetchedData);
-//            return fetchedData;
-//        } catch (Exception ex) {
-//            LOG.error("ERROR: " + ex.getMessage(), ex);
-//            throw ex;
-//        }
-//    }
+    public boolean isCheckDateOfLastRecord() {
+        boolean check = true;
+        if ( this.checkDateOfLastRecord == null ) {
+            this.checkDateOfLastRecord = env.getProperty(PERIOD_KEY);
+        }
+        if ( "false".equalsIgnoreCase(this.checkDateOfLastRecord) ) {
+            check = false;
+        }
+        return check;
+    }
+    public boolean isPushDataSingleStation() {
+        boolean check = false;
+        if ( this.pushDataSingleStation == null ) {
+            this.pushDataSingleStation = env.getProperty(PERIOD_KEY);
+        }
+        check = "true".equalsIgnoreCase(this.pushDataSingleStation);
+        return check;
+    }
 
     public List<MeteoTnDto> convertExternalStationDtoListToInternalDtoList(List<Map<String, String>> list) {
         if ( LOG.isDebugEnabled() ) {
@@ -136,43 +139,5 @@ public class MeteoTnDataConverter {
         }
         return stationDto;
     }
-
-//    public MeteoStationDto convertMeteoTnDtoToStationDto(MeteoTnDto ptnDto) {
-//        MeteoStationDto station = null;
-//        if ( ptnDto!=null ) {
-//            station = new MeteoStationDto();
-//            MeteoAreaServiceDto extDto = ptnDto.getMeteoArea();
-//            String municipality = ptnDto.getMunicipality();
-//
-//            //From StationDTO
-//            String id = toHexString(extDto.getName());
-//            Double longitude = null;
-//            Double latitude = null;
-//            if ( extDto.getPosition() != null ) {
-//                List<Double> position = extDto.getPosition();
-//                if ( position.size() > 0 ) {
-//                    longitude = position.get(0);
-//                }
-//                if ( position.size() > 1 ) {
-//                    latitude = position.get(1);
-//                }
-//            }
-//            station.setId(id);
-//            station.setName(DCUtils.trunc(extDto.getName(), 255));
-//            station.setLongitude(longitude);
-//            station.setLatitude(latitude);
-//            //OMITTED: protected String crs;
-//            station.setOrigin(DCUtils.trunc(getOrigin(), 255));
-//            station.setMunicipality(DCUtils.trunc(municipality, 255));
-//            station.setStationType(getStationType());
-//
-//            //From MeteoStationDto
-//            station.setSlots(extDto.getSlotsTotal());
-//            station.setAddress(extDto.getDescription());
-//            //OMITTED: station.setPhone(phone);
-//        }
-//
-//        return station;
-//    }
 
 }
