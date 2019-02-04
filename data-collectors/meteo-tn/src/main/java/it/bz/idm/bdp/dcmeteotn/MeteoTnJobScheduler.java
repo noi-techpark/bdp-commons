@@ -35,7 +35,7 @@ public class MeteoTnJobScheduler {
 
     /** JOB 1 */
     public void pushStations() throws Exception {
-        LOG.debug("START.pushStations");
+        LOG.info("START.pushStations");
 
         try {
             List<MeteoTnDto> data = retriever.fetchStations();
@@ -51,12 +51,12 @@ public class MeteoTnJobScheduler {
             LOG.error(pusher + " - " + e, e);
             throw e;
         }
-        LOG.debug("END.pushStations");
+        LOG.info("END.pushStations");
     }
 
     /** JOB 2 */
     public void pushDataTypes() throws Exception {
-        LOG.debug("START.pushDataTypes");
+        LOG.info("START.pushDataTypes");
 
         try {
             List<MeteoTnDto> data = retriever.fetchData();
@@ -74,12 +74,12 @@ public class MeteoTnJobScheduler {
             LOG.error(pusher + " - " + e, e);
             throw e;
         }
-        LOG.debug("END.pushDataTypes");
+        LOG.info("END.pushDataTypes");
     }
 
     /** JOB 3 */
     public void pushData() throws Exception {
-        LOG.debug("START.pushData");
+        LOG.info("START.pushData");
 
         try {
 
@@ -127,6 +127,6 @@ public class MeteoTnJobScheduler {
             LOG.error(pusher + " - " + e, e);
             throw e;
         }
-        LOG.debug("END.pushData");
+        LOG.info("END.pushData");
     }
 }
