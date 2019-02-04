@@ -118,7 +118,7 @@ public class MeteoTnDataPusherIT extends AbstractJUnit4SpringContextTests {
 
     private void pushStationData(MeteoTnDto data, List<String> errors) {
         try {
-            DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(data);
+            DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(data, true);
             if (stationRec != null) {
                 pusher.pushData(stationRec);
             }
