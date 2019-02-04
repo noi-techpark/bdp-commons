@@ -34,7 +34,7 @@ public class DataFetcher {
 	/**
 	 * fetches measurements from observations_endpoint getting station_ID, type_ID,
 	 * timestamp and value.
-	 * 
+	 *
 	 * @param endpoint   The endpoint string for the requested data
 	 * @param parameters The additional parameters in the request query string
 	 * @return String representation of the fetched json
@@ -83,7 +83,7 @@ public class DataFetcher {
 
 	/**
 	 * Fetches current observations from the endpoint
-	 * 
+	 *
 	 * @param stationId
 	 * @param measurements
 	 * @return String representation of the json response
@@ -95,7 +95,7 @@ public class DataFetcher {
 
 	/**
 	 * Fetches historic observations from the endpoint
-	 * 
+	 *
 	 * @param stationId
 	 * @param measurements
 	 * @param from
@@ -110,7 +110,7 @@ public class DataFetcher {
 
 	/**
 	 * Fetches sensors from the endpoint
-	 * 
+	 *
 	 * @param stationId
 	 * @return String representation of the json response
 	 */
@@ -120,7 +120,7 @@ public class DataFetcher {
 
 	/**
 	 * Fetches stations from the endpoint
-	 * 
+	 *
 	 * @return String representation of the json response
 	 */
 	public String fetchStations() {

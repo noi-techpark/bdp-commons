@@ -19,7 +19,7 @@ import java.util.*;
  */
 public class DataPusher extends JSONPusher {
     public static final String SEPARATOR = "_";
-	private final ResourceBundle rb = ResourceBundle.getBundle("config");
+    private final ResourceBundle rb = ResourceBundle.getBundle("config");
     private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
     private ArrayList<JsonElement> stations;
     private ArrayList<String> pollutersNames = new CSVHandler().getPollutersNames();
@@ -281,7 +281,7 @@ public class DataPusher extends JSONPusher {
             missingValuesInfo.append("\n").append("No ").append(polluter).append(" data were collected at station ")
                     .append(stationIds[looper]).append(" for ").append(date).append(" at hour ").append(hour).append(".");
         } else {
-            rootMap.getBranch().get(origin + SEPARATOR + (stationIds[looper])).getBranch().get(pollutersNames.get(index)).getData().add(recordDto);
+            rootMap.getBranch().get(origin + "_" + (stationIds[looper])).getBranch().get(pollutersNames.get(index)).getData().add(recordDto);
             LOG.debug("Record added correctly.");
         }
         return consistencyChecker;
@@ -309,10 +309,10 @@ public class DataPusher extends JSONPusher {
             for (String polluterName : pollutersNames)
             {
                 //rootMap is emptied every 30 days so that the data syncing doesn't take too much time.
-                JobScheduler.numberOfRecords += rootMap.getBranch().get(origin+SEPARATOR + stationIds[looper]).getBranch().get(polluterName).getData().size();
+                JobScheduler.numberOfRecords += rootMap.getBranch().get(origin + SEPARATOR + stationIds[looper]).getBranch().get(polluterName).getData().size();
                 List<RecordDtoImpl> measurements = new ArrayList<>();
                 try {
-                    rootMap.getBranch().get(origin+SEPARATOR + stationIds[looper]).getBranch().get(polluterName).setData(measurements);
+                    rootMap.getBranch().get(origin + SEPARATOR + stationIds[looper]).getBranch().get(polluterName).setData(measurements);
                 } catch (NullPointerException e)
                 {
                     LOG.debug("Non existing branch hasn't been emptied. " + stationIds[looper] + " has no data for the given period for " + polluterName + ".");
@@ -468,6 +468,7 @@ public class DataPusher extends JSONPusher {
     {
         String[] rawStationIds = rootMap.getBranch().keySet().toString().replace("[", "").replace("]", "").replace(" ", "").split(",");
         int[] stationIds = new int[rawStationIds.length];
+
         for (int index = 0; index < stationIds.length; index++) {
             int stationId = Integer.valueOf(rawStationIds[index].substring(origin.length()+SEPARATOR.length()));
             stationIds[index] = stationId;
