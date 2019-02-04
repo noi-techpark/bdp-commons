@@ -442,7 +442,7 @@ public class MeteoTnDataRetriever {
      *             on error propagate exception to caller
      */
     public List<MeteoTnDto> fetchData() throws Exception {
-        LOG.info("START.fetchData");
+        LOG.debug("START.fetchData");
         List<MeteoTnDto> dtoList = new ArrayList<MeteoTnDto>();
         try {
             StringBuffer err = new StringBuffer();
@@ -479,7 +479,7 @@ public class MeteoTnDataRetriever {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
             throw ex;
         }
-        LOG.info("END.fetchData");
+        LOG.debug("END.fetchData");
         return dtoList;
     }
 
@@ -490,7 +490,7 @@ public class MeteoTnDataRetriever {
      * @throws Exception
      */
     public List<MeteoTnDto> fetchStations() throws Exception {
-        LOG.info("START.fetchStations");
+        LOG.debug("START.fetchStations");
         List<MeteoTnDto> dtoList = new ArrayList<MeteoTnDto>();
         try {
             StringBuffer err = new StringBuffer();
@@ -507,7 +507,7 @@ public class MeteoTnDataRetriever {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
             throw ex;
         }
-        LOG.info("END.fetchStations");
+        LOG.debug("END.fetchStations");
         return dtoList;
     }
 
@@ -519,7 +519,7 @@ public class MeteoTnDataRetriever {
      * @throws Exception
      */
     public MeteoTnDto fetchDataByStation(Map<String, String> station) throws Exception {
-        LOG.info("START.fetchDataByStation("+station+")");
+        LOG.debug("START.fetchDataByStation("+station+")");
         MeteoTnDto extDto = null;
         try {
             List<NameValuePair> endpointParams = new ArrayList<NameValuePair>();
@@ -542,7 +542,7 @@ public class MeteoTnDataRetriever {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
             throw ex;
         }
-        LOG.info("END.fetchDataByStation("+station+")");
+        LOG.debug("END.fetchDataByStation("+station+")");
         return extDto;
     }
 
