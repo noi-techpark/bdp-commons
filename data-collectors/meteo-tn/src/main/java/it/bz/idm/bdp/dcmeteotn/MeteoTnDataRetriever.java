@@ -291,7 +291,7 @@ public class MeteoTnDataRetriever {
 
         MeteoStationDto stationDto = converter.convertExternalStationDtoToStationDto(station);
         extDto = new MeteoTnDto(stationDto, station);
-        List<MeteoTnMeasurementListDto> measurementTypes = extDto.getMeasurementTypes();
+        List<MeteoTnMeasurementListDto> measurementsByType = extDto.getMeasurementsByType();
         Map<String, DataTypeDto> dataTypes = extDto.getDataTypes();
 
         // Analyze XML in a dynamic and configurable way
@@ -307,7 +307,7 @@ public class MeteoTnDataRetriever {
                     type1Name = type1Name.substring(0, type1Name.length() - "_list".length());
                 }
                 MeteoTnMeasurementListDto measurementListDto = new MeteoTnMeasurementListDto(type1Name);
-                measurementTypes.add(measurementListDto);
+                measurementsByType.add(measurementListDto);
                 List<MeteoTnMeasurementDto> measurements = measurementListDto.getMeasurements();
 
                 Node node2 = node1.getFirstChild();
@@ -536,7 +536,7 @@ public class MeteoTnDataRetriever {
             }
             String responseString = callRemoteService(clientMeasurements, serviceUrlMeasurements, endpointMethodMeasurements, endpointParams);
             extDto = convertMeasurementsResponseToInternalDTO(responseString, station);
-            int size = extDto!=null && extDto.getMeasurementTypes()!=null ? extDto.getMeasurementTypes().size() : -1;
+            int size = extDto!=null && extDto.getMeasurementsByType()!=null ? extDto.getMeasurementsByType().size() : -1;
             LOG.debug("Data fetched for station "+station+": "+size);
         } catch (Exception ex) {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
