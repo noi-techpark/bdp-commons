@@ -84,6 +84,8 @@ public class MeteoTnJobScheduler {
         try {
 
             boolean pushDataSingleStation = converter.isPushDataSingleStation();
+            boolean checkDateOfLastRecord = converter.isCheckDateOfLastRecord();
+            LOG.info("  pushData:  checkDateOfLastRecord="+checkDateOfLastRecord+"  pushDataSingleStation="+pushDataSingleStation);
 
             if ( pushDataSingleStation ) {
 
