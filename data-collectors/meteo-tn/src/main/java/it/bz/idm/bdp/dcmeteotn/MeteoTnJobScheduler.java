@@ -1,6 +1,7 @@
 package it.bz.idm.bdp.dcmeteotn;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -89,11 +90,13 @@ public class MeteoTnJobScheduler {
             for (MeteoTnDto meteoTnDto : data) {
                 //Consider only the valid stations, in this way we also avoid to fetch data for invalid stations
                 boolean valid = meteoTnDto.isValid();
+                MeteoStationDto station = meteoTnDto.getStation();
                 if ( valid ) {
                     Map<String, String> stationAttributes = meteoTnDto.getStationAttributes();
                     MeteoTnDto stationData = retriever.fetchDataByStation(stationAttributes);
 
-                    DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(stationData);
+                    Date lastSavedRecord = pusher.getLastSavedRecordForStation(station);
+                    DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(stationData, lastSavedRecord);
                     if (stationRec != null){
                         pusher.pushData(stationRec);
                     }
