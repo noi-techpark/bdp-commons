@@ -98,7 +98,7 @@ public class MeteoTnDataPusher extends JSONPusher {
             if ( dto.isValid() ) {
     
                 String stationId = stationDto.getId();
-                List<MeteoTnMeasurementListDto> measurementTypes = dto.getMeasurementTypes();
+                List<MeteoTnMeasurementListDto> measurementsByType = dto.getMeasurementsByType();
 
                 //Check if we already treated this station (branch), if not found create the map and the list of records
                 DataMapDto<RecordDtoImpl> recordsByStation = map.getBranch().get(stationId);
@@ -110,7 +110,7 @@ public class MeteoTnDataPusher extends JSONPusher {
                     countStations++;
                 }
 
-                for (MeteoTnMeasurementListDto measurementListDto : measurementTypes) {
+                for (MeteoTnMeasurementListDto measurementListDto : measurementsByType) {
 
                     //String measurementListName = measurementListDto.getName();
                     List<MeteoTnMeasurementDto> measurements = measurementListDto.getMeasurements();
@@ -270,9 +270,9 @@ public class MeteoTnDataPusher extends JSONPusher {
         }
         if ( lastSavedRecord != null ) {
             // Remove measurements older than lastSavedRecord in order to have less data to send to the Data Hub
-            List<MeteoTnMeasurementListDto> measurementTypes = meteoTnDto.getMeasurementTypes();
-            for ( int i=0 ; measurementTypes!=null && i<measurementTypes.size() ; i++ ) {
-                MeteoTnMeasurementListDto measurementListDto = measurementTypes.get(i);
+            List<MeteoTnMeasurementListDto> measurementsByType = meteoTnDto.getMeasurementsByType();
+            for ( int i=0 ; measurementsByType!=null && i<measurementsByType.size() ; i++ ) {
+                MeteoTnMeasurementListDto measurementListDto = measurementsByType.get(i);
                 List<MeteoTnMeasurementDto> measurements = measurementListDto.getMeasurements();
                 List<MeteoTnMeasurementDto> filteredList = new ArrayList<MeteoTnMeasurementDto>();
                 MeteoTnMeasurementDto lastMeasurementDto = null;

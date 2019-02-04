@@ -21,7 +21,7 @@ public class MeteoTnDto implements Serializable {
     private boolean checkLastSavedRecord;
     private Map<String, String> stationAttributes;
     private Map<String, DataTypeDto> dataTypes;
-    private List<MeteoTnMeasurementListDto> measurementTypes;
+    private List<MeteoTnMeasurementListDto> measurementsByType;
 
     public MeteoTnDto() {
     }
@@ -35,7 +35,7 @@ public class MeteoTnDto implements Serializable {
         this.station = station;
         this.stationAttributes = stationAttributes;
         this.dataTypes = new HashMap<String, DataTypeDto>();
-        this.measurementTypes = new ArrayList<MeteoTnMeasurementListDto>();
+        this.measurementsByType = new ArrayList<MeteoTnMeasurementListDto>();
     }
 
     public boolean isValid() {
@@ -93,17 +93,17 @@ public class MeteoTnDto implements Serializable {
         this.dataTypes = dataTypes;
     }
 
-    public List<MeteoTnMeasurementListDto> getMeasurementTypes() {
-        return measurementTypes;
+    public List<MeteoTnMeasurementListDto> getMeasurementsByType() {
+        return measurementsByType;
     }
 
-    public void setMeasurementTypes(List<MeteoTnMeasurementListDto> measurementTypes) {
-        this.measurementTypes = measurementTypes;
+    public void setMeasurementsByType(List<MeteoTnMeasurementListDto> measurementsByType) {
+        this.measurementsByType = measurementsByType;
     }
 
     @Override
     public String toString() {
-        return "MeteoTnDto [valid=" + valid + ", station=" + station + ", stationAttributes=" + stationAttributes + ", dataTypes=" + dataTypes + ", measurementTypes=" + measurementTypes + "]";
+        return "MeteoTnDto [valid=" + valid + ", station=" + station + ", stationAttributes=" + stationAttributes + ", dataTypes=" + dataTypes + ", measurementsByType=" + measurementsByType + "]";
     }
 
 }
