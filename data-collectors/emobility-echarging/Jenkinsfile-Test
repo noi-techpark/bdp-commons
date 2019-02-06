@@ -60,16 +60,16 @@ pipeline {
             }
         }
 
-        // stage('Test - route220') {
-        //     environment {
-        //         VENDOR = "route220"
-        //         CONFIG = "${ROUTE220_CONFIG}"
-        //     }
-        //     steps {
-        //         sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
-        //         sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
-        //     }
-        // }
+        stage('Test - route220') {
+            environment {
+                VENDOR = "route220"
+                CONFIG = "${ROUTE220_CONFIG}"
+            }
+            steps {
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
+            }
+        }
 
         // stage('Test - nevicam') {
         //     environment {
