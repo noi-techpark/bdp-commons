@@ -7,11 +7,11 @@ pipeline {
     }
     
     environment {
-        PROJECT = "emobility-hydrogen"
+        PROJECT = "parking-MeBo"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
         ARTIFACT_NAME = "dc-${PROJECT}"
-        ACCESS_TOKEN = credentials('hydrogen-access-token')
+        PARKING_PROPS = credentials('parking-datacollector.properties')
     }
 
     stages {
@@ -20,7 +20,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
 	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
 
-                sh 'sed -i -e "s%\\(__TOKEN_PARAMETER__\\).*\\$%${ACCESS_TOKEN}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'cat "${PARKING_PROPS}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/app.properties'
             }
         }
 

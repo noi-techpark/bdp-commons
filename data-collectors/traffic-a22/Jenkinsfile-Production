@@ -1,0 +1,28 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile-java'
+            additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
+    }
+    
+    environment {
+        PROJECT = "traffic-a22"
+        PROJECT_FOLDER = "data-collectors/${PROJECT}/A22Connector"
+        ARTIFACT_NAME = "dc-${PROJECT}"
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify package'
+            }
+        }
+
+	    stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+    }
+}

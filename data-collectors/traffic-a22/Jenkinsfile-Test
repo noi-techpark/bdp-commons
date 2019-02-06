@@ -9,7 +9,8 @@ pipeline {
     environment {
         TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
         TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
-        FOLDER = 'data-collectors/traffic-a22/A22Connector'
+        PROJECT = "traffic-a22"
+        PROJECT_FOLDER = "data-collectors/${PROJECT}/A22Connector"
     }
 
     stages {
@@ -25,13 +26,13 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'cd ${FOLDER} && mvn -B clean test verify'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify'
             }
         }
 
 	    stage('Deploy') {
             steps {
-                sh 'cd ${FOLDER} && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
             }
         }
     }
