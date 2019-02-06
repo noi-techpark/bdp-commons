@@ -44,90 +44,90 @@ pipeline {
                 CONFIG = "${ALPERIA_CONFIG}"
             }
             steps {
-                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
             }
         }
 
-        stage('Test - driwe') {
-            environment {
-                VENDOR = "driwe"
-                CONFIG = "${DRIWE_CONFIG}"
-            }
-            steps {
-                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
-            }
-        }
+        // stage('Test - driwe') {
+        //     environment {
+        //         VENDOR = "driwe"
+        //         CONFIG = "${DRIWE_CONFIG}"
+        //     }
+        //     steps {
+        //         sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+        //         sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
+        //     }
+        // }
 
-        stage('Test - route220') {
-            environment {
-                VENDOR = "route220"
-                CONFIG = "${ROUTE220_CONFIG}"
-            }
-            steps {
-                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
-            }
-        }
+        // stage('Test - route220') {
+        //     environment {
+        //         VENDOR = "route220"
+        //         CONFIG = "${ROUTE220_CONFIG}"
+        //     }
+        //     steps {
+        //         sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+        //         sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
+        //     }
+        // }
 
-        stage('Test - nevicam') {
-            environment {
-                VENDOR = "nevicam"
-                CONFIG = "${NEVICAM_CONFIG}"
-            }
-            steps {
-                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
-            }
-        }
+        // stage('Test - nevicam') {
+        //     environment {
+        //         VENDOR = "nevicam"
+        //         CONFIG = "${NEVICAM_CONFIG}"
+        //     }
+        //     steps {
+        //         sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+        //         sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
+        //     }
+        // }
 
-        stage('Deploy - alperia') {
-            environment {
-                VENDOR = "alperia"
-                CONFIG = "${ALPERIA_CONFIG}"
-            }
-            steps {
-                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
-                sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
-            }
-        }
+        // stage('Deploy - alperia') {
+        //     environment {
+        //         VENDOR = "alperia"
+        //         CONFIG = "${ALPERIA_CONFIG}"
+        //     }
+        //     steps {
+        //         sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+        //         sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+        //         sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
+        //     }
+        // }
 
-        stage('Deploy - driwe') {
-            environment {
-                VENDOR = "driwe"
-                CONFIG = "${DRIWE_CONFIG}"
-            }
-            steps {
-                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
-                sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
-            }
-        }
+        // stage('Deploy - driwe') {
+        //     environment {
+        //         VENDOR = "driwe"
+        //         CONFIG = "${DRIWE_CONFIG}"
+        //     }
+        //     steps {
+        //         sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+        //         sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+        //         sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
+        //     }
+        // }
 
-        stage('Deploy - route220') {
-            environment {
-                VENDOR = "route220"
-                CONFIG = "${ROUTE220_CONFIG}"
-            }
-            steps {
-                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
-                sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
-            }
-        }
+        // stage('Deploy - route220') {
+        //     environment {
+        //         VENDOR = "route220"
+        //         CONFIG = "${ROUTE220_CONFIG}"
+        //     }
+        //     steps {
+        //         sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+        //         sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+        //         sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
+        //     }
+        // }
 
-        stage('Deploy - nevicam') {
-            environment {
-                VENDOR = "nevicam"
-                CONFIG = "${NEVICAM_CONFIG}"
-            }
-            steps {
-                sh 'cp "${CONFIG}" ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
-                sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
-            }
-        }
+        // stage('Deploy - nevicam') {
+        //     environment {
+        //         VENDOR = "nevicam"
+        //         CONFIG = "${NEVICAM_CONFIG}"
+        //     }
+        //     steps {
+        //         sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+        //         sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+        //         sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
+        //     }
+        // }
     }
 }
