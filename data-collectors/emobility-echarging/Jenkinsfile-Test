@@ -71,16 +71,16 @@ pipeline {
             }
         }
 
-        // stage('Test - nevicam') {
-        //     environment {
-        //         VENDOR = "nevicam"
-        //         CONFIG = "${NEVICAM_CONFIG}"
-        //     }
-        //     steps {
-        //         sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
-        //         sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
-        //     }
-        // }
+        stage('Test - nevicam') {
+            environment {
+                VENDOR = "nevicam"
+                CONFIG = "${NEVICAM_CONFIG}"
+            }
+            steps {
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
+            }
+        }
 
         // stage('Deploy - alperia') {
         //     environment {
