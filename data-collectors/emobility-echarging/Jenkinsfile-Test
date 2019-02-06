@@ -88,7 +88,7 @@ pipeline {
                 CONFIG = "${ALPERIA_CONFIG}"
             }
             steps {
-                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
             }
@@ -100,7 +100,7 @@ pipeline {
                 CONFIG = "${DRIWE_CONFIG}"
             }
             steps {
-                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
             }
@@ -112,7 +112,7 @@ pipeline {
                 CONFIG = "${ROUTE220_CONFIG}"
             }
             steps {
-                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
             }
@@ -124,7 +124,7 @@ pipeline {
                 CONFIG = "${NEVICAM_CONFIG}"
             }
             steps {
-                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
             }
