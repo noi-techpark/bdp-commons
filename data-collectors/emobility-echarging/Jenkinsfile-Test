@@ -49,16 +49,16 @@ pipeline {
             }
         }
 
-        // stage('Test - driwe') {
-        //     environment {
-        //         VENDOR = "driwe"
-        //         CONFIG = "${DRIWE_CONFIG}"
-        //     }
-        //     steps {
-        //         sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
-        //         sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
-        //     }
-        // }
+        stage('Test - driwe') {
+            environment {
+                VENDOR = "driwe"
+                CONFIG = "${DRIWE_CONFIG}"
+            }
+            steps {
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify'
+            }
+        }
 
         // stage('Test - route220') {
         //     environment {
