@@ -7,8 +7,6 @@ pipeline {
     }
     
     environment {
-        TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
-        TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
         PROJECT = "appatn-tenminutes"
         PROJECT_FOLDER = "data-collectors/environment-appa/appatn_tenminutes"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
@@ -20,30 +18,24 @@ pipeline {
     stages {
         stage('Configure') {
             steps {
-                sh 'sed -i -e "s/<\\/settings>$//g\" ~/.m2/settings.xml'
-                sh 'echo "    <servers>" >> ~/.m2/settings.xml'
-                sh 'echo "        ${TESTSERVER_TOMCAT_CREDENTIALS}" >> ~/.m2/settings.xml'
-                sh 'echo "    </servers>" >> ~/.m2/settings.xml'
-                sh 'echo "</settings>" >> ~/.m2/settings.xml'
-
                 sh 'sed -i -e "s%\\(property.logFileFolder =\\).*\\$%\\1${LOG_FOLDER}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
                 sh 'sed -i -e "s%\\(property.logFileName =\\).*\\$%\\1${ARTIFACT_NAME}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
-                sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1DEBUG%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+                sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1INFO%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
 
                 sh 'sed -i -e "s%\\(odp.url.stations.tenminutes=\\).*\\$%\\1"${DATA_ENDPOINT}"%" ${PROJECT_FOLDER}/src/main/resources/config.properties'
                 sh 'sed -i -e "s%\\(odp.url.stations.tenminutes.key=\\).*\\$%\\1"${AUTH_TOKEN}"%" ${PROJECT_FOLDER}/src/main/resources/config.properties'
             }
         }
 
-        stage('Test') {
+        stage('Build') {
             steps {
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify package'
             }
         }
 
-	    stage('Deploy') {
+	    stage('Archive') {
             steps {
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -U tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
     }

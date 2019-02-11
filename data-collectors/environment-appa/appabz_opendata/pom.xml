@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>groupId</groupId>
-    <artifactId>bdp-appabz-pollution-airquality</artifactId>
+    <artifactId>dc-appabz-opendata</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>AppaBZ AirQuality data collector - Medie Orarie</name>
@@ -102,7 +102,7 @@
     </dependencies>
 
     <build>
-        <finalName>dc-airquality-appabz - Medie Orarie</finalName>
+        <finalName>dc-appabz-opendata</finalName>
         <testSourceDirectory>src/test/java/</testSourceDirectory>
         <plugins>
             <plugin>
