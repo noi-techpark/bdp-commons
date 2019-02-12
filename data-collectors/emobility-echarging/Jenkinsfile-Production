@@ -37,6 +37,7 @@ pipeline {
             }
             steps {
                 sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify package'
             }
@@ -59,6 +60,7 @@ pipeline {
             }
             steps {
                 sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify package'
             }
@@ -81,6 +83,7 @@ pipeline {
             }
             steps {
                 sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify package'
             }
@@ -103,6 +106,7 @@ pipeline {
             }
             steps {
                 sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify package'
             }
