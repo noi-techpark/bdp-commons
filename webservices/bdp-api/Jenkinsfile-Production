@@ -45,7 +45,8 @@ pipeline {
                 ARTIFACT_NAME = "bikesharing"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
 
@@ -77,7 +78,8 @@ pipeline {
                 ARTIFACT_NAME = "bluetooth"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
 
@@ -109,7 +111,8 @@ pipeline {
                 ARTIFACT_NAME = "carsharing"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
 
@@ -141,7 +144,8 @@ pipeline {
                 ARTIFACT_NAME = "emobility"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
 
@@ -173,7 +177,8 @@ pipeline {
                 ARTIFACT_NAME = "environment"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
 
@@ -205,7 +210,8 @@ pipeline {
                 ARTIFACT_NAME = "origin-destination"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
 
@@ -237,7 +243,8 @@ pipeline {
                 ARTIFACT_NAME = "meteorology"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
 
@@ -269,7 +276,8 @@ pipeline {
                 ARTIFACT_NAME = "parking"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
 
@@ -301,7 +309,8 @@ pipeline {
                 ARTIFACT_NAME = "roadweather"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
 
@@ -333,7 +342,8 @@ pipeline {
                 ARTIFACT_NAME = "street"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
 
@@ -365,7 +375,8 @@ pipeline {
                 ARTIFACT_NAME = "sensors"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
     }
