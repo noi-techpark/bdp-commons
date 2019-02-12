@@ -47,7 +47,8 @@ pipeline {
                 VENDOR = "alperia"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war ${ARTIFACT_NAME}-${VENDOR}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
         }
 
@@ -68,7 +69,8 @@ pipeline {
                 VENDOR = "driwe"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war ${ARTIFACT_NAME}-${VENDOR}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
         }
 
@@ -89,7 +91,8 @@ pipeline {
                 VENDOR = "route220"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war ${ARTIFACT_NAME}-${VENDOR}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
         }
 
@@ -110,7 +113,8 @@ pipeline {
                 VENDOR = "nevicam"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war ${ARTIFACT_NAME}-${VENDOR}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
         }
     }
