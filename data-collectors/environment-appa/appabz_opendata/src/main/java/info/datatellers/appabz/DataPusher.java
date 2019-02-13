@@ -36,7 +36,7 @@ public class DataPusher extends JSONPusher {
         for (JsonElement rawStation : rawStations) {
             StationDto station = new StationDto();
             try {
-                station.setId("APPABZ_" + rawStation.getAsJsonObject().get("SCODE").getAsString());
+                station.setId(rawStation.getAsJsonObject().get("SCODE").getAsString());
                 station.setName(rawStation.getAsJsonObject().get("NAME_I").getAsString());
                 station.setCrs(rb.getString("odh.station.projection"));
                 station.setOrigin(rb.getString("odh.station.origin"));
