@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
@@ -34,8 +33,11 @@ public class MeteoTnDataPusher extends JSONPusher {
 
     private static final Logger LOG = LogManager.getLogger(MeteoTnDataPusher.class.getName());
 
+//    @Autowired
+//    private Environment env;
+
     @Autowired
-    private Environment env;
+    private MeteoTnDataConverter converter;
 
     public MeteoTnDataPusher() {
         LOG.debug("START.constructor.");
@@ -80,7 +82,7 @@ public class MeteoTnDataPusher extends JSONPusher {
         DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
         Date now = new Date();
         Long nowTimestamp = now.getTime();
-        Integer period = env.getProperty(MeteoTnDataConverter.PERIOD_KEY, Integer.class);
+        Integer period = converter.getPeriod();
 
         int countStations = 0;
         int countBranches = 0;
@@ -88,13 +90,15 @@ public class MeteoTnDataPusher extends JSONPusher {
 
         for (MeteoTnDto dto : data) {
 
+            removeAlreadyPushedData(dto);
+
             MeteoStationDto stationDto = dto.getStation();
 
-            //Exclude Stations having endDate<today
+            //Exclude Stations having endDate < today
             if ( dto.isValid() ) {
     
                 String stationId = stationDto.getId();
-                List<MeteoTnMeasurementListDto> measurementTypes = dto.getMeasurementTypes();
+                List<MeteoTnMeasurementListDto> measurementsByType = dto.getMeasurementsByType();
 
                 //Check if we already treated this station (branch), if not found create the map and the list of records
                 DataMapDto<RecordDtoImpl> recordsByStation = map.getBranch().get(stationId);
@@ -106,7 +110,7 @@ public class MeteoTnDataPusher extends JSONPusher {
                     countStations++;
                 }
 
-                for (MeteoTnMeasurementListDto measurementListDto : measurementTypes) {
+                for (MeteoTnMeasurementListDto measurementListDto : measurementsByType) {
 
                     //String measurementListName = measurementListDto.getName();
                     List<MeteoTnMeasurementDto> measurements = measurementListDto.getMeasurements();
@@ -143,7 +147,7 @@ public class MeteoTnDataPusher extends JSONPusher {
                 }
 
             } else {
-                LOG.debug("SKIP MEASURES: id="+stationDto.getId());
+                LOG.debug("SKIP MEASURES: station_id="+stationDto.getId());
             }
         }
 
@@ -224,50 +228,70 @@ public class MeteoTnDataPusher extends JSONPusher {
         return dataTypeList;
     }
 
-    public List<DataTypeDto> mapDataTypes2Bdp_OLD(DataMapDto<RecordDtoImpl> stationRec) {
-        LOG.debug("START.mapdataTypes2Bdp");
-        if (stationRec == null) {
+    public Date getLastSavedRecordForStation(MeteoStationDto station) {
+        LOG.debug("START.getLastSavedRecordForStation");
+        if (station == null) {
             return null;
         }
 
-        List<DataTypeDto> dataTypeList = new ArrayList<DataTypeDto>();
-        Set<String> dataTypeNames = new HashSet<String>();
-
-        Map<String, DataMapDto<RecordDtoImpl>> branch1 = stationRec.getBranch();
-        Set<String> keySet1 = branch1.keySet();
-        for (String key1 : keySet1) {
-            LOG.debug("check key1="+key1);
-            DataMapDto<RecordDtoImpl> dataMapDto1 = branch1.get(key1);
-
-            Map<String, DataMapDto<RecordDtoImpl>> branch2 = dataMapDto1.getBranch();
-            Set<String> keySet2 = branch2.keySet();
-            for (String key2 : keySet2) {
-                LOG.debug("check key2="+key2);
-                DataMapDto<RecordDtoImpl> dataMapDto2 = branch2.get(key2);
-                List<RecordDtoImpl> data2 = dataMapDto2.getData();
-
-                for (RecordDtoImpl recordDtoImpl : data2) {
-                    LOG.debug("check recordDtoImpl="+recordDtoImpl);
-                    SimpleRecordDto sr = (SimpleRecordDto) recordDtoImpl;
-
-                    if ( !dataTypeNames.contains(key2) ) {
-                        DataTypeDto type = new DataTypeDto();
-                        type.setName(key2);
-                        type.setPeriod(sr.getPeriod());
-//                      type.setUnit(dto.getUnit());
-                        LOG.debug("ADD DataTypeDto="+type);
-                        dataTypeList.add(type);
-                        dataTypeNames.add(key2);
-                    }
-                }
-
-            }
-
+        Date lastSavedRecord = null;
+        Integer period = converter.getPeriod();
+        String stationCode = station.getId();
+        Object dateOfLastRecord = super.getDateOfLastRecord(stationCode, null, period);
+        if ( dateOfLastRecord instanceof Date ) {
+            lastSavedRecord = (Date) dateOfLastRecord;
         }
 
-        LOG.debug("dataTypeList: "+dataTypeList);
-        LOG.debug("END.mapdataTypes2Bdp");
-        return dataTypeList;
+        LOG.debug("stationCode="+stationCode+"  lastSavedRecord="+lastSavedRecord);
+        LOG.debug("END.getLastSavedRecordForStation");
+        return lastSavedRecord;
+    }
+
+    public void removeAlreadyPushedData(MeteoTnDto meteoTnDto) {
+        LOG.debug("START.removeAlreadyPushedData");
+        if (meteoTnDto == null) {
+            return;
+        }
+
+        //Exit if it is not necessary to read date of last saved record (check the environment parameter and the flag on the station)
+        boolean envParamCheck = converter.isCheckDateOfLastRecord();
+        boolean stationCheck = meteoTnDto.isCheckLastSavedRecord();
+        if ( !stationCheck || !envParamCheck ) {
+            return;
+        }
+
+        //Read date of last saved record, save it on the DTO for later use. Save also the information that we read the data to avoid unnecessary reads
+        Date lastSavedRecord = meteoTnDto.getLastSavedRecord();
+        if ( lastSavedRecord == null ) {
+            MeteoStationDto station = meteoTnDto.getStation();
+            lastSavedRecord = getLastSavedRecordForStation(station);
+            meteoTnDto.setLastSavedRecord(lastSavedRecord);
+            meteoTnDto.setCheckLastSavedRecord(false);
+        }
+        if ( lastSavedRecord != null ) {
+            // Remove measurements older than lastSavedRecord in order to have less data to send to the Data Hub
+            List<MeteoTnMeasurementListDto> measurementsByType = meteoTnDto.getMeasurementsByType();
+            for ( int i=0 ; measurementsByType!=null && i<measurementsByType.size() ; i++ ) {
+                MeteoTnMeasurementListDto measurementListDto = measurementsByType.get(i);
+                List<MeteoTnMeasurementDto> measurements = measurementListDto.getMeasurements();
+                List<MeteoTnMeasurementDto> filteredList = new ArrayList<MeteoTnMeasurementDto>();
+                MeteoTnMeasurementDto lastMeasurementDto = null;
+                for ( int j=0 ; measurements!=null && j<measurements.size() ; j++ ) {
+                    MeteoTnMeasurementDto measurementDto = measurements.get(j);
+                    Date date = measurementDto.getDate();
+                    if ( date.compareTo(lastSavedRecord) >= 0 ) {
+                        filteredList.add(measurementDto);
+                        lastMeasurementDto = measurementDto;
+                    }
+                }
+                measurementListDto.setMeasurements(filteredList);
+                if ( lastMeasurementDto!=null && LOG.isDebugEnabled() ) {
+                    LOG.debug("LAST MEASURE: " + lastMeasurementDto);
+                }
+            }
+        }
+
+        LOG.debug("END.removeAlreadyPushedData");
     }
 
     @Override

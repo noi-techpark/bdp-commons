@@ -171,9 +171,14 @@ public class DCUtils {
     }
 
     public static String convertDateToString(Date inval) {
+        String retval = convertDateToString(inval, "yyyy-MM-dd_HH-mm-ss");
+        return retval;
+    }
+
+    public static String convertDateToString(Date inval, String pattern) {
         String retval = null;
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+            SimpleDateFormat formatter = new SimpleDateFormat(pattern);
             retval = formatter.format(inval);
         } catch (Exception ex) {
         }
@@ -181,9 +186,14 @@ public class DCUtils {
     }
 
     public static Date convertStringToDate(String inval) {
+        Date retval = convertStringToDate(inval, "yyyy-MM-dd_HH-mm-ss");
+        return retval;
+    }
+
+    public static Date convertStringToDate(String inval, String pattern) {
         Date retval = null;
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+            SimpleDateFormat formatter = new SimpleDateFormat(pattern);
             retval = formatter.parse(inval);
         } catch (Exception ex) {
         }
@@ -193,7 +203,7 @@ public class DCUtils {
     public static Date convertStringTimezoneToDate(String inval) {
         Date retval = null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
             retval = sdf.parse(inval);
         } catch (Exception e1) {
             LOG.debug("Exception parsing date "+inval+": "+e1);

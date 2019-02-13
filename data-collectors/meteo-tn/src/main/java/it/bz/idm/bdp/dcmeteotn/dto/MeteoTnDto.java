@@ -2,6 +2,7 @@ package it.bz.idm.bdp.dcmeteotn.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +17,11 @@ public class MeteoTnDto implements Serializable {
 
     private boolean valid;
     private MeteoStationDto station;
+    private Date lastSavedRecord;
+    private boolean checkLastSavedRecord;
     private Map<String, String> stationAttributes;
     private Map<String, DataTypeDto> dataTypes;
-    private List<MeteoTnMeasurementListDto> measurementTypes;
+    private List<MeteoTnMeasurementListDto> measurementsByType;
 
     public MeteoTnDto() {
     }
@@ -28,18 +31,19 @@ public class MeteoTnDto implements Serializable {
     }
 
     public MeteoTnDto(MeteoStationDto station, Map<String, String> stationAttributes) {
+        this.checkLastSavedRecord = true;
         this.station = station;
         this.stationAttributes = stationAttributes;
         this.dataTypes = new HashMap<String, DataTypeDto>();
-        this.measurementTypes = new ArrayList<MeteoTnMeasurementListDto>();
+        this.measurementsByType = new ArrayList<MeteoTnMeasurementListDto>();
     }
 
     public boolean isValid() {
         if ( stationAttributes!=null ) {
             if ( DCUtils.paramNotNull(stationAttributes.get("enddate")) ) {
-                return false;
+                valid = false;
             } else {
-                return true;
+                valid = true;
             }
         }
         return valid;
@@ -55,6 +59,22 @@ public class MeteoTnDto implements Serializable {
 
     public void setStation(MeteoStationDto station) {
         this.station = station;
+    }
+
+    public Date getLastSavedRecord() {
+        return lastSavedRecord;
+    }
+
+    public void setLastSavedRecord(Date lastSavedRecord) {
+        this.lastSavedRecord = lastSavedRecord;
+    }
+
+    public boolean isCheckLastSavedRecord() {
+        return checkLastSavedRecord;
+    }
+
+    public void setCheckLastSavedRecord(boolean checkLastSavedRecord) {
+        this.checkLastSavedRecord = checkLastSavedRecord;
     }
 
     public Map<String, String> getStationAttributes() {
@@ -73,17 +93,17 @@ public class MeteoTnDto implements Serializable {
         this.dataTypes = dataTypes;
     }
 
-    public List<MeteoTnMeasurementListDto> getMeasurementTypes() {
-        return measurementTypes;
+    public List<MeteoTnMeasurementListDto> getMeasurementsByType() {
+        return measurementsByType;
     }
 
-    public void setMeasurementTypes(List<MeteoTnMeasurementListDto> measurementTypes) {
-        this.measurementTypes = measurementTypes;
+    public void setMeasurementsByType(List<MeteoTnMeasurementListDto> measurementsByType) {
+        this.measurementsByType = measurementsByType;
     }
 
     @Override
     public String toString() {
-        return "MeteoTnDto [valid=" + valid + ", station=" + station + ", stationAttributes=" + stationAttributes + ", dataTypes=" + dataTypes + ", measurementTypes=" + measurementTypes + "]";
+        return "MeteoTnDto [valid=" + valid + ", station=" + station + ", stationAttributes=" + stationAttributes + ", dataTypes=" + dataTypes + ", measurementsByType=" + measurementsByType + "]";
     }
 
 }
