@@ -16,7 +16,7 @@ public class MeteoTnDto implements Serializable {
     private static final long serialVersionUID = 8642860252556395832L;
 
     private boolean valid;
-    private MeteoStationDto station;
+    private StationDto station;
     private Date lastSavedRecord;
     private boolean checkLastSavedRecord;
     private Map<String, String> stationAttributes;

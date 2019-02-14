@@ -1,5 +1,8 @@
 package it.bz.idm.bdp.dcmeteotn;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -21,6 +24,8 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
@@ -74,13 +79,13 @@ public class MeteoTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {
             //Test data contains 1 station (1 station is rejected due to enddate!=null)
             assertEquals(1, stations.size());
 
-            //Check that station list contains a station with ID=TEST_IDX and that input data is converted correctly 
+            //Check that station list contains a station with ID=TEST_IDX and that input data is converted correctly
             StringBuffer errs = new StringBuffer();
             boolean station1Found = false;
             boolean station2Found = false;
             boolean allFound = false;
             for ( int i=0 ; !allFound && i<stations.size() ; i++ ) {
-                MeteoStationDto station = (MeteoStationDto) stations.get(i);
+                StationDto station = stations.get(i);
                 String id = station.getId();
                 if ( TEST_STATION_ID_1.equals(id) ) {
                     station1Found = true;
@@ -241,7 +246,7 @@ public class MeteoTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {
     private void checkEquals(Object expected, Object actual, StringBuffer sb, String errMsg) {
         if ( expected == actual ) {
             return;
-        } 
+        }
         if ( expected!=null && actual==null ) {
             sb.append("\n - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
             return;

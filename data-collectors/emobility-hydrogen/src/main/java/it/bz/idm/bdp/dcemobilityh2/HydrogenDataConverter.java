@@ -153,7 +153,8 @@ public class HydrogenDataConverter {
         return plug;
     }
 
-    public ChargingPointsDtoV2 getPointDto(StationDto station, StationDto plug) {
+    @SuppressWarnings("unchecked")
+	public ChargingPointsDtoV2 getPointDto(StationDto station, StationDto plug) {
         ChargingPointsDtoV2 point = null;
         if ( station!=null && plug!=null ) {
             //For each station we create a Point with id = station.id-1
