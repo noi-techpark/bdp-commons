@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +34,6 @@ public class MeteoTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {
     @Autowired
     private MeteoTnDataRetriever reader;
 
-    @Autowired
-    private MeteoTnDataConverter converter;
-
     private static final String TEST_FILE_FETCH_STATIONS     = "/test_data/test_data_fetch_stations.xml";
     private static final String TEST_FILE_FETCH_MEASUREMENTS = "/test_data/test_data_fetch_measurements.xml";
     private static final String TEST_FILE_PUSH_STATIONS      = "/test_data/test_data_push_stations.xml";
@@ -43,12 +41,22 @@ public class MeteoTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {
 
     public static final String DATA_FETCH_STATIONS     = "FETCH_STATIONS";
     public static final String DATA_FETCH_MEASUREMENTS = "FETCH_MEASUREMENTS";
-    public static final String DATA_PUSH_STATIONS     = "PUSH_STATIONS";
-    public static final String DATA_PUSH_MEASUREMENTS = "PUSH_MEASUREMENTS";
+    public static final String DATA_PUSH_STATIONS      = "PUSH_STATIONS";
+    public static final String DATA_PUSH_MEASUREMENTS  = "PUSH_MEASUREMENTS";
 
     public static final String MUNICIPALITY = "FETCH_MUNICIPALITY";
     private static final String TEST_STATION_ID_1 = "ST_001";
     private static final String TEST_STATION_ID_2 = "ST_002";
+    private static final Date TEST_DATE_LAST_RECORD = DCUtils.convertStringTimezoneToDate("2019-01-18T14:00:00+01");
+    private static final Integer TEST_PERIOD = new Integer(900);
+
+    private static final String TEST_STATION_DATA_TYPE_1 = "air_temperature";
+    private static final String TEST_STATION_DATA_TYPE_2 = "precipitation";
+    private static final String TEST_STATION_DATA_TYPE_3 = "wind10m_speed";
+    private static final String TEST_STATION_DATA_TYPE_4 = "wind10m_direction";
+    private static final String TEST_STATION_DATA_TYPE_5 = "global_radiation";
+    private static final String TEST_STATION_DATA_TYPE_6 = "relative_humidity";
+    private static final String TEST_STATION_DATA_TYPE_7 = "snow_depth";
 
     @Test
     public void testConvertStationData() {
@@ -60,52 +68,43 @@ public class MeteoTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {
 
             StationList stations = pusher.mapStations2Bdp(data);
 
-            //TODO: implement tests
-//            //Test data contains 4 records
-//            assertEquals(4, data.size());
-//
-//            //Test data contains 3 stations (1 station is rejected due to available=-2)
-//            assertEquals(3, stations.size());
-//
-//            //Check that station list contains a station with ID=TEST_IDX and that input data is converted correctly 
-//            StringBuffer errs = new StringBuffer();
-//            boolean station1Found = false;
-//            boolean station2Found = false;
-//            boolean allFound = false;
-//            for ( int i=0 ; !allFound && i<stations.size() ; i++ ) {
-//                MeteoStationDto station = (MeteoStationDto) stations.get(i);
-//                String id = station.getId();
-//                if ( TEST_STATION_ID_1.equals(id) ) {
-//                    station1Found = true;
-//                    checkEquals(TEST_STATION_ID_1    , station.getId()            , errs, "STATION_1: ID is INCORRECT");
-//                    checkEquals("NAME ?-.,/ 1"       , station.getName()          , errs, "STATION_1: NAME is INCORRECT");
-//                    checkEquals(11D                  , station.getLongitude()     , errs, "STATION_1: LONGITUDE is INCORRECT");
-//                    checkEquals(46D                  , station.getLatitude()      , errs, "STATION_1: LATITUDE is INCORRECT");
-//                    checkEquals("FETCH_MUNICIPALITY" , station.getMunicipality()  , errs, "STATION_1: MUNICIPALITY is INCORRECT");
-//                    checkEquals("FBK"                , station.getOrigin()        , errs, "STATION_1: ORIGIN is INCORRECT");
-//                    checkEquals("MeteoStation"     , station.getStationType()   , errs, "STATION_1: STATION_TYPE is INCORRECT");
-//                }
-//                if ( TEST_STATION_ID_2.equals(id) ) {
-//                    station2Found = true;
-//                    checkEquals(TEST_STATION_ID_2    , station.getId()            , errs, "STATION_2: ID is INCORRECT");
-//                    checkEquals("NAME 2"             , station.getName()          , errs, "STATION_2: NAME is INCORRECT");
-//                    checkEquals(11D                  , station.getLongitude()     , errs, "STATION_2: LONGITUDE is INCORRECT");
-//                    checkEquals(46D                  , station.getLatitude()      , errs, "STATION_2: LATITUDE is INCORRECT");
-//                    checkEquals("FETCH_MUNICIPALITY" , station.getMunicipality()  , errs, "STATION_2: MUNICIPALITY is INCORRECT");
-//                    checkEquals("FBK"                , station.getOrigin()        , errs, "STATION_2: ORIGIN is INCORRECT");
-//                    checkEquals("MeteoStation"     , station.getStationType()   , errs, "STATION_2: STATION_TYPE is INCORRECT");
-//                }
-//                allFound = station1Found && station2Found;
-//            }
-//            if ( !station1Found ) {
-//                Assert.fail("No station 1 found with id: " + TEST_STATION_ID_1);
-//            }
-//            if ( !station2Found ) {
-//                Assert.fail("No station 2 found with id: " + TEST_STATION_ID_2);
-//            }
-//            if ( errs.length() > 0 ) {
-//                Assert.fail("Station converter failure: " + errs);
-//            }
+            //Test data contains 2 records
+            assertEquals(2, data.size());
+
+            //Test data contains 1 station (1 station is rejected due to enddate!=null)
+            assertEquals(1, stations.size());
+
+            //Check that station list contains a station with ID=TEST_IDX and that input data is converted correctly 
+            StringBuffer errs = new StringBuffer();
+            boolean station1Found = false;
+            boolean station2Found = false;
+            boolean allFound = false;
+            for ( int i=0 ; !allFound && i<stations.size() ; i++ ) {
+                MeteoStationDto station = (MeteoStationDto) stations.get(i);
+                String id = station.getId();
+                if ( TEST_STATION_ID_1.equals(id) ) {
+                    station1Found = true;
+                }
+                if ( TEST_STATION_ID_2.equals(id) ) {
+                    station2Found = true;
+                    checkEquals(TEST_STATION_ID_2    , station.getId()            , errs, "STATION_2: ID is INCORRECT");
+                    checkEquals("Ala (Maso Le Pozze)", station.getName()          , errs, "STATION_2: NAME is INCORRECT");
+                    checkEquals(11.023828D           , station.getLongitude()     , errs, "STATION_2: LONGITUDE is INCORRECT");
+                    checkEquals(45.786137D           , station.getLatitude()      , errs, "STATION_2: LATITUDE is INCORRECT");
+                    checkEquals("meteotrentino"      , station.getOrigin()        , errs, "STATION_2: ORIGIN is INCORRECT");
+                    checkEquals("Meteostation"       , station.getStationType()   , errs, "STATION_2: STATION_TYPE is INCORRECT");
+                }
+                allFound = !station1Found && station2Found;
+            }
+            if ( station1Found ) {
+                Assert.fail("INVALID Station 1 found with id: " + TEST_STATION_ID_1);
+            }
+            if ( !station2Found ) {
+                Assert.fail("No station 2 found with id: " + TEST_STATION_ID_2);
+            }
+            if ( errs.length() > 0 ) {
+                Assert.fail("Station converter failure: " + errs);
+            }
 
         } catch (Exception e) {
             String msg = "Exception in testConvertStationData: " + e;
@@ -124,27 +123,64 @@ public class MeteoTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {
             stationAttrs.put("code", TEST_STATION_ID_1);
 
             MeteoTnDto data = reader.convertMeasurementsResponseToInternalDTO(responseString, stationAttrs);
+            data.setLastSavedRecord(TEST_DATE_LAST_RECORD);
 
             DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(data);
 
-            //TODO: implement tests
-//            //Check that there is a branch for TEST_IDX station that contains a measurement for "number-available" Type
-//            Map<String, DataMapDto<RecordDtoImpl>> branch1 = stationRec.getBranch();
-//            assertNotNull("StationMeasurements: Branch Level 1 is null", branch1);
-//
-//            DataMapDto<RecordDtoImpl> dataMapDto1 = branch1.get(TEST_STATION_ID_1);
-//            assertNotNull("StationMeasurements: DataMapDTO for station "+TEST_STATION_ID_1+" is null", dataMapDto1);
-//
-//            List<RecordDtoImpl> data1 = dataMapDto1.getData();
-//            assertNotNull("StationMeasurements: Records for DataType "+TEST_STATION_DATA_TYPE+" is null", data1);
-//
-//            if ( data1.size() > 0 ) {
-//                SimpleRecordDto record = (SimpleRecordDto) data1.get(0);
-//                Object value = record.getValue();
-//                assertEquals("StationMeasurements: measurement value is wrong", 50, value);
-//            } else {
-//                Assert.fail("No StationMeasurements found");
-//            }
+            //Check there is a branch for TEST_STATION_ID_1 station
+            Map<String, DataMapDto<RecordDtoImpl>> branch1 = stationRec.getBranch();
+            assertNotNull("StationMeasurements: Branch Level 1 is null", branch1);
+
+            //Check there is a data map for TEST_STATION_ID_1 station
+            DataMapDto<RecordDtoImpl> dataMapDto1 = branch1.get(TEST_STATION_ID_1);
+            assertNotNull("StationMeasurements: DataMapDTO for station "+TEST_STATION_ID_1+" is null", dataMapDto1);
+
+            //Check there is data measurements in the map
+            Map<String, DataMapDto<RecordDtoImpl>> branch2_1 = dataMapDto1.getBranch();
+            DataMapDto<RecordDtoImpl> dataMapDto2_1 = branch2_1.get(TEST_STATION_DATA_TYPE_1);
+            DataMapDto<RecordDtoImpl> dataMapDto2_2 = branch2_1.get(TEST_STATION_DATA_TYPE_2);
+            DataMapDto<RecordDtoImpl> dataMapDto2_3 = branch2_1.get(TEST_STATION_DATA_TYPE_3);
+            DataMapDto<RecordDtoImpl> dataMapDto2_4 = branch2_1.get(TEST_STATION_DATA_TYPE_4);
+            DataMapDto<RecordDtoImpl> dataMapDto2_5 = branch2_1.get(TEST_STATION_DATA_TYPE_5);
+            DataMapDto<RecordDtoImpl> dataMapDto2_6 = branch2_1.get(TEST_STATION_DATA_TYPE_6);
+            DataMapDto<RecordDtoImpl> dataMapDto2_7 = branch2_1.get(TEST_STATION_DATA_TYPE_7);
+
+            StringBuffer errs = new StringBuffer();
+
+            //Types 1..6 must not be empty, type 7 should be empty
+            checkNotEmpty(dataMapDto2_1          , errs, "Measures for type "+TEST_STATION_DATA_TYPE_1);
+            checkNotEmpty(dataMapDto2_2          , errs, "Measures for type "+TEST_STATION_DATA_TYPE_2);
+            checkNotEmpty(dataMapDto2_3          , errs, "Measures for type "+TEST_STATION_DATA_TYPE_3);
+            checkNotEmpty(dataMapDto2_4          , errs, "Measures for type "+TEST_STATION_DATA_TYPE_4);
+            checkNotEmpty(dataMapDto2_5          , errs, "Measures for type "+TEST_STATION_DATA_TYPE_5);
+            checkNotEmpty(dataMapDto2_6          , errs, "Measures for type "+TEST_STATION_DATA_TYPE_6);
+            checkNotExists(dataMapDto2_7         , errs, "Measures for type "+TEST_STATION_DATA_TYPE_7);
+
+            //Check data older than TEST_DATE_LAST_RECORD is removed from the list
+            Long lastTimestamp = TEST_DATE_LAST_RECORD.getTime();
+            if ( dataMapDto2_1!=null && dataMapDto2_1.getData()!=null && dataMapDto2_1.getData().size()>0 ) {
+                for (RecordDtoImpl record : dataMapDto2_1.getData()) {
+                    Long recordTimestamp = record.getTimestamp();
+                    if ( recordTimestamp == null ) {
+                        errs.append("\n - Timestamp in measure IS NULL (should be NOT NULL)");
+                    } else {
+                        if ( lastTimestamp > recordTimestamp ) {
+                            errs.append("\n - Timestamp in measure IS OLDER than last record. Last_Record="+lastTimestamp+"  Curr_Record="+recordTimestamp);
+                        }
+                    }
+                    if ( record instanceof SimpleRecordDto ) {
+                        SimpleRecordDto simpleRecord = (SimpleRecordDto) record;
+                        Integer recordPeriod = simpleRecord.getPeriod();
+                        checkEquals(TEST_PERIOD    , recordPeriod            , errs, "PERIOD is INCORRECT");
+                    } else {
+                        errs.append("\n - Measure is not of type SimpleRecordDto: "+record.getClass());
+                    }
+                }
+            }
+
+            if ( errs.length() > 0 ) {
+                Assert.fail("Station converter failure: " + errs);
+            }
 
         } catch (Exception e) {
             String msg = "Exception in testConvertStationMeasurements: " + e;
@@ -207,20 +243,38 @@ public class MeteoTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {
             return;
         } 
         if ( expected!=null && actual==null ) {
-            sb.append(" - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
+            sb.append("\n - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
             return;
         }
         if ( expected==null && actual!=null ) {
-            sb.append(" - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
+            sb.append("\n - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
             return;
         }
         if ( expected.getClass() != actual.getClass() ) {
-            sb.append(" - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
+            sb.append("\n - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
             return;
         }
         if ( !expected.equals(actual) ) {
-            sb.append(" - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
+            sb.append("\n - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
             return;
+        }
+    }
+
+    private void checkNotExists(Object actual, StringBuffer sb, String errMsg) {
+        if (actual != null ) {
+            sb.append("\n - "+errMsg+" IS NOT NULL (should be NULL)");
+            return;
+        }
+    }
+
+    private void checkNotEmpty(DataMapDto<RecordDtoImpl> dataMap, StringBuffer sb, String errMsg) {
+        if (dataMap == null ) {
+            sb.append("\n - "+errMsg+" IS NULL (should be NOT NULL)");
+            return;
+        }
+        List<RecordDtoImpl> data = dataMap.getData();
+        if ( data==null || data.size()==0 ) {
+            sb.append("\n - "+errMsg+" IS EMPTY (should contain some data)");
         }
     }
 

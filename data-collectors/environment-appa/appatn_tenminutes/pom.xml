@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>info.datatellers.appatn</groupId>
-	<artifactId>bdp-appatn-airquality</artifactId>
+	<artifactId>dc-appatn-tenminutes</artifactId>
 	<version>1.0.5</version>
 	<packaging>war</packaging>
 	<name>AppaTN AirQuality data collector</name>
@@ -94,7 +94,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>dc-airquality-appatn</finalName>
+		<finalName>dc-appatn-tenminutes</finalName>
 		<testSourceDirectory>src/test/java/</testSourceDirectory>
 		<plugins>
 			<plugin>

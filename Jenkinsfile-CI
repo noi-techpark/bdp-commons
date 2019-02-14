@@ -11,93 +11,88 @@ pipeline {
             parallel {
                 stage('airquality-appabz') {
                     steps {
-                        sh 'cd data-collectors/airquality-appabz && mvn clean compile test -U'
+                        sh 'cd data-collectors/airquality-appabz && mvn -B -U clean compile test'
                     }
                 }
                 stage('bikesharing-algorab') {
                     steps {
-                        sh 'cd data-collectors/bikesharing-algorab && mvn clean compile test -U'
+                        sh 'cd data-collectors/bikesharing-algorab && mvn -B -U clean compile test'
                     }
                 }
                 stage('carsharing-halapi') {
                     steps {
-                        sh 'cd data-collectors/carsharing-halapi && mvn clean compile test -U'
+                        sh 'cd data-collectors/carsharing-halapi && mvn -B -U clean compile test'
                     }
                 }
                 stage('emobility-echarging') {
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/emobility-echarging/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/datacollectors/emobility-dc.log%" data-collectors/emobility-echarging/src/main/resources/log4j.properties'
-                        sh 'cd data-collectors/emobility-echarging && mvn clean compile test -U'
+                        sh 'cd data-collectors/emobility-echarging && mvn -B -U clean compile test'
                     }
                 }
                 stage('emobility-hydrogen') {
                     steps {
-                        sh 'cd data-collectors/emobility-hydrogen && mvn clean compile test -U'
+                        sh 'cd data-collectors/emobility-hydrogen && mvn -B -U clean compile test'
                     }
                 }
                 stage('environment-appa-tenminutes') {
                     steps {
-                        sh 'cd data-collectors/environment-appa/appatn_tenminutes && mvn clean compile'
+                        sh 'cd data-collectors/environment-appa/appatn_tenminutes && mvn -B -U clean compile'
                     }
                 }
                 stage('environment-appa-opendata') {
                     steps {
-                        sh 'cd data-collectors/environment-appa/appatn_opendata && mvn clean compile'
+                        sh 'cd data-collectors/environment-appa/appatn_opendata && mvn -B -U clean compile'
+                    }
+                }
+                stage('environment-appa-bz') {
+                    steps {
+                        sh 'cd data-collectors/environment-appa/appabz_opendata && mvn -B -U clean compile'
                     }
                 }
                 stage('meteorology-siag (ZRX-data-collector)') {
                     steps {
-                        sh 'cd data-collectors/meteorology-siag/zrx2json && mvn install'
-                        sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn clean compile test -U'
+                        sh 'cd data-collectors/meteorology-siag/zrx2json && mvn -B -U install'
+                        sh 'cd data-collectors/meteorology-siag/ZRX-data-collector && mvn -B -U clean compile test'
                     }
                 }
                 stage('meteorology-siag (zrx2json)') {
                     steps {
-                        sh 'cd data-collectors/meteorology-siag/zrx2json && mvn clean compile test -U'
+                        sh 'cd data-collectors/meteorology-siag/zrx2json && mvn -B -U clean compile test'
                     }
                 }
                 stage('meteorology-provincetrento') {
                     steps {
-                        sh 'cd data-collectors/meteo-tn/ && mvn clean compile test -U'
+                        sh 'cd data-collectors/meteo-tn/ && mvn -B -U clean compile test'
                     }
                 }
                 stage('parking-MeBo') {
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/parking-MeBo/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/parking-MeBo/src/main/resources/log4j.properties'
-                        sh 'cd data-collectors/parking-MeBo && mvn clean compile test -U'
+                        sh 'cd data-collectors/parking-MeBo && mvn -B -U clean compile test'
                     }
                 }
                 stage('parking-tn') {
                     steps {
-                        sh 'test -d data-collectors/parking-tn && { cd data-collectors/parking-tn; mvn clean compile test; } || true'
+                        sh 'test -d data-collectors/parking-tn && { cd data-collectors/parking-tn; mvn -B -U clean compile test; } || true'
                     }
                 }
                 stage('roadweather-famas') {
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/roadweather-famas/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/parking.log%" data-collectors/roadweather-famas/src/main/resources/log4j.properties'
-                        sh 'cd data-collectors/roadweather-famas && mvn clean compile test -U'
+                        sh 'cd data-collectors/roadweather-famas && mvn -B -U clean compile test'
                     }
                 }
                 stage('traffic-a22') {
                     steps {
-                        sh 'cd data-collectors/traffic-a22/A22Connector/ && mvn clean compile test -U'
+                        sh 'cd data-collectors/traffic-a22/A22Connector/ && mvn -B -U clean compile test'
                     }
                 }
                 stage('vehicletraffic-bluetooth'){
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/bluetooth-endpoint.log%" data-collectors/vehicletraffic-bluetooth/src/main/resources/log4j.properties'
-                        sh 'cd data-collectors/vehicletraffic-bluetooth && mvn clean compile test -U'
+                        sh 'cd data-collectors/vehicletraffic-bluetooth && mvn -B -U clean compile test'
                     }
                 }
                 stage('traffic-bz') {
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/traffic-sensors-dc.log%" data-collectors/traffic-bz/src/main/resources/log4j.properties'
-                        sh 'cd data-collectors/traffic-bz/ && mvn clean compile test -U'
+                        sh 'cd data-collectors/traffic-bz/ && mvn -B -U clean compile test'
                     }
                 }
             }
@@ -107,9 +102,7 @@ pipeline {
             parallel {
                 stage('bdp-api') {
                     steps {
-                        sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
-                        sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/bdp-api.log%" webservices/bdp-api/src/main/resources/log4j.properties'
-                        sh 'cd webservices/bdp-api/ && mvn clean compile test -U'
+                        sh 'cd webservices/bdp-api/ && mvn -B -U clean compile test'
                     }
                 }
             }

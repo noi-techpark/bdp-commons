@@ -291,7 +291,7 @@ public class MeteoTnDataRetriever {
 
         StationDto stationDto = converter.convertExternalStationDtoToStationDto(station);
         extDto = new MeteoTnDto(stationDto, station);
-        List<MeteoTnMeasurementListDto> measurementTypes = extDto.getMeasurementTypes();
+        List<MeteoTnMeasurementListDto> measurementsByType = extDto.getMeasurementsByType();
         Map<String, DataTypeDto> dataTypes = extDto.getDataTypes();
 
         // Analyze XML in a dynamic and configurable way
@@ -307,7 +307,7 @@ public class MeteoTnDataRetriever {
                     type1Name = type1Name.substring(0, type1Name.length() - "_list".length());
                 }
                 MeteoTnMeasurementListDto measurementListDto = new MeteoTnMeasurementListDto(type1Name);
-                measurementTypes.add(measurementListDto);
+                measurementsByType.add(measurementListDto);
                 List<MeteoTnMeasurementDto> measurements = measurementListDto.getMeasurements();
 
                 Node node2 = node1.getFirstChild();
@@ -333,15 +333,25 @@ public class MeteoTnDataRetriever {
                             String strUmName = node2Attrs.get(umKey);
                             String strValue = null;
                             String strTypeName = null;
-                            //if attribute is "UM" then the value is in the tag "value"
+                            //if attribute is "UM" then the value is in the tag "value", for example "air_temperature":
+                            //<air_temperature UM="°C">
+                            //  <date>2018-12-17T00:00:00+01</date>
+                            //  <value>-6.8</value>
+                            //</air_temperature>
                             if ( "UM".equals(umKey) ) {
                                 strTypeName = node2Name;
                                 strValue = DCUtils.getElementTagValue(elem2, "value");
                             } else {
-                                //if attribute is "UM_xxx" then the value is in the tag "xxx"
+                                //if attribute is "UM_xxx" then the value is in the tag "xxx_value", the name becomes "attr_xxx", for example "wind10m_speed":
+                                //<wind10m UM_speed="m/s" UM_direction="gN">
+                                //  <date>2018-12-18T02:00:00+01</date>
+                                //  <speed_value>1.9</speed_value>
+                                //  <direction_value>113</direction_value>
+                                //</wind10m>
                                 if ( umKey.startsWith("UM_") ) {
-                                    strTypeName = umKey.substring(3);
-                                    strValue = DCUtils.getElementTagValue(elem2, strTypeName);
+                                    String tmpTypeName = umKey.substring(3);
+                                    strValue = DCUtils.getElementTagValue(elem2, tmpTypeName+"_value");
+                                    strTypeName = node2Name + "_" + tmpTypeName;
                                 } else {
                                     LOG.debug("How to deal with this attribute??? attr='"+umKey+"'  xml="+xml);
                                 }
@@ -353,6 +363,7 @@ public class MeteoTnDataRetriever {
                             MeteoTnMeasurementDto measurementDto = new MeteoTnMeasurementDto(xml, date, strTypeName, strUmName, value);
                             measurements.add(measurementDto);
 
+                            //First time we find this data type, collect it
                             if ( !dataTypes.containsKey(strTypeName) ) {
                                 DataTypeDto dataTypeDto = new DataTypeDto();
                                 dataTypeDto.setName(strTypeName);
@@ -376,6 +387,11 @@ public class MeteoTnDataRetriever {
         return extDto;
     }
 
+    /**
+     * Convenient method only for logging pourpose
+     * @param node
+     * @param indentation
+     */
     private void analyzeNode(Node node, String indentation) {
         while ( node != null ) {
             String nodeName = node.getNodeName();
@@ -417,8 +433,8 @@ public class MeteoTnDataRetriever {
 
     /**
      * Fetch data from Meteo service, to be integrated into the Open Data Hub.
-     * A loop on all provided cities is performed:
-     *    for every city a call to the meteo service is done and at the end 
+     * A loop on all provided stations is performed:
+     *    for every station a call to the meteo service is done and at the end 
      *    all data is collected in a single list.
      * Do not prevent exceptions from being thrown to not hide any malfunctioning.
      *
@@ -439,11 +455,17 @@ public class MeteoTnDataRetriever {
             for (MeteoTnDto station : stations) {
                 Map<String, String> stationAttrs = station.getStationAttributes();
                 //We do not stop execution if one call goes in exception.
-                //All exceptions are collected in a StringBuffer
+                //All exceptions are collected in a StringBuffer 
                 String key = stationAttrs.get("code");
                 try {
-                    MeteoTnDto dataByCity = fetchDataByStation(stationAttrs);
-                    dtoList.add(dataByCity);
+                    //Exclude invalid stations
+                    boolean valid = station.isValid();
+                    if ( valid ) {
+                        MeteoTnDto dataByCity = fetchDataByStation(stationAttrs);
+                        dtoList.add(dataByCity);
+                    } else {
+                        LOG.debug("EXCLUDE INVALID STATION: station_id="+key+"  enddate="+stationAttrs.get("enddate"));
+                    }
                 } catch (Exception ex) {
                     LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
                     String stackTrace = DCUtils.extractStackTrace(ex, -1);
@@ -461,6 +483,12 @@ public class MeteoTnDataRetriever {
         return dtoList;
     }
 
+    /**
+     * Fetch anagrafic data from Meteo service for all stations.
+     * 
+     * @return
+     * @throws Exception
+     */
     public List<MeteoTnDto> fetchStations() throws Exception {
         LOG.debug("START.fetchStations");
         List<MeteoTnDto> dtoList = new ArrayList<MeteoTnDto>();
@@ -484,14 +512,14 @@ public class MeteoTnDataRetriever {
     }
 
     /**
-     * Fetch data from Meteo service for one specific city.
+     * Fetch measurement data from Meteo service for one specific station.
      * 
      * @param cityKey
      * @return
      * @throws Exception
      */
     public MeteoTnDto fetchDataByStation(Map<String, String> station) throws Exception {
-        LOG.info("START.fetchDataByStation("+station+")");
+        LOG.debug("START.fetchDataByStation("+station+")");
         MeteoTnDto extDto = null;
         try {
             List<NameValuePair> endpointParams = new ArrayList<NameValuePair>();
@@ -508,13 +536,13 @@ public class MeteoTnDataRetriever {
             }
             String responseString = callRemoteService(clientMeasurements, serviceUrlMeasurements, endpointMethodMeasurements, endpointParams);
             extDto = convertMeasurementsResponseToInternalDTO(responseString, station);
-            int size = extDto!=null && extDto.getMeasurementTypes()!=null ? extDto.getMeasurementTypes().size() : -1;
+            int size = extDto!=null && extDto.getMeasurementsByType()!=null ? extDto.getMeasurementsByType().size() : -1;
             LOG.debug("Data fetched for station "+station+": "+size);
         } catch (Exception ex) {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
             throw ex;
         }
-        LOG.info("END.fetchDataByStation("+station+")");
+        LOG.debug("END.fetchDataByStation("+station+")");
         return extDto;
     }
 

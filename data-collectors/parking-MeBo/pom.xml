@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
-	<artifactId>parking-dc</artifactId>
+	<artifactId>dc-parking-MeBo</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.0</version>
 	<name>Parking datacollector</name>
@@ -121,7 +121,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>dc-parking-famas</finalName>
+		<finalName>dc-parking-MeBo</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

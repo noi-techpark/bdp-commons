@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
-	<artifactId>bikesharing-dc</artifactId>
+	<artifactId>dc-bikesharing-algorab</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.2</version>
 	<name>Bikesharing datacollector</name>
@@ -115,7 +115,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>dc-bikesharing-meran</finalName>
+		<finalName>dc-bikesharing-algorab</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -1,0 +1,38 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile-java'
+            additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
+    }
+    
+    environment {
+        PROJECT = "appabz-opendata"
+        PROJECT_FOLDER = "data-collectors/environment-appa/appabz_opendata"
+        LOG_FOLDER = "/var/log/opendatahub/data-collectors"
+        ARTIFACT_NAME = "dc-${PROJECT}"
+    }
+
+    stages {
+        stage('Configure') {
+            steps {
+                sh 'sed -i -e "s%\\(property.logFileFolder =\\).*\\$%\\1${LOG_FOLDER}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+                sh 'sed -i -e "s%\\(property.logFileName =\\).*\\$%\\1${ARTIFACT_NAME}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+                sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1INFO%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify package'
+            }
+        }
+
+	    stage('Archive') {
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+    }
+}

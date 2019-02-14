@@ -232,25 +232,10 @@ public class DataPusher extends JSONPusher {
 			String longitude = ((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0))
 					.get("properties")).get("lon").getAsString();
 
-// The following part is needed if pre-insertion coordinate conversion has to be made
-
-//			CoordinateHelper converter = new CoordinateHelper();
-//
-//			double[] coordinates = converter.UTMtoDecimal(32, Double.parseDouble(longitude),
-//					Double.parseDouble(latitude));
-//
-//			StationDto station = new StationDto(
-//					rb.getString("odh.station.origin") + "_"
-//							+ ((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0))
-//									.get("properties")).get("id").getAsString(),
-//					((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0)).get("properties"))
-//							.get("name").getAsString(),
-//					coordinates[1], coordinates[0]);
-
 			StationDto station = new StationDto(
 					rb.getString("odh.station.origin") + "_"
 							+ ((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0))
-									.get("properties")).get("id").getAsString(),
+							.get("properties")).get("id").getAsString(),
 					((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0)).get("properties"))
 							.get("name").getAsString(),
 					Double.parseDouble(latitude), Double.parseDouble(longitude));

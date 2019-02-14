@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Date;
 import java.util.Calendar;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.apache.logging.log4j.LogManager;
@@ -26,111 +25,51 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
-@Component
+@Component("jobScheduler")
 public class JobScheduler {
 
 	private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
-	private DataPusher pusher = new DataPusher();
-	private DataFetcher fetcher = new DataFetcher();
-	private ResourceBundle rb = ResourceBundle.getBundle("config");
 
-	/**
-	 * Takes care of historic data pushing, called once when launched (see
-	 * applicationContext.xml)
-	 */
-	public void init() {
-		LOG.info("Starting APPATN ten minutes history collection");
-		LOG.debug("Started at {}", new Date());
-
-		DataMapDto<RecordDtoImpl> rootMap;
-		DataPusher pusher = new DataPusher();
-		ResourceBundle rb = ResourceBundle.getBundle("config");
-
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date from;
+	public void collectData() {
 		try {
-			// set initial date from configuration file
-			from = format.parse(rb.getString("odp.data.history.from.tenminutes"));
-
-			Date now = new Date();
-			// construct base structure
-			rootMap = constructRootMap();
-
-			while (from.compareTo(now) < 0) {
-
-				// set final date
-				Calendar c = Calendar.getInstance();
-				c.setTime(from);
-				c.add(Calendar.DATE, 31);
-				Date to = c.getTime();
-
-				// clone base data structure
-				DataMapDto<RecordDtoImpl> historicMap = new DataMapDto<RecordDtoImpl>();
-				historicMap.setName(rootMap.getName());
-				historicMap.setData(rootMap.getData());
-				for (String stationKey : rootMap.getBranch().keySet()) {
-					DataMapDto<RecordDtoImpl> station = historicMap.upsertBranch(stationKey);
-					station.setName(rootMap.upsertBranch(stationKey).getName());
-					for (String sensorKey : rootMap.upsertBranch(stationKey).getBranch().keySet()) {
-						DataMapDto<RecordDtoImpl> sensor = station.upsertBranch(sensorKey);
-						sensor.setName(rootMap.upsertBranch(stationKey).upsertBranch(sensorKey).getName());
-					}
-				}
-
-				for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry : historicMap.getBranch().entrySet()) {
-					LOG.info("historicMap Station: " + entry.getKey());
-					for (Map.Entry<String, DataMapDto<RecordDtoImpl>> typeEntry : entry.getValue().getBranch()
-							.entrySet()) {
-						LOG.info("\tDatatype: " + typeEntry.getKey() + " records:"
-								+ typeEntry.getValue().getData().size());
-					}
-				}
-
-				LOG.debug("Parsing data from {} to {}", from, to);
-				// map data
-				historicMap = pusher.mapDataWithDates(historicMap, from, to);
-				// push data
-				pusher.pushData(rb.getString("odh.station.type"), historicMap);
-				// increment interval
-				from = to;
-			}
-		} catch (ParseException e) {
-			LOG.error("Unknown value in odp.data.history.from.tenminutes. Format should be yyyy-MM-dd, {}",
-					e.getMessage());
+			pushData();
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
 		}
 	}
 
-	/**
-	 * Takes care of repetitive data pushing and filling possible data gaps
-	 * 
-	 * @throws Exception
-	 */
-	public void pushData() throws Exception {
+	@SuppressWarnings("Duplicates")
+	public static void pushData() throws Exception {
 
 		DataMapDto<RecordDtoImpl> rootMap;
 		DataPusher pusher = new DataPusher();
+
+		ResourceBundle rb = ResourceBundle.getBundle("config");
 
 		LOG.info("Scheduled APPATN ten minutes execution started");
 		LOG.debug("Started at {}", new Date());
 
 		rootMap = constructRootMap();
-		
-		// get date of last record for most outdated sensor
-		
-		Date from = null;
+
+		String startDate = rb.getString("odp.data.history.from.tenminutes");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date from = format.parse(startDate);
+		Date lastDatabaseEntryDate = format.parse("1970-01-01");
 
 		for (String stationIndex : rootMap.getBranch().keySet()) {
 			for (String sensorIndex : rootMap.upsertBranch(stationIndex).getBranch().keySet()) {
 				Date lastRecord = (Date) pusher.getDateOfLastRecord(stationIndex, sensorIndex, 600);
-				if (from == null || from.compareTo(lastRecord) > 0)
+				lastDatabaseEntryDate = lastRecord;
+				if (!lastRecord.toString().contains("1970"))
+				{
 					from = lastRecord;
+				}
 			}
 		}
 
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DATE, 1);
-		Date now = c.getTime();
-		
+		Date today = c.getTime();
+
 		c.setTime(from);
 		// start from next 10 minutes (skips a day if the last record is at 23:50, saves computation)
 		c.add(Calendar.MINUTE, 10);
@@ -142,38 +81,50 @@ public class JobScheduler {
 
 		// if the interval of the last record is more than one hour, we need to gather
 		// the interval of data missing.
-		if ((now.getTime() - from.getTime()) > 3600000) {
+		if ((today.getTime() - from.getTime()) > 3600000) {
 			LOG.info("There seems to be missing data from {}, recollecting", from);
-			
-			c.add(Calendar.DATE, 31);
-			Date to = c.getTime().compareTo(now) >= 0 ? now : c.getTime();
 
-			while (from.compareTo(now) < 0) {
+			c.add(Calendar.DATE, 31);
+			Date to = c.getTime().compareTo(today) >= 0 ? today : c.getTime();
+
+			while (from.compareTo(today) < 0) {
 				LOG.debug("Collecting from {} to {}", from, to);
-				rootMap = pusher.mapDataWithDates(rootMap, from, to);
+
+				if (dateComparison(from, to, today))
+				{
+					c.setTime(to);
+					c.add(Calendar.DATE, 1);
+					to = c.getTime();
+					rootMap = pusher.mapDataWithDates(rootMap, from, to);
+				}else{
+					rootMap = pusher.mapDataWithDates(rootMap, from, to);
+				}
+
 				pusher.pushData(rb.getString("odh.station.type"), rootMap);
 				rootMap = constructRootMap();
 				from = to;
-				c.add(Calendar.DATE, 31);
-				to = c.getTime().compareTo(now) >= 0 ? now : c.getTime();
+				c.add(Calendar.DATE, 30);
+				to = c.getTime();
 			}
 
 		} else {
 			LOG.debug("All records are up to date, executing as usual");
-			rootMap = pusher.mapData(rootMap);
+			c.setTime(today);
+			c.add(Calendar.DATE, 1);
+			Date tomorrow = c.getTime();
+			rootMap = pusher.mapDataWithDates(rootMap, lastDatabaseEntryDate, tomorrow);
 			pusher.pushData(rb.getString("odh.station.type"), rootMap);
 		}
 
 		LOG.info("Scheduled APPATN ten minutes execution completed");
-		LOG.debug("Completed at {}", new Date());
+		LOG.debug("Finished at {}", new Date());
 	}
 
-	/**
-	 * Constructs the DataMapDto with the basic structure root -> station -> sensor
-	 * 
-	 * @return The basic structure for data pushing
-	 */
-	private DataMapDto<RecordDtoImpl> constructRootMap() {
+	@SuppressWarnings("Duplicates")
+	private static DataMapDto<RecordDtoImpl> constructRootMap() {
+		ResourceBundle rb = ResourceBundle.getBundle("config");
+		DataPusher pusher = new DataPusher();
+		DataFetcher fetcher = new DataFetcher();
 		JsonElement station;
 
 		// only one station is available so it is not possible to predict the format for
@@ -229,12 +180,17 @@ public class JobScheduler {
 		}
 
 		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry : map.getBranch().entrySet()) {
-			LOG.info("rootMap (constructRootMap()) Station: " + entry.getKey());
+			LOG.debug("The following rootMap (constructRootMap()) should contain no observations. Station: " + entry.getKey());
 			for (Map.Entry<String, DataMapDto<RecordDtoImpl>> typeEntry : entry.getValue().getBranch().entrySet()) {
-				LOG.info("\tDatatype: " + typeEntry.getKey() + " records:" + typeEntry.getValue().getData().size());
+				LOG.debug("\tDatatype: " + typeEntry.getKey() + ". Records:" + typeEntry.getValue().getData().size());
 			}
 		}
 
 		return map;
+	}
+
+	private static boolean dateComparison(Date from, Date to, Date target)
+	{
+		return (from.before(target) && to.after(target));
 	}
 }

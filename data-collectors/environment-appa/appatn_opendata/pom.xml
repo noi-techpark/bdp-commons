@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>info.datatellers.appatn.opendata</groupId>
-	<artifactId>bdp-appatn-airquality-opendata</artifactId>
+	<artifactId>dc-appatn-opendata</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
 	<name>AppaTN Open Data AirQuality data collector</name>
@@ -105,7 +105,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>dc-airquality-appatn-opendata</finalName>
+		<finalName>dc-appatn-opendata</finalName>
 		<testSourceDirectory>src/test/java/</testSourceDirectory>
 		<plugins>
 			<plugin>

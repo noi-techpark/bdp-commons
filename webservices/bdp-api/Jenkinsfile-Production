@@ -1,0 +1,383 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile-java'
+            additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
+    }
+
+    environment {
+        PROJECT_FOLDER = "webservices/bdp-api"        
+    }
+
+    stages {
+        stage('Configure') {
+            steps {
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+
+        stage('Configure - bikesharing') {
+            environment {
+                ARTIFACT_NAME = "bikesharing"
+                STATION_TYPE = "BikesharingStation"
+                CHILD_STATION_TYPE = "Bicycle"
+                CHILDREN_PATH = "bikes"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - bikesharing') {
+            environment {
+                ARTIFACT_NAME = "bikesharing"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - bikesharing') {
+            environment {
+                ARTIFACT_NAME = "bikesharing"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+
+        stage('Configure - bluetooth') {
+            environment {
+                ARTIFACT_NAME = "bluetooth"
+                STATION_TYPE = "Bluetoothstation"
+                CHILD_STATION_TYPE = "/"
+                CHILDREN_PATH = "/"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - bluetooth') {
+            environment {
+                ARTIFACT_NAME = "bluetooth"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - bluetooth') {
+            environment {
+                ARTIFACT_NAME = "bluetooth"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+
+        stage('Configure - carsharing') {
+            environment {
+                ARTIFACT_NAME = "carsharing"
+                STATION_TYPE = "Carsharingstation"
+                CHILD_STATION_TYPE = "Carsharingcar"
+                CHILDREN_PATH = "cars"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - carsharing') {
+            environment {
+                ARTIFACT_NAME = "carsharing"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - carsharing') {
+            environment {
+                ARTIFACT_NAME = "carsharing"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+
+        stage('Configure - emobility') {
+            environment {
+                ARTIFACT_NAME = "emobility"
+                STATION_TYPE = "EChargingStation"
+                CHILD_STATION_TYPE = "EChargingPlug"
+                CHILDREN_PATH = "plugs"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - emobility') {
+            environment {
+                ARTIFACT_NAME = "emobility"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - emobility') {
+            environment {
+                ARTIFACT_NAME = "emobility"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+
+        stage('Configure - environment') {
+            environment {
+                ARTIFACT_NAME = "environment"
+                STATION_TYPE = "Environmentstation"
+                CHILD_STATION_TYPE = "/"
+                CHILDREN_PATH = "/"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - environment') {
+            environment {
+                ARTIFACT_NAME = "environment"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - environment') {
+            environment {
+                ARTIFACT_NAME = "environment"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+
+        stage('Configure - origin-destination') {
+            environment {
+                ARTIFACT_NAME = "origin-destination"
+                STATION_TYPE = "Linkstation"
+                CHILD_STATION_TYPE = "/"
+                CHILDREN_PATH = "/"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - origin-destination') {
+            environment {
+                ARTIFACT_NAME = "origin-destination"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - origin-destination') {
+            environment {
+                ARTIFACT_NAME = "origin-destination"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+
+        stage('Configure - meteorology') {
+            environment {
+                ARTIFACT_NAME = "meteorology"
+                STATION_TYPE = "Meteostation"
+                CHILD_STATION_TYPE = "/"
+                CHILDREN_PATH = "/"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - meteorology') {
+            environment {
+                ARTIFACT_NAME = "meteorology"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - meteorology') {
+            environment {
+                ARTIFACT_NAME = "meteorology"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+
+        stage('Configure - parking') {
+            environment {
+                ARTIFACT_NAME = "parking"
+                STATION_TYPE = "ParkingStation"
+                CHILD_STATION_TYPE = "/"
+                CHILDREN_PATH = "/"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - parking') {
+            environment {
+                ARTIFACT_NAME = "parking"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - parking') {
+            environment {
+                ARTIFACT_NAME = "parking"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+
+        stage('Configure - roadweather') {
+            environment {
+                ARTIFACT_NAME = "roadweather"
+                STATION_TYPE = "RWISstation"
+                CHILD_STATION_TYPE = "/"
+                CHILDREN_PATH = "/"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - roadweather') {
+            environment {
+                ARTIFACT_NAME = "roadweather"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - roadweather') {
+            environment {
+                ARTIFACT_NAME = "roadweather"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+
+        stage('Configure - street') {
+            environment {
+                ARTIFACT_NAME = "street"
+                STATION_TYPE = "Streetstation"
+                CHILD_STATION_TYPE = "/"
+                CHILDREN_PATH = "/"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - street') {
+            environment {
+                ARTIFACT_NAME = "street"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - street') {
+            environment {
+                ARTIFACT_NAME = "street"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+
+        stage('Configure - sensors') {
+            environment {
+                ARTIFACT_NAME = "sensors"
+                STATION_TYPE = "TrafficSensor"
+                CHILD_STATION_TYPE = "/"
+                CHILDREN_PATH = "/"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - sensors') {
+            environment {
+                ARTIFACT_NAME = "sensors"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - sensors') {
+            environment {
+                ARTIFACT_NAME = "sensors"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+    }
+}

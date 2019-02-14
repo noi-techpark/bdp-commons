@@ -1,30 +1,40 @@
 pipeline {
-    agent any
-    environment {
-       ACCESS_TOKEN = credentials('hydrogen-access-token')
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile-java'
+            additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
     }
+    
+    environment {
+        PROJECT = "emobility-hydrogen"
+        PROJECT_FOLDER = "data-collectors/${PROJECT}"
+        LOG_FOLDER = "/var/log/opendatahub/data-collectors"
+        ARTIFACT_NAME = "dc-${PROJECT}"
+        ACCESS_TOKEN = credentials('hydrogen-access-token')
+    }
+
     stages {
         stage('Configure') {
             steps {
-	       sh 'sed -i -e "s%\\(__TOKEN_PARAMETER__\\).*\\$%${ACCESS_TOKEN}%" data-collectors/emobility-hydrogen/src/main/resources/META-INF/spring/application.properties'
-	       sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/emobility-hydrogen.log%" data-collectors/emobility-hydrogen/src/main/resources/log4j.properties'
-	       sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO, stdout, R%" data-collectors/emobility-hydrogen/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+
+                sh 'sed -i -e "s%\\(__TOKEN_PARAMETER__\\).*\\$%${ACCESS_TOKEN}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
             }
         }
-        stage('Test') {
+
+        stage('Build') {
             steps {
-               sh 'cd data-collectors/emobility-hydrogen && mvn clean compile test'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify package'
             }
         }
-	stage('Build'){
-	   steps {
-	       sh 'cd data-collectors/emobility-hydrogen && mvn package'
-	   }
-	}
-	stage('Archive'){
-	   steps {
-	       sh 'cp data-collectors/emobility-hydrogen/target/dc-emobility-hydrogen.war /var/builds/prod-server-dc'
-	   }
-	}
+
+	    stage('Archive') {
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
     }
 }

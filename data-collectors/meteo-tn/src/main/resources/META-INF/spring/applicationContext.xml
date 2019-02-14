@@ -52,9 +52,9 @@
             -->
         <!-- <task:scheduled ref="jobScheduler" method="pushData"      cron="0 0   * * * *" /> -->       <!-- Every hour -->
         <!-- <task:scheduled ref="jobScheduler" method="pushData"      cron="0 0   1 * * *" /> --> <!-- Every day at 1pm -->
-        <task:scheduled ref="jobScheduler" method="pushData"      cron="0 0/15 * * * *" /> <!-- Every 15 minutes -->
-        <task:scheduled ref="jobScheduler" method="pushDataTypes" cron="0 0    * * * *" /> <!-- Every hour -->
-        <task:scheduled ref="jobScheduler" method="pushStations"  cron="0 0    1 * * *" /> <!-- Every day at 1pm -->
+        <task:scheduled ref="jobScheduler" method="pushData"      cron="0 01/15 * * * *" /> <!-- Every 15 minutes, start at minute 01 (the service provides measurements that change every 15 minutes) -->
+        <task:scheduled ref="jobScheduler" method="pushDataTypes" cron="0 0     * * * *" /> <!-- Every hour -->
+        <task:scheduled ref="jobScheduler" method="pushStations"  cron="0 0     1 * * *" /> <!-- Every day at 1pm -->
     </task:scheduled-tasks>
 
 </beans>
