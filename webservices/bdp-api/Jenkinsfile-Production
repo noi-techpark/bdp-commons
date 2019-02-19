@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Configure') {
             steps {
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.rootLogger\\s*=\\).*\\$%\\1INFO,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
 
@@ -25,11 +25,11 @@ pipeline {
                 CHILDREN_PATH = "bikes"
             }
             steps {
-                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
         stage('Build - bikesharing') {
@@ -58,11 +58,11 @@ pipeline {
                 CHILDREN_PATH = "/"
             }
             steps {
-                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
         stage('Build - bluetooth') {
@@ -91,11 +91,11 @@ pipeline {
                 CHILDREN_PATH = "cars"
             }
             steps {
-                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
         stage('Build - carsharing') {
@@ -124,11 +124,11 @@ pipeline {
                 CHILDREN_PATH = "plugs"
             }
             steps {
-                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
         stage('Build - emobility') {
@@ -157,11 +157,11 @@ pipeline {
                 CHILDREN_PATH = "/"
             }
             steps {
-                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
         stage('Build - environment') {
@@ -190,11 +190,11 @@ pipeline {
                 CHILDREN_PATH = "/"
             }
             steps {
-                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
         stage('Build - origin-destination') {
@@ -223,11 +223,11 @@ pipeline {
                 CHILDREN_PATH = "/"
             }
             steps {
-                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
         stage('Build - meteorology') {
@@ -256,11 +256,11 @@ pipeline {
                 CHILDREN_PATH = "/"
             }
             steps {
-                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
         stage('Build - parking') {
@@ -289,11 +289,11 @@ pipeline {
                 CHILDREN_PATH = "/"
             }
             steps {
-                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
         stage('Build - roadweather') {
@@ -322,11 +322,11 @@ pipeline {
                 CHILDREN_PATH = "/"
             }
             steps {
-                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
         stage('Build - street') {
@@ -355,11 +355,11 @@ pipeline {
                 CHILDREN_PATH = "/"
             }
             steps {
-                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
         stage('Build - sensors') {
