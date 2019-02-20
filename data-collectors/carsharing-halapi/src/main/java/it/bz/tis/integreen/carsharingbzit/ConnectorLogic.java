@@ -154,7 +154,10 @@ public class ConnectorLogic
 		StationList castedVehicles = castToBDP(vehiclesDtos);
 		
 		countVehiclesPerStation(castedStations,castedVehicles);
-		
+		List<DataTypeDto> dtos = new ArrayList<>();
+		dtos.add(new DataTypeDto("number-available", "number of available vehicles / charging points", "", "Instantaneous"));
+		dtos.add(new DataTypeDto("availability", "Indicates if a vehicle is available for rental ", "", "Instantaneous"));
+		xmlrpcPusher.syncDataTypes(CARSHARINGSTATION_DATASOURCE,dtos);
 		Object result = xmlrpcPusher.syncStations(CARSHARINGSTATION_DATASOURCE, castedStations);
 		if (result instanceof IntegreenException)
 		{
