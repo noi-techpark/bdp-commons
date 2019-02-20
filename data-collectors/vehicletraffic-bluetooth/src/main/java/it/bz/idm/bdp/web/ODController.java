@@ -76,6 +76,7 @@ public class ODController {
 			List<DataTypeDto> dataTypes = new ArrayList<DataTypeDto>();
 			DataTypeDto dataType = new DataTypeDto();
 			dataType.setName(env.getRequiredProperty("datatype"));
+			dataType.setPeriod(1);
 			dataTypes.add(dataType);
 			pusher.syncDataTypes(dataTypes);
 

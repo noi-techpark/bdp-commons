@@ -37,6 +37,7 @@ public class OddsPusher extends JSONPusher {
 			SimpleRecordDto textDto = new SimpleRecordDto();
 			textDto.setValue(dto.getMac());
 			textDto.setTimestamp(dto.getGathered_on().getTime());
+			textDto.setPeriod(1);
 			typeMap.getData().add(textDto);
 		}
 		return dataMap;
