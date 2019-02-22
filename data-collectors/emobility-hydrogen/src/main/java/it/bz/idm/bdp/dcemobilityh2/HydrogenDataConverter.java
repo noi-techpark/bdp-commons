@@ -109,7 +109,6 @@ public class HydrogenDataConverter {
             station.setOrigin(DCUtils.trunc(env.getProperty(ORIGIN_KEY), 255));
             station.getMetaData().put("municipality", DCUtils.trunc(map.get("city"), 255));
             station.setStationType(env.getProperty(STATION_TYPE_KEY));
-            //From EchargingStationDto
             //OMITTED: s.setCapacity(dto.getChargingPoints().size());
             station.getMetaData().put("provider",DCUtils.trunc(map.get("hostname"), 255));
             station.getMetaData().put("city",DCUtils.trunc(map.get("city"), 255));
