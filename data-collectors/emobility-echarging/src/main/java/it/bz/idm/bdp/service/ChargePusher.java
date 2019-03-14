@@ -21,6 +21,8 @@ import it.bz.idm.bdp.service.dto.ChargingPointsDtoV2;
 @Service
 public class ChargePusher extends JSONPusher {
 
+	private static final String E_CHARGING_PLUG_TYPOLOGY = "EChargingPlug";
+
 	private static final String ORIGIN_KEY = "app.dataOrigin";
 
 	@Autowired
@@ -95,6 +97,7 @@ public class ChargePusher extends JSONPusher {
 			s.getMetaData().put("accessType",dto.getAccessType());
 			s.getMetaData().put("categories",dto.getCategories());
 			s.setOrigin(env.getProperty(ORIGIN_KEY));
+			s.setStationType(this.integreenTypology);
 			stations.add(s);
 		}
 		return stations;
@@ -114,6 +117,7 @@ public class ChargePusher extends JSONPusher {
 				s.setParentStation(dto.getCode());
 				s.getMetaData().put("outlets",point.getOutlets());
 				s.setOrigin(env.getProperty(ORIGIN_KEY));
+				s.setStationType(E_CHARGING_PLUG_TYPOLOGY);
 				stations.add(s);
 			}
 		}
