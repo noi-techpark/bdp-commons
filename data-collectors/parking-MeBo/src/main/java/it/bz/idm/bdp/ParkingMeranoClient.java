@@ -77,7 +77,7 @@ public class ParkingMeranoClient {
 			dMap.setData(records);
 			if (tMap.getBranch().get("free") == null)
 				tMap.getBranch().put("free", dMap);
-			
+
 			String stationKey = "me:"+e.getAreaName().toLowerCase().replaceAll("\\s+","");
 			if (sMap.getBranch().get(stationKey) == null)
 				sMap.getBranch().put(stationKey, tMap);
@@ -90,6 +90,7 @@ public class ParkingMeranoClient {
 			stationDto.setId("me:"+dto.getAreaName().toLowerCase().replaceAll("\\s+",""));
 			stationDto.setName(dto.getAreaName());
 			stationDto.getMetaData().put("capacity", dto.getTotalParkingSpaces());
+			stationDto.getMetaData().put("municipality", "Meran - Merano");
 			stationDto.setOrigin("Municipality Merano");
 			stations.add(stationDto);
 		}

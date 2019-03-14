@@ -17,6 +17,7 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.util.LocationLookupUtil;
 
 @Service
 public class ParkingClient {
@@ -33,7 +34,7 @@ public class ParkingClient {
 	private static final int XMLRPCREPLYTIMEOUT = 10000;
 	private static final int XMLRPCCONNECTIONTIMEOUT = 8000;
 	private static final String P_GUIDE_GET_POSTI_LIBERI_PARCHEGGIO_EXT = "pGuide.getPostiLiberiParcheggioExt";
-
+	private LocationLookupUtil lookupUtil= new LocationLookupUtil();
 	private XmlRpcClient client;
 
 	@Autowired
@@ -100,6 +101,7 @@ public class ParkingClient {
 			stationDto.setId(metaDataParkingPlace.get(0).toString());
 			stationDto.setName(metaDataParkingPlace.get(1).toString());
 			stationDto.getMetaData().put("capacity",Integer.valueOf(metaDataParkingPlace.get(2).toString()));
+			stationDto.getMetaData().put("municipality", "Bozen - Bolzano");
 			stationDto.setOrigin(origin);
 		} catch (XmlRpcException e) {
 			e.printStackTrace();
@@ -194,5 +196,5 @@ public class ParkingClient {
 					stations.add(parkingMetaData);
 			}
 		}
-	}		
+	}
 }
