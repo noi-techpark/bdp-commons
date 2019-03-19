@@ -90,15 +90,10 @@ public class JobScheduler {
 			while (from.compareTo(today) < 0) {
 				LOG.debug("Collecting from {} to {}", from, to);
 
-				if (dateComparison(from, to, today))
-				{
-					c.setTime(to);
-					c.add(Calendar.DATE, 1);
-					to = c.getTime();
-					rootMap = pusher.mapDataWithDates(rootMap, from, to);
-				}else{
-					rootMap = pusher.mapDataWithDates(rootMap, from, to);
-				}
+				c.setTime(to);
+				c.add(Calendar.DATE, 1);
+				to = c.getTime();
+				rootMap = pusher.mapDataWithDates(rootMap, from, to);
 
 				pusher.pushData(rb.getString("odh.station.type"), rootMap);
 				rootMap = constructRootMap();

@@ -36,9 +36,6 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.meteo.MeteoStationDto;
-import it.bz.idm.bdp.dto.meteo.SegmentDataPointDto;
-import it.bz.idm.bdp.dto.meteo.SegmentDto;
 import it.bz.tis.zrx2json.MeteoStationDataPoint;
 import it.bz.tis.zrx2json.Meteostation;
 import it.bz.tis.zrx2json.Zrx2json;
@@ -158,8 +155,8 @@ public class MeteoUtil {
 				Map<String, String> params = station.getMetaData();
 				params.putAll(optionalParametersFromComments);
 
-				MeteoStationDto dto = new MeteoStationDto();
-				dto.setArea(params.get(AREA));
+				StationDto dto = new StationDto();
+				dto.getMetaData().put("area", params.get(AREA));
 				dto.setId(params.get(ZEUS_ID));
 				Double latitude = null,longitude = null;
 				try {
@@ -171,7 +168,7 @@ public class MeteoUtil {
 
 				dto.setLatitude(latitude);
 				dto.setLongitude(longitude);
-				dto.setCrs(environment.getProperty(GEOMTRY_CRS));
+				dto.setCoordinateReferenceSystem(environment.getProperty(GEOMTRY_CRS));
 				dto.setName(params.get(NAME));
 				dto.setOrigin("SIAG");
 				stations.add(dto);

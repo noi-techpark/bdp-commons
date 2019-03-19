@@ -19,8 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package it.bz.tis.integreen.carsharingbzit.api;
 
-import it.bz.tis.integreen.carsharingbzit.ListStationsByBoundingBoxResponse;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,8 +38,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import it.bz.tis.integreen.carsharingbzit.ListStationsByBoundingBoxResponse;
+
 /**
- * 
+ *
  * @author Davide Montesin <d@vide.bz>
  */
 public class ApiClient
@@ -59,7 +59,7 @@ public class ApiClient
       this.password = password;
    }
 
-   public <T> T callWebService(ServiceRequest request, Class<T> clazz) throws IOException
+   public <T> T callWebService(ServiceRequest<?> request, Class<T> clazz) throws IOException
    {
 
       request.request.technicalUser.username = this.user;

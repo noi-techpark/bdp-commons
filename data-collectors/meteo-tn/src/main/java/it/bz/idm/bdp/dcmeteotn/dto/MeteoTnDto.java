@@ -9,14 +9,14 @@ import java.util.Map;
 
 import it.bz.idm.bdp.dcmeteotn.DCUtils;
 import it.bz.idm.bdp.dto.DataTypeDto;
-import it.bz.idm.bdp.dto.meteo.MeteoStationDto;
+import it.bz.idm.bdp.dto.StationDto;
 
 public class MeteoTnDto implements Serializable {
 
     private static final long serialVersionUID = 8642860252556395832L;
 
     private boolean valid;
-    private MeteoStationDto station;
+    private StationDto station;
     private Date lastSavedRecord;
     private boolean checkLastSavedRecord;
     private Map<String, String> stationAttributes;
@@ -26,11 +26,11 @@ public class MeteoTnDto implements Serializable {
     public MeteoTnDto() {
     }
 
-    public MeteoTnDto(MeteoStationDto station) {
+    public MeteoTnDto(StationDto station) {
         this(station, new HashMap<String, String>());
     }
 
-    public MeteoTnDto(MeteoStationDto station, Map<String, String> stationAttributes) {
+    public MeteoTnDto(StationDto station, Map<String, String> stationAttributes) {
         this.checkLastSavedRecord = true;
         this.station = station;
         this.stationAttributes = stationAttributes;
@@ -53,11 +53,11 @@ public class MeteoTnDto implements Serializable {
         this.valid = valid;
     }
 
-    public MeteoStationDto getStation() {
+    public StationDto getStation() {
         return station;
     }
 
-    public void setStation(MeteoStationDto station) {
+    public void setStation(StationDto station) {
         this.station = station;
     }
 

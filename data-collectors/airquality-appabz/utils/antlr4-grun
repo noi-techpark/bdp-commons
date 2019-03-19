@@ -1,0 +1,5 @@
+#!/bin/bash
+
+java -Xmx500M -cp "/opt/antlr/antlr-4.7.1-complete.jar:$CLASSPATH"  org.antlr.v4.gui.TestRig "$@"
+
+exit $?

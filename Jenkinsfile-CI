@@ -85,7 +85,7 @@ pipeline {
                         sh 'cd data-collectors/traffic-a22/A22Connector/ && mvn -B -U clean compile test'
                     }
                 }
-                stage('vehicletraffic-bluetooth') {
+                stage('vehicletraffic-bluetooth'){
                     steps {
                         sh 'cd data-collectors/vehicletraffic-bluetooth && mvn -B -U clean compile test'
                     }

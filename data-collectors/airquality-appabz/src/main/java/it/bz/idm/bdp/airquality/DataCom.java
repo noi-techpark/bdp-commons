@@ -207,7 +207,7 @@ public class DataCom {
 					if (station == null)
 						continue;
 
-					station.setCrs(crs);
+					station.setCoordinateReferenceSystem(crs);
 					station.setName(result.getJsonObject("properties").getString("NAME_I"));
 					station.setOrigin(env.getRequiredProperty("odh.station.origin"));
 

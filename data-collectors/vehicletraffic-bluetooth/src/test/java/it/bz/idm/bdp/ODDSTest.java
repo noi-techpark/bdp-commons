@@ -12,6 +12,11 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.OddsRecordDto;
@@ -19,7 +24,13 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.service.OddsPusher;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext*.xml" })
+@WebAppConfiguration
 public class ODDSTest {
+
+	@Autowired
+	private OddsPusher pusher;
 
 	private List<OddsRecordDto> records = new ArrayList<OddsRecordDto>();
 
@@ -52,7 +63,6 @@ public class ODDSTest {
 
 	@Test
 	public void testDataCast(){
-		OddsPusher pusher = new OddsPusher();
 		OddsRecordDto.removeCorruptedData(records);
 		DataMapDto<RecordDtoImpl> parsedData = pusher.mapData(records);
 		assertNotNull(parsedData);

@@ -24,8 +24,8 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.meteo.MeteoStationDto;
 import it.bz.idm.bdp.json.JSONPusher;
 
 @Service
@@ -92,11 +92,11 @@ public class MeteoTnDataPusher extends JSONPusher {
 
             removeAlreadyPushedData(dto);
 
-            MeteoStationDto stationDto = dto.getStation();
+            StationDto stationDto = dto.getStation();
 
             //Exclude Stations having endDate < today
             if ( dto.isValid() ) {
-    
+
                 String stationId = stationDto.getId();
                 List<MeteoTnMeasurementListDto> measurementsByType = dto.getMeasurementsByType();
 
@@ -180,7 +180,7 @@ public class MeteoTnDataPusher extends JSONPusher {
         int countStations = 0;
         StationList stations = new StationList();
         for (MeteoTnDto dto : data) {
-            MeteoStationDto stationDto = dto.getStation();
+            StationDto stationDto = dto.getStation();
             Map<String, String> stationAttributes = dto.getStationAttributes();
             Object endDate = stationAttributes.get("enddate");
 
@@ -228,7 +228,7 @@ public class MeteoTnDataPusher extends JSONPusher {
         return dataTypeList;
     }
 
-    public Date getLastSavedRecordForStation(MeteoStationDto station) {
+    public Date getLastSavedRecordForStation(StationDto station) {
         LOG.debug("START.getLastSavedRecordForStation");
         if (station == null) {
             return null;
@@ -263,7 +263,7 @@ public class MeteoTnDataPusher extends JSONPusher {
         //Read date of last saved record, save it on the DTO for later use. Save also the information that we read the data to avoid unnecessary reads
         Date lastSavedRecord = meteoTnDto.getLastSavedRecord();
         if ( lastSavedRecord == null ) {
-            MeteoStationDto station = meteoTnDto.getStation();
+            StationDto station = meteoTnDto.getStation();
             lastSavedRecord = getLastSavedRecordForStation(station);
             meteoTnDto.setLastSavedRecord(lastSavedRecord);
             meteoTnDto.setCheckLastSavedRecord(false);
@@ -297,7 +297,7 @@ public class MeteoTnDataPusher extends JSONPusher {
     @Override
     public String toString() {
         String str1 = "http://" + config.getString(HOST_KEY) + ":" + config.getString(PORT_KEY) + config.getString("json_endpoint");
-        String str2 = 
+        String str2 =
                 "integreenTypology=" + this.integreenTypology   + "  " +
                 "DEFAULT_HOST="      + DEFAULT_HOST     + "  " +
                 "DEFAULT_PORT="      + DEFAULT_PORT     + "  " +

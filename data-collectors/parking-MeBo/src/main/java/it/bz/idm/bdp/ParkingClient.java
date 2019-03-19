@@ -17,7 +17,7 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.parking.ParkingStationDto;
+import it.bz.idm.bdp.util.LocationLookupUtil;
 
 @Service
 public class ParkingClient {
@@ -34,7 +34,7 @@ public class ParkingClient {
 	private static final int XMLRPCREPLYTIMEOUT = 10000;
 	private static final int XMLRPCCONNECTIONTIMEOUT = 8000;
 	private static final String P_GUIDE_GET_POSTI_LIBERI_PARCHEGGIO_EXT = "pGuide.getPostiLiberiParcheggioExt";
-
+	private LocationLookupUtil lookupUtil= new LocationLookupUtil();
 	private XmlRpcClient client;
 
 	@Autowired
@@ -92,7 +92,7 @@ public class ParkingClient {
 	}
 
 	public StationDto getParkingMetaData(Integer identifier) {
-		ParkingStationDto stationDto = new ParkingStationDto();
+		StationDto stationDto = new StationDto();
 		List<Object> pParams = new ArrayList<Object>();
 		pParams.add(identifier);
 		List<Object> metaDataParkingPlace = null;
@@ -100,7 +100,8 @@ public class ParkingClient {
 			metaDataParkingPlace = Arrays.asList(getArray(P_GUIDE_GET_PARKING_METADATA, pParams));
 			stationDto.setId(metaDataParkingPlace.get(0).toString());
 			stationDto.setName(metaDataParkingPlace.get(1).toString());
-			stationDto.setSlots(Integer.valueOf(metaDataParkingPlace.get(2).toString()));
+			stationDto.getMetaData().put("capacity",Integer.valueOf(metaDataParkingPlace.get(2).toString()));
+			stationDto.getMetaData().put("municipality", "Bozen - Bolzano");
 			stationDto.setOrigin(origin);
 		} catch (XmlRpcException e) {
 			e.printStackTrace();
@@ -159,6 +160,7 @@ public class ParkingClient {
 		if (identifers!=null){
 			for (Integer identifier:identifers){
 				List<Object> objects = this.getData(identifier);
+				DataMapDto<RecordDtoImpl> typeMap = new DataMapDto<>();
 				DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
 				List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
 				SimpleRecordDto record = new SimpleRecordDto();
@@ -171,9 +173,13 @@ public class ParkingClient {
 					if(!communicationState && !controlUnit && !totalChangeAllarm && !inactiveAllarm && !occupiedSlotsAllarm) {
 						record.setValue(objects.get(5));
 						record.setTimestamp((Integer) objects.get(6)*1000l);
+						record.setPeriod(600);
 						records.add(record);
 						dataMap.setData(records);
-						sMap.getBranch().put(identifier.toString(), dataMap);
+						if (typeMap.getBranch().get("free") == null)
+							typeMap.getBranch().put("free", dataMap);
+						if (sMap.getBranch().get("free") == null)
+							sMap.getBranch().put(identifier.toString(),typeMap);
 					}
 				}
 
@@ -190,5 +196,5 @@ public class ParkingClient {
 					stations.add(parkingMetaData);
 			}
 		}
-	}		
+	}
 }

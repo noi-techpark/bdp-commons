@@ -19,12 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package it.bz.tis.integreen.carsharingbzit.api;
 
-import it.bz.idm.bdp.dto.carsharing.BookMode;
-import it.bz.idm.bdp.dto.carsharing.Company;
-import it.bz.idm.bdp.dto.carsharing.StationAccess;
-
 /**
- * 
+ *
  * @author Davide Montesin <d@vide.bz>
  */
 public class CarsharingStationDto
@@ -134,6 +130,6 @@ public class CarsharingStationDto
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-	
+
 
 }

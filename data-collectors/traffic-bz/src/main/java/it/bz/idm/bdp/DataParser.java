@@ -30,7 +30,6 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.meteo.MeteoStationDto;
 
 @Component
 @PropertySource("classpath:/META-INF/spring/types.properties")
@@ -63,7 +62,7 @@ public class DataParser {
 			if (metaData.getStationTypeList() != null && !metaData.getStationTypeList().getStationType().isEmpty())
 				for (StationType type : metaData.getStationTypeList().getStationType()) {
 					if (type.getType() == 2) { // 2 is a weatherstation
-						MeteoStationDto stationDto = new MeteoStationDto();
+						StationDto stationDto = new StationDto();
 						stationDto.setId(MUNICIPALITYBZ_NAMESPACE + num);
 						stationDto.setName(metaData.getNome());
 						stationDto.setLatitude(metaData.getLatit());
