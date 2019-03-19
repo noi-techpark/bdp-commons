@@ -44,12 +44,12 @@ import it.bz.tis.integreen.carsharingbzit.api.ApiClient;
 import it.bz.tis.integreen.carsharingbzit.tis.CarSharingPusher;
 
 /**
+ * 
  * @author Davide Montesin <d@vide.bz>
  */
 public class ConnectorServlet extends HttpServlet implements Runnable
 {
    private static final long serialVersionUID = 2317521315923271535L;
-
    static final Logger       logger       = LogManager.getLogger(ConnectorServlet.class);
 
    Thread                    backgroundTask;
@@ -66,7 +66,7 @@ public class ConnectorServlet extends HttpServlet implements Runnable
    String                    serviceStartedAt;
    ArrayList<ActivityLog>    activityLogs = new ArrayList<ActivityLog>();
 
-	private Properties props = new Properties(); 
+	private Properties props = new Properties();
 
    @Override
    public void init(ServletConfig config) throws ServletException

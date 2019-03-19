@@ -15,15 +15,14 @@ import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConvert
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.stereotype.Service;
 
+import it.bz.idm.bdp.dcemobilityh2.dto.ChargingPointsDtoV2;
 import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.emobility.ChargingPointsDtoV2;
-import it.bz.idm.bdp.dto.emobility.EchargingPlugDto;
-import it.bz.idm.bdp.dto.emobility.EchargingStationDto;
 import it.bz.idm.bdp.json.JSONPusher;
 
 @Service
@@ -82,7 +81,7 @@ public class HydrogenDataPusher extends JSONPusher {
         for(HydrogenDto dto: data){
             DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<RecordDtoImpl>();
             Integer availableStations=0;
-            EchargingStationDto stationDto = dto.getStation();
+            StationDto stationDto = dto.getStation();
             List<ChargingPointsDtoV2> pointList = dto.getPointList();
             for (ChargingPointsDtoV2 point : pointList){
                 List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
@@ -145,7 +144,7 @@ public class HydrogenDataPusher extends JSONPusher {
 
         StationList stations = new StationList();
         for (HydrogenDto dto : data) {
-            EchargingStationDto stationDto = dto.getStation();
+            StationDto stationDto = dto.getStation();
             stations.add(stationDto);
         }
         LOG.debug("stations: "+stations);
@@ -161,7 +160,7 @@ public class HydrogenDataPusher extends JSONPusher {
 
         StationList plugs = new StationList();
         for (HydrogenDto dto : data) {
-            List<EchargingPlugDto> plugList = dto.getPlugList();
+            List<StationDto> plugList = dto.getPlugList();
             plugs.addAll(plugList);
         }
 
@@ -173,7 +172,7 @@ public class HydrogenDataPusher extends JSONPusher {
     @Override
     public String toString() {
         String str1 = "http://" + config.getString(HOST_KEY) + ":" + config.getString(PORT_KEY) + config.getString("json_endpoint");
-        String str2 = 
+        String str2 =
                 "integreenTypology=" + this.integreenTypology   + "  " +
                 "DEFAULT_HOST="      + DEFAULT_HOST     + "  " +
                 "DEFAULT_PORT="      + DEFAULT_PORT     + "  " +

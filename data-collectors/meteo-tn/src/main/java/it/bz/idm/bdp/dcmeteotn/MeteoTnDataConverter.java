@@ -11,7 +11,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnDto;
-import it.bz.idm.bdp.dto.meteo.MeteoStationDto;
+import it.bz.idm.bdp.dto.StationDto;
 
 @Service
 public class MeteoTnDataConverter {
@@ -85,7 +85,7 @@ public class MeteoTnDataConverter {
             return extDtoList;
         }
         for (Map<String, String> map : list) {
-            MeteoStationDto stationDto = convertExternalStationDtoToStationDto(map);
+            StationDto stationDto = convertExternalStationDtoToStationDto(map);
             MeteoTnDto extDto = new MeteoTnDto(stationDto, map);
             extDtoList.add(extDto);
         }
@@ -96,13 +96,13 @@ public class MeteoTnDataConverter {
         return extDtoList;
     }
 
-    public MeteoStationDto convertExternalStationDtoToStationDto(Map<String, String> map) {
+    public StationDto convertExternalStationDtoToStationDto(Map<String, String> map) {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("map: "+map);
         }
-        MeteoStationDto stationDto = null;
+        StationDto stationDto = null;
         if ( map != null ) {
-            stationDto = new MeteoStationDto();
+            stationDto = new StationDto();
 
             /*
              *  Example of xml provided by the service

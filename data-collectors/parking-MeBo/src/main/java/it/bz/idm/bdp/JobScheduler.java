@@ -1,10 +1,12 @@
 package it.bz.idm.bdp;
 
 import java.io.IOException;
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import it.bz.idm.bdp.dto.DataTypeDto;
 
 
 @Component
@@ -35,4 +37,13 @@ public class JobScheduler {
 			e.printStackTrace();
 		}
 	}
+	public void syncDataTypes(){
+		try {
+			List<DataTypeDto> dataTypeList = ParkingPusher.getDataTypeList();
+			pusher.syncDataTypes(dataTypeList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

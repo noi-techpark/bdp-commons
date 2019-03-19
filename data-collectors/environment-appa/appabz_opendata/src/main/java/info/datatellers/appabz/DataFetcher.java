@@ -1,19 +1,22 @@
 package info.datatellers.appabz;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ResourceBundle;
+import java.util.TreeMap;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 /**
  * @author Nicolò Molinari, Datatellers.
@@ -231,7 +234,9 @@ public class DataFetcher {
     @SuppressWarnings("Duplicates")
     TreeMap<String, ArrayList<String>> interrogateEndpoint(String polluterID, String stationID)
     {
-        String specificEndpoint = measurementsEndpoint + "?meas_code=" + polluterID + "&type=1&station_code=" + stationID.split("[_]")[1];
+        String stationCodeSplit[] = stationID.split("[_]");
+        String stationCode = stationCodeSplit.length == 1 ? stationCodeSplit[0] : stationCodeSplit[1];
+        String specificEndpoint = measurementsEndpoint + "?meas_code=" + polluterID + "&type=1&station_code=" + stationCode;
         TreeMap<String, ArrayList<String>> dataMap;
         LOG.debug("Endpoint requested: " + specificEndpoint);
         try {
