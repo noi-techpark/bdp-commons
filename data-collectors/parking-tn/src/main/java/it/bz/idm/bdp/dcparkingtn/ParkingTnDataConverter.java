@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dcparkingtn.dto.ParkingAreaServiceDto;
 import it.bz.idm.bdp.dcparkingtn.dto.ParkingTnDto;
-import it.bz.idm.bdp.dto.parking.ParkingStationDto;
+import it.bz.idm.bdp.dto.StationDto;
 
 @Service
 public class ParkingTnDataConverter {
@@ -82,7 +82,7 @@ public class ParkingTnDataConverter {
             }
             List<ParkingTnDto> fetchedData = new ArrayList<ParkingTnDto>();
             for (ParkingAreaServiceDto extDto : dataList) {
-                ParkingStationDto stationDto = convertExternalDtoToStationDto(extDto, municipality, codePrefix);
+                StationDto stationDto = convertExternalDtoToStationDto(extDto, municipality, codePrefix);
                 ParkingTnDto intDto = new ParkingTnDto(extDto, stationDto, municipality);
                 fetchedData.add(intDto);
             }
@@ -94,10 +94,10 @@ public class ParkingTnDataConverter {
         }
     }
 
-    public ParkingStationDto convertExternalDtoToStationDto(ParkingAreaServiceDto extDto, String municipality, String codePrefix) {
-        ParkingStationDto station = null;
+    public StationDto convertExternalDtoToStationDto(ParkingAreaServiceDto extDto, String municipality, String codePrefix) {
+        StationDto station = null;
         if ( extDto!=null ) {
-            station = new ParkingStationDto();
+            station = new StationDto();
 
             //From StationDTO
             String id = calculateId(extDto.getName(), codePrefix);
@@ -118,12 +118,12 @@ public class ParkingTnDataConverter {
             station.setLatitude(latitude);
             //OMITTED: protected String crs;
             station.setOrigin(DCUtils.trunc(getOrigin(), 255));
-            station.setMunicipality(DCUtils.trunc(municipality, 255));
+            station.getMetaData().put("municipality", DCUtils.trunc(municipality, 255));
             station.setStationType(getStationType());
 
             //From ParkingStationDto
-            station.setSlots(extDto.getSlotsTotal());
-            station.setAddress(extDto.getDescription());
+            station.getMetaData().put("capacity",extDto.getSlotsTotal());
+            station.getMetaData().put("mainaddress",extDto.getDescription());
             //OMITTED: station.setPhone(phone);
         }
 

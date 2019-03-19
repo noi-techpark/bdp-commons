@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -204,7 +205,7 @@ public class MyAirQualityListener extends AirQualityBaseListener {
 
 		} catch (Exception e) {
 			log.error("Unknown error: {}", e.getMessage());
-			log.error(e.getStackTrace());
+			log.error(ExceptionUtils.getStackTrace(e));
 		}
 	}
 

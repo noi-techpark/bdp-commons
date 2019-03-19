@@ -19,6 +19,7 @@
 	<task:scheduler id="Scheduler" pool-size="10" />
 	<task:scheduled-tasks scheduler="Scheduler">
 		<task:scheduled ref="jobScheduler" method="parkingStations" cron="0	0 * * * *" /> 
+		<task:scheduled ref="jobScheduler" method="syncDataTypes" cron="0 0 0 * * *" /> 
  		<task:scheduled ref="jobScheduler" method="currentSlots"    cron="10 */5 * * * *" />
  		<task:scheduled ref="jobScheduler" method="pushPredictions" cron="0 5-59/30 * * * *" />
 	</task:scheduled-tasks> 

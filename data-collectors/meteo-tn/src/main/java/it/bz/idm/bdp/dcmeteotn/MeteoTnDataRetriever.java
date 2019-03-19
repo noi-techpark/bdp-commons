@@ -45,7 +45,7 @@ import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnDto;
 import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnMeasurementDto;
 import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnMeasurementListDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
-import it.bz.idm.bdp.dto.meteo.MeteoStationDto;
+import it.bz.idm.bdp.dto.StationDto;
 
 @Component
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
@@ -217,7 +217,7 @@ public class MeteoTnDataRetriever {
 
         //Convert in internal DTO without calling measurement service
         for (Map<String, String> station : dataMap) {
-            MeteoStationDto stationDto = converter.convertExternalStationDtoToStationDto(station);
+            StationDto stationDto = converter.convertExternalStationDtoToStationDto(station);
             MeteoTnDto dataByCity = new MeteoTnDto(stationDto, station);
             dtoList.add(dataByCity);
         }
@@ -289,7 +289,7 @@ public class MeteoTnDataRetriever {
             analyzeNode(node, "");
         }
 
-        MeteoStationDto stationDto = converter.convertExternalStationDtoToStationDto(station);
+        StationDto stationDto = converter.convertExternalStationDtoToStationDto(station);
         extDto = new MeteoTnDto(stationDto, station);
         List<MeteoTnMeasurementListDto> measurementsByType = extDto.getMeasurementsByType();
         Map<String, DataTypeDto> dataTypes = extDto.getDataTypes();

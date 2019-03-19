@@ -34,6 +34,7 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.StationList;
 
 /**
+ *
  * @author Davide Montesin <d@vide.bz>
  */
 public class FakeConnector implements IXMLRPCPusher
@@ -70,7 +71,7 @@ public class FakeConnector implements IXMLRPCPusher
    }
 
    @Override
-   public Object pushData(String datasourceName, DataMapDto data)
+   public Object pushData(String datasourceName, @SuppressWarnings("rawtypes") DataMapDto data)
    {
       StringWriter sw = new StringWriter();
       try
