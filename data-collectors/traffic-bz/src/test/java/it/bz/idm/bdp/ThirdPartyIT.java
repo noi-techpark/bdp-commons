@@ -23,7 +23,6 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cleanroadsdatatype.cleanroadswebservices.ArrayOfXmlImAnagraficaStazioneStationType.StationType;
-import cleanroadsdatatype.cleanroadswebservices.ArrayOfXmlImClassConfigXmlClassificazioneClasse.Classe;
 import cleanroadsdatatype.cleanroadswebservices.ArrayOfXmlImDataTypesXmlDataTypeClassifiSpec.ClassifiSpec;
 import cleanroadsdatatype.cleanroadswebservices.GetClassifConfigResult.XmlClassificazione;
 import cleanroadsdatatype.cleanroadswebservices.GetDataResult.XmlRwData;
@@ -35,7 +34,7 @@ import cleanroadsdatatype.cleanroadswebservices.GetMetadataStationResult;
 public class ThirdPartyIT extends AbstractJUnit4SpringContextTests{
 
 	private Logger logger = Logger.getLogger(ThirdPartyIT.class);
-	
+
 	@Autowired
 	private SoapClient soapClient;
 
@@ -73,7 +72,7 @@ public class ThirdPartyIT extends AbstractJUnit4SpringContextTests{
 		for (Integer station : stations){
 			try{
 				List<XmlClassificazione> stationConfig = soapClient.getStationConfig(station);
-				for(XmlClassificazione config:stationConfig){
+				for(@SuppressWarnings("unused") XmlClassificazione config:stationConfig){
 				}
 
 				assertFalse(stationConfig.isEmpty());
@@ -86,7 +85,7 @@ public class ThirdPartyIT extends AbstractJUnit4SpringContextTests{
 			logger.debug("Station config requests failed for station ids:" + Arrays.toString(failedRequests.toArray()));
 		}
 	}
-	@Test 
+	@Test
 	public void testGetDataTypes(){
 		List<Integer> stations = soapClient.getStationIdentifiers();
 		List<Integer> failedRequests = new ArrayList<Integer>();
@@ -96,7 +95,7 @@ public class ThirdPartyIT extends AbstractJUnit4SpringContextTests{
 				for (XmlDataType type : stationDataTypes){
 					assertNotNull(type.getId());
 					if (type.getClassificazioni() != null)
-						for (ClassifiSpec spec:type.getClassificazioni().getClassifiSpec()){
+						for (@SuppressWarnings("unused") ClassifiSpec spec:type.getClassificazioni().getClassifiSpec()){
 						}
 				}
 			}catch(IllegalStateException ex){
@@ -117,8 +116,8 @@ public class ThirdPartyIT extends AbstractJUnit4SpringContextTests{
 		for (Integer station : stations){
 			try{
 				List<XmlDataType> stationDataTypes = soapClient.getStationDataTypes(station);
-				if (stationDataTypes.isEmpty()) 
-					continue; 
+				if (stationDataTypes.isEmpty())
+					continue;
 				List<XmlRwData> currentData = soapClient.getCurrentData(station,stationDataTypes);
 				for(XmlRwData data : currentData){
 					assertNotNull(data);

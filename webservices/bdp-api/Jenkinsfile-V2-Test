@@ -1,0 +1,208 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile-java'
+            additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
+    }
+
+    environment {
+        TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
+        TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
+    }
+
+    stages {
+        stage('Configure') {
+            steps {
+                sh 'sed -i -e "s/<\\/settings>$//g\" ~/.m2/settings.xml'
+                sh 'echo "    <servers>" >> ~/.m2/settings.xml'
+                sh 'echo "        ${TESTSERVER_TOMCAT_CREDENTIALS}" >> ~/.m2/settings.xml'
+                sh 'echo "    </servers>" >> ~/.m2/settings.xml'
+                sh 'echo "</settings>" >> ~/.m2/settings.xml'
+            }
+        }
+
+        stage('Configure General Things') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.endpoint=\\).*\\$%\\1http://localhost:8080/reader2%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.requestTimeoutInSeconds=\\).*\\$%\\120%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+            }
+        }
+
+        stage('Configure - bikesharing') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1BikesharingStation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1Bicycle%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1bikes%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/bikesharing2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - bikesharing') {
+            steps {
+                sh 'cd webservices/bdp-api && mvn -U -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=bikesharing2'
+            }
+        }
+
+        stage('Configure - bluetooth') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1Bluetoothstation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/bluetooth2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - bluetooth') {
+            steps {
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=bluetooth2'
+            }
+        }
+
+        stage('Configure - carsharing') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1Carsharingstation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1Carsharingcar%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1cars%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/carsharing2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - carsharing') {
+            steps {
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=carsharing2'
+            }
+        }
+
+        stage('Configure - emobility') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1EChargingStation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1EChargingPlug%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1plugs%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/emobility2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - emobility') {
+            steps {
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=emobility2'
+            }
+        }
+
+        stage('Configure - environment') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1Environmentstation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/environment2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - environment') {
+            steps {
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=environment2'
+            }
+        }
+
+        stage('Configure - origin-destination') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1Linkstation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/origin-destination2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - origin-destination') {
+            steps {
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=origin-destination2'
+            }
+        }
+
+        stage('Configure - meteorology') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1Meteostation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/meteorology2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - meteorology') {
+            steps {
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=meteorology2'
+            }
+        }
+
+        stage('Configure - parking') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1ParkingStation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/parking2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - parking') {
+            steps {
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=parking2'
+            }
+        }
+
+        stage('Configure - roadweather') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1RWISstation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/roadweather2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - roadweather') {
+            steps {
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=roadweather2'
+            }
+        }
+
+        stage('Configure - street') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1Streetstation%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/street2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - street') {
+            steps {
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=street2'
+            }
+        }
+
+        stage('Configure - sensors') {
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1TrafficSensor%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1/%" webservices/bdp-api/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" webservices/bdp-api/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/sensors2.log%" webservices/bdp-api/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - sensors') {
+            steps {
+                sh 'cd webservices/bdp-api && mvn -B tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=sensors2'
+            }
+        }
+    }
+}

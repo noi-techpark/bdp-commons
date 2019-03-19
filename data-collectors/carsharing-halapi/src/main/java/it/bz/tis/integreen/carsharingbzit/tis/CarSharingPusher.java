@@ -29,14 +29,14 @@ import it.bz.idm.bdp.json.JSONPusher;
  */
 public class CarSharingPusher extends JSONPusher
 {
-
-	public Object pushData(String datasourceName, DataMapDto dto) {
+	@Override
+	public Object pushData(String datasourceName, DataMapDto<?> dto) {
 		return super.pushData(datasourceName, dto);
 	}
 
 	@Override
 	public String initIntegreenTypology() {
-		return "Carsharingstation";
+		return "CarsharingStation";
 	}
 
 	@Override

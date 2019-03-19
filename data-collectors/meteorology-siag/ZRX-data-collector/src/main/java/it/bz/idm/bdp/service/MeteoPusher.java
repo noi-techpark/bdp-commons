@@ -32,7 +32,7 @@ public class MeteoPusher extends JSONPusher{
 	private static final String ZEUS_ID = "SANR";
 	@Override
 	public String initIntegreenTypology() {
-		return "Meteostation";
+		return "MeteoStation";
 	}
 	@Autowired
 	private Environment environment;
