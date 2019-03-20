@@ -36,6 +36,7 @@ public class ParkingTnDataConverter {
     private String stationType;
     //This must be initialized in application.properties file (for example abcdefghijklmnopqrstuvwxyz0123456789)
     private String stationCodeAllowedChars;
+ // TODO Auto-generated method
 
 /*
  *  Example of json provided by the service
@@ -118,7 +119,8 @@ public class ParkingTnDataConverter {
             station.setLatitude(latitude);
             //OMITTED: protected String crs;
             station.setOrigin(DCUtils.trunc(getOrigin(), 255));
-            station.getMetaData().put("municipality", DCUtils.trunc(municipality, 255));
+
+            station.getMetaData().put("municipality",  municipality);
             station.setStationType(getStationType());
 
             //From ParkingStationDto
