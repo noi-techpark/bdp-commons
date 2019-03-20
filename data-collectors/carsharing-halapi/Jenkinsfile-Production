@@ -17,9 +17,9 @@ pipeline {
     stages {
         stage('Configure') {
             steps {
-                sh 'sed -i -e "s%\\(property.logFileFolder =\\).*\\$%\\1${LOG_FOLDER}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
-                sh 'sed -i -e "s%\\(property.logFileName =\\).*\\$%\\1${ARTIFACT_NAME}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
-                sh 'sed -i -e "s%\\(property.rootlevel =\\).*\\$%\\1INFO%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+                sh 'sed -i -e "s%\\(property.logFileFolder\\s*=\\).*\\$%\\1${LOG_FOLDER}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+                sh 'sed -i -e "s%\\(property.logFileName\\s*=\\).*\\$%\\1${ARTIFACT_NAME}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+                sh 'sed -i -e "s%\\(property.rootlevel\\s*=\\).*\\$%\\1INFO%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
 
                 sh 'cat "${CARSHARING_PROPS}" > ${PROJECT_FOLDER}/src/main/resources/app.properties'
             }
