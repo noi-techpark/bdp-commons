@@ -1,13 +1,26 @@
 package info.datatellers.appabz;
 
-import com.google.gson.JsonElement;
-import it.bz.idm.bdp.dto.*;
-import it.bz.idm.bdp.json.JSONPusher;
-import Helpers.DateHelper;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.TreeMap;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import com.google.gson.JsonElement;
+
+import Helpers.DateHelper;
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
+import it.bz.idm.bdp.json.JSONPusher;
 
 /**
  * @author Nicolò Molinari, Datatellers.
@@ -38,9 +51,9 @@ public class DataPusher extends JSONPusher {
             try {
                 station.setId(rawStation.getAsJsonObject().get("SCODE").getAsString());
                 station.setName(rawStation.getAsJsonObject().get("NAME_I").getAsString());
-                station.setCrs(rb.getString("odh.station.projection"));
+                station.setCoordinateReferenceSystem(rb.getString("odh.station.projection"));
                 station.setOrigin(rb.getString("odh.station.origin"));
-                station.setMunicipality(this.guessMunicipality(station.getId()));
+                station.getMetaData().put("municipality", this.guessMunicipality(station.getId()));
                 station.setStationType(rb.getString("odh.station.type"));
 
                 station.setLongitude(Double.valueOf(rawStation.getAsJsonObject().get("LONG").getAsString()));
