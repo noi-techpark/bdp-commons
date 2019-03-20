@@ -84,7 +84,7 @@ public class JobScheduler {
 		if ((today.getTime() - from.getTime()) > 3600000) {
 			LOG.info("There seems to be missing data from {}, recollecting", from);
 
-			c.add(Calendar.DATE, 31);
+			c.add(Calendar.DATE, 30);
 			Date to = c.getTime().compareTo(today) >= 0 ? today : c.getTime();
 
 			while (from.compareTo(today) < 0) {
