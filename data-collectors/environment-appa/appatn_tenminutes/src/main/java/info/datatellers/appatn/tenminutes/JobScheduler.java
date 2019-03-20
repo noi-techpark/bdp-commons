@@ -98,7 +98,7 @@ public class JobScheduler {
 				pusher.pushData(rb.getString("odh.station.type"), rootMap);
 				rootMap = constructRootMap();
 				from = to;
-				c.add(Calendar.DATE, 30);
+				c.add(Calendar.DATE, 29);
 				to = c.getTime();
 			}
 

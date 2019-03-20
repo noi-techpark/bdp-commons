@@ -145,7 +145,6 @@ public class DataFetcher {
      * and isolates the field containing the measurement's date.
      * @return the said date, in form of a String.
      */
-    @SuppressWarnings("Duplicates")
     public String getDateOfRecord()
     {
         try {
@@ -231,7 +230,6 @@ public class DataFetcher {
      *     |--> value(...)
      * and so on.
      */
-    @SuppressWarnings("Duplicates")
     TreeMap<String, ArrayList<String>> interrogateEndpoint(String polluterID, String stationID)
     {
         String stationCodeSplit[] = stationID.split("[_]");

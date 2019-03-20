@@ -32,8 +32,8 @@ public class DataPusherTest {
                 Assert.assertNotNull(station.getId());
                 Assert.assertNotNull(station.getName());
                 Assert.assertNotNull(station.getOrigin());
-                Assert.assertNotNull(station.getCrs());
-                Assert.assertNotNull(station.getMunicipality());
+                Assert.assertNotNull(station.getCoordinateReferenceSystem());
+                Assert.assertNotNull(station.getMetaData().get("municipality"));
                 Assert.assertNotNull(station.getStationType());
                 Assert.assertNotNull(station.getLatitude());
                 Assert.assertNotNull(station.getLongitude());
@@ -119,7 +119,6 @@ public class DataPusherTest {
         }
     }
 
-    @SuppressWarnings("Duplicates")
     private static DataMapDto<RecordDtoImpl> constructRootMap() {
         LOG.info("Starting to construct rootMap.");
         DataPusher pusher = new DataPusher();
