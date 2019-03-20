@@ -60,7 +60,7 @@ public class JobScheduler {
 			for (String sensorIndex : rootMap.upsertBranch(stationIndex).getBranch().keySet()) {
 				Date lastRecord = (Date) pusher.getDateOfLastRecord(stationIndex, sensorIndex, 600);
 				lastDatabaseEntryDate = lastRecord;
-				if (!lastRecord.toString().contains("1970"))
+				if (lastRecord.after(from))
 				{
 					from = lastRecord;
 				}
