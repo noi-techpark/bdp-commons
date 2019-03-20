@@ -152,39 +152,42 @@ public class ConnectorLogic
 
 		it.bz.tis.integreen.carsharingbzit.api.CarsharingVehicleDto[] vehiclesDtos = responseVehicleDetails.getVehicle();
 		StationList castedVehicles = castToBDP(vehiclesDtos);
-		
+
 		countVehiclesPerStation(castedStations,castedVehicles);
 		List<DataTypeDto> dtos = new ArrayList<>();
 		dtos.add(new DataTypeDto("number-available", "number of available vehicles / charging points", "", "Instantaneous"));
 		dtos.add(new DataTypeDto("availability", "Indicates if a vehicle is available for rental ", "", "Instantaneous"));
+		dtos.add(new DataTypeDto("future-availability", "Indicates if a vehicle is already booked", "", "Instantaneous"));
 		xmlrpcPusher.syncDataTypes(CARSHARINGSTATION_DATASOURCE,dtos);
-		Object result = xmlrpcPusher.syncStations(CARSHARINGSTATION_DATASOURCE, castedStations);
-		if (result instanceof IntegreenException)
-		{
-			throw new IOException("IntegreenException");
-		}
+		if (castedStations.size()>0) {
+			Object result = xmlrpcPusher.syncStations(CARSHARINGSTATION_DATASOURCE, castedStations);
+			if (result instanceof IntegreenException)
+			{
+				throw new IOException("IntegreenException");
+			}
 
-		synchronized (lock)
-		{
-			activityLog.report += "syncStations("
-					+ CARSHARINGSTATION_DATASOURCE
-					+ "): "
-					+ stations.length
-					+ "\n";
-		}
-		result = xmlrpcPusher.syncStations(CARSHARINGCAR_DATASOURCE, castedVehicles);
-		if (result instanceof IntegreenException)
-		{
-			throw new IOException("IntegreenException");
-		}
+			synchronized (lock)
+			{
+				activityLog.report += "syncStations("
+						+ CARSHARINGSTATION_DATASOURCE
+						+ "): "
+						+ stations.length
+						+ "\n";
+			}
+			result = xmlrpcPusher.syncStations(CARSHARINGCAR_DATASOURCE, castedVehicles);
+			if (result instanceof IntegreenException)
+			{
+				throw new IOException("IntegreenException");
+			}
 
-		synchronized (lock)
-		{
-			activityLog.report += "syncStations("
-					+ CARSHARINGCAR_DATASOURCE
-					+ "): "
-					+ vehiclesDtos.length
-					+ "\n";
+			synchronized (lock)
+			{
+				activityLog.report += "syncStations("
+						+ CARSHARINGCAR_DATASOURCE
+						+ "): "
+						+ vehiclesDtos.length
+						+ "\n";
+			}
 		}
 		return vehicleIdsByStationIds;
 	}
@@ -195,7 +198,7 @@ public class ConnectorLogic
 			String parentStation = v.getParentStation();
 			Integer currentCount = temp.get(parentStation);
 			if (currentCount != null) {
-				 temp.put(parentStation, currentCount+1);
+				temp.put(parentStation, currentCount+1);
 			}
 			else
 				temp.put(parentStation, 1);
@@ -246,6 +249,7 @@ public class ConnectorLogic
 			castedDto.getMetaData().put("model",dto.getModel());
 			castedDto.getMetaData().put("showType",dto.getShowType());
 			castedDto.setParentStation(dto.getStationId());
+			castedDto.setStationType("CarsharingCar");
 			dtos.add(castedDto);
 		}
 		return dtos;
@@ -267,6 +271,7 @@ public class ConnectorLogic
 			castedDto.setLongitude(dto.getLongitude());
 			castedDto.setName(dto.getName());
 			castedDto.setOrigin(CARSHARING_ORIGIN);
+			castedDto.setStationType("CarsharingStation");
 			dtos.add(castedDto);
 		}
 		return dtos;
@@ -353,33 +358,35 @@ public class ConnectorLogic
 				List<RecordDtoImpl> dtos = new ArrayList<RecordDtoImpl>();
 				DataMapDto<RecordDtoImpl> typeMap = new DataMapDto<>();
 				typeMap.getBranch().put(DataTypeDto.NUMBER_AVAILABE, new DataMapDto<>(dtos));
-				if (begin.equals(created))
+				if (begin.equals(created)) {
 					dtos.add(new SimpleRecordDto(updateTime + forecast, free+0.,600));
-				stationData.getBranch().put(stationId, typeMap );
-
+					stationData.getBranch().put(stationId, typeMap );
+				}
 			}
 
 			///////////////////////////////////////////////////////////////
 			// Write data to integreen
 			///////////////////////////////////////////////////////////////
 
-			Object result = jsonPusher.pushData(CARSHARINGSTATION_DATASOURCE, stationData);
-			if (result instanceof IntegreenException)
-			{
-				throw new IOException("IntegreenException");
-			}
-			synchronized (lock)
-			{
-				activityLog.report += "pushData(" + CARSHARINGSTATION_DATASOURCE + "): " + stationData.getBranch().size()+ "\n";
-			}
-			result = jsonPusher.pushData(CARSHARINGCAR_DATASOURCE, vehicleData);
-			if (result instanceof IntegreenException)
-			{
-				throw new IOException("IntegreenException");
-			}
-			synchronized (lock)
-			{
-				activityLog.report += "pushData(" + CARSHARINGCAR_DATASOURCE + "): " + vehicleData.getBranch().size() + "\n";
+			if (!stationData.getBranch().isEmpty()) {
+				Object result = jsonPusher.pushData(CARSHARINGSTATION_DATASOURCE, stationData);
+				if (result instanceof IntegreenException)
+				{
+					throw new IOException("IntegreenException");
+				}
+				synchronized (lock)
+				{
+					activityLog.report += "pushData(" + CARSHARINGSTATION_DATASOURCE + "): " + stationData.getBranch().size()+ "\n";
+				}
+				result = jsonPusher.pushData(CARSHARINGCAR_DATASOURCE, vehicleData);
+				if (result instanceof IntegreenException)
+				{
+					throw new IOException("IntegreenException");
+				}
+				synchronized (lock)
+				{
+					activityLog.report += "pushData(" + CARSHARINGCAR_DATASOURCE + "): " + vehicleData.getBranch().size() + "\n";
+				}
 			}
 		}
 	}
