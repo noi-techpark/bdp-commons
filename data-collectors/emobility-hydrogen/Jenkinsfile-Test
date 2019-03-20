@@ -25,8 +25,8 @@ pipeline {
                 sh 'echo "    </servers>" >> ~/.m2/settings.xml'
                 sh 'echo "</settings>" >> ~/.m2/settings.xml'
 
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
-	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.rootLogger\\s*=\\).*\\$%\\1DEBUG,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+	            sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
 
                 sh 'sed -i -e "s%\\(__TOKEN_PARAMETER__\\).*\\$%${ACCESS_TOKEN}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
             }
