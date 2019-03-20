@@ -29,7 +29,6 @@ public class JobScheduler {
         LOG.info("Data Collector execution terminated.");
     }
 
-    @SuppressWarnings("Duplicates")
     private static DataMapDto<RecordDtoImpl> constructRootMap()
     {
         LOG.info("Starting to construct rootMap.");
