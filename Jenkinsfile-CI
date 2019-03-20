@@ -7,85 +7,93 @@ pipeline {
     }
 
     stages {
-        stage('Test - data-collectors - airquality-appabz') {
-            steps {
-                sh 'cd data-collectors/airquality-appabz && mvn -B -U clean compile test'
-            }
-        }
-        stage('Test - data-collectors - bikesharing-algorab') {
-            steps {
-                sh 'cd data-collectors/bikesharing-algorab && mvn -B -U clean compile test'
-            }
-        }
-        stage('Test - data-collectors - carsharing-halapi') {
-            steps {
-                sh 'cd data-collectors/carsharing-halapi && mvn -B -U clean compile test'
-            }
-        }
-        stage('Test - data-collectors - emobility-echarging') {
-            steps {
-                sh 'cd data-collectors/emobility-echarging && mvn -B -U clean compile test'
-            }
-        }
-        stage('Test - data-collectors - emobility-hydrogen') {
-            steps {
-                sh 'cd data-collectors/emobility-hydrogen && mvn -B -U clean compile test'
-            }
-        }
-        stage('Test - data-collectors - environment-appa-tenminutes') {
-            steps {
-                sh 'cd data-collectors/environment-appa/appatn_tenminutes && mvn -B -U clean compile'
-            }
-        }
-        stage('Test - data-collectors - environment-appa-opendata') {
-            steps {
-                sh 'cd data-collectors/environment-appa/appatn_opendata && mvn -B -U clean compile'
-            }
-        }
-        stage('Test - data-collectors - environment-appa-bz') {
-            steps {
-                sh 'cd data-collectors/environment-appa/appabz_opendata && mvn -B -U clean compile'
-            }
-        }
-        stage('Test - data-collectors - meteorology-provincetrento') {
-            steps {
-                sh 'cd data-collectors/meteo-tn/ && mvn -B -U clean compile test'
-            }
-        }
-        stage('Test - data-collectors - parking-MeBo') {
-            steps {
-                sh 'cd data-collectors/parking-MeBo && mvn -B -U clean compile test'
-            }
-        }
-        stage('Test - data-collectors - parking-tn') {
-            steps {
-                sh 'test -d data-collectors/parking-tn && { cd data-collectors/parking-tn; mvn -B -U clean compile test; } || true'
-            }
-        }
-        stage('Test - data-collectors - roadweather-famas') {
-            steps {
-                sh 'cd data-collectors/roadweather-famas && mvn -B -U clean compile test'
-            }
-        }
-        stage('Test - data-collectors - traffic-a22') {
-            steps {
-                sh 'cd data-collectors/traffic-a22/A22Connector/ && mvn -B -U clean compile test'
-            }
-        }
-        stage('Test - data-collectors - vehicletraffic-bluetooth'){
-            steps {
-                sh 'cd data-collectors/vehicletraffic-bluetooth && mvn -B -U clean compile test'
-            }
-        }
-        stage('Test - data-collectors - traffic-bz') {
-            steps {
-                sh 'cd data-collectors/traffic-bz/ && mvn -B -U clean compile test'
+        stage('Test - data-collectors') {
+            parallel {
+                stage('airquality-appabz') {
+                    steps {
+                        sh 'cd data-collectors/airquality-appabz && mvn -B -U clean compile test'
+                    }
+                }
+                stage('bikesharing-algorab') {
+                    steps {
+                        sh 'cd data-collectors/bikesharing-algorab && mvn -B -U clean compile test'
+                    }
+                }
+                stage('carsharing-halapi') {
+                    steps {
+                        sh 'cd data-collectors/carsharing-halapi && mvn -B -U clean compile test'
+                    }
+                }
+                stage('emobility-echarging') {
+                    steps {
+                        sh 'cd data-collectors/emobility-echarging && mvn -B -U clean compile test'
+                    }
+                }
+                stage('emobility-hydrogen') {
+                    steps {
+                        sh 'cd data-collectors/emobility-hydrogen && mvn -B -U clean compile test'
+                    }
+                }
+                stage('environment-appa-tenminutes') {
+                    steps {
+                        sh 'cd data-collectors/environment-appa/appatn_tenminutes && mvn -B -U clean compile'
+                    }
+                }
+                stage('environment-appa-opendata') {
+                    steps {
+                        sh 'cd data-collectors/environment-appa/appatn_opendata && mvn -B -U clean compile'
+                    }
+                }
+                stage('environment-appa-bz') {
+                    steps {
+                        sh 'cd data-collectors/environment-appa/appabz_opendata && mvn -B -U clean compile'
+                    }
+                }
+                stage('meteorology-provincetrento') {
+                    steps {
+                        sh 'cd data-collectors/meteo-tn/ && mvn -B -U clean compile test'
+                    }
+                }
+                stage('parking-MeBo') {
+                    steps {
+                        sh 'cd data-collectors/parking-MeBo && mvn -B -U clean compile test'
+                    }
+                }
+                stage('parking-tn') {
+                    steps {
+                        sh 'test -d data-collectors/parking-tn && { cd data-collectors/parking-tn; mvn -B -U clean compile test; } || true'
+                    }
+                }
+                stage('roadweather-famas') {
+                    steps {
+                        sh 'cd data-collectors/roadweather-famas && mvn -B -U clean compile test'
+                    }
+                }
+                stage('traffic-a22') {
+                    steps {
+                        sh 'cd data-collectors/traffic-a22/A22Connector/ && mvn -B -U clean compile test'
+                    }
+                }
+                stage('vehicletraffic-bluetooth'){
+                    steps {
+                        sh 'cd data-collectors/vehicletraffic-bluetooth && mvn -B -U clean compile test'
+                    }
+                }
+                stage('traffic-bz') {
+                    steps {
+                        sh 'cd data-collectors/traffic-bz/ && mvn -B -U clean compile test'
+                    }
+                }
             }
         }
 
         stage('Test - webservices') {
-            steps {
-                sh 'cd webservices/bdp-api/ && mvn -B -U clean compile test'
+            parallel {
+                stage('bdp-api') {
+                    steps {
+                        sh 'cd webservices/bdp-api/ && mvn -B -U clean compile test'
+                    }
+                }
             }
         }
     }
