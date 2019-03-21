@@ -20,6 +20,7 @@ import it.bz.idm.bdp.dto.StationDto;
 @Component
 public class ParkingMeranoClient {
 
+	private static final String OCCUPIED_TYPE = "occupied";
 	private RestTemplate restTemplate;
 	private String endpoint;
 	private final static String ORIGIN = "ParkingMeran";
@@ -64,7 +65,7 @@ public class ParkingMeranoClient {
 			DataMapDto<RecordDtoImpl> tMap = new DataMapDto<>();
 			List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
 			SimpleRecordDto record = new SimpleRecordDto();
-			record.setValue(e.getFreeParkingSpaces());
+			record.setValue(e.getTotalParkingSpaces()-e.getFreeParkingSpaces());
 			Date date;
 			try {
 				date = format.parse(e.getCurrentDateTime());
@@ -75,8 +76,8 @@ public class ParkingMeranoClient {
 			}
 			records.add(record);
 			dMap.setData(records);
-			if (tMap.getBranch().get("free") == null)
-				tMap.getBranch().put("free", dMap);
+			if (tMap.getBranch().get(OCCUPIED_TYPE) == null)
+				tMap.getBranch().put(OCCUPIED_TYPE, dMap);
 
 			String stationKey = "me:"+e.getAreaName().toLowerCase().replaceAll("\\s+","");
 			if (sMap.getBranch().get(stationKey) == null)
