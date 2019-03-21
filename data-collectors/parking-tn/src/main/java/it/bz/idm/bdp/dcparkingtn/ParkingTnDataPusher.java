@@ -89,7 +89,7 @@ public class ParkingTnDataPusher extends JSONPusher {
         for (ParkingTnDto dto: data) {
             StationDto stationDto = dto.getStation();
             ParkingAreaServiceDto extDto = dto.getParkingArea();
-            Integer slotsOccupied = extDto.getSlotsTotal()-extDto.getSlotsAvailable();
+            Integer slotsOccupied = extDto.getSlotsAvailable() < 0 ? -1 : extDto.getSlotsTotal()-extDto.getSlotsAvailable();
 
             //Exclude Measures having slotsAvailable<0
             if ( slotsOccupied != null && slotsOccupied >= 0 ) {
