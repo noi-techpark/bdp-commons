@@ -31,7 +31,7 @@ import it.bz.idm.bdp.json.JSONPusher;
 @Service
 public class ParkingTnDataPusher extends JSONPusher {
 
-    public static final String PARKING_TYPE_IDENTIFIER = "free";
+    public static final String PARKING_TYPE_IDENTIFIER = "occupied";
 
 	private static final Logger LOG = LogManager.getLogger(ParkingTnDataPusher.class.getName());
 
@@ -89,12 +89,12 @@ public class ParkingTnDataPusher extends JSONPusher {
         for (ParkingTnDto dto: data) {
             StationDto stationDto = dto.getStation();
             ParkingAreaServiceDto extDto = dto.getParkingArea();
-            Integer slotsAvailable = extDto.getSlotsAvailable();
+            Integer slotsOccupied = extDto.getSlotsTotal()-extDto.getSlotsAvailable();
 
             //Exclude Measures having slotsAvailable<0
-            if ( slotsAvailable != null && slotsAvailable >= 0 ) {
+            if ( slotsOccupied != null && slotsOccupied >= 0 ) {
                 SimpleRecordDto record = new SimpleRecordDto();
-                record.setValue(slotsAvailable);
+                record.setValue(slotsOccupied);
                 record.setTimestamp(timestamp);
                 record.setPeriod(period);
 
@@ -114,9 +114,9 @@ public class ParkingTnDataPusher extends JSONPusher {
                 //Add the measure in the list
                 List<RecordDtoImpl> records = typeMap.getBranch().get(PARKING_TYPE_IDENTIFIER).getData();
                 records.add(record);
-                LOG.debug("ADD  MEASURE:  id="+stationDto.getId()+", slotsAvailable="+slotsAvailable);
+                LOG.debug("ADD  MEASURE:  id="+stationDto.getId()+", slotsOccupied="+slotsOccupied);
             } else {
-                LOG.debug("SKIP MEASURE:  id="+stationDto.getId()+", slotsAvailable="+slotsAvailable);
+                LOG.debug("SKIP MEASURE:  id="+stationDto.getId()+", slotsOccupied="+slotsOccupied);
             }
         }
 
@@ -201,7 +201,7 @@ public class ParkingTnDataPusher extends JSONPusher {
     @Override
     public String toString() {
         String str1 = "http://" + config.getString(HOST_KEY) + ":" + config.getString(PORT_KEY) + config.getString("json_endpoint");
-        String str2 = 
+        String str2 =
                 "integreenTypology=" + this.integreenTypology   + "  " +
                 "DEFAULT_HOST="      + DEFAULT_HOST     + "  " +
                 "DEFAULT_PORT="      + DEFAULT_PORT     + "  " +
