@@ -22,9 +22,9 @@ public class ParkingPusher extends JSONPusher{
 
 	private static final String STATION_TYPE = "ParkingStation";
 
-	private static final String PARKINGSLOT_TYPEIDENTIFIER = "free";
+	private static final String PARKINGSLOT_TYPEIDENTIFIER = "occupied";
 
-	private static final String PARKINGSLOT_METRIC = "Instantaneous";
+	private static final String PARKINGSLOT_METRIC = "Count";
 
 	private static final String TYPE_UNIT = "";
 
@@ -128,7 +128,7 @@ public class ParkingPusher extends JSONPusher{
 
 	public static List<DataTypeDto> getDataTypeList() {
 		List<DataTypeDto> dataTypes = new ArrayList<>();
-		dataTypes.add(new DataTypeDto(PARKINGSLOT_TYPEIDENTIFIER,TYPE_UNIT,TYPE_UNIT,PARKINGSLOT_METRIC));
+		dataTypes.add(new DataTypeDto(PARKINGSLOT_TYPEIDENTIFIER,TYPE_UNIT,"Occupacy of a parking area",PARKINGSLOT_METRIC));
 		for (int minutesForecast:PREDICTION_FORECAST_TIMES_IN_MINUTES)
 			dataTypes.add(new DataTypeDto(FORECAST_PREFIX+ minutesForecast,TYPE_UNIT,minutesForecast+TYPEDESCRIPTION_SUFFIX,FORECAST_METRIC));
 		return dataTypes;
