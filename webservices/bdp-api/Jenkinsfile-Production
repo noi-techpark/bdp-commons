@@ -86,8 +86,8 @@ pipeline {
         stage('Configure - carsharing') {
             environment {
                 ARTIFACT_NAME = "carsharing"
-                STATION_TYPE = "Carsharingstation"
-                CHILD_STATION_TYPE = "Carsharingcar"
+                STATION_TYPE = "CarsharingStation"
+                CHILD_STATION_TYPE = "CarsharingCar"
                 CHILDREN_PATH = "cars"
             }
             steps {
