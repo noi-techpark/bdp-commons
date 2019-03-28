@@ -152,7 +152,7 @@ pipeline {
         stage('Configure - environment') {
             environment {
                 ARTIFACT_NAME = "environment"
-                STATION_TYPE = "Environmentstation"
+                STATION_TYPE = "EnvironmentStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
