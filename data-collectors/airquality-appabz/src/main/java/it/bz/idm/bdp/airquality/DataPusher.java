@@ -39,7 +39,7 @@ public class DataPusher extends JSONPusher {
 
 	@Override
 	public String initIntegreenTypology() {
-		return "Environmentstation";// env.getRequiredProperty("odh.station.type");
+		return "EnvironmentStation";// env.getRequiredProperty("odh.station.type");
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public class JobScheduler {
 		Map<String, StationList> stations = parser.retrieveStations();
 		pusher.syncStations("Meteostation",stations.get("meteo"));
 		pusher.syncStations(stations.get("traffic"));
-		pusher.syncStations("Environmentstation",stations.get("environment"));
+		pusher.syncStations("EnvironmentStation",stations.get("environment"));
 	}
 	public void syncDataTypes(){
 		List<DataTypeDto> types = parser.retrieveDataTypes();
