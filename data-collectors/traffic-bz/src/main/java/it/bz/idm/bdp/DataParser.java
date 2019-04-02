@@ -48,7 +48,7 @@ public class DataParser {
 	private Environment environment;
 
 	/**
-	 * 
+	 *
 	 * @return a map containing different types of stations
 	 */
 	public Map<String, StationList> retrieveStations() {
@@ -68,6 +68,7 @@ public class DataParser {
 						stationDto.setLatitude(metaData.getLatit());
 						stationDto.setLongitude(metaData.getLongit());
 						stationDto.setOrigin(DATA_ORIGIN);
+						stationDto.setStationType(TrafficPusher.METEOSTATION_IDENTIFIER);
 						meteostations.add(stationDto);
 					} else if (type.getType() == 1) { // 1 is a traffic sensor
 						Set<Integer> stationLanes = this.getStationLanes(num);
@@ -77,6 +78,7 @@ public class DataParser {
 						stationDto.setLatitude(metaData.getLatit());
 						stationDto.setLongitude(metaData.getLongit());
 						stationDto.setOrigin(DATA_ORIGIN);
+						stationDto.setStationType(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER);
 						trafficStations.add(stationDto);
 						for (Integer lane : stationLanes) { // create one station for each lane
 							int i;
@@ -87,6 +89,7 @@ public class DataParser {
 								laneDto.setLatitude(metaData.getLatit());
 								laneDto.setLongitude(metaData.getLongit());
 								laneDto.setOrigin(DATA_ORIGIN);
+								laneDto.setStationType(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER);
 								trafficStations.add(laneDto);
 							}
 						}
@@ -97,6 +100,7 @@ public class DataParser {
 						stationDto.setLatitude(metaData.getLatit());
 						stationDto.setLongitude(metaData.getLongit());
 						stationDto.setOrigin(DATA_ORIGIN);
+						stationDto.setStationType(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER);
 						environmentStations.add(stationDto);
 
 					}
@@ -108,7 +112,7 @@ public class DataParser {
 		return stations;
 	}
 	/**
-	 * 
+	 *
 	 * @return a list of simple types and complex types of all typologgies of
 	 *         stations divided in weather types, environment types and traffic
 	 *         types
@@ -198,9 +202,9 @@ public class DataParser {
 					if (rawdata.getClassifDataList() == null && type != null && rawdata.getCorsia() != null //as long as lane and direction is not null and categorisazion is null the data is about the specific lane
 							&& rawdata.getDir() != null) {
 						aggregateData(trafficData, idAsString, MEASUREMENT_CONTEXT.LANE, String.valueOf(simpleType), rawdata.getCorsia(), rawdata.getDir(), acqInterv, time, value);
-					} else if (rawdata.getClassifDataList() == null && type != null) {																//  if no lane is specified it means the data is of the station like air-temperature 
+					} else if (rawdata.getClassifDataList() == null && type != null) {																//  if no lane is specified it means the data is of the station like air-temperature
 						if (simpleType >= 38 && simpleType <= 42) {												//environment types
-							aggregateData(environmentData, idAsString, MEASUREMENT_CONTEXT.STATION,					
+							aggregateData(environmentData, idAsString, MEASUREMENT_CONTEXT.STATION,
 									String.valueOf(simpleType), rawdata.getCorsia(), rawdata.getDir(), acqInterv,
 									time, rawdata.getValore());
 						} else {																				// meteo types and potentially more :->
@@ -251,14 +255,14 @@ public class DataParser {
 						String stationIdAsString = String.valueOf(num);
 						long time = calendar.getTime().getTime();
 						int acqInterv = type.getAcqInterv();
-						if (rawdata.getClassifDataList() == null && type != null && rawdata.getCorsia() != null 
+						if (rawdata.getClassifDataList() == null && type != null && rawdata.getCorsia() != null
 								&& rawdata.getDir() != null) {													//as long as lane and direction is not null and categorisazion is null the data is about the specific lane
 							aggregateData(trafficData, stationIdAsString, MEASUREMENT_CONTEXT.LANE,
 									String.valueOf(simpleType), rawdata.getCorsia(), rawdata.getDir(), acqInterv, time,
 									rawdata.getValore());
-						} else if (rawdata.getClassifDataList() == null && type != null) {																//  if no lane is specified it means the data is of the station like air-temperature 
+						} else if (rawdata.getClassifDataList() == null && type != null) {																//  if no lane is specified it means the data is of the station like air-temperature
 							if (simpleType >= 38 && simpleType <= 42) {												//environment types
-								aggregateData(environmentData, stationIdAsString, MEASUREMENT_CONTEXT.STATION,					
+								aggregateData(environmentData, stationIdAsString, MEASUREMENT_CONTEXT.STATION,
 										String.valueOf(simpleType), rawdata.getCorsia(), rawdata.getDir(), acqInterv,
 										time, rawdata.getValore());
 							} else {																				// meteo types and potentially more :->
@@ -306,7 +310,7 @@ public class DataParser {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param data
 	 * @param stationId
 	 * @param mContext
@@ -364,7 +368,7 @@ public class DataParser {
 		}
 	}
 	/**
-	 * 
+	 *
 	 * @param typeDefinition
 	 * @param firstLevelMap
 	 * @return the list associated with given type and stationmap or new instance if not existing. It binds this list correctly than
@@ -411,7 +415,7 @@ public class DataParser {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param direction
 	 * @param value
 	 * @return true if the number is measured of a vehicle driving in the right
