@@ -289,7 +289,26 @@ public class DataParser {
 				continue;
 			}
 		}
+		removeEmptyDataSets(map);
 		return map;
+	}
+	public static void removeEmptyDataSets(Map<String, DataMapDto<RecordDtoImpl>> map) {
+		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry: map.entrySet()) {
+				cutBranchesWithNoLeafs(entry.getValue());
+		}
+
+	}
+	/**
+	 * removes all empty datasets and all maps containing no data
+	 * @param stationMap
+	 *
+	 */
+	private static void cutBranchesWithNoLeafs(DataMapDto<RecordDtoImpl> stationMap) {
+		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> stationEntry: stationMap.getBranch().entrySet()) {
+			Map<String, DataMapDto<RecordDtoImpl>> typeMap = stationEntry.getValue().getBranch();
+			typeMap.entrySet().removeIf(entry -> entry.getValue().getData().isEmpty());
+		}
+		stationMap.getBranch().entrySet().removeIf(entry -> entry.getValue().getBranch().isEmpty());
 	}
 	private Set<Integer> getStationLanes(int num) {
 		Set<Integer> lanes = new HashSet<Integer>();
@@ -370,18 +389,18 @@ public class DataParser {
 	/**
 	 *
 	 * @param typeDefinition
-	 * @param firstLevelMap
+	 * @param typeLevelMap
 	 * @return the list associated with given type and stationmap or new instance if not existing. It binds this list correctly than
 	 */
 	private List<RecordDtoImpl> retrieveOrCreateDataList(String typeDefinition,
-			DataMapDto<RecordDtoImpl> firstLevelMap) {
-		DataMapDto<RecordDtoImpl> typeMapDto = firstLevelMap.getBranch().get(typeDefinition);
-		List<RecordDtoImpl> list = typeMapDto != null ? typeMapDto.getData() : null;
+			DataMapDto<RecordDtoImpl> typeLevelMap) {
+		DataMapDto<RecordDtoImpl> currentRecordMapDto = typeLevelMap.getBranch().get(typeDefinition);
+		List<RecordDtoImpl> list = currentRecordMapDto != null ? currentRecordMapDto.getData() : null;
 		if (list == null) {
 			list = new ArrayList<RecordDtoImpl>();
 			DataMapDto<RecordDtoImpl> recordMapDto = new DataMapDto<>();
 			recordMapDto.setData(list);
-			firstLevelMap.getBranch().put(typeDefinition, recordMapDto);
+			typeLevelMap.getBranch().put(typeDefinition, recordMapDto);
 		}
 		return list;
 	}
