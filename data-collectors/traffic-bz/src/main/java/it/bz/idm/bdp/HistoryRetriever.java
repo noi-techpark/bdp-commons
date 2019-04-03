@@ -62,7 +62,15 @@ public class HistoryRetriever {
 				Long now = new Date().getTime();
 				Map<String, DataMapDto<RecordDtoImpl>> retrieveHistoricData = parser.retrieveHistoricData(from,to);
 				logger.debug("3rd party took" + (new Date().getTime()-now)/1000 +" s");
-				bdpClient.pushData(retrieveHistoricData.get(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER));
+
+				DataMapDto<RecordDtoImpl> dataMapDto = retrieveHistoricData.get(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER);
+				for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry : dataMapDto.getBranch().entrySet()) {
+					logger.info("Station "+entry.getKey()+": ");
+					for (Map.Entry<String, DataMapDto<RecordDtoImpl>> tentry : entry.getValue().getBranch().entrySet()) {
+						logger.info("Type "+tentry.getKey()+" number of records:" + tentry.getValue().getData().size());
+					}
+				}
+				bdpClient.pushData(dataMapDto);
 				logger.debug("traffic data sent");
 				bdpClient.pushData(TrafficPusher.METEOSTATION_IDENTIFIER,retrieveHistoricData.get(TrafficPusher.METEOSTATION_IDENTIFIER));
 				logger.debug("meteo data sent");
