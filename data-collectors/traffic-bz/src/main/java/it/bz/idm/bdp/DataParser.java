@@ -296,6 +296,7 @@ public class DataParser {
 		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry: map.entrySet()) {
 				cutBranchesWithNoLeafs(entry.getValue());
 		}
+		map.entrySet().removeIf(entry->entry.getValue().getBranch().isEmpty());
 
 	}
 	/**
