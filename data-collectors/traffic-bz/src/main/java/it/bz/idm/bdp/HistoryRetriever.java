@@ -1,6 +1,7 @@
 package it.bz.idm.bdp;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
@@ -45,10 +46,12 @@ public class HistoryRetriever {
 
 	/*retrieve all history data from a given point in time and push it to the bdp */
 	public void getHistory(LocalDateTime newestDateMidnight){
-		if (newestDateMidnight == null) {
-			DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			newestDateMidnight = LocalDateTime.parse(environment.getProperty("history.startDate"),format);
-		}
+
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String startDate = environment.getProperty("history.startDate");
+		LocalDateTime manualDate = LocalDate.parse(startDate,format).atStartOfDay();
+		if (manualDate.isAfter(newestDateMidnight))
+			newestDateMidnight= manualDate;
 		try {
 			XMLGregorianCalendar from = null,to = null;
 			GregorianCalendar cal = new GregorianCalendar();
@@ -64,12 +67,6 @@ public class HistoryRetriever {
 				logger.debug("3rd party took" + (new Date().getTime()-now)/1000 +" s");
 
 				DataMapDto<RecordDtoImpl> dataMapDto = retrieveHistoricData.get(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER);
-				for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry : dataMapDto.getBranch().entrySet()) {
-					logger.info("Station "+entry.getKey()+": ");
-					for (Map.Entry<String, DataMapDto<RecordDtoImpl>> tentry : entry.getValue().getBranch().entrySet()) {
-						logger.info("Type "+tentry.getKey()+" number of records:" + tentry.getValue().getData().size());
-					}
-				}
 				bdpClient.pushData(dataMapDto);
 				logger.debug("traffic data sent");
 				bdpClient.pushData(TrafficPusher.METEOSTATION_IDENTIFIER,retrieveHistoricData.get(TrafficPusher.METEOSTATION_IDENTIFIER));
