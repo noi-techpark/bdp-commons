@@ -14,7 +14,7 @@ import it.bz.idm.bdp.util.EncryptUtil;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext*.xml" })
 @WebAppConfiguration
-public class EncryptionTest {
+public class EncryptionIT {
 
 	@Autowired
 	private EncryptUtil util;

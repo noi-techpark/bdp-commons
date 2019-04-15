@@ -13,6 +13,7 @@ pipeline {
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
         ARTIFACT_NAME = "dc-${PROJECT}"
+        ENCRYPTION_KEY = credentials('bluetooth-encryption-key')
     }
 
     stages {
@@ -25,7 +26,9 @@ pipeline {
                 sh 'echo "</settings>" >> ~/.m2/settings.xml'
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger\\s*=\\).*\\$%\\1DEBUG,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
-	            sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+	            sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+	            sh 'sed -i -e "s%\\(encryption.key=\\).*\\$%\\1${ENCRYPTION_KEY}%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+	            
             }
         }
 
