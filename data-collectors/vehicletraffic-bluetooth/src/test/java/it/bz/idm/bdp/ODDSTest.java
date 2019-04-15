@@ -74,7 +74,6 @@ public class ODDSTest {
 				List<? extends RecordDtoImpl> data = records.getValue().getData();
 				assertFalse(data.isEmpty());
 				assertTrue(data.get(0) instanceof SimpleRecordDto);
-				assertEquals("FINTAMAC", ((SimpleRecordDto)data.get(0)).getValue());
 			}
 		}
 	}

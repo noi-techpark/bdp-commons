@@ -12,6 +12,7 @@ import it.bz.idm.bdp.dto.OddsRecordDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.util.EncryptUtil;
 
 @Component
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
@@ -19,6 +20,9 @@ public class OddsPusher extends JSONPusher {
 
 	@Autowired
 	private Environment env;
+
+	@Autowired
+	private EncryptUtil cryptUtil;
 
 	@Override
 	public String initIntegreenTypology() {
@@ -35,7 +39,8 @@ public class OddsPusher extends JSONPusher {
 			DataMapDto<RecordDtoImpl> typeMap = stationMap.upsertBranch(env.getRequiredProperty("datatype"));
 
 			SimpleRecordDto textDto = new SimpleRecordDto();
-			textDto.setValue(dto.getMac());
+			String encryptedMac = cryptUtil.encrypt(dto.getMac());
+			textDto.setValue(encryptedMac);
 			textDto.setTimestamp(dto.getGathered_on().getTime());
 			textDto.setPeriod(1);
 			typeMap.getData().add(textDto);
