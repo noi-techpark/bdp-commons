@@ -17,7 +17,8 @@ public class EncryptUtil {
 
 	@PostConstruct
 	public void init() {
-		utils = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, key);
+		if (key != null)
+			utils = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, key);
 	}
 
 	public String encrypt(String mac) {
