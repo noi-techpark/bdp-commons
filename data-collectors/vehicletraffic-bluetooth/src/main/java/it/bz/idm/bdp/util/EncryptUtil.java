@@ -17,7 +17,7 @@ public class EncryptUtil {
 
 	@PostConstruct
 	public void init() {
-		if (key != null)
+		if (key != null && !key.isEmpty())
 			utils = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, key);
 	}
 
@@ -26,6 +26,6 @@ public class EncryptUtil {
 	}
 
 	public boolean isValid() {
-		return key!=null;
+		return key!=null && !key.isEmpty();
 	}
 }
