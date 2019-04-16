@@ -24,4 +24,8 @@ public class EncryptUtil {
 	public String encrypt(String mac) {
 		return utils.hmacHex(mac);
 	}
+
+	public boolean isValid() {
+		return key!=null;
+	}
 }

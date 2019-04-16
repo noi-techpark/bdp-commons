@@ -1,6 +1,7 @@
 package it.bz.idm.bdp;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,7 @@ public class EncryptionIT {
 
 	@Test
 	public void testStringEncryption() {
+		assertTrue(util.isValid());
 		String mac="whatever";
 		String encryptedString = util.encrypt(mac);
 		assertEquals("73c0611fced8cc3a8c890e649b461ce0a76dd6207b161458887332af2ee97133", encryptedString);
