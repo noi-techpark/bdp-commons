@@ -53,7 +53,7 @@ pipeline {
         stage('Configure - bluetooth') {
             environment {
                 ARTIFACT_NAME = "bluetooth"
-                STATION_TYPE = "Bluetoothstation"
+                STATION_TYPE = "BluetoothStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
