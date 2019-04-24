@@ -58,7 +58,7 @@ pipeline {
         stage('Configure - bluetooth') {
             environment {
                 ARTIFACT_NAME = "bluetooth"
-                STATION_TYPE = "Bluetoothstation"
+                STATION_TYPE = "BluetoothStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
@@ -82,8 +82,8 @@ pipeline {
         stage('Configure - carsharing') {
             environment {
                 ARTIFACT_NAME = "carsharing"
-                STATION_TYPE = "Carsharingstation"
-                CHILD_STATION_TYPE = "Carsharingcar"
+                STATION_TYPE = "CarsharingStation"
+                CHILD_STATION_TYPE = "CarsharingCar"
                 CHILDREN_PATH = "cars"
             }
             steps {
@@ -130,7 +130,7 @@ pipeline {
         stage('Configure - environment') {
             environment {
                 ARTIFACT_NAME = "environment"
-                STATION_TYPE = "Environmentstation"
+                STATION_TYPE = "EnvironmentStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
@@ -154,7 +154,7 @@ pipeline {
         stage('Configure - origin-destination') {
             environment {
                 ARTIFACT_NAME = "origin-destination"
-                STATION_TYPE = "Linkstation"
+                STATION_TYPE = "LinkStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
@@ -178,7 +178,7 @@ pipeline {
         stage('Configure - meteorology') {
             environment {
                 ARTIFACT_NAME = "meteorology"
-                STATION_TYPE = "Meteostation"
+                STATION_TYPE = "MeteoStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
@@ -250,7 +250,7 @@ pipeline {
         stage('Configure - street') {
             environment {
                 ARTIFACT_NAME = "street"
-                STATION_TYPE = "Streetstation"
+                STATION_TYPE = "StreetStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
