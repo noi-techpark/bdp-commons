@@ -17,8 +17,8 @@ pipeline {
     stages {
         stage('Configure') {
             steps {
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
-	            sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.rootLogger\\s*=\\).*\\$%\\1INFO,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+	            sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
 
                 sh 'cat "${PARKING_PROPS}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/app.properties'
             }
@@ -26,13 +26,14 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify package'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package'
             }
         }
 
 	    stage('Archive') {
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
     }

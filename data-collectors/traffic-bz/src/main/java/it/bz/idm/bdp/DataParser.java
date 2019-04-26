@@ -30,7 +30,6 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.meteo.MeteoStationDto;
 
 @Component
 @PropertySource("classpath:/META-INF/spring/types.properties")
@@ -49,7 +48,7 @@ public class DataParser {
 	private Environment environment;
 
 	/**
-	 * 
+	 *
 	 * @return a map containing different types of stations
 	 */
 	public Map<String, StationList> retrieveStations() {
@@ -63,12 +62,13 @@ public class DataParser {
 			if (metaData.getStationTypeList() != null && !metaData.getStationTypeList().getStationType().isEmpty())
 				for (StationType type : metaData.getStationTypeList().getStationType()) {
 					if (type.getType() == 2) { // 2 is a weatherstation
-						MeteoStationDto stationDto = new MeteoStationDto();
+						StationDto stationDto = new StationDto();
 						stationDto.setId(MUNICIPALITYBZ_NAMESPACE + num);
 						stationDto.setName(metaData.getNome());
 						stationDto.setLatitude(metaData.getLatit());
 						stationDto.setLongitude(metaData.getLongit());
 						stationDto.setOrigin(DATA_ORIGIN);
+						stationDto.setStationType(TrafficPusher.METEOSTATION_IDENTIFIER);
 						meteostations.add(stationDto);
 					} else if (type.getType() == 1) { // 1 is a traffic sensor
 						Set<Integer> stationLanes = this.getStationLanes(num);
@@ -78,6 +78,7 @@ public class DataParser {
 						stationDto.setLatitude(metaData.getLatit());
 						stationDto.setLongitude(metaData.getLongit());
 						stationDto.setOrigin(DATA_ORIGIN);
+						stationDto.setStationType(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER);
 						trafficStations.add(stationDto);
 						for (Integer lane : stationLanes) { // create one station for each lane
 							int i;
@@ -88,6 +89,7 @@ public class DataParser {
 								laneDto.setLatitude(metaData.getLatit());
 								laneDto.setLongitude(metaData.getLongit());
 								laneDto.setOrigin(DATA_ORIGIN);
+								laneDto.setStationType(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER);
 								trafficStations.add(laneDto);
 							}
 						}
@@ -98,6 +100,7 @@ public class DataParser {
 						stationDto.setLatitude(metaData.getLatit());
 						stationDto.setLongitude(metaData.getLongit());
 						stationDto.setOrigin(DATA_ORIGIN);
+						stationDto.setStationType(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER);
 						environmentStations.add(stationDto);
 
 					}
@@ -109,7 +112,7 @@ public class DataParser {
 		return stations;
 	}
 	/**
-	 * 
+	 *
 	 * @return a list of simple types and complex types of all typologgies of
 	 *         stations divided in weather types, environment types and traffic
 	 *         types
@@ -199,9 +202,9 @@ public class DataParser {
 					if (rawdata.getClassifDataList() == null && type != null && rawdata.getCorsia() != null //as long as lane and direction is not null and categorisazion is null the data is about the specific lane
 							&& rawdata.getDir() != null) {
 						aggregateData(trafficData, idAsString, MEASUREMENT_CONTEXT.LANE, String.valueOf(simpleType), rawdata.getCorsia(), rawdata.getDir(), acqInterv, time, value);
-					} else if (rawdata.getClassifDataList() == null && type != null) {																//  if no lane is specified it means the data is of the station like air-temperature 
+					} else if (rawdata.getClassifDataList() == null && type != null) {																//  if no lane is specified it means the data is of the station like air-temperature
 						if (simpleType >= 38 && simpleType <= 42) {												//environment types
-							aggregateData(environmentData, idAsString, MEASUREMENT_CONTEXT.STATION,					
+							aggregateData(environmentData, idAsString, MEASUREMENT_CONTEXT.STATION,
 									String.valueOf(simpleType), rawdata.getCorsia(), rawdata.getDir(), acqInterv,
 									time, rawdata.getValore());
 						} else {																				// meteo types and potentially more :->
@@ -252,14 +255,14 @@ public class DataParser {
 						String stationIdAsString = String.valueOf(num);
 						long time = calendar.getTime().getTime();
 						int acqInterv = type.getAcqInterv();
-						if (rawdata.getClassifDataList() == null && type != null && rawdata.getCorsia() != null 
+						if (rawdata.getClassifDataList() == null && type != null && rawdata.getCorsia() != null
 								&& rawdata.getDir() != null) {													//as long as lane and direction is not null and categorisazion is null the data is about the specific lane
 							aggregateData(trafficData, stationIdAsString, MEASUREMENT_CONTEXT.LANE,
 									String.valueOf(simpleType), rawdata.getCorsia(), rawdata.getDir(), acqInterv, time,
 									rawdata.getValore());
-						} else if (rawdata.getClassifDataList() == null && type != null) {																//  if no lane is specified it means the data is of the station like air-temperature 
+						} else if (rawdata.getClassifDataList() == null && type != null) {																//  if no lane is specified it means the data is of the station like air-temperature
 							if (simpleType >= 38 && simpleType <= 42) {												//environment types
-								aggregateData(environmentData, stationIdAsString, MEASUREMENT_CONTEXT.STATION,					
+								aggregateData(environmentData, stationIdAsString, MEASUREMENT_CONTEXT.STATION,
 										String.valueOf(simpleType), rawdata.getCorsia(), rawdata.getDir(), acqInterv,
 										time, rawdata.getValore());
 							} else {																				// meteo types and potentially more :->
@@ -286,7 +289,27 @@ public class DataParser {
 				continue;
 			}
 		}
+		removeEmptyDataSets(map);
 		return map;
+	}
+	public static void removeEmptyDataSets(Map<String, DataMapDto<RecordDtoImpl>> map) {
+		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry: map.entrySet()) {
+				cutBranchesWithNoLeafs(entry.getValue());
+		}
+		map.entrySet().removeIf(entry->entry.getValue().getBranch().isEmpty());
+
+	}
+	/**
+	 * removes all empty datasets and all maps containing no data
+	 * @param stationMap
+	 *
+	 */
+	private static void cutBranchesWithNoLeafs(DataMapDto<RecordDtoImpl> stationMap) {
+		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> stationEntry: stationMap.getBranch().entrySet()) {
+			Map<String, DataMapDto<RecordDtoImpl>> typeMap = stationEntry.getValue().getBranch();
+			typeMap.entrySet().removeIf(entry -> entry.getValue().getData().isEmpty());
+		}
+		stationMap.getBranch().entrySet().removeIf(entry -> entry.getValue().getBranch().isEmpty());
 	}
 	private Set<Integer> getStationLanes(int num) {
 		Set<Integer> lanes = new HashSet<Integer>();
@@ -307,7 +330,7 @@ public class DataParser {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param data
 	 * @param stationId
 	 * @param mContext
@@ -365,20 +388,20 @@ public class DataParser {
 		}
 	}
 	/**
-	 * 
+	 *
 	 * @param typeDefinition
-	 * @param firstLevelMap
+	 * @param typeLevelMap
 	 * @return the list associated with given type and stationmap or new instance if not existing. It binds this list correctly than
 	 */
 	private List<RecordDtoImpl> retrieveOrCreateDataList(String typeDefinition,
-			DataMapDto<RecordDtoImpl> firstLevelMap) {
-		DataMapDto<RecordDtoImpl> typeMapDto = firstLevelMap.getBranch().get(typeDefinition);
-		List<RecordDtoImpl> list = typeMapDto != null ? typeMapDto.getData() : null;
+			DataMapDto<RecordDtoImpl> typeLevelMap) {
+		DataMapDto<RecordDtoImpl> currentRecordMapDto = typeLevelMap.getBranch().get(typeDefinition);
+		List<RecordDtoImpl> list = currentRecordMapDto != null ? currentRecordMapDto.getData() : null;
 		if (list == null) {
 			list = new ArrayList<RecordDtoImpl>();
 			DataMapDto<RecordDtoImpl> recordMapDto = new DataMapDto<>();
 			recordMapDto.setData(list);
-			firstLevelMap.getBranch().put(typeDefinition, recordMapDto);
+			typeLevelMap.getBranch().put(typeDefinition, recordMapDto);
 		}
 		return list;
 	}
@@ -412,7 +435,7 @@ public class DataParser {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param direction
 	 * @param value
 	 * @return true if the number is measured of a vehicle driving in the right

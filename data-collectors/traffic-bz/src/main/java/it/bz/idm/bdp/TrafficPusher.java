@@ -12,7 +12,7 @@ public class TrafficPusher extends JSONPusher {
 
 	public static final String TRAFFIC_SENSOR_IDENTIFIER = "TrafficSensor";
 
-	public static final String ENVIRONMENTSTATION_IDENTIFIER = "Environmentstation";
+	public static final String ENVIRONMENTSTATION_IDENTIFIER = "EnvironmentStation";
 
 	public static final String METEOSTATION_IDENTIFIER = "Meteostation";
 

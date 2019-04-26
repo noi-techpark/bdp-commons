@@ -60,7 +60,7 @@ public class JobScheduler {
 			for (String sensorIndex : rootMap.upsertBranch(stationIndex).getBranch().keySet()) {
 				Date lastRecord = (Date) pusher.getDateOfLastRecord(stationIndex, sensorIndex, 600);
 				lastDatabaseEntryDate = lastRecord;
-				if (!lastRecord.toString().contains("1970"))
+				if (lastRecord.after(from))
 				{
 					from = lastRecord;
 				}
@@ -84,26 +84,21 @@ public class JobScheduler {
 		if ((today.getTime() - from.getTime()) > 3600000) {
 			LOG.info("There seems to be missing data from {}, recollecting", from);
 
-			c.add(Calendar.DATE, 31);
+			c.add(Calendar.DATE, 30);
 			Date to = c.getTime().compareTo(today) >= 0 ? today : c.getTime();
 
 			while (from.compareTo(today) < 0) {
 				LOG.debug("Collecting from {} to {}", from, to);
 
-				if (dateComparison(from, to, today))
-				{
-					c.setTime(to);
-					c.add(Calendar.DATE, 1);
-					to = c.getTime();
-					rootMap = pusher.mapDataWithDates(rootMap, from, to);
-				}else{
-					rootMap = pusher.mapDataWithDates(rootMap, from, to);
-				}
+				c.setTime(to);
+				c.add(Calendar.DATE, 1);
+				to = c.getTime();
+				rootMap = pusher.mapDataWithDates(rootMap, from, to);
 
 				pusher.pushData(rb.getString("odh.station.type"), rootMap);
 				rootMap = constructRootMap();
 				from = to;
-				c.add(Calendar.DATE, 30);
+				c.add(Calendar.DATE, 29);
 				to = c.getTime();
 			}
 

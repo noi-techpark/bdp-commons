@@ -10,11 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import it.bz.idm.bdp.dcemobilityh2.dto.ChargingPointsDtoV2;
 import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
-import it.bz.idm.bdp.dto.emobility.ChargingPointsDtoV2;
-import it.bz.idm.bdp.dto.emobility.EchargingPlugDto;
-import it.bz.idm.bdp.dto.emobility.EchargingStationDto;
-import it.bz.idm.bdp.dto.emobility.OutletDtoV2;
+import it.bz.idm.bdp.dcemobilityh2.dto.OutletDtoV2;
+import it.bz.idm.bdp.dto.StationDto;
 
 @Service
 public class HydrogenDataConverter {
@@ -80,8 +79,8 @@ public class HydrogenDataConverter {
             }
             List<HydrogenDto> fetchedData = new ArrayList<HydrogenDto>();
             for (Map<String, String> map : dataMap) {
-                EchargingStationDto stationDto = convertMapToStationDto(map);
-                EchargingPlugDto plugDto = convertMapToPlugDto(map);
+                StationDto stationDto = convertMapToStationDto(map);
+                StationDto plugDto = convertMapToPlugDto(map);
                 ChargingPointsDtoV2 pointDto = getPointDto(stationDto, plugDto);
                 if ( stationDto!=null && plugDto!=null ) {
                     HydrogenDto dto = new HydrogenDto(stationDto, plugDto, pointDto);
@@ -96,10 +95,10 @@ public class HydrogenDataConverter {
         }
     }
 
-    public EchargingStationDto convertMapToStationDto(Map<String, String> map) {
-        EchargingStationDto station = null;
+    public StationDto convertMapToStationDto(Map<String, String> map) {
+        StationDto station = null;
         if ( map!=null && map.containsKey("idx") ) {
-            station = new EchargingStationDto();
+            station = new StationDto();
 
             //From StationDTO
             station.setId(map.get("idx"));
@@ -107,55 +106,54 @@ public class HydrogenDataConverter {
             station.setLongitude(DCUtils.convertStringToDouble(map.get("longitude")));
             station.setLatitude(DCUtils.convertStringToDouble(map.get("latitude")));
             //OMITTED: protected String crs;
-            station.setOrigin(DCUtils.trunc(map.get("operatorname") /*env.getProperty(ORIGIN_KEY)*/, 255));
-            station.setMunicipality(DCUtils.trunc(map.get("city"), 255));
+            station.setOrigin(DCUtils.trunc(env.getProperty(ORIGIN_KEY), 255));
+            station.getMetaData().put("municipality", DCUtils.trunc(map.get("city"), 255));
             station.setStationType(env.getProperty(STATION_TYPE_KEY));
-
-            //From EchargingStationDto
-            station.setCapacity(1);
-            station.setProvider(DCUtils.trunc(map.get("hostname"), 255));
-            station.setCity(DCUtils.trunc(map.get("city"), 255));
+            //OMITTED: s.setCapacity(dto.getChargingPoints().size());
+            station.getMetaData().put("provider",DCUtils.trunc(map.get("hostname"), 255));
+            station.getMetaData().put("city",DCUtils.trunc(map.get("city"), 255));
             //The value of "combinedstatus" must be remapped to the corresponding value of the attribute "state"
-            station.setState(mapAttribute("app.station.WS.combinedstatus", map.get("combinedstatus"))); 
-            station.setPaymentInfo(DCUtils.trunc(env.getProperty(STATION_PAYMENT_INFO_KEY), 255));
-            station.setAccessInfo(DCUtils.trunc(map.get("comments"), 255));
-            station.setAccessType(env.getProperty(STATION_ACCESS_TYPE_KEY));
+            station.getMetaData().put("state",mapAttribute("app.station.WS.combinedstatus", map.get("combinedstatus")));
+            station.getMetaData().put("paymentInfo",DCUtils.trunc(env.getProperty(STATION_PAYMENT_INFO_KEY), 255));
+            station.getMetaData().put("accessInfo",DCUtils.trunc(map.get("comments"), 255));
+            station.getMetaData().put("accessType",env.getProperty(STATION_ACCESS_TYPE_KEY));
             //OMITTED: private String[] categories;
             //OMITTED: private String flashInfo;
             //OMITTED: private String locationServiceInfo;
-            station.setAddress(DCUtils.trunc(map.get("street") + " " + map.get("streetnr") + " - " + map.get("zip") + " " + map.get("city") + " - " + map.get("countryshortname"), 255));
-            station.setReservable(DCUtils.convertStringToBoolean(env.getProperty(STATION_RESERVABLE_KEY)));
+            station.getMetaData().put("address",DCUtils.trunc(map.get("street") + " " + map.get("streetnr") + " - " + map.get("zip") + " " + map.get("city") + " - " + map.get("countryshortname"), 255));
+            station.getMetaData().put("reservable",DCUtils.convertStringToBoolean(env.getProperty(STATION_RESERVABLE_KEY)));
         }
 
         return station;
     }
 
-    public EchargingPlugDto convertMapToPlugDto(Map<String, String> map) {
-        EchargingPlugDto plug = null;
+    public StationDto convertMapToPlugDto(Map<String, String> map) {
+        StationDto plug = null;
         if ( map.containsKey("idx") ) {
             //For each station we create a Plug with id = station.id-1
-            plug = new EchargingPlugDto();
+            plug = new StationDto();
             plug.setId(map.get("idx") + "-" + env.getProperty(PLUG_ID_KEY));
             plug.setLongitude(DCUtils.convertStringToDouble(map.get("longitude")));
             plug.setLatitude(DCUtils.convertStringToDouble(map.get("latitude")));
             plug.setName(DCUtils.trunc(map.get("name")+" - " + env.getProperty(PLUG_NAME_KEY), 255));
             plug.setParentStation(map.get("idx"));
-            plug.setOrigin(DCUtils.trunc(map.get("operatorname") /*env.getProperty(ORIGIN_KEY)*/, 255));
+            plug.setOrigin(DCUtils.trunc(env.getProperty(ORIGIN_KEY) /*env.getProperty(ORIGIN_KEY)*/, 255));
             plug.setStationType(env.getProperty(PLUG_TYPE_KEY));
 
             //For each Plug we create an Outlet
             OutletDtoV2 outlet = new OutletDtoV2();
-            outlet.setId(plug.getId());
+            outlet.setId("1");
             outlet.setOutletTypeCode(env.getProperty(OUTLET_TYPE_KEY));
             List<OutletDtoV2> outlets = new ArrayList<OutletDtoV2>();
             outlets.add(outlet);
-            plug.setOutlets(outlets);
+            plug.getMetaData().put("outlets",outlets);
         }
 
         return plug;
     }
 
-    public ChargingPointsDtoV2 getPointDto(EchargingStationDto station, EchargingPlugDto plug) {
+    @SuppressWarnings("unchecked")
+	public ChargingPointsDtoV2 getPointDto(StationDto station, StationDto plug) {
         ChargingPointsDtoV2 point = null;
         if ( station!=null && plug!=null ) {
             //For each station we create a Point with id = station.id-1
@@ -163,8 +161,8 @@ public class HydrogenDataConverter {
             String id = plug.getId();
             point = new ChargingPointsDtoV2();
             point.setId(id);
-            point.setState(station.getState());
-            point.setOutlets(plug.getOutlets());
+            point.setState(station.getMetaData().get("state").toString());
+            point.setOutlets((List<OutletDtoV2>) plug.getMetaData().get("outlets"));
             //OMITTED: point.setRechargeState(rechargeState);
         }
 

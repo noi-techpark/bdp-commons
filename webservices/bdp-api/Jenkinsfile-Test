@@ -9,7 +9,7 @@ pipeline {
     environment {
         TESTSERVER_TOMCAT_ENDPOINT = credentials('testserver-tomcat8-url')
         TESTSERVER_TOMCAT_CREDENTIALS = credentials('testserver-tomcat8-credentials')
-        PROJECT_FOLDER = "webservices/bdp-api"        
+        PROJECT_FOLDER = "webservices/bdp-api"
     }
 
     stages {
@@ -21,7 +21,13 @@ pipeline {
                 sh 'echo "    </servers>" >> ~/.m2/settings.xml'
                 sh 'echo "</settings>" >> ~/.m2/settings.xml'
 
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.rootLogger\\s*=\\).*\\$%\\1DEBUG,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+
+        stage('Clean') {
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -U -B clean'
             }
         }
 
@@ -52,7 +58,7 @@ pipeline {
         stage('Configure - bluetooth') {
             environment {
                 ARTIFACT_NAME = "bluetooth"
-                STATION_TYPE = "Bluetoothstation"
+                STATION_TYPE = "BluetoothStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
@@ -76,8 +82,8 @@ pipeline {
         stage('Configure - carsharing') {
             environment {
                 ARTIFACT_NAME = "carsharing"
-                STATION_TYPE = "Carsharingstation"
-                CHILD_STATION_TYPE = "Carsharingcar"
+                STATION_TYPE = "CarsharingStation"
+                CHILD_STATION_TYPE = "CarsharingCar"
                 CHILDREN_PATH = "cars"
             }
             steps {
@@ -124,7 +130,7 @@ pipeline {
         stage('Configure - environment') {
             environment {
                 ARTIFACT_NAME = "environment"
-                STATION_TYPE = "Environmentstation"
+                STATION_TYPE = "EnvironmentStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
@@ -148,7 +154,7 @@ pipeline {
         stage('Configure - origin-destination') {
             environment {
                 ARTIFACT_NAME = "origin-destination"
-                STATION_TYPE = "Linkstation"
+                STATION_TYPE = "LinkStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
@@ -172,7 +178,7 @@ pipeline {
         stage('Configure - meteorology') {
             environment {
                 ARTIFACT_NAME = "meteorology"
-                STATION_TYPE = "Meteostation"
+                STATION_TYPE = "MeteoStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
@@ -244,7 +250,7 @@ pipeline {
         stage('Configure - street') {
             environment {
                 ARTIFACT_NAME = "street"
-                STATION_TYPE = "Streetstation"
+                STATION_TYPE = "StreetStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }

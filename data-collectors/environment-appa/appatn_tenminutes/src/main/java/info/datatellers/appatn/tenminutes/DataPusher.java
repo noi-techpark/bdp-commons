@@ -242,7 +242,7 @@ public class DataPusher extends JSONPusher {
 
 			station.setStationType(rb.getString("odh.station.type"));
 			station.setOrigin(rb.getString("odh.station.origin"));
-			station.setCrs(rb.getString("odh.station.projection"));
+			station.setCoordinateReferenceSystem((rb.getString("odh.station.projection")));
 
 			return station;
 		} catch (NumberFormatException e) {

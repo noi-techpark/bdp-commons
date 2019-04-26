@@ -2,6 +2,9 @@ package it.bz.idm.bdp.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -9,12 +12,17 @@ import it.bz.idm.bdp.dto.OddsRecordDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.util.EncryptUtil;
 
 @Component
+@PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class OddsPusher extends JSONPusher {
 
+	@Autowired
+	private Environment env;
 
-	private static final String ODDS_TYPE = "vehicle detection";
+	@Autowired
+	private EncryptUtil cryptUtil;
 
 	@Override
 	public String initIntegreenTypology() {
@@ -27,19 +35,16 @@ public class OddsPusher extends JSONPusher {
 		@SuppressWarnings("unchecked")
 		List<OddsRecordDto> dtos = (List<OddsRecordDto>) data;
 		for (OddsRecordDto dto : dtos){
-			DataMapDto<RecordDtoImpl> stationMap = dataMap.getBranch().get(dto.getStationcode());
-			if (stationMap == null){
-				stationMap = new DataMapDto<>();
-				dataMap.getBranch().put(dto.getStationcode(), stationMap);
-			}
-			DataMapDto<RecordDtoImpl> typeMap = stationMap.getBranch().get(ODDS_TYPE);
-			if (typeMap == null){
-				typeMap = new DataMapDto<>();
-				stationMap.getBranch().put(ODDS_TYPE, typeMap);
-			}
+			DataMapDto<RecordDtoImpl> stationMap = dataMap.upsertBranch(dto.getStationcode());
+			DataMapDto<RecordDtoImpl> typeMap = stationMap.upsertBranch(env.getRequiredProperty("datatype"));
+
 			SimpleRecordDto textDto = new SimpleRecordDto();
-			textDto.setValue(dto.getMac());
+			String stringValue = dto.getMac();
+			if (cryptUtil.isValid())
+				stringValue = cryptUtil.encrypt(stringValue);
+			textDto.setValue(stringValue);
 			textDto.setTimestamp(dto.getGathered_on().getTime());
+			textDto.setPeriod(1);
 			typeMap.getData().add(textDto);
 		}
 		return dataMap;

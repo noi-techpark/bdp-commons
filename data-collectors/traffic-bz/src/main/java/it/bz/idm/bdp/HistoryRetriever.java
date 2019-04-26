@@ -1,7 +1,5 @@
 package it.bz.idm.bdp;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -48,10 +46,12 @@ public class HistoryRetriever {
 
 	/*retrieve all history data from a given point in time and push it to the bdp */
 	public void getHistory(LocalDateTime newestDateMidnight){
-		if (newestDateMidnight == null) {
-			DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			newestDateMidnight = LocalDateTime.parse(environment.getProperty("history.startDate"),format);
-		}
+
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String startDate = environment.getProperty("history.startDate");
+		LocalDateTime manualDate = LocalDate.parse(startDate,format).atStartOfDay();
+		if (manualDate.isAfter(newestDateMidnight))
+			newestDateMidnight= manualDate;
 		try {
 			XMLGregorianCalendar from = null,to = null;
 			GregorianCalendar cal = new GregorianCalendar();
@@ -65,7 +65,9 @@ public class HistoryRetriever {
 				Long now = new Date().getTime();
 				Map<String, DataMapDto<RecordDtoImpl>> retrieveHistoricData = parser.retrieveHistoricData(from,to);
 				logger.debug("3rd party took" + (new Date().getTime()-now)/1000 +" s");
-				bdpClient.pushData(retrieveHistoricData.get(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER));
+
+				DataMapDto<RecordDtoImpl> dataMapDto = retrieveHistoricData.get(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER);
+				bdpClient.pushData(dataMapDto);
 				logger.debug("traffic data sent");
 				bdpClient.pushData(TrafficPusher.METEOSTATION_IDENTIFIER,retrieveHistoricData.get(TrafficPusher.METEOSTATION_IDENTIFIER));
 				logger.debug("meteo data sent");

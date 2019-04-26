@@ -20,7 +20,7 @@ pipeline {
     stages {
         stage('Configure') {
             steps {
-                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.rootLogger\\s*=\\).*\\$%\\1INFO,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
 
@@ -37,7 +37,8 @@ pipeline {
             }
             steps {
                 sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify package'
             }
         }
@@ -47,7 +48,8 @@ pipeline {
                 VENDOR = "alperia"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war ${ARTIFACT_NAME}-${VENDOR}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
         }
 
@@ -58,7 +60,8 @@ pipeline {
             }
             steps {
                 sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify package'
             }
         }
@@ -68,7 +71,8 @@ pipeline {
                 VENDOR = "driwe"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war ${ARTIFACT_NAME}-${VENDOR}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
         }
 
@@ -79,7 +83,8 @@ pipeline {
             }
             steps {
                 sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify package'
             }
         }
@@ -89,7 +94,8 @@ pipeline {
                 VENDOR = "route220"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war ${ARTIFACT_NAME}-${VENDOR}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
         }
 
@@ -100,7 +106,8 @@ pipeline {
             }
             steps {
                 sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean verify package'
             }
         }
@@ -110,7 +117,8 @@ pipeline {
                 VENDOR = "nevicam"
             }
             steps {
-                archiveArtifacts artifacts: "${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war ${ARTIFACT_NAME}-${VENDOR}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
         }
     }

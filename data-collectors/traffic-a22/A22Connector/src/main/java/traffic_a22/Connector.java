@@ -1,9 +1,18 @@
 package traffic_a22;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import org.json.simple.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  * A22 traffic API connector.
@@ -118,7 +127,7 @@ public class Connector {
         os.close();
         conn.disconnect();
 
-        // parse response 
+        // parse response
         Boolean result = null;
         try {
             JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
@@ -178,7 +187,7 @@ public class Connector {
         os.close();
         conn.disconnect();
 
-        // parse response 
+        // parse response
         ArrayList<HashMap<String, String>> output = new ArrayList<>();
         try {
             JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
@@ -192,7 +201,7 @@ public class Connector {
                     JSONObject sensor = (JSONObject) sensor_list.get(j);
                     HashMap<String, String> h = new HashMap<>();
                     h.put("stationcode", "A22:" + coil.get("idspira") + ":" + sensor.get("idsensore"));
-                    h.put("name", coil.get("descrizione") + " (" + getLaneText((Long) sensor.get("idcorsia") + "", (Long) sensor.get("iddirezione") + "") + ")");
+                    h.put("name", coil.get("descrizione") + " (" + getLaneText(sensor.get("idcorsia") + "", sensor.get("iddirezione") + "") + ")");
                     h.put("pointprojection", "" + coil.get("latitudine") + "," + coil.get("longitudine"));
                     output.add(h);
 
@@ -288,7 +297,7 @@ public class Connector {
             os.close();
             conn.disconnect();
 
-            // parse response 
+            // parse response
             try {
                 JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
                 JSONArray event_list = (JSONArray) response_json.get("Traffico_GetTransitiResult");
@@ -297,7 +306,7 @@ public class Connector {
                     System.out.println("    +- got " + event_list.size() + " events");
                 }
 
-                int i, j;
+                int i;
                 for (i = 0; i < event_list.size(); i++) {
                     JSONObject event = (JSONObject) event_list.get(i);
                     HashMap<String, String> h = new HashMap<>();
@@ -311,7 +320,7 @@ public class Connector {
                     h.put("direction", "" + event.get("direzione"));
                     // substring -> see the comment "Reverse engineering the A22 timestamp format" at the end of the file)
                     h.put("timestamp", ("" + event.get("data")).substring(6, 16));
-                    h.put("against-traffic", "" + (Boolean) event.get("controsenso"));
+                    h.put("against-traffic", "" + event.get("controsenso"));
                     output.add(h);
                 }
             } catch (Exception e) {
@@ -325,7 +334,7 @@ public class Connector {
             } catch (InterruptedException ex) {
             }
 
-        } // for coilid 
+        } // for coilid
 
         if (DEBUG) {
             System.out.println("getVehicles summary - coils: " + coils.keySet().size() + ", sensors: " + sensors.size() + ", transit events: " + output.size());
@@ -395,7 +404,7 @@ public class Connector {
     }
 
     /*
-    
+
     Reverse engineering the A22 timestamp format
     --------------------------------------------
 
@@ -416,7 +425,7 @@ public class Connector {
     /Date(1540688648000+0100)/
     /Date(1540688656000+0100)/
     [...]
-    
+
     /Date(1540688390000+0200)/
 
         $ date --date='@1540688390'
@@ -432,8 +441,8 @@ public class Connector {
 
         01:02 UTC would be 02:02 CET ~ 02 CET
 
-    That means the first part of this string *is* the correct timestamp 
-    in unix epoch / UTC. 
+    That means the first part of this string *is* the correct timestamp
+    in unix epoch / UTC.
 
      */
 }

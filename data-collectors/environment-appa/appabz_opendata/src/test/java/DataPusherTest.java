@@ -1,14 +1,19 @@
-import info.datatellers.appabz.*;
-import it.bz.idm.bdp.dto.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import info.datatellers.appabz.DataFetcher;
+import info.datatellers.appabz.DataPusher;
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
 
 public class DataPusherTest {
 
@@ -27,8 +32,8 @@ public class DataPusherTest {
                 Assert.assertNotNull(station.getId());
                 Assert.assertNotNull(station.getName());
                 Assert.assertNotNull(station.getOrigin());
-                Assert.assertNotNull(station.getCrs());
-                Assert.assertNotNull(station.getMunicipality());
+                Assert.assertNotNull(station.getCoordinateReferenceSystem());
+                Assert.assertNotNull(station.getMetaData().get("municipality"));
                 Assert.assertNotNull(station.getStationType());
                 Assert.assertNotNull(station.getLatitude());
                 Assert.assertNotNull(station.getLongitude());
@@ -94,7 +99,6 @@ public class DataPusherTest {
         for (int looper = 0; looper < rootMap.getBranch().keySet().size(); looper++)
         {
             Assert.assertNotNull(stationIDs.get(looper));
-            Assert.assertTrue(stationIDs.get(looper).contains("APPABZ_"));
 
             for (int index = 0; index < rootMap.getBranch().get(stationIDs.get(looper)).getBranch().keySet().size(); index++) {
                 String polluter = pollutersIDs.get(index);
@@ -115,7 +119,6 @@ public class DataPusherTest {
         }
     }
 
-    @SuppressWarnings("Duplicates")
     private static DataMapDto<RecordDtoImpl> constructRootMap() {
         LOG.info("Starting to construct rootMap.");
         DataPusher pusher = new DataPusher();

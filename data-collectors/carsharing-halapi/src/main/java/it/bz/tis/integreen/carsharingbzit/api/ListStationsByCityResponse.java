@@ -19,6 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package it.bz.tis.integreen.carsharingbzit.api;
 
+import it.bz.idm.bdp.dto.StationDto;
+
 /**
  * 
  * @author Davide Montesin <d@vide.bz>
@@ -28,14 +30,14 @@ public class ListStationsByCityResponse
    public static class CityAndStations
    {
       City      city = new City();
-      it.bz.idm.bdp.dto.carsharing.CarsharingStationDto[] station;
+      StationDto[] station;
 
       public City getCity()
       {
          return this.city;
       }
 
-      public it.bz.idm.bdp.dto.carsharing.CarsharingStationDto[] getStation()
+      public StationDto[] getStation()
       {
          return this.station;
       }

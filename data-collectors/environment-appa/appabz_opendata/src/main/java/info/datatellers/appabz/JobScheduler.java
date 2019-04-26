@@ -1,12 +1,13 @@
 package info.datatellers.appabz;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
+
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Nicolò Molinari, Datatellers.
@@ -23,12 +24,11 @@ public class JobScheduler {
     public void pushData()
     {
         LOG.info("Data Collector execution started.");
-        DataMapDto rootMap = constructRootMap();
+        DataMapDto<RecordDtoImpl> rootMap = constructRootMap();
         new DataPusher().mapData(rootMap, false);
         LOG.info("Data Collector execution terminated.");
     }
 
-    @SuppressWarnings("Duplicates")
     private static DataMapDto<RecordDtoImpl> constructRootMap()
     {
         LOG.info("Starting to construct rootMap.");

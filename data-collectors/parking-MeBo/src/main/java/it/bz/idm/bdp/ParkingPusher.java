@@ -3,11 +3,13 @@ package it.bz.idm.bdp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationList;
@@ -18,7 +20,21 @@ import it.bz.idm.bdp.json.JSONPusher;
 @Component
 public class ParkingPusher extends JSONPusher{
 
-	private static final int[] PREDICTION_FORECAST_TIMES_IN_MINUTES = {30,60,90,120,150,180,210,240};
+	private static final String STATION_TYPE = "ParkingStation";
+
+	private static final String PARKINGSLOT_TYPEIDENTIFIER = "occupied";
+
+	private static final String PARKINGSLOT_METRIC = "Count";
+
+	private static final String TYPE_UNIT = "";
+
+	private static final String FORECAST_METRIC = "Forecast";
+
+	private static final String TYPEDESCRIPTION_SUFFIX = " minutes forecast";
+
+	public static final String FORECAST_PREFIX = "parking-forecast-";
+
+	public static final int[] PREDICTION_FORECAST_TIMES_IN_MINUTES = {30,60,90,120,150,180,210,240};
 
 	@Autowired
 	private ParkingClient parkingClient;
@@ -53,27 +69,30 @@ public class ParkingPusher extends JSONPusher{
 			DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
 			for (String stationIdentifier:identifers){
 				ParkingForecasts predictions = predictionRetriever.predict(stationIdentifier);
-				List<RecordDtoImpl> records = new ArrayList<>();
-				if (predictions != null){
-					for (Integer period : ParkingPusher.PREDICTION_FORECAST_TIMES_IN_MINUTES){
-						ParkingForecast prediction = predictions.findByTime(period);
-
-						Date date = new Date(prediction.getStartDate().getTime());
-						Double value = new Double(prediction.getPrediction().getPredictedFreeSlots().doubleValue());
-						SimpleRecordDto dto = new SimpleRecordDto(date.getTime(), value);
-						dto.setPeriod(period*60);
-						records.add(dto);
-					}
-				}
-				DataMapDto<RecordDtoImpl> typeMap = new DataMapDto<>();
-				DataMapDto<RecordDtoImpl> recordMap = new DataMapDto<>();
-				recordMap.setData(records);
-				typeMap.getBranch().put("parking-forecast", recordMap);
+				DataMapDto<RecordDtoImpl> typeMap = generateTypeMap(predictions);
 				dataMap.getBranch().put(stationIdentifier, typeMap);
 			}
 			pushData(dataMap);
 		}
+	}
 
+	public DataMapDto<RecordDtoImpl> generateTypeMap(ParkingForecasts predictions) {
+		DataMapDto<RecordDtoImpl> typeMap = new DataMapDto<>();
+		if (predictions != null){
+			for (Integer period : ParkingPusher.PREDICTION_FORECAST_TIMES_IN_MINUTES){
+				List<RecordDtoImpl> records = new ArrayList<>();
+				ParkingForecast prediction = predictions.findByTime(period);
+				Date date = new Date(prediction.getStartDate().getTime());
+				Double value = new Double(prediction.getPrediction().getPredictedFreeSlots().doubleValue());
+				SimpleRecordDto dto = new SimpleRecordDto(date.getTime(), value);
+				dto.setPeriod(period*60);
+				records.add(dto);
+				DataMapDto<RecordDtoImpl> recordMap = new DataMapDto<>();
+				recordMap.setData(records);
+				typeMap.getBranch().put(FORECAST_PREFIX+period, recordMap);
+			}
+		}
+		return typeMap;
 	}
 
 	public void pushData() {
@@ -82,6 +101,13 @@ public class ParkingPusher extends JSONPusher{
 		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<RecordDtoImpl>();
 		parkingClient.insertDataInto(dataMap);
 		parkingMeranoClient.insertDataInto(dataMap);
+		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry : dataMap.getBranch().entrySet()) {
+			System.out.println("Station: "+entry.getKey());
+			for (Map.Entry<String, DataMapDto<RecordDtoImpl>> typeEntry : entry.getValue().getBranch().entrySet()) {
+				System.out.println("\tDatatype: "+typeEntry.getKey()+" records:"+typeEntry.getValue().getData().size());
+			}
+		}
+		System.out.println();
 		pushData(dataMap);
 	}
 
@@ -90,14 +116,21 @@ public class ParkingPusher extends JSONPusher{
 
 	@Override
 	public String initIntegreenTypology() {
-		return "ParkingStation";
+		return STATION_TYPE;
 	}
 
 
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+
+	public static List<DataTypeDto> getDataTypeList() {
+		List<DataTypeDto> dataTypes = new ArrayList<>();
+		dataTypes.add(new DataTypeDto(PARKINGSLOT_TYPEIDENTIFIER,TYPE_UNIT,"Occupacy of a parking area",PARKINGSLOT_METRIC));
+		for (int minutesForecast:PREDICTION_FORECAST_TIMES_IN_MINUTES)
+			dataTypes.add(new DataTypeDto(FORECAST_PREFIX+ minutesForecast,TYPE_UNIT,minutesForecast+TYPEDESCRIPTION_SUFFIX,FORECAST_METRIC));
+		return dataTypes;
+	}
 }
