@@ -34,6 +34,11 @@ pipeline {
                         sh 'cd data-collectors/emobility-hydrogen && mvn -B -U clean compile test'
                     }
                 }
+                stage('environment-a22-algorab'){
+                    steps{
+                        sh 'cd data-collectors/environment-a22 && mvn -B -U clean compile test'
+                    }
+                }
                 stage('environment-appa-tenminutes') {
                     steps {
                         sh 'cd data-collectors/environment-appa/appatn_tenminutes && mvn -B -U clean compile'
