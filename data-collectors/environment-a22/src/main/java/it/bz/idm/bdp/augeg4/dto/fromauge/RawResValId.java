@@ -1,6 +1,5 @@
 package it.bz.idm.bdp.augeg4.dto.fromauge;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public enum RawResValId {

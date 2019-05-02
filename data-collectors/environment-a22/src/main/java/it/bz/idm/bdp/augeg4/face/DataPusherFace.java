@@ -20,4 +20,8 @@ public interface DataPusherFace {
     <T> DataMapDto<RecordDtoImpl> mapData(T data);
 
     StationList getSyncedStations();
+
+    String getStationType();
+
+    String getOrigin();
 }

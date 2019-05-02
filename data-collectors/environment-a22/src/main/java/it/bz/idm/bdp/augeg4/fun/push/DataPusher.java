@@ -3,10 +3,7 @@ package it.bz.idm.bdp.augeg4.fun.push;
 import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ToHubDataDto;
 import it.bz.idm.bdp.augeg4.face.DataPusherFace;
 import it.bz.idm.bdp.augeg4.face.DataPusherMapperFace;
-import it.bz.idm.bdp.dto.DataMapDto;
-import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.StationList;
+import it.bz.idm.bdp.dto.*;
 import it.bz.idm.bdp.json.JSONPusher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +15,10 @@ import java.util.List;
 @Service
 public class DataPusher extends JSONPusher implements DataPusherFace {
 
+    private static final String STATION_TYPE = "EnvironmentStation";
+
+    private static final String STATION_ORIGIN = "A22_algorab";
+
     private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
 
     private final DataPusherMapperFace mapper;
@@ -26,6 +27,12 @@ public class DataPusher extends JSONPusher implements DataPusherFace {
 
     public DataPusher(@Value("${station.period}") int period) {
         mapper = new DataPusherMapper(period);
+    }
+
+    @Override
+    public Object syncDataTypes(List<DataTypeDto> dataTypeDtoList) {
+        List<DataTypeDto> mappedDataTypeDtoList = mapper.mapDataTypes(dataTypeDtoList);
+        return super.syncDataTypes(mappedDataTypeDtoList);
     }
 
     @Override
@@ -39,9 +46,17 @@ public class DataPusher extends JSONPusher implements DataPusherFace {
      */
     @Override
     public String initIntegreenTypology() {
-        // This method is called by the DataPusher constructor, so we don't have access to the Environment of Spring.
-        // TODO: Decide if keep the station type in the code or if we want to use environment variables
-        return "Teststation";
+        return getStationType();
+    }
+
+    @Override
+    public String getStationType() {
+        return STATION_TYPE;
+    }
+
+    @Override
+    public String getOrigin() {
+        return STATION_ORIGIN;
     }
 
     @Override
@@ -49,7 +64,7 @@ public class DataPusher extends JSONPusher implements DataPusherFace {
         try {
             @SuppressWarnings("unchecked")
             List<AugeG4ToHubDataDto> measurementsByStation = ((List<AugeG4ToHubDataDto>) data);
-            return rootMap = mapper.map(measurementsByStation);
+            return rootMap = mapper.mapData(measurementsByStation);
         } catch (ClassCastException ex) {
             throw new IllegalArgumentException("data must be of type List<AugeG4ToHubDataDto>", ex);
         }
@@ -57,7 +72,7 @@ public class DataPusher extends JSONPusher implements DataPusherFace {
 
     @Override
     public StationList getSyncedStations() {
-        List<StationDto> stations = fetchStations("Teststations", "?");
+        List<StationDto> stations = fetchStations(getStationType(), getOrigin());
         return new StationList(stations);
     }
 }

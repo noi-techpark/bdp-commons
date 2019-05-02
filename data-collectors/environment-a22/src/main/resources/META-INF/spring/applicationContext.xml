@@ -50,9 +50,8 @@
 		<task:scheduled ref="jobScheduler" method="pushDataTypes" cron="0 0 1 * * *"  /> <!- Every day at 1pm ->
 		<task:scheduled ref="jobScheduler" method="pushStations" cron="0 0 1 * * *"  />  <!- Every day at 1pm ->
 		-->
-		<task:scheduled ref="jobScheduler" method="mockDataRetrievedFromAlgorab" cron="* */30 * * * *" />
+		<task:scheduled ref="jobScheduler" method="mockDataRetrievedFromAlgorab" cron="0 0/30 * * * *" />
 		<task:scheduled ref="jobScheduler" method="pushData" cron="0 0 * * * *" />
-		<task:scheduled ref="jobScheduler" method="pushDataTypes" cron="0 0 1 * * *"  />
 		<task:scheduled ref="jobScheduler" method="pushStations" cron="0 0 1 * * *"  />
 	</task:scheduled-tasks>
 

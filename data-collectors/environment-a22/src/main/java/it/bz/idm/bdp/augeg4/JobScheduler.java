@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Cronjob configuration can be found under src/main/resources/META-INF/spring/applicationContext.xml
  * XXX Do not forget to configure it!
@@ -43,6 +45,27 @@ public class JobScheduler {
     }
 
     /**
+     * Called when the data collector has been deployed
+     */
+    @PostConstruct
+    public void onDeploy () throws Exception {
+        LOG.info("onDeploy() called");
+        loadPreviouslySyncedStations();
+        pushDataTypes();
+    }
+
+
+    void loadPreviouslySyncedStations () throws Exception {
+        LOG.info("loadPreviouslySyncedStations() called");
+        dataService.loadPreviouslySyncedStations();
+    }
+
+    void pushDataTypes() throws Exception {
+        LOG.info("pushDataTypes() called.");
+        dataService.syncDataTypesWithHub();
+    }
+
+    /**
      * JOB 1
      */
     public void pushStations() throws Exception {
@@ -53,21 +76,13 @@ public class JobScheduler {
     /**
      * JOB 2
      */
-    public void pushDataTypes() throws Exception {
-        LOG.info("pushDataTypes() called.");
-        dataService.syncDataTypesWithHub();
-    }
-
-    /**
-     * JOB 3
-     */
     public void pushData() throws Exception {
         LOG.info("pushData() called.");
         dataService.pushData();
     }
 
     /**
-     * JOB 4
+     * JOB 3
      */
     public void mockDataRetrievedFromAlgorab() {
         LOG.info("mockDataRetrievedFromAlgorab() called.");

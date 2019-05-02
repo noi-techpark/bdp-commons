@@ -24,18 +24,23 @@ public class DataPusherTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void test_sync_stations() {
         // given
-        StationList list = new StationList();
-        StationDto station = new StationDto();
-        station.setId("STATION A ID");
-        station.setName("non-unique name for station");
-        station.setStationType("STATION A");
-        station.setOrigin("origin"); // The source of our data set
-        list.add(station);
+        StationList list = getStationList();
 
         // when
         dataPusher.syncStations(list);
 
         // then no exception is thrown
+    }
+
+    private StationList getStationList() {
+        StationList list = new StationList();
+        StationDto station = new StationDto();
+        station.setId("STATION A");
+        station.setName("non-unique name for station");
+        station.setStationType("EnvironmentStation");
+        station.setOrigin("origin"); // The source of our data set
+        list.add(station);
+        return list;
     }
 
     @Test
@@ -56,7 +61,10 @@ public class DataPusherTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void test_push_data() {
         // given
+        StationList list = getStationList();
+        dataPusher.syncStations(list);
         List<AugeG4ToHubDataDto> mockedData = new DataConverterMock().convert(new ArrayList<>());
+
 
         // when
         dataPusher.mapData(mockedData);

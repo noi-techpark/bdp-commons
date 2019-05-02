@@ -13,7 +13,7 @@ public class DataServiceTest {
 
 
     @Test
-    public void should_push_mapped_data() throws Exception { // TODO: Data retriever is not used
+    public void should_push_mapped_data() throws Exception {
         // given
         DataPusherMock pusher = new DataPusherMock();
         DataLinearizerFace linearizer = new DataLinearizer();

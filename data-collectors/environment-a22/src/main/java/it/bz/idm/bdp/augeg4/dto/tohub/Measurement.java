@@ -5,26 +5,34 @@ public class Measurement {
 
     private final String dataType;
 
-    private final double value;
+    private final double rawValue;
 
-    public Measurement(String dataType, double value) {
+    private final double processedValue;
+
+    public Measurement(String dataType, double rawValue, double processedValue) {
         this.dataType = dataType;
-        this.value = value;
+        this.rawValue = rawValue;
+        this.processedValue = processedValue;
     }
 
     public String getDataType() {
         return dataType;
     }
 
-    public double getValue() {
-        return value;
+    public double getRawValue() {
+        return rawValue;
+    }
+
+    public double getProcessedValue() {
+        return processedValue;
     }
 
     @Override
     public String toString() {
         return "Measurement{" +
                 "dataType='" + dataType + '\'' +
-                ", value=" + value +
+                ", rawValue=" + rawValue +
+                ", processedValue=" + processedValue +
                 '}';
     }
 }

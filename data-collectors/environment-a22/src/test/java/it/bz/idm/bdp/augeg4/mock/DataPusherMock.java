@@ -45,6 +45,16 @@ public class DataPusherMock implements DataPusherFace {
         return new StationList();
     }
 
+    @Override
+    public String getStationType() {
+        return "Teststation";
+    }
+
+    @Override
+    public String getOrigin() {
+        return "test";
+    }
+
     public boolean getPushed() {
         return pushed;
     }

@@ -4,6 +4,7 @@ import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4LinearizedDataDto;
 import it.bz.idm.bdp.augeg4.dto.toauge.LinearResVal;
 import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ToHubDataDto;
 import it.bz.idm.bdp.augeg4.dto.tohub.Measurement;
+import it.bz.idm.bdp.augeg4.dto.tohub.StationId;
 import it.bz.idm.bdp.augeg4.face.DataConverterFace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,12 +43,13 @@ public class DataConverter implements DataConverterFace {
         return new AugeG4ToHubDataDto(
                 convertControlUnitId(
                         linearized.getControlUnitId()),
-                        linearized.getDateTimeAcquisition(),
-                        convertResources(linearized.getResVal()));
+                linearized.getDateTimeAcquisition(),
+                convertResources(linearized.getResVal()));
     }
 
-    private String convertControlUnitId(String controlUnitId) {
-        return prefix + controlUnitId;
+    private StationId convertControlUnitId(String controlUnitId) {
+        // TODO: From the 2° specifications document it seems that the id of stations has to be only the controlUnitId. Do we need to remove the prefix?
+        return new StationId(prefix + controlUnitId);
     }
 
     private List<Measurement> convertResources(List<LinearResVal> resources) {
@@ -60,7 +62,9 @@ public class DataConverter implements DataConverterFace {
     private Measurement convertResource(LinearResVal resource) {
         return new Measurement(
                     convertLinearizedId(resource.getId()),
-                    resource.getValue());
+                    resource.getRawValue(),
+                    resource.getLinearizedValue()
+        );
     }
 
     private String convertLinearizedId(int linearizedId) {
