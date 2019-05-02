@@ -2,7 +2,6 @@ package it.bz.idm.bdp.augeg4.fun.push;
 
 import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ToHubDataDto;
 import it.bz.idm.bdp.augeg4.face.DataPusherMapperFace;
-import it.bz.idm.bdp.augeg4.fun.push.DataPusherMapper;
 import it.bz.idm.bdp.augeg4.mock.DataConverterMock;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;

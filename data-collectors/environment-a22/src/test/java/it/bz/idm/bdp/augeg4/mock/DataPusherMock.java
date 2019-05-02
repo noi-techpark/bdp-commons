@@ -40,6 +40,11 @@ public class DataPusherMock implements DataPusherFace {
         return null;
     }
 
+    @Override
+    public StationList getSyncedStations() {
+        return new StationList();
+    }
+
     public boolean getPushed() {
         return pushed;
     }

@@ -3,12 +3,13 @@ package it.bz.idm.bdp.augeg4;
 import it.bz.idm.bdp.augeg4.face.DataConverterFace;
 import it.bz.idm.bdp.augeg4.face.DataLinearizerFace;
 import it.bz.idm.bdp.augeg4.face.DataRetrieverFace;
-import it.bz.idm.bdp.augeg4.fun.linearize.DataLinearizer;
+import it.bz.idm.bdp.augeg4.face.DataServiceFace;
 import it.bz.idm.bdp.augeg4.fun.push.DataPusher;
+import it.bz.idm.bdp.augeg4.fun.retrieve.DataRetrieverMock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,32 +17,37 @@ import org.springframework.stereotype.Component;
  * XXX Do not forget to configure it!
  */
 @Component
+@PropertySource({"classpath:/META-INF/spring/application.properties"})
 public class JobScheduler {
 
     private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
 
-    @Autowired
-    private Environment env;
-
-    @Autowired
     private DataPusher pusher;
 
-    @Autowired
-    private DataRetrieverFace retrieval;
+    private DataRetrieverFace retriever;
 
-    private DataLinearizerFace linearizer = new DataLinearizer();
+    private DataLinearizerFace linearizer;
 
-    @Autowired
     private DataConverterFace converter;
 
-    private DataService dataService;
+    private DataServiceFace dataService;
+
+    @Autowired
+    public JobScheduler(DataPusher pusher, DataRetrieverFace retriever, DataLinearizerFace linearizer, DataConverterFace converter) {
+        this.pusher = pusher;
+        this.retriever = retriever;
+        this.linearizer = linearizer;
+        this.converter = converter;
+        dataService = new DataService(pusher, linearizer, converter);
+        retriever.setDataService(dataService);
+    }
 
     /**
      * JOB 1
      */
     public void pushStations() throws Exception {
         LOG.info("pushStations() called");
-        getDataService().pushStations(env.getProperty("station.type"), env.getProperty("origin"));
+        dataService.syncStationsWithHub();
     }
 
     /**
@@ -49,7 +55,7 @@ public class JobScheduler {
      */
     public void pushDataTypes() throws Exception {
         LOG.info("pushDataTypes() called.");
-        getDataService().pushDataTypes(env.getProperty("period", Integer.class));
+        dataService.syncDataTypesWithHub();
     }
 
     /**
@@ -57,12 +63,18 @@ public class JobScheduler {
      */
     public void pushData() throws Exception {
         LOG.info("pushData() called.");
-        getDataService().pushData();
+        dataService.pushData();
     }
 
-    private DataService getDataService() {
-        if (dataService == null)
-            this.dataService = new DataService(pusher, retrieval, linearizer, converter);
-        return this.dataService;
+    /**
+     * JOB 4
+     */
+    public void mockDataRetrievedFromAlgorab() {
+        LOG.info("mockDataRetrievedFromAlgorab() called.");
+        if (retriever instanceof DataRetrieverMock) {
+            DataRetrieverMock mock = (DataRetrieverMock) retriever;
+            mock.mockDataRetrievedFromAlgorab();
+        }
     }
+
 }

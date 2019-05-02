@@ -1,10 +1,10 @@
 package it.bz.idm.bdp.augeg4;
 
 import it.bz.idm.bdp.augeg4.face.DataLinearizerFace;
+import it.bz.idm.bdp.augeg4.face.DataServiceFace;
 import it.bz.idm.bdp.augeg4.fun.linearize.DataLinearizer;
 import it.bz.idm.bdp.augeg4.mock.DataConverterMock;
 import it.bz.idm.bdp.augeg4.mock.DataPusherMock;
-import it.bz.idm.bdp.augeg4.mock.DataRetrieverMock;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
@@ -13,17 +13,17 @@ public class DataServiceTest {
 
 
     @Test
-    public void should_push_mapped_data() throws Exception {
+    public void should_push_mapped_data() throws Exception { // TODO: Data retriever is not used
         // given
         DataPusherMock pusher = new DataPusherMock();
-        DataRetrieverMock retrieval = new DataRetrieverMock();
         DataLinearizerFace linearizer = new DataLinearizer();
         DataConverterMock converter = new DataConverterMock();
-        DataService dataService = new DataService(pusher, retrieval, linearizer, converter);
+        DataServiceFace dataServiceFace = new DataService(pusher, linearizer, converter);
+
         // when
-        dataService.pushData();
+        dataServiceFace.pushData();
+
         // then
-        assertTrue(retrieval.getRetrieved());
         assertTrue(pusher.getPushed());
     }
 }

@@ -5,7 +5,6 @@ import it.bz.idm.bdp.augeg4.dto.toauge.LinearResVal;
 import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ToHubDataDto;
 import it.bz.idm.bdp.augeg4.dto.tohub.Measurement;
 import it.bz.idm.bdp.augeg4.face.DataConverterFace;
-import it.bz.idm.bdp.augeg4.fun.convert.DataConverter;
 import org.junit.Test;
 
 import java.util.Collections;

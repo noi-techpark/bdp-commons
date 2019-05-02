@@ -18,4 +18,6 @@ public interface DataPusherFace {
     Object syncDataTypes(List<DataTypeDto> dataTypeList);
 
     <T> DataMapDto<RecordDtoImpl> mapData(T data);
+
+    StationList getSyncedStations();
 }

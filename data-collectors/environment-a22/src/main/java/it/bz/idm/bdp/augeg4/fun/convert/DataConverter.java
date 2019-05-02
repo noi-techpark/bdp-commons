@@ -1,6 +1,5 @@
 package it.bz.idm.bdp.augeg4.fun.convert;
 
-import it.bz.idm.bdp.augeg4.fun.push.DataPusher;
 import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4LinearizedDataDto;
 import it.bz.idm.bdp.augeg4.dto.toauge.LinearResVal;
 import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ToHubDataDto;
@@ -11,20 +10,17 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
 public class DataConverter implements DataConverterFace {
 
-    private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
+    private static final Logger LOG = LogManager.getLogger(DataConverter.class.getName());
 
     private final String prefix;
 
-    private final Map<Integer, String> dataTypeByLinearizedId = new HashMap<>();
+    private final ConverterMappings converterMappings = new ConverterMappings();
 
     /**
      * @param prefix Prefix that will be used to create the station identifier for the hub starting from the control
@@ -32,13 +28,6 @@ public class DataConverter implements DataConverterFace {
      */
     public DataConverter(@Value("${station.prefix}") String prefix) {
         this.prefix = prefix;
-        initDataTypeByLinearizedIdMap();
-    }
-
-    private void initDataTypeByLinearizedIdMap () {
-        dataTypeByLinearizedId.put(101, "temperature");
-        dataTypeByLinearizedId.put(102, "pressure");
-        // TODO: Define or load all the data types
     }
 
     @Override
@@ -50,12 +39,11 @@ public class DataConverter implements DataConverterFace {
     }
 
     private AugeG4ToHubDataDto convertDto(AugeG4LinearizedDataDto linearized) {
-        String controlUnitId = linearized.getControlUnitId();
-        Date acquisition = linearized.getDateTimeAcquisition();
-        List<LinearResVal> resources = linearized.getResVal();
-        List<Measurement> measurements = convertResources(resources);
-        String station = convertControlUnitId(controlUnitId);
-        return new AugeG4ToHubDataDto(station, acquisition, measurements);
+        return new AugeG4ToHubDataDto(
+                convertControlUnitId(
+                        linearized.getControlUnitId()),
+                        linearized.getDateTimeAcquisition(),
+                        convertResources(linearized.getResVal()));
     }
 
     private String convertControlUnitId(String controlUnitId) {
@@ -70,17 +58,13 @@ public class DataConverter implements DataConverterFace {
     }
 
     private Measurement convertResource(LinearResVal resource) {
-        int linearizedId = resource.getId();
-        double value = resource.getValue();
-        String dataType = convertLinearizedId(linearizedId);
-        return new Measurement(dataType, value);
+        return new Measurement(
+                    convertLinearizedId(resource.getId()),
+                    resource.getValue());
     }
 
     private String convertLinearizedId(int linearizedId) {
-        if (!dataTypeByLinearizedId.containsKey(linearizedId)) {
-            throw new IllegalArgumentException("Unknown linearized id " + linearizedId);
-        }
-        return dataTypeByLinearizedId.get(linearizedId);
+        return converterMappings.mapLinearizedIdToDataType(linearizedId);
     }
 
 }

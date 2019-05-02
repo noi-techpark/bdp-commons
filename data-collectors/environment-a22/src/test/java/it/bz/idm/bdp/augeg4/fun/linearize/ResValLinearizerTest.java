@@ -2,7 +2,6 @@ package it.bz.idm.bdp.augeg4.fun.linearize;
 
 import it.bz.idm.bdp.augeg4.dto.fromauge.RawResVal;
 import it.bz.idm.bdp.augeg4.dto.toauge.LinearResVal;
-import it.bz.idm.bdp.augeg4.fun.linearize.ResValLinearizer;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

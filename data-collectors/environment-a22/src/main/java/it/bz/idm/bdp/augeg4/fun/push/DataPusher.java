@@ -5,6 +5,8 @@ import it.bz.idm.bdp.augeg4.face.DataPusherFace;
 import it.bz.idm.bdp.augeg4.face.DataPusherMapperFace;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
 import it.bz.idm.bdp.json.JSONPusher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,5 +53,11 @@ public class DataPusher extends JSONPusher implements DataPusherFace {
         } catch (ClassCastException ex) {
             throw new IllegalArgumentException("data must be of type List<AugeG4ToHubDataDto>", ex);
         }
+    }
+
+    @Override
+    public StationList getSyncedStations() {
+        List<StationDto> stations = fetchStations("Teststations", "?");
+        return new StationList(stations);
     }
 }

@@ -16,7 +16,7 @@ class ResValLinearizer {
     static final int LINEAR_FUNCTION_3_LINFUNCID = 3;
     static final int LINEAR_FUNCTION_4_LINFUNCID = 4;
 
-    private final ResValIdMapper resValIdMapper = new ResValIdMapper();
+    private final LinearizerMappings linearizerMappings = new LinearizerMappings();
 
     private interface LinearFunction {
         double apply(double a, double b, double x);
@@ -43,7 +43,7 @@ class ResValLinearizer {
      */
     LinearResVal linearize(RawResVal rawResVal) {
         int dataTypeId = rawResVal.getId();
-        int linearizedDataTypeId = resValIdMapper.mapRawIdToLinearized(dataTypeId);
+        int linearizedDataTypeId = linearizerMappings.mapRawIdToLinearized(dataTypeId);
         double linearizedValue = getLinearizedValue(rawResVal);
         return new LinearResVal(linearizedDataTypeId, linearizedValue);
     }
