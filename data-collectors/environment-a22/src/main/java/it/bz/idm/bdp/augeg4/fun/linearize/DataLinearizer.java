@@ -5,11 +5,13 @@ import it.bz.idm.bdp.augeg4.dto.fromauge.RawResVal;
 import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4LinearizedDataDto;
 import it.bz.idm.bdp.augeg4.dto.toauge.LinearResVal;
 import it.bz.idm.bdp.augeg4.face.DataLinearizerFace;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class DataLinearizer implements DataLinearizerFace {
 
     private final ResValLinearizer resValLinearizer = new ResValLinearizer();
@@ -23,12 +25,11 @@ public class DataLinearizer implements DataLinearizerFace {
     }
 
     public AugeG4LinearizedDataDto linearize(AugeG4FromAlgorabDataDto fromAlgorab) {
-        String controlUnitId = fromAlgorab.getControlUnitId();
-        Date acquisition = fromAlgorab.getDateTimeAcquisition();
-        List<RawResVal> rawValues = fromAlgorab.getResVal();
-        List<LinearResVal> linearizedResVal = linearizeResVal(rawValues);
-        Date linearization = getLinearizationDate();
-        return new AugeG4LinearizedDataDto(controlUnitId, acquisition, linearization, linearizedResVal);
+        return new AugeG4LinearizedDataDto(
+                        fromAlgorab.getControlUnitId(),
+                        fromAlgorab.getDateTimeAcquisition(),
+                        getLinearizationDate(),
+                        linearizeResVal(fromAlgorab.getResVal()));
     }
 
     private List<LinearResVal> linearizeResVal(List<RawResVal> rawValues) {

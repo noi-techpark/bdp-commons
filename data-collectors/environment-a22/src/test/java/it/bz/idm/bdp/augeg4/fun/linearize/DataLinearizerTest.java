@@ -4,7 +4,6 @@ import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4FromAlgorabDataDto;
 import it.bz.idm.bdp.augeg4.dto.fromauge.RawResVal;
 import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4LinearizedDataDto;
 import it.bz.idm.bdp.augeg4.dto.toauge.LinearResVal;
-import it.bz.idm.bdp.augeg4.fun.linearize.DataLinearizer;
 import org.junit.Test;
 
 import java.util.Collections;

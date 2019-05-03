@@ -3,25 +3,22 @@ package it.bz.idm.bdp.augeg4.dto.tohub;
 import java.util.Date;
 import java.util.List;
 
-/**
- * // TODO: Document
- */
 public class AugeG4ToHubDataDto {
 
-    private final String station;
+    private final StationId stationId;
 
     private final Date acquisition;
 
     private final List<Measurement> measurements;
 
-    public AugeG4ToHubDataDto(String station, Date acquisition, List<Measurement> measurements) {
-        this.station = station;
+    public AugeG4ToHubDataDto(StationId stationId, Date acquisition, List<Measurement> measurements) {
+        this.stationId = stationId;
         this.acquisition = acquisition;
         this.measurements = measurements;
     }
 
-    public String getStation() {
-        return station;
+    public StationId getStationId() {
+        return stationId;
     }
 
     public Date getAcquisition() {
@@ -35,7 +32,7 @@ public class AugeG4ToHubDataDto {
     @Override
     public String toString() {
         return "AugeG4ToHubDataDto{" +
-                "station='" + station + '\'' +
+                "stationId='" + stationId + '\'' +
                 ", acquisition=" + acquisition +
                 ", measurements=" + measurements +
                 '}';

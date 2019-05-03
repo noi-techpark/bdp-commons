@@ -1,6 +1,5 @@
 package it.bz.idm.bdp.augeg4;
 
-import it.bz.idm.bdp.augeg4.face.DataPusherFace;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,22 +12,25 @@ public class JobSchedulerTest extends AbstractJUnit4SpringContextTests {
     @Autowired
     private JobScheduler js;
 
-    @Autowired
-    private DataPusherFace pusher;
-
     @Test
-    public void testScheduledSyncStations() throws Exception {
-        js.pushStations();
+    public void test_load_previously_synced_stations_at_deploy () throws Exception {
+        //  TODO: The method is already called by Spring, do we keep anyway the test?
+        js.loadPreviouslySyncedStations();
     }
 
     @Test
-    public void testScheduledSyncDataTypes() throws Exception {
+    public void test_scheduled_sync_DataTypes_at_deploy() throws Exception {
         js.pushDataTypes();
     }
 
     @Test
+    public void test_scheduled_sync_stations() throws Exception {
+        js.pushStations();
+    }
+
+    @Test
     @Ignore
-    public void testScheduledPushData() throws Exception {
+    public void test_scheduled_push_data() throws Exception {
         js.pushData();
     }
 

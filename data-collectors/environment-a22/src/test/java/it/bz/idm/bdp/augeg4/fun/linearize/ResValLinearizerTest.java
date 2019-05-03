@@ -2,7 +2,6 @@ package it.bz.idm.bdp.augeg4.fun.linearize;
 
 import it.bz.idm.bdp.augeg4.dto.fromauge.RawResVal;
 import it.bz.idm.bdp.augeg4.dto.toauge.LinearResVal;
-import it.bz.idm.bdp.augeg4.fun.linearize.ResValLinearizer;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -17,7 +16,7 @@ public class ResValLinearizerTest {
      * Linear function 1 = (a * x) + b
      */
     @Test
-    public void test_linear_function_1 () {
+    public void test_linear_function_1() {
         // given
         double a = 1;
         double b = 3;
@@ -28,10 +27,8 @@ public class ResValLinearizerTest {
         LinearResVal linearResVal = linearizer.linearize(rawResVal);
 
         // then
-        double expectedLinearizedValue = (a * x) + b;
-        assertEquals(expectedLinearizedValue, linearResVal.getValue(), ASSERT_EQUALS_DOUBLE_DELTA);
-        // TODO: Should we also test the mapping between the ids?
+        assertEquals(x, linearResVal.getRawValue(), ASSERT_EQUALS_DOUBLE_DELTA);
+        assertEquals((a * x) + b, linearResVal.getLinearizedValue(), ASSERT_EQUALS_DOUBLE_DELTA);
     }
 
-    // TODO: Test other linear functions
 }
