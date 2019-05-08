@@ -7,8 +7,13 @@ pipeline {
     }
 
     stages {
-        stage('Test - data-collectors') {
+        stage('Test data collectors and web services') {
             parallel {
+                stage('bdp-api') {
+                    steps {
+                        sh 'cd webservices/bdp-api/ && mvn -B -U clean compile test'
+                    }
+                }
                 stage('airquality-appabz') {
                     steps {
                         sh 'cd data-collectors/airquality-appabz && mvn -B -U clean compile test'
@@ -87,16 +92,6 @@ pipeline {
                 stage('traffic-bz') {
                     steps {
                         sh 'cd data-collectors/traffic-bz/ && mvn -B -U clean compile test'
-                    }
-                }
-            }
-        }
-
-        stage('Test - webservices') {
-            parallel {
-                stage('bdp-api') {
-                    steps {
-                        sh 'cd webservices/bdp-api/ && mvn -B -U clean compile test'
                     }
                 }
             }
