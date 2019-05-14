@@ -1,0 +1,37 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile-java'
+            additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
+    }
+    environment{
+      CARPOOLING_ENDPOINT = credentials('carpooling-endpoint')
+      TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
+    }
+    stages {
+	stage('Configure'){
+	  steps{
+	      sh 'cat ${CARPOOLING_ENDPOINT} > data-collectors/carpooling-flootta/src/test/resources/META-INF/spring/application.properties'
+	      sh 'cat ${CARPOOLING_ENDPOINT} > data-collectors/carpooling-flootta/src/main/resources/META-INF/spring/application.properties'
+              sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/carpooling.log%" data-collectors/carpooling-flootta/src/main/resources/log4j.properties'
+              sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG, R, stdout%" data-collectors/carpooling-flootta/src/main/resources/log4j.properties'
+	  }
+	}
+        stage('Test') {
+            steps {
+              sh 'cd data-collectors/carpooling-flootta && mvn test'
+            }
+        }
+        stage('Build') {
+            steps {
+              sh 'cd data-collectors/carpooling-flootta && mvn package'
+	    }
+	}
+	stage('Deploy') {
+            steps{
+                sh 'cd data-collectors/carpooling-flootta && mvn tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+            }
+        }
+    }
+}
