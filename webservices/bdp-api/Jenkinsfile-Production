@@ -394,7 +394,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
-        stage('Deploy - carpooling') {
+        stage('Archive - carpooling') {
             environment {
                 ARTIFACT_NAME = "carpooling"
             }
