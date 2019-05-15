@@ -309,9 +309,9 @@ pipeline {
                 sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
             }
         }
-        stage('Deploy - bikesharing') {
+        stage('Deploy - carpooling') {
             environment {
-                ARTIFACT_NAME = "bikesharing"
+                ARTIFACT_NAME = "carpooling"
             }
             steps {
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=${ARTIFACT_NAME}'
