@@ -87,7 +87,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>dc-carpooling-floota</finalName>
+		<finalName>dc-carpooling-flootta</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

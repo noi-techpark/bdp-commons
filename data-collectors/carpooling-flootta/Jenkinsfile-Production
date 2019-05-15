@@ -7,6 +7,9 @@ pipeline {
     }
     environment{
       CARPOOLING_ENDPOINT = credentials('carpooling-endpoint')
+      PROJECT = "carpooling-flootta"
+      PROJECT_FOLDER = "data-collectors/${PROJECT}"
+      ARTIFACT_NAME = "dc-${PROJECT}"
     }
     stages {
 	stage('Configure'){
@@ -19,7 +22,7 @@ pipeline {
 	}
         stage('Test') {
             steps {
-              sh 'cd data-collectors/carpooling-flootta && mvn test'
+              sh 'cd data-collectors/carpooling-flootta && mvn test verify'
             }
         }
         stage('Build') {
@@ -29,8 +32,8 @@ pipeline {
 	}
         stage('Archive') {
             steps {
-		sh 'mkdir -p /var/builds/prod-server-dc'
-		sh 'cp -f data-collectors/carpooling-flootta/target/dc-carpooling-floota.war /var/builds/prod-server-dc/'
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
 	    }
 	}
     }
