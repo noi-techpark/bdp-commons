@@ -76,6 +76,7 @@ public class DataRetriever {
 					parsedLat = hub.getLatitude();
 					dto.setLongitude(parsedLon);
 					dto.setLatitude(parsedLat);
+					dto.setStationType("CarpoolingHub");
 					dto.setOrigin(DATA_ORIGIN);
 					dto.getMetaData().put("address", hub.getAddress());
 					dto.getMetaData().put("city", hub.getCity());
@@ -108,6 +109,7 @@ public class DataRetriever {
 					dto.getMetaData().put("arrival",user.getTripArrival());
 					dto.getMetaData().put("departure",user.getTripDeparture());
 					dto.getMetaData().put("tripFrom",user.getTripFrom());
+					dto.setStationType("CarpoolingUser");
 					dto.setLongitude(user.getTripLongitude());
 					dto.setLatitude(user.getTripLatitude());
 					dtos.add(dto);
