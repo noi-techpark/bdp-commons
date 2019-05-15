@@ -1,9 +1,6 @@
 package it.bz.idm.bdp.augeg4.dto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4FromAlgorabDataDto;
-import it.bz.idm.bdp.augeg4.dto.fromauge.RawResVal;
-import org.junit.Test;
+import static junit.framework.TestCase.assertEquals;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -14,8 +11,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.TimeZone;
 
-import static junit.framework.TestCase.assertEquals;
+import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4FromAlgorabDataDto;
+import it.bz.idm.bdp.augeg4.dto.fromauge.RawResVal;
 
 public class DataFromJsonTest {
 
@@ -37,6 +40,7 @@ public class DataFromJsonTest {
 
         ObjectMapper mapper = new ObjectMapper();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Rome"));
         mapper.setDateFormat(dateFormat);
 
         // when
