@@ -171,7 +171,11 @@ public class DataRetriever {
 		return null;
 	}
 	public StationList generateOriginStation() {
-		return new StationList() {{add(new StationDto("innovie", "Car pooling Innovie", null, null));}};
+		return new StationList() {{
+			StationDto dto =new StationDto("innovie", "Car pooling Innovie", null, null);
+			dto.setOrigin("FLOOTA");
+			add(dto);
+			}};
 	}
 
 }
