@@ -294,5 +294,28 @@ pipeline {
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=${ARTIFACT_NAME}'
             }
         }
+        stage('Configure - carpooling') {
+            environment {
+                ARTIFACT_NAME = "carpooling"
+                STATION_TYPE = "CarpoolingHub"
+                CHILD_STATION_TYPE = "CarpoolingUser"
+                CHILDREN_PATH = "user"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Deploy - bikesharing') {
+            environment {
+                ARTIFACT_NAME = "bikesharing"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
     }
 }
