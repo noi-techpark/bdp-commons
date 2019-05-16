@@ -400,6 +400,7 @@ pipeline {
             }
             steps {
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
     }
