@@ -105,10 +105,11 @@ public class DataRetriever {
 					dto.getMetaData().put("gender", user.getUserGender().charAt(0));
 					dto.getMetaData().put("type",user.getUserType());
 					dto.getMetaData().put("pendular",user.getUserPendular());
-					dto.getMetaData().put("hub",user.getTripToId().toString());
+					dto.setParentStation(user.getTripToId().toString());
 					dto.getMetaData().put("arrival",user.getTripArrival());
 					dto.getMetaData().put("departure",user.getTripDeparture());
 					dto.getMetaData().put("tripFrom",user.getTripFrom());
+
 					dto.setStationType("CarpoolingUser");
 					dto.setLongitude(user.getTripLongitude());
 					dto.setLatitude(user.getTripLatitude());
