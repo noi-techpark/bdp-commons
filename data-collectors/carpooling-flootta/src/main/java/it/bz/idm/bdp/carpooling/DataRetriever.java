@@ -62,6 +62,7 @@ public class DataRetriever {
 
 	public StationList getHubIds() {
 		String stations = getResponseEntity(endpointPath + "/jServices.json");
+		if (stations == null) return null;
 		StationList dtos = new StationList();
 		try {
 			JServices response = mapper.readValue(stations, JServices.class);
@@ -92,6 +93,7 @@ public class DataRetriever {
 	}
 	public StationList getUsers() {
 		String users = getResponseEntity(endpointPath + "/jUsers.json");
+		if (users == null) return null;
 		StationList dtos = new StationList();
 		try {
 			JUsers response = mapper.readValue(users, JUsers.class);
@@ -109,7 +111,12 @@ public class DataRetriever {
 					dto.getMetaData().put("arrival",user.getTripArrival());
 					dto.getMetaData().put("departure",user.getTripDeparture());
 					dto.getMetaData().put("tripFrom",user.getTripFrom());
-
+					dto.getMetaData().put("tripToName",user.getTripToName());
+					dto.getMetaData().put("added",user.getAdded());
+					dto.getMetaData().put("additionalProperties",user.getAdditionalProperties());
+					dto.getMetaData().put("userAvailability",user.getUserAvailability());
+					dto.getMetaData().put("userRating",user.getUserRating());
+					dto.getMetaData().put("tripToName",user.getTripToName());
 					dto.setStationType("CarpoolingUser");
 					dto.setLongitude(user.getTripLongitude());
 					dto.setLatitude(user.getTripLatitude());
