@@ -62,6 +62,7 @@ public class DataRetriever {
 
 	public StationList getHubIds() {
 		String stations = getResponseEntity(endpointPath + "/jServices.json");
+		if (stations == null) return null;
 		StationList dtos = new StationList();
 		try {
 			JServices response = mapper.readValue(stations, JServices.class);
@@ -92,6 +93,7 @@ public class DataRetriever {
 	}
 	public StationList getUsers() {
 		String users = getResponseEntity(endpointPath + "/jUsers.json");
+		if (users == null) return null;
 		StationList dtos = new StationList();
 		try {
 			JUsers response = mapper.readValue(users, JUsers.class);
