@@ -38,6 +38,8 @@ import it.bz.idm.bdp.dto.StationList;
 @Component
 public class DataRetriever {
 
+	private static final String CARPOOLING_NAMESPACE = "carpooling:";
+
 	private static final String DATA_ORIGIN = "FLOOTA";
 
 	private ObjectMapper mapper = new ObjectMapper();
@@ -74,7 +76,7 @@ public class DataRetriever {
 				Date hubExpires = dateFormatter.parse(hub.getAvailability());
 				if (hubExpires.after(new Date())){
 					StationDto dto = new StationDto();
-					dto.setId(hub.getId().toString());
+					dto.setId(CARPOOLING_NAMESPACE+hub.getId().toString());
 					dto.setName(hub.getName());
 					Double parsedLon, parsedLat;
 					parsedLon = hub.getLongitude();
@@ -105,13 +107,13 @@ public class DataRetriever {
 				Date userExpires = dateFormatter.parse(user.getUserAvailability());
 				if (userExpires.after(new Date())){
 					StationDto dto = new StationDto();
-					dto.setId(user.getId().toString());
+					dto.setId(CARPOOLING_NAMESPACE + user.getId().toString());
 					dto.setOrigin(DATA_ORIGIN);
 					dto.setName(user.getUserName());
 					dto.getMetaData().put("gender", user.getUserGender().charAt(0));
 					dto.getMetaData().put("type",user.getUserType());
 					dto.getMetaData().put("pendular",user.getUserPendular());
-					dto.setParentStation(user.getTripToId().toString());
+					dto.setParentStation(CARPOOLING_NAMESPACE + user.getTripToId().toString());
 					dto.getMetaData().put("arrival",user.getTripArrival());
 					dto.getMetaData().put("departure",user.getTripDeparture());
 					dto.getMetaData().put("tripFrom",user.getTripFrom());
@@ -184,7 +186,7 @@ public class DataRetriever {
 	}
 	public StationList generateOriginStation() {
 		return new StationList() {{
-			StationDto dto =new StationDto("innovie", "Car pooling Innovie", null, null);
+			StationDto dto =new StationDto(CARPOOLING_NAMESPACE + "innovie", "Car pooling Innovie", null, null);
 			dto.setOrigin("FLOOTA");
 			add(dto);
 			}};
