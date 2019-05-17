@@ -3,11 +3,13 @@ package it.bz.idm.bdp.carpooling;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
@@ -48,6 +50,8 @@ public class DataRetriever {
 
 	@Autowired
 	public HttpHost webserviceEndpoint;
+
+	private static NumberFormat format = NumberFormat.getInstance(Locale.ITALY);
 
 	@Value("${endpoint.path}")
 	public String endpointPath;
@@ -115,7 +119,7 @@ public class DataRetriever {
 					dto.getMetaData().put("added",user.getAdded());
 					dto.getMetaData().put("additionalProperties",user.getAdditionalProperties());
 					dto.getMetaData().put("userAvailability",user.getUserAvailability());
-					dto.getMetaData().put("userRating",user.getUserRating());
+					dto.getMetaData().put("userRating",format.parse(user.getUserRating()));
 					dto.getMetaData().put("tripToName",user.getTripToName());
 					dto.setStationType("CarpoolingUser");
 					dto.setLongitude(user.getTripLongitude());
