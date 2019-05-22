@@ -18,7 +18,7 @@ import it.bz.idm.bdp.json.JSONPusher;
 public class CarpoolingPusher extends JSONPusher {
 
 	private static final Integer DEFAULT_PERIOD = 3600;
-	private static final String INNOVIE_STATION_IDENTIFIER = "innovie";
+	private static final String INNOVIE_STATION_IDENTIFIER = "carpooling:innovie";
 
 	private static DataTypeDto co2 		= new DataTypeDto("avoided-co2","kg","avoided carbon dioxide consumption","Instantaneous"),
 			registeredUsers = new DataTypeDto("carpooling-users",null,"number of registered users in the carpooling system","Instantaneous"),
