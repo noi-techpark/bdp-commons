@@ -68,10 +68,10 @@ public class DataRetriever {
 
 	public StationList getHubIds() {
 		String stations = getResponseEntity(endpointPath + "/jServices.json");
-		if (stations == null) return null;
-		StationList dtos = new StationList();
+		StationList dtos = null;
 		try {
 			JServices response = mapper.readValue(stations, JServices.class);
+			dtos = new StationList();
 			for (Hub hub: response.getServices().getHub()){
 				Date hubExpires = dateFormatter.parse(hub.getAvailability());
 				if (hubExpires.after(new Date())){
@@ -100,9 +100,10 @@ public class DataRetriever {
 	public StationList getUsers() {
 		String users = getResponseEntity(endpointPath + "/jUsers.json");
 		if (users == null) return null;
-		StationList dtos = new StationList();
+		StationList dtos = null;
 		try {
 			JUsers response = mapper.readValue(users, JUsers.class);
+			dtos = new StationList();
 			for (User user: response.getUser()){
 				Date userExpires = dateFormatter.parse(user.getUserAvailability());
 				if (userExpires.after(new Date())){
