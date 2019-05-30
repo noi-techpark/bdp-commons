@@ -67,11 +67,11 @@ public class DataRetriever {
 
 
 	public StationList getHubIds() {
-		String stations = getResponseEntity(endpointPath + "/jServices.json");
-		if (stations == null) return null;
-		StationList dtos = new StationList();
+		StationList dtos = null;
 		try {
+			String stations = getResponseEntity(endpointPath + "/jServices.json");
 			JServices response = mapper.readValue(stations, JServices.class);
+			dtos = new StationList();
 			for (Hub hub: response.getServices().getHub()){
 				Date hubExpires = dateFormatter.parse(hub.getAvailability());
 				if (hubExpires.after(new Date())){
@@ -98,14 +98,14 @@ public class DataRetriever {
 		return dtos;
 	}
 	public StationList getUsers() {
-		String users = getResponseEntity(endpointPath + "/jUsers.json");
-		if (users == null) return null;
-		StationList dtos = new StationList();
+		StationList dtos = null;
 		try {
+			String users = getResponseEntity(endpointPath + "/jUsers.json");
 			JUsers response = mapper.readValue(users, JUsers.class);
+			dtos = new StationList();
 			for (User user: response.getUser()){
 				Date userExpires = dateFormatter.parse(user.getUserAvailability());
-				if (userExpires.after(new Date())){
+				if (user.getUserPendular().equals("true") || userExpires.after(new Date())){
 					StationDto dto = new StationDto();
 					dto.setId(CARPOOLING_NAMESPACE + user.getId().toString());
 					dto.setOrigin(DATA_ORIGIN);
@@ -136,7 +136,7 @@ public class DataRetriever {
 		}
 		return dtos;
 	}
-	private String getResponseEntity(String path) {
+	private String getResponseEntity(String path) throws IOException {
 		HttpGet get = new HttpGet(path);
 		try {
 			CloseableHttpResponse response = httpClient.execute(webserviceEndpoint, get);
@@ -149,8 +149,6 @@ public class DataRetriever {
 			response.close();
 			return data;
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -171,8 +169,8 @@ public class DataRetriever {
 		return dtos;
 	}
 	public JServices getCurrentStats() {
-		String stations = getResponseEntity(endpointPath + "/jServices.json");
 		try {
+			String stations = getResponseEntity(endpointPath + "/jServices.json");
 			JServices response = mapper.readValue(stations, JServices.class);
 			return response;
 		} catch (JsonParseException e) {

@@ -8,7 +8,7 @@ pipeline {
 
     stages {
         stage('Test data collectors and web services') {
-            parallel {
+            stages {
                 stage('bdp-api') {
                     steps {
                         sh 'cd webservices/bdp-api/ && mvn -B -U clean compile test'
@@ -24,11 +24,11 @@ pipeline {
                         sh 'cd data-collectors/bikesharing-algorab && mvn -B -U clean compile test'
                     }
                 }
-		stage('carpooling-flootta'){
-	 	    steps {
-			sh 'cd data-collectors/carpooling-flootta && mvn -B -U clean compile test'
-            	    }
-		}
+                stage('carpooling-flootta'){
+                    steps {
+                        sh 'cd data-collectors/carpooling-flootta && mvn -B -U clean compile test'
+                    }
+                }
                 stage('carsharing-halapi') {
                     steps {
                         sh 'cd data-collectors/carsharing-halapi && mvn -B -U clean compile test'
