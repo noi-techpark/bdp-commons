@@ -1,12 +1,5 @@
 package it.bz.idm.bdp.augeg4.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4ElaboratedDataDto;
-import it.bz.idm.bdp.augeg4.dto.fromauge.ElaboratedResVal;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -19,6 +12,14 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4ElaboratedDataDto;
+import it.bz.idm.bdp.augeg4.dto.fromauge.ElaboratedResVal;
+
+import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class DataFromJsonTest {

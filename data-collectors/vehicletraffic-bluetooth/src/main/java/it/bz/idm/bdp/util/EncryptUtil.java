@@ -17,10 +17,15 @@ public class EncryptUtil {
 
 	@PostConstruct
 	public void init() {
-		utils = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, key);
+		if (key != null && !key.isEmpty())
+			utils = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, key);
 	}
 
 	public String encrypt(String mac) {
 		return utils.hmacHex(mac);
+	}
+
+	public boolean isValid() {
+		return key!=null && !key.isEmpty();
 	}
 }

@@ -26,7 +26,7 @@ public class OddsPusher extends JSONPusher {
 
 	@Override
 	public String initIntegreenTypology() {
-		return "Bluetoothstation";
+		return "BluetoothStation";
 	}
 
 	@Override
@@ -39,8 +39,10 @@ public class OddsPusher extends JSONPusher {
 			DataMapDto<RecordDtoImpl> typeMap = stationMap.upsertBranch(env.getRequiredProperty("datatype"));
 
 			SimpleRecordDto textDto = new SimpleRecordDto();
-			String encryptedMac = cryptUtil.encrypt(dto.getMac());
-			textDto.setValue(encryptedMac);
+			String stringValue = dto.getMac();
+			if (cryptUtil.isValid())
+				stringValue = cryptUtil.encrypt(stringValue);
+			textDto.setValue(stringValue);
 			textDto.setTimestamp(dto.getGathered_on().getTime());
 			textDto.setPeriod(1);
 			typeMap.getData().add(textDto);
