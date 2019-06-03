@@ -1,14 +1,14 @@
-package it.bz.idm.bdp.augeg4.integration;
+package it.bz.idm.bdp.augeg4;
 
 
-import it.bz.idm.bdp.augeg4.ConnectorConfig;
-import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4ElaboratedDataDto;
-import it.bz.idm.bdp.augeg4.face.DataRetrieverFace;
-import it.bz.idm.bdp.augeg4.fun.retrieve.DataRetriever;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
+import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4ElaboratedDataDto;
+import it.bz.idm.bdp.augeg4.face.DataRetrieverFace;
+import it.bz.idm.bdp.augeg4.fun.retrieve.DataRetriever;
 
 /**
  * Requires real Auge MQTT.

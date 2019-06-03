@@ -1,16 +1,16 @@
-package it.bz.idm.bdp.augeg4.integration;
-
-import it.bz.idm.bdp.augeg4.ConnectorConfig;
-import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4ProcessedDataToAugeDto;
-import it.bz.idm.bdp.augeg4.dto.toauge.ProcessedResValToAuge;
-import it.bz.idm.bdp.augeg4.fun.push.DataPusherAuge;
-import it.bz.idm.bdp.augeg4.util.AugeMqttConfiguration;
-import org.junit.Assert;
-import org.junit.Test;
+package it.bz.idm.bdp.augeg4;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4ProcessedDataToAugeDto;
+import it.bz.idm.bdp.augeg4.dto.toauge.ProcessedResValToAuge;
+import it.bz.idm.bdp.augeg4.fun.push.DataPusherAuge;
+import it.bz.idm.bdp.augeg4.util.AugeMqttConfiguration;
 
 /**
  * Requires real Auge MQTT.

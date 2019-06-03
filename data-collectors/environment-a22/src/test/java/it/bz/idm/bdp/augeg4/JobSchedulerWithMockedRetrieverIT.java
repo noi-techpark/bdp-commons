@@ -5,34 +5,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import it.bz.idm.bdp.augeg4.face.DataConverterFace;
-import it.bz.idm.bdp.augeg4.face.DataLinearizerFace;
-import it.bz.idm.bdp.augeg4.fun.push.DataPusher;
-import it.bz.idm.bdp.augeg4.fun.retrieve.DataRetrieverMock;
+import it.bz.idm.bdp.augeg4.fun.push.DataPusherHub;
+import it.bz.idm.bdp.augeg4.mock.DataRetrieverMock;
 
 @ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml"})
 public class JobSchedulerWithMockedRetrieverIT extends AbstractJUnit4SpringContextTests {
 
     @Autowired
-    private DataPusher pusher;
+    private DataPusherHub pusherHub;
 
     private DataRetrieverMock retriever = new DataRetrieverMock();
 
     @Autowired
-    private DataLinearizerFace linearizer;
-
-    @Autowired
-    private DataConverterFace converter;
+    private ConnectorConfig config;
 
     @Test
     public void test_scheduled_push_data_with_mocked_retriever () throws Exception {
         // given
-        JobScheduler js = new JobScheduler(pusher, retriever, linearizer, converter);
-        js.mockDataRetrievedFromAlgorab();
-        js.pushStations();
+        JobScheduler scheduler = new JobScheduler(retriever, pusherHub, config);
 
         // when
-        js.pushData();
+        scheduler.pushData();
+        scheduler.pushDataTypes();
+        scheduler.pushStations();
 
         // then no exception is thrown
     }
