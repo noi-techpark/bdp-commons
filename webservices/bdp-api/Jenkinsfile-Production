@@ -53,7 +53,7 @@ pipeline {
         stage('Configure - bluetooth') {
             environment {
                 ARTIFACT_NAME = "bluetooth"
-                STATION_TYPE = "Bluetoothstation"
+                STATION_TYPE = "BluetoothStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
@@ -373,6 +373,38 @@ pipeline {
         stage('Archive - sensors') {
             environment {
                 ARTIFACT_NAME = "sensors"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+	stage('Configure - carpooling') {
+            environment {
+                ARTIFACT_NAME = "carpooling"
+                STATION_TYPE = "CarpoolingHub"
+                CHILD_STATION_TYPE = "CarpoolingUser"
+                CHILDREN_PATH = "user"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+	 stage('Build - carpooling') {
+            environment {
+                ARTIFACT_NAME = "carpooling"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - carpooling') {
+            environment {
+                ARTIFACT_NAME = "carpooling"
             }
             steps {
                 sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'

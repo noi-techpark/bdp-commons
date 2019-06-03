@@ -1,93 +1,88 @@
 package it.bz.idm.bdp.augeg4;
 
-import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4FromAlgorabDataDto;
-import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4LinearizedDataDto;
-import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ToHubDataDto;
-import it.bz.idm.bdp.augeg4.face.DataConverterFace;
-import it.bz.idm.bdp.augeg4.face.DataLinearizerFace;
-import it.bz.idm.bdp.augeg4.face.DataPusherFace;
+import it.bz.idm.bdp.augeg4.face.DataPusherAugeFace;
+import it.bz.idm.bdp.augeg4.face.DataPusherHubFace;
 import it.bz.idm.bdp.augeg4.face.DataRetrieverFace;
-import it.bz.idm.bdp.dto.DataTypeDto;
-import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.StationList;
+import it.bz.idm.bdp.augeg4.face.DataServiceFace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-
-// TODO: add buffer for mqtt inbound messages.
-public class DataService {
+public class DataService implements DataServiceFace {
 
     private static final Logger LOG = LogManager.getLogger(DataService.class.getName());
 
-    private DataPusherFace pusher;
+    private final DataRetrieverFace dataRetriever;
+    private final DataPusherHubFace dataPusherHub;
+    private final DataPusherAugeFace dataPusherAuge;
 
-    private DataRetrieverFace retrieval;
+    private final StationsDelegate stationsDelegate = new StationsDelegate(this);
+    private final DataTypeDelegate dataTypeDelegate = new DataTypeDelegate(this);
+    private final DataDelegate dataDelegate = new DataDelegate(this);
 
-    private DataConverterFace converter;
-
-    private DataLinearizerFace linearizer;
-
-    List<AugeG4LinearizedDataDto> linearizedData;
-    StationList stationList = new StationList();
-    List<DataTypeDto> dataTypeList = new ArrayList<DataTypeDto>();
-
-
-    public DataService(DataPusherFace pusher, DataRetrieverFace retrieval, DataLinearizerFace linearizer, DataConverterFace converter) {
-        this.pusher = pusher;
-        this.retrieval = retrieval;
-        this.linearizer = linearizer;
-        this.converter = converter;
+    public DataService(
+            DataRetrieverFace dataRetriever,
+            DataPusherHubFace dataPusherHub,
+            DataPusherAugeFace dataPusherAuge
+    ) {
+        this.dataRetriever = dataRetriever;
+        this.dataPusherHub = dataPusherHub;
+        this.dataPusherAuge = dataPusherAuge;
     }
 
-    public void pushStations(String stationType, String origin) throws Exception {
-        LOG.info("pushStations() called");
-
-        List<AugeG4ToHubDataDto> data = new ArrayList<>();
-        for (AugeG4ToHubDataDto dto : data) {
-            StationDto station = new StationDto();
-            station.setId(dto.getStation());
-            station.setName("Cool non-unique name for ID " + dto.getStation());
-            station.setStationType(stationType);
-            station.setOrigin(origin); // The source of our data set
-            stationList.add(station);
-        }
-
-		try {
-			pusher.syncStations(stationList);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+    @Override
+    public void loadPreviouslySyncedStations() throws Exception {
+        stationsDelegate.loadPreviouslySyncedStations();
     }
 
-    public void pushDataTypes(Integer period) throws Exception {
-        LOG.info("pushDataTypes() called.");
-
-        List<AugeG4ToHubDataDto> data = new ArrayList<>();
-        for (AugeG4ToHubDataDto dto : data) {
-            DataTypeDto type = new DataTypeDto();
-            //type.setName(dto.getName());
-            type.setPeriod(period);
-            //type.setUnit(dto.getUnit());
-            dataTypeList.add(type);
-        }
-
-		pusher.syncDataTypes(dataTypeList);
+    /**
+     * Loads from HUB previously synced stations and then sends stations in the stationsMap to the HUB
+     */
+    @Override
+    public void syncStations() {
+        stationsDelegate.syncStationsWithHub();
     }
 
-    /** JOB 3 */
-    public void pushData() throws Exception {
-        LOG.info("pushData() called.");
-        List<AugeG4FromAlgorabDataDto> data = retrieval.fetchData();
-		try {
-			pusher.mapData(converter.convert(linearizer.linearize(data)));
-			pusher.pushData();
-		} catch (Exception e) {
-			LOG.error("Processing of failed: {}.", e.getMessage());
-			throw e;
-		}
+    /**
+     * Sends to HUB the list of known DataTypes
+     */
+    @Override
+    public void syncDataTypes() {
+        dataTypeDelegate.syncDataTypes();
     }
 
+    /**
+     * Dequeues converted data and sends it to the HUB
+     */
+    @Override
+    public void pushData() {
+        dataDelegate.pushData();
+    }
 
+    DataPusherHubFace getDataPusherHub() {
+        return dataPusherHub;
+    }
+
+    DataRetrieverFace getDataRetriever() {
+        return dataRetriever;
+    }
+
+    DataPusherAugeFace getDataPusherAuge() {
+        return dataPusherAuge;
+    }
+
+    StationsDelegate getStationsDelegate() {
+        return stationsDelegate;
+    }
+
+    public int getStationsCount() {
+        return stationsDelegate.getStationsCount();
+    }
+
+    public int getDataToAugeCount() {
+        return dataDelegate.getDataToAugeCount();
+    }
+
+    public int getDataToHubCount() {
+        return dataDelegate.getDataToHubCount();
+    }
 }

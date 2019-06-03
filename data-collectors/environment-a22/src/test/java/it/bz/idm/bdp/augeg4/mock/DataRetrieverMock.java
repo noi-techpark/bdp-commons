@@ -1,35 +1,47 @@
 package it.bz.idm.bdp.augeg4.mock;
 
+import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4ElaboratedDataDto;
+import it.bz.idm.bdp.augeg4.dto.fromauge.ElaboratedResVal;
 import it.bz.idm.bdp.augeg4.face.DataRetrieverFace;
-import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4FromAlgorabDataDto;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import it.bz.idm.bdp.augeg4.util.FixedQueue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import static it.bz.idm.bdp.augeg4.fun.process.MeasurementProcessor.MEASUREMENT_ID_O3;
+import static it.bz.idm.bdp.augeg4.fun.process.MeasurementProcessor.MEASUREMENT_ID_TEMPERATURA;
+
+//@Component
 public class DataRetrieverMock implements DataRetrieverFace {
 
-    private static final Logger LOG = LogManager.getLogger(DataRetrieverMock.class.getName());
-
-    private boolean retrieved = true;
+    FixedQueue<AugeG4ElaboratedDataDto> buffer = new FixedQueue<>(100);
 
     @Override
-    public List<AugeG4FromAlgorabDataDto> fetchData() throws Exception {
-        LOG.info("fetchData()");
-        System.out.println(this);
-        this.retrieved = true;
-        return mockedResult();
+    public List<AugeG4ElaboratedDataDto> fetchData() {
+        AugeG4ElaboratedDataDto dto = mockDtoFromAlgorab();
+        buffer.add(dto);
+        List<AugeG4ElaboratedDataDto> fetchedAugeG4ElaboratedDataDto = new ArrayList<>();
+        buffer.drainTo(fetchedAugeG4ElaboratedDataDto);
+        return fetchedAugeG4ElaboratedDataDto;
     }
 
-    private List<AugeG4FromAlgorabDataDto> mockedResult() {
-        List<AugeG4FromAlgorabDataDto> result = new ArrayList<AugeG4FromAlgorabDataDto>();
-        return result;
+    @Override
+    public void stop() {
+
     }
 
-    public boolean getRetrieved() {
-        System.out.println(this);
-        return this.retrieved;
+    private AugeG4ElaboratedDataDto mockDtoFromAlgorab () {
+        AugeG4ElaboratedDataDto dto = new AugeG4ElaboratedDataDto();
+        dto.setDateTimeAcquisition(new Date());
+        dto.setControlUnitId("AIRQ01");
+        dto.setResVal(Arrays.asList(
+                new ElaboratedResVal(MEASUREMENT_ID_O3.getValue(), 10.0, 1, 1.0, 1.0),
+                new ElaboratedResVal(MEASUREMENT_ID_TEMPERATURA.getValue(), 10.0, 1, 1.0, 1.0)
+        ));
+        return dto;
     }
+
+
 }
-

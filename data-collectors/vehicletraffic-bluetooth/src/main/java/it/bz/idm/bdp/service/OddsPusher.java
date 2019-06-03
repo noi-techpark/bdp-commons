@@ -26,7 +26,7 @@ public class OddsPusher extends JSONPusher {
 
 	@Override
 	public String initIntegreenTypology() {
-		return "Bluetoothstation";
+		return "BluetoothStation";
 	}
 
 	@Override

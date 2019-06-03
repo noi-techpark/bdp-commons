@@ -7,8 +7,13 @@ pipeline {
     }
 
     stages {
-        stage('Test - data-collectors') {
-            parallel {
+        stage('Test data collectors and web services') {
+            stages {
+                stage('bdp-api') {
+                    steps {
+                        sh 'cd webservices/bdp-api/ && mvn -B -U clean compile test'
+                    }
+                }
                 stage('airquality-appabz') {
                     steps {
                         sh 'cd data-collectors/airquality-appabz && mvn -B -U clean compile test'
@@ -17,6 +22,11 @@ pipeline {
                 stage('bikesharing-algorab') {
                     steps {
                         sh 'cd data-collectors/bikesharing-algorab && mvn -B -U clean compile test'
+                    }
+                }
+                stage('carpooling-flootta'){
+                    steps {
+                        sh 'cd data-collectors/carpooling-flootta && mvn -B -U clean compile test'
                     }
                 }
                 stage('carsharing-halapi') {
@@ -32,6 +42,11 @@ pipeline {
                 stage('emobility-hydrogen') {
                     steps {
                         sh 'cd data-collectors/emobility-hydrogen && mvn -B -U clean compile test'
+                    }
+                }
+                stage('environment-a22-algorab'){
+                    steps{
+                        sh 'cd data-collectors/environment-a22 && mvn -B -U clean compile test'
                     }
                 }
                 stage('environment-appa-tenminutes') {
@@ -82,16 +97,6 @@ pipeline {
                 stage('traffic-bz') {
                     steps {
                         sh 'cd data-collectors/traffic-bz/ && mvn -B -U clean compile test'
-                    }
-                }
-            }
-        }
-
-        stage('Test - webservices') {
-            parallel {
-                stage('bdp-api') {
-                    steps {
-                        sh 'cd webservices/bdp-api/ && mvn -B -U clean compile test'
                     }
                 }
             }
