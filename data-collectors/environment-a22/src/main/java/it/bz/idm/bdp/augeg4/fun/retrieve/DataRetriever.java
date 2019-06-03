@@ -30,14 +30,6 @@ public class DataRetriever implements DataRetrieverFace {
 		augeCallback = augeSubscriber.listen(AugeMqttConfiguration.buildMqttSubscriberConfiguration(config));
 	}
 
-	public DataRetriever() {
-		if (config==null) {
-			System.err.println("DataRetriever config dependency injection FAULT!!!");
-		}
-	    augeSubscriber = new AugeSubscriber();
-		augeCallback = augeSubscriber.listen(AugeMqttConfiguration.buildMqttSubscriberConfiguration(config));
-	}
-
     @Override
 	public List<AugeG4ElaboratedDataDto> fetchData() {
 		return augeCallback.fetchData();
