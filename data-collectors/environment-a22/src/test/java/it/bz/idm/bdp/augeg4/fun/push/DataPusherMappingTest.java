@@ -1,8 +1,8 @@
 package it.bz.idm.bdp.augeg4.fun.push;
 
-import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ToHubDataDto;
+import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ProcessedDataToHubDto;
 import it.bz.idm.bdp.augeg4.face.DataPusherMapperFace;
-import it.bz.idm.bdp.augeg4.mock.DataConverterMock;
+import it.bz.idm.bdp.augeg4.mock.DataConverterHubMock;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static it.bz.idm.bdp.augeg4.mock.DataConverterMock.MOCKED_VALUE_PROCESSED;
-import static it.bz.idm.bdp.augeg4.mock.DataConverterMock.MOCKED_VALUE_RAW;
+import static it.bz.idm.bdp.augeg4.mock.DataConverterHubMock.MOCKED_VALUE_PROCESSED;
+import static it.bz.idm.bdp.augeg4.mock.DataConverterHubMock.MOCKED_VALUE_RAW;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -28,13 +28,13 @@ public class DataPusherMappingTest {
     @Test
     public void test_mapping_from_AugeG4ToHubData_to_DataMapDto () {
         // given
-        List<AugeG4ToHubDataDto> mockedData = new DataConverterMock().convert(new ArrayList<>());
+        List<AugeG4ProcessedDataToHubDto> mockedData = new DataConverterHubMock().convert(new ArrayList<>());
 
         // when
         DataMapDto<RecordDtoImpl> rootMap = mapper.mapData(mockedData);
 
         // then
-        DataMapDto<RecordDtoImpl> stationMap = rootMap.getBranch().get("STATION A");
+        DataMapDto<RecordDtoImpl> stationMap = rootMap.getBranch().get("AUGEG4_STATION A");
         assertNotNull(stationMap);
 
         assertMeasurementEquals(stationMap, "temperature_raw", MOCKED_VALUE_RAW);

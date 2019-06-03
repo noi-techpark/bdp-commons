@@ -1,8 +1,8 @@
 package it.bz.idm.bdp.augeg4.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4LinearizedDataDto;
-import it.bz.idm.bdp.augeg4.dto.toauge.LinearResVal;
+import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4ProcessedDataToAugeDto;
+import it.bz.idm.bdp.augeg4.dto.toauge.ProcessedResValToAuge;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,10 +26,10 @@ public class DataToJsonTest {
         Date acq = new Date();
         acq.setTime(1555320011885l);
 
-        AugeG4LinearizedDataDto augeG4LinearizedDataDto = new AugeG4LinearizedDataDto(
-                "AIRQ01", acq, acq, Arrays.asList(
-                new LinearResVal(101, 1.3, 4.1),
-                new LinearResVal(102, 2.1, 3.7)
+        AugeG4ProcessedDataToAugeDto augeG4ProcessedDataToAugeDto = new AugeG4ProcessedDataToAugeDto(
+                acq, acq, "AIRQ01", Arrays.asList(
+                new ProcessedResValToAuge(101, 4.1),
+                new ProcessedResValToAuge(102, 3.7)
         ));
 
         URL resource = DataFromJsonTest.class.getResource("/dataToAlgorab.json");
@@ -40,7 +40,7 @@ public class DataToJsonTest {
         dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Rome"));
         mapper.setDateFormat(dateFormat);
         // when
-        String json = mapper.writeValueAsString(Arrays.asList(augeG4LinearizedDataDto));
+        String json = mapper.writeValueAsString(Arrays.asList(augeG4ProcessedDataToAugeDto));
 
         // then
         assertEquals(content, json);

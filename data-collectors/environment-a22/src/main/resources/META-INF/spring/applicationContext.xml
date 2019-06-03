@@ -37,7 +37,7 @@
 
 				* 		means match any
 				*/X 	means "every X"
-				? 		means "no specific value"
+				? 		means "no specific processedValue"
 						useful when you need to specify something in one of the two fields in
 						which the character is allowed, but not the other. For example, if I want
 						my trigger to fire on a particular day of the month (say, the 10th), but
@@ -46,13 +46,10 @@
 
 			(taken from https://stackoverflow.com/a/26147143)
 
-		<task:scheduled ref="jobScheduler" method="pushData" cron="0 0 * * * *" />       <!- Every hour ->
-		<task:scheduled ref="jobScheduler" method="pushDataTypes" cron="0 0 1 * * *"  /> <!- Every day at 1pm ->
-		<task:scheduled ref="jobScheduler" method="pushStations" cron="0 0 1 * * *"  />  <!- Every day at 1pm ->
 		-->
-		<task:scheduled ref="jobScheduler" method="mockDataRetrievedFromAlgorab" cron="0 0/30 * * * *" />
-		<task:scheduled ref="jobScheduler" method="pushData" cron="0 0 * * * *" />
+		<task:scheduled ref="jobScheduler" method="pushDataTypes" cron="0 0 * * * *" />
 		<task:scheduled ref="jobScheduler" method="pushStations" cron="0 0 1 * * *"  />
+		<task:scheduled ref="jobScheduler" method="pushData" cron="0 0 * * * *" />
 	</task:scheduled-tasks>
 
 
