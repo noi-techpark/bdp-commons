@@ -1,0 +1,29 @@
+<ArrayOfPointOfMeasureInfo
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.meteotrentino.it/">
+	<pointOfMeasureInfo>
+		<code>ST_001</code>
+		<name>Ala (Convento)</name>
+		<shortname>Ala Convento</shortname>
+		<elevation>165</elevation>
+		<latitude>45.757117</latitude>
+		<longitude>10.999871</longitude>
+		<east>655530</east>
+		<north>5069007</north>
+		<startdate>1921-01-01</startdate>
+		<enddate>2005-06-22</enddate>
+	</pointOfMeasureInfo>
+	<pointOfMeasureInfo>
+		<code>ST_002</code>
+		<name>Ala (Maso Le Pozze)</name>
+		<shortname>SM Ala Maso Le Pozze</shortname>
+		<elevation>170</elevation>
+		<latitude>45.786137</latitude>
+		<longitude>11.023828</longitude>
+		<east>657311.5</east>
+		<north>5072278</north>
+		<startdate>2012-05-17</startdate>
+		<enddate />
+	</pointOfMeasureInfo>
+</ArrayOfPointOfMeasureInfo>
