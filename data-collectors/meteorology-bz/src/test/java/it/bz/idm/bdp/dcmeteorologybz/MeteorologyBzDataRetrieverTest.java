@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,15 +44,22 @@ public class MeteorologyBzDataRetrieverTest extends AbstractJUnit4SpringContextT
     @Autowired
     private MeteorologyBzDataRetriever reader;
 
-    private static final String TEST_FILE_FETCH_STATIONS     = "/test_data/test_data_fetch_stations.xml";
-    private static final String TEST_FILE_FETCH_MEASUREMENTS = "/test_data/test_data_fetch_measurements.xml";
-    private static final String TEST_FILE_PUSH_STATIONS      = "/test_data/test_data_push_stations.xml";
-    private static final String TEST_FILE_PUSH_MEASUREMENTS  = "/test_data/test_data_push_measurements.xml";
+    private static final String TEST_FILE_FETCH_STATIONS     = "/test_data/test_data_fetch_stations.json";
+    private static final String TEST_FILE_FETCH_SENSORS      = "/test_data/test_data_fetch_sensors.json";
+    private static final String TEST_FILE_FETCH_MEASUREMENTS = "/test_data/test_data_fetch_measurements.json";
+
+    private static final String TEST_FILE_PUSH_STATIONS      = "/test_data/test_data_push_stations.json";
+    private static final String TEST_FILE_PUSH_SENSORS       = "/test_data/test_data_push_sensors.json";
+    private static final String TEST_FILE_PUSH_MEASUREMENTS  = "/test_data/test_data_push_measurements.json";
 
     public static final String DATA_FETCH_STATIONS     = "FETCH_STATIONS";
+    public static final String DATA_FETCH_DATA_TYPES   = "PUSH_DATA_TYPES";
     public static final String DATA_FETCH_MEASUREMENTS = "FETCH_MEASUREMENTS";
+    public static final String DATA_FETCH_TYPE_CODE    = "LW";
     public static final String DATA_PUSH_STATIONS      = "PUSH_STATIONS";
+    public static final String DATA_PUSH_DATA_TYPES    = "PUSH_DATA_TYPES";
     public static final String DATA_PUSH_MEASUREMENTS  = "PUSH_MEASUREMENTS";
+    public static final String DATA_PUSH_TYPE_CODE     = "LW";
 
     public static final String MUNICIPALITY = "FETCH_MUNICIPALITY";
     private static final String TEST_STATION_ID_1 = "ST_001";
@@ -65,6 +74,25 @@ public class MeteorologyBzDataRetrieverTest extends AbstractJUnit4SpringContextT
     private static final String TEST_STATION_DATA_TYPE_5 = "global_radiation";
     private static final String TEST_STATION_DATA_TYPE_6 = "relative_humidity";
     private static final String TEST_STATION_DATA_TYPE_7 = "snow_depth";
+
+    @Test
+    public void testConvertDate() {
+        String str1 = "2019-06-01T13:20:00CEST";
+        String str2 = "2019-03-31T01:40:00CET";
+        Date d1 = DCUtils.convertStringTimezoneToDate(str1);
+        Date d2 = DCUtils.convertStringTimezoneToDate(str2);
+        LOG.info("d1="+d1);
+        LOG.info("d2="+d2);
+
+        Date d3 = new Date();
+        String str3_1 = DCUtils.convertDateToString(d3, "yyyy-MM-dd'T'HH:mm:ssX");
+        String str3_2 = DCUtils.convertDateToString(d3, "yyyy-MM-dd'T'HH:mm:ssZ");
+        String str3_3 = DCUtils.convertDateToString(d3, "yyyy-MM-dd'T'HH:mm:ss");
+        LOG.info("str3_1="+str3_1);
+        LOG.info("str3_2="+str3_2);
+        LOG.info("str3_3="+str3_3);
+
+    }
 
     @Test
     public void testConvertStationData() {
@@ -130,8 +158,9 @@ public class MeteorologyBzDataRetrieverTest extends AbstractJUnit4SpringContextT
             Map<String, String> stationAttrs = new HashMap<String, String>();
             stationAttrs.put("code", TEST_STATION_ID_1);
 
-            MeteorologyBzDto data = reader.convertMeasurementsResponseToInternalDTO(responseString, stationAttrs);
-            data.setLastSavedRecord(TEST_DATE_LAST_RECORD);
+            MeteorologyBzDto data = new MeteorologyBzDto();
+//            MeteorologyBzDto data = reader.convertMeasurementsResponseToInternalDTO(responseString, stationAttrs);
+//            data.setLastSavedRecord(TEST_DATE_LAST_RECORD);
 
             DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(data);
 

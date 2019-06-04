@@ -2,7 +2,6 @@ package it.bz.idm.bdp.dcmeteorologybz;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -12,10 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import it.bz.idm.bdp.dcmeteorologybz.MeteorologyBzDataPusher;
-import it.bz.idm.bdp.dcmeteorologybz.MeteorologyBzDataRetriever;
-import it.bz.idm.bdp.dcmeteorologybz.MeteorologyBzJobScheduler;
+import it.bz.idm.bdp.dcmeteorologybz.dto.Feature;
 import it.bz.idm.bdp.dcmeteorologybz.dto.MeteorologyBzDto;
+import it.bz.idm.bdp.dcmeteorologybz.dto.TimeSerieDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
@@ -65,22 +63,29 @@ public class MeteorologyBzDataPusherIT extends AbstractJUnit4SpringContextTests 
 
         List<String> errors = new ArrayList<String>();
         List<MeteorologyBzDto> dataStations = null;
+        List<DataTypeDto> dataTypes = null;
         MeteorologyBzDto dataMeasurements = null;
 
         try {
             String responseStringStations = MeteorologyBzDataRetrieverTest.getTestData(MeteorologyBzDataRetrieverTest.DATA_PUSH_STATIONS);
             dataStations = reader.convertStationsResponseToInternalDTO(responseStringStations);
 
-            Map<String, String> stationAttrs = dataStations.get(0).getStationAttributes();
+            String responseStringDataTypes = MeteorologyBzDataRetrieverTest.getTestData(MeteorologyBzDataRetrieverTest.DATA_PUSH_DATA_TYPES);
+            dataTypes = reader.convertSensorsResponseToInternalDTO(responseStringDataTypes, dataStations);
+
             String responseStringMeasurements = MeteorologyBzDataRetrieverTest.getTestData(MeteorologyBzDataRetrieverTest.DATA_PUSH_MEASUREMENTS);
-            dataMeasurements = reader.convertMeasurementsResponseToInternalDTO(responseStringMeasurements, stationAttrs);
+            List<TimeSerieDto> timeSeries = reader.convertMeasurementsResponseToInternalDTO(responseStringMeasurements);
+
+            dataMeasurements = dataStations.get(0);
+            Feature stationAttrs = dataMeasurements.getStationAttributes();
+            dataMeasurements.getTimeSeriesMap().get(MeteorologyBzDataRetrieverTest.DATA_PUSH_TYPE_CODE).addAll(timeSeries);
         } catch (Exception e) {
             LOG.error("Exception in testPush: "+e, e);
             Assert.fail();
         }
 
         pushStations(dataStations, errors);
-        pushDataTypes(dataStations, errors);
+        pushDataTypes(dataTypes, errors);
         pushStationData(dataMeasurements, errors);
 
         if ( errors.size() > 0 ) {
@@ -104,11 +109,9 @@ public class MeteorologyBzDataPusherIT extends AbstractJUnit4SpringContextTests 
         }
     }
 
-    private void pushDataTypes(List<MeteorologyBzDto> data, List<String> errors) {
+    private void pushDataTypes(List<DataTypeDto> dataTypes, List<String> errors) {
         try {
-//            DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(data);
-//            List<DataTypeDto> dataTypeList = pusher.mapDataTypes2Bdp_OLD(stationRec);
-            List<DataTypeDto> dataTypeList = pusher.mapDataTypes2Bdp(data);
+            List<DataTypeDto> dataTypeList = dataTypes;
             LOG.debug(dataTypeList);
             if (dataTypeList != null) {
                 pusher.syncDataTypes(dataTypeList);

@@ -1,5 +1,6 @@
 package it.bz.idm.bdp.dcmeteorologybz;
 
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.Date;
@@ -19,6 +20,11 @@ public class DCUtils {
 
     public static final String TRUE_VALUE = "1";
     public static final String FALSE_VALUE = "0";
+
+    public static final Class<?>[] EMPTY_TYPES = new Class[]{};
+    public static final Object[]   EMPTY_VALUES = new Object[]{};
+    public static final Class<?>[] STRING_TYPES = new Class[]{String.class};
+    public static final String SEPARATOR = "$";
 
     public static boolean isEmpty(String s) {
         return (s == null || s.trim().length() == 0);
@@ -219,16 +225,22 @@ public class DCUtils {
         } catch (Exception e1) {
             LOG.debug("Exception parsing date "+inval+": "+e1);
             try {
-                OffsetDateTime odt = OffsetDateTime.parse(inval);
-                retval = new Date(odt.toEpochSecond());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+                retval = sdf.parse(inval);
             } catch (Exception e2) {
                 LOG.debug("Exception parsing date "+inval+": "+e2);
                 try {
-                    inval = inval.substring(0, inval.indexOf("+"));
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                    retval = sdf.parse(inval);
+                    OffsetDateTime odt = OffsetDateTime.parse(inval);
+                    retval = new Date(odt.toEpochSecond());
                 } catch (Exception e3) {
-                    LOG.error("Exception parsing date "+inval+": "+e3);
+                    LOG.debug("Exception parsing date "+inval+": "+e3);
+                    try {
+                        inval = inval.substring(0, inval.indexOf("+"));
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                        retval = sdf.parse(inval);
+                    } catch (Exception e4) {
+                        LOG.error("Exception parsing date "+inval+": "+e4);
+                    }
                 }
             }
         }
@@ -346,6 +358,105 @@ public class DCUtils {
             value = item.getTextContent().trim();
         }
         return value;
+    }
+
+    public static Object getProperty(String name, Object target) {
+        Object retval = null;
+        Method getterMethod = null;
+        Object obj = target;
+        name = vv(name);
+        int countOccorrenze = occorrenze(name, SEPARATOR);
+        for ( int i=1 ; obj!=null && i<countOccorrenze ; i++ ) {
+            String nameToUpperCase = checkCase(getToken(name,i));
+            getterMethod = findMethod(obj, "get" + nameToUpperCase, EMPTY_TYPES);
+            if (getterMethod != null) {
+                retval = invokeMethod(obj, getterMethod, EMPTY_VALUES);
+                obj = retval;
+            } else {
+                retval = null;
+                obj = retval;
+            }
+        }
+        return retval;
+    }
+
+    public static Method findMethod(Object target, String methodName, Class<?>[] methodTypes) {
+        try {
+            if ( target!=null ) {
+                Method method = target.getClass().getMethod(methodName, methodTypes);
+                return method;
+            }
+        } catch (Exception ex) {
+            LOG.debug("Method '"+methodName+"' not found in class '"+target+"': "+ex);
+            LOG.debug("EXCEPTION: "+ex, ex);
+        }
+        return null;
+    }
+
+    public static Object invokeMethod(Object target, Method method, Object[] methodValues) {
+        try {
+            Object retval = method.invoke(target, methodValues);
+            return retval;
+        } catch (Exception ex) {
+            LOG.error("EXCEPTION: "+ex, ex);
+        }
+        return null;
+    }
+
+    public static String vv(String s) {
+        String r = allowNulls(s);
+        if ("".equals(r)) {
+            return r;
+        } else {
+            r = adjustsPropertyName(r);
+            if (!r.substring(r.length()-1).equals(SEPARATOR)){
+                r = r+SEPARATOR;
+            }
+            if (!r.substring(0,1).equals(SEPARATOR)){
+                r = SEPARATOR+r;
+            }
+        }
+        return r;
+    }
+
+    public static String adjustsPropertyName(String propName) {
+        if (paramNotNull(propName)) {
+            propName = propName.replace(".", SEPARATOR);
+        }
+        return propName;
+    }
+
+    public static int occorrenze(String s, String c) {
+        if (s.length()==0) return 0;
+        else if (s.charAt(0)==c.charAt(0)) return 1 + occorrenze(s.substring(1),c);
+        else return occorrenze(s.substring(1),c);
+    }
+
+    public static String checkCase(String name) {
+        char firstLetter = name.charAt(0);
+        if(Character.isLowerCase(firstLetter)) {
+            name = name.substring(1,name.length());
+            name = Character.toString(firstLetter).toUpperCase() + name;
+        }
+        return name;
+    }
+
+    public static String getToken(String s, int token){
+        int p;
+        int q;
+        String ss = vv (s);
+        p = instr (ss, SEPARATOR, 0, token) + 1;
+        q = instr (ss, SEPARATOR, p, 1) - p;
+        return ss.substring(p, p+q);
+    }
+
+    public static int instr(String s, String v, int d, int p) {
+        int e = d;
+        for (int i=0;i<p;i++){
+            d = s.indexOf(v, e);
+            e = d+1;
+        }
+        return d;
     }
 
 }

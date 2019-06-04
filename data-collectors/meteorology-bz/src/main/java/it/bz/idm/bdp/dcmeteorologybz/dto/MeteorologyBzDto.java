@@ -9,7 +9,7 @@ import java.util.Map;
 
 //import javax.json.JsonObject;
 
-import it.bz.idm.bdp.dcmeteorologybz.DCUtils;
+//import it.bz.idm.bdp.dcmeteorologybz.DCUtils;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.StationDto;
 
@@ -19,12 +19,12 @@ public class MeteorologyBzDto implements Serializable {
 
     private boolean valid;
     private StationDto station;
-    private Date lastSavedRecord;
     private boolean checkLastSavedRecord;
-//    private JsonObject stationAttributes;
     private Feature stationAttributes;
-    private Map<String, DataTypeDto> dataTypes;
-    private List<MeteorologyBzMeasurementListDto> measurementsByType;
+    private Map<String, DataTypeDto> dataTypeMap;
+    private Map<String, List<TimeSerieDto>> timeSeriesMap;
+    private Map<String, Date> lastSavedRecordMap;
+    private List<SensorDto> sensorDataList;
 
     public MeteorologyBzDto() {
         this(null, null);
@@ -38,17 +38,19 @@ public class MeteorologyBzDto implements Serializable {
         this.checkLastSavedRecord = true;
         this.station = station;
         this.stationAttributes = stationAttributes;
-        this.dataTypes = new HashMap<String, DataTypeDto>();
-        this.measurementsByType = new ArrayList<MeteorologyBzMeasurementListDto>();
+        this.dataTypeMap = new HashMap<String, DataTypeDto>();
+        this.timeSeriesMap = new HashMap<String, List<TimeSerieDto>>();
+        lastSavedRecordMap = new HashMap<String, Date>();
+        this.sensorDataList = new ArrayList<SensorDto>();
     }
 
     public boolean isValid() {
         if ( stationAttributes!=null ) {
             //TODO: check!!
             if ( stationAttributes!=null ) { //&& DCUtils.paramNotNull(stationAttributes.get("enddate")) ) {
-                valid = false;
-            } else {
                 valid = true;
+            } else {
+                valid = false;
             }
         }
         return valid;
@@ -64,14 +66,6 @@ public class MeteorologyBzDto implements Serializable {
 
     public void setStation(StationDto station) {
         this.station = station;
-    }
-
-    public Date getLastSavedRecord() {
-        return lastSavedRecord;
-    }
-
-    public void setLastSavedRecord(Date lastSavedRecord) {
-        this.lastSavedRecord = lastSavedRecord;
     }
 
     public boolean isCheckLastSavedRecord() {
@@ -90,25 +84,41 @@ public class MeteorologyBzDto implements Serializable {
         this.stationAttributes = stationAttributes;
     }
 
-    public Map<String, DataTypeDto> getDataTypes() {
-        return dataTypes;
+    public Map<String, DataTypeDto> getDataTypeMap() {
+        return dataTypeMap;
     }
 
-    public void setDataTypes(Map<String, DataTypeDto> dataTypes) {
-        this.dataTypes = dataTypes;
+    public void setDataTypeMap(Map<String, DataTypeDto> dataTypeMap) {
+        this.dataTypeMap = dataTypeMap;
     }
 
-    public List<MeteorologyBzMeasurementListDto> getMeasurementsByType() {
-        return measurementsByType;
+    public Map<String, List<TimeSerieDto>> getTimeSeriesMap() {
+        return timeSeriesMap;
     }
 
-    public void setMeasurementsByType(List<MeteorologyBzMeasurementListDto> measurementsByType) {
-        this.measurementsByType = measurementsByType;
+    public void setTimeSeriesMap(Map<String, List<TimeSerieDto>> timeSeriesMap) {
+        this.timeSeriesMap = timeSeriesMap;
+    }
+
+    public Map<String, Date> getLastSavedRecordMap() {
+        return lastSavedRecordMap;
+    }
+
+    public void setLastSavedRecordMap(Map<String, Date> lastSavedRecordMap) {
+        this.lastSavedRecordMap = lastSavedRecordMap;
+    }
+
+    public List<SensorDto> getSensorDataList() {
+        return sensorDataList;
+    }
+
+    public void setSensorDataList(List<SensorDto> sensorDataList) {
+        this.sensorDataList = sensorDataList;
     }
 
     @Override
     public String toString() {
-        return "MeteorologyBzDto [valid=" + valid + ", station=" + station + ", stationAttributes=" + stationAttributes + ", dataTypes=" + dataTypes + ", measurementsByType=" + measurementsByType + "]";
+        return "MeteorologyBzDto [valid=" + valid + ", station=" + station + ", stationAttributes=" + stationAttributes + ", dataTypeMap=" + dataTypeMap + ", lastSavedRecordMap=" + lastSavedRecordMap + ", sensorDataList=" + sensorDataList + ", timeSeriesMap=" + timeSeriesMap + "]";
     }
 
 }

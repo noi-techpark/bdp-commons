@@ -1,6 +1,7 @@
 package it.bz.idm.bdp.dcmeteorologybz;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ public class MeteorologyBzDataConverter {
     public static final String PERIOD_KEY                = "app.period";
     public static final String CHECK_DATE_LAST_REC_KEY   = "app.checkDateOfLastRecord";
     public static final String PUSH_DATA_SINGLE_STATION  = "app.pushDataSingleStation";
+    public static final String MIN_DATE_FROM             = "app.min_date_from";
 
     public static final String STATION_TYPE_KEY          = "app.station.type";
 
@@ -51,6 +53,8 @@ public class MeteorologyBzDataConverter {
     private String checkDateOfLastRecord;
     //This must be initialized in application.properties file (for example "false")
     private String pushDataSingleStation;
+    //This must be initialized in application.properties file (for example "201901010000")
+    private String minDateFrom;
 
     public String getOrigin() {
         if ( this.origin == null ) {
@@ -87,6 +91,12 @@ public class MeteorologyBzDataConverter {
         }
         check = "true".equalsIgnoreCase(this.pushDataSingleStation);
         return check;
+    }
+    public String getMinDateFrom() {
+        if ( this.minDateFrom == null ) {
+            this.minDateFrom = env.getProperty(MIN_DATE_FROM);
+        }
+        return this.minDateFrom;
     }
 
     public List<MeteorologyBzDto> convertExternalStationDtoListToInternalDtoList(/*JsonArray stationsArray*/ FeaturesDto stationsArray) {
@@ -184,11 +194,14 @@ public class MeteorologyBzDataConverter {
             stationDto.setStationType(getStationType());
 
             Map<String, Object> metaData = new HashMap<String, Object>();
-            Map<String, String> names = new HashMap<String, String>();
-            metaData.put("name", names);
-            names.put("it", stationProps.getNAMEI());
-            names.put("de", stationProps.getNAMED());
-            names.put("en", stationProps.getNAMEE());
+//            Map<String, String> names = new HashMap<String, String>();
+//            metaData.put("name", names);
+//            names.put("it", stationProps.getNAMEI());
+//            names.put("de", stationProps.getNAMED());
+//            names.put("en", stationProps.getNAMEE());
+            metaData.put("name_it", stationProps.getNAMEI());
+            metaData.put("name_de", stationProps.getNAMED());
+            metaData.put("name_en", stationProps.getNAMEE());
             //TODO: ladino????
             //names.put("it", stationProps.getNAMEL());
             stationDto.setMetaData(metaData);
@@ -203,7 +216,42 @@ public class MeteorologyBzDataConverter {
         return stationDto;
     }
 
-    public DataTypeDto convertExternalSensorDtoToDataTypeDto(SensorDto sensorObj) {
+//    public DataTypeDto convertExternalSensorDtoToDataTypeDto(SensorDto sensorObj) {
+//        if ( LOG.isDebugEnabled() ) {
+//            LOG.debug("sensorObj: "+sensorObj);
+//        }
+//        DataTypeDto dataTypeDto = null;
+//        if ( sensorObj != null ) {
+//
+//            /*
+//             *  Example of JSON provided by the service
+//{
+//  "SCODE":"89940PG",
+//  "TYPE":"WT",
+//  "DESC_D":"Wassertemperatur",
+//  "DESC_I":"Temperatura acqua",
+//  "DESC_L":"Temperatura dl’ega",
+//  "UNIT":"°C",
+//  "DATE":"2019-02-20T11:10:00CET",
+//  "VALUE":3.8
+//}
+//             */
+//            String type = sensorObj.getTYPE();
+//            String name = env.getProperty(type, type);
+//            dataTypeDto = new DataTypeDto();
+//            dataTypeDto.setName(name);
+//            dataTypeDto.setUnit(sensorObj.getUNIT());
+//            dataTypeDto.setDescription(sensorObj.getDESCI());
+//            dataTypeDto.setPeriod(getPeriod());
+//        }
+//
+//        if ( LOG.isDebugEnabled() ) {
+//            LOG.debug("dataTypeDto: "+dataTypeDto);
+//        }
+//        return dataTypeDto;
+//    }
+
+    public DataTypeDto convertExternalSensorDtoToDataTypeDto(SensorDto sensorObj, Map<String, MeteorologyBzDto> stationMap) {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("sensorObj: "+sensorObj);
         }
@@ -223,13 +271,34 @@ public class MeteorologyBzDataConverter {
   "VALUE":3.8
 }
              */
-            String type = sensorObj.getTYPE();
-            String name = env.getProperty(type, type);
+            String sensorType = sensorObj.getTYPE();
+            String dataTypeName = env.getProperty(sensorType, sensorType);
+            if ( dataTypeName.equals(sensorType) ) {
+                LOG.warn("**** UNMAPPED DataType name: '"+sensorType+"'! A corresponding mapping entry must be added in types.properties file.");
+            }
             dataTypeDto = new DataTypeDto();
-            dataTypeDto.setName(name);
+            dataTypeDto.setName(dataTypeName);
             dataTypeDto.setUnit(sensorObj.getUNIT());
             dataTypeDto.setDescription(sensorObj.getDESCI());
             dataTypeDto.setPeriod(getPeriod());
+
+            //Store also measurement in corresponding Station
+            if ( stationMap != null ) {
+                String scode = sensorObj.getSCODE();
+                //Double value = sensorObj.getVALUE();
+                //String strDate = sensorObj.getDATE();
+                //Date date = DCUtils.convertStringTimezoneToDate(strDate);
+                MeteorologyBzDto meteoDto = stationMap.get(scode);
+                if ( meteoDto != null ) {
+                    Map<String, DataTypeDto> dataTypes = meteoDto.getDataTypeMap();
+                    if ( dataTypes.get(sensorType) == null ) {
+                        dataTypes.put(sensorType, dataTypeDto);
+                    }
+                    List<SensorDto> sensorAttrs = meteoDto.getSensorDataList();
+                    sensorAttrs.add(sensorObj);
+                }
+            }
+
         }
 
         if ( LOG.isDebugEnabled() ) {

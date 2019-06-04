@@ -59,9 +59,9 @@ public class MeteorologyBzJobScheduler {
         LOG.info("START.pushDataTypes");
 
         try {
-            List<MeteorologyBzDto> data = retriever.fetchData();
+            List<DataTypeDto> dataTypes = retriever.fetchDataTypes(null);
 
-            List<DataTypeDto> dataTypes = pusher.mapDataTypes2Bdp(data);
+            //List<DataTypeDto> dataTypes = pusher.mapDataTypes2Bdp(data);
 
             if (dataTypes != null){
                 pusher.syncDataTypes(dataTypes);
@@ -91,17 +91,23 @@ public class MeteorologyBzJobScheduler {
 
                 //Fetch station data
                 List<MeteorologyBzDto> data = retriever.fetchStations();
+                int size = data!=null ? data.size() : 0;
+
+                //fetch also DataTypes to fill sensor data list
+                retriever.fetchDataTypes(data);
 
                 //Send measurements separately for each station
-                for (MeteorologyBzDto meteoBzDto : data) {
+                for (int i=0 ; i<size ; i++) {
+                    MeteorologyBzDto meteoBzDto = data.get(i);
                     //Consider only the valid stations, in this way we also avoid to fetch data for invalid stations
                     boolean valid = meteoBzDto.isValid();
-                    //MeteoStationDto station = meteoBzDto.getStation();
                     if ( valid ) {
-                        Map<String, String> stationAttributes = meteoBzDto.getStationAttributes();
-                        MeteorologyBzDto stationData = retriever.fetchDataByStation(stationAttributes);
+                        String stationId = meteoBzDto.getStation()!=null ? meteoBzDto.getStation().getId() : null;
+                        LOG.info("fetchData, "+i+" of "+size+": stationId="+stationId);
 
-                        DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(stationData);
+                        retriever.fetchDataByStation(meteoBzDto);
+
+                        DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(meteoBzDto);
                         if (stationRec != null){
                             pusher.pushData(stationRec);
                         }

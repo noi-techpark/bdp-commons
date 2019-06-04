@@ -1,7 +1,6 @@
 package it.bz.idm.bdp.dcmeteorologybz;
 
 import java.io.InputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
@@ -10,16 +9,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-//import javax.json.Json;
-//import javax.json.JsonArray;
-//import javax.json.JsonObject;
-//import javax.json.JsonReader;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
@@ -38,11 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,9 +41,8 @@ import it.bz.idm.bdp.dcmeteorologybz.dto.FeaturesDto;
 //import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import it.bz.idm.bdp.dcmeteorologybz.dto.MeteorologyBzDto;
-import it.bz.idm.bdp.dcmeteorologybz.dto.MeteorologyBzMeasurementDto;
-import it.bz.idm.bdp.dcmeteorologybz.dto.MeteorologyBzMeasurementListDto;
 import it.bz.idm.bdp.dcmeteorologybz.dto.SensorDto;
+import it.bz.idm.bdp.dcmeteorologybz.dto.TimeSerieDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.StationDto;
 
@@ -71,6 +57,9 @@ public class MeteorologyBzDataRetriever {
 
     @Autowired
     private MeteorologyBzDataConverter converter;
+
+    @Autowired
+    private MeteorologyBzDataPusher pusher;
 
     private HttpClientBuilder builderStations = HttpClients.custom();
     private HttpClientBuilder builderSensors = HttpClients.custom();
@@ -89,7 +78,7 @@ public class MeteorologyBzDataRetriever {
 
     private String endpointMethodMeasurements;
     private String serviceUrlMeasurements;
-    private Map<String, String> measurementsParams;
+    private List<ServiceCallParam> measurementsParams;
 
     public MeteorologyBzDataRetriever() {
         LOG.debug("Create instance");
@@ -182,17 +171,38 @@ public class MeteorologyBzDataRetriever {
 
             clientMeasurements = builderMeasurements.build();
 
-            measurementsParams = new HashMap<String, String>();
+            measurementsParams = new ArrayList<ServiceCallParam>();
             boolean hasNext = true;
             int i=0;
             while ( hasNext ) {
                 //Example of parameters to add
                 //endpoint.measurements.param.0.param_name
                 //endpoint.measurements.param.0.station_attr_name
-                String paramName = DCUtils.allowNulls(env.getProperty("endpoint.measurements.param."+i+".param_name")).trim();
+                String paramName  = DCUtils.allowNulls(env.getProperty("endpoint.measurements.param."+i+".param_name")).trim();
+                String paramValue = DCUtils.allowNulls(env.getProperty("endpoint.measurements.param."+i+".param_value")).trim();
                 String stationAttrName = DCUtils.allowNulls(env.getProperty("endpoint.measurements.param."+i+".station_attr_name")).trim();
-                if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(stationAttrName) ) {
-                    measurementsParams.put(paramName, stationAttrName);
+                String sensorAttrName  = DCUtils.allowNulls(env.getProperty("endpoint.measurements.param."+i+".sensor_attr_name")).trim();
+                String functionName = DCUtils.allowNulls(env.getProperty("endpoint.measurements.param."+i+".function_name")).trim();
+                if ( DCUtils.paramNotNull(paramName) ) {
+                    ServiceCallParam param = new ServiceCallParam(paramName);
+                    if ( DCUtils.paramNotNull(stationAttrName) ) {
+                        param.type = ServiceCallParam.TYPE_STATION_VALUE;
+                        param.value = stationAttrName;
+                    } else if ( DCUtils.paramNotNull(sensorAttrName) ) {
+                        param.type = ServiceCallParam.TYPE_SENSOR_VALUE;
+                        param.value = sensorAttrName;
+                    } else if ( DCUtils.paramNotNull(functionName) ) {
+                        param.type = ServiceCallParam.TYPE_FUNCTION;
+                        param.value = functionName;
+                    } else if ( DCUtils.paramNotNull(paramValue) ) {
+                        param.type = ServiceCallParam.TYPE_FIXED_VALUE;
+                        param.value = paramValue;
+                    }
+                    if ( param.type!=null && param.value!=null ) {
+                        measurementsParams.add(param);
+                    } else {
+                        LOG.warn("UNRECOGNIZED parameter type in application.properties file: '"+paramName+"'  index="+i+"");
+                    }
                     i++;
                 } else {
                     hasNext = false;
@@ -304,8 +314,9 @@ public class MeteorologyBzDataRetriever {
         }
         for (Feature stationObj : dataList) {
             StationDto stationDto = converter.convertExternalStationDtoToStationDto(stationObj);
-            MeteorologyBzDto dataByCity = new MeteorologyBzDto(stationDto);
-            dtoList.add(dataByCity);
+            MeteorologyBzDto meteoBzDto = new MeteorologyBzDto(stationDto);
+            meteoBzDto.setStationAttributes(stationObj);
+            dtoList.add(meteoBzDto);
         }
 
         if (LOG.isDebugEnabled()) {
@@ -314,14 +325,68 @@ public class MeteorologyBzDataRetriever {
         return dtoList;
     }
 
+//    /**
+//     * Converts the string returned by the Meteo service in a more useful internal representation
+//     * 
+//     * @param responseString
+//     * @return
+//     * @throws Exception
+//     */
+//    public List<DataTypeDto> convertSensorsResponseToInternalDTO(String responseString) throws Exception {
+//
+//        List<DataTypeDto> dtoList = new ArrayList<DataTypeDto>();
+//
+//        /*
+//         * Example JSON returned by the service
+//[
+//  {
+//    "SCODE":"89940PG",
+//    "TYPE":"WT",
+//    "DESC_D":"Wassertemperatur",
+//    "DESC_I":"Temperatura acqua",
+//    "DESC_L":"Temperatura dl’ega",
+//    "UNIT":"°C",
+//    "DATE":"2019-02-20T11:10:00CET",
+//    "VALUE":3.8
+//  },
+//  ...
+//]
+//         */
+//
+//        List<SensorDto> dataList = mapper.readValue(responseString, new TypeReference<List<SensorDto>>() {});
+//        Set<String> sensorNames = new HashSet<String>();
+//
+//        if (LOG.isDebugEnabled()) {
+//            LOG.debug("dataList: "+dataList);
+//        }
+//
+//        if ( dataList == null ) {
+//            return null;
+//        }
+//        for (SensorDto sensorObj : dataList) {
+//            DataTypeDto dataTypeDto = converter.convertExternalSensorDtoToDataTypeDto(sensorObj);
+//            String name = dataTypeDto!=null ? dataTypeDto.getName() : null;
+//            if ( name!=null && !sensorNames.contains(name) ) {
+//                sensorNames.add(name);
+//                dtoList.add(dataTypeDto);
+//            }
+//        }
+//
+//        if (LOG.isDebugEnabled()) {
+//            LOG.debug("dtoList: "+dtoList); 
+//        }
+//        return dtoList;
+//    }
+
     /**
-     * Converts the string returned by the Meteo service in a more useful internal representation
+     * Converts the string returned by the Meteo service in a more useful internal representation.
+     * Data regarding the measurements are added to the corresponding MeteorologyBzDto.
      * 
      * @param responseString
      * @return
      * @throws Exception
      */
-    public List<DataTypeDto> convertSensorsResponseToInternalDTO(String responseString) throws Exception {
+    public List<DataTypeDto> convertSensorsResponseToInternalDTO(String responseString, List<MeteorologyBzDto> stationList) throws Exception {
 
         List<DataTypeDto> dtoList = new ArrayList<DataTypeDto>();
 
@@ -342,6 +407,7 @@ public class MeteorologyBzDataRetriever {
 ]
          */
 
+        //Convert JSON string to External DTO
         List<SensorDto> dataList = mapper.readValue(responseString, new TypeReference<List<SensorDto>>() {});
         Set<String> sensorNames = new HashSet<String>();
 
@@ -352,8 +418,21 @@ public class MeteorologyBzDataRetriever {
         if ( dataList == null ) {
             return null;
         }
+
+        //Put Station data in a map for more convenience handling
+        Map<String, MeteorologyBzDto> stationMap = null;
+        if ( stationList != null ) {
+            stationMap = new HashMap<String, MeteorologyBzDto>();
+            for (MeteorologyBzDto meteoDto : stationList) {
+                StationDto stationDto = meteoDto.getStation();
+                String id = stationDto.getId();
+                stationMap.put(id, meteoDto);
+            }
+        }
+
+        //Convert External DTO to Internal DTO
         for (SensorDto sensorObj : dataList) {
-            DataTypeDto dataTypeDto = converter.convertExternalSensorDtoToDataTypeDto(sensorObj);
+            DataTypeDto dataTypeDto = converter.convertExternalSensorDtoToDataTypeDto(sensorObj, stationMap);
             String name = dataTypeDto!=null ? dataTypeDto.getName() : null;
             if ( name!=null && !sensorNames.contains(name) ) {
                 sensorNames.add(name);
@@ -374,200 +453,27 @@ public class MeteorologyBzDataRetriever {
      * @return
      * @throws Exception
      */
-    public MeteorologyBzDto convertMeasurementsResponseToInternalDTO(String responseString, Map<String, String> station) throws Exception {
-        MeteorologyBzDto extDto = null;
+    public List<TimeSerieDto> convertMeasurementsResponseToInternalDTO(String responseString) throws Exception {
 
         /*
-         * Example of XML retrieved for measures of one station
+         * Example of JSON retrieved for measures of one station and sensor
          * 
-<lastData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.meteotrentino.it/">
-  <temperature_list>
-    <air_temperature UM="°C">
-      <date>2018-12-17T00:00:00+01</date>
-      <value>-6.8</value>
-    </air_temperature>
-  </temperature_list>
-  <precipitation_list>
-    <precipitation UM="mm">
-      <date>2018-12-17T00:00:00+01</date>
-      <value>0</value>
-    </precipitation>
-  </precipitation_list>
-  <wind_list>
-    <wind10m UM_speed="m/s" UM_direction="gN">
-      <date>2018-12-18T02:00:00+01</date>
-      <speed_value>1.9</speed_value>
-      <direction_value>113</direction_value>
-    </wind10m>
-  </wind_list>
-  <global_radiation_list>
-    <global_radiation UM="W/mq">
-      <date>2018-12-17T00:00:00+01</date>
-      <value>0</value>
-    </global_radiation>
-  </global_radiation_list>
-  <relative_humidity_list>
-    <relative_humidity UM="%">
-      <date>2018-12-17T00:00:00+01</date>
-      <value>78</value>
-    </relative_humidity>
-  </relative_humidity_list>
-  <snow_depth_list/>
-</lastData>
+[
+  {
+    "DATE":"2019-06-01T13:20:00CEST",
+    "VALUE":21.5
+  },
+  ...
+]
          */
 
-        InputStream in = org.apache.commons.io.IOUtils.toInputStream(responseString, "UTF-8");
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document docXml = db.parse(in);
-        Element root = docXml.getDocumentElement();
-
-        if ( LOG.isDebugEnabled() ) {
-            Node node = root.getFirstChild();
-            analyzeNode(node, "");
-        }
-
-        StationDto stationDto = converter.convertExternalStationDtoToStationDto(station);
-        extDto = new MeteorologyBzDto(stationDto, station);
-        List<MeteorologyBzMeasurementListDto> measurementsByType = extDto.getMeasurementsByType();
-        Map<String, DataTypeDto> dataTypes = extDto.getDataTypes();
-
-        // Analyze XML in a dynamic and configurable way
-        //Three levels: measurement_list, measurement_type, data
-        Node node1 = root.getFirstChild();
-        while ( node1 != null ) {
-            String node1Name = node1.getNodeName();
-
-            //First level
-            if ( node1.getNodeType() == Node.ELEMENT_NODE ) {
-                String type1Name = node1Name;
-                if ( type1Name.endsWith("_list") ) {
-                    type1Name = type1Name.substring(0, type1Name.length() - "_list".length());
-                }
-                MeteorologyBzMeasurementListDto measurementListDto = new MeteorologyBzMeasurementListDto(type1Name);
-                measurementsByType.add(measurementListDto);
-                List<MeteorologyBzMeasurementDto> measurements = measurementListDto.getMeasurements();
-
-                Node node2 = node1.getFirstChild();
-                while ( node2 != null ) {
-                    String node2Name = node2.getNodeName();
-
-                    //Second level
-                    if ( node2.getNodeType() == Node.ELEMENT_NODE ) {
-                        String node2Content = node2.getTextContent();
-                        String xml = DCUtils.allowNulls(node2Content).trim();
-                        NamedNodeMap attributes = node2.getAttributes();
-                        Map<String, String> node2Attrs = DCUtils.getNodeAttributes(attributes);
-
-                        Element elem2 = (Element) node2;
-
-                        //The date is specified as tag "date"
-                        String strDate = DCUtils.getElementTagValue(elem2, "date");
-                        Date date = DCUtils.convertStringTimezoneToDate(strDate);
-
-                        //The UM is specified as attribute, values in tags
-                        Set<String> umKeySet = node2Attrs.keySet();
-                        for (String umKey : umKeySet) {
-                            String strUmName = node2Attrs.get(umKey);
-                            String strValue = null;
-                            String strTypeName = null;
-                            //if attribute is "UM" then the value is in the tag "value", for example "air_temperature":
-                            //<air_temperature UM="°C">
-                            //  <date>2018-12-17T00:00:00+01</date>
-                            //  <value>-6.8</value>
-                            //</air_temperature>
-                            if ( "UM".equals(umKey) ) {
-                                strTypeName = node2Name;
-                                strValue = DCUtils.getElementTagValue(elem2, "value");
-                            } else {
-                                //if attribute is "UM_xxx" then the value is in the tag "xxx_value", the name becomes "attr_xxx", for example "wind10m_speed":
-                                //<wind10m UM_speed="m/s" UM_direction="gN">
-                                //  <date>2018-12-18T02:00:00+01</date>
-                                //  <speed_value>1.9</speed_value>
-                                //  <direction_value>113</direction_value>
-                                //</wind10m>
-                                if ( umKey.startsWith("UM_") ) {
-                                    String tmpTypeName = umKey.substring(3);
-                                    strValue = DCUtils.getElementTagValue(elem2, tmpTypeName+"_value");
-                                    strTypeName = node2Name + "_" + tmpTypeName;
-                                } else {
-                                    LOG.debug("How to deal with this attribute??? attr='"+umKey+"'  xml="+xml);
-                                }
-                            }
-                            Object value = DCUtils.convertStringToDouble(strValue);
-                            if ( value == null ) {
-                                value = strValue;
-                            }
-                            MeteorologyBzMeasurementDto measurementDto = new MeteorologyBzMeasurementDto(xml, date, strTypeName, strUmName, value);
-                            measurements.add(measurementDto);
-
-                            //First time we find this data type, collect it
-                            if ( !dataTypes.containsKey(strTypeName) ) {
-                                DataTypeDto dataTypeDto = new DataTypeDto();
-                                dataTypeDto.setName(strTypeName);
-                                dataTypeDto.setUnit(strUmName);
-                                dataTypeDto.setPeriod(converter.getPeriod());
-                                dataTypes.put(strTypeName, dataTypeDto);
-                            }
-                        }
-
-                    }
-                    node2 = node2.getNextSibling();
-                }
-
-            }
-            node1 = node1.getNextSibling();
-        }
+        //Convert JSON string to External DTO
+        List<TimeSerieDto> dataList = mapper.readValue(responseString, new TypeReference<List<TimeSerieDto>>() {});
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("extDto: "+extDto); 
+            LOG.debug("dataList: "+dataList); 
         }
-        return extDto;
-    }
-
-    /**
-     * Convenient method only for logging pourpose
-     * @param node
-     * @param indentation
-     */
-    private void analyzeNode(Node node, String indentation) {
-        while ( node != null ) {
-            String nodeName = node.getNodeName();
-            if ( node.getNodeType() == Node.ELEMENT_NODE ) {
-                NamedNodeMap attributes = node.getAttributes();
-                Map<String, String> nodeAttrs = DCUtils.getNodeAttributes(attributes);
-                String nodeValue = node.getNodeValue();
-                String nodeContent = node.getTextContent();
-                String text = null;
-
-                if ( nodeAttrs!=null && nodeAttrs.size()>1 ) {
-                    LOG.debug("***************"+indentation+"nodeName="+nodeName+"  text="+text+"  nodeAttrs="+nodeAttrs+"  nodeValue="+nodeValue);
-                }
-
-                boolean hasChildren = false;
-                node.normalize();
-                NodeList childNodes = node.getChildNodes();
-                for (int i=0 ; childNodes!=null && i<childNodes.getLength() ; i++) {
-                    Node childNode = childNodes.item(i);
-                    if ( childNode.getNodeType() == Node.ELEMENT_NODE ) {
-                        hasChildren = true;
-                    }
-                }
-                if ( !hasChildren ) {
-                    text = nodeContent;
-                }
-
-                Node childNode = node.getFirstChild();
-
-                LOG.debug(indentation+"nodeName="+nodeName+"  text="+text+"  nodeAttrs="+nodeAttrs+"  nodeValue="+nodeValue);
-
-                //Go down recursively, if child is null exit
-                analyzeNode(childNode, indentation+" ");
-
-            }
-            node = node.getNextSibling();
-        }
+        return dataList;
     }
 
     /**
@@ -581,34 +487,30 @@ public class MeteorologyBzDataRetriever {
      *             on error propagate exception to caller
      */
     public List<MeteorologyBzDto> fetchData() throws Exception {
-        LOG.debug("START.fetchData");
+        LOG.info("START.fetchData");
         List<MeteorologyBzDto> dtoList = new ArrayList<MeteorologyBzDto>();
         try {
             StringBuffer err = new StringBuffer();
 
             //Call service that retrieves the list of stations
             String responseString = callRemoteService(clientStations, serviceUrlStations, endpointMethodStations, null);
-            List<MeteorologyBzDto> stations = convertStationsResponseToInternalDTO(responseString);
+            dtoList = convertStationsResponseToInternalDTO(responseString);
+            int size = dtoList!=null ? dtoList.size() : 0;
+
+            //fetch also DataTypes to fill sensor data list
+            fetchDataTypes(dtoList);
 
             //Call service that retrieves the measurements for each station
-            for (MeteorologyBzDto station : stations) {
-                Map<String, String> stationAttrs = station.getStationAttributes();
-                //We do not stop execution if one call goes in exception.
-                //All exceptions are collected in a StringBuffer 
-                String key = stationAttrs.get("code");
+            for (int i=0 ; i<size ; i++) {
+                MeteorologyBzDto meteoDto = dtoList.get(i);
+                String stationId = meteoDto.getStation()!=null ? meteoDto.getStation().getId() : null;
+                LOG.info("fetchData, "+i+" of "+size+": stationId="+stationId);
                 try {
-                    //Exclude invalid stations
-                    boolean valid = station.isValid();
-                    if ( valid ) {
-                        MeteorologyBzDto dataByCity = fetchDataByStation(stationAttrs);
-                        dtoList.add(dataByCity);
-                    } else {
-                        LOG.debug("EXCLUDE INVALID STATION: station_id="+key+"  enddate="+stationAttrs.get("enddate"));
-                    }
+                    fetchDataByStation(meteoDto);
                 } catch (Exception ex) {
                     LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
                     String stackTrace = DCUtils.extractStackTrace(ex, -1);
-                    err.append("\n***** EXCEPTION RETRIEVING DATA FOR STATION: '"+key+"' ******" + stackTrace);
+                    err.append("\n***** EXCEPTION RETRIEVING DATA FOR STATION: '"+stationId+"' ******" + stackTrace);
                 }
             }
             if ( dtoList.size()==0 && err.length()>0 ) {
@@ -618,7 +520,7 @@ public class MeteorologyBzDataRetriever {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
             throw ex;
         }
-        LOG.debug("END.fetchData");
+        LOG.info("END.fetchData");
         return dtoList;
     }
 
@@ -650,13 +552,59 @@ public class MeteorologyBzDataRetriever {
         return dtoList;
     }
 
+//    /**
+//     * Fetch anagrafic data from Meteo service for all dataTypes.
+//     * All available DataTypes are fetched using the sensors service which provides a list of all measures,
+//     * from the measures only a single distinct instance of each DataType is added to the output list.
+//     * 
+//     * @return
+//     * @throws Exception
+//     */
+//    public List<DataTypeDto> fetchDataTypes() throws Exception {
+//        LOG.debug("START.fetchDataTypes");
+//        List<DataTypeDto> dtoList = new ArrayList<DataTypeDto>();
+//        try {
+//            StringBuffer err = new StringBuffer();
+//
+//            //Call service that retrieves the list of stations
+//            String responseString = callRemoteService(clientSensors, serviceUrlSensors, endpointMethodSensors, null);
+//
+//            //Convert to internal representation
+//            dtoList = convertSensorsResponseToInternalDTO(responseString, null);
+//            if ( dtoList.size()==0 && err.length()>0 ) {
+//                throw new RuntimeException("NO DATA FETCHED: "+err);
+//            }
+//        } catch (Exception ex) {
+//            LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
+//            throw ex;
+//        }
+//        LOG.debug("END.fetchDataTypes");
+//        return dtoList;
+//    }
+
     /**
-     * Fetch anagrafic data from Meteo service for all stations.
+     * Fetch anagrafic data from Meteo service for all dataTypes.
+     * All available DataTypes are fetched using the sensors service which provides a list of all measures,
+     * from the measures only a single distinct instance of each DataType is added to the output list.
      * 
      * @return
      * @throws Exception
      */
     public List<DataTypeDto> fetchDataTypes() throws Exception {
+        return fetchDataTypes(null);
+    }
+
+    /**
+     * Fetch anagrafic data from Meteo service for all dataTypes.
+     * All available DataTypes are fetched using the sensors service which provides a list of all measures,
+     * in each MeteorologyBzDto (representing a station), all measurements for that station are recorded.
+     * 
+     * If stationList is null, only the distinct list of DataTypes is returned.
+     * 
+     * @return
+     * @throws Exception
+     */
+    public List<DataTypeDto> fetchDataTypes(List<MeteorologyBzDto> stationList) throws Exception {
         LOG.debug("START.fetchDataTypes");
         List<DataTypeDto> dtoList = new ArrayList<DataTypeDto>();
         try {
@@ -666,7 +614,7 @@ public class MeteorologyBzDataRetriever {
             String responseString = callRemoteService(clientSensors, serviceUrlSensors, endpointMethodSensors, null);
 
             //Convert to internal representation
-            dtoList = convertSensorsResponseToInternalDTO(responseString);
+            dtoList = convertSensorsResponseToInternalDTO(responseString, stationList);
             if ( dtoList.size()==0 && err.length()>0 ) {
                 throw new RuntimeException("NO DATA FETCHED: "+err);
             }
@@ -685,32 +633,102 @@ public class MeteorologyBzDataRetriever {
      * @return
      * @throws Exception
      */
-    public MeteorologyBzDto fetchDataByStation(Map<String, String> station) throws Exception {
-        LOG.debug("START.fetchDataByStation("+station+")");
-        MeteorologyBzDto extDto = null;
-        try {
-            List<NameValuePair> endpointParams = new ArrayList<NameValuePair>();
-            if ( measurementsParams!=null && measurementsParams.size()>0 ) {
-                Set<Entry<String, String>> entrySet = measurementsParams.entrySet();
-                for (Entry<String, String> entry : entrySet) {
-                    String paramName = entry.getKey();
-                    String attrName = entry.getValue();
-                    String paramValue = station.get(attrName);
-                    if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
-                        endpointParams.add(new BasicNameValuePair(paramName, paramValue));
+    public void fetchDataByStation(MeteorologyBzDto meteoDto) throws Exception {
+        LOG.debug("START.fetchDataByStation("+meteoDto+")");
+
+        if ( meteoDto==null || meteoDto.getStation()==null|| meteoDto.getSensorDataList()==null || meteoDto.getSensorDataList().size()==0 ) {
+            return;
+        }
+
+        StationDto stationDto = meteoDto.getStation();
+        Map<String, DataTypeDto> dataTypeMap = meteoDto.getDataTypeMap();
+        for (SensorDto sensorDto : meteoDto.getSensorDataList()) {
+
+            String stationId  = stationDto.getId();
+            String sensorType = sensorDto.getTYPE();
+
+            try {
+                List<NameValuePair> endpointParams = new ArrayList<NameValuePair>();
+                if ( measurementsParams!=null && measurementsParams.size()>0 ) {
+                    for (ServiceCallParam entry : measurementsParams) {
+                        String paramName  = entry.name;
+                        String paramValue = null;
+
+                        if ( ServiceCallParam.TYPE_FIXED_VALUE.equals(entry.type) ) {
+                            paramValue = entry.value;
+                        } else if ( ServiceCallParam.TYPE_STATION_VALUE.equals(entry.type) ) {
+                            String attrName = entry.value;
+                            paramValue = DCUtils.allowNulls(DCUtils.getProperty(attrName, stationDto));
+                        } else if ( ServiceCallParam.TYPE_SENSOR_VALUE.equals(entry.type) ) {
+                            String attrName = entry.value;
+                            paramValue = DCUtils.allowNulls(DCUtils.getProperty(attrName, sensorDto));
+                        } else if ( ServiceCallParam.TYPE_FUNCTION.equals(entry.type) ) {
+                            if ( ServiceCallParam.FUNCTION_NAME_CURR_DATE.equals(entry.value) ) {
+                                paramValue = DCUtils.convertDateToString(new Date(System.currentTimeMillis()), "yyyyMMddHHmm");
+                            } else if ( ServiceCallParam.FUNCTION_NAME_LAST_DATE.equals(entry.value) ) {
+
+                                //Fetch last record for sensor and station present in the data hub
+                                //As default set value from env param "app.min_date_from"
+                                DataTypeDto dataTypeDto = dataTypeMap!=null ? dataTypeMap.get(sensorType) : null;
+                                Date lastSavedRecord = null;
+                                String minDateFrom = converter.getMinDateFrom();
+                                if ( minDateFrom == null ) {
+                                    //If env param is not set, use a fixed default
+                                    minDateFrom = "201701010800";
+                                    LOG.warn("MIN DATE PARAM '"+MeteorologyBzDataConverter.MIN_DATE_FROM+"' NOT SET, USING DEFAULT VALUE: " + minDateFrom);
+                                }
+                                String dateFrom = minDateFrom;
+                                try {
+                                    lastSavedRecord = pusher.getLastSavedRecordForStationAndDataType(stationDto, dataTypeDto);
+                                } catch (Exception ex) {
+                                    LOG.warn("ERROR in getLastSavedRecordForStationAndDataType(stationId="+stationId+", dataType="+dataTypeDto+"): " + ex.getMessage());
+                                    LOG.warn("USING DEFAULT VALUE: " + dateFrom);
+                                }
+                                //If lastSavedRecord is found, compare with minimum and take the greater between the two
+                                if ( lastSavedRecord != null ) {
+                                    meteoDto.getLastSavedRecordMap().put(sensorType, lastSavedRecord);
+                                    String strLastDate = DCUtils.convertDateToString(lastSavedRecord, "yyyyMMddHHmm");
+                                    if ( strLastDate.compareTo(minDateFrom) > 0 ) {
+                                        dateFrom = strLastDate;
+                                    }
+                                }
+                                paramValue = dateFrom;
+
+                            }
+                        }
+
+                        if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
+                            endpointParams.add(new BasicNameValuePair(paramName, paramValue));
+                        }
                     }
                 }
+
+                String responseString = callRemoteService(clientMeasurements, serviceUrlMeasurements, endpointMethodMeasurements, endpointParams);
+
+                List<TimeSerieDto> timeSeriesList = convertMeasurementsResponseToInternalDTO(responseString);
+                int size = timeSeriesList!=null ? timeSeriesList.size() : -1;
+
+                //Store TimeSerieList in DTO
+                if ( size > 0 ) {
+                    Map<String, List<TimeSerieDto>> timeSeriesMap = meteoDto.getTimeSeriesMap();
+                    List<TimeSerieDto> list = timeSeriesMap.get(sensorType);
+                    if ( list != null ) {
+                        list.addAll(timeSeriesList);
+                    } else {
+                        timeSeriesMap.put(sensorType, timeSeriesList);
+                    }
+                }
+
+                LOG.debug("Data fetched for station="+stationId+", sensor="+sensorType+": "+size);
+            } catch (Exception ex) {
+                LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
+                throw ex;
             }
-            String responseString = callRemoteService(clientMeasurements, serviceUrlMeasurements, endpointMethodMeasurements, endpointParams);
-            extDto = convertMeasurementsResponseToInternalDTO(responseString, station);
-            int size = extDto!=null && extDto.getMeasurementsByType()!=null ? extDto.getMeasurementsByType().size() : -1;
-            LOG.debug("Data fetched for station "+station+": "+size);
-        } catch (Exception ex) {
-            LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
-            throw ex;
+
         }
-        LOG.debug("END.fetchDataByStation("+station+")");
-        return extDto;
+
+        LOG.debug("END.fetchDataByStation("+stationDto+")");
+        //return extDto;
     }
 
 }
