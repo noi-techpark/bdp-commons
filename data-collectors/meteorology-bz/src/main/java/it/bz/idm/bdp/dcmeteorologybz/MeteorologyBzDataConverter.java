@@ -32,6 +32,8 @@ public class MeteorologyBzDataConverter {
 
     private static final Logger LOG = LogManager.getLogger(MeteorologyBzDataConverter.class.getName());
 
+    public static final long   MILLIS_ONE_DAY            = 24 * 60 * 60 * 1000;
+
     public static final String ORIGIN_KEY                = "app.origin";
     public static final String PERIOD_KEY                = "app.period";
     public static final String CHECK_DATE_LAST_REC_KEY   = "app.checkDateOfLastRecord";

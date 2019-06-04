@@ -648,57 +648,93 @@ public class MeteorologyBzDataRetriever {
             String sensorType = sensorDto.getTYPE();
 
             try {
+
+                //Fetch last record for sensor and station present in the data hub
+                //As default set value from env param "app.min_date_from"
+                String strDateFrom = null;
+                String strDateTo = null;
+
+                DataTypeDto dataTypeDto = dataTypeMap!=null ? dataTypeMap.get(sensorType) : null;
+                Date lastSavedRecord = null;
+                String strMinDateFrom = converter.getMinDateFrom();
+                if ( strMinDateFrom == null ) {
+                    //If env param is not set, use a fixed default
+                    strMinDateFrom = "201701010800";
+                    LOG.warn("MIN DATE PARAM '"+MeteorologyBzDataConverter.MIN_DATE_FROM+"' NOT SET, USING DEFAULT VALUE: " + strMinDateFrom);
+                }
+                strDateFrom = strMinDateFrom;
+                try {
+                    lastSavedRecord = pusher.getLastSavedRecordForStationAndDataType(stationDto, dataTypeDto);
+                } catch (Exception ex) {
+                    LOG.warn("ERROR in getLastSavedRecordForStationAndDataType(stationId="+stationId+", dataType="+dataTypeDto+"): " + ex.getMessage());
+                    LOG.warn("USING DEFAULT VALUE: " + strDateFrom);
+                }
+                //If lastSavedRecord is found, compare with minimum and take the greater between the two
+                if ( lastSavedRecord != null ) {
+                    meteoDto.getLastSavedRecordMap().put(sensorType, lastSavedRecord);
+                    String strLastDate = DCUtils.convertDateToString(lastSavedRecord, "yyyyMMddHHmm");
+                    if ( strLastDate.compareTo(strMinDateFrom) > 0 ) {
+                        strDateFrom = strLastDate;
+                    }
+                }
+
                 List<NameValuePair> endpointParams = new ArrayList<NameValuePair>();
+                String paramNameDateFrom = null;
+                String paramNameDateTo   = null;
+                Date dtNow = new Date(System.currentTimeMillis());
+                String strNow = DCUtils.convertDateToString(dtNow, "yyyyMMddHHmm");
                 if ( measurementsParams!=null && measurementsParams.size()>0 ) {
                     for (ServiceCallParam entry : measurementsParams) {
                         String paramName  = entry.name;
                         String paramValue = null;
+                        BasicNameValuePair param = null;
 
                         if ( ServiceCallParam.TYPE_FIXED_VALUE.equals(entry.type) ) {
                             paramValue = entry.value;
+                            if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
+                                param = new BasicNameValuePair(paramName, paramValue);
+                            }
                         } else if ( ServiceCallParam.TYPE_STATION_VALUE.equals(entry.type) ) {
                             String attrName = entry.value;
                             paramValue = DCUtils.allowNulls(DCUtils.getProperty(attrName, stationDto));
+                            if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
+                                param = new BasicNameValuePair(paramName, paramValue);
+                            }
                         } else if ( ServiceCallParam.TYPE_SENSOR_VALUE.equals(entry.type) ) {
                             String attrName = entry.value;
                             paramValue = DCUtils.allowNulls(DCUtils.getProperty(attrName, sensorDto));
+                            if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
+                                param = new BasicNameValuePair(paramName, paramValue);
+                            }
                         } else if ( ServiceCallParam.TYPE_FUNCTION.equals(entry.type) ) {
                             if ( ServiceCallParam.FUNCTION_NAME_CURR_DATE.equals(entry.value) ) {
-                                paramValue = DCUtils.convertDateToString(new Date(System.currentTimeMillis()), "yyyyMMddHHmm");
+                                paramValue = strNow;
+                                strDateTo = strNow;
+
+                                //Optimization: we get only one day of measurements otherwise fetch af too many data is time consuming
+                                Date tmpDateFrom = DCUtils.convertStringToDate(strDateFrom, "yyyyMMddHHmm");
+                                Date tmpDateTo   = new Date(tmpDateFrom.getTime() + MeteorologyBzDataConverter.MILLIS_ONE_DAY);
+                                String strTmpDateTo = DCUtils.convertDateToString(tmpDateTo, "yyyyMMddHHmm");
+                                if ( strTmpDateTo.compareTo(strDateTo) < 0 ) {
+                                    strDateTo = strTmpDateTo;
+                                    paramValue = strTmpDateTo;
+                                }
+
+                                if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
+                                    param = new BasicNameValuePair(paramName, paramValue);
+                                    paramNameDateTo = paramName;
+                                }
                             } else if ( ServiceCallParam.FUNCTION_NAME_LAST_DATE.equals(entry.value) ) {
-
-                                //Fetch last record for sensor and station present in the data hub
-                                //As default set value from env param "app.min_date_from"
-                                DataTypeDto dataTypeDto = dataTypeMap!=null ? dataTypeMap.get(sensorType) : null;
-                                Date lastSavedRecord = null;
-                                String minDateFrom = converter.getMinDateFrom();
-                                if ( minDateFrom == null ) {
-                                    //If env param is not set, use a fixed default
-                                    minDateFrom = "201701010800";
-                                    LOG.warn("MIN DATE PARAM '"+MeteorologyBzDataConverter.MIN_DATE_FROM+"' NOT SET, USING DEFAULT VALUE: " + minDateFrom);
+                                paramValue = strDateFrom;
+                                if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
+                                    param = new BasicNameValuePair(paramName, paramValue);
+                                    paramNameDateFrom = paramName;
                                 }
-                                String dateFrom = minDateFrom;
-                                try {
-                                    lastSavedRecord = pusher.getLastSavedRecordForStationAndDataType(stationDto, dataTypeDto);
-                                } catch (Exception ex) {
-                                    LOG.warn("ERROR in getLastSavedRecordForStationAndDataType(stationId="+stationId+", dataType="+dataTypeDto+"): " + ex.getMessage());
-                                    LOG.warn("USING DEFAULT VALUE: " + dateFrom);
-                                }
-                                //If lastSavedRecord is found, compare with minimum and take the greater between the two
-                                if ( lastSavedRecord != null ) {
-                                    meteoDto.getLastSavedRecordMap().put(sensorType, lastSavedRecord);
-                                    String strLastDate = DCUtils.convertDateToString(lastSavedRecord, "yyyyMMddHHmm");
-                                    if ( strLastDate.compareTo(minDateFrom) > 0 ) {
-                                        dateFrom = strLastDate;
-                                    }
-                                }
-                                paramValue = dateFrom;
-
                             }
                         }
 
-                        if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
-                            endpointParams.add(new BasicNameValuePair(paramName, paramValue));
+                        if ( param != null ) {
+                            endpointParams.add(param);
                         }
                     }
                 }
@@ -707,6 +743,67 @@ public class MeteorologyBzDataRetriever {
 
                 List<TimeSerieDto> timeSeriesList = convertMeasurementsResponseToInternalDTO(responseString);
                 int size = timeSeriesList!=null ? timeSeriesList.size() : -1;
+
+                //If no data found, fetch data adding one day to the fetched period, until we get some data or dateTo is greater than dateNow
+                boolean isPastPeriod = strDateTo.compareTo(strNow) < 0;
+                while ( size==0 && isPastPeriod ) {
+                    strDateFrom = strDateTo;
+                    Date nextDateFrom = DCUtils.convertStringToDate(strDateFrom, "yyyyMMddHHmm");
+                    Date nextDateTo   = new Date(nextDateFrom.getTime() + MeteorologyBzDataConverter.MILLIS_ONE_DAY);
+                    strDateTo = DCUtils.convertDateToString(nextDateTo, "yyyyMMddHHmm");
+                    List<NameValuePair> nextEndpointParams = new ArrayList<NameValuePair>();
+                    for (NameValuePair nvp : endpointParams) {
+                        String name = nvp.getName();
+                        if ( name.equals(paramNameDateTo) ) {
+                            nvp = new BasicNameValuePair(name, strDateTo);
+                        } else if ( name.equals(paramNameDateFrom) ) {
+                            nvp = new BasicNameValuePair(name, strDateFrom);
+                        }
+                        nextEndpointParams.add(nvp);
+                    }
+                    responseString = callRemoteService(clientMeasurements, serviceUrlMeasurements, endpointMethodMeasurements, nextEndpointParams);
+
+                    timeSeriesList = convertMeasurementsResponseToInternalDTO(responseString);
+                    size = timeSeriesList!=null ? timeSeriesList.size() : -1;
+
+                    isPastPeriod = strDateTo.compareTo(strNow) < 0;
+                }
+
+//                //Optimization: limit the list so that no more than one complete day of measurements is stored 
+//                //otherwise fetch of historic data is too time consuming.
+//                //We fetch in any case all data starting from DATE_FROM and CURR_DATE, min date could be greater than requested DATE_FROM
+//                //Find min date in the list
+//                String strMinDate = null;
+//                for ( int i=0 ; i<size ; i++ ) {
+//                    TimeSerieDto tsDto = timeSeriesList.get(i);
+//                    String date = tsDto.getDATE();
+//                    if ( DCUtils.paramNotNull(date) ) {
+//                        if ( strMinDate == null ) {
+//                            strMinDate = date;
+//                        } else if ( strMinDate.compareTo(date) > 0 ) {
+//                            strMinDate = date;
+//                        }
+//                    }
+//                }
+//                String strFromDate = strMinDate; //2019-01-01T00:00:00CET
+//                Date fromDate = DCUtils.convertStringTimezoneToDate(strFromDate);
+//                String strToDate   = null;
+//                Date toDate = null;
+//                if ( fromDate != null ) {
+//                    toDate = new Date(fromDate.getTime() + MeteorologyBzDataConverter.MILLIS_ONE_DAY);
+//                    strToDate = DCUtils.convertDateToString(toDate, "yyyy-MM-dd'T'HH:mm:ss");
+//                    //Create a temp list, excluding measurements with date greater than (min + 1day)
+//                    List<TimeSerieDto> tmpList = new ArrayList<TimeSerieDto>();
+//                    for ( int i=0 ; i<size ; i++ ) {
+//                        TimeSerieDto tsDto = timeSeriesList.get(i);
+//                        String date = tsDto.getDATE();
+//                        if ( DCUtils.paramNotNull(date) && date.compareTo(strToDate)<=0 ) {
+//                            tmpList.add(tsDto);
+//                        }
+//                    }
+//                    timeSeriesList = tmpList;
+//                    size = timeSeriesList.size();
+//                }
 
                 //Store TimeSerieList in DTO
                 if ( size > 0 ) {
