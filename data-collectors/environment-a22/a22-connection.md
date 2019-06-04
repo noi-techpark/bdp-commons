@@ -1,4 +1,4 @@
-The A22-VPN-REVERS-TUNNEL CONUNDRUM
+The A22-VPN-REVERSE-TUNNEL CONUNDRUM
 =======================================
 
 "Security by obscurity", describes this situation the best. We just need to connect to a mqtt broker of a22 through a proprietary vpn server called "Checkpoint". Sounds easy... but it's not. This is why:
