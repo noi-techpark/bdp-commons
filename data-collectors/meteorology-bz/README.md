@@ -66,7 +66,7 @@ This package contains the Pusher, the Retiever, the Scheduler and Converter clas
 
 package **it.bz.idm.bdp.dcmeteorologybz.dto**  
 This package contains the following DTOs:
- - MeteorologyBzDto class: used to store the data after conversion, the data are sent to the OpenDataHub as StationDto.
+ - MeteorologyBzDto: used to store the data after conversion, the data are sent to the OpenDataHub as StationDto.
  - FeaturesDto, Feature, Crs, Geometry, Properties: used to convert JSON string provided by `/stations` service into Java objects.
  - SensorDto: used to convert JSON string provided by `/sensors` service into Java objects.
  - TimeSerieDto: used to convert JSON string provided by `/timeseries` service into Java objects.
@@ -76,7 +76,7 @@ This package contains the following DTOs:
 
 Mainly for each service an HTTP call is performed. Returned JSON string is converted to Java objects using the com.fasterxml.jackson.databind.ObjectMapper provided by the Jackson library.
 
-For Station and DataType the fetch, conversion and synchronization process is simple and no particular explanation is needed.
+For Station and DataType the fetch / conversion / synchronization process is simple and no particular explanation is needed.
 
 For measurement fetch / convert / sync process, some explanation is necessary. The process consists of three steps:
 1. get all station data (service /stations);
