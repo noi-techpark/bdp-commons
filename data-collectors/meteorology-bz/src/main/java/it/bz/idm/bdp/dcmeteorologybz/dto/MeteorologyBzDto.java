@@ -17,7 +17,6 @@ public class MeteorologyBzDto implements Serializable {
 
     private static final long serialVersionUID = 8642860252556395832L;
 
-    private boolean valid;
     private StationDto station;
     private boolean checkLastSavedRecord;
     private Feature stationAttributes;
@@ -34,7 +33,7 @@ public class MeteorologyBzDto implements Serializable {
         this(station, null);
     }
 
-    public MeteorologyBzDto(StationDto station, /*JsonObject*/Feature stationAttributes) {
+    public MeteorologyBzDto(StationDto station, Feature stationAttributes) {
         this.checkLastSavedRecord = true;
         this.station = station;
         this.stationAttributes = stationAttributes;
@@ -42,22 +41,6 @@ public class MeteorologyBzDto implements Serializable {
         this.timeSeriesMap = new HashMap<String, List<TimeSerieDto>>();
         lastSavedRecordMap = new HashMap<String, Date>();
         this.sensorDataList = new ArrayList<SensorDto>();
-    }
-
-    public boolean isValid() {
-        if ( stationAttributes!=null ) {
-            //TODO: check!!
-            if ( stationAttributes!=null ) { //&& DCUtils.paramNotNull(stationAttributes.get("enddate")) ) {
-                valid = true;
-            } else {
-                valid = false;
-            }
-        }
-        return valid;
-    }
-
-    public void setValid(boolean valid) {
-        this.valid = valid;
     }
 
     public StationDto getStation() {
@@ -76,11 +59,11 @@ public class MeteorologyBzDto implements Serializable {
         this.checkLastSavedRecord = checkLastSavedRecord;
     }
 
-    public /*JsonObject*/ Feature getStationAttributes() {
+    public Feature getStationAttributes() {
         return stationAttributes;
     }
 
-    public void setStationAttributes(/*JsonObject*/ Feature stationAttributes) {
+    public void setStationAttributes(Feature stationAttributes) {
         this.stationAttributes = stationAttributes;
     }
 
@@ -118,7 +101,7 @@ public class MeteorologyBzDto implements Serializable {
 
     @Override
     public String toString() {
-        return "MeteorologyBzDto [valid=" + valid + ", station=" + station + ", stationAttributes=" + stationAttributes + ", dataTypeMap=" + dataTypeMap + ", lastSavedRecordMap=" + lastSavedRecordMap + ", sensorDataList=" + sensorDataList + ", timeSeriesMap=" + timeSeriesMap + "]";
+        return "MeteorologyBzDto [station=" + station + ", stationAttributes=" + stationAttributes + ", dataTypeMap=" + dataTypeMap + ", lastSavedRecordMap=" + lastSavedRecordMap + ", sensorDataList=" + sensorDataList + ", timeSeriesMap=" + timeSeriesMap + "]";
     }
 
 }

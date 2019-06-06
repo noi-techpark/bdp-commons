@@ -1,7 +1,6 @@
 package it.bz.idm.bdp.dcmeteorologybz;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -61,8 +60,6 @@ public class MeteorologyBzJobScheduler {
         try {
             List<DataTypeDto> dataTypes = retriever.fetchDataTypes(null);
 
-            //List<DataTypeDto> dataTypes = pusher.mapDataTypes2Bdp(data);
-
             if (dataTypes != null){
                 pusher.syncDataTypes(dataTypes);
             }
@@ -99,18 +96,14 @@ public class MeteorologyBzJobScheduler {
                 //Send measurements separately for each station
                 for (int i=0 ; i<size ; i++) {
                     MeteorologyBzDto meteoBzDto = data.get(i);
-                    //Consider only the valid stations, in this way we also avoid to fetch data for invalid stations
-                    boolean valid = meteoBzDto.isValid();
-                    if ( valid ) {
-                        String stationId = meteoBzDto.getStation()!=null ? meteoBzDto.getStation().getId() : null;
-                        LOG.info("fetchData, "+i+" of "+size+": stationId="+stationId);
+                    String stationId = meteoBzDto.getStation()!=null ? meteoBzDto.getStation().getId() : null;
+                    LOG.info("fetchData, "+i+" of "+size+": stationId="+stationId);
 
-                        retriever.fetchDataByStation(meteoBzDto);
+                    retriever.fetchDataByStation(meteoBzDto);
 
-                        DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(meteoBzDto);
-                        if (stationRec != null){
-                            pusher.pushData(stationRec);
-                        }
+                    DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(meteoBzDto);
+                    if (stationRec != null){
+                        pusher.pushData(stationRec);
                     }
                 }
 

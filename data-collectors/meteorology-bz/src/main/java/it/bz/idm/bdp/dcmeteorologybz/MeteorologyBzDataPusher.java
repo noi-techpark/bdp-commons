@@ -12,9 +12,6 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
-import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dcmeteorologybz.dto.MeteorologyBzDto;
@@ -43,19 +40,19 @@ public class MeteorologyBzDataPusher extends JSONPusher {
     @PostConstruct
     private void init() {
         LOG.debug("START.init.");
-        //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTTP 415 error)
-        //this must be done because we added dependencies to com.fasterxml.jackson.dataformat.xml.XmlMapper to read data from IIT web service!
-        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
-        List<HttpMessageConverter<?>> newMessageConverters = new ArrayList<HttpMessageConverter<?>>();
-        for (HttpMessageConverter<?> messageConverter : messageConverters) {
-            if ( messageConverter instanceof MappingJackson2XmlHttpMessageConverter || messageConverter instanceof Jaxb2RootElementHttpMessageConverter ) {
-                LOG.debug("REMOVE   converter: " + messageConverter.getClass().getName());
-            } else {
-                LOG.debug("PRESERVE converter: " + messageConverter.getClass().getName());
-                newMessageConverters.add(messageConverter);
-            }
-        }
-        restTemplate.setMessageConverters(newMessageConverters);
+//        //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTTP 415 error)
+//        //this must be done because we added dependencies to com.fasterxml.jackson.dataformat.xml.XmlMapper to read data from IIT web service!
+//        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
+//        List<HttpMessageConverter<?>> newMessageConverters = new ArrayList<HttpMessageConverter<?>>();
+//        for (HttpMessageConverter<?> messageConverter : messageConverters) {
+//            if ( messageConverter instanceof MappingJackson2XmlHttpMessageConverter || messageConverter instanceof Jaxb2RootElementHttpMessageConverter ) {
+//                LOG.debug("REMOVE   converter: " + messageConverter.getClass().getName());
+//            } else {
+//                LOG.debug("PRESERVE converter: " + messageConverter.getClass().getName());
+//                newMessageConverters.add(messageConverter);
+//            }
+//        }
+//        restTemplate.setMessageConverters(newMessageConverters);
         LOG.debug("END.init.");
     }
 
@@ -84,74 +81,66 @@ public class MeteorologyBzDataPusher extends JSONPusher {
 
         for (MeteorologyBzDto dto : data) {
 
-            //removeAlreadyPushedData(dto);
-
             StationDto stationDto = dto.getStation();
 
-            //Exclude Stations having endDate < today
-            if ( dto.isValid() ) {
+            String stationId = stationDto.getId();
+            Map<String, List<TimeSerieDto>> measurementsByType = dto.getTimeSeriesMap();
+            Map<String, DataTypeDto> dataTypeMap = dto.getDataTypeMap();
+            Set<String> dataTypeNames = dataTypeMap!=null ? dataTypeMap.keySet() : new HashSet<>();
 
-                String stationId = stationDto.getId();
-                Map<String, List<TimeSerieDto>> measurementsByType = dto.getTimeSeriesMap();
-                Map<String, DataTypeDto> dataTypeMap = dto.getDataTypeMap();
-                Set<String> dataTypeNames = dataTypeMap!=null ? dataTypeMap.keySet() : new HashSet<>();
+            //Check if we already treated this station (branch), if not found create the map and the list of records
+            DataMapDto<RecordDtoImpl> recordsByStation = map.getBranch().get(stationId);
+            if ( recordsByStation == null ) {
+                recordsByStation = new DataMapDto<RecordDtoImpl>();
+                map.getBranch().put(stationId, recordsByStation);
+                List<RecordDtoImpl> dataList = new ArrayList<RecordDtoImpl>();
+                recordsByStation.setData(dataList);
+                countStations++;
+            }
 
-                //Check if we already treated this station (branch), if not found create the map and the list of records
-                DataMapDto<RecordDtoImpl> recordsByStation = map.getBranch().get(stationId);
-                if ( recordsByStation == null ) {
-                    recordsByStation = new DataMapDto<RecordDtoImpl>();
-                    map.getBranch().put(stationId, recordsByStation);
-                    List<RecordDtoImpl> dataList = new ArrayList<RecordDtoImpl>();
-                    recordsByStation.setData(dataList);
-                    countStations++;
-                }
+            for (String dataTypeName : dataTypeNames) {
 
-                for (String dataTypeName : dataTypeNames) {
+                List<TimeSerieDto> measurements = measurementsByType.get(dataTypeName);
+                DataTypeDto dataType = dataTypeMap.get(dataTypeName);
 
-                    List<TimeSerieDto> measurements = measurementsByType.get(dataTypeName);
-                    DataTypeDto dataType = dataTypeMap.get(dataTypeName);
+                for (TimeSerieDto measurementDto : measurements) {
 
-                    for (TimeSerieDto measurementDto : measurements) {
+                    //Get values from MeasutementDto and convert to SimpleRecordDto
+                    String typeName = dataType.getName();
+                    String strDate = measurementDto.getDATE();
+                    Date date = DCUtils.convertStringTimezoneToDate(strDate);
+                    long timestamp = date!=null ? date.getTime() : -1;
+                    Object value = measurementDto.getVALUE();
 
-                        //Get values from MeasutementDto and convert to SimpleRecordDto
-                        String typeName = dataType.getName();
-                        String strDate = measurementDto.getDATE();
-                        Date date = DCUtils.convertStringTimezoneToDate(strDate);
-                        long timestamp = date!=null ? date.getTime() : -1;
-                        Object value = measurementDto.getVALUE();
+                    if ( timestamp>0 && date!=null && value!=null ) {
+                        SimpleRecordDto record = new SimpleRecordDto();
+                        record.setValue(value);
+                        record.setTimestamp(timestamp);
+                        record.setPeriod(period);
 
-                        if ( timestamp>0 && date!=null && value!=null ) {
-                            SimpleRecordDto record = new SimpleRecordDto();
-                            record.setValue(value);
-                            record.setTimestamp(timestamp);
-                            record.setPeriod(period);
-
-                            //Check if we already treated this type (branch), if not found create the map and the list of records
-                            DataMapDto<RecordDtoImpl> recordsByType = recordsByStation.getBranch().get(typeName);
-                            if ( recordsByType == null ) {
-                                recordsByType = new DataMapDto<RecordDtoImpl>();
-                                recordsByStation.getBranch().put(typeName, recordsByType);
-                                List<RecordDtoImpl> dataList = new ArrayList<RecordDtoImpl>();
-                                recordsByType.setData(dataList);
-                                countBranches++;
-                            }
-
-                            //Add the measure in the list
-                            List<RecordDtoImpl> records = recordsByType.getData();
-                            records.add(record);
-                            countMeasures++;
-                            LOG.debug("ADD  MEASURE:  id="+stationDto.getId()+", typeName="+typeName+"  value="+value);
-                        } else {
-                            LOG.warn( "SKIP MEASURE:  id="+stationDto.getId()+", typeName="+typeName+"  value="+value+"  timestamp="+timestamp+"  date="+date+"  strDate="+strDate);
+                        //Check if we already treated this type (branch), if not found create the map and the list of records
+                        DataMapDto<RecordDtoImpl> recordsByType = recordsByStation.getBranch().get(typeName);
+                        if ( recordsByType == null ) {
+                            recordsByType = new DataMapDto<RecordDtoImpl>();
+                            recordsByStation.getBranch().put(typeName, recordsByType);
+                            List<RecordDtoImpl> dataList = new ArrayList<RecordDtoImpl>();
+                            recordsByType.setData(dataList);
+                            countBranches++;
                         }
 
+                        //Add the measure in the list
+                        List<RecordDtoImpl> records = recordsByType.getData();
+                        records.add(record);
+                        countMeasures++;
+                        LOG.debug("ADD  MEASURE:  id="+stationDto.getId()+", typeName="+typeName+"  value="+value);
+                    } else {
+                        LOG.warn( "SKIP MEASURE:  id="+stationDto.getId()+", typeName="+typeName+"  value="+value+"  timestamp="+timestamp+"  date="+date+"  strDate="+strDate);
                     }
 
                 }
 
-            } else {
-                LOG.debug("SKIP MEASURES: station_id="+stationDto.getId());
             }
+
         }
 
         LOG.debug("countStations="+countStations+"  countBranches="+countBranches+", countMeasures="+countMeasures);
@@ -184,51 +173,16 @@ public class MeteorologyBzDataPusher extends JSONPusher {
         StationList stations = new StationList();
         for (MeteorologyBzDto dto : data) {
             StationDto stationDto = dto.getStation();
-            boolean isValid = dto.isValid();
 
-            //Exclude Stations having endDate<today
-            if ( isValid ) {
-                stations.add(stationDto);
-                countStations++;
-                LOG.debug("ADD  STATION:  id="+stationDto.getId()+", isValid="+isValid);
-            } else {
-                LOG.debug("SKIP STATION:  id="+stationDto.getId()+", isValid="+isValid);
-            }
+            stations.add(stationDto);
+            countStations++;
+            LOG.debug("ADD  STATION:  id="+stationDto.getId());
+
         }
         LOG.debug("countStations="+countStations+"  stations: "+stations);
         LOG.debug("END.mapStations2Bdp");
         return stations;
     }
-
-//    public List<DataTypeDto> mapDataTypes2Bdp(List<MeteorologyBzDto> data) {
-//        LOG.debug("START.mapDataTypes2Bdp");
-//        if (data == null) {
-//            return null;
-//        }
-//
-//        List<DataTypeDto> dataTypeList = new ArrayList<DataTypeDto>();
-//        Set<String> dataTypeNames = new HashSet<String>();
-//        for (MeteorologyBzDto dto : data) {
-//            Map<String, DataTypeDto> dataTypes = dto.getDataTypes();
-//            Set<String> keySet = dataTypes!=null ? dataTypes.keySet() : null;
-//
-//            if ( keySet!=null && keySet.size()>0 ) {
-//                for (String key : keySet) {
-//                    if ( !dataTypeNames.contains(key) ) {
-//                        DataTypeDto type = dataTypes.get(key);
-//                        dataTypeList.add(type);
-//                        dataTypeNames.add(key);
-//                        LOG.debug("ADD DataTypeDto="+type);
-//                    }
-//                }
-//            }
-//
-//        }
-//
-//        LOG.debug("dataTypeList: "+dataTypeList);
-//        LOG.debug("END.mapDataTypes2Bdp");
-//        return dataTypeList;
-//    }
 
     public Date getLastSavedRecordForStationAndDataType(StationDto station, DataTypeDto dataType) {
         LOG.debug("START.getLastSavedRecordForStation");
@@ -245,57 +199,10 @@ public class MeteorologyBzDataPusher extends JSONPusher {
             lastSavedRecord = (Date) dateOfLastRecord;
         }
 
-        LOG.debug("stationCode="+stationCode+"  lastSavedRecord="+lastSavedRecord);
+        LOG.debug("stationCode="+stationCode+"  typeName="+typeName+"  lastSavedRecord="+lastSavedRecord);
         LOG.debug("END.getLastSavedRecordForStation");
         return lastSavedRecord;
     }
-
-//    public void removeAlreadyPushedData(MeteorologyBzDto meteoBzDto) {
-//        LOG.debug("START.removeAlreadyPushedData");
-//        if (meteoBzDto == null) {
-//            return;
-//        }
-//
-//        //Exit if it is not necessary to read date of last saved record (check the environment parameter and the flag on the station)
-//        boolean envParamCheck = converter.isCheckDateOfLastRecord();
-//        boolean stationCheck = meteoBzDto.isCheckLastSavedRecord();
-//        if ( !stationCheck || !envParamCheck ) {
-//            return;
-//        }
-//
-//        //Read date of last saved record, save it on the DTO for later use. Save also the information that we read the data to avoid unnecessary reads
-//        Date lastSavedRecord = meteoBzDto.getLastSavedRecord();
-//        if ( lastSavedRecord == null ) {
-//            StationDto station = meteoBzDto.getStation();
-//            lastSavedRecord = getLastSavedRecordForStation(station);
-//            meteoBzDto.setLastSavedRecord(lastSavedRecord);
-//            meteoBzDto.setCheckLastSavedRecord(false);
-//        }
-//        if ( lastSavedRecord != null ) {
-//            // Remove measurements older than lastSavedRecord in order to have less data to send to the Data Hub
-//            List<MeteorologyBzMeasurementListDto> measurementsByType = meteoBzDto.getMeasurementsByType();
-//            for ( int i=0 ; measurementsByType!=null && i<measurementsByType.size() ; i++ ) {
-//                MeteorologyBzMeasurementListDto measurementListDto = measurementsByType.get(i);
-//                List<MeteorologyBzMeasurementDto> measurements = measurementListDto.getMeasurements();
-//                List<MeteorologyBzMeasurementDto> filteredList = new ArrayList<MeteorologyBzMeasurementDto>();
-//                MeteorologyBzMeasurementDto lastMeasurementDto = null;
-//                for ( int j=0 ; measurements!=null && j<measurements.size() ; j++ ) {
-//                    MeteorologyBzMeasurementDto measurementDto = measurements.get(j);
-//                    Date date = measurementDto.getDate();
-//                    if ( date.compareTo(lastSavedRecord) >= 0 ) {
-//                        filteredList.add(measurementDto);
-//                        lastMeasurementDto = measurementDto;
-//                    }
-//                }
-//                measurementListDto.setMeasurements(filteredList);
-//                if ( lastMeasurementDto!=null && LOG.isDebugEnabled() ) {
-//                    LOG.debug("LAST MEASURE: " + lastMeasurementDto);
-//                }
-//            }
-//        }
-//
-//        LOG.debug("END.removeAlreadyPushedData");
-//    }
 
     @Override
     public String toString() {

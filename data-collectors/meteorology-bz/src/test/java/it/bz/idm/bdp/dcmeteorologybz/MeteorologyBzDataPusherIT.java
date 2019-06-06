@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import it.bz.idm.bdp.dcmeteorologybz.dto.Feature;
 import it.bz.idm.bdp.dcmeteorologybz.dto.MeteorologyBzDto;
 import it.bz.idm.bdp.dcmeteorologybz.dto.TimeSerieDto;
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -77,8 +76,9 @@ public class MeteorologyBzDataPusherIT extends AbstractJUnit4SpringContextTests 
             List<TimeSerieDto> timeSeries = reader.convertMeasurementsResponseToInternalDTO(responseStringMeasurements);
 
             dataMeasurements = dataStations.get(0);
-            Feature stationAttrs = dataMeasurements.getStationAttributes();
-            dataMeasurements.getTimeSeriesMap().get(MeteorologyBzDataRetrieverTest.DATA_PUSH_TYPE_CODE).addAll(timeSeries);
+            for (String typeCode : MeteorologyBzDataRetrieverTest.DATA_PUSH_TYPE_CODES) {
+                dataMeasurements.getTimeSeriesMap().put(typeCode, timeSeries);
+            }
         } catch (Exception e) {
             LOG.error("Exception in testPush: "+e, e);
             Assert.fail();
@@ -129,7 +129,7 @@ public class MeteorologyBzDataPusherIT extends AbstractJUnit4SpringContextTests 
                 pusher.pushData(stationRec);
             }
         } catch (Exception e) {
-            errors.add("STATION-REC: "+e);
+            errors.add("MEASUREMENTS-REC: "+e);
         }
     }
 

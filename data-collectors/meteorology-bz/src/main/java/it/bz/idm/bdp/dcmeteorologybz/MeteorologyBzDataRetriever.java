@@ -67,8 +67,8 @@ public class MeteorologyBzDataRetriever {
     private CloseableHttpClient clientStations;
     private CloseableHttpClient clientSensors;
     private CloseableHttpClient clientMeasurements;
+
     private ObjectMapper mapper = new ObjectMapper();
-//    private XmlMapper mapper = new XmlMapper();
 
     private String endpointMethodStations;
     private String serviceUrlStations;
@@ -272,35 +272,6 @@ public class MeteorologyBzDataRetriever {
 
         List<MeteorologyBzDto> dtoList = new ArrayList<MeteorologyBzDto>();
 
-//        StringReader strReader = new StringReader(responseString);
-//        JsonReader jsonReader = Json.createReader(strReader);
-
-        /*
-         * Example JSON returned by the service
-{
-  "name": "station",
-  "type": "FeatureCollection",
-  "crs": {},
-  "features": [
-    ....
-  ]
-}
-         */
-
-//        //Get first level, we hava a JsonObject
-//        JsonObject mainObj = jsonReader.readObject();
-//
-//        //Get list of stations, it is a JsonArray stored in attribute "features"
-//        JsonArray featuresArray = mainObj.getJsonArray("features");
-//        List<JsonObject> stationList = featuresArray.getValuesAs(JsonObject.class);
-//
-//        //Convert in internal DTO without calling measurement service
-//        for (JsonObject stationObj : stationList) {
-//            StationDto stationDto = converter.convertExternalStationDtoToStationDto(stationObj);
-//            MeteorologyBzDto dataByCity = new MeteorologyBzDto(stationDto);
-//            dtoList.add(dataByCity);
-//        }
-
         FeaturesDto data = mapper.readValue(responseString, new TypeReference<FeaturesDto>() {});
         List<Feature> dataList = data!=null ? data.getFeatures() : null;
 
@@ -325,62 +296,24 @@ public class MeteorologyBzDataRetriever {
         return dtoList;
     }
 
-//    /**
-//     * Converts the string returned by the Meteo service in a more useful internal representation
-//     * 
-//     * @param responseString
-//     * @return
-//     * @throws Exception
-//     */
-//    public List<DataTypeDto> convertSensorsResponseToInternalDTO(String responseString) throws Exception {
-//
-//        List<DataTypeDto> dtoList = new ArrayList<DataTypeDto>();
-//
-//        /*
-//         * Example JSON returned by the service
-//[
-//  {
-//    "SCODE":"89940PG",
-//    "TYPE":"WT",
-//    "DESC_D":"Wassertemperatur",
-//    "DESC_I":"Temperatura acqua",
-//    "DESC_L":"Temperatura dl’ega",
-//    "UNIT":"°C",
-//    "DATE":"2019-02-20T11:10:00CET",
-//    "VALUE":3.8
-//  },
-//  ...
-//]
-//         */
-//
-//        List<SensorDto> dataList = mapper.readValue(responseString, new TypeReference<List<SensorDto>>() {});
-//        Set<String> sensorNames = new HashSet<String>();
-//
-//        if (LOG.isDebugEnabled()) {
-//            LOG.debug("dataList: "+dataList);
-//        }
-//
-//        if ( dataList == null ) {
-//            return null;
-//        }
-//        for (SensorDto sensorObj : dataList) {
-//            DataTypeDto dataTypeDto = converter.convertExternalSensorDtoToDataTypeDto(sensorObj);
-//            String name = dataTypeDto!=null ? dataTypeDto.getName() : null;
-//            if ( name!=null && !sensorNames.contains(name) ) {
-//                sensorNames.add(name);
-//                dtoList.add(dataTypeDto);
-//            }
-//        }
-//
-//        if (LOG.isDebugEnabled()) {
-//            LOG.debug("dtoList: "+dtoList); 
-//        }
-//        return dtoList;
-//    }
-
     /**
      * Converts the string returned by the Meteo service in a more useful internal representation.
      * Data regarding the measurements are added to the corresponding MeteorologyBzDto.
+     * 
+     * Example JSON returned by the service
+     * [
+     *   {
+     *     "SCODE":"89940PG",
+     *     "TYPE":"WT",
+     *     "DESC_D":"Wassertemperatur",
+     *     "DESC_I":"Temperatura acqua",
+     *     "DESC_L":"Temperatura dl’ega",
+     *     "UNIT":"°C",
+     *     "DATE":"2019-02-20T11:10:00CET",
+     *     "VALUE":3.8
+     *   },
+     *   ...
+     * ]
      * 
      * @param responseString
      * @return
@@ -389,23 +322,6 @@ public class MeteorologyBzDataRetriever {
     public List<DataTypeDto> convertSensorsResponseToInternalDTO(String responseString, List<MeteorologyBzDto> stationList) throws Exception {
 
         List<DataTypeDto> dtoList = new ArrayList<DataTypeDto>();
-
-        /*
-         * Example JSON returned by the service
-[
-  {
-    "SCODE":"89940PG",
-    "TYPE":"WT",
-    "DESC_D":"Wassertemperatur",
-    "DESC_I":"Temperatura acqua",
-    "DESC_L":"Temperatura dl’ega",
-    "UNIT":"°C",
-    "DATE":"2019-02-20T11:10:00CET",
-    "VALUE":3.8
-  },
-  ...
-]
-         */
 
         //Convert JSON string to External DTO
         List<SensorDto> dataList = mapper.readValue(responseString, new TypeReference<List<SensorDto>>() {});
@@ -449,23 +365,21 @@ public class MeteorologyBzDataRetriever {
     /**
      * Converts the string returned by the Meteo service in a more useful internal representation
      * 
+     * Example of JSON retrieved for measures of one station and sensor
+     * 
+     * [
+     *   {
+     *     "DATE":"2019-06-01T13:20:00CEST",
+     *     "VALUE":21.5
+     *   },
+     *   ...
+     * ]
+     * 
      * @param responseString
      * @return
      * @throws Exception
      */
     public List<TimeSerieDto> convertMeasurementsResponseToInternalDTO(String responseString) throws Exception {
-
-        /*
-         * Example of JSON retrieved for measures of one station and sensor
-         * 
-[
-  {
-    "DATE":"2019-06-01T13:20:00CEST",
-    "VALUE":21.5
-  },
-  ...
-]
-         */
 
         //Convert JSON string to External DTO
         List<TimeSerieDto> dataList = mapper.readValue(responseString, new TypeReference<List<TimeSerieDto>>() {});
@@ -551,36 +465,6 @@ public class MeteorologyBzDataRetriever {
         LOG.debug("END.fetchStations");
         return dtoList;
     }
-
-//    /**
-//     * Fetch anagrafic data from Meteo service for all dataTypes.
-//     * All available DataTypes are fetched using the sensors service which provides a list of all measures,
-//     * from the measures only a single distinct instance of each DataType is added to the output list.
-//     * 
-//     * @return
-//     * @throws Exception
-//     */
-//    public List<DataTypeDto> fetchDataTypes() throws Exception {
-//        LOG.debug("START.fetchDataTypes");
-//        List<DataTypeDto> dtoList = new ArrayList<DataTypeDto>();
-//        try {
-//            StringBuffer err = new StringBuffer();
-//
-//            //Call service that retrieves the list of stations
-//            String responseString = callRemoteService(clientSensors, serviceUrlSensors, endpointMethodSensors, null);
-//
-//            //Convert to internal representation
-//            dtoList = convertSensorsResponseToInternalDTO(responseString, null);
-//            if ( dtoList.size()==0 && err.length()>0 ) {
-//                throw new RuntimeException("NO DATA FETCHED: "+err);
-//            }
-//        } catch (Exception ex) {
-//            LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
-//            throw ex;
-//        }
-//        LOG.debug("END.fetchDataTypes");
-//        return dtoList;
-//    }
 
     /**
      * Fetch anagrafic data from Meteo service for all dataTypes.
@@ -678,6 +562,7 @@ public class MeteorologyBzDataRetriever {
                     }
                 }
 
+                //Fill endpoint params
                 List<NameValuePair> endpointParams = new ArrayList<NameValuePair>();
                 String paramNameDateFrom = null;
                 String paramNameDateTo   = null;
@@ -689,18 +574,22 @@ public class MeteorologyBzDataRetriever {
                         String paramValue = null;
                         BasicNameValuePair param = null;
 
+                        //Parameters can be of various type
                         if ( ServiceCallParam.TYPE_FIXED_VALUE.equals(entry.type) ) {
+                            //If parameter is of type FIXED_VALUE take the value read from env property
                             paramValue = entry.value;
                             if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
                                 param = new BasicNameValuePair(paramName, paramValue);
                             }
                         } else if ( ServiceCallParam.TYPE_STATION_VALUE.equals(entry.type) ) {
+                            //If parameter is of type STATION_VALUE take the value from the station object (attribute name is read from env property)
                             String attrName = entry.value;
                             paramValue = DCUtils.allowNulls(DCUtils.getProperty(attrName, stationDto));
                             if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
                                 param = new BasicNameValuePair(paramName, paramValue);
                             }
                         } else if ( ServiceCallParam.TYPE_SENSOR_VALUE.equals(entry.type) ) {
+                            //If parameter is of type SENSOR_VALUE take the value from the sensor object (attribute name is read from env property)
                             String attrName = entry.value;
                             paramValue = DCUtils.allowNulls(DCUtils.getProperty(attrName, sensorDto));
                             if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
@@ -708,12 +597,14 @@ public class MeteorologyBzDataRetriever {
                             }
                         } else if ( ServiceCallParam.TYPE_FUNCTION.equals(entry.type) ) {
                             if ( ServiceCallParam.FUNCTION_NAME_CURR_DATE.equals(entry.value) ) {
+                                //If parameter is of type FUNCTION CURR_DATE take the value from current date
                                 paramValue = strNow;
                                 strDateTo = strNow;
 
                                 //Optimization: we get only one day of measurements otherwise fetch af too many data is time consuming
+                                long millisFetchPeriod = converter.getFetchPeriod() * MeteorologyBzDataConverter.MILLIS_ONE_DAY;
                                 Date tmpDateFrom = DCUtils.convertStringToDate(strDateFrom, "yyyyMMddHHmm");
-                                Date tmpDateTo   = new Date(tmpDateFrom.getTime() + MeteorologyBzDataConverter.MILLIS_ONE_DAY);
+                                Date tmpDateTo   = new Date(tmpDateFrom.getTime() + millisFetchPeriod);
                                 String strTmpDateTo = DCUtils.convertDateToString(tmpDateTo, "yyyyMMddHHmm");
                                 if ( strTmpDateTo.compareTo(strDateTo) < 0 ) {
                                     strDateTo = strTmpDateTo;
@@ -725,6 +616,7 @@ public class MeteorologyBzDataRetriever {
                                     paramNameDateTo = paramName;
                                 }
                             } else if ( ServiceCallParam.FUNCTION_NAME_LAST_DATE.equals(entry.value) ) {
+                                //If parameter is of type FUNCTION LAST_DATE take the value from last record saved in Open Data Hub
                                 paramValue = strDateFrom;
                                 if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
                                     param = new BasicNameValuePair(paramName, paramValue);
@@ -738,6 +630,8 @@ public class MeteorologyBzDataRetriever {
                         }
                     }
                 }
+
+                LOG.debug("Fetch timeseries: endpointParams=" + endpointParams);
 
                 String responseString = callRemoteService(clientMeasurements, serviceUrlMeasurements, endpointMethodMeasurements, endpointParams);
 
@@ -761,7 +655,9 @@ public class MeteorologyBzDataRetriever {
                         }
                         nextEndpointParams.add(nvp);
                     }
-                    responseString = callRemoteService(clientMeasurements, serviceUrlMeasurements, endpointMethodMeasurements, nextEndpointParams);
+                    endpointParams = nextEndpointParams;
+                    LOG.debug("RETRY Fetch timeseries: nextEndpointParams=" + endpointParams);
+                    responseString = callRemoteService(clientMeasurements, serviceUrlMeasurements, endpointMethodMeasurements, endpointParams);
 
                     timeSeriesList = convertMeasurementsResponseToInternalDTO(responseString);
                     size = timeSeriesList!=null ? timeSeriesList.size() : -1;
@@ -769,50 +665,36 @@ public class MeteorologyBzDataRetriever {
                     isPastPeriod = strDateTo.compareTo(strNow) < 0;
                 }
 
-//                //Optimization: limit the list so that no more than one complete day of measurements is stored 
-//                //otherwise fetch of historic data is too time consuming.
-//                //We fetch in any case all data starting from DATE_FROM and CURR_DATE, min date could be greater than requested DATE_FROM
-//                //Find min date in the list
-//                String strMinDate = null;
-//                for ( int i=0 ; i<size ; i++ ) {
-//                    TimeSerieDto tsDto = timeSeriesList.get(i);
-//                    String date = tsDto.getDATE();
-//                    if ( DCUtils.paramNotNull(date) ) {
-//                        if ( strMinDate == null ) {
-//                            strMinDate = date;
-//                        } else if ( strMinDate.compareTo(date) > 0 ) {
-//                            strMinDate = date;
-//                        }
-//                    }
-//                }
-//                String strFromDate = strMinDate; //2019-01-01T00:00:00CET
-//                Date fromDate = DCUtils.convertStringTimezoneToDate(strFromDate);
-//                String strToDate   = null;
-//                Date toDate = null;
-//                if ( fromDate != null ) {
-//                    toDate = new Date(fromDate.getTime() + MeteorologyBzDataConverter.MILLIS_ONE_DAY);
-//                    strToDate = DCUtils.convertDateToString(toDate, "yyyy-MM-dd'T'HH:mm:ss");
-//                    //Create a temp list, excluding measurements with date greater than (min + 1day)
-//                    List<TimeSerieDto> tmpList = new ArrayList<TimeSerieDto>();
-//                    for ( int i=0 ; i<size ; i++ ) {
-//                        TimeSerieDto tsDto = timeSeriesList.get(i);
-//                        String date = tsDto.getDATE();
-//                        if ( DCUtils.paramNotNull(date) && date.compareTo(strToDate)<=0 ) {
-//                            tmpList.add(tsDto);
-//                        }
-//                    }
-//                    timeSeriesList = tmpList;
-//                    size = timeSeriesList.size();
-//                }
-
                 //Store TimeSerieList in DTO
                 if ( size > 0 ) {
                     Map<String, List<TimeSerieDto>> timeSeriesMap = meteoDto.getTimeSeriesMap();
                     List<TimeSerieDto> list = timeSeriesMap.get(sensorType);
-                    if ( list != null ) {
-                        list.addAll(timeSeriesList);
+                    if ( list == null ) {
+                        list = new ArrayList<TimeSerieDto>(); 
+                        timeSeriesMap.put(sensorType, list);
                     } else {
-                        timeSeriesMap.put(sensorType, timeSeriesList);
+                        LOG.warn("ALREADY PRESENT VALUES:  stationId="+stationId+"  dataType="+dataTypeDto.getName()+"  endpointParams="+endpointParams);
+                    }
+                    //In some cases we have duplicate values, before adding a new value check if it already exists
+//                    if ( list != null ) {
+//                        list.addAll(timeSeriesList);
+//                    } else {
+//                        timeSeriesMap.put(sensorType, timeSeriesList);
+//                    }
+                    for (TimeSerieDto newDto : timeSeriesList) {
+                        String newDate = newDto.getDATE();
+                        boolean duplicated = false;
+                        for (int i=0 ; !duplicated && i<list.size() ; i++) {
+                            TimeSerieDto oldDto = list.get(i);
+                            String oldDate = oldDto.getDATE();
+                            if ( oldDate.equals(newDate) ) {
+                                duplicated = true;
+                                LOG.warn("DUPLICATED VALUE:  stationId="+stationId+"  dataType="+dataTypeDto.getName()+"  date="+oldDate+"  value="+oldDto.getVALUE()+"  endpointParams="+endpointParams);
+                            }
+                        }
+                        if ( !duplicated ) {
+                            list.add(newDto);
+                        }
                     }
                 }
 
@@ -825,7 +707,6 @@ public class MeteorologyBzDataRetriever {
         }
 
         LOG.debug("END.fetchDataByStation("+stationDto+")");
-        //return extDto;
     }
 
 }
