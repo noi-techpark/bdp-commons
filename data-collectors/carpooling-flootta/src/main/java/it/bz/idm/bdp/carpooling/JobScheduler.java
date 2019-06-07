@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import it.bz.idm.bdp.carpooling.dto.generated.JServices;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.StationList;
 
 @Component
 public class JobScheduler {
@@ -18,7 +19,9 @@ public class JobScheduler {
 	private DataRetriever retriever;
 
 	public void syncStations(){
-		pusher.syncStations(retriever.getHubIds());
+		StationList hubs = retriever.getHubIds();
+		if (!hubs.isEmpty()) // to avoid deactivation of all hubs
+			pusher.syncStations(hubs);
 	}
 
 	public void syncUser(){
