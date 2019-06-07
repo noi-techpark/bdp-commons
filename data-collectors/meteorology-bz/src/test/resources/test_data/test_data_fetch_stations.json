@@ -1,0 +1,92 @@
+{
+	"name": "station",
+	"type": "FeatureCollection",
+	"crs": {
+		"type": "name",
+		"properties": {
+			"name": "EPSG:25832"
+		}
+	},
+	"features": [
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					669803.015640121,
+					5123442.04315501
+				]
+			},
+			"properties": {
+				"SCODE": "89940PG",
+				"NAME_D": "ETSCH BEI SALURN",
+				"NAME_I": "ADIGE A SALORNO",
+				"NAME_L": "ETSCH BEI SALURN",
+				"NAME_E": "ETSCH BEI SALURN",
+				"ALT": 210,
+				"LONG": 11.20262,
+				"LAT": 46.243333
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					626295.144332811,
+					5164467.60475602
+				]
+			},
+			"properties": {
+				"SCODE": "08155PG",
+				"NAME_D": "ETSCH BEI EYRS",
+				"NAME_I": "ADIGE A ORIS",
+				"NAME_L": "ETSCH BEI EYRS",
+				"NAME_E": "ETSCH BEI EYRS",
+				"ALT": 873.99,
+				"LONG": 10.64963,
+				"LAT": 46.621876
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					669803.015640121,
+					5123442.04315501
+				]
+			},
+			"properties": {
+				"SCODE": "ST_001",
+				"NAME_D": "DESC ST_001 DE",
+				"NAME_I": "DESC ST_001 IT",
+				"NAME_L": "DESC ST_001 LL",
+				"NAME_E": "DESC ST_001 EN",
+				"ALT": 210,
+				"LONG": 11.20262,
+				"LAT": 46.243333
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					670190.962489375,
+					5183397.27205222
+				]
+			},
+			"properties": {
+				"SCODE": "22210MS",
+				"NAME_D": "St. Martin in Passeier",
+				"NAME_I": "S. Martino in Passiria",
+				"NAME_L": "St. Martin in Passeier",
+				"NAME_E": "St. Martin in Passeier",
+				"ALT": 586,
+				"LONG": 11.2296,
+				"LAT": 46.7824
+			}
+		}
+	]
+}
