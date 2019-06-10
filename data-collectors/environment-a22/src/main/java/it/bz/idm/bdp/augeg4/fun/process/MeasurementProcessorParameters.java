@@ -6,6 +6,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -43,12 +44,12 @@ public class MeasurementProcessorParameters {
         MeasurementParametersId id = getMeasurementParametersId(record);
         parametersByMeasurementParametersId.put(id, new MeasurementParameters(
                 id,
-                Double.parseDouble(record.get("a")),
-                Double.parseDouble(record.get("b")),
-                Double.parseDouble(record.get("c")),
-                Double.parseDouble(record.get("d")),
-                Double.parseDouble(record.get("e")),
-                Double.parseDouble(record.get("f"))
+                new BigDecimal(record.get("a")),
+                new BigDecimal(record.get("b")),
+                new BigDecimal(record.get("c")),
+                new BigDecimal(record.get("d")),
+                new BigDecimal(record.get("e")),
+                new BigDecimal(record.get("f"))
         ));
     }
 

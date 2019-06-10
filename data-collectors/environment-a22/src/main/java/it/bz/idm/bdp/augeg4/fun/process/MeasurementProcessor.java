@@ -4,20 +4,27 @@ import it.bz.idm.bdp.augeg4.dto.AugeG4RawData;
 import it.bz.idm.bdp.augeg4.dto.MeasurementId;
 import it.bz.idm.bdp.augeg4.dto.ProcessedMeasurement;
 import it.bz.idm.bdp.augeg4.dto.RawMeasurement;
+import it.bz.idm.bdp.augeg4.util.math.BigDecimalMath;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 public class MeasurementProcessor {
 
     private static final Logger LOG = LogManager.getLogger(MeasurementProcessor.class.getName());
 
-    // TODO: Where do we keep these hard coded ids?
     public static final MeasurementId MEASUREMENT_ID_O3 = new MeasurementId(8);
+    public static final MeasurementId MEASUREMENT_ID_NO2 = new MeasurementId(9);
     public static final MeasurementId MEASUREMENT_ID_TEMPERATURA = new MeasurementId(2);
 
     private final MeasurementProcessorParameters measurementProcessorParameters = new MeasurementProcessorParameters();
+    private final int RAD = 1;
+    private static final MathContext mathContext = new MathContext(5, RoundingMode.HALF_UP);
+
 
     public Optional<ProcessedMeasurement> process(AugeG4RawData rawData, RawMeasurement rawMeasurement) {
         if (!isToProcess(rawData, rawMeasurement)) {
@@ -65,21 +72,35 @@ public class MeasurementProcessor {
         }
         MeasurementParameters parameters = parametersContainer.get();
         return Optional.of(applyFunction(
-                rawMeasurement.getValue(),
+                BigDecimal.valueOf(rawMeasurement.getValue()),
                 parameters.getA(),
                 parameters.getB(),
                 parameters.getC(),
                 parameters.getD(),
                 parameters.getE(),
                 parameters.getF(),
-                O3.get(),
-                temperature.get(),
-                1 // TODO: Replace with Rad
+                BigDecimal.valueOf(O3.get()),
+                BigDecimal.valueOf(temperature.get()),
+                BigDecimal.valueOf(RAD)
         ));
     }
 
-    private double applyFunction(double x, double a, double b, double c, double d, double e, double f, double O3, double T_int, double Rad) {
-        return a * Math.pow(x, 2) + b * x + c * O3 + d * T_int + e * Rad + f;
+    private double applyFunction(BigDecimal x,
+                                 BigDecimal a,
+                                 BigDecimal b,
+                                 BigDecimal c,
+                                 BigDecimal d,
+                                 BigDecimal e,
+                                 BigDecimal f,
+                                 BigDecimal O3,
+                                 BigDecimal T_int,
+                                 BigDecimal Rad) {
+        return a.multiply(x.pow(2,mathContext),mathContext)
+                .add(b.multiply(x,mathContext),mathContext)
+                .add(c.multiply(BigDecimalMath.pow(O3,new BigDecimal("0.1")),mathContext),mathContext)
+                .add(d.multiply(T_int.pow(4),mathContext),mathContext)
+                .add(e.multiply(Rad,mathContext),mathContext)
+                .add(f,mathContext).doubleValue();
     }
 
     private Optional<Double> getMeasurementFromRawData(AugeG4RawData rawData, MeasurementId measurementId) {

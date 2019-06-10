@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import java.util.Optional;
 
-import static it.bz.idm.bdp.augeg4.fun.process.MeasurementProcessor.MEASUREMENT_ID_O3;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
@@ -17,11 +16,12 @@ public class MeasurementProcessorParametersTest {
         MeasurementProcessorParameters processorParameters = new MeasurementProcessorParameters();
 
         // when
-        Optional<MeasurementParameters> parameters = processorParameters.getMeasurementParameters(controlUnitId, MEASUREMENT_ID_O3);
+        Optional<MeasurementParameters> parameters = processorParameters.getMeasurementParameters(controlUnitId, MeasurementProcessor.MEASUREMENT_ID_NO2);
 
         // expect
         assertTrue(parameters.isPresent());
-        assertEquals(1.0, parameters.get().getA());
+        assertEquals(-450.3, parameters.get().getA().doubleValue());
+
     }
 
 }
