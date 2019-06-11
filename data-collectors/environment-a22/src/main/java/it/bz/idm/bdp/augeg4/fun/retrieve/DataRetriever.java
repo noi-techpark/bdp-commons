@@ -4,8 +4,6 @@ import it.bz.idm.bdp.augeg4.ConnectorConfig;
 import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4ElaboratedDataDto;
 import it.bz.idm.bdp.augeg4.face.DataRetrieverFace;
 import it.bz.idm.bdp.augeg4.util.AugeMqttConfiguration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +14,6 @@ public class DataRetriever implements DataRetrieverFace {
 
 	@Autowired
 	ConnectorConfig config;
-
-	/** Logging your efforts */
-	private static final Logger LOG = LogManager.getLogger(DataRetriever.class.getName());
 
 	private AugeSubscriber augeSubscriber;
 

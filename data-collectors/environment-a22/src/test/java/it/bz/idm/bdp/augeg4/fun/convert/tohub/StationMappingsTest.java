@@ -22,7 +22,7 @@ public class StationMappingsTest {
         assertTrue(mappingContainer.isPresent());
 
         StationMapping mapping = mappingContainer.get();
-        assertEquals(mapping.getName(), "Stazione di test 01");
+        assertEquals(mapping.getName(), "103.700_APPA BZ");
     }
 
     @Test

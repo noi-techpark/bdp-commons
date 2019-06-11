@@ -1,5 +1,7 @@
 package it.bz.idm.bdp.augeg4.fun.process;
 
+import java.math.BigDecimal;
+
 /**
  * Parameters used by the MeasurementProcessor for a specific Measurement
  */
@@ -7,14 +9,14 @@ public class MeasurementParameters {
 
     private MeasurementParametersId id;
 
-    private double a;
-    private double b;
-    private double c;
-    private double d;
-    private double e;
-    private double f;
+    private BigDecimal a;
+    private BigDecimal b;
+    private BigDecimal c;
+    private BigDecimal d;
+    private BigDecimal e;
+    private BigDecimal f;
 
-    public MeasurementParameters(MeasurementParametersId id, double a, double b, double c, double d, double e, double f) {
+    public MeasurementParameters(MeasurementParametersId id, BigDecimal a, BigDecimal b, BigDecimal c, BigDecimal d, BigDecimal e, BigDecimal f) {
         this.id = id;
         this.a = a;
         this.b = b;
@@ -24,27 +26,27 @@ public class MeasurementParameters {
         this.f = f;
     }
 
-    public double getA() {
+    public BigDecimal getA() {
         return a;
     }
 
-    public double getB() {
+    public BigDecimal getB() {
         return b;
     }
 
-    public double getC() {
+    public BigDecimal getC() {
         return c;
     }
 
-    public double getD() {
+    public BigDecimal getD() {
         return d;
     }
 
-    public double getE() {
+    public BigDecimal getE() {
         return e;
     }
 
-    public double getF() {
+    public BigDecimal getF() {
         return f;
     }
 }
