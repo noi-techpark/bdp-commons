@@ -1,7 +1,7 @@
 package it.bz.idm.bdp.augeg4.fun.push;
 
-import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ToHubDataDto;
-import it.bz.idm.bdp.augeg4.dto.tohub.Measurement;
+import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ProcessedDataToHubDto;
+import it.bz.idm.bdp.augeg4.dto.tohub.ProcessedMeasurementToHub;
 import it.bz.idm.bdp.augeg4.dto.tohub.StationId;
 import it.bz.idm.bdp.augeg4.face.DataPusherMapperFace;
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -28,36 +28,36 @@ public class DataPusherMapper implements DataPusherMapperFace {
      * @inheritDoc
      */
     @Override
-    public DataMapDto<RecordDtoImpl> mapData(List<AugeG4ToHubDataDto> measurementsByStations) {
+    public DataMapDto<RecordDtoImpl> mapData(List<AugeG4ProcessedDataToHubDto> measurementsByStations) {
         DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
         measurementsByStations.forEach(measurementsByStation -> mapMeasurementByStation(rootMap, measurementsByStation));
         return rootMap;
     }
 
-    private void mapMeasurementByStation(DataMapDto<RecordDtoImpl> rootMap, AugeG4ToHubDataDto measurementsByStation) {
+    private void mapMeasurementByStation(DataMapDto<RecordDtoImpl> rootMap, AugeG4ProcessedDataToHubDto measurementsByStation) {
         StationId stationId = measurementsByStation.getStationId();
         DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(stationId.getValue());
-        measurementsByStation.getMeasurements()
+        measurementsByStation.getProcessedMeasurementsToHub()
                 .forEach(measurement -> {
                     mapRawMeasurement(measurementsByStation, stationMap, measurement);
                     mapProcessedMeasurement(measurementsByStation, stationMap, measurement);
                 });
     }
 
-    private void mapRawMeasurement(AugeG4ToHubDataDto measurementsByStation, DataMapDto<RecordDtoImpl> stationMap, Measurement measurement) {
-        String dataType = measurement.getDataType() + DATA_TYPE_NAME_SUFFIX_RAW;
+    private void mapRawMeasurement(AugeG4ProcessedDataToHubDto measurementsByStation, DataMapDto<RecordDtoImpl> stationMap, ProcessedMeasurementToHub processedMeasurementToHub) {
+        String dataType = processedMeasurementToHub.getDataType() + DATA_TYPE_NAME_SUFFIX_RAW;
         List<RecordDtoImpl> values = getRecordDtoList(stationMap, dataType);
         values.add(getSimpleRecordDto(
-                measurement.getRawValue(),
+                processedMeasurementToHub.getRawValue(),
                 measurementsByStation.getAcquisition()
         ));
     }
 
-    private void mapProcessedMeasurement(AugeG4ToHubDataDto measurementsByStation, DataMapDto<RecordDtoImpl> stationMap, Measurement measurement) {
-        String dataType = measurement.getDataType() + DATA_TYPE_NAME_SUFFIX_PROCESSED;
+    private void mapProcessedMeasurement(AugeG4ProcessedDataToHubDto measurementsByStation, DataMapDto<RecordDtoImpl> stationMap, ProcessedMeasurementToHub processedMeasurementToHub) {
+        String dataType = processedMeasurementToHub.getDataType() + DATA_TYPE_NAME_SUFFIX_PROCESSED;
         List<RecordDtoImpl> values = getRecordDtoList(stationMap, dataType);
         values.add(getSimpleRecordDto(
-                measurement.getProcessedValue(),
+                processedMeasurementToHub.getProcessedValue(),
                 measurementsByStation.getAcquisition()
         ));
     }

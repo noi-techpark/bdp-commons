@@ -1,42 +1,37 @@
 package it.bz.idm.bdp.augeg4.fun.retrieve;
 
+import it.bz.idm.bdp.augeg4.ConnectorConfig;
+import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4ElaboratedDataDto;
 import it.bz.idm.bdp.augeg4.face.DataRetrieverFace;
-import it.bz.idm.bdp.augeg4.face.DataServiceFace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import it.bz.idm.bdp.augeg4.util.AugeMqttConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
-//@Component
+import java.util.List;
+
+@Component
 public class DataRetriever implements DataRetrieverFace {
 
-	/** Logging your efforts */
-	private static final Logger LOG = LogManager.getLogger(DataRetriever.class.getName());
-
-	/** If you need to fetch application property values, otherwise please delete */
 	@Autowired
-	private Environment env;
+	ConnectorConfig config;
 
+	private AugeSubscriber augeSubscriber;
 
-	private String getPrefix() {
-		String prefix = "";
-		try {
-			prefix = env.getProperty("station.prefix");
+	private AugeCallback augeCallback;
 
-			if (prefix.startsWith("\"") && prefix.endsWith("\""))
-				prefix = prefix.substring(1, prefix.length() - 1);
-
-		} catch (Exception e) {
-			LOG.error("ERROR: {}", e.getMessage());
-			e.printStackTrace();
-			throw e; // always throw errors, we do not want to fail silently!
-		}
-		return prefix;
+	public DataRetriever(ConnectorConfig config) {
+		this.config = config;
+		augeSubscriber = new AugeSubscriber();
+		augeCallback = augeSubscriber.listen(AugeMqttConfiguration.buildMqttSubscriberConfiguration(config));
 	}
 
-
-	@Override
-	public void setDataService(DataServiceFace dataServiceFace) {
-
+    @Override
+	public List<AugeG4ElaboratedDataDto> fetchData() {
+		return augeCallback.fetchData();
 	}
+
+    @Override
+    public void stop() {
+        augeSubscriber.stop();
+    }
 }

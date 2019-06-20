@@ -1,6 +1,6 @@
 package it.bz.idm.bdp.augeg4.face;
 
-import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ToHubDataDto;
+import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ProcessedDataToHubDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
@@ -8,7 +8,7 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import java.util.List;
 
 /**
- * Maps a list of {@link AugeG4ToHubDataDto} to a single {@link DataMapDto}, used by the Pusher to send data to the hub
+ * Maps a list of {@link AugeG4ProcessedDataToHubDto} to a single {@link DataMapDto}, used by the Pusher to send data to the hub
  */
 public interface DataPusherMapperFace {
 
@@ -34,7 +34,7 @@ public interface DataPusherMapperFace {
      * @param measurementsByStations List of DTOs to map
      * @return Hierarchical map structure
      */
-    DataMapDto<RecordDtoImpl> mapData(List<AugeG4ToHubDataDto> measurementsByStations);
+    DataMapDto<RecordDtoImpl> mapData(List<AugeG4ProcessedDataToHubDto> measurementsByStations);
 
     /**
      * Maps every DataTypeDto to two DataTypeDtos: one for the raw measurement and one for the processed measurement.

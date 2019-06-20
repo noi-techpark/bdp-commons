@@ -105,7 +105,7 @@ public class DataRetriever {
 			dtos = new StationList();
 			for (User user: response.getUser()){
 				Date userExpires = dateFormatter.parse(user.getUserAvailability());
-				if (user.getUserPendular().equals("true") || userExpires.after(new Date())){
+				if (user.getUserPendular().equals("True") || userExpires.after(new Date())){
 					StationDto dto = new StationDto();
 					dto.setId(CARPOOLING_NAMESPACE + user.getId().toString());
 					dto.setOrigin(DATA_ORIGIN);
