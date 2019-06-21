@@ -185,6 +185,7 @@ public class DataRetriever {
 	public StationList generateOriginStation() {
 		return new StationList() {{
 			StationDto dto =new StationDto(CARPOOLING_NAMESPACE + "innovie", "Car pooling Innovie", null, null);
+			dto.setStationType("CarpoolingService");
 			dto.setOrigin("FLOOTA");
 			add(dto);
 			}};
