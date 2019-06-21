@@ -10,6 +10,7 @@ import it.bz.idm.bdp.carpooling.dto.generated.JServices;
 import it.bz.idm.bdp.carpooling.dto.generated.Stats;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.json.JSONPusher;
@@ -68,6 +69,11 @@ public class CarpoolingPusher extends JSONPusher {
 		dataMap.getBranch().put(INNOVIE_STATION_IDENTIFIER, typeMap);
 
 		return dataMap;
+	}
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null,"dc-carpooling-flootta","2.0.0-SNAPSHOT","FLOOTTA");
 	}
 
 }

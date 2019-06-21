@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package it.bz.tis.integreen.carsharingbzit.tis;
 
 import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.json.JSONPusher;
 
@@ -42,6 +43,11 @@ public class CarSharingPusher extends JSONPusher
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
 		return null;
+	}
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null,"dc-carsharing-halapi","2.0.0-SNAPSHOT","HAL-API");
 	}
 
 }

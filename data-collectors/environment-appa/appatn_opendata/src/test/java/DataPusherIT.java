@@ -27,8 +27,10 @@ public class DataPusherIT
     {
         LOG.debug("mapStationTest execution started.");
         LOG.debug("Initializing two partially complete stations.");
-        StationDto testStationOne = new StationDto("22", "PIANA ROTALIANA", 46.196839, 11.11343, "Mezzolombardo");
-        StationDto testStationTwo = new StationDto("15", "MONTE GAZA", 46.082531, 10.958041, "Vallelaghi");
+        StationDto testStationOne = new StationDto("22", "PIANA ROTALIANA", 46.196839, 11.11343);
+        testStationOne.getMetaData().put("municipality", "Mezzolombardo");
+        StationDto testStationTwo = new StationDto("15", "MONTE GAZA", 46.082531, 10.958041);
+        testStationTwo.getMetaData().put("municipality", "Vallelaghi");
 
         LOG.debug("Fetching real stations.");
         StationList stationList = dataPusher.mapStations();
@@ -40,9 +42,7 @@ public class DataPusherIT
             Assert.assertNotNull(station.getName());
             Assert.assertNotNull(station.getLatitude());
             Assert.assertNotNull(station.getLongitude());
-            Assert.assertNotNull(station.getCrs());
             Assert.assertNotNull(station.getOrigin());
-            Assert.assertNotNull(station.getMunicipality());
             Assert.assertNotNull(station.getStationType());
         }
 

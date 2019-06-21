@@ -152,6 +152,6 @@ public class ChargePusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,"dc-emobility-echarging","2.0.0",env.getProperty(ORIGIN_KEY));
+		return new ProvenanceDto(null,"dc-emobility-echarging","2.0.0-SNAPSHOT",env.getProperty(ORIGIN_KEY));
 	}
 }
