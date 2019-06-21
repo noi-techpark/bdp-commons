@@ -4,6 +4,7 @@ package it.bz.idm.bdp;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.json.JSONPusher;
 
@@ -24,6 +25,11 @@ public class TrafficPusher extends JSONPusher {
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
 		return null;
+	}
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null, "dc-traffic-bz", "2.0.0-SNAPSHOT", "FAMAS-traffic");
 	}
 
 }

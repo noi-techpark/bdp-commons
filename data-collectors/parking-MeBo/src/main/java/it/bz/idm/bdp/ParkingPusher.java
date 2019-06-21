@@ -3,13 +3,13 @@ package it.bz.idm.bdp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationList;
@@ -19,6 +19,8 @@ import it.bz.idm.bdp.json.JSONPusher;
 
 @Component
 public class ParkingPusher extends JSONPusher{
+
+	private static final ProvenanceDto merano_provenance = new ProvenanceDto(null, "dc-parking-MeBo", "2.0.0-SNAPSHOT", "Municipality Merano");
 
 	private static final String STATION_TYPE = "ParkingStation";
 
@@ -98,16 +100,12 @@ public class ParkingPusher extends JSONPusher{
 	public void pushData() {
 		connectToParkingServer();
 		connectToDataCenterCollector();
-		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<RecordDtoImpl>();
+		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<RecordDtoImpl>(), dataMap2 = new DataMapDto<>();
+		this.provenance = new ProvenanceDto(null, "dc-parking-MeBo", "2.0.0-SNAPSHOT", config.getString("pbz_origin"));
 		parkingClient.insertDataInto(dataMap);
-		parkingMeranoClient.insertDataInto(dataMap);
-		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry : dataMap.getBranch().entrySet()) {
-			System.out.println("Station: "+entry.getKey());
-			for (Map.Entry<String, DataMapDto<RecordDtoImpl>> typeEntry : entry.getValue().getBranch().entrySet()) {
-				System.out.println("\tDatatype: "+typeEntry.getKey()+" records:"+typeEntry.getValue().getData().size());
-			}
-		}
-		System.out.println();
+
+		this.provenance = merano_provenance;
+		parkingMeranoClient.insertDataInto(dataMap2);
 		pushData(dataMap);
 	}
 
@@ -132,5 +130,11 @@ public class ParkingPusher extends JSONPusher{
 		for (int minutesForecast:PREDICTION_FORECAST_TIMES_IN_MINUTES)
 			dataTypes.add(new DataTypeDto(FORECAST_PREFIX+ minutesForecast,TYPE_UNIT,minutesForecast+TYPEDESCRIPTION_SUFFIX,FORECAST_METRIC));
 		return dataTypes;
+	}
+
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null, "dc-parking-MeBo", "2.0.0-SNAPSHOT", config.getString("pbz_origin"));
 	}
 }

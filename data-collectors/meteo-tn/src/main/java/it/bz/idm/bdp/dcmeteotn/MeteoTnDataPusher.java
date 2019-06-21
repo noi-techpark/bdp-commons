@@ -22,6 +22,7 @@ import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnMeasurementDto;
 import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnMeasurementListDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
@@ -45,7 +46,7 @@ public class MeteoTnDataPusher extends JSONPusher {
     }
 
     @PostConstruct
-    private void init() {
+    private void initScript() {
         LOG.debug("START.init.");
         //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTTP 415 error)
         //this must be done because we added dependencies to com.fasterxml.jackson.dataformat.xml.XmlMapper to read data from IIT web service!
@@ -305,4 +306,9 @@ public class MeteoTnDataPusher extends JSONPusher {
                 "";
         return str2 + " ---> " + str1;
     }
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null, "dc-meteo-tn", "2.0.0-SNAPSHOT", config.getString("app.origin"));
+	}
 }

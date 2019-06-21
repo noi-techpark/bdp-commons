@@ -53,6 +53,6 @@ public class OddsPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, "dc-vehicletraffic-bluetooth", "2.0.0", "bluetoothbox");
+		return new ProvenanceDto(null, "dc-vehicletraffic-bluetooth", "2.0.0-SNAPSHOT", "bluetoothbox");
 	}
 }

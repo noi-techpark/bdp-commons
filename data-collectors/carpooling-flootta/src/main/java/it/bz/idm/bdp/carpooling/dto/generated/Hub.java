@@ -10,9 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -179,12 +176,80 @@ public class Hub implements Serializable
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("name", name).append("address", address).append("cap", cap).append("city", city).append("country", country).append("latitude", latitude).append("longitude", longitude).append("isEvent", isEvent).append("availability", availability).append("users", users).append("additionalProperties", additionalProperties).toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(Hub.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("id");
+        sb.append('=');
+        sb.append(((this.id == null)?"<null>":this.id));
+        sb.append(',');
+        sb.append("name");
+        sb.append('=');
+        sb.append(((this.name == null)?"<null>":this.name));
+        sb.append(',');
+        sb.append("address");
+        sb.append('=');
+        sb.append(((this.address == null)?"<null>":this.address));
+        sb.append(',');
+        sb.append("cap");
+        sb.append('=');
+        sb.append(((this.cap == null)?"<null>":this.cap));
+        sb.append(',');
+        sb.append("city");
+        sb.append('=');
+        sb.append(((this.city == null)?"<null>":this.city));
+        sb.append(',');
+        sb.append("country");
+        sb.append('=');
+        sb.append(((this.country == null)?"<null>":this.country));
+        sb.append(',');
+        sb.append("latitude");
+        sb.append('=');
+        sb.append(((this.latitude == null)?"<null>":this.latitude));
+        sb.append(',');
+        sb.append("longitude");
+        sb.append('=');
+        sb.append(((this.longitude == null)?"<null>":this.longitude));
+        sb.append(',');
+        sb.append("isEvent");
+        sb.append('=');
+        sb.append(((this.isEvent == null)?"<null>":this.isEvent));
+        sb.append(',');
+        sb.append("availability");
+        sb.append('=');
+        sb.append(((this.availability == null)?"<null>":this.availability));
+        sb.append(',');
+        sb.append("users");
+        sb.append('=');
+        sb.append(((this.users == null)?"<null>":this.users));
+        sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(country).append(address).append(city).append(latitude).append(availability).append(users).append(cap).append(name).append(id).append(additionalProperties).append(longitude).append(isEvent).toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.country == null)? 0 :this.country.hashCode()));
+        result = ((result* 31)+((this.address == null)? 0 :this.address.hashCode()));
+        result = ((result* 31)+((this.city == null)? 0 :this.city.hashCode()));
+        result = ((result* 31)+((this.latitude == null)? 0 :this.latitude.hashCode()));
+        result = ((result* 31)+((this.availability == null)? 0 :this.availability.hashCode()));
+        result = ((result* 31)+((this.users == null)? 0 :this.users.hashCode()));
+        result = ((result* 31)+((this.cap == null)? 0 :this.cap.hashCode()));
+        result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
+        result = ((result* 31)+((this.id == null)? 0 :this.id.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
+        result = ((result* 31)+((this.longitude == null)? 0 :this.longitude.hashCode()));
+        result = ((result* 31)+((this.isEvent == null)? 0 :this.isEvent.hashCode()));
+        return result;
     }
 
     @Override
@@ -196,7 +261,7 @@ public class Hub implements Serializable
             return false;
         }
         Hub rhs = ((Hub) other);
-        return new EqualsBuilder().append(country, rhs.country).append(address, rhs.address).append(city, rhs.city).append(latitude, rhs.latitude).append(availability, rhs.availability).append(users, rhs.users).append(cap, rhs.cap).append(name, rhs.name).append(id, rhs.id).append(additionalProperties, rhs.additionalProperties).append(longitude, rhs.longitude).append(isEvent, rhs.isEvent).isEquals();
+        return (((((((((((((this.country == rhs.country)||((this.country!= null)&&this.country.equals(rhs.country)))&&((this.address == rhs.address)||((this.address!= null)&&this.address.equals(rhs.address))))&&((this.city == rhs.city)||((this.city!= null)&&this.city.equals(rhs.city))))&&((this.latitude == rhs.latitude)||((this.latitude!= null)&&this.latitude.equals(rhs.latitude))))&&((this.availability == rhs.availability)||((this.availability!= null)&&this.availability.equals(rhs.availability))))&&((this.users == rhs.users)||((this.users!= null)&&this.users.equals(rhs.users))))&&((this.cap == rhs.cap)||((this.cap!= null)&&this.cap.equals(rhs.cap))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.longitude == rhs.longitude)||((this.longitude!= null)&&this.longitude.equals(rhs.longitude))))&&((this.isEvent == rhs.isEvent)||((this.isEvent!= null)&&this.isEvent.equals(rhs.isEvent))));
     }
 
 }

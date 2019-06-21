@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>dc-carpooling-flootta</artifactId>
@@ -13,7 +13,7 @@
 	</properties>
 	<repositories>
 		<repository>
-			<id>maven-repo.opendatahub.bz.it</id>
+			<id>maven-repo.opendatahub.bz.it-SNAPSHOT</id>
 			<url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/snapshot</url>
 		</repository>
 	</repositories>
