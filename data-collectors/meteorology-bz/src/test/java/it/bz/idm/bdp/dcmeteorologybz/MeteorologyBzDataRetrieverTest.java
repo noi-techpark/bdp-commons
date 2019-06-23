@@ -96,18 +96,21 @@ public class MeteorologyBzDataRetrieverTest extends AbstractJUnit4SpringContextT
     public void testConvertDate() {
         String str1 = "2019-06-01T13:20:00CEST";
         String str2 = "2019-03-31T01:40:00CET";
+        String str3 = "2019-01-12T20:50:00CET";
         Date d1 = DCUtils.convertStringTimezoneToDate(str1);
         Date d2 = DCUtils.convertStringTimezoneToDate(str2);
+        Date d3 = DCUtils.convertStringTimezoneToDate(str3);
         LOG.info("d1="+d1);
         LOG.info("d2="+d2);
+        LOG.info("d3="+d3);
 
-        Date d3 = new Date();
-        String str3_1 = DCUtils.convertDateToString(d3, "yyyy-MM-dd'T'HH:mm:ssX");
-        String str3_2 = DCUtils.convertDateToString(d3, "yyyy-MM-dd'T'HH:mm:ssZ");
-        String str3_3 = DCUtils.convertDateToString(d3, "yyyy-MM-dd'T'HH:mm:ss");
-        LOG.info("str3_1="+str3_1);
-        LOG.info("str3_2="+str3_2);
-        LOG.info("str3_3="+str3_3);
+        Date d9 = new Date();
+        String str9_1 = DCUtils.convertDateToString(d9, "yyyy-MM-dd'T'HH:mm:ssX");
+        String str9_2 = DCUtils.convertDateToString(d9, "yyyy-MM-dd'T'HH:mm:ssZ");
+        String str9_3 = DCUtils.convertDateToString(d9, "yyyy-MM-dd'T'HH:mm:ss");
+        LOG.info("str9_1="+str9_1);
+        LOG.info("str9_2="+str9_2);
+        LOG.info("str9_3="+str9_3);
 
     }
 
