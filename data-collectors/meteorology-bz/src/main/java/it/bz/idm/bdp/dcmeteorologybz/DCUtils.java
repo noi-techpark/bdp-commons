@@ -220,26 +220,26 @@ public class DCUtils {
     public static Date convertStringTimezoneToDate(String inval) {
         Date retval = null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
             retval = sdf.parse(inval);
         } catch (Exception e1) {
-            LOG.debug("Exception parsing date "+inval+": "+e1);
+            LOG.debug("Step1, unable to parse date "+inval+": "+e1+"  Go To Step2");
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
                 retval = sdf.parse(inval);
             } catch (Exception e2) {
-                LOG.debug("Exception parsing date "+inval+": "+e2);
+                LOG.debug("Step2, unable to parse date "+inval+": "+e2+"  Go To Step3");
                 try {
                     OffsetDateTime odt = OffsetDateTime.parse(inval);
                     retval = new Date(odt.toEpochSecond());
                 } catch (Exception e3) {
-                    LOG.debug("Exception parsing date "+inval+": "+e3);
+                    LOG.debug("Step3, unable to parse date "+inval+": "+e3+"  Go To Step4");
                     try {
                         inval = inval.substring(0, inval.indexOf("+"));
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                         retval = sdf.parse(inval);
                     } catch (Exception e4) {
-                        LOG.error("Exception parsing date "+inval+": "+e4);
+                        LOG.error("Step4, Exception parsing date "+inval+": "+e4);
                     }
                 }
             }
