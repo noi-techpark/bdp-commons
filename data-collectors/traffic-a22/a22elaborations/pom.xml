@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>it.bz.noi.a22elaborations</groupId>
+	<artifactId>a22elaborations</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+	</properties>
+
+	<packaging>war</packaging>
+
+	<repositories>
+		<repository>
+			<id>maven-repo.opendatahub.bz.it</id>
+			<url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
+		</repository>
+	</repositories>
+
+	<!-- <build> <finalName>a22elaborations</finalName> </build> -->
+
+	<dependencies>
+		<dependency>
+			<groupId>it.bz.idm.bdp</groupId>
+			<artifactId>dc-interface</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+		<!-- embedded tomcat for development -->
+		<dependency>
+			<groupId>com.github.jsimone</groupId>
+			<artifactId>webapp-runner</artifactId>
+			<version>8.5.11.3</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+</project>
