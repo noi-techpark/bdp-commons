@@ -99,11 +99,11 @@ pipeline {
                         sh 'cd data-collectors/vehicletraffic-bluetooth && mvn -B -U clean compile test'
                     }
                 }
-                stage('traffic-bz') {
-                    steps {
-                        sh 'cd data-collectors/traffic-bz/ && mvn -B -U clean compile test'
-                    }
-                }
+                //stage('traffic-bz') {
+                    //steps {
+                        //sh 'cd data-collectors/traffic-bz/ && mvn -B -U clean compile test'
+                    //}
+                //}
                 stage('vms-a22') {
                     steps {
                         sh 'cd data-collectors/vms-a22/ && mvn -B -U clean compile test'
