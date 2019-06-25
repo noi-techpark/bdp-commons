@@ -13,6 +13,7 @@ pipeline {
         PROJECT_FOLDER = "data-collectors/vms-a22"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
         ARTIFACT_NAME = "dc-${PROJECT}"
+        VMS_CREDENTIALS = credentials('vms-a22-credentials')
     }
 
     stages {
@@ -26,6 +27,7 @@ pipeline {
 
                 sh 'sed -i -e "s%\\(appender.file.fileName\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
                 sh 'sed -i -e "s%\\(property.rootlevel\\s*=\\).*\\$%\\1DEBUG%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+                sh 'cat ${VMS_CREDENTIALS} > ${PROJECT_FOLDER}/src/main/resources/it/bz/noi/a22/vms/a22connector.properties'
             }
         }
 
