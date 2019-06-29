@@ -23,7 +23,7 @@ public class MeasurementProcessor {
 
     private final MeasurementProcessorParameters measurementProcessorParameters = new MeasurementProcessorParameters();
     private final int RAD = 1;
-    private static final MathContext mathContext = new MathContext(5, RoundingMode.HALF_UP);
+    private static final MathContext mathContext = new MathContext(10, RoundingMode.HALF_EVEN);
 
 
     public Optional<ProcessedMeasurement> process(AugeG4RawData rawData, RawMeasurement rawMeasurement) {
@@ -85,7 +85,7 @@ public class MeasurementProcessor {
         ));
     }
 
-    private double applyFunction(BigDecimal x,
+    public double applyFunction(BigDecimal x,
                                  BigDecimal a,
                                  BigDecimal b,
                                  BigDecimal c,
@@ -95,12 +95,27 @@ public class MeasurementProcessor {
                                  BigDecimal O3,
                                  BigDecimal T_int,
                                  BigDecimal Rad) {
-        return a.multiply(x.pow(2,mathContext),mathContext)
-                .add(b.multiply(x,mathContext),mathContext)
-                .add(c.multiply(BigDecimalMath.pow(O3,new BigDecimal("0.1")),mathContext),mathContext)
-                .add(d.multiply(T_int.pow(4),mathContext),mathContext)
-                .add(e.multiply(Rad,mathContext),mathContext)
-                .add(f,mathContext).doubleValue();
+        BigDecimal uno = a.multiply(x.pow(2, mathContext), mathContext);
+        LOG.debug("uno:"+uno);
+
+        BigDecimal due = b.multiply(x, mathContext);
+        LOG.debug("due:"+due);
+
+        BigDecimal tre = c.multiply(BigDecimalMath.pow(O3, new BigDecimal("0.1")), mathContext);
+        LOG.debug("tre:"+tre);
+
+        BigDecimal quattro = d.multiply(T_int.pow(4), mathContext);
+        LOG.debug("quattro:"+quattro);
+
+        BigDecimal cinque = e.multiply(Rad, mathContext);
+        LOG.debug("cinque:"+cinque);
+        BigDecimal somma = uno
+                .add(due, mathContext)
+                .add(tre, mathContext)
+                .add(quattro, mathContext)
+                .add(cinque, mathContext);
+        LOG.debug("somma:"+somma);
+        return somma.doubleValue();
     }
 
     private Optional<Double> getMeasurementFromRawData(AugeG4RawData rawData, MeasurementId measurementId) {

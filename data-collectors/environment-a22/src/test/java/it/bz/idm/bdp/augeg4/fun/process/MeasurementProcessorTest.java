@@ -100,4 +100,49 @@ public class MeasurementProcessorTest {
         System.out.println("Tax : " + money.format(big_tax));
         System.out.println("Tax+Total: " + money.format(big_taxedTotal));
     }
+
+    @Test
+    public void test_apply_function() {
+        MeasurementProcessor processor = new MeasurementProcessor();
+
+
+        BigDecimal a = new BigDecimal("-0.45");
+        BigDecimal b = new BigDecimal("103.3");
+        BigDecimal c = new BigDecimal("9.67");
+        BigDecimal d = new BigDecimal("-0.00009452");
+        BigDecimal e = new BigDecimal("-5687.74");
+        BigDecimal f = new BigDecimal("0");
+        BigDecimal rad = new BigDecimal("1");
+
+        caso(processor, a, b, c, d, e, f, rad, "91", "87", "23.1", -21.44d);
+
+        caso(processor, a, b, c, d, e, f, rad, "87", "87", "23.2", -114.49d);
+
+        caso(processor, a, b, c, d, e, f, rad, "85", "87", "23.3", -166.66d);
+
+        caso(processor, a, b, c, d, e, f, rad, "86", "87", "23.2", -139.89d);
+
+        caso(processor, a, b, c, d, e, f, rad, "83", "87", "23.2", -221.49d);
+
+        caso(processor, a, b, c, d, e, f, rad, "96", "87", "23.3", 73.09d);
+
+        caso(processor, a, b, c, d, e, f, rad, "88", "88", "23.7", -92.43d);
+    }
+
+    private void caso(MeasurementProcessor processor, BigDecimal a, BigDecimal b, BigDecimal c, BigDecimal d, BigDecimal e, BigDecimal f, BigDecimal rad, String s_no2, String s_o3, String s_t, double v_expected) {
+        BigDecimal no2;
+        BigDecimal o3;
+        BigDecimal t;
+        double v;
+        no2 = new BigDecimal(s_no2);
+        o3 = new BigDecimal(s_o3);
+        t = new BigDecimal(s_t);
+        v = processor.applyFunction(no2, a, b, c, d, e, f, o3, t, rad);
+        System.out.println("v=" + v);
+        System.out.println("v_expected:" + v_expected);
+        double v_diff = v - v_expected;
+        System.out.println(v_diff);
+        assertTrue(Math.abs(v_diff) < 0.5);
+        System.out.println();
+    }
 }
