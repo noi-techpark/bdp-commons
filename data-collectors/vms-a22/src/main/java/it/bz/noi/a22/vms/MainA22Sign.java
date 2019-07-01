@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -21,10 +22,13 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
+@DisallowConcurrentExecution
 public class MainA22Sign implements Job
 {
 	static final String KEY_ESPOSIZIONE = "esposizione";
 	static final String KEY_STATO = "stato";
+	
+	static final String ORIGIN = "a22";
 
 	private static Logger log = Logger.getLogger(MainA22Sign.class);
 
@@ -38,8 +42,9 @@ public class MainA22Sign implements Job
 
 			A22SignJSONPusher pusher = new A22SignJSONPusher();
 
+			// 2019-06-26 d@vide.bz: now that fetchstations works, should I find what???
 			long lastTimestampSeconds = readLastTimestampSeconds(pusher);
-			long delaySeconds = 60; // 2019-06-21 d@vide.bz: a22 data realtime delay
+			long delaySeconds = 3600; // 2019-06-21 d@vide.bz: a22 data realtime delay
 			long nowSeconds = System.currentTimeMillis() / 1000 - delaySeconds;
 
 			Connector a22Service = setupA22ServiceConnector();
@@ -93,14 +98,17 @@ public class MainA22Sign implements Job
 						// esposizione
 
 						SimpleRecordDto esposizione = esposizioneByComponentId.get(component_id);
+						// 2019-06-26 d@vide.bz: replace multiple spaces with one space
+						String normalizedData = data.replaceAll("\\s+", " ");
 						if (esposizione == null)
 						{
-							esposizione = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, data, 1);
+							esposizione = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, normalizedData, 1);
 							esposizioniDataMapDto.addRecord(virtualStationId, KEY_ESPOSIZIONE, esposizione);
 							esposizioneByComponentId.put(component_id, esposizione);
-						} else
+						}
+						else
 						{
-							esposizione.setValue(esposizione.getValue() + "|" + data);
+							esposizione.setValue(esposizione.getValue() + "|" + normalizedData);
 						}
 
 						// stato
@@ -111,7 +119,8 @@ public class MainA22Sign implements Job
 							stato = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, status, 1);
 							statoDataMapDto.addRecord(virtualStationId, KEY_STATO, stato);
 							statoByComponentId.put(component_id, stato);
-						} else
+						}
+						else
 						{
 							stato.setValue(stato.getValue() + "|" + status);
 						}
@@ -125,6 +134,8 @@ public class MainA22Sign implements Job
 							StationDto station = new StationDto(virtualStationId, virtualStationIdName, sign_lat,
 									sign_lon);
 							station.getMetaData().put("pmv_type", pmv_type);
+							station.setOrigin(ORIGIN); // 2019-06-26 d@vide.bz: required to make fetchStations work!
+							// add other metadata
 							stationList.add(station);
 						}
 
@@ -175,6 +186,11 @@ public class MainA22Sign implements Job
 		  List<StationDto> stations = pusher.fetchStations(null, null);
 		
 		 */
+		List<StationDto> stations = pusher.fetchStations(pusher.initIntegreenTypology(), ORIGIN);
+		
+		int size = stations.size();
+		
+		System.out.println(size);
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(2019, Calendar.JUNE, 20, 0, 0, 0); // 2019-06-21 d@vide.bz: conventional date when no data was already saved
