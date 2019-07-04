@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -48,6 +49,9 @@ public class ParkingPusher extends JSONPusher{
 	private PredictionRetriever predictionRetriever;
 	@Autowired
 	private ParkingFrontEndRetriever parkingFrontEndRetriever;
+
+	@Autowired
+	private Environment env;
 
 	public void connectToParkingServer() {
 		parkingClient.connect();
@@ -100,13 +104,14 @@ public class ParkingPusher extends JSONPusher{
 	public void pushData() {
 		connectToParkingServer();
 		connectToDataCenterCollector();
-		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<RecordDtoImpl>(), dataMap2 = new DataMapDto<>();
-		this.provenance = new ProvenanceDto(null, "dc-parking-MeBo", "2.0.0-SNAPSHOT", config.getString("pbz_origin"));
-		parkingClient.insertDataInto(dataMap);
+		DataMapDto<RecordDtoImpl> bolzanoDataMap = new DataMapDto<RecordDtoImpl>(), meranoDataMap = new DataMapDto<>();
+		this.provenance = new ProvenanceDto(null, "dc-parking-MeBo", "2.0.0-SNAPSHOT", env.getProperty("pbz_origin"));
+		parkingClient.insertDataInto(bolzanoDataMap);
+		pushData(bolzanoDataMap);
 
 		this.provenance = merano_provenance;
-		parkingMeranoClient.insertDataInto(dataMap2);
-		pushData(dataMap);
+		parkingMeranoClient.insertDataInto(meranoDataMap);
+		pushData(meranoDataMap);
 	}
 
 
@@ -135,6 +140,6 @@ public class ParkingPusher extends JSONPusher{
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, "dc-parking-MeBo", "2.0.0-SNAPSHOT", config.getString("pbz_origin"));
+		return new ProvenanceDto(null, "dc-parking-MeBo", "2.0.0-SNAPSHOT", env.getProperty("pbz_origin"));
 	}
 }

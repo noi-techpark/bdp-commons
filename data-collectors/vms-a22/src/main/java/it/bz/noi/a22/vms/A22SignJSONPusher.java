@@ -1,6 +1,7 @@
 package it.bz.noi.a22.vms;
 
 import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.json.JSONPusher;
 
@@ -13,7 +14,7 @@ public class A22SignJSONPusher extends JSONPusher
 {
 
 	private String stationtype;
-
+	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T arg0)
 	{
 		throw new IllegalStateException("it is used by who?");
@@ -30,6 +31,10 @@ public class A22SignJSONPusher extends JSONPusher
 		}
 
 		return stationtype;
+	}
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null, "dc-vms-a22", "0.1.0-SNAPSHOT", "");
 	}
 
 }

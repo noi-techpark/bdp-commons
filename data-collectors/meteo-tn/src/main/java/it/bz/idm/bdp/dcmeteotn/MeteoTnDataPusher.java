@@ -309,6 +309,6 @@ public class MeteoTnDataPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, "dc-meteo-tn", "2.0.0-SNAPSHOT", config.getString("app.origin"));
+		return new ProvenanceDto(null, "dc-meteo-tn", "2.0.0-SNAPSHOT", "meteotrentino");
 	}
 }
