@@ -87,6 +87,7 @@ windowLength=600000
 step=600000
 ```
 
+* configure the log4j.properties file as desidered
 
 * create the war executing the following command
 
