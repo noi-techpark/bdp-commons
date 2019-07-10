@@ -24,7 +24,8 @@ public class DataDelegate {
 
     private static final Logger LOG = LogManager.getLogger(DataDelegate.class.getName());
 
-    private static final int MAX_QUEUE_SIZE = 100;
+    private static final int MAX_QUEUE_SIZE = 1000;
+    private static boolean first_error_stack_logged = false;
 
     private final DataService dataService;
 
@@ -128,7 +129,10 @@ public class DataDelegate {
             dataService.getDataPusherAuge().pushData(data);
         } catch (Exception e) {
             LOG.error("Push of data to Auge failed: {}.", e.getMessage());
-            throw e;
+            if (!first_error_stack_logged) {
+                e.printStackTrace();
+            }
+            //throw e;
         }
     }
 
