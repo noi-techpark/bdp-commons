@@ -1,9 +1,7 @@
 package it.bz.noi.a22elaborations;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,13 +9,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -28,6 +25,7 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
+@DisallowConcurrentExecution
 public class MainElaborations implements Job
 {
 
@@ -71,6 +69,11 @@ public class MainElaborations implements Job
 					calendar.set(Calendar.MILLISECOND, 0);
 
 					lastTimestamp = calendar.getTimeInMillis();
+				}
+				else
+				{
+					// 2019-07-10 d@vide.bz: go back 1 hour from last time elaboration because data can't be in realtime
+					lastTimestamp -= 3600L * 1000L;
 				}
 
 				// loop over the windows

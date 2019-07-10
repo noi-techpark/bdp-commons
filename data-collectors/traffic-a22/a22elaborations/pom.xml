@@ -53,7 +53,7 @@
 		<!-- embedded tomcat for development -->
 		<dependency>
 			<groupId>com.github.jsimone</groupId>
-			<artifactId>webapp-runner</artifactId>
+			<artifactId>webapp-runner-main</artifactId>
 			<version>8.5.11.3</version>
 			<scope>provided</scope>
 		</dependency>
