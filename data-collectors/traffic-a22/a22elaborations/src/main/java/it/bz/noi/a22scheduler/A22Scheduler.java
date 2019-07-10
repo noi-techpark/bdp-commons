@@ -63,6 +63,8 @@ public class A22Scheduler extends HttpServlet
 		log.info("Start A22Scheduler");
 
 		// Grab the Scheduler instance from the Factory
+		System.setProperty("org.quartz.threadPool.threadCount","1");
+		System.setProperty("org.quartz.jobStore.misfireThreshold", "500");
 		scheduler = StdSchedulerFactory.getDefaultScheduler();
 
 		String schedule;
