@@ -131,6 +131,7 @@ public class DataDelegate {
             LOG.error("Push of data to Auge failed: {}.", e.getMessage());
             if (!first_error_stack_logged) {
                 e.printStackTrace();
+                first_error_stack_logged = true;
             }
             //throw e;
         }
