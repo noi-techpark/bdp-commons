@@ -30,10 +30,13 @@ public class SyncStation
 	 */
 	public static StationList saveStations(Connection connection) throws IOException, SQLException
 	{
-		log.info("Start MainSaveStation");
+		log.debug("Start MainSaveStation");
 
+		log.debug("Read stations");
 		StationList stationList = readStationList(connection);
+		log.debug("Size stationlist: " + stationList.size());
 
+		log.debug("Push stations");
 		A22TrafficJSONPusher pusher = new A22TrafficJSONPusher();
 		pusher.syncStations(stationList);
 
