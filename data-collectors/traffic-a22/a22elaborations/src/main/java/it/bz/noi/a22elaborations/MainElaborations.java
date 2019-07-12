@@ -41,31 +41,39 @@ public class MainElaborations implements Job
 	{
 		try
 		{
-			log.info("Start MainElaborations");
+			log.debug("Start MainElaborations");
 
 			A22TrafficJSONPusher pusher = new A22TrafficJSONPusher();
 
-			// SyncDatatype.saveDatatypes();
+			log.debug("Sync datatypes");
+			SyncDatatype.saveDatatypes();
 
+			log.debug("Create connection");
 			Connection connection = Utility.createConnection();
 
+			log.debug("Sync stations");
 			StationList stations = SyncStation.saveStations(connection);
+			log.debug("Length stationList: "  + stations.size());
 
+			log.debug("Read elaboration properties");
 			WindowStepLength winStepLength = readElaborationProperties();
 
 			long now = System.currentTimeMillis();
 
 			for (StationDto station : stations)
 			{
+
 				String stationcode = station.getId();
+				log.debug("Stationcode: " + stationcode);
 				// System.out.println(stationcode);
 				// System.out.println(station.getName());
 
 				long lastTimestamp = ((java.util.Date) pusher.getDateOfLastRecord(stationcode, null, null)).getTime();
+				log.debug("Timestamp of last record: " +  lastTimestamp);
 				if (lastTimestamp <= 0)
 				{
 					Calendar calendar = Calendar.getInstance();
-					calendar.set(2019, Calendar.JUNE, 21, 0, 0, 0);
+					calendar.set(2019, Calendar.JANUARY, 1, 0, 0, 0);
 					calendar.set(Calendar.MILLISECOND, 0);
 
 					lastTimestamp = calendar.getTimeInMillis();
@@ -79,10 +87,13 @@ public class MainElaborations implements Job
 				// loop over the windows
 				while (lastTimestamp + winStepLength.length < now) // loop until the window is entirely in the past
 				{
-					log.debug("elaborating station: " + station.getName() + " window: " + new java.sql.Timestamp(lastTimestamp).toString());
+					log.debug("elaborating station: " + station.getName() + " window from: " + new java.sql.Timestamp(lastTimestamp).toString()
+					+ " to: " + new java.sql.Timestamp(lastTimestamp + winStepLength.length).toString());
 					ArrayList<Vehicle> vehicles = readWindow(lastTimestamp, lastTimestamp + winStepLength.length,
 							stationcode, connection);
 
+					log.debug("Vehicles in window " + vehicles.size());
+					log.debug("Save measurement and calculations");
 					saveMeasurementAndCalculation(station, vehicles, lastTimestamp, winStepLength.length);
 
 					lastTimestamp = lastTimestamp + winStepLength.step;
@@ -94,33 +105,36 @@ public class MainElaborations implements Job
 		{
 			throw new JobExecutionException(exxx);
 		}
+		log.debug("Finish writing.");
 	}
 
 	private WindowStepLength readElaborationProperties() throws IOException
 	{
 		try (InputStream in = getClass().getResourceAsStream("elaborations.properties"))
 		{
+			log.debug("Elaboration properties: ");
 			Properties prop = new Properties();
 			prop.load(in);
 			WindowStepLength result = new WindowStepLength();
 			result.length = Integer.parseInt(prop.getProperty("windowLength"));
+			log.debug("Window length: " + result.length);
 			result.step = Integer.parseInt(prop.getProperty("step"));
+			log.debug("Step: " + result.step);
 			return result;
 		}
 	}
 
 	/**
 	 * saves all calculations in bdp-core
-	 * 
-	 * @param vehiclesForStation
+	 *
 	 */
-	private void saveMeasurementAndCalculation(StationDto station, ArrayList<Vehicle> vehicles, long lastTimestamp,
-			long windowLength)
+	private void saveMeasurementAndCalculation(StationDto station, ArrayList<Vehicle> vehicles, long lastTimestamp, long windowLength)
 	{
 		A22TrafficJSONPusher pusher = new A22TrafficJSONPusher();
 
 		DataMapDto<RecordDtoImpl> dataMapDto = new DataMapDto<>();
 
+		log.debug("Create vehicle classes");
 		Map<String, Integer> classCounts = createVehicleCounts(vehicles);
 
 		double equivalentVehicles = 0;
@@ -140,6 +154,7 @@ public class MainElaborations implements Job
 			SimpleRecordDto record = new SimpleRecordDto(timestamp.getTime(), classCount.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
 
+			log.debug("Save "+classCount.getKey()+" vehicles: " + classCount.getValue());
 			dataMapDto.addRecord(station.getId(), classCount.getKey(), record);
 
 		}
@@ -156,6 +171,7 @@ public class MainElaborations implements Job
 			Timestamp timestampAvgSpeed = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 			SimpleRecordDto recordAvgSpeed = new SimpleRecordDto(timestampAvgSpeed.getTime(), classAvgSpeed.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
+			log.debug("Save avg speed: " + classAvgSpeed.getValue());
 			dataMapDto.addRecord(station.getId(), classAvgSpeed.getKey(), recordAvgSpeed);
 		}
 
@@ -166,6 +182,7 @@ public class MainElaborations implements Job
 			Timestamp timestampVarSpeed = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 			SimpleRecordDto recordVarSpeed = new SimpleRecordDto(timestampVarSpeed.getTime(), classVarSpeed.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
+			log.debug("Save speed variance "+classVarSpeed.getKey()+": " + classVarSpeed.getValue());
 			dataMapDto.addRecord(station.getId(), classVarSpeed.getKey(), recordVarSpeed);
 		}
 
@@ -176,6 +193,7 @@ public class MainElaborations implements Job
 			Timestamp timestampAvg = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 			SimpleRecordDto recordAvg = new SimpleRecordDto(timestampAvg.getTime(), classAvg.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
+			log.debug("Save "+classAvg.getKey()+": " + classAvg.getValue());
 			dataMapDto.addRecord(station.getId(), classAvg.getKey(), recordAvg);
 
 		}
