@@ -184,37 +184,6 @@ public class MainA22Sign implements Job
 
 	private void readLastTimestampsForAllSigns(A22SignJSONPusher pusher)
 	{
-		/*
-		  2019-06-21 d@vide.bz: not working, i got an exception
-		  
-		  List<StationDto> stations = pusher.fetchStations(null, null);
-
-
-                 long lastTimestamp = ((java.util.Date) pusher.getDateOfLastRecord(stationcode, null, null)).getTime();
-				if (lastTimestamp <= 0)
-				{
-					Calendar calendar = Calendar.getInstance();
-					calendar.set(2019, Calendar.JUNE, 21, 0, 0, 0);
-					calendar.set(Calendar.MILLISECOND, 0);
-
-					lastTimestamp = calendar.getTimeInMillis();
-				}
-				else
-
-
-			s1:c1   2019-07-10
-			s1:c2   2019-07-09
-
-			-> s1 si usa 2019-07-10
-
-			s2:c1   2019-07-07
-
-			-> s2 si usa 2019-07-07
-
- 			HashMap stazione e timestamp
-
-		
-		 */
 		signIdLastTimestampMap = new HashMap<>();
 		List<StationDto> stations = pusher.fetchStations(pusher.initIntegreenTypology(), a22stationProperties.getProperty("origin"));
 
@@ -231,13 +200,6 @@ public class MainA22Sign implements Job
 
 	private long getLastTimestampOfSignInSeconds(A22SignJSONPusher pusher, String roadSignId) {
 
-		// dalla hashmap prendere per questa stazione il timestamp from
-
-		// però comunque non più vecchio di 1 settimana
-
-		// if (lastTimestampSeconds < now - 1 settimana)
-		//	lastTimestampSeconds = now - 1 settimana
-
 		if(signIdLastTimestampMap == null) {
 			readLastTimestampsForAllSigns(pusher);
 		}
@@ -246,6 +208,10 @@ public class MainA22Sign implements Job
 					new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22stationProperties.getProperty("lastTimestamp")).getTime());
 
 			long scanWindowMilliseconds = Long.parseLong(a22stationProperties.getProperty("scanWindowSeconds")) * 1000;
+
+			/*
+				don't go back in time more than scanWindowMilliseconds
+			*/
 
 			if(ret < System.currentTimeMillis() - scanWindowMilliseconds) {
 				ret = System.currentTimeMillis() - scanWindowMilliseconds;
