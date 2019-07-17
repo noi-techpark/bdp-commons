@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import org.apache.log4j.Logger;
 import org.json.simple.*;
 
 /**
@@ -22,6 +23,8 @@ public class Connector {
     private static final String user_agent = "NOI/A22SignConnector";
     private static final int WS_CONN_TIMEOUT_MSEC = 30000;
     private static final boolean DEBUG = false;
+
+    private static Logger log = Logger.getLogger(Connector.class);
 
     private String token = null;
     private String url = null;
@@ -53,6 +56,7 @@ public class Connector {
         os.flush();
         int status = conn.getResponseCode();
         if (status != 200) {
+            log.error("authentication failure (response code was " + status + ")");
             throw new RuntimeException("authentication failure (response code was " + status + ")");
         }
 
@@ -75,10 +79,12 @@ public class Connector {
         } catch (Exception e) {
             // null pointer or cast exception in case the json hasn't the expected form
             e.printStackTrace();
+            log.error("authentication failure (could not parse response)");
             throw new RuntimeException("authentication failure (could not parse response)");
         }
 
         if (session_id == null) {
+            log.error("authentication failure (could not find sessionId in response)");
             throw new RuntimeException("authentication failure (could not find sessionId in response)");
         }
 
@@ -86,7 +92,7 @@ public class Connector {
         this.token = session_id;
 
         if (DEBUG) {
-            System.err.println("authentication    OK new token = " + token);
+            log.debug("authentication    OK new token = " + token);
         }
 
     }
@@ -143,7 +149,7 @@ public class Connector {
         }
 
         if (DEBUG) {
-            System.err.println("de-authentication OK old token = " + token);
+            log.debug("de-authentication OK old token = " + token);
         }
 
         this.url = null;
@@ -177,6 +183,7 @@ public class Connector {
         os.flush();
         int status = conn.getResponseCode();
         if (status != 200) {
+            log.error("could not get signs (response code was " + status + ")");
             throw new RuntimeException("could not get signs (response code was " + status + ")");
         }
 
@@ -214,12 +221,12 @@ public class Connector {
             }
         } catch (Exception e) {
             // null pointer, cast or number format exception in case the json hasn't the expected form or data types
-            e.printStackTrace();
+            log.error("could not parse list of signs", e);
             throw new RuntimeException("could not parse list of signs");
         }
 
         if (DEBUG) {
-            System.err.println("getSigns() OK: got " + output.size() + " signs");
+            log.debug("getSigns() OK: got " + output.size() + " signs");
         }
 
         return output;
@@ -274,6 +281,7 @@ public class Connector {
             http_codes.put(status, 1);
         }
         if (status != 200) {
+            log.error("could not get events (response code was " + status + ")");
             throw new RuntimeException("could not get events (response code was " + status + ")");
 
         }
@@ -317,12 +325,12 @@ public class Connector {
             }
         } catch (Exception e) {
             // null pointer, cast or number format exception in case the json hasn't the expected form or data types
-            e.printStackTrace();
+            log.error("could not parse list of events", e);
             throw new RuntimeException("could not parse list of events");
         }
 
         if (DEBUG) {
-            System.err.println("getEvents() OK: got " + output.size() + " events");
+            log.debug("getEvents() OK: got " + output.size() + " events");
         }
 
         return output;
