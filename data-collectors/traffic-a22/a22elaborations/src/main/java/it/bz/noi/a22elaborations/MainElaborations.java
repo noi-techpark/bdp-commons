@@ -101,8 +101,9 @@ public class MainElaborations implements Job
 			}
 			connection.close();
 		}
-		catch (IOException | SQLException exxx)
+		catch (Exception exxx )
 		{
+			log.error(exxx);
 			throw new JobExecutionException(exxx);
 		}
 		log.debug("Finish writing.");
