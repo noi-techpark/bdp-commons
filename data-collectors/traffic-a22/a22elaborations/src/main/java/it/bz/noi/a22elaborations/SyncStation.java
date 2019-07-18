@@ -53,23 +53,35 @@ public class SyncStation
 	public static StationList readStationList(Connection connection) throws IOException, SQLException
 	{
 
+		log.debug("Create stationlist");
 		StationList stationList = new StationList();
-
+		log.debug("Read stations from db");
 		String query = Utility.readResourceText(SyncStation.class, "read-all-stations.sql");
+		log.debug("Create prepared statement");
 		PreparedStatement ps = connection.prepareStatement(query);
+		log.debug("Create result set");
 		ResultSet resultSet = ps.executeQuery();
 		while (resultSet.next())
 		{
+			log.debug("Read stationcode:" );
 			String code = resultSet.getString("code");
+			log.debug(code);
+			log.debug("Read stationname:");
 			String name = resultSet.getString("name");
+			log.debug(name);
+			log.debug("Read geo:");
 			String geo = resultSet.getString("geo");
+			log.debug(geo);
 			String[] latlng = geo.split(",");
 			double lat = Double.parseDouble(latlng[0]);
 			double lng = Double.parseDouble(latlng[1]);
 
+			log.debug("Create stationDto");
 			StationDto station = new StationDto(code, name, lat, lng);
+			log.debug("Add stationDto to stationList");
 			stationList.add(station);
 		}
+		log.debug("Return stationlist");
 		return stationList;
 
 	}
