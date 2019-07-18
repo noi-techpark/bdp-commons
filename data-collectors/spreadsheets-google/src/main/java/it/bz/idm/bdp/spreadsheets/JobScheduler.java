@@ -1,6 +1,5 @@
 package it.bz.idm.bdp.spreadsheets;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +18,14 @@ public class JobScheduler {
 	@Autowired
 	private GoogleSpreadSheetDataFetcher googleClient;
 
-	@Value("${spreadsheetId}")
-	private String origin;
-
 	@Autowired
 	private ODHClient odhClient;
+
+	@Autowired
+	private DataMappingUtil util;
+
+	@Value("${spreadsheetId}")
+	private String origin;
 
 	@Value("${headers.addressId}")
 	private String addressId;
@@ -32,7 +34,6 @@ public class JobScheduler {
 	 * scheduled job which syncs odh with the spreadsheet
 	 */
 	public void syncData() {
-
 		List<List<Object>> values = googleClient.getWholeSheet().getValues();
 		List<StationDto> odhStations = odhClient.fetchStations(odhClient.getIntegreenTypology(), origin);
 		StationList dtos = mapData(values, odhStations);
@@ -52,7 +53,7 @@ public class JobScheduler {
 		int i = 0;
 		for (final List<Object> row : spreadSheetValues) {
 			if (i == 0) {
-				headerMapping = getHeaderMapping(row);
+				headerMapping = util.listToMap(row);
 				if (headerMapping.isEmpty() || !(headerMapping.containsKey("address")||(headerMapping.containsKey("longitude") && headerMapping.containsKey("latitdude")))){
 					throw new IllegalStateException("Spreadsheet does not conform to rules");
 				}
@@ -79,18 +80,5 @@ public class JobScheduler {
 		return dtos;
 	}
 
-	/**
-	 * @param row values of column header row
-	 * @return mapping of column name with column position in sheet
-	 */
-	private Map<String, Short> getHeaderMapping(List<Object> row) {
-		Map<String, Short> mapping = new HashMap<>();
-		short count = 0;
-		for (Object header : row) {
-			mapping.put(header.toString().toLowerCase(), count);
-			count++;
-		}
-		return mapping;
-	}
 
 }

@@ -9,8 +9,8 @@
 	<bean class="it.bz.idm.bdp.spreadsheets.JobScheduler" id="jobScheduler" />
 	<task:scheduler id="Scheduler" pool-size="10" />
 	<task:scheduled-tasks scheduler="Scheduler">
-		<task:scheduled ref="jobScheduler" method="syncData" cron="0 */10 * * * *" />
+		<task:scheduled ref="jobScheduler" method="syncData" cron="* */10 * * * *" />
  	</task:scheduled-tasks>
-    <context:component-scan base-package="it.bz.idm.bdp"/>
+    <context:component-scan base-package="it.bz.idm.bdp.spreadsheets"/>
     <context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
 </beans>

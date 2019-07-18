@@ -95,8 +95,12 @@ public class ODHClient extends JSONPusher{
 		}
 		if (longIndex != null && latIndex != null && rowSize > longIndex && rowSize > latIndex) {
 			try {
-				dto.setLongitude(numberFormatter.parse(row.get(longIndex).toString()).doubleValue());
-				dto.setLatitude(numberFormatter.parse(row.get(latIndex).toString()).doubleValue());
+				String longString = row.get(longIndex).toString();
+				String latString = row.get(latIndex).toString();
+				if (!longString.isEmpty() || !latString.isEmpty()) {
+					dto.setLongitude(numberFormatter.parse(longString).doubleValue());
+					dto.setLatitude(numberFormatter.parse(latString).doubleValue());
+				}
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
