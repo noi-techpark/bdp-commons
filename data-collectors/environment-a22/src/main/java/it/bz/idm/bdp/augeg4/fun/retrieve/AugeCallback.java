@@ -23,7 +23,7 @@ public class AugeCallback implements MqttCallback {
 
     ObjectMapper mapper = new ObjectMapper();
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    FixedQueue<AugeG4ElaboratedDataDto> buffer = new FixedQueue<>(100);
+    FixedQueue<AugeG4ElaboratedDataDto> buffer = new FixedQueue<>(1000);
 
     public  AugeCallback() {
         dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Rome"));
