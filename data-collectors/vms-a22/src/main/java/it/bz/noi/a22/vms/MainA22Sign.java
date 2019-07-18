@@ -1,13 +1,9 @@
 package it.bz.noi.a22.vms;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
@@ -25,12 +21,18 @@ import it.bz.idm.bdp.dto.StationList;
 @DisallowConcurrentExecution
 public class MainA22Sign implements Job
 {
-	static final String KEY_ESPOSIZIONE = "esposizione";
-	static final String KEY_STATO = "stato";
 	
-	static final String ORIGIN = "a22";
-
 	private static Logger log = Logger.getLogger(MainA22Sign.class);
+
+	private final A22Properties datatypesProperties;
+	private final A22Properties a22stationProperties;
+	private HashMap<String, Long> signIdLastTimestampMap;
+
+	public MainA22Sign() {
+		this.datatypesProperties = new A22Properties("a22vmsdatatypes.properties");
+		this.a22stationProperties = new A22Properties("a22sign.properties");
+
+	}
 
 	@Override
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException
@@ -42,14 +44,14 @@ public class MainA22Sign implements Job
 
 			A22SignJSONPusher pusher = new A22SignJSONPusher();
 
-			// 2019-06-26 d@vide.bz: now that fetchstations works, should I find what???
-			long lastTimestampSeconds = readLastTimestampSeconds(pusher);
 			long delaySeconds = 3600; // 2019-06-21 d@vide.bz: a22 data realtime delay
 			long nowSeconds = System.currentTimeMillis() / 1000 - delaySeconds;
 
 			Connector a22Service = setupA22ServiceConnector();
 
 			setupDataType(pusher);
+
+			readLastTimestampsForAllSigns(pusher);
 
 			StationList stationList = new StationList();
 			DataMapDto<RecordDtoImpl> esposizioniDataMapDto = new DataMapDto<>();
@@ -72,6 +74,8 @@ public class MainA22Sign implements Job
 				String position_m = sign.get("position_m");
 				double sign_lat = Double.parseDouble(sign.get("lat"));
 				double sign_lon = Double.parseDouble(sign.get("long"));
+
+				long lastTimestampSeconds = getLastTimestampOfSignInSeconds(pusher, road + ":" + sign_id);
 
 				ArrayList<HashMap<String, Object>> events = a22Service.getEvents(lastTimestampSeconds, nowSeconds,
 						Long.parseLong(sign_id));
@@ -103,7 +107,7 @@ public class MainA22Sign implements Job
 						if (esposizione == null)
 						{
 							esposizione = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, normalizedData, 1);
-							esposizioniDataMapDto.addRecord(virtualStationId, KEY_ESPOSIZIONE, esposizione);
+							esposizioniDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.esposizione.key"), esposizione);
 							esposizioneByComponentId.put(component_id, esposizione);
 						}
 						else
@@ -117,7 +121,7 @@ public class MainA22Sign implements Job
 						if (stato == null)
 						{
 							stato = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, status, 1);
-							statoDataMapDto.addRecord(virtualStationId, KEY_STATO, stato);
+							statoDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.stato.key"), stato);
 							statoByComponentId.put(component_id, stato);
 						}
 						else
@@ -134,8 +138,12 @@ public class MainA22Sign implements Job
 							StationDto station = new StationDto(virtualStationId, virtualStationIdName, sign_lat,
 									sign_lon);
 							station.getMetaData().put("pmv_type", pmv_type);
-							station.setOrigin(ORIGIN); // 2019-06-26 d@vide.bz: required to make fetchStations work!
+							station.setOrigin(a22stationProperties.getProperty("origin")); // 2019-06-26 d@vide.bz: required to make fetchStations work!
 							// add other metadata
+							station.getMetaData().put("direction_id", direction_id);
+							station.getMetaData().put("segment_start", segment_start);
+							station.getMetaData().put("segment_end", segment_end);
+							station.getMetaData().put("position_m", position_m);
 							stationList.add(station);
 						}
 
@@ -164,49 +172,72 @@ public class MainA22Sign implements Job
 		String password;
 
 		// read connector auth informations
-		try (Reader in = new InputStreamReader(getClass().getResourceAsStream("a22connector.properties")))
-		{
-			Properties prop = new Properties();
-			prop.load(in);
-			url = prop.getProperty("url");
-			user = prop.getProperty("user");
-			password = prop.getProperty("password");
-		}
+		A22Properties prop = new A22Properties("a22connector.properties");
+		url = prop.getProperty("url");
+		user = prop.getProperty("user");
+		password = prop.getProperty("password");
 
 		Connector a22Service = new Connector(url, user, password);
 
 		return a22Service;
 	}
 
-	private static long readLastTimestampSeconds(A22SignJSONPusher pusher)
+	private void readLastTimestampsForAllSigns(A22SignJSONPusher pusher)
 	{
-		/*
-		  2019-06-21 d@vide.bz: not working, i got an exception
-		  
-		  List<StationDto> stations = pusher.fetchStations(null, null);
-		
-		 */
-		List<StationDto> stations = pusher.fetchStations(pusher.initIntegreenTypology(), ORIGIN);
-		
-		int size = stations.size();
-		
-		System.out.println(size);
+		signIdLastTimestampMap = new HashMap<>();
+		List<StationDto> stations = pusher.fetchStations(pusher.initIntegreenTypology(), a22stationProperties.getProperty("origin"));
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(2019, Calendar.JUNE, 20, 0, 0, 0); // 2019-06-21 d@vide.bz: conventional date when no data was already saved
-		calendar.set(Calendar.MILLISECOND, 0);
+		for(StationDto stationDto: stations) {
+			String stationCode = stationDto.getId();
+			long lastTimestamp = ((Date) pusher.getDateOfLastRecord(stationCode, null, null)).getTime();
+			log.debug("Station Code: " + stationCode + ", lastTimestamp: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
+			String signId = stationCode.substring(0, stationCode.lastIndexOf(":"));
+			if(signIdLastTimestampMap.getOrDefault(signId, 0L) < lastTimestamp) {
+				signIdLastTimestampMap.put(signId, lastTimestamp);
+			}
+		}
+	}
 
-		long lastTimestamp = calendar.getTimeInMillis();
-		return lastTimestamp / 1000;
+	private long getLastTimestampOfSignInSeconds(A22SignJSONPusher pusher, String roadSignId) {
+
+		if(signIdLastTimestampMap == null) {
+			readLastTimestampsForAllSigns(pusher);
+		}
+		try {
+			long ret = signIdLastTimestampMap.getOrDefault(roadSignId,
+					new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22stationProperties.getProperty("lastTimestamp")).getTime());
+
+			long scanWindowMilliseconds = Long.parseLong(a22stationProperties.getProperty("scanWindowSeconds")) * 1000;
+
+			/*
+				don't go back in time more than scanWindowMilliseconds
+			*/
+
+			if(ret < System.currentTimeMillis() - scanWindowMilliseconds) {
+				ret = System.currentTimeMillis() - scanWindowMilliseconds;
+			}
+
+			log.debug("getLastTimestampOfSignInSeconds(" + roadSignId + "): " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
+
+			return ret / 1000;
+		} catch (ParseException e) {
+			log.error("Invalid lastTimestamp: " + a22stationProperties.getProperty("lastTimestamp"));
+			throw new RuntimeException("Invalid lastTimestamp: " + a22stationProperties.getProperty("lastTimestamp"), e);
+		}
 	}
 
 	private void setupDataType(A22SignJSONPusher pusher)
 	{
 		List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
-		DataTypeDto esportazione = new DataTypeDto(KEY_ESPOSIZIONE, "", "Messaggio esposto su display",
-				"Instananteous");
+		DataTypeDto esportazione = new DataTypeDto(datatypesProperties.getProperty("a22vms.datatype.esposizione.key"),
+				datatypesProperties.getProperty("a22vms.datatype.esposizione.unit"),
+				datatypesProperties.getProperty("a22vms.datatype.esposizione.description"),
+				datatypesProperties.getProperty("a22vms.datatype.esposizione.rtype"));
 		dataTypeDtoList.add(esportazione);
-		DataTypeDto stato = new DataTypeDto(KEY_STATO, "", "Stato del display (acceso / spento)", "Instananteous");
+		DataTypeDto stato = new DataTypeDto(datatypesProperties.getProperty("a22vms.datatype.stato.key"),
+				datatypesProperties.getProperty("a22vms.datatype.stato.unit"),
+				datatypesProperties.getProperty("a22vms.datatype.stato.description"),
+				datatypesProperties.getProperty("a22vms.datatype.stato.rtype"));
 		dataTypeDtoList.add(stato);
 		pusher.syncDataTypes(dataTypeDtoList);
 	}
