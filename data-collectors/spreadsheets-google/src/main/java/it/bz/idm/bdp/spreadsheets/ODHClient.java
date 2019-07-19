@@ -23,12 +23,13 @@ import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.json.JSONPusher;
-import it.bz.idm.bdp.util.LocationLookupUtil;
+import it.bz.idm.bdp.util.LocationLookup;
+import it.bz.idm.bdp.util.NominatimLocationLookupUtil;
 
 @Component
 public class ODHClient extends JSONPusher{
 
-	private LocationLookupUtil util = new LocationLookupUtil();
+	private LocationLookup lookUpUtil = new NominatimLocationLookupUtil();
 
 	@Value(value="${suportedLanguages}")
 	private String[] supportedLanguages;
@@ -112,7 +113,8 @@ public class ODHClient extends JSONPusher{
 				value = row.get(entry.getValue());
 			if (!excludeFromMetaData.contains(entry.getKey()) && value != null) {
 				String text = value.toString().trim().replace("\n", " ").replace("\r", "").replaceAll(" +", " ");
-				metaData.put(entry.getKey(), text != null ? text : "");
+				if (text!=null && !text.isEmpty())
+					metaData.put(entry.getKey(), text != null ? text : "");
 			}
 		}
 		dto.setMetaData(metaData);
@@ -140,7 +142,7 @@ public class ODHClient extends JSONPusher{
 	 * @param dto to guess the position off
 	 */
 	public void guessPositionByAddress(StationDto dto) {
-		Double[] coordinates = util.lookupCoordinates(dto.getMetaData().get(addressId).toString());
+		Double[] coordinates = lookUpUtil.lookupCoordinates(dto.getMetaData().get(addressId).toString());
 		if (coordinates[0] != null && coordinates[1] != null) {
 			dto.setLongitude(coordinates[0]);
 			dto.setLatitude(coordinates[1]);
