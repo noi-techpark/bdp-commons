@@ -12,11 +12,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import it.bz.idm.bdp.dto.StationDto;
 
-@ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
+@ContextConfiguration(locations = { "classpath*:/META-INF/spring/applicationContext.xml" })
+@TestPropertySource(properties = {
+	    "headers.addressId=address",
+	    "composite.unique.key=name,address",
+	    "headers.nameId=name",
+	    "headers.longitudeId=longitude",
+	    "headers.latitudeId=latitude"
+	})
 public class UtilityTest extends AbstractJUnit4SpringContextTests{
 
 	@Autowired

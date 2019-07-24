@@ -61,7 +61,6 @@ public class ODHClient extends JSONPusher{
 
 	@PostConstruct
 	public void initMetadata() throws IOException {
-		excludeFromMetaData.add(nameId);
 		excludeFromMetaData.add(longitudeId);
 		excludeFromMetaData.add(latitudeId);
 
