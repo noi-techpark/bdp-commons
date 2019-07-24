@@ -36,8 +36,6 @@ import com.google.api.services.sheets.v4.model.GridRange;
 import com.google.api.services.sheets.v4.model.RepeatCellRequest;
 import com.google.api.services.sheets.v4.model.Request;
 import com.google.api.services.sheets.v4.model.Response;
-import com.google.api.services.sheets.v4.model.Sheet;
-import com.google.api.services.sheets.v4.model.SheetProperties;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
@@ -50,8 +48,6 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
 	@Value("${spreadsheetId}")
 	private String spreadhSheetId;
 
-	private SheetProperties sheetProperties;
-
     Sheets service;
     NetHttpTransport HTTP_TRANSPORT ;
     JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -62,12 +58,9 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
     @Value("${spreadsheet.range}")
 	private String spreadsheetRange;
 
-
-
     @PostConstruct
     private void init() throws GeneralSecurityException, IOException {
     	authenticate();
-    	this.sheetProperties = ((Sheet)fetchSheet()).getProperties();
     }
     private Credential getCredentials() throws IOException {
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(clientSecret.getInputStream()));
@@ -96,14 +89,14 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
 	public Object fetchSheet() {
 		try {
 			Spreadsheet sheet = service.spreadsheets().get(spreadhSheetId).execute();
-			return sheet.getSheets().get(0);
+			return sheet;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	public ValueRange getWholeSheet() {
-		return getValues(this.sheetProperties.getTitle()+"!"+ spreadsheetRange);
+	public ValueRange getWholeSheet(String sheedTitle) {
+		return getValues(sheedTitle+"!"+ spreadsheetRange);
 	}
 	private ValueRange getValues(String range) {
 		try {
@@ -117,7 +110,7 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
 	 * @param missingPositions rows in which address or (longituted and longitude information is missing)
 	 * @param collumnPosition column which will be marked as wrong wit a red background
 	 */
-	public void markMissing(Set<Integer> missingPositions, Integer collumnPosition) {
+	public void markMissing(Set<Integer> missingPositions, Integer collumnPosition, Integer sheetId) {
 		List<Request> list = new ArrayList<>();
 		Color backgroundColor = new Color();
 		backgroundColor.setBlue(0f);
@@ -129,7 +122,7 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
 		white.setRed(1f);
 		Request clearRequest = new Request().setRepeatCell(new RepeatCellRequest()
 				.setCell(new CellData().setUserEnteredFormat(new CellFormat().setBackgroundColor(white)))
-				.setRange(new GridRange().setSheetId(this.sheetProperties.getSheetId())
+				.setRange(new GridRange().setSheetId(sheetId)
 						.setStartRowIndex(1)
 						.setStartColumnIndex(collumnPosition).setEndColumnIndex(collumnPosition+1))
 				.setFields("userEnteredFormat.backgroundColor"));
@@ -137,7 +130,7 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
 		for (Integer missing : missingPositions) {
 			Request colorRequest = new Request().setRepeatCell(new RepeatCellRequest()
 					.setCell(new CellData().setUserEnteredFormat(new CellFormat().setBackgroundColor(backgroundColor)))
-					.setRange(new GridRange().setSheetId(this.sheetProperties.getSheetId())
+					.setRange(new GridRange().setSheetId(sheetId)
 							.setStartRowIndex(missing).setEndRowIndex(missing+1)
 							.setStartColumnIndex(collumnPosition).setEndColumnIndex(collumnPosition+1))
 					.setFields("userEnteredFormat.backgroundColor"));
