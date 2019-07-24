@@ -29,6 +29,9 @@ import it.bz.idm.bdp.util.NominatimLocationLookupUtil;
 @Component
 public class ODHClient extends JSONPusher{
 
+	@Value(value="${stationtype}")
+	private String stationtype;
+
 	private LocationLookup lookUpUtil = new NominatimLocationLookupUtil();
 
 	@Value(value="${suportedLanguages}")
@@ -51,6 +54,9 @@ public class ODHClient extends JSONPusher{
 	@Value("${headers.latitudeId}")
 	private String latitudeId;
 
+	@Value("${composite.unique.key}")
+	private String[] uniqueIdFields;
+
 	public Set<String> excludeFromMetaData = new HashSet<>();
 
 	@PostConstruct
@@ -70,7 +76,7 @@ public class ODHClient extends JSONPusher{
 
 	@Override
 	public String initIntegreenTypology() {
-		return "CreativeIndustry";
+		return stationtype;
 	}
 
 	@Override
@@ -85,12 +91,12 @@ public class ODHClient extends JSONPusher{
 	 */
 	public StationDto mapStation(Map<String, Short> headerMapping, List<Object> row) {
 		StationDto dto = new StationDto();
-		Short nameIndex = headerMapping.get(nameId);
+		Short nameIndex = headerMapping.get(nameId.toLowerCase());
 		Short longIndex = headerMapping.get(longitudeId);
 		Short latIndex = headerMapping.get(latitudeId);
 		Integer rowSize = row.size();
 		if (nameIndex != null && rowSize > nameIndex ) {
-			Object object = row.get(headerMapping.get(nameId));
+			Object object = row.get(headerMapping.get(nameId.toLowerCase()));
 			if (object != null && !object.toString().isEmpty())
 				dto.setName(object.toString().trim().replace("\n", " ").replace("\r", "").replaceAll(" +", " "));
 		}
@@ -113,15 +119,29 @@ public class ODHClient extends JSONPusher{
 				value = row.get(entry.getValue());
 			if (!excludeFromMetaData.contains(entry.getKey()) && value != null) {
 				String text = value.toString().trim().replace("\n", " ").replace("\r", "").replaceAll(" +", " ");
-				if (text!=null && !text.isEmpty())
-					metaData.put(entry.getKey(), text != null ? text : "");
+				if (text!=null && !text.isEmpty()) {
+					if (entry.getKey().length()>0)
+						metaData.put(entry.getKey(), text != null ? text : "");
+				}
 			}
 		}
 		dto.setMetaData(metaData);
 		dto.setOrigin(origin);
 		dto.setStationType(this.getIntegreenTypology());
-		dto.setId((dto.getName()+dto.getMetaData().get(addressId).toString()).replaceAll("\\s+",""));
+		dto.setId(generateUniqueId(dto));
 		return dto;
+	}
+
+	private String generateUniqueId(StationDto dto) {
+		StringBuffer uniqueId = new StringBuffer();
+		uniqueId.append(dto.getOrigin()).append(":");
+		for(String idField:uniqueIdFields) {
+			String value= dto.getMetaData().get(idField).toString();
+			if (value!=null && !value.isEmpty()) {
+				uniqueId.append(value);
+			}
+		}
+		return uniqueId.toString().replaceAll("\\s+","");
 	}
 
 	/**
@@ -142,10 +162,13 @@ public class ODHClient extends JSONPusher{
 	 * @param dto to guess the position off
 	 */
 	public void guessPositionByAddress(StationDto dto) {
-		Double[] coordinates = lookUpUtil.lookupCoordinates(dto.getMetaData().get(addressId).toString());
-		if (coordinates[0] != null && coordinates[1] != null) {
-			dto.setLongitude(coordinates[0]);
-			dto.setLatitude(coordinates[1]);
+		Object addressObject = dto.getMetaData().get(addressId);
+		if (addressObject != null && !addressObject.toString().isEmpty()) {
+			Double[] coordinates = lookUpUtil.lookupCoordinates(addressObject.toString());
+			if (coordinates[0] != null && coordinates[1] != null) {
+				dto.setLongitude(coordinates[0]);
+				dto.setLatitude(coordinates[1]);
+			}
 		}
 
 	}
