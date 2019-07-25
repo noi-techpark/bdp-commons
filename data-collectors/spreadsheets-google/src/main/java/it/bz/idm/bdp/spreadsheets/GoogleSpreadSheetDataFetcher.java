@@ -58,10 +58,6 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
     @Value("${spreadsheet.range}")
 	private String spreadsheetRange;
 
-    @PostConstruct
-    private void init() throws GeneralSecurityException, IOException {
-    	authenticate();
-    }
     private Credential getCredentials() throws IOException {
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(clientSecret.getInputStream()));
 

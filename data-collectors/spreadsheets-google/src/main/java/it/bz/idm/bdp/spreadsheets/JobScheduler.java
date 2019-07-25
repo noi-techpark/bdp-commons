@@ -41,6 +41,7 @@ public class JobScheduler {
 	 * scheduled job which syncs odh with the spreadsheet
 	 */
 	public void syncData() {
+		googleClient.authenticate();
 		Spreadsheet fetchedSheet = (Spreadsheet) googleClient.fetchSheet();
 		for (Sheet sheet : fetchedSheet.getSheets()){
 			if (Arrays.asList(sheetsIdentifier).contains(sheet.getProperties().getTitle())) {
