@@ -1,7 +1,10 @@
 package it.bz.idm.bdp.spreadsheets;
 
 import java.io.IOException;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -116,11 +119,18 @@ public class ODHClient extends JSONPusher{
 			Object value = null;
 			if (row.size() > entry.getValue())
 				value = row.get(entry.getValue());
-			if (!excludeFromMetaData.contains(entry.getKey()) && value != null) {
+			String keyValue = entry.getKey();
+			if (!excludeFromMetaData.contains(keyValue) && value != null) {
 				String text = value.toString().trim().replace("\n", " ").replace("\r", "").replaceAll(" +", " ");
 				if (text!=null && !text.isEmpty()) {
-					if (entry.getKey().length()>0)
-						metaData.put(entry.getKey(), text != null ? text : "");
+					if (keyValue.length()>0) {
+						Object jsonGuessedType = jsonTypeGuessing(text);
+						if (jsonGuessedType != null) {
+							String normalizedJsonKey = normalizeKey(keyValue);
+							Normalizer.normalize(keyValue, Form.NFKC);
+							metaData.put(normalizedJsonKey, jsonGuessedType);
+						}
+					}
 				}
 			}
 		}
@@ -131,11 +141,30 @@ public class ODHClient extends JSONPusher{
 		return dto;
 	}
 
+	private String normalizeKey(String keyValue) {
+		String replaceAll = keyValue.replaceAll(" ","_");
+		return Normalizer.normalize(replaceAll, Form.NFKC);
+	}
+
+	private Object jsonTypeGuessing(String text) {
+		try {
+			return numberFormatter.parse(text);
+		} catch (ParseException e) {
+			// Do not do anything since we just want to check if string is parsable to a
+			// number
+		}
+		if ("true".equals(text) || "false".equals(text))
+			return "true".equals(text);
+
+		return text;
+	}
+
 	private String generateUniqueId(StationDto dto) {
 		StringBuffer uniqueId = new StringBuffer();
 		uniqueId.append(dto.getOrigin()).append(":");
 		for(String idField:uniqueIdFields) {
-			String value= dto.getMetaData().get(idField).toString();
+			String normalizedKey = normalizeKey(idField);
+			String value= dto.getMetaData().get(normalizedKey).toString();
 			if (value!=null && !value.isEmpty()) {
 				uniqueId.append(value);
 			}
