@@ -72,7 +72,7 @@ public class UtilityTest extends AbstractJUnit4SpringContextTests{
 		assertEquals(dataRow.get(1), station.getMetaData().get("address"));
 		assertEquals(dataRow.get(2), station.getLongitude().toString());
 		assertEquals(dataRow.get(3), station.getLatitude().toString());
-		assertEquals(dataRow.get(4), station.getMetaData().get("en:phone"));
+		assertEquals(3936936l, station.getMetaData().get("en:phone"));
 	}
 	@Test
 	public void testMapTextToLanguage() {
