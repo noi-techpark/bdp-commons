@@ -44,11 +44,12 @@ public class JobScheduler {
 		googleClient.authenticate();
 		Spreadsheet fetchedSheet = (Spreadsheet) googleClient.fetchSheet();
 		StationList dtos = new StationList();
+	    List<StationDto> odhStations = odhClient.fetchStations(odhClient.getIntegreenTypology(), origin);
+	    List<String> sheetFilter = Arrays.asList(sheetsIdentifier);
 		for (Sheet sheet : fetchedSheet.getSheets()){
-			if (Arrays.asList(sheetsIdentifier).contains(sheet.getProperties().getTitle())) {
+			if (sheetFilter.isEmpty() || sheetFilter.contains(sheet.getProperties().getTitle())) {
 				try {
 				    List<List<Object>> values = googleClient.getWholeSheet(sheet.getProperties().getTitle()).getValues();
-				    List<StationDto> odhStations = odhClient.fetchStations(odhClient.getIntegreenTypology(), origin);
 				    dtos.addAll(mapData(values, odhStations, sheet.getProperties().getSheetId()));
 				}catch(Exception ex) {
 					ex.printStackTrace();

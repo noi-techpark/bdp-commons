@@ -103,7 +103,7 @@ public class ODHClient extends JSONPusher{
 			try {
 				String longString = row.get(longIndex).toString();
 				String latString = row.get(latIndex).toString();
-				if (!longString.isEmpty() || !latString.isEmpty()) {
+				if (!longString.isEmpty() && !latString.isEmpty()) {
 					dto.setLongitude(numberFormatter.parse(longString).doubleValue());
 					dto.setLatitude(numberFormatter.parse(latString).doubleValue());
 				}
