@@ -43,20 +43,20 @@ public class JobScheduler {
 	public void syncData() {
 		googleClient.authenticate();
 		Spreadsheet fetchedSheet = (Spreadsheet) googleClient.fetchSheet();
+		StationList dtos = new StationList();
 		for (Sheet sheet : fetchedSheet.getSheets()){
 			if (Arrays.asList(sheetsIdentifier).contains(sheet.getProperties().getTitle())) {
 				try {
-				List<List<Object>> values = googleClient.getWholeSheet(sheet.getProperties().getTitle()).getValues();
-				List<StationDto> odhStations = odhClient.fetchStations(odhClient.getIntegreenTypology(), origin);
-				StationList dtos = mapData(values, odhStations, sheet.getProperties().getSheetId());
-				odhClient.syncStations(dtos);
+				    List<List<Object>> values = googleClient.getWholeSheet(sheet.getProperties().getTitle()).getValues();
+				    List<StationDto> odhStations = odhClient.fetchStations(odhClient.getIntegreenTypology(), origin);
+				    dtos.addAll(mapData(values, odhStations, sheet.getProperties().getSheetId()));
 				}catch(Exception ex) {
 					ex.printStackTrace();
 					continue;
 				}
 			}
 		}
-
+		odhClient.syncStations(dtos);
 	}
 
 	/**
