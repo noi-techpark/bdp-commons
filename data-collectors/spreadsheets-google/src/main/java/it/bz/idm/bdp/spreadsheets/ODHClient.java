@@ -127,8 +127,7 @@ public class ODHClient extends JSONPusher{
 					if (keyValue.length()>0) {
 						Object jsonGuessedType = jsonTypeGuessing(text);
 						if (jsonGuessedType != null) {
-							String normalizedJsonKey = normalizeKey(keyValue);
-							metaData.put(normalizedJsonKey, jsonGuessedType);
+							metaData.put(keyValue, jsonGuessedType);
 						}
 					}
 				}
@@ -220,7 +219,7 @@ public class ODHClient extends JSONPusher{
 	 * @param metaData current metadata of {@link StationDto}
 	 * @param headerMapping mapping of column index and column name
 	 */
-	public void mergeTranslations(Map<String, Object> metaData,Map<String, Short> headerMapping) {
+	public void mergeTranslations(Map<String, Object> metaData, Map<String, Short> headerMapping) {
 		for (Map.Entry<String, Short> entry : headerMapping.entrySet()) {
 			String[] split = entry.getKey().split(":");
 			Locale locale = null;
@@ -254,5 +253,13 @@ public class ODHClient extends JSONPusher{
 
 	}
 
-
+	public void normalizeMetaData(Map<String, Object> metaData) {
+		for (Map.Entry<String,Object> entry:metaData.entrySet()) {
+			String normalizedKey = normalizeKey(entry.getKey());
+			if (!entry.getKey().equals(normalizedKey)){
+				metaData.put(normalizedKey, entry.getValue());
+				metaData.remove(entry.getKey());
+			}
+		}
+	}
 }

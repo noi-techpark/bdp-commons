@@ -100,6 +100,7 @@ public class JobScheduler {
 				if (existingOdhStations.contains(dto)||(dto.getLongitude() != null && dto.getLatitude() != null)) {
 					dtos.add(dto);
 				}
+				odhClient.normalizeMetaData(dto.getMetaData());
 			}
 			i++;
 		}
