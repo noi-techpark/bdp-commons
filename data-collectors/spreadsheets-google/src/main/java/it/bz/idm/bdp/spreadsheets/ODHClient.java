@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.LocaleUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.langdetect.OptimaizeLangDetector;
 import org.apache.tika.language.detect.LanguageDetector;
 import org.springframework.beans.factory.annotation.Value;
@@ -121,13 +122,12 @@ public class ODHClient extends JSONPusher{
 				value = row.get(entry.getValue());
 			String keyValue = entry.getKey();
 			if (!excludeFromMetaData.contains(keyValue) && value != null) {
-				String text = value.toString().trim().replace("\n", " ").replace("\r", "").replaceAll(" +", " ");
+				String text = StringUtils.normalizeSpace(value.toString()).replace("\n", " ").replace("\r", "");
 				if (text!=null && !text.isEmpty()) {
 					if (keyValue.length()>0) {
 						Object jsonGuessedType = jsonTypeGuessing(text);
 						if (jsonGuessedType != null) {
 							String normalizedJsonKey = normalizeKey(keyValue);
-							Normalizer.normalize(keyValue, Form.NFKC);
 							metaData.put(normalizedJsonKey, jsonGuessedType);
 						}
 					}
@@ -142,8 +142,10 @@ public class ODHClient extends JSONPusher{
 	}
 
 	private String normalizeKey(String keyValue) {
-		String replaceAll = keyValue.replaceAll(" ","_");
-		return Normalizer.normalize(replaceAll, Form.NFKC);
+		String accentFreeString = StringUtils.stripAccents(keyValue).replaceAll(" ", "_");
+		String asciiString = accentFreeString.replaceAll("[^\\x00-\\x7F]", "");
+		String validVar = asciiString.replaceAll("[^\\w0-9]", "");
+		return validVar;
 	}
 
 	private Object jsonTypeGuessing(String text) {
