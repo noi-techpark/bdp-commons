@@ -4,9 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -55,6 +59,8 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
 
     @Value("${spreadsheet.range}")
 	private String spreadsheetRange;
+
+    private DateFormat formatter = new SimpleDateFormat("dd/MM HH:mm");
 
     private Credential getCredentials() throws IOException {
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(clientSecret.getInputStream()));
@@ -120,7 +126,14 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
 						.setStartRowIndex(1)
 						.setStartColumnIndex(collumnPosition).setEndColumnIndex(collumnPosition+1))
 				.setFields("userEnteredFormat.backgroundColor"));
+		Request noteClearRequest = new Request().setRepeatCell(new RepeatCellRequest()
+				.setCell(new CellData().setNote(null))
+				.setRange(new GridRange().setSheetId(sheetId)
+						.setStartRowIndex(1)
+						.setStartColumnIndex(collumnPosition))
+				.setFields("note"));
 		list.add(clearRequest);
+		list.add(noteClearRequest);
 		for (Integer missing : missingPositions) {
 			Request colorRequest = new Request().setRepeatCell(new RepeatCellRequest()
 					.setCell(new CellData().setUserEnteredFormat(new CellFormat().setBackgroundColor(backgroundColor)))
@@ -128,7 +141,14 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
 							.setStartRowIndex(missing).setEndRowIndex(missing+1)
 							.setStartColumnIndex(collumnPosition).setEndColumnIndex(collumnPosition+1))
 					.setFields("userEnteredFormat.backgroundColor"));
+			Request noteRequest = new Request().setRepeatCell(new RepeatCellRequest()
+					.setCell(new CellData().setNote("Last validity check: "+ formatter.format(Calendar.getInstance(Locale.GERMAN).getTime())))
+					.setRange(new GridRange().setSheetId(sheetId)
+							.setStartRowIndex(missing).setEndRowIndex(missing+1)
+							.setStartColumnIndex(collumnPosition).setEndColumnIndex(collumnPosition+1))
+					.setFields("note"));
 			list.add(colorRequest);
+			list.add(noteRequest);
 		}
 		BatchUpdateSpreadsheetRequest requests = new BatchUpdateSpreadsheetRequest().setRequests(list);
 		try {
