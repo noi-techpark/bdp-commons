@@ -1,8 +1,6 @@
 package it.bz.idm.bdp.spreadsheets;
 
 import java.io.IOException;
-import java.text.Normalizer;
-import java.text.Normalizer.Form;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -228,19 +226,19 @@ public class ODHClient extends JSONPusher{
 			try {
 				locale = LocaleUtils.toLocale(split[0]);
 				Object object = metaData.get(split[1]);
-				String content = metaData.get(entry.getKey()).toString();
-				if (content == null || content.isEmpty())
+				Object content = metaData.get(entry.getKey());
+				if (content == null || content.toString().isEmpty())
 					continue;
 				if (object instanceof Map) {
 					Map langMap = (Map) object;
 					langMap.put(split[0], content);
 				}else if (object instanceof String) {
 					Map<String, String> langMap = mapTextToLanguage(object.toString());
-					langMap.put(split[0], content);
+					langMap.put(split[0], content.toString());
 					metaData.put(split[1], langMap);
 				}else if (object == null) {
 					Map<String,String> langMap = new HashMap<>();
-					langMap.put(split[0],content);
+					langMap.put(split[0],content.toString());
 					metaData.put(split[1], langMap);
 				}
 				metaData.remove(entry.getKey());
