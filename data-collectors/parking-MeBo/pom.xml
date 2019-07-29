@@ -23,7 +23,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>3.0.0-SNAPSHOT</version>
+			<version>3.0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- General dependencies for standard applications -->
 		<dependency>
