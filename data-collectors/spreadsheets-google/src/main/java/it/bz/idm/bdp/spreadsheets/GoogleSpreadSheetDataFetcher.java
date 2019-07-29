@@ -7,8 +7,8 @@ import java.security.GeneralSecurityException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -60,7 +60,7 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
     @Value("${spreadsheet.range}")
 	private String spreadsheetRange;
 
-    private DateFormat formatter = new SimpleDateFormat("dd/MM HH:mm");
+    private DateFormat formatter = new SimpleDateFormat("dd/MM HH:mm",Locale.ITALY);
 
     private Credential getCredentials() throws IOException {
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(clientSecret.getInputStream()));
@@ -142,7 +142,7 @@ public class GoogleSpreadSheetDataFetcher implements DataFetcher{
 							.setStartColumnIndex(collumnPosition).setEndColumnIndex(collumnPosition+1))
 					.setFields("userEnteredFormat.backgroundColor"));
 			Request noteRequest = new Request().setRepeatCell(new RepeatCellRequest()
-					.setCell(new CellData().setNote("Last validity check: "+ formatter.format(Calendar.getInstance(Locale.GERMAN).getTime())))
+					.setCell(new CellData().setNote("Last validity check: "+ formatter.format(new Date())))
 					.setRange(new GridRange().setSheetId(sheetId)
 							.setStartRowIndex(missing).setEndRowIndex(missing+1)
 							.setStartColumnIndex(collumnPosition).setEndColumnIndex(collumnPosition+1))
