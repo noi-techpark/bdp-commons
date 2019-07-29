@@ -2,6 +2,7 @@ package it.bz.idm.bdp.spreadsheets;
 
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.LocaleUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.langdetect.OptimaizeLangDetector;
 import org.apache.tika.language.detect.LanguageDetector;
 import org.springframework.beans.factory.annotation.Value;
@@ -103,7 +105,7 @@ public class ODHClient extends JSONPusher{
 			try {
 				String longString = row.get(longIndex).toString();
 				String latString = row.get(latIndex).toString();
-				if (!longString.isEmpty() || !latString.isEmpty()) {
+				if (!longString.isEmpty() && !latString.isEmpty()) {
 					dto.setLongitude(numberFormatter.parse(longString).doubleValue());
 					dto.setLatitude(numberFormatter.parse(latString).doubleValue());
 				}
@@ -116,11 +118,16 @@ public class ODHClient extends JSONPusher{
 			Object value = null;
 			if (row.size() > entry.getValue())
 				value = row.get(entry.getValue());
-			if (!excludeFromMetaData.contains(entry.getKey()) && value != null) {
-				String text = value.toString().trim().replace("\n", " ").replace("\r", "").replaceAll(" +", " ");
+			String keyValue = entry.getKey();
+			if (!excludeFromMetaData.contains(keyValue) && value != null) {
+				String text = StringUtils.normalizeSpace(value.toString()).replace("\n", " ").replace("\r", "");
 				if (text!=null && !text.isEmpty()) {
-					if (entry.getKey().length()>0)
-						metaData.put(entry.getKey(), text != null ? text : "");
+					if (keyValue.length()>0) {
+						Object jsonGuessedType = jsonTypeGuessing(text);
+						if (jsonGuessedType != null) {
+							metaData.put(keyValue, jsonGuessedType);
+						}
+					}
 				}
 			}
 		}
@@ -131,11 +138,32 @@ public class ODHClient extends JSONPusher{
 		return dto;
 	}
 
+	private String normalizeKey(String keyValue) {
+		String accentFreeString = StringUtils.stripAccents(keyValue).replaceAll(" ", "_");
+		String asciiString = accentFreeString.replaceAll("[^\\x00-\\x7F]", "");
+		String validVar = asciiString.replaceAll("[^\\w0-9]", "");
+		return validVar;
+	}
+
+	private Object jsonTypeGuessing(String text) {
+		try {
+			return numberFormatter.parse(text);
+		} catch (ParseException e) {
+			// Do not do anything since we just want to check if string is parsable to a
+			// number
+		}
+		if ("true".equals(text) || "false".equals(text))
+			return "true".equals(text);
+
+		return text;
+	}
+
 	private String generateUniqueId(StationDto dto) {
 		StringBuffer uniqueId = new StringBuffer();
 		uniqueId.append(dto.getOrigin()).append(":");
 		for(String idField:uniqueIdFields) {
-			String value= dto.getMetaData().get(idField).toString();
+			String normalizedKey = normalizeKey(idField);
+			String value= dto.getMetaData().get(normalizedKey).toString();
 			if (value!=null && !value.isEmpty()) {
 				uniqueId.append(value);
 			}
@@ -189,7 +217,7 @@ public class ODHClient extends JSONPusher{
 	 * @param metaData current metadata of {@link StationDto}
 	 * @param headerMapping mapping of column index and column name
 	 */
-	public void mergeTranslations(Map<String, Object> metaData,Map<String, Short> headerMapping) {
+	public void mergeTranslations(Map<String, Object> metaData, Map<String, Short> headerMapping) {
 		for (Map.Entry<String, Short> entry : headerMapping.entrySet()) {
 			String[] split = entry.getKey().split(":");
 			Locale locale = null;
@@ -198,19 +226,19 @@ public class ODHClient extends JSONPusher{
 			try {
 				locale = LocaleUtils.toLocale(split[0]);
 				Object object = metaData.get(split[1]);
-				String content = metaData.get(entry.getKey()).toString();
-				if (content == null || content.isEmpty())
+				Object content = metaData.get(entry.getKey());
+				if (content == null || content.toString().isEmpty())
 					continue;
 				if (object instanceof Map) {
 					Map langMap = (Map) object;
 					langMap.put(split[0], content);
 				}else if (object instanceof String) {
 					Map<String, String> langMap = mapTextToLanguage(object.toString());
-					langMap.put(split[0], content);
+					langMap.put(split[0], content.toString());
 					metaData.put(split[1], langMap);
 				}else if (object == null) {
 					Map<String,String> langMap = new HashMap<>();
-					langMap.put(split[0],content);
+					langMap.put(split[0],content.toString());
 					metaData.put(split[1], langMap);
 				}
 				metaData.remove(entry.getKey());
@@ -223,5 +251,13 @@ public class ODHClient extends JSONPusher{
 
 	}
 
-
+	public void normalizeMetaData(Map<String, Object> metaData) {
+		for (Map.Entry<String,Object> entry:metaData.entrySet()) {
+			String normalizedKey = normalizeKey(entry.getKey());
+			if (!entry.getKey().equals(normalizedKey)){
+				metaData.put(normalizedKey, entry.getValue());
+				metaData.remove(entry.getKey());
+			}
+		}
+	}
 }
