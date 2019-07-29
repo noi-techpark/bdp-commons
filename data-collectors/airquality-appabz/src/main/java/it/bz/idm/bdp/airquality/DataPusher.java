@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import it.bz.idm.bdp.airquality.dto.AQBlockDto;
 import it.bz.idm.bdp.airquality.dto.AQStationDto;
 import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.json.JSONPusher;
@@ -86,6 +87,11 @@ public class DataPusher extends JSONPusher {
 			}
 		}
 		return rootMap;
+	}
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null, "dc-airquality-appabz", "2.0.0-SNAPSHOT", env.getProperty("odh.station.origin"));
 	}
 
 	/*

@@ -16,6 +16,7 @@ import com.google.gson.JsonElement;
 import Helpers.DateHelper;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
@@ -235,4 +236,9 @@ public class DataPusher extends JSONPusher {
     public <T> void mapData(T data, boolean test){
         this.fillRootMap((DataMapDto<RecordDtoImpl>) data, test);
     }
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null, "dc-appatn-opendata", "2.0.0-SNAPSHOT", rb.getString("odh.station.origin"));
+	}
 }

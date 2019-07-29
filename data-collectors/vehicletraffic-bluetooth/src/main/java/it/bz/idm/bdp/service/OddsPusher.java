@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.OddsRecordDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.json.JSONPusher;
@@ -48,5 +49,10 @@ public class OddsPusher extends JSONPusher {
 			typeMap.getData().add(textDto);
 		}
 		return dataMap;
+	}
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null, "dc-vehicletraffic-bluetooth", "2.0.0-SNAPSHOT", "bluetoothbox");
 	}
 }
