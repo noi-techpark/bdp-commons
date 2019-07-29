@@ -34,6 +34,12 @@ public class JobScheduler {
 	@Value("${headers.addressId}")
 	private String addressId;
 
+	@Value("${headers.longitudeId}")
+	private String longitudeId;
+
+	@Value("${headers.latitudeId}")
+	private String latitudeId;
+
 
     @Value("${spreadsheet.sheets.names}")
     private String[] sheetsIdentifier;
@@ -73,7 +79,7 @@ public class JobScheduler {
 		for (final List<Object> row : spreadSheetValues) {
 			if (i == 0) {
 				headerMapping = util.listToMap(row);
-				if (headerMapping.isEmpty() || !(headerMapping.containsKey("address")||(headerMapping.containsKey("longitude") && headerMapping.containsKey("latitude")))){
+				if (headerMapping.isEmpty() || !(headerMapping.containsKey(addressId)||(headerMapping.containsKey(longitudeId) && headerMapping.containsKey(latitudeId)))){
 					throw new IllegalStateException("Spreadsheet does not conform to rules");
 				}
 			} else {
