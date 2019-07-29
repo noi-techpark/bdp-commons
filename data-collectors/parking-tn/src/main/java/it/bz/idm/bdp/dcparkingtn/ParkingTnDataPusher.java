@@ -213,6 +213,6 @@ public class ParkingTnDataPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, "dc-parking-tn", "1.0.0-SNAPSHOT", env.getProperty("app.origin"));
+		return new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("app.origin"));
 	}
 }
