@@ -32,6 +32,8 @@ pipeline {
 
                 sh 'sed -i -e "s%\\(odp.url.stations.tenminutes\\s*=\\).*\\$%\\1"${DATA_ENDPOINT}"%" ${PROJECT_FOLDER}/src/main/resources/config.properties'
                 sh 'sed -i -e "s%\\(odp.url.stations.tenminutes.key\\s*=\\).*\\$%\\1"${AUTH_TOKEN}"%" ${PROJECT_FOLDER}/src/main/resources/config.properties'
+                sh '''sed -i -e "s%\\(provenance.version=\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(provenance.name=\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
             }
         }
 

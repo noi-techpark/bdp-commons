@@ -32,6 +32,8 @@ pipeline {
 				sh 'cat "${SENSORS_CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
 		        sh 'cat "${SENSORS_CONFIG}" > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
 		        sh 'cp "${SENSORS_WSDL}" ${PROJECT_FOLDER}/src/main/resources/DataDispatcherWebServices.wsdl'
+                sh '''sed -i -e "s%\\(provenance.version=\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(provenance.name=\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
             }
         }
 
