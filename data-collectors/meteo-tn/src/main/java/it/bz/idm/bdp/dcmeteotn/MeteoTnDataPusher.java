@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
@@ -39,6 +40,9 @@ public class MeteoTnDataPusher extends JSONPusher {
 
     @Autowired
     private MeteoTnDataConverter converter;
+
+    @Autowired
+    private Environment env;
 
     public MeteoTnDataPusher() {
         LOG.debug("START.constructor.");
@@ -309,6 +313,6 @@ public class MeteoTnDataPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, "dc-meteo-tn", "2.0.0-SNAPSHOT", "meteotrentino");
+		return new ProvenanceDto(null,env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("app.origin"));
 	}
 }

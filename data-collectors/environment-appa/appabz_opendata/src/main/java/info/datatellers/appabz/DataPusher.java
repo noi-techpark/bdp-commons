@@ -10,6 +10,7 @@ import java.util.TreeMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonElement;
 
@@ -29,6 +30,7 @@ import it.bz.idm.bdp.json.JSONPusher;
  * This class will map stations, sensors and measurements data into a many levels deep DataMapDto map and return it.
  */
 
+@Component
 public class DataPusher extends JSONPusher {
     private final ResourceBundle rb = ResourceBundle.getBundle("config");
     private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
@@ -239,6 +241,6 @@ public class DataPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, "dc-appatn-opendata", "2.0.0-SNAPSHOT", rb.getString("odh.station.origin"));
+		return new ProvenanceDto(null,rb.getString("provenance.name"), rb.getString("provenance.version"), rb.getString("odh.station.origin"));
 	}
 }

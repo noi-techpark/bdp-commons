@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dcmeteorologybz.dto.MeteorologyBzDto;
@@ -29,6 +30,9 @@ import it.bz.idm.bdp.json.JSONPusher;
 public class MeteorologyBzDataPusher extends JSONPusher {
 
     private static final Logger LOG = LogManager.getLogger(MeteorologyBzDataPusher.class.getName());
+
+    @Autowired
+    private Environment env;
 
     @Autowired
     private MeteorologyBzDataConverter converter;
@@ -219,6 +223,6 @@ public class MeteorologyBzDataPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,"dc-meteorology-bz","2.0.0-SNAPSHOT","SIAG");
+		return new ProvenanceDto(null,env.getProperty("provenance.name"), env.getProperty("provenance.version"),  env.getProperty("app.origin"));
 	}
 }

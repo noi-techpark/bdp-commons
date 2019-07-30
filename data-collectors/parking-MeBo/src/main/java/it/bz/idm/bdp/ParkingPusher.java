@@ -21,8 +21,6 @@ import it.bz.idm.bdp.json.JSONPusher;
 @Component
 public class ParkingPusher extends JSONPusher{
 
-	private static final ProvenanceDto merano_provenance = new ProvenanceDto(null, "dc-parking-MeBo", "2.0.0-SNAPSHOT", "Municipality Merano");
-
 	private static final String STATION_TYPE = "ParkingStation";
 
 	private static final String PARKINGSLOT_TYPEIDENTIFIER = "occupied";
@@ -105,11 +103,11 @@ public class ParkingPusher extends JSONPusher{
 		connectToParkingServer();
 		connectToDataCenterCollector();
 		DataMapDto<RecordDtoImpl> bolzanoDataMap = new DataMapDto<RecordDtoImpl>(), meranoDataMap = new DataMapDto<>();
-		this.provenance = new ProvenanceDto(null, "dc-parking-MeBo", "2.0.0-SNAPSHOT", env.getProperty("pbz_origin"));
+		this.provenance = new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("pbz_origin"));
 		parkingClient.insertDataInto(bolzanoDataMap);
 		pushData(bolzanoDataMap);
 
-		this.provenance = merano_provenance;
+		this.provenance = new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("pbz_origin"));;
 		parkingMeranoClient.insertDataInto(meranoDataMap);
 		pushData(meranoDataMap);
 	}
@@ -140,6 +138,6 @@ public class ParkingPusher extends JSONPusher{
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, "dc-parking-MeBo", "2.0.0-SNAPSHOT", env.getProperty("pbz_origin"));
+		return new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("pbz_origin"));
 	}
 }

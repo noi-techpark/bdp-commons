@@ -91,7 +91,7 @@ public class DataPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, "dc-airquality-appabz", "2.0.0-SNAPSHOT", env.getProperty("odh.station.origin"));
+		return new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("odh.station.origin"));
 	}
 
 	/*

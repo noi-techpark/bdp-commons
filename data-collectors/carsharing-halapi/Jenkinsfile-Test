@@ -30,8 +30,8 @@ pipeline {
                 sh 'sed -i -e "s%\\(property.rootlevel\\s*=\\).*\\$%\\1DEBUG%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
 
                 sh 'cat "${CARSHARING_PROPS}" > ${PROJECT_FOLDER}/src/main/resources/app.properties'
-                sh '''sed -i -e "s%\\(provenance.version=\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/app.properties'''
-                sh '''sed -i -e "s%\\(provenance.name=\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/app.properties'''
+                sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/app.properties'''
+                sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/app.properties'''
             }
         }
 

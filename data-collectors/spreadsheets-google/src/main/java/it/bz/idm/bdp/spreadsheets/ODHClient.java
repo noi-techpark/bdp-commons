@@ -17,7 +17,9 @@ import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.langdetect.OptimaizeLangDetector;
 import org.apache.tika.language.detect.LanguageDetector;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -35,6 +37,9 @@ public class ODHClient extends JSONPusher{
 	private String stationtype;
 
 	private LocationLookup lookUpUtil = new NominatimLocationLookupUtil();
+
+	@Autowired
+	private Environment env;
 
 	@Value(value="${suportedLanguages}")
 	private String[] supportedLanguages;
@@ -82,7 +87,7 @@ public class ODHClient extends JSONPusher{
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,"Spreadsheets","0.1.0-SNAPSHOT","IDM");
+		return new ProvenanceDto(null,env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("origin"));
 	}
 
 	/**

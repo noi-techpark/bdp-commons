@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ProcessedDataToHubDto;
@@ -30,6 +32,9 @@ public class DataPusherHub extends JSONPusher implements DataPusherHubFace {
     private final DataPusherMapperFace mapper;
 
     private DataMapDto<RecordDtoImpl> rootMap;
+
+    @Autowired
+    private Environment env;
 
     public DataPusherHub(@Value("${station.period}") int period) {
         mapper = new DataPusherMapper(period);
@@ -93,6 +98,6 @@ public class DataPusherHub extends JSONPusher implements DataPusherHubFace {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,"dc-algorab-a22","0.1.0-SNAPSHOT",STATION_ORIGIN);
+		return new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"),  env.getProperty("origin"));
 	}
 }

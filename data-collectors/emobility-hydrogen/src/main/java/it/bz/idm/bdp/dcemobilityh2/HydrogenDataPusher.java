@@ -184,6 +184,6 @@ public class HydrogenDataPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,"dc-emobility-hydrogen","2.0.0-SNAPSHOT","IIT");
+		return new ProvenanceDto(null,env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("app.origin"));
 	}
 }
