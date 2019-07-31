@@ -9,6 +9,9 @@ pipeline {
       CARPOOLING_ENDPOINT = credentials('carpooling-endpoint')
       TESTSERVER_TOMCAT_ENDPOINT=credentials('testserver-tomcat8-url')
       TESTSERVER_TOMCAT_CREDENTIALS=credentials('testserver-tomcat8-credentials')
+      PROJECT = "carpooling-flootta"
+      PROJECT_FOLDER = "data-collectors/${PROJECT}"
+
     }
     stages {
 	stage('Configure'){

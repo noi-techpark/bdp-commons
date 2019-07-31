@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -27,6 +28,7 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.json.JSONPusher;
 
+@Component
 public class DataPusher extends JSONPusher {
 
 	private ResourceBundle rb = ResourceBundle.getBundle("config");
