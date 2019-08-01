@@ -1,22 +1,21 @@
 package it.bz.noi.a22.vms;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
-
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.json.JSONPusher;
 
-@Component
 public class A22SignJSONPusher extends JSONPusher
 {
-
-	@Autowired
-	private Environment env;
-
 	private String stationtype;
+	private String origin;
+	private String provenanceVersion;
+	private String provenanceName;
+	
+	public A22SignJSONPusher() {
+		super.init();
+	}
+	
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T arg0)
 	{
@@ -31,13 +30,17 @@ public class A22SignJSONPusher extends JSONPusher
 			A22Properties prop = new A22Properties("a22sign.properties");
 
 			stationtype = prop.getProperty("stationtype");
+			origin = prop.getProperty("origin");
+			provenanceName = prop.getProperty("provenance.name");
+			provenanceVersion = prop.getProperty("provenance.version");
+			
 		}
 
 		return stationtype;
 	}
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"),  env.getProperty("origin"));
+		return new ProvenanceDto(null, provenanceName, provenanceVersion,  origin);
 	}
 
 }

@@ -27,6 +27,8 @@ public class MainA22Sign implements Job
 	private final A22Properties datatypesProperties;
 	private final A22Properties a22stationProperties;
 	private HashMap<String, Long> signIdLastTimestampMap;
+	private A22SignJSONPusher pusher = new A22SignJSONPusher();
+
 
 	public MainA22Sign() {
 		this.datatypesProperties = new A22Properties("a22vmsdatatypes.properties");
@@ -42,7 +44,6 @@ public class MainA22Sign implements Job
 		{
 			log.info("Start A22SignMain");
 
-			A22SignJSONPusher pusher = new A22SignJSONPusher();
 
 			long delaySeconds = 3600; // 2019-06-21 d@vide.bz: a22 data realtime delay
 			long nowSeconds = System.currentTimeMillis() / 1000 - delaySeconds;

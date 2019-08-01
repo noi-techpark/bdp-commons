@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
+import org.springframework.stereotype.Component;
+
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
@@ -34,6 +36,8 @@ import it.bz.idm.bdp.json.JSONPusher;
  *
  * @author Davide Montesin <d@vide.bz>
  */
+
+@Component
 public class CarSharingPusher extends JSONPusher
 {
 	
@@ -47,6 +51,7 @@ public class CarSharingPusher extends JSONPusher
 			props.load(new FileInputStream(resource.getFile()));
 			provenanceName = props.getProperty("provenance.name");
 			provenanceVersion = props.getProperty("provenance.version");
+			super.init();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
