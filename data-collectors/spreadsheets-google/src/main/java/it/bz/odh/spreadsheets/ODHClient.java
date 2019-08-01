@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.spreadsheets;
+package it.bz.odh.spreadsheets;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -38,9 +38,13 @@ public class ODHClient extends JSONPusher{
 
 	private LocationLookup lookUpUtil = new NominatimLocationLookupUtil();
 
-	@Autowired
-	private Environment env;
-
+	@Value("${provenance.name}")
+	private String provenanceName;
+	@Value("${provenance.version}")
+	private String provenanceVersion;
+	@Value("${origin}")
+	private String dataOrigin;
+	
 	@Value(value="${suportedLanguages}")
 	private String[] supportedLanguages;
 	private LanguageDetector detector;
@@ -87,7 +91,7 @@ public class ODHClient extends JSONPusher{
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("origin"));
+		return new ProvenanceDto(null, provenanceName, provenanceVersion, origin);
 	}
 
 	/**

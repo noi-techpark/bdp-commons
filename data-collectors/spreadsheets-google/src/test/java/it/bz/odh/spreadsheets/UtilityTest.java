@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.spreadsheets;
+package it.bz.odh.spreadsheets;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -16,6 +16,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import it.bz.idm.bdp.dto.StationDto;
+import it.bz.odh.spreadsheets.DataMappingUtil;
+import it.bz.odh.spreadsheets.ODHClient;
 
 @ContextConfiguration(locations = { "classpath*:/META-INF/spring/applicationContext.xml" })
 @TestPropertySource(properties = {
