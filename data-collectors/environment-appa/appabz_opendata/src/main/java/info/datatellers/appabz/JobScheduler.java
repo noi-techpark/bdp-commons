@@ -2,6 +2,7 @@ package info.datatellers.appabz;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -20,21 +21,23 @@ import it.bz.idm.bdp.dto.StationList;
 public class JobScheduler {
 
     private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
+    
+    @Autowired
+	private DataPusher dataPusher;
 
     public void pushData()
     {
         LOG.info("Data Collector execution started.");
         DataMapDto<RecordDtoImpl> rootMap = constructRootMap();
-        new DataPusher().mapData(rootMap, false);
+		dataPusher.mapData(rootMap, false);
         LOG.info("Data Collector execution terminated.");
     }
 
-    private static DataMapDto<RecordDtoImpl> constructRootMap()
+    private DataMapDto<RecordDtoImpl> constructRootMap()
     {
         LOG.info("Starting to construct rootMap.");
-        DataPusher pusher = new DataPusher();
-        StationList stationList = pusher.mapStations(false);
-        String[] pollutersName = pusher.mapTypes(false).keySet().toArray(new String[0]);
+        StationList stationList = dataPusher.mapStations(false);
+        String[] pollutersName = dataPusher.mapTypes(false).keySet().toArray(new String[0]);
 
         DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
         for (StationDto station : stationList)

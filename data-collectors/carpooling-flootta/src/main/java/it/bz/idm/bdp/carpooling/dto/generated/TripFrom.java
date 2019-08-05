@@ -10,9 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -88,12 +85,45 @@ public class TripFrom implements Serializable
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("address", address).append("city", city).append("cap", cap).append("country", country).append("additionalProperties", additionalProperties).toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(TripFrom.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("address");
+        sb.append('=');
+        sb.append(((this.address == null)?"<null>":this.address));
+        sb.append(',');
+        sb.append("city");
+        sb.append('=');
+        sb.append(((this.city == null)?"<null>":this.city));
+        sb.append(',');
+        sb.append("cap");
+        sb.append('=');
+        sb.append(((this.cap == null)?"<null>":this.cap));
+        sb.append(',');
+        sb.append("country");
+        sb.append('=');
+        sb.append(((this.country == null)?"<null>":this.country));
+        sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(country).append(address).append(cap).append(additionalProperties).append(city).toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.country == null)? 0 :this.country.hashCode()));
+        result = ((result* 31)+((this.address == null)? 0 :this.address.hashCode()));
+        result = ((result* 31)+((this.cap == null)? 0 :this.cap.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
+        result = ((result* 31)+((this.city == null)? 0 :this.city.hashCode()));
+        return result;
     }
 
     @Override
@@ -105,7 +135,7 @@ public class TripFrom implements Serializable
             return false;
         }
         TripFrom rhs = ((TripFrom) other);
-        return new EqualsBuilder().append(country, rhs.country).append(address, rhs.address).append(cap, rhs.cap).append(additionalProperties, rhs.additionalProperties).append(city, rhs.city).isEquals();
+        return ((((((this.country == rhs.country)||((this.country!= null)&&this.country.equals(rhs.country)))&&((this.address == rhs.address)||((this.address!= null)&&this.address.equals(rhs.address))))&&((this.cap == rhs.cap)||((this.cap!= null)&&this.cap.equals(rhs.cap))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.city == rhs.city)||((this.city!= null)&&this.city.equals(rhs.city))));
     }
 
 }

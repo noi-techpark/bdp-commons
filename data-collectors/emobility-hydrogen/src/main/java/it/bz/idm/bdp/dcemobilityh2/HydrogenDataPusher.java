@@ -19,6 +19,7 @@ import it.bz.idm.bdp.dcemobilityh2.dto.ChargingPointsDtoV2;
 import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
@@ -38,8 +39,8 @@ public class HydrogenDataPusher extends JSONPusher {
         LOG.debug("END.constructor.");
     }
 
-    @PostConstruct
-    private void init() {
+	@PostConstruct
+    private void initPusher() {
         LOG.debug("START.init.");
         //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTTP 415 error)
         //this must be done because we added dependencies to com.fasterxml.jackson.dataformat.xml.XmlMapper to read data from IIT web service!
@@ -180,4 +181,9 @@ public class HydrogenDataPusher extends JSONPusher {
                 "";
         return str2 + " ---> " + str1;
     }
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null,env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("app.origin"));
+	}
 }

@@ -6,6 +6,8 @@ ARG JENKINS_USER_ID=1000
 RUN addgroup -g $JENKINS_GROUP_ID jenkins && \
     adduser -D -u $JENKINS_USER_ID -G jenkins jenkins
 
+RUN apk add --no-cache xmlstarlet git openssh-client gawk
+
 RUN mkdir -p /var/log/opendatahub && \
     mkdir -p /var/log/opendatahub/data-collectors && \
     chmod -R 777 /var/log/opendatahub

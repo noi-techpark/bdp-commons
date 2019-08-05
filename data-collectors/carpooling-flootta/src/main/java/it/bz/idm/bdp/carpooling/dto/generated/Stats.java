@@ -10,9 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -127,12 +124,60 @@ public class Stats implements Serializable
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("registeredUsers", registeredUsers).append("confirmedTrips", confirmedTrips).append("tripsLast30", tripsLast30).append("drivers", drivers).append("passengers", passengers).append("distance", distance).append("co2", co2).append("additionalProperties", additionalProperties).toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(Stats.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("registeredUsers");
+        sb.append('=');
+        sb.append(((this.registeredUsers == null)?"<null>":this.registeredUsers));
+        sb.append(',');
+        sb.append("confirmedTrips");
+        sb.append('=');
+        sb.append(((this.confirmedTrips == null)?"<null>":this.confirmedTrips));
+        sb.append(',');
+        sb.append("tripsLast30");
+        sb.append('=');
+        sb.append(((this.tripsLast30 == null)?"<null>":this.tripsLast30));
+        sb.append(',');
+        sb.append("drivers");
+        sb.append('=');
+        sb.append(((this.drivers == null)?"<null>":this.drivers));
+        sb.append(',');
+        sb.append("passengers");
+        sb.append('=');
+        sb.append(((this.passengers == null)?"<null>":this.passengers));
+        sb.append(',');
+        sb.append("distance");
+        sb.append('=');
+        sb.append(((this.distance == null)?"<null>":this.distance));
+        sb.append(',');
+        sb.append("co2");
+        sb.append('=');
+        sb.append(((this.co2 == null)?"<null>":this.co2));
+        sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(passengers).append(distance).append(tripsLast30).append(registeredUsers).append(co2).append(additionalProperties).append(drivers).append(confirmedTrips).toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.passengers == null)? 0 :this.passengers.hashCode()));
+        result = ((result* 31)+((this.distance == null)? 0 :this.distance.hashCode()));
+        result = ((result* 31)+((this.tripsLast30 == null)? 0 :this.tripsLast30 .hashCode()));
+        result = ((result* 31)+((this.registeredUsers == null)? 0 :this.registeredUsers.hashCode()));
+        result = ((result* 31)+((this.co2 == null)? 0 :this.co2 .hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
+        result = ((result* 31)+((this.drivers == null)? 0 :this.drivers.hashCode()));
+        result = ((result* 31)+((this.confirmedTrips == null)? 0 :this.confirmedTrips.hashCode()));
+        return result;
     }
 
     @Override
@@ -144,7 +189,7 @@ public class Stats implements Serializable
             return false;
         }
         Stats rhs = ((Stats) other);
-        return new EqualsBuilder().append(passengers, rhs.passengers).append(distance, rhs.distance).append(tripsLast30, rhs.tripsLast30).append(registeredUsers, rhs.registeredUsers).append(co2, rhs.co2).append(additionalProperties, rhs.additionalProperties).append(drivers, rhs.drivers).append(confirmedTrips, rhs.confirmedTrips).isEquals();
+        return (((((((((this.passengers == rhs.passengers)||((this.passengers!= null)&&this.passengers.equals(rhs.passengers)))&&((this.distance == rhs.distance)||((this.distance!= null)&&this.distance.equals(rhs.distance))))&&((this.tripsLast30 == rhs.tripsLast30)||((this.tripsLast30 != null)&&this.tripsLast30 .equals(rhs.tripsLast30))))&&((this.registeredUsers == rhs.registeredUsers)||((this.registeredUsers!= null)&&this.registeredUsers.equals(rhs.registeredUsers))))&&((this.co2 == rhs.co2)||((this.co2 != null)&&this.co2 .equals(rhs.co2))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.drivers == rhs.drivers)||((this.drivers!= null)&&this.drivers.equals(rhs.drivers))))&&((this.confirmedTrips == rhs.confirmedTrips)||((this.confirmedTrips!= null)&&this.confirmedTrips.equals(rhs.confirmedTrips))));
     }
 
 }

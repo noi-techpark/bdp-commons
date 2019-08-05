@@ -34,10 +34,13 @@ public class A22Scheduler extends HttpServlet
 		super.init(config);
 		try
 		{
+			// d@vide.bz: don't required by jvm, but required when java code is executed as a war
+			Class.forName("org.postgresql.Driver");
 			startScheduler();
 		}
-		catch (SchedulerException | IOException e)
+		catch (Exception e)
 		{
+			log.error(e);
 			throw new ServletException(e);
 		}
 	}

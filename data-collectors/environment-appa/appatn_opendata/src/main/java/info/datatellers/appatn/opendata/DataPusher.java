@@ -1,22 +1,40 @@
 package info.datatellers.appatn.opendata;
 
-import com.google.gson.*;
-import info.datatellers.appatn.helpers.CSVHandler;
-import info.datatellers.appatn.helpers.DateHelper;
-import it.bz.idm.bdp.dto.*;
-import it.bz.idm.bdp.json.JSONPusher;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import info.datatellers.appatn.helpers.CSVHandler;
+import info.datatellers.appatn.helpers.DateHelper;
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
+import it.bz.idm.bdp.json.JSONPusher;
 
 /**
  * @author Nicolò Molinari, Datatellers.
  *
  * This class will map stations, sensors and measurements data into a many levels deep DataMapDto map and return it.
  */
+@Component
 public class DataPusher extends JSONPusher {
     public static final String SEPARATOR = "_";
     private final ResourceBundle rb = ResourceBundle.getBundle("config");
@@ -52,9 +70,9 @@ public class DataPusher extends JSONPusher {
             station.setName(stationMetadata.get(1));
             station.setLatitude(Double.valueOf(stationMetadata.get(2)));
             station.setLongitude(Double.valueOf(stationMetadata.get(3)));
-            station.setCrs(rb.getString("odh.station.projection"));
+            station.getMetaData().put("crs",rb.getString("odh.station.projection"));
             station.setOrigin(origin);
-            station.setMunicipality(stationMetadata.get(4));
+            station.getMetaData().put("municipality",stationMetadata.get(4));
             station.setStationType(rb.getString("odh.station.type"));
 
             mappedStations.add(station);
@@ -370,7 +388,8 @@ public class DataPusher extends JSONPusher {
         return bundle.getString("odh.station.type");
     }
 
-    public <T> DataMapDto<RecordDtoImpl> mapData(T data)
+    @Override
+	public <T> DataMapDto<RecordDtoImpl> mapData(T data)
     {
         return null;
     }
@@ -475,4 +494,9 @@ public class DataPusher extends JSONPusher {
         }
         return stationIds;
     }
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null,  rb.getString("provenance.name"), rb.getString("provenance.version"), rb.getString("odh.station.origin"));
+	}
 }
