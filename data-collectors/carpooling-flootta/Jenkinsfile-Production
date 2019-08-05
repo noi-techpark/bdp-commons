@@ -12,29 +12,31 @@ pipeline {
       ARTIFACT_NAME = "dc-${PROJECT}"
     }
     stages {
-	stage('Configure'){
-	  steps{
-	      sh 'cat ${CARPOOLING_ENDPOINT} > data-collectors/carpooling-flootta/src/test/resources/META-INF/spring/application.properties'
-	      sh 'cat ${CARPOOLING_ENDPOINT} > data-collectors/carpooling-flootta/src/main/resources/META-INF/spring/application.properties'
-              sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/carpooling.log%" data-collectors/carpooling-flootta/src/main/resources/log4j.properties'
-              sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO, R, stdout%" data-collectors/carpooling-flootta/src/main/resources/log4j.properties'
-	  }
-	}
+        stage('Configure'){
+            steps{
+                sh 'cat ${CARPOOLING_ENDPOINT} > data-collectors/carpooling-flootta/src/test/resources/META-INF/spring/application.properties'
+                sh 'cat ${CARPOOLING_ENDPOINT} > data-collectors/carpooling-flootta/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/carpooling.log%" data-collectors/carpooling-flootta/src/main/resources/log4j.properties'
+                sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1INFO, R, stdout%" data-collectors/carpooling-flootta/src/main/resources/log4j.properties'
+                sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+            }
+        }
         stage('Test') {
             steps {
-              sh 'cd data-collectors/carpooling-flootta && mvn test verify'
+                sh 'cd data-collectors/carpooling-flootta && mvn test verify'
             }
         }
         stage('Build') {
             steps {
-              sh 'cd data-collectors/carpooling-flootta && mvn package'
-	    }
-	}
+                sh 'cd data-collectors/carpooling-flootta && mvn package'
+            }
+        }
         stage('Archive') {
             steps {
                 sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
                 archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
-	    }
-	}
+            }
+        }
     }
 }

@@ -22,10 +22,10 @@ pipeline {
               sh 'echo "    </servers>" >> ~/.m2/settings.xml'
               sh 'echo "</settings>" >> ~/.m2/settings.xml'
 
-	      sh 'cat ${CARPOOLING_ENDPOINT} > data-collectors/carpooling-flootta/src/test/resources/META-INF/spring/application.properties'
-	      sh 'cat ${CARPOOLING_ENDPOINT} > data-collectors/carpooling-flootta/src/main/resources/META-INF/spring/application.properties'
-              sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/carpooling.log%" data-collectors/carpooling-flootta/src/main/resources/log4j.properties'
-              sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG, R, stdout%" data-collectors/carpooling-flootta/src/main/resources/log4j.properties'
+          sh 'cat ${CARPOOLING_ENDPOINT} > data-collectors/carpooling-flootta/src/test/resources/META-INF/spring/application.properties'
+          sh 'cat ${CARPOOLING_ENDPOINT} > data-collectors/carpooling-flootta/src/main/resources/META-INF/spring/application.properties'
+          sh 'sed -i -e "s%\\(log4j.appender.R.File=\\).*\\$%\\1/var/log/opendatahub/data-collectors/carpooling.log%" data-collectors/carpooling-flootta/src/main/resources/log4j.properties'
+          sh 'sed -i -e "s%\\(log4j.rootLogger=\\).*\\$%\\1DEBUG, R, stdout%" data-collectors/carpooling-flootta/src/main/resources/log4j.properties'
           sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
           sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
 	  }
