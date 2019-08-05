@@ -25,7 +25,7 @@
 			<url>https://repo.eclipse.org/content/repositories/paho-releases/</url>
 		</repository>
 		<repository>
-			<id>maven-repo.opendatahub.bz.it-SNAPSHOT</id>
+			<id>maven-repo.opendatahub.bz.it</id>
 			<url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
 		</repository>
 	</repositories>
