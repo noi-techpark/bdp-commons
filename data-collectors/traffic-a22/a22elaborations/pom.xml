@@ -5,7 +5,7 @@
 
 	<groupId>it.bz.noi.a22elaborations</groupId>
 	<artifactId>a22elaborations</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 
 	<properties>
 		<maven.compiler.target>1.8</maven.compiler.target>
