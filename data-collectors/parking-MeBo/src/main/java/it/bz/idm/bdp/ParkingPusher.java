@@ -21,6 +21,8 @@ import it.bz.idm.bdp.json.JSONPusher;
 @Component
 public class ParkingPusher extends JSONPusher{
 
+	private static final String MUNICIPALITY_MERANO = "Municipality Merano";
+
 	private static final String STATION_TYPE = "ParkingStation";
 
 	private static final String PARKINGSLOT_TYPEIDENTIFIER = "occupied";
@@ -107,7 +109,7 @@ public class ParkingPusher extends JSONPusher{
 		parkingClient.insertDataInto(bolzanoDataMap);
 		pushData(bolzanoDataMap);
 
-		this.provenance = new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("pbz_origin"));;
+		this.provenance = new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"), MUNICIPALITY_MERANO);;
 		parkingMeranoClient.insertDataInto(meranoDataMap);
 		pushData(meranoDataMap);
 	}
