@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
@@ -89,21 +88,25 @@ public class DataRetriever {
 					dto.setOrigin(DATA_ORIGIN);
 
 					HashMap<String, Object> addressMap = new HashMap<String, Object>(), cityMap = new HashMap<String, Object>(), nameMap = new HashMap<String, Object>();
-					addressMap.put("de", hub.getAddressDe());
-					addressMap.put("it", hub.getAddressIt());
-					addressMap.put("de", hub.getCityDe());
-					addressMap.put("it", hub.getCityIt());
-					nameMap.put("de", hub.getNameDe());
-					nameMap.put("it", hub.getNameIt());
-					dto.getMetaData().put("address", addressMap);
-					dto.getMetaData().put("city", cityMap);
-					dto.getMetaData().put("name", nameMap);
+					addressMap.computeIfAbsent("de", val -> hub.getAddressDe());
+					addressMap.computeIfAbsent("it", val -> hub.getAddressIt());
+					cityMap.computeIfAbsent("de", val -> hub.getCityDe());
+					cityMap.computeIfAbsent("it", val -> hub.getCityIt());
+					nameMap.computeIfAbsent("de", val -> hub.getNameDe());
+					nameMap.computeIfAbsent("it", val -> hub.getNameIt());
+					if (!addressMap.isEmpty())
+						dto.getMetaData().put("address", addressMap);
+					if (!cityMap.isEmpty())
+						dto.getMetaData().put("city", cityMap);
+					if (!nameMap.isEmpty())
+						dto.getMetaData().put("hubName", nameMap);
 
-					dto.getMetaData().put("more", hub.getAdditionalProperties());
-					dto.getMetaData().put("cap", hub.getCap());
-					dto.getMetaData().put("country", hub.getCountry());
-					dto.getMetaData().put("isEvent", hub.getIsEvent());
-					dto.getMetaData().put("numberOfUsers", hub.getUsers());
+					if (!hub.getAdditionalProperties().isEmpty())
+						dto.getMetaData().put("more", hub.getAdditionalProperties());
+					dto.getMetaData().computeIfAbsent("cap", val -> hub.getCap());
+					dto.getMetaData().computeIfAbsent("country", val -> hub.getCountry());
+					dto.getMetaData().computeIfAbsent("isEvent", val -> hub.getIsEvent());
+					dto.getMetaData().computeIfAbsent("numberOfUsers", val -> hub.getUsers());
 					dtos.add(dto);
 				}
 			}
