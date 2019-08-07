@@ -14,10 +14,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "id",
-    "name",
-    "address",
+    "name_de",
+    "address_de",
+    "city_de",
+    "name_it",
+    "address_it",
+    "city_it",
     "cap",
-    "city",
     "country",
     "latitude",
     "longitude",
@@ -30,14 +33,20 @@ public class Hub implements Serializable
 
     @JsonProperty("id")
     private Integer id;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("address")
-    private String address;
+    @JsonProperty("name_de")
+    private String nameDe;
+    @JsonProperty("address_de")
+    private String addressDe;
+    @JsonProperty("city_de")
+    private String cityDe;
+    @JsonProperty("name_it")
+    private String nameIt;
+    @JsonProperty("address_it")
+    private String addressIt;
+    @JsonProperty("city_it")
+    private String cityIt;
     @JsonProperty("cap")
     private Integer cap;
-    @JsonProperty("city")
-    private String city;
     @JsonProperty("country")
     private String country;
     @JsonProperty("latitude")
@@ -52,7 +61,7 @@ public class Hub implements Serializable
     private Integer users;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = 8600691433377306948L;
+    private final static long serialVersionUID = -4127907172219267243L;
 
     @JsonProperty("id")
     public Integer getId() {
@@ -64,24 +73,64 @@ public class Hub implements Serializable
         this.id = id;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("name_de")
+    public String getNameDe() {
+        return nameDe;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("name_de")
+    public void setNameDe(String nameDe) {
+        this.nameDe = nameDe;
     }
 
-    @JsonProperty("address")
-    public String getAddress() {
-        return address;
+    @JsonProperty("address_de")
+    public String getAddressDe() {
+        return addressDe;
     }
 
-    @JsonProperty("address")
-    public void setAddress(String address) {
-        this.address = address;
+    @JsonProperty("address_de")
+    public void setAddressDe(String addressDe) {
+        this.addressDe = addressDe;
+    }
+
+    @JsonProperty("city_de")
+    public String getCityDe() {
+        return cityDe;
+    }
+
+    @JsonProperty("city_de")
+    public void setCityDe(String cityDe) {
+        this.cityDe = cityDe;
+    }
+
+    @JsonProperty("name_it")
+    public String getNameIt() {
+        return nameIt;
+    }
+
+    @JsonProperty("name_it")
+    public void setNameIt(String nameIt) {
+        this.nameIt = nameIt;
+    }
+
+    @JsonProperty("address_it")
+    public String getAddressIt() {
+        return addressIt;
+    }
+
+    @JsonProperty("address_it")
+    public void setAddressIt(String addressIt) {
+        this.addressIt = addressIt;
+    }
+
+    @JsonProperty("city_it")
+    public String getCityIt() {
+        return cityIt;
+    }
+
+    @JsonProperty("city_it")
+    public void setCityIt(String cityIt) {
+        this.cityIt = cityIt;
     }
 
     @JsonProperty("cap")
@@ -92,16 +141,6 @@ public class Hub implements Serializable
     @JsonProperty("cap")
     public void setCap(Integer cap) {
         this.cap = cap;
-    }
-
-    @JsonProperty("city")
-    public String getCity() {
-        return city;
-    }
-
-    @JsonProperty("city")
-    public void setCity(String city) {
-        this.city = city;
     }
 
     @JsonProperty("country")
@@ -182,21 +221,33 @@ public class Hub implements Serializable
         sb.append('=');
         sb.append(((this.id == null)?"<null>":this.id));
         sb.append(',');
-        sb.append("name");
+        sb.append("nameDe");
         sb.append('=');
-        sb.append(((this.name == null)?"<null>":this.name));
+        sb.append(((this.nameDe == null)?"<null>":this.nameDe));
         sb.append(',');
-        sb.append("address");
+        sb.append("addressDe");
         sb.append('=');
-        sb.append(((this.address == null)?"<null>":this.address));
+        sb.append(((this.addressDe == null)?"<null>":this.addressDe));
+        sb.append(',');
+        sb.append("cityDe");
+        sb.append('=');
+        sb.append(((this.cityDe == null)?"<null>":this.cityDe));
+        sb.append(',');
+        sb.append("nameIt");
+        sb.append('=');
+        sb.append(((this.nameIt == null)?"<null>":this.nameIt));
+        sb.append(',');
+        sb.append("addressIt");
+        sb.append('=');
+        sb.append(((this.addressIt == null)?"<null>":this.addressIt));
+        sb.append(',');
+        sb.append("cityIt");
+        sb.append('=');
+        sb.append(((this.cityIt == null)?"<null>":this.cityIt));
         sb.append(',');
         sb.append("cap");
         sb.append('=');
         sb.append(((this.cap == null)?"<null>":this.cap));
-        sb.append(',');
-        sb.append("city");
-        sb.append('=');
-        sb.append(((this.city == null)?"<null>":this.city));
         sb.append(',');
         sb.append("country");
         sb.append('=');
@@ -237,16 +288,19 @@ public class Hub implements Serializable
     @Override
     public int hashCode() {
         int result = 1;
+        result = ((result* 31)+((this.cityDe == null)? 0 :this.cityDe.hashCode()));
         result = ((result* 31)+((this.country == null)? 0 :this.country.hashCode()));
-        result = ((result* 31)+((this.address == null)? 0 :this.address.hashCode()));
-        result = ((result* 31)+((this.city == null)? 0 :this.city.hashCode()));
         result = ((result* 31)+((this.latitude == null)? 0 :this.latitude.hashCode()));
+        result = ((result* 31)+((this.nameIt == null)? 0 :this.nameIt.hashCode()));
         result = ((result* 31)+((this.availability == null)? 0 :this.availability.hashCode()));
         result = ((result* 31)+((this.users == null)? 0 :this.users.hashCode()));
+        result = ((result* 31)+((this.nameDe == null)? 0 :this.nameDe.hashCode()));
         result = ((result* 31)+((this.cap == null)? 0 :this.cap.hashCode()));
-        result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
+        result = ((result* 31)+((this.addressDe == null)? 0 :this.addressDe.hashCode()));
         result = ((result* 31)+((this.id == null)? 0 :this.id.hashCode()));
+        result = ((result* 31)+((this.cityIt == null)? 0 :this.cityIt.hashCode()));
         result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
+        result = ((result* 31)+((this.addressIt == null)? 0 :this.addressIt.hashCode()));
         result = ((result* 31)+((this.longitude == null)? 0 :this.longitude.hashCode()));
         result = ((result* 31)+((this.isEvent == null)? 0 :this.isEvent.hashCode()));
         return result;
@@ -261,7 +315,7 @@ public class Hub implements Serializable
             return false;
         }
         Hub rhs = ((Hub) other);
-        return (((((((((((((this.country == rhs.country)||((this.country!= null)&&this.country.equals(rhs.country)))&&((this.address == rhs.address)||((this.address!= null)&&this.address.equals(rhs.address))))&&((this.city == rhs.city)||((this.city!= null)&&this.city.equals(rhs.city))))&&((this.latitude == rhs.latitude)||((this.latitude!= null)&&this.latitude.equals(rhs.latitude))))&&((this.availability == rhs.availability)||((this.availability!= null)&&this.availability.equals(rhs.availability))))&&((this.users == rhs.users)||((this.users!= null)&&this.users.equals(rhs.users))))&&((this.cap == rhs.cap)||((this.cap!= null)&&this.cap.equals(rhs.cap))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.longitude == rhs.longitude)||((this.longitude!= null)&&this.longitude.equals(rhs.longitude))))&&((this.isEvent == rhs.isEvent)||((this.isEvent!= null)&&this.isEvent.equals(rhs.isEvent))));
+        return ((((((((((((((((this.cityDe == rhs.cityDe)||((this.cityDe!= null)&&this.cityDe.equals(rhs.cityDe)))&&((this.country == rhs.country)||((this.country!= null)&&this.country.equals(rhs.country))))&&((this.latitude == rhs.latitude)||((this.latitude!= null)&&this.latitude.equals(rhs.latitude))))&&((this.nameIt == rhs.nameIt)||((this.nameIt!= null)&&this.nameIt.equals(rhs.nameIt))))&&((this.availability == rhs.availability)||((this.availability!= null)&&this.availability.equals(rhs.availability))))&&((this.users == rhs.users)||((this.users!= null)&&this.users.equals(rhs.users))))&&((this.nameDe == rhs.nameDe)||((this.nameDe!= null)&&this.nameDe.equals(rhs.nameDe))))&&((this.cap == rhs.cap)||((this.cap!= null)&&this.cap.equals(rhs.cap))))&&((this.addressDe == rhs.addressDe)||((this.addressDe!= null)&&this.addressDe.equals(rhs.addressDe))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))))&&((this.cityIt == rhs.cityIt)||((this.cityIt!= null)&&this.cityIt.equals(rhs.cityIt))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.addressIt == rhs.addressIt)||((this.addressIt!= null)&&this.addressIt.equals(rhs.addressIt))))&&((this.longitude == rhs.longitude)||((this.longitude!= null)&&this.longitude.equals(rhs.longitude))))&&((this.isEvent == rhs.isEvent)||((this.isEvent!= null)&&this.isEvent.equals(rhs.isEvent))));
     }
 
 }
