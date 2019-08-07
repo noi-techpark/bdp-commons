@@ -88,7 +88,7 @@ public class DataRetriever {
 					dto.setStationType("CarpoolingHub");
 					dto.setOrigin(DATA_ORIGIN);
 
-					HashMap<String, String> addressMap = new HashMap<String, String>(), cityMap = new HashMap<String, String>(), nameMap = new HashMap<String, String>();
+					HashMap<String, Object> addressMap = new HashMap<String, Object>(), cityMap = new HashMap<String, Object>(), nameMap = new HashMap<String, Object>();
 					addressMap.put("de", hub.getAddressDe());
 					addressMap.put("it", hub.getAddressIt());
 					addressMap.put("de", hub.getCityDe());
