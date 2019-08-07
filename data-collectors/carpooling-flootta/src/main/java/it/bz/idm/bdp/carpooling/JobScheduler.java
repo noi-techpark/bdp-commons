@@ -20,8 +20,7 @@ public class JobScheduler {
 
 	public void syncStations(){
 		StationList hubs = retriever.getHubIds();
-		if (!hubs.isEmpty()) // to avoid deactivation of all hubs
-			pusher.syncStations(hubs);
+		pusher.syncStations(hubs);
 	}
 
 	public void syncUser(){

@@ -8,8 +8,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
@@ -77,7 +79,7 @@ public class DataRetriever {
 				if (hubExpires.after(new Date())){
 					StationDto dto = new StationDto();
 					dto.setId(CARPOOLING_NAMESPACE+hub.getId().toString());
-					dto.setName(hub.getName());
+					dto.setName(hub.getNameDe());
 					Double parsedLon, parsedLat;
 					parsedLon = hub.getLongitude();
 					parsedLat = hub.getLatitude();
@@ -85,8 +87,23 @@ public class DataRetriever {
 					dto.setLatitude(parsedLat);
 					dto.setStationType("CarpoolingHub");
 					dto.setOrigin(DATA_ORIGIN);
-					dto.getMetaData().put("address", hub.getAddress());
-					dto.getMetaData().put("city", hub.getCity());
+
+					HashMap<String, String> addressMap = new HashMap<String, String>(), cityMap = new HashMap<String, String>(), nameMap = new HashMap<String, String>();
+					addressMap.put("de", hub.getAddressDe());
+					addressMap.put("it", hub.getAddressIt());
+					addressMap.put("de", hub.getCityDe());
+					addressMap.put("it", hub.getCityIt());
+					nameMap.put("de", hub.getNameDe());
+					nameMap.put("it", hub.getNameIt());
+					dto.getMetaData().put("address", addressMap);
+					dto.getMetaData().put("city", cityMap);
+					dto.getMetaData().put("name", nameMap);
+
+					dto.getMetaData().put("more", hub.getAdditionalProperties());
+					dto.getMetaData().put("cap", hub.getCap());
+					dto.getMetaData().put("country", hub.getCountry());
+					dto.getMetaData().put("isEvent", hub.getIsEvent());
+					dto.getMetaData().put("numberOfUsers", hub.getUsers());
 					dtos.add(dto);
 				}
 			}
