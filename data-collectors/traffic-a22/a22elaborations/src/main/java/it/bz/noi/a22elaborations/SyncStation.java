@@ -1,10 +1,12 @@
 package it.bz.noi.a22elaborations;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -15,12 +17,21 @@ public class SyncStation
 {
 
 	private static Logger log = Logger.getLogger(SyncStation.class);
+	private static String origin;
 
 	public static void main(String[] args) throws IOException, SQLException
 	{
 		Connection connection = Utility.createConnection();
 		saveStations(connection);
 		connection.close();
+		InputStream in = Utility.class.getResourceAsStream("elaborations.properties");
+		Properties prop = new Properties();
+		try {
+			prop.load(in);
+			origin = prop.getProperty("origin");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -78,6 +89,7 @@ public class SyncStation
 
 			log.debug("Create stationDto");
 			StationDto station = new StationDto(code, name, lat, lng);
+			station.setOrigin(origin);
 			log.debug("Add stationDto to stationList");
 			stationList.add(station);
 		}

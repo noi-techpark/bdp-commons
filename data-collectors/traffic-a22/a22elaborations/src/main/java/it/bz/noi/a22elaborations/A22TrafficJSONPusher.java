@@ -28,7 +28,7 @@ public class A22TrafficJSONPusher extends JSONPusher
 	@Override
 	public String initIntegreenTypology()
 	{
-		return "a22-traffic";
+		return "TrafficSensor";
 	}
 
 	@Override
