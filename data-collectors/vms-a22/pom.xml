@@ -56,4 +56,7 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+	<build>
+		<finalName>vms-a22</finalName>
+	</build>
 </project>
