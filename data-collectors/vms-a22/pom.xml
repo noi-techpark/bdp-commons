@@ -57,6 +57,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>vms-a22</finalName>
+		<finalName>${project.artifactId}</finalName>
 	</build>
 </project>
