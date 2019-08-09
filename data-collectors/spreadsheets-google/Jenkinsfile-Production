@@ -22,13 +22,6 @@ pipeline {
                 sh 'cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json'
             }
         }
-
-        stage('Test') {
-            steps {
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test'
-            }
-        }
-
         stage('Test - CreativeIndustry') {
             environment {
                 VENDOR = "creativeIndustries"
