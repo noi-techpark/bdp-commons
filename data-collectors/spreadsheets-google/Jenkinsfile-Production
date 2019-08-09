@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        PROJECT = "spreadsheet-google"
+        PROJECT = "spreadsheets-google"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
         ARTIFACT_NAME = "dc-${PROJECT}"
