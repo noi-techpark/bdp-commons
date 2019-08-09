@@ -9,7 +9,7 @@
 	<bean class="it.bz.odh.spreadsheets.JobScheduler" id="jobScheduler" />
 	<task:scheduler id="Scheduler" pool-size="10" />
 	<task:scheduled-tasks scheduler="Scheduler">
-		<task:scheduled ref="jobScheduler" method="syncData" cron="0 */5 * * * *" />
+		<task:scheduled ref="jobScheduler" method="syncData" cron="0 0 * * * *" />
  	</task:scheduled-tasks>
     <context:component-scan base-package="it.bz.odh.spreadsheets"/>
     <context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
