@@ -90,10 +90,13 @@ public class DataRetriever {
 					HashMap<String, Object> addressMap = new HashMap<String, Object>(), cityMap = new HashMap<String, Object>(), nameMap = new HashMap<String, Object>();
 					addressMap.computeIfAbsent("de", val -> hub.getAddressDe());
 					addressMap.computeIfAbsent("it", val -> hub.getAddressIt());
+					addressMap.computeIfAbsent("en", val -> hub.getAddressIt());
 					cityMap.computeIfAbsent("de", val -> hub.getCityDe());
 					cityMap.computeIfAbsent("it", val -> hub.getCityIt());
+					cityMap.computeIfAbsent("en", val -> hub.getCityIt());
 					nameMap.computeIfAbsent("de", val -> hub.getNameDe());
 					nameMap.computeIfAbsent("it", val -> hub.getNameIt());
+					nameMap.computeIfAbsent("en", val -> hub.getNameIt());
 					if (!addressMap.isEmpty())
 						dto.getMetaData().put("address", addressMap);
 					if (!cityMap.isEmpty())
