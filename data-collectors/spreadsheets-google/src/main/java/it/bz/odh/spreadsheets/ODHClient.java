@@ -169,8 +169,7 @@ public class ODHClient extends JSONPusher{
 		StringBuffer uniqueId = new StringBuffer();
 		uniqueId.append(dto.getOrigin()).append(":");
 		for(String idField:uniqueIdFields) {
-			String normalizedKey = normalizeKey(idField);
-			String value= dto.getMetaData().get(normalizedKey).toString();
+			String value= dto.getMetaData().get(idField).toString();
 			if (value!=null && !value.isEmpty()) {
 				uniqueId.append(value);
 			}
