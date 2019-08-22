@@ -258,13 +258,14 @@ public class ODHClient extends JSONPusher{
 
 	}
 
-	public void normalizeMetaData(Map<String, Object> metaData) {
+	public Map<String, Object> normalizeMetaData(Map<String, Object> metaData) {
+		Map<String,Object> resultMap = new HashMap<String, Object>();
 		for (Map.Entry<String,Object> entry:metaData.entrySet()) {
 			String normalizedKey = normalizeKey(entry.getKey());
 			if (!entry.getKey().equals(normalizedKey)){
-				metaData.put(normalizedKey, entry.getValue());
-				metaData.remove(entry.getKey());
+				resultMap.put(normalizedKey, entry.getValue());
 			}
 		}
+		return resultMap;
 	}
 }
