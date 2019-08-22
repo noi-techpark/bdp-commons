@@ -1,10 +1,12 @@
 package it.bz.odh.spreadsheets;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,4 +89,12 @@ public class UtilityTest extends AbstractJUnit4SpringContextTests{
 		assertTrue(langMap.containsKey("de"));
 	}
 
+	@Test
+	public void testMetaDataNormalization() {
+		Map<String, Object> metaData = new HashMap<String, Object>();
+		metaData.put("today.noi.bz.it", "Hello");
+		metaData.put("Blüschtier", "ßcharf");
+		Map<String, Object> result = odhClient.normalizeMetaData(metaData);
+		assertFalse(result.isEmpty());
+	}
 }
