@@ -24,14 +24,6 @@ public class SyncStation
 		Connection connection = Utility.createConnection();
 		saveStations(connection);
 		connection.close();
-		InputStream in = Utility.class.getResourceAsStream("elaborations.properties");
-		Properties prop = new Properties();
-		try {
-			prop.load(in);
-			origin = prop.getProperty("origin");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -64,6 +56,14 @@ public class SyncStation
 	public static StationList readStationList(Connection connection) throws IOException, SQLException
 	{
 
+		InputStream in = Utility.class.getResourceAsStream("elaborations.properties");
+		Properties prop = new Properties();
+		try {
+			prop.load(in);
+			origin = prop.getProperty("origin");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		log.debug("Create stationlist");
 		StationList stationList = new StationList();
 		log.debug("Read stations from db");
