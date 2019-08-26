@@ -218,7 +218,7 @@ pipeline {
         stage('Configure - meteorology') {
             environment {
                 ARTIFACT_NAME = "meteorology"
-                STATION_TYPE = "Meteostation"
+                STATION_TYPE = "MeteoStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
