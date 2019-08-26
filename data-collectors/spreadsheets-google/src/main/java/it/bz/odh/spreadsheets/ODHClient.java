@@ -169,8 +169,7 @@ public class ODHClient extends JSONPusher{
 		StringBuffer uniqueId = new StringBuffer();
 		uniqueId.append(dto.getOrigin()).append(":");
 		for(String idField:uniqueIdFields) {
-			String normalizedKey = normalizeKey(idField);
-			String value= dto.getMetaData().get(normalizedKey).toString();
+			String value= dto.getMetaData().get(idField).toString();
 			if (value!=null && !value.isEmpty()) {
 				uniqueId.append(value);
 			}
@@ -258,13 +257,12 @@ public class ODHClient extends JSONPusher{
 
 	}
 
-	public void normalizeMetaData(Map<String, Object> metaData) {
+	public Map<String, Object> normalizeMetaData(Map<String, Object> metaData) {
+		Map<String,Object> resultMap = new HashMap<String, Object>();
 		for (Map.Entry<String,Object> entry:metaData.entrySet()) {
 			String normalizedKey = normalizeKey(entry.getKey());
-			if (!entry.getKey().equals(normalizedKey)){
-				metaData.put(normalizedKey, entry.getValue());
-				metaData.remove(entry.getKey());
-			}
+			resultMap.put("m-"+normalizedKey, entry.getValue());
 		}
+		return resultMap;
 	}
 }

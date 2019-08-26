@@ -103,10 +103,12 @@ public class JobScheduler {
 				odhClient.mergeTranslations(dto.getMetaData(),headerMapping);
 				if (dto.getName()==null || dto.getName().isEmpty())
 					dto.setName(dto.getId());
+				Map<String, Object> normalizedMetaData = odhClient.normalizeMetaData(dto.getMetaData());
+				dto.getMetaData().clear();
+				dto.setMetaData(normalizedMetaData);
 				if (existingOdhStations.contains(dto)||(dto.getLongitude() != null && dto.getLatitude() != null)) {
 					dtos.add(dto);
 				}
-				odhClient.normalizeMetaData(dto.getMetaData());
 			}
 			i++;
 		}
