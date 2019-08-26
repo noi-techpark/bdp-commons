@@ -97,7 +97,7 @@ public class MeteoTnDataRetrieverTest extends AbstractJUnit4SpringContextTests {
                     checkEquals(11.023828D           , station.getLongitude()     , errs, "STATION_2: LONGITUDE is INCORRECT");
                     checkEquals(45.786137D           , station.getLatitude()      , errs, "STATION_2: LATITUDE is INCORRECT");
                     checkEquals("meteotrentino"      , station.getOrigin()        , errs, "STATION_2: ORIGIN is INCORRECT");
-                    checkEquals("Meteostation"       , station.getStationType()   , errs, "STATION_2: STATION_TYPE is INCORRECT");
+                    checkEquals("MeteoStation"       , station.getStationType()   , errs, "STATION_2: STATION_TYPE is INCORRECT");
                 }
                 allFound = !station1Found && station2Found;
             }

@@ -70,7 +70,7 @@ public class MeteoTnDataPusher extends JSONPusher {
 
     @Override
     public String initIntegreenTypology() {
-        String stationType = "Meteostation";
+        String stationType = "MeteoStation";
         return stationType;
     }
 
