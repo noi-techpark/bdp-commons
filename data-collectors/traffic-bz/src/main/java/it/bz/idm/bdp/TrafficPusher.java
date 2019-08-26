@@ -20,7 +20,7 @@ public class TrafficPusher extends JSONPusher {
 
 	public static final String ENVIRONMENTSTATION_IDENTIFIER = "EnvironmentStation";
 
-	public static final String METEOSTATION_IDENTIFIER = "Meteostation";
+	public static final String METEOSTATION_IDENTIFIER = "MeteoStation";
 
 	@Override
 	public String initIntegreenTypology() {
