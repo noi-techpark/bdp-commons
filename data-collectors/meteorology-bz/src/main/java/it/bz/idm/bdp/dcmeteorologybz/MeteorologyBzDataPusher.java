@@ -63,7 +63,7 @@ public class MeteorologyBzDataPusher extends JSONPusher {
 
     @Override
     public String initIntegreenTypology() {
-        String stationType = "Meteostation";
+        String stationType = "MeteoStation";
         return stationType;
     }
 
