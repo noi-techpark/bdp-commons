@@ -12,6 +12,7 @@ pipeline {
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
         ARTIFACT_NAME = "dc-${PROJECT}"
         CREATIVEINDUSTRIES_CONFIG=credentials('spreadsheets.creativeIndustries.production.config')
+        NOIPLACES_CONFIG=credentials('spreadsheets.noiPlaces.production.config')
         GOOGLE_SECRET=credentials('spreadsheets.client_secret.json')
     }
 
@@ -60,5 +61,42 @@ pipeline {
                 archiveArtifacts artifacts: "${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
         }
+        stage('Test - NoiPlaces') {
+            environment {
+                VENDOR = "noiPlaces"
+                CONFIG = "${CREATIVEINDUSTRIES_CONFIG}"
+            }
+            steps {
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean test'
+            }
+
+        }
+        stage('Build - NoiPlaces') {
+            environment {
+                VENDOR = "noiPlaces"
+                CONFIG = "${NOIPLACES_CONFIG}"
+            }
+            steps {
+                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean package'
+            }
+        }
+
+        stage('Archive - NoiPlaces') {
+            environment {
+                VENDOR = "noiPlaces"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war ${ARTIFACT_NAME}-${VENDOR}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
+            }
     }
 }
