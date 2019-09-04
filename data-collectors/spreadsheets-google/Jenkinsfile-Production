@@ -98,5 +98,6 @@ pipeline {
                 sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}-${VENDOR}.war ${ARTIFACT_NAME}-${VENDOR}.war'
                 archiveArtifacts artifacts: "${ARTIFACT_NAME}-${VENDOR}.war", onlyIfSuccessful: true
             }
+        }
     }
 }
