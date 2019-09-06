@@ -18,6 +18,7 @@ public class SyncStation
 
 	private static Logger log = Logger.getLogger(SyncStation.class);
 	private static String origin;
+	private static String stationtype;
 
 	public static void main(String[] args) throws IOException, SQLException
 	{
@@ -69,6 +70,7 @@ public class SyncStation
 		try {
 			prop.load(in);
 			origin = prop.getProperty("origin");
+			stationtype = prop.getProperty("stationtype");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -98,6 +100,7 @@ public class SyncStation
 			log.debug("Create stationDto");
 			StationDto station = new StationDto(code, name, lat, lng);
 			station.setOrigin(origin);
+			station.setStationType(stationtype);
 			log.debug("Add stationDto to stationList");
 			stationList.add(station);
 		}
