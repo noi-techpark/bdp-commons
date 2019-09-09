@@ -441,7 +441,7 @@ public class DataPusher extends JSONPusher {
         {
             if (Integer.valueOf(date.substring(8)) > Integer.valueOf(getLastRetrievedDate(stationList.get(looper + 1).getAsJsonObject()).substring(8)))
             {
-                date = getLastRetrievedDate(stationList.get(looper + 1).getAsJsonObject()).substring(8);
+                date = getLastRetrievedDate(stationList.get(looper + 1).getAsJsonObject());
             }
         }
         return date;
