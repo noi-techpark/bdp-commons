@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
@@ -140,12 +141,15 @@ public class DataRetriever {
 					dto.getMetaData().put("arrival",user.getTripArrival());
 					dto.getMetaData().put("departure",user.getTripDeparture());
 					dto.getMetaData().put("tripFrom",user.getTripFrom());
-					dto.getMetaData().put("tripToName",user.getTripToName());
+					Map<String,String> tripToMap = new HashMap<String, String>();
+					tripToMap.put("it", user.getTripToName());
+					tripToMap.put("en", user.getTripToName());
+					tripToMap.put("de", user.getTripToNameDe());
+					dto.getMetaData().put("tripToName",tripToMap);
 					dto.getMetaData().put("added",user.getAdded());
 					dto.getMetaData().put("additionalProperties",user.getAdditionalProperties());
 					dto.getMetaData().put("userAvailability",user.getUserAvailability());
 					dto.getMetaData().put("userRating",format.parse(user.getUserRating()));
-					dto.getMetaData().put("tripToName",user.getTripToName());
 					dto.setStationType("CarpoolingUser");
 					dto.setLongitude(user.getTripLongitude());
 					dto.setLatitude(user.getTripLatitude());

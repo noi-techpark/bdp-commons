@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "trip_from",
     "trip_to_id",
     "trip_to_name",
+    "trip_to_name_de",
     "trip_arrival",
     "trip_departure",
     "trip_latitude",
@@ -54,6 +55,8 @@ public class User implements Serializable
     private Integer tripToId;
     @JsonProperty("trip_to_name")
     private String tripToName;
+    @JsonProperty("trip_to_name_de")
+    private String tripToNameDe;
     @JsonProperty("trip_arrival")
     private String tripArrival;
     @JsonProperty("trip_departure")
@@ -64,7 +67,7 @@ public class User implements Serializable
     private Double tripLongitude;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = 1119434612997166770L;
+    private final static long serialVersionUID = -8891427127720684467L;
 
     @JsonProperty("id")
     public Integer getId() {
@@ -176,6 +179,16 @@ public class User implements Serializable
         this.tripToName = tripToName;
     }
 
+    @JsonProperty("trip_to_name_de")
+    public String getTripToNameDe() {
+        return tripToNameDe;
+    }
+
+    @JsonProperty("trip_to_name_de")
+    public void setTripToNameDe(String tripToNameDe) {
+        this.tripToNameDe = tripToNameDe;
+    }
+
     @JsonProperty("trip_arrival")
     public String getTripArrival() {
         return tripArrival;
@@ -274,6 +287,10 @@ public class User implements Serializable
         sb.append('=');
         sb.append(((this.tripToName == null)?"<null>":this.tripToName));
         sb.append(',');
+        sb.append("tripToNameDe");
+        sb.append('=');
+        sb.append(((this.tripToNameDe == null)?"<null>":this.tripToNameDe));
+        sb.append(',');
         sb.append("tripArrival");
         sb.append('=');
         sb.append(((this.tripArrival == null)?"<null>":this.tripArrival));
@@ -312,6 +329,7 @@ public class User implements Serializable
         result = ((result* 31)+((this.tripFrom == null)? 0 :this.tripFrom.hashCode()));
         result = ((result* 31)+((this.userAvailability == null)? 0 :this.userAvailability.hashCode()));
         result = ((result* 31)+((this.userName == null)? 0 :this.userName.hashCode()));
+        result = ((result* 31)+((this.tripToNameDe == null)? 0 :this.tripToNameDe.hashCode()));
         result = ((result* 31)+((this.userRating == null)? 0 :this.userRating.hashCode()));
         result = ((result* 31)+((this.tripArrival == null)? 0 :this.tripArrival.hashCode()));
         result = ((result* 31)+((this.tripToId == null)? 0 :this.tripToId.hashCode()));
@@ -333,7 +351,7 @@ public class User implements Serializable
             return false;
         }
         User rhs = ((User) other);
-        return (((((((((((((((((this.tripLongitude == rhs.tripLongitude)||((this.tripLongitude!= null)&&this.tripLongitude.equals(rhs.tripLongitude)))&&((this.added == rhs.added)||((this.added!= null)&&this.added.equals(rhs.added))))&&((this.tripToName == rhs.tripToName)||((this.tripToName!= null)&&this.tripToName.equals(rhs.tripToName))))&&((this.tripDeparture == rhs.tripDeparture)||((this.tripDeparture!= null)&&this.tripDeparture.equals(rhs.tripDeparture))))&&((this.tripFrom == rhs.tripFrom)||((this.tripFrom!= null)&&this.tripFrom.equals(rhs.tripFrom))))&&((this.userAvailability == rhs.userAvailability)||((this.userAvailability!= null)&&this.userAvailability.equals(rhs.userAvailability))))&&((this.userName == rhs.userName)||((this.userName!= null)&&this.userName.equals(rhs.userName))))&&((this.userRating == rhs.userRating)||((this.userRating!= null)&&this.userRating.equals(rhs.userRating))))&&((this.tripArrival == rhs.tripArrival)||((this.tripArrival!= null)&&this.tripArrival.equals(rhs.tripArrival))))&&((this.tripToId == rhs.tripToId)||((this.tripToId!= null)&&this.tripToId.equals(rhs.tripToId))))&&((this.userGender == rhs.userGender)||((this.userGender!= null)&&this.userGender.equals(rhs.userGender))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))))&&((this.userType == rhs.userType)||((this.userType!= null)&&this.userType.equals(rhs.userType))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.tripLatitude == rhs.tripLatitude)||((this.tripLatitude!= null)&&this.tripLatitude.equals(rhs.tripLatitude))))&&((this.userPendular == rhs.userPendular)||((this.userPendular!= null)&&this.userPendular.equals(rhs.userPendular))));
+        return ((((((((((((((((((this.tripLongitude == rhs.tripLongitude)||((this.tripLongitude!= null)&&this.tripLongitude.equals(rhs.tripLongitude)))&&((this.added == rhs.added)||((this.added!= null)&&this.added.equals(rhs.added))))&&((this.tripToName == rhs.tripToName)||((this.tripToName!= null)&&this.tripToName.equals(rhs.tripToName))))&&((this.tripDeparture == rhs.tripDeparture)||((this.tripDeparture!= null)&&this.tripDeparture.equals(rhs.tripDeparture))))&&((this.tripFrom == rhs.tripFrom)||((this.tripFrom!= null)&&this.tripFrom.equals(rhs.tripFrom))))&&((this.userAvailability == rhs.userAvailability)||((this.userAvailability!= null)&&this.userAvailability.equals(rhs.userAvailability))))&&((this.userName == rhs.userName)||((this.userName!= null)&&this.userName.equals(rhs.userName))))&&((this.tripToNameDe == rhs.tripToNameDe)||((this.tripToNameDe!= null)&&this.tripToNameDe.equals(rhs.tripToNameDe))))&&((this.userRating == rhs.userRating)||((this.userRating!= null)&&this.userRating.equals(rhs.userRating))))&&((this.tripArrival == rhs.tripArrival)||((this.tripArrival!= null)&&this.tripArrival.equals(rhs.tripArrival))))&&((this.tripToId == rhs.tripToId)||((this.tripToId!= null)&&this.tripToId.equals(rhs.tripToId))))&&((this.userGender == rhs.userGender)||((this.userGender!= null)&&this.userGender.equals(rhs.userGender))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))))&&((this.userType == rhs.userType)||((this.userType!= null)&&this.userType.equals(rhs.userType))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.tripLatitude == rhs.tripLatitude)||((this.tripLatitude!= null)&&this.tripLatitude.equals(rhs.tripLatitude))))&&((this.userPendular == rhs.userPendular)||((this.userPendular!= null)&&this.userPendular.equals(rhs.userPendular))));
     }
 
 }
