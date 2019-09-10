@@ -143,13 +143,13 @@ public class DataRetriever {
 					dto.getMetaData().put("tripFrom",user.getTripFrom());
 					Map<String,String> tripToMap = new HashMap<String, String>();
 					tripToMap.put("it", user.getTripToName());
+					tripToMap.put("en", user.getTripToName());
 					tripToMap.put("de", user.getTripToNameDe());
 					dto.getMetaData().put("tripToName",tripToMap);
 					dto.getMetaData().put("added",user.getAdded());
 					dto.getMetaData().put("additionalProperties",user.getAdditionalProperties());
 					dto.getMetaData().put("userAvailability",user.getUserAvailability());
 					dto.getMetaData().put("userRating",format.parse(user.getUserRating()));
-					dto.getMetaData().put("tripToName",user.getTripToName());
 					dto.setStationType("CarpoolingUser");
 					dto.setLongitude(user.getTripLongitude());
 					dto.setLatitude(user.getTripLatitude());
