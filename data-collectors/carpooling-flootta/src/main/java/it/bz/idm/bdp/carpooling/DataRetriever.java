@@ -83,8 +83,11 @@ public class DataRetriever {
 					Double parsedLon, parsedLat;
 					parsedLon = hub.getLongitude();
 					parsedLat = hub.getLatitude();
-					dto.setLongitude(parsedLon);
-					dto.setLatitude(parsedLat);
+					if (validEPSG4326Coordinates(parsedLon,parsedLat)) {
+						dto.setLongitude(parsedLon);
+						dto.setLatitude(parsedLat);
+					}else
+						continue;
 					dto.setStationType("CarpoolingHub");
 					dto.setOrigin(DATA_ORIGIN);
 
@@ -121,6 +124,9 @@ public class DataRetriever {
 		}
 		return dtos;
 	}
+	private boolean validEPSG4326Coordinates(Double lon, Double lat) {
+		return lon<=180&&lon>=-180&&lat<=90&&lat>=-90;
+	}
 	public StationList getUsers() {
 		StationList dtos = null;
 		try {
@@ -151,8 +157,11 @@ public class DataRetriever {
 					dto.getMetaData().put("userAvailability",user.getUserAvailability());
 					dto.getMetaData().put("userRating",format.parse(user.getUserRating()));
 					dto.setStationType("CarpoolingUser");
-					dto.setLongitude(user.getTripLongitude());
-					dto.setLatitude(user.getTripLatitude());
+					if (validEPSG4326Coordinates(user.getTripLongitude(),user.getTripLatitude())) {
+						dto.setLongitude(user.getTripLongitude());
+						dto.setLatitude(user.getTripLatitude());
+					}else
+						continue;
 					dtos.add(dto);
 				}
 			}
