@@ -452,8 +452,9 @@ public class MainElaborations implements Job
 				ps_anomalies.executeUpdate();
 			}
 
-			if (vehicle.getNr_classes_avg() == 1 && vehicle.getNr_classes_count() != 1)
-				throw new IllegalStateException("Illegal condition?");
+			// 2019-07-24 d@vide.bz: this case is happen. check the anomalies table to understand why.
+			// if (vehicle.getNr_classes_avg() == 1 && vehicle.getNr_classes_count() != 1)
+			//    throw new IllegalStateException("Illegal condition?");
 
 			// if this vehicle can at least be used for count then add it for processing!
 			if (vehicle.getNr_classes_count() == 1)
