@@ -29,6 +29,8 @@ import it.bz.idm.bdp.dto.StationList;
 public class MainElaborations implements Job
 {
 
+	private static final int NULL_VALUE = -999;
+
 	static class WindowStepLength
 	{
 		int step;
@@ -73,7 +75,7 @@ public class MainElaborations implements Job
 				if (lastTimestamp <= 0)
 				{
 					Calendar calendar = Calendar.getInstance();
-					calendar.set(2019, Calendar.JANUARY, 1, 0, 0, 0);
+					calendar.set(2017, Calendar.JANUARY, 1, 0, 0, 0);
 					calendar.set(Calendar.MILLISECOND, 0);
 
 					lastTimestamp = calendar.getTimeInMillis();
@@ -138,17 +140,23 @@ public class MainElaborations implements Job
 		log.debug("Create vehicle classes");
 		Map<String, Integer> classCounts = createVehicleCounts(vehicles);
 
-		double equivalentVehicles = 0;
+		double equivalentVehicles;
+		double nrLightVehicles = 0;
+		double nrHeavyVehicles = 0;
+		double nrBuses = 0;
 
 		for (Map.Entry<String, Integer> classCount : classCounts.entrySet())
 		{
 
 			if (classCount.getKey().equals(SyncDatatype.NR_LIGHT_VEHICLES))
 			{
-				equivalentVehicles += classCount.getValue();
+				nrLightVehicles += classCount.getValue();
 			} else if (classCount.getKey().equals(SyncDatatype.NR_HEAVY_VEHICLES))
 			{
-				equivalentVehicles += 2.5 * classCount.getValue();
+				nrHeavyVehicles += classCount.getValue();
+			} else if (classCount.getKey().equals(SyncDatatype.NR_BUSES))
+			{
+				nrBuses += classCount.getValue();
 			}
 
 			Timestamp timestamp = new Timestamp(lastTimestamp /* + windowLength / 2 */);
@@ -160,9 +168,11 @@ public class MainElaborations implements Job
 
 		}
 
+		equivalentVehicles = nrLightVehicles + 2.5 * (nrHeavyVehicles + nrBuses);
 		Timestamp timestamp = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 		SimpleRecordDto record = new SimpleRecordDto(timestamp.getTime(), equivalentVehicles,
 				(int) (windowLength / 1000), System.currentTimeMillis());
+		log.debug("Save "+SyncDatatype.NR_EQUIVALENT_VEHICLES+" vehicles: " + equivalentVehicles);
 		dataMapDto.addRecord(station.getId(), SyncDatatype.NR_EQUIVALENT_VEHICLES, record);
 
 		Map<String, Double> classAvgSpeeds = createClassAvgSpeeds(vehicles);
@@ -217,7 +227,7 @@ public class MainElaborations implements Job
 
 		double gapSum = 0;
 		double headwaySum = 0;
-		double meanSpacing = 0;
+		// double meanSpacing = 0;
 		double speedSum = 0;
 
 		for (Vehicle vehicle : vehicles)
@@ -227,25 +237,23 @@ public class MainElaborations implements Job
 
 			gapSum += vehicle.getDistance();
 			headwaySum += vehicle.getHeadway();
-			meanSpacing += vehicle.getHeadway() * vehicle.getSpeed() / 3.6;
+			// meanSpacing += vehicle.getHeadway() * vehicle.getSpeed() / 3.6;
 			speedSum += vehicle.getSpeed();
 		}
-		double avgHeadway = 0;
-		double averageDensity = 0;
-		double averageFlow = 0;
-		double averageGap = 0;
-		double averageSpeed = 0;
+		double avgHeadway = NULL_VALUE;
+		double averageDensity = NULL_VALUE;
+		// calculate avgFlow from vehicles in interval and convert sec to h
+		double averageFlow = equivalentVehicles * 3600 * 1000 / windowLength;
+		double averageGap = NULL_VALUE;
 
 		if (vehicles.size() > 0)
 		{
 			avgHeadway = headwaySum / vehicles.size();
-			meanSpacing = meanSpacing / vehicles.size();
+			// meanSpacing = meanSpacing / vehicles.size();
 			// averageDensity = 1/(meanSpacing/1000);
 			// averageFlow = (1/avgHeadway)*3600;
 
-			// calculate avgFlow from vehicles in interval and convert sec to h
-			averageFlow = equivalentVehicles * 3600 / windowLength;
-			averageSpeed = speedSum / vehicles.size();
+			double averageSpeed = speedSum / vehicles.size();
 			averageDensity = averageFlow / averageSpeed;
 			averageGap = gapSum / vehicles.size();
 		}
@@ -299,9 +307,9 @@ public class MainElaborations implements Job
 			}
 		}
 
-		double speedVarLight = 0;
-		double speedVarHeavy = 0;
-		double speedVarBuses = 0;
+		double speedVarLight = NULL_VALUE;
+		double speedVarHeavy = NULL_VALUE;
+		double speedVarBuses = NULL_VALUE;
 
 		if (countLight > 0)
 		{
@@ -361,9 +369,9 @@ public class MainElaborations implements Job
 			}
 		}
 
-		double speedAvgLight = 0;
-		double speedAvgHeavy = 0;
-		double speedAvgBuses = 0;
+		double speedAvgLight = NULL_VALUE;
+		double speedAvgHeavy = NULL_VALUE;
+		double speedAvgBuses = NULL_VALUE;
 
 		if (countLight > 0)
 		{
