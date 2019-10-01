@@ -12,9 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -64,12 +61,35 @@ public class Services implements Serializable
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("hub", hub).append("stats", stats).append("additionalProperties", additionalProperties).toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(Services.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("hub");
+        sb.append('=');
+        sb.append(((this.hub == null)?"<null>":this.hub));
+        sb.append(',');
+        sb.append("stats");
+        sb.append('=');
+        sb.append(((this.stats == null)?"<null>":this.stats));
+        sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(additionalProperties).append(hub).append(stats).toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
+        result = ((result* 31)+((this.hub == null)? 0 :this.hub.hashCode()));
+        result = ((result* 31)+((this.stats == null)? 0 :this.stats.hashCode()));
+        return result;
     }
 
     @Override
@@ -81,7 +101,7 @@ public class Services implements Serializable
             return false;
         }
         Services rhs = ((Services) other);
-        return new EqualsBuilder().append(additionalProperties, rhs.additionalProperties).append(hub, rhs.hub).append(stats, rhs.stats).isEquals();
+        return ((((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties)))&&((this.hub == rhs.hub)||((this.hub!= null)&&this.hub.equals(rhs.hub))))&&((this.stats == rhs.stats)||((this.stats!= null)&&this.stats.equals(rhs.stats))));
     }
 
 }

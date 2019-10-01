@@ -16,6 +16,8 @@ import java.util.Date;
 public class DateHelper
 {
     private static final Logger LOG = LogManager.getLogger(DateHelper.class.getName());
+    private SimpleDateFormat standardTimeFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+    private SimpleDateFormat appTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
     public DateHelper()
     {}
 
@@ -73,45 +75,14 @@ public class DateHelper
     public String formatDate(String inputDate)
     {
         LOG.debug("Formatting date...");
-        String year;
-        String month;
-        String day;
-        
-        String[] tokens = inputDate.split(" ");
-
-        year = tokens[5];
-        day = tokens[2];
-
-        switch (tokens[1])
-        {
-            case "Jan": month = "01";
-                break;
-            case "Feb": month = "02";
-                break;
-            case "Mar": month = "03";
-                break;
-            case "Apr": month = "04";
-                break;
-            case "May": month = "05";
-                break;
-            case "Jun": month = "06";
-                break;
-            case "Jul": month = "07";
-                break;
-            case "Aug": month = "08";
-                break;
-            case "Sep": month = "09";
-                break;
-            case "Oct": month = "10";
-                break;
-            case "Nov": month = "11";
-                break;
-            case "Dec": month = "12";
-                break;
-            default: month = "Invalid month.";
-                break;
-        }
-        return year + "-" + month + "-" + day;
+        try {
+			Date date = standardTimeFormat.parse(inputDate);
+			String output = appTimeFormat.format(date);
+			return output;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
     }
 
     /**

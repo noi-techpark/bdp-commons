@@ -12,9 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -51,12 +48,30 @@ public class JUsers implements Serializable
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("user", user).append("additionalProperties", additionalProperties).toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(JUsers.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("user");
+        sb.append('=');
+        sb.append(((this.user == null)?"<null>":this.user));
+        sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(user).append(additionalProperties).toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.user == null)? 0 :this.user.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
+        return result;
     }
 
     @Override
@@ -68,7 +83,7 @@ public class JUsers implements Serializable
             return false;
         }
         JUsers rhs = ((JUsers) other);
-        return new EqualsBuilder().append(user, rhs.user).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return (((this.user == rhs.user)||((this.user!= null)&&this.user.equals(rhs.user)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))));
     }
 
 }

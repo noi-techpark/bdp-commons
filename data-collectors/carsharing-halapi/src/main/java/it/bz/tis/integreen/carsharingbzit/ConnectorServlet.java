@@ -91,6 +91,7 @@ public class ConnectorServlet extends HttpServlet implements Runnable
       String user = props.getProperty("user");
       String password = props.getProperty("password");
       String initCityUIDs = props.getProperty("cityUIDs");
+
       this.cityUIDs = initCityUIDs.split("\\s*,\\s*");
 
       this.apiClient = new ApiClient(endpoint, user, password);

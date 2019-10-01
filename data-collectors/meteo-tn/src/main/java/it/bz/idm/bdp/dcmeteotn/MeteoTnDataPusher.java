@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
@@ -22,6 +23,7 @@ import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnMeasurementDto;
 import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnMeasurementListDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
@@ -39,13 +41,16 @@ public class MeteoTnDataPusher extends JSONPusher {
     @Autowired
     private MeteoTnDataConverter converter;
 
+    @Autowired
+    private Environment env;
+
     public MeteoTnDataPusher() {
         LOG.debug("START.constructor.");
         LOG.debug("END.constructor.");
     }
 
     @PostConstruct
-    private void init() {
+    private void initScript() {
         LOG.debug("START.init.");
         //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTTP 415 error)
         //this must be done because we added dependencies to com.fasterxml.jackson.dataformat.xml.XmlMapper to read data from IIT web service!
@@ -305,4 +310,9 @@ public class MeteoTnDataPusher extends JSONPusher {
                 "";
         return str2 + " ---> " + str1;
     }
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null,env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("app.origin"));
+	}
 }

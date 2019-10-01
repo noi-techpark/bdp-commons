@@ -1,0 +1,6684 @@
+[
+	{
+		"SCODE": "89940PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-02-20T11:10:00CET",
+		"VALUE": 3.8
+	},
+	{
+		"SCODE": "89940GW",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-02-20T11:00:00CET",
+		"VALUE": 13.9
+	},
+	{
+		"SCODE": "89940GW",
+		"TYPE": "W.ABST",
+		"DESC_D": "Grundwasserstand",
+		"DESC_I": "Altezza freatimetrica ",
+		"DESC_L": "Livel dl''ega de sofonz",
+		"UNIT": "m",
+		"DATE": "2019-02-20T11:00:00CET",
+		"VALUE": 6.84
+	},
+	{
+		"SCODE": "08155PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-02-20T11:10:00CET",
+		"VALUE": 15.2
+	},
+	{
+		"SCODE": "08155PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-02-20T11:10:00CET",
+		"VALUE": 98.0
+	},
+	{
+		"SCODE": "08155PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-02-19T06:50:00CET",
+		"VALUE": 103.0
+	},
+	{
+		"SCODE": "08155PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-02-01T11:40:00CET",
+		"VALUE": 105.0
+	},
+	{
+		"SCODE": "08155PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-03-08T08:50:00CET",
+		"VALUE": 4.62
+	},
+	{
+		"SCODE": "08155PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-03-08T08:50:00CET",
+		"VALUE": 65.0
+	},
+	{
+		"SCODE": "82500WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 14.7
+	},
+	{
+		"SCODE": "82500WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 228.0
+	},
+	{
+		"SCODE": "82500WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.4
+	},
+	{
+		"SCODE": "82500WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 7.2
+	},
+	{
+		"SCODE": "00390SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 11.3
+	},
+	{
+		"SCODE": "00390SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 251.0
+	},
+	{
+		"SCODE": "00390SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.5
+	},
+	{
+		"SCODE": "00390SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.9
+	},
+	{
+		"SCODE": "00390SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 44.4
+	},
+	{
+		"SCODE": "00390SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": -3.5
+	},
+	{
+		"SCODE": "06040WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.5
+	},
+	{
+		"SCODE": "06040WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 316.0
+	},
+	{
+		"SCODE": "06040WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.8
+	},
+	{
+		"SCODE": "06040WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 8.4
+	},
+	{
+		"SCODE": "06090SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 7.6
+	},
+	{
+		"SCODE": "06090SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 96.0
+	},
+	{
+		"SCODE": "06090SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.5
+	},
+	{
+		"SCODE": "06090SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.3
+	},
+	{
+		"SCODE": "06090SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 38.0
+	},
+	{
+		"SCODE": "06090SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 233.8
+	},
+	{
+		"SCODE": "35100WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 15.2
+	},
+	{
+		"SCODE": "35100WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 327.0
+	},
+	{
+		"SCODE": "35100WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "35100WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "35100WS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 34.1
+	},
+	{
+		"SCODE": "50400WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.9
+	},
+	{
+		"SCODE": "50400WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 14.0
+	},
+	{
+		"SCODE": "50400WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.8
+	},
+	{
+		"SCODE": "50400WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.8
+	},
+	{
+		"SCODE": "50400WS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 75.8
+	},
+	{
+		"SCODE": "50360SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 14.4
+	},
+	{
+		"SCODE": "50360SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 210.0
+	},
+	{
+		"SCODE": "50360SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.5
+	},
+	{
+		"SCODE": "50360SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.1
+	},
+	{
+		"SCODE": "50360SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 43.1
+	},
+	{
+		"SCODE": "50360SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 53.6
+	},
+	{
+		"SCODE": "61690SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 12.7
+	},
+	{
+		"SCODE": "61690SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 181.0
+	},
+	{
+		"SCODE": "61690SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.2
+	},
+	{
+		"SCODE": "61690SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.2
+	},
+	{
+		"SCODE": "61690SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 72.2
+	},
+	{
+		"SCODE": "61690SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.5
+	},
+	{
+		"SCODE": "61720WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.4
+	},
+	{
+		"SCODE": "61720WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 19.0
+	},
+	{
+		"SCODE": "61720WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.1
+	},
+	{
+		"SCODE": "61720WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.9
+	},
+	{
+		"SCODE": "61720WS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 59.0
+	},
+	{
+		"SCODE": "19850PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 41.1
+	},
+	{
+		"SCODE": "19850PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 167.0
+	},
+	{
+		"SCODE": "19850PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 12.5
+	},
+	{
+		"SCODE": "29850PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 82.5
+	},
+	{
+		"SCODE": "29850PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 245.0
+	},
+	{
+		"SCODE": "29850PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 12.4
+	},
+	{
+		"SCODE": "36750PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 24.7
+	},
+	{
+		"SCODE": "36750PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 225.0
+	},
+	{
+		"SCODE": "59450PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 179.0
+	},
+	{
+		"SCODE": "69790PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 152.0
+	},
+	{
+		"SCODE": "69790PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 210.0
+	},
+	{
+		"SCODE": "85550PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 282.1
+	},
+	{
+		"SCODE": "85550PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 243.7
+	},
+	{
+		"SCODE": "85550PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 11.8
+	},
+	{
+		"SCODE": "20720WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 7.4
+	},
+	{
+		"SCODE": "20720WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 294.0
+	},
+	{
+		"SCODE": "20720WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.6
+	},
+	{
+		"SCODE": "20720WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 7.9
+	},
+	{
+		"SCODE": "20720WS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 48.9
+	},
+	{
+		"SCODE": "20690SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 14.0
+	},
+	{
+		"SCODE": "20690SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 158.0
+	},
+	{
+		"SCODE": "20690SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.4
+	},
+	{
+		"SCODE": "20690SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.8
+	},
+	{
+		"SCODE": "20690SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 37.9
+	},
+	{
+		"SCODE": "20690SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.5
+	},
+	{
+		"SCODE": "05950PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 13.7
+	},
+	{
+		"SCODE": "05950PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 66.0
+	},
+	{
+		"SCODE": "05950PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 12.7
+	},
+	{
+		"SCODE": "91210WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:10:00CEST",
+		"VALUE": 7.0
+	},
+	{
+		"SCODE": "91210WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:10:00CEST",
+		"VALUE": 21.4
+	},
+	{
+		"SCODE": "91210WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:10:00CEST",
+		"VALUE": 2.6
+	},
+	{
+		"SCODE": "91210WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:10:00CEST",
+		"VALUE": 3.8
+	},
+	{
+		"SCODE": "91210WS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:10:00CEST",
+		"VALUE": 99.8
+	},
+	{
+		"SCODE": "91180SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 14.2
+	},
+	{
+		"SCODE": "91180SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 151.4
+	},
+	{
+		"SCODE": "91180SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.2
+	},
+	{
+		"SCODE": "91180SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.7
+	},
+	{
+		"SCODE": "91180SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 67.4
+	},
+	{
+		"SCODE": "91180SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": -0.2
+	},
+	{
+		"SCODE": "24300SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 9.8
+	},
+	{
+		"SCODE": "24300SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 206.0
+	},
+	{
+		"SCODE": "24300SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.9
+	},
+	{
+		"SCODE": "24300SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 5.4
+	},
+	{
+		"SCODE": "24300SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 40.2
+	},
+	{
+		"SCODE": "24300SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 81.8
+	},
+	{
+		"SCODE": "15050WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C"
+	},
+	{
+		"SCODE": "15050WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° "
+	},
+	{
+		"SCODE": "15050WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s"
+	},
+	{
+		"SCODE": "15050WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s"
+	},
+	{
+		"SCODE": "15050WS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%"
+	},
+	{
+		"SCODE": "15000SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C"
+	},
+	{
+		"SCODE": "15000SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%"
+	},
+	{
+		"SCODE": "15000SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm"
+	},
+	{
+		"SCODE": "34200WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.4
+	},
+	{
+		"SCODE": "34200WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 354.0
+	},
+	{
+		"SCODE": "34200WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.3
+	},
+	{
+		"SCODE": "34200WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 5.7
+	},
+	{
+		"SCODE": "34200WS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 79.0
+	},
+	{
+		"SCODE": "31810SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 15.2
+	},
+	{
+		"SCODE": "31810SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 19.2
+	},
+	{
+		"SCODE": "31810SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.0
+	},
+	{
+		"SCODE": "31810SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.3
+	},
+	{
+		"SCODE": "31810SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 35.5
+	},
+	{
+		"SCODE": "31810SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": -0.7
+	},
+	{
+		"SCODE": "66000WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 7.8
+	},
+	{
+		"SCODE": "66000WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 336.0
+	},
+	{
+		"SCODE": "66000WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.7
+	},
+	{
+		"SCODE": "66000WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.4
+	},
+	{
+		"SCODE": "66000WS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 52.6
+	},
+	{
+		"SCODE": "66100SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 15.1
+	},
+	{
+		"SCODE": "66100SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 14.0
+	},
+	{
+		"SCODE": "66100SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.6
+	},
+	{
+		"SCODE": "66100SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.5
+	},
+	{
+		"SCODE": "66100SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 32.8
+	},
+	{
+		"SCODE": "66100SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": -1.0
+	},
+	{
+		"SCODE": "73950PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 10.8
+	},
+	{
+		"SCODE": "73950PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 77.0
+	},
+	{
+		"SCODE": "73950PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 9.1
+	},
+	{
+		"SCODE": "37230PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 51.3
+	},
+	{
+		"SCODE": "37230PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 206.0
+	},
+	{
+		"SCODE": "37230PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 10.8
+	},
+	{
+		"SCODE": "80100SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 14.5
+	},
+	{
+		"SCODE": "80100SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 230.0
+	},
+	{
+		"SCODE": "80100SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.4
+	},
+	{
+		"SCODE": "80100SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.1
+	},
+	{
+		"SCODE": "80100SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 33.1
+	},
+	{
+		"SCODE": "80100SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 23.0
+	},
+	{
+		"SCODE": "61050PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 99.0
+	},
+	{
+		"SCODE": "61050PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 239.0
+	},
+	{
+		"SCODE": "61050PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 10.4
+	},
+	{
+		"SCODE": "45200SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 12.6
+	},
+	{
+		"SCODE": "45200SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 291.0
+	},
+	{
+		"SCODE": "45200SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.2
+	},
+	{
+		"SCODE": "45200SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.5
+	},
+	{
+		"SCODE": "45200SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 41.2
+	},
+	{
+		"SCODE": "45200SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": -4.2
+	},
+	{
+		"SCODE": "45100WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 9.9
+	},
+	{
+		"SCODE": "45100WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 327.0
+	},
+	{
+		"SCODE": "45100WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.8
+	},
+	{
+		"SCODE": "45100WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.2
+	},
+	{
+		"SCODE": "45100WS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 44.7
+	},
+	{
+		"SCODE": "78480SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 11.0
+	},
+	{
+		"SCODE": "78480SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 126.0
+	},
+	{
+		"SCODE": "78480SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.5
+	},
+	{
+		"SCODE": "78480SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.6
+	},
+	{
+		"SCODE": "78480SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 77.0
+	},
+	{
+		"SCODE": "78480SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 25.9
+	},
+	{
+		"SCODE": "90000SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 11.6
+	},
+	{
+		"SCODE": "90000SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 135.0
+	},
+	{
+		"SCODE": "90000SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.1
+	},
+	{
+		"SCODE": "90000SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.8
+	},
+	{
+		"SCODE": "90000SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 77.8
+	},
+	{
+		"SCODE": "90000SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": -0.3
+	},
+	{
+		"SCODE": "82910PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 24.4
+	},
+	{
+		"SCODE": "82910PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 82.0
+	},
+	{
+		"SCODE": "82910PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 12.1
+	},
+	{
+		"SCODE": "24170WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 5.3
+	},
+	{
+		"SCODE": "24170WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 302.0
+	},
+	{
+		"SCODE": "24170WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.2
+	},
+	{
+		"SCODE": "24170WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.1
+	},
+	{
+		"SCODE": "24170WS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%"
+	},
+	{
+		"SCODE": "53200SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:20:00CEST",
+		"VALUE": 14.2
+	},
+	{
+		"SCODE": "53200SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:20:00CEST",
+		"VALUE": 35.0
+	},
+	{
+		"SCODE": "53200SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:20:00CEST",
+		"VALUE": 0.8
+	},
+	{
+		"SCODE": "53200SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:20:00CEST",
+		"VALUE": 2.7
+	},
+	{
+		"SCODE": "53200SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:20:00CEST",
+		"VALUE": 36.5
+	},
+	{
+		"SCODE": "53200SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:20:00CEST",
+		"VALUE": 46.2
+	},
+	{
+		"SCODE": "42830SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 11.2
+	},
+	{
+		"SCODE": "42830SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 229.0
+	},
+	{
+		"SCODE": "42830SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.3
+	},
+	{
+		"SCODE": "42830SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.5
+	},
+	{
+		"SCODE": "42830SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 61.5
+	},
+	{
+		"SCODE": "42830SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 93.6
+	},
+	{
+		"SCODE": "37100MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 24.9
+	},
+	{
+		"SCODE": "37100MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "37100MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 308.2
+	},
+	{
+		"SCODE": "37100MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.9
+	},
+	{
+		"SCODE": "37100MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.1
+	},
+	{
+		"SCODE": "37100MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 28.0
+	},
+	{
+		"SCODE": "37100MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1006.1
+	},
+	{
+		"SCODE": "37100MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 165.6
+	},
+	{
+		"SCODE": "37100MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 600.0
+	},
+	{
+		"SCODE": "85700MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 27.3
+	},
+	{
+		"SCODE": "85700MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "85700MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 186.9
+	},
+	{
+		"SCODE": "85700MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.9
+	},
+	{
+		"SCODE": "85700MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 7.0
+	},
+	{
+		"SCODE": "85700MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 46.6
+	},
+	{
+		"SCODE": "85700MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1009.9
+	},
+	{
+		"SCODE": "85700MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 69.4
+	},
+	{
+		"SCODE": "85700MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "59700MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 25.8
+	},
+	{
+		"SCODE": "59700MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "59700MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 22.4
+	},
+	{
+		"SCODE": "59700MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.0
+	},
+	{
+		"SCODE": "59700MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.6
+	},
+	{
+		"SCODE": "59700MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 24.7
+	},
+	{
+		"SCODE": "59700MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1008.4
+	},
+	{
+		"SCODE": "59700MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 189.4
+	},
+	{
+		"SCODE": "59700MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 598.0
+	},
+	{
+		"SCODE": "85120MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 19.1
+	},
+	{
+		"SCODE": "85120MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "85120MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 225.4
+	},
+	{
+		"SCODE": "85120MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.5
+	},
+	{
+		"SCODE": "85120MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 5.3
+	},
+	{
+		"SCODE": "85120MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 62.6
+	},
+	{
+		"SCODE": "85120MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.2
+	},
+	{
+		"SCODE": "85120MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 236.0
+	},
+	{
+		"SCODE": "85120MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 600.0
+	},
+	{
+		"SCODE": "83200MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 29.3
+	},
+	{
+		"SCODE": "83200MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:35:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "83200MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 205.6
+	},
+	{
+		"SCODE": "83200MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.3
+	},
+	{
+		"SCODE": "83200MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.3
+	},
+	{
+		"SCODE": "83200MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 39.5
+	},
+	{
+		"SCODE": "83200MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.3
+	},
+	{
+		"SCODE": "83200MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 188.9
+	},
+	{
+		"SCODE": "83200MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 600.0
+	},
+	{
+		"SCODE": "86900MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 28.0
+	},
+	{
+		"SCODE": "86900MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "86900MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 42.2
+	},
+	{
+		"SCODE": "86900MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.0
+	},
+	{
+		"SCODE": "86900MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 170.1
+	},
+	{
+		"SCODE": "86900MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 600.0
+	},
+	{
+		"SCODE": "39100MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 24.4
+	},
+	{
+		"SCODE": "39100MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "39100MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 264.7
+	},
+	{
+		"SCODE": "39100MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.9
+	},
+	{
+		"SCODE": "39100MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.7
+	},
+	{
+		"SCODE": "39100MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 35.3
+	},
+	{
+		"SCODE": "39100MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1008.5
+	},
+	{
+		"SCODE": "39100MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 36.9
+	},
+	{
+		"SCODE": "39100MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "08200MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 25.0
+	},
+	{
+		"SCODE": "08200MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "08200MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 90.1
+	},
+	{
+		"SCODE": "08200MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.9
+	},
+	{
+		"SCODE": "08200MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.3
+	},
+	{
+		"SCODE": "08200MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 35.7
+	},
+	{
+		"SCODE": "08200MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1009.0
+	},
+	{
+		"SCODE": "08200MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 112.7
+	},
+	{
+		"SCODE": "08200MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 481.0
+	},
+	{
+		"SCODE": "23200MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 26.6
+	},
+	{
+		"SCODE": "23200MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "23200MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 205.0
+	},
+	{
+		"SCODE": "23200MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.8
+	},
+	{
+		"SCODE": "23200MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.8
+	},
+	{
+		"SCODE": "23200MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 43.1
+	},
+	{
+		"SCODE": "23200MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1009.3
+	},
+	{
+		"SCODE": "23200MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 40.7
+	},
+	{
+		"SCODE": "23200MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "47400MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 19.1
+	},
+	{
+		"SCODE": "47400MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "47400MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 17.9
+	},
+	{
+		"SCODE": "47400MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.4
+	},
+	{
+		"SCODE": "47400MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.6
+	},
+	{
+		"SCODE": "47400MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 37.7
+	},
+	{
+		"SCODE": "47400MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1007.8
+	},
+	{
+		"SCODE": "47400MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 26.1
+	},
+	{
+		"SCODE": "47400MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "86600MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 28.1
+	},
+	{
+		"SCODE": "86600MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:35:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "86600MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 176.2
+	},
+	{
+		"SCODE": "86600MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.4
+	},
+	{
+		"SCODE": "86600MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 8.1
+	},
+	{
+		"SCODE": "86600MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 41.4
+	},
+	{
+		"SCODE": "86600MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1011.2
+	},
+	{
+		"SCODE": "86600MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 55.7
+	},
+	{
+		"SCODE": "86600MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "37700MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 23.5
+	},
+	{
+		"SCODE": "37700MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "37700MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 263.3
+	},
+	{
+		"SCODE": "37700MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.3
+	},
+	{
+		"SCODE": "37700MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.0
+	},
+	{
+		"SCODE": "37700MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 27.5
+	},
+	{
+		"SCODE": "37700MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1007.8
+	},
+	{
+		"SCODE": "74900MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 25.3
+	},
+	{
+		"SCODE": "74900MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "74900MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 184.4
+	},
+	{
+		"SCODE": "74900MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.3
+	},
+	{
+		"SCODE": "74900MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.6
+	},
+	{
+		"SCODE": "74900MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 42.8
+	},
+	{
+		"SCODE": "74900MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1008.2
+	},
+	{
+		"SCODE": "74900MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 40.9
+	},
+	{
+		"SCODE": "74900MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "20500MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 14.4
+	},
+	{
+		"SCODE": "20500MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "20500MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 260.8
+	},
+	{
+		"SCODE": "20500MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.7
+	},
+	{
+		"SCODE": "20500MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.0
+	},
+	{
+		"SCODE": "20500MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 39.5
+	},
+	{
+		"SCODE": "20500MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1013.3
+	},
+	{
+		"SCODE": "20500MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 31.0
+	},
+	{
+		"SCODE": "20500MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "19300MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 25.9
+	},
+	{
+		"SCODE": "19300MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T15:15:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "19300MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 96.7
+	},
+	{
+		"SCODE": "19300MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.4
+	},
+	{
+		"SCODE": "19300MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 5.1
+	},
+	{
+		"SCODE": "19300MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 35.3
+	},
+	{
+		"SCODE": "19300MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1009.8
+	},
+	{
+		"SCODE": "19300MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 45.8
+	},
+	{
+		"SCODE": "19300MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "80300MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 17.3
+	},
+	{
+		"SCODE": "80300MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "80300MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 45.6
+	},
+	{
+		"SCODE": "80300MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1012.3
+	},
+	{
+		"SCODE": "50500MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 16.7
+	},
+	{
+		"SCODE": "50500MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "50500MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 51.9
+	},
+	{
+		"SCODE": "50500MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.0
+	},
+	{
+		"SCODE": "50500MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 5.0
+	},
+	{
+		"SCODE": "50500MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 45.2
+	},
+	{
+		"SCODE": "50500MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1012.5
+	},
+	{
+		"SCODE": "50500MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 87.0
+	},
+	{
+		"SCODE": "50500MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "34500MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 20.9
+	},
+	{
+		"SCODE": "34500MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "34500MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 29.6
+	},
+	{
+		"SCODE": "34500MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1012.8
+	},
+	{
+		"SCODE": "56900MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 24.9
+	},
+	{
+		"SCODE": "56900MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "56900MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 340.2
+	},
+	{
+		"SCODE": "56900MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.5
+	},
+	{
+		"SCODE": "56900MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.3
+	},
+	{
+		"SCODE": "56900MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 26.8
+	},
+	{
+		"SCODE": "56900MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1006.0
+	},
+	{
+		"SCODE": "56900MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 29.8
+	},
+	{
+		"SCODE": "56900MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "54500MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 14.8
+	},
+	{
+		"SCODE": "54500MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "54500MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 149.4
+	},
+	{
+		"SCODE": "54500MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.2
+	},
+	{
+		"SCODE": "54500MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.4
+	},
+	{
+		"SCODE": "54500MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 56.7
+	},
+	{
+		"SCODE": "54500MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1012.7
+	},
+	{
+		"SCODE": "54500MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 48.0
+	},
+	{
+		"SCODE": "54500MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "69900MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 11.8
+	},
+	{
+		"SCODE": "69900MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 354.7
+	},
+	{
+		"SCODE": "69900MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.0
+	},
+	{
+		"SCODE": "69900MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.5
+	},
+	{
+		"SCODE": "69900MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 45.3
+	},
+	{
+		"SCODE": "69900MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 245.2
+	},
+	{
+		"SCODE": "69900MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 599.0
+	},
+	{
+		"SCODE": "09700MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 25.7
+	},
+	{
+		"SCODE": "09700MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "09700MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 67.5
+	},
+	{
+		"SCODE": "09700MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.1
+	},
+	{
+		"SCODE": "09700MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.7
+	},
+	{
+		"SCODE": "09700MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 35.7
+	},
+	{
+		"SCODE": "09700MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1008.0
+	},
+	{
+		"SCODE": "09700MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 106.9
+	},
+	{
+		"SCODE": "09700MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 546.0
+	},
+	{
+		"SCODE": "82200MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 21.2
+	},
+	{
+		"SCODE": "82200MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "82200MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 260.3
+	},
+	{
+		"SCODE": "82200MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.6
+	},
+	{
+		"SCODE": "82200MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.9
+	},
+	{
+		"SCODE": "82200MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 55.2
+	},
+	{
+		"SCODE": "82200MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.9
+	},
+	{
+		"SCODE": "82200MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 38.0
+	},
+	{
+		"SCODE": "82200MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "88820MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 26.2
+	},
+	{
+		"SCODE": "88820MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "88820MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 270.2
+	},
+	{
+		"SCODE": "88820MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 5.6
+	},
+	{
+		"SCODE": "88820MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.7
+	},
+	{
+		"SCODE": "88820MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 48.6
+	},
+	{
+		"SCODE": "88820MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1011.2
+	},
+	{
+		"SCODE": "88820MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 49.2
+	},
+	{
+		"SCODE": "88820MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "25900MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 21.0
+	},
+	{
+		"SCODE": "25900MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "25900MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 349.2
+	},
+	{
+		"SCODE": "25900MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.5
+	},
+	{
+		"SCODE": "25900MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.2
+	},
+	{
+		"SCODE": "25900MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 41.6
+	},
+	{
+		"SCODE": "25900MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.4
+	},
+	{
+		"SCODE": "25900MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 66.5
+	},
+	{
+		"SCODE": "25900MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "73500MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 13.4
+	},
+	{
+		"SCODE": "73500MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "73500MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 82.3
+	},
+	{
+		"SCODE": "73500MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1013.8
+	},
+	{
+		"SCODE": "68600MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 16.4
+	},
+	{
+		"SCODE": "68600MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "68600MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 339.5
+	},
+	{
+		"SCODE": "68600MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.3
+	},
+	{
+		"SCODE": "68600MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.5
+	},
+	{
+		"SCODE": "68600MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 45.8
+	},
+	{
+		"SCODE": "68600MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1011.2
+	},
+	{
+		"SCODE": "68600MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 37.7
+	},
+	{
+		"SCODE": "68600MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "02200MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 18.8
+	},
+	{
+		"SCODE": "02200MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "02200MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 291.8
+	},
+	{
+		"SCODE": "02200MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.1
+	},
+	{
+		"SCODE": "02200MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.3
+	},
+	{
+		"SCODE": "02200MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 28.8
+	},
+	{
+		"SCODE": "02200MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.5
+	},
+	{
+		"SCODE": "02200MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 40.0
+	},
+	{
+		"SCODE": "02200MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "03100MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 21.0
+	},
+	{
+		"SCODE": "03100MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "03100MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 293.4
+	},
+	{
+		"SCODE": "03100MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.5
+	},
+	{
+		"SCODE": "03100MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 5.5
+	},
+	{
+		"SCODE": "03100MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 25.8
+	},
+	{
+		"SCODE": "03100MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1009.8
+	},
+	{
+		"SCODE": "03100MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 37.7
+	},
+	{
+		"SCODE": "03100MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "41000MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 21.6
+	},
+	{
+		"SCODE": "41000MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "41000MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 134.0
+	},
+	{
+		"SCODE": "41000MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.1
+	},
+	{
+		"SCODE": "41000MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.6
+	},
+	{
+		"SCODE": "41000MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 44.4
+	},
+	{
+		"SCODE": "41000MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.3
+	},
+	{
+		"SCODE": "41000MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 175.7
+	},
+	{
+		"SCODE": "41000MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 591.0
+	},
+	{
+		"SCODE": "75600MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 24.0
+	},
+	{
+		"SCODE": "75600MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "75600MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 60.3
+	},
+	{
+		"SCODE": "75600MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.4
+	},
+	{
+		"SCODE": "75600MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.0
+	},
+	{
+		"SCODE": "75600MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 42.6
+	},
+	{
+		"SCODE": "75600MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1007.3
+	},
+	{
+		"SCODE": "75600MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 165.3
+	},
+	{
+		"SCODE": "75600MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 600.0
+	},
+	{
+		"SCODE": "62600MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 21.0
+	},
+	{
+		"SCODE": "62600MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "62600MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 243.4
+	},
+	{
+		"SCODE": "62600MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.8
+	},
+	{
+		"SCODE": "62600MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.7
+	},
+	{
+		"SCODE": "62600MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 38.2
+	},
+	{
+		"SCODE": "62600MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1008.6
+	},
+	{
+		"SCODE": "62600MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 163.8
+	},
+	{
+		"SCODE": "62600MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 403.0
+	},
+	{
+		"SCODE": "74200MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 13.5
+	},
+	{
+		"SCODE": "74200MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "74200MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 130.2
+	},
+	{
+		"SCODE": "74200MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.8
+	},
+	{
+		"SCODE": "74200MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.7
+	},
+	{
+		"SCODE": "74200MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 53.8
+	},
+	{
+		"SCODE": "74200MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 201.8
+	},
+	{
+		"SCODE": "74200MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 386.0
+	},
+	{
+		"SCODE": "11400MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 15.5
+	},
+	{
+		"SCODE": "11400MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "11400MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 187.6
+	},
+	{
+		"SCODE": "11400MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.7
+	},
+	{
+		"SCODE": "11400MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.7
+	},
+	{
+		"SCODE": "11400MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 41.5
+	},
+	{
+		"SCODE": "11400MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1014.1
+	},
+	{
+		"SCODE": "11400MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 50.0
+	},
+	{
+		"SCODE": "11400MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "02500MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 20.9
+	},
+	{
+		"SCODE": "02500MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "02500MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 22.4
+	},
+	{
+		"SCODE": "02500MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1008.9
+	},
+	{
+		"SCODE": "02500MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 22.8
+	},
+	{
+		"SCODE": "02500MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "33500MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 18.6
+	},
+	{
+		"SCODE": "33500MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "33500MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 83.0
+	},
+	{
+		"SCODE": "33500MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.2
+	},
+	{
+		"SCODE": "33500MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.6
+	},
+	{
+		"SCODE": "33500MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 39.0
+	},
+	{
+		"SCODE": "33500MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1011.0
+	},
+	{
+		"SCODE": "33500MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 32.4
+	},
+	{
+		"SCODE": "33500MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "44500MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 17.0
+	},
+	{
+		"SCODE": "44500MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "44500MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 18.4
+	},
+	{
+		"SCODE": "44500MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.2
+	},
+	{
+		"SCODE": "44500MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.8
+	},
+	{
+		"SCODE": "44500MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 42.3
+	},
+	{
+		"SCODE": "44500MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1015.3
+	},
+	{
+		"SCODE": "44500MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 30.1
+	},
+	{
+		"SCODE": "44500MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "06400MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 15.0
+	},
+	{
+		"SCODE": "06400MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "06400MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 32.7
+	},
+	{
+		"SCODE": "06400MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.4
+	},
+	{
+		"SCODE": "06400MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 71.9
+	},
+	{
+		"SCODE": "06400MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "65600MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 20.9
+	},
+	{
+		"SCODE": "65600MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "65600MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 345.2
+	},
+	{
+		"SCODE": "65600MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.4
+	},
+	{
+		"SCODE": "65600MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.2
+	},
+	{
+		"SCODE": "65600MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 29.6
+	},
+	{
+		"SCODE": "65600MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1009.8
+	},
+	{
+		"SCODE": "65600MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 88.3
+	},
+	{
+		"SCODE": "65600MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 600.0
+	},
+	{
+		"SCODE": "24400MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 15.4
+	},
+	{
+		"SCODE": "24400MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "24400MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 31.9
+	},
+	{
+		"SCODE": "24400MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.7
+	},
+	{
+		"SCODE": "24400MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 46.6
+	},
+	{
+		"SCODE": "24400MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "43200MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 24.3
+	},
+	{
+		"SCODE": "43200MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "43200MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 92.3
+	},
+	{
+		"SCODE": "43200MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.1
+	},
+	{
+		"SCODE": "43200MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.2
+	},
+	{
+		"SCODE": "43200MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 32.7
+	},
+	{
+		"SCODE": "43200MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1005.3
+	},
+	{
+		"SCODE": "43200MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 221.4
+	},
+	{
+		"SCODE": "43200MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 600.0
+	},
+	{
+		"SCODE": "78305MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 20.4
+	},
+	{
+		"SCODE": "78305MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "78305MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 44.9
+	},
+	{
+		"SCODE": "78305MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1006.9
+	},
+	{
+		"SCODE": "78305MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 46.4
+	},
+	{
+		"SCODE": "78305MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "56500MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 20.7
+	},
+	{
+		"SCODE": "56500MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "56500MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 41.6
+	},
+	{
+		"SCODE": "56500MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.1
+	},
+	{
+		"SCODE": "42700MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 19.4
+	},
+	{
+		"SCODE": "42700MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:35:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "42700MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 51.4
+	},
+	{
+		"SCODE": "42700MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1012.7
+	},
+	{
+		"SCODE": "15800MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 19.2
+	},
+	{
+		"SCODE": "15800MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "15800MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 29.8
+	},
+	{
+		"SCODE": "15800MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.1
+	},
+	{
+		"SCODE": "83450PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 166.0
+	},
+	{
+		"SCODE": "83450PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 218.0
+	},
+	{
+		"SCODE": "83450PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 11.9
+	},
+	{
+		"SCODE": "22950PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 39.8
+	},
+	{
+		"SCODE": "22950PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 87.0
+	},
+	{
+		"SCODE": "22950PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 12.8
+	},
+	{
+		"SCODE": "03750PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.43
+	},
+	{
+		"SCODE": "03750PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 52.0
+	},
+	{
+		"SCODE": "03750PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 11.7
+	},
+	{
+		"SCODE": "42850PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.27
+	},
+	{
+		"SCODE": "42850PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 37.0
+	},
+	{
+		"SCODE": "51450PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:00:00CEST",
+		"VALUE": 19.6
+	},
+	{
+		"SCODE": "51450PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:00:00CEST",
+		"VALUE": 126.1
+	},
+	{
+		"SCODE": "51450PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:00:00CEST",
+		"VALUE": 7.9
+	},
+	{
+		"SCODE": "20750PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 7.51
+	},
+	{
+		"SCODE": "20750PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 76.0
+	},
+	{
+		"SCODE": "20750PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.6
+	},
+	{
+		"SCODE": "26950PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 17.7
+	},
+	{
+		"SCODE": "26950PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 103.0
+	},
+	{
+		"SCODE": "26950PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 9.9
+	},
+	{
+		"SCODE": "91850PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.48
+	},
+	{
+		"SCODE": "91850PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 66.0
+	},
+	{
+		"SCODE": "89190MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 24.6
+	},
+	{
+		"SCODE": "89190MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:35:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "89190MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 201.2
+	},
+	{
+		"SCODE": "89190MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.6
+	},
+	{
+		"SCODE": "89190MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.4
+	},
+	{
+		"SCODE": "89190MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 51.5
+	},
+	{
+		"SCODE": "89190MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.1
+	},
+	{
+		"SCODE": "89190MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 47.3
+	},
+	{
+		"SCODE": "89190MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "22210MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 21.1
+	},
+	{
+		"SCODE": "22210MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "22210MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 32.7
+	},
+	{
+		"SCODE": "22210MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.8
+	},
+	{
+		"SCODE": "22210MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.4
+	},
+	{
+		"SCODE": "22210MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 56.2
+	},
+	{
+		"SCODE": "22210MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.0
+	},
+	{
+		"SCODE": "22210MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 43.9
+	},
+	{
+		"SCODE": "22210MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "15590SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 14.9
+	},
+	{
+		"SCODE": "15590SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 34.1
+	},
+	{
+		"SCODE": "15590SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm"
+	},
+	{
+		"SCODE": "35205SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 17.2
+	},
+	{
+		"SCODE": "35205SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 291.0
+	},
+	{
+		"SCODE": "35205SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.0
+	},
+	{
+		"SCODE": "35205SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.1
+	},
+	{
+		"SCODE": "35205SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 29.2
+	},
+	{
+		"SCODE": "35205SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.3
+	},
+	{
+		"SCODE": "01080SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 11.8
+	},
+	{
+		"SCODE": "01080SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 350.0
+	},
+	{
+		"SCODE": "01080SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.7
+	},
+	{
+		"SCODE": "01080SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.9
+	},
+	{
+		"SCODE": "01080SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 38.0
+	},
+	{
+		"SCODE": "01080SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 93.3
+	},
+	{
+		"SCODE": "20050SF",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 8.8
+	},
+	{
+		"SCODE": "20050SF",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 46.0
+	},
+	{
+		"SCODE": "20050SF",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 3.5
+	},
+	{
+		"SCODE": "20050SF",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.7
+	},
+	{
+		"SCODE": "20050SF",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 52.7
+	},
+	{
+		"SCODE": "20050SF",
+		"TYPE": "HS",
+		"DESC_D": "Schneehöhe",
+		"DESC_I": "Altezza neve al suolo",
+		"DESC_L": "Autëza dla nëif",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 65.3
+	},
+	{
+		"SCODE": "82910MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 22.6
+	},
+	{
+		"SCODE": "82910MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "82910MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 175.6
+	},
+	{
+		"SCODE": "82910MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1.2
+	},
+	{
+		"SCODE": "82910MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.7
+	},
+	{
+		"SCODE": "82910MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 54.0
+	},
+	{
+		"SCODE": "82910MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1011.5
+	},
+	{
+		"SCODE": "82910MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 187.5
+	},
+	{
+		"SCODE": "82910MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 600.0
+	},
+	{
+		"SCODE": "07740WS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 12.7
+	},
+	{
+		"SCODE": "07740WS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 283.0
+	},
+	{
+		"SCODE": "07740WS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.0
+	},
+	{
+		"SCODE": "07740WS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.4
+	},
+	{
+		"SCODE": "07740WS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 35.0
+	},
+	{
+		"SCODE": "08105GW",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C"
+	},
+	{
+		"SCODE": "08105GW",
+		"TYPE": "W.ABST",
+		"DESC_D": "Grundwasserstand",
+		"DESC_I": "Altezza freatimetrica ",
+		"DESC_L": "Livel dl''ega de sofonz",
+		"UNIT": "m"
+	},
+	{
+		"SCODE": "27100MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 29.3
+	},
+	{
+		"SCODE": "27100MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "27100MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 135.2
+	},
+	{
+		"SCODE": "27100MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.3
+	},
+	{
+		"SCODE": "27100MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 4.7
+	},
+	{
+		"SCODE": "27100MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 38.5
+	},
+	{
+		"SCODE": "27100MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1010.1
+	},
+	{
+		"SCODE": "27100MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 175.6
+	},
+	{
+		"SCODE": "27100MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 599.0
+	},
+	{
+		"SCODE": "65350MS",
+		"TYPE": "LT",
+		"DESC_D": "Lufttemperatur",
+		"DESC_I": "Temperatura dell´aria",
+		"DESC_L": "Temperatura dl’aria",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 27.7
+	},
+	{
+		"SCODE": "65350MS",
+		"TYPE": "N",
+		"DESC_D": "Niederschlag",
+		"DESC_I": "Precipitazioni",
+		"DESC_L": "plueia",
+		"UNIT": "mm",
+		"DATE": "2019-06-03T19:35:00CEST",
+		"VALUE": 0.0
+	},
+	{
+		"SCODE": "65350MS",
+		"TYPE": "WR",
+		"DESC_D": "Windrichtung",
+		"DESC_I": "Direzione del vento",
+		"DESC_L": "Direzion dl vënt",
+		"UNIT": "° ",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 232.4
+	},
+	{
+		"SCODE": "65350MS",
+		"TYPE": "WG",
+		"DESC_D": "Windgeschwindigkeit",
+		"DESC_I": "Velocità del vento",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 2.3
+	},
+	{
+		"SCODE": "65350MS",
+		"TYPE": "WG.BOE",
+		"DESC_D": "Windgeschwindigkeit Böe",
+		"DESC_I": "Velocitá raffica",
+		"DESC_L": "Slune dl vënt",
+		"UNIT": "m/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 6.5
+	},
+	{
+		"SCODE": "65350MS",
+		"TYPE": "LF",
+		"DESC_D": "relative Luftfeuchte",
+		"DESC_I": "Umidità relativa",
+		"DESC_L": "Tume relatif",
+		"UNIT": "%",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 18.8
+	},
+	{
+		"SCODE": "65350MS",
+		"TYPE": "LD.RED",
+		"DESC_D": "Luftdruck",
+		"DESC_I": "Pressione atmosferica",
+		"DESC_L": "Druch dl’aria",
+		"UNIT": "hPa",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 1007.1
+	},
+	{
+		"SCODE": "65350MS",
+		"TYPE": "GS",
+		"DESC_D": "Globalstrahlung",
+		"DESC_I": "Radiazione globale ",
+		"DESC_L": "Nraiazion globala ",
+		"UNIT": "W/m²",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 42.8
+	},
+	{
+		"SCODE": "65350MS",
+		"TYPE": "SD",
+		"DESC_D": "Sonnenscheindauer",
+		"DESC_I": "Durata soleggiamento",
+		"DESC_L": "Dureda dl surëdl",
+		"UNIT": "s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 567.0
+	},
+	{
+		"SCODE": "47150SE",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T13:00:00CEST",
+		"VALUE": 90.8
+	},
+	{
+		"SCODE": "47150SE",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T13:00:00CEST",
+		"VALUE": 10.4
+	},
+	{
+		"SCODE": "89155SE",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T16:00:00CEST",
+		"VALUE": 103.4
+	},
+	{
+		"SCODE": "89155SE",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T16:00:00CEST",
+		"VALUE": 19.6
+	},
+	{
+		"SCODE": "89355SE",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T16:00:00CEST",
+		"VALUE": 79.5
+	},
+	{
+		"SCODE": "89355SE",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T16:00:00CEST",
+		"VALUE": 21.3
+	},
+	{
+		"SCODE": "89055SE",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T10:00:00CEST",
+		"VALUE": 90.3
+	},
+	{
+		"SCODE": "89055SE",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T10:00:00CEST",
+		"VALUE": 20.0
+	},
+	{
+		"SCODE": "42150SE",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm"
+	},
+	{
+		"SCODE": "42150SE",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C"
+	},
+	{
+		"SCODE": "39050SE",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T15:00:00CEST",
+		"VALUE": 121.7
+	},
+	{
+		"SCODE": "39050SE",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T15:00:00CEST",
+		"VALUE": 18.4
+	},
+	{
+		"SCODE": "79450SE",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T15:00:00CEST",
+		"VALUE": 210.0
+	},
+	{
+		"SCODE": "79450SE",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T15:00:00CEST",
+		"VALUE": 15.7
+	},
+	{
+		"SCODE": "89950SE",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T11:00:00CEST",
+		"VALUE": 192.8
+	},
+	{
+		"SCODE": "89950SE",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T11:00:00CEST",
+		"VALUE": 17.9
+	},
+	{
+		"SCODE": "02250SE",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T12:00:00CEST",
+		"VALUE": 72.3
+	},
+	{
+		"SCODE": "02250SE",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T12:00:00CEST",
+		"VALUE": 12.4
+	},
+	{
+		"SCODE": "78150SE",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T13:00:00CEST",
+		"VALUE": 1388.3
+	},
+	{
+		"SCODE": "78150SE",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T13:00:00CEST",
+		"VALUE": 5.0
+	},
+	{
+		"SCODE": "89357PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:00:00CEST",
+		"VALUE": 0.469
+	},
+	{
+		"SCODE": "89357PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:00:00CEST",
+		"VALUE": 503.9
+	},
+	{
+		"SCODE": "89940PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 302.0
+	},
+	{
+		"SCODE": "89940PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 330.0
+	},
+	{
+		"SCODE": "89940PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 12.0
+	},
+	{
+		"SCODE": "89940GW",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:00:00CEST",
+		"VALUE": 12.5
+	},
+	{
+		"SCODE": "89940GW",
+		"TYPE": "W.ABST",
+		"DESC_D": "Grundwasserstand",
+		"DESC_I": "Altezza freatimetrica ",
+		"DESC_L": "Livel dl''ega de sofonz",
+		"UNIT": "m",
+		"DATE": "2019-06-03T19:00:00CEST",
+		"VALUE": 6.15
+	},
+	{
+		"SCODE": "08155PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 19.9
+	},
+	{
+		"SCODE": "08155PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:30:00CEST",
+		"VALUE": 108.0
+	},
+	{
+		"SCODE": "10750PG",
+		"TYPE": "Q",
+		"DESC_D": "Durchfluss",
+		"DESC_I": "Portata",
+		"DESC_L": "Ega passeda",
+		"UNIT": "m³/s",
+		"DATE": "2019-06-03T19:00:00CEST",
+		"VALUE": 2.63
+	},
+	{
+		"SCODE": "10750PG",
+		"TYPE": "W",
+		"DESC_D": "Wasserstand",
+		"DESC_I": "Livello idrometrico",
+		"DESC_L": "Livel dl’ega",
+		"UNIT": "cm",
+		"DATE": "2019-06-03T19:00:00CEST",
+		"VALUE": 57.1
+	},
+	{
+		"SCODE": "10750PG",
+		"TYPE": "WT",
+		"DESC_D": "Wassertemperatur",
+		"DESC_I": "Temperatura acqua",
+		"DESC_L": "Temperatura dl’ega",
+		"UNIT": "°C",
+		"DATE": "2019-06-03T19:00:00CEST",
+		"VALUE": 0.9
+	}
+]

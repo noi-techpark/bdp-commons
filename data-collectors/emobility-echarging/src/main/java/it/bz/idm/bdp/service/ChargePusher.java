@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
@@ -147,5 +148,10 @@ public class ChargePusher extends JSONPusher {
 
 	public List<DataTypeDto> getDataTypes(){
 		return EMOBILTYTYPES;
+	}
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null,env.getProperty("provenance.name"), env.getProperty("provenance.version"),env.getProperty(ORIGIN_KEY));
 	}
 }
