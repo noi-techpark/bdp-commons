@@ -41,6 +41,12 @@ public class JobScheduler {
             DataPusherHub pusherHub,
             ConnectorConfig config
     ) {
+        LOG.info("mqtt push pass:"+config.mqtt_publisher_password);
+        LOG.info("mqtt push user:"+config.mqtt_publisher_username);
+        LOG.info("mqtt push client:"+config.mqtt_publisher_clientid);
+        LOG.info("mqtt push port:"+config.mqtt_publisher_port);
+        LOG.info("mqtt push topic:"+config.mqtt_publisher_topic);
+        LOG.info("mqtt push uri:"+config.mqtt_publisher_uri);
         DataPusherAuge pusherAuge = new DataPusherAuge(AugeMqttConfiguration.buildMqttPublisherConfiguration(config));
         dataService = new DataService(retriever, pusherHub, pusherAuge);
     }

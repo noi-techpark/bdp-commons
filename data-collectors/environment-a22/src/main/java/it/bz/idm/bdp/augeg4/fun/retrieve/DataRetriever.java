@@ -43,4 +43,6 @@ public class DataRetriever implements DataRetrieverFace, ApplicationListener<Con
 		if (augeCallback==null)
 			augeCallback = augeSubscriber.listen(AugeMqttConfiguration.buildMqttSubscriberConfiguration(config));
 	}
+
+
 }
