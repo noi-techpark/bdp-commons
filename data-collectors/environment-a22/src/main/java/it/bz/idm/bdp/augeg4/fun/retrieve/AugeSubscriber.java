@@ -15,8 +15,10 @@ public class AugeSubscriber {
     MqttClient client;
 
     public static void main(String[] args) {
+        ConnectorConfig config = new ConnectorConfig();
+        config.mqtt_unit_test=true;
         new AugeSubscriber().listen(
-            AugeMqttConfiguration.buildMqttSubscriberConfiguration(new ConnectorConfig()));
+            AugeMqttConfiguration.buildMqttSubscriberConfiguration(config));
     }
 
     public AugeCallback listen(AugeMqttConfiguration mqttConfiguration) {

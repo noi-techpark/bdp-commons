@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConnectorConfig {
 
+    public boolean mqtt_unit_test=false;
+
     @Value("${mqtt.clean_session_flag}")
     public boolean mqtt_clean_session_flag=false;
 

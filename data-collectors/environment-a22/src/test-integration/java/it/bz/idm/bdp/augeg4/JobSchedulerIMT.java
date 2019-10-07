@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
  * Requires real Data Hub AND mqtt broker.
  */
 @ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml"})
-public class JobSchedulerIT extends AbstractJUnit4SpringContextTests {
+public class JobSchedulerIMT extends AbstractJUnit4SpringContextTests {
 
     @Autowired
     private JobScheduler scheduler;

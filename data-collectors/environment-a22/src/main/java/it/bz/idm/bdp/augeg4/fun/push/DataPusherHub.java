@@ -14,7 +14,7 @@ import it.bz.idm.bdp.augeg4.face.DataPusherHubFace;
 import it.bz.idm.bdp.augeg4.face.DataPusherMapperFace;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
-import it.bz.idm.bdp.dto.ProvenanceDto;
+//import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
@@ -53,6 +53,7 @@ public class DataPusherHub extends JSONPusher implements DataPusherHubFace {
             LOG.warn("pushData() rootMap.getBranch().keySet().isEmpty()");
         } else {
             // FIXME integreenTypology substitute with real value
+            LOG.debug("PUSH Typology: ["+this.integreenTypology+"]");
             super.pushData(this.integreenTypology, rootMap);
         }
     }
@@ -96,8 +97,8 @@ public class DataPusherHub extends JSONPusher implements DataPusherHubFace {
         return this.rootMap;
     }
 
-	@Override
-	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"),  env.getProperty("origin"));
-	}
+//	@Override
+//	public ProvenanceDto defineProvenance() {
+//		return new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"),  env.getProperty("origin"));
+//	}
 }

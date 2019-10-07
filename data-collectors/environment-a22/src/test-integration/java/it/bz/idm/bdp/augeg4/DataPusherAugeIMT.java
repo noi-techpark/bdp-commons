@@ -15,14 +15,16 @@ import it.bz.idm.bdp.augeg4.util.AugeMqttConfiguration;
 /**
  * Requires real Auge MQTT.
  */
-public class DataPusherAugeIOT {
+public class DataPusherAugeIMT {
 
     @Test
     public void test_push_data() {
         try {
         // given
         List<AugeG4ProcessedDataToAugeDto> content = mockedDataToSend();
-        DataPusherAuge dataPusherAuge = new DataPusherAuge(AugeMqttConfiguration.buildMqttPublisherConfiguration(new ConnectorConfig()));
+            ConnectorConfig config = new ConnectorConfig();
+            config.mqtt_unit_test=true;
+            DataPusherAuge dataPusherAuge = new DataPusherAuge(AugeMqttConfiguration.buildMqttPublisherConfiguration(config));
         // when
         dataPusherAuge.pushData(content);
     } catch (Exception e) {
