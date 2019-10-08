@@ -1,6 +1,5 @@
-package it.bz.idm.bdp.augeg4.integration;
+package it.bz.idm.bdp.augeg4;
 
-import it.bz.idm.bdp.augeg4.JobScheduler;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -10,7 +9,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
  * Requires real Data Hub AND mqtt broker.
  */
 @ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml"})
-public class JobSchedulerIOT extends AbstractJUnit4SpringContextTests {
+public class JobSchedulerIMT extends AbstractJUnit4SpringContextTests {
 
     @Autowired
     private JobScheduler scheduler;

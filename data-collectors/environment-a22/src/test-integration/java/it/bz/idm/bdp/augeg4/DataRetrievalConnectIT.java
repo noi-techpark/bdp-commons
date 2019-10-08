@@ -20,9 +20,11 @@ public class DataRetrievalConnectIT {
 
 	@Test
 	public void tests_fetch_data_retrieval_from_mqtt_after_one_minute() {
-		dr =  new DataRetriever(new ConnectorConfig());
+		ConnectorConfig config = new ConnectorConfig();
+		config.mqtt_unit_test=true;
+		dr =  new DataRetriever(config);
 		try {
-			Thread.sleep(30 * 1000 * 1);
+			Thread.sleep(5 * 1000 * 1);
 			List<AugeG4ElaboratedDataDto> data = dr.fetchData();
 			printReceived(data);
 			dr.stop();

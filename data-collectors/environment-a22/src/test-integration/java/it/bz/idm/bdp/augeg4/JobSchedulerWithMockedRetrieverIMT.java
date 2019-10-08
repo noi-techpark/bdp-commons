@@ -9,7 +9,7 @@ import it.bz.idm.bdp.augeg4.fun.push.DataPusherHub;
 import it.bz.idm.bdp.augeg4.mock.DataRetrieverMock;
 
 @ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml"})
-public class JobSchedulerWithMockedRetrieverIT extends AbstractJUnit4SpringContextTests {
+public class JobSchedulerWithMockedRetrieverIMT extends AbstractJUnit4SpringContextTests {
 
     @Autowired
     private DataPusherHub pusherHub;

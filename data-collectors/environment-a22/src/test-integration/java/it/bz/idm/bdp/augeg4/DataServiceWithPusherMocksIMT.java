@@ -10,19 +10,21 @@ import it.bz.idm.bdp.augeg4.fun.retrieve.DataRetriever;
 import it.bz.idm.bdp.augeg4.mock.DataPusherAugeMock;
 import it.bz.idm.bdp.augeg4.mock.DataPusherHubMockLog;
 
-public class DataServiceWithPusherMocksIOT {
+public class DataServiceWithPusherMocksIMT {
 
 
     private static final int PERIOD = 600;
 
     public static void main(String[] args) throws Exception {
-        new DataServiceWithPusherMocksIOT().test_data_pipeline_from_retrieval_with_pusher_mock();
+        new DataServiceWithPusherMocksIMT().test_data_pipeline_from_retrieval_with_pusher_mock();
     }
 
     @Test
     public void test_data_pipeline_from_retrieval_with_pusher_mock() throws Exception {
         // given
-        DataRetrieverFace retriever = new DataRetriever(new ConnectorConfig());
+        ConnectorConfig config = new ConnectorConfig();
+        config.mqtt_unit_test=true;
+        DataRetrieverFace retriever = new DataRetriever(config);
         DataPusherAugeFace pusherAuge = new DataPusherAugeMock();
         DataPusherHubFace pusherHub = new DataPusherHubMockLog(PERIOD);
         DataServiceFace dataService = new DataService(retriever, pusherHub, pusherAuge);
@@ -35,7 +37,9 @@ public class DataServiceWithPusherMocksIOT {
     @Test
     public void test_stations_pipeline_from_retrieval_with_pusher_mock() throws Exception {
         // given
-        DataRetrieverFace retriever = new DataRetriever(new ConnectorConfig());
+        ConnectorConfig config = new ConnectorConfig();
+        config.mqtt_unit_test=true;
+        DataRetrieverFace retriever = new DataRetriever(config);
         DataPusherAugeFace pusherAuge = new DataPusherAugeMock();
         DataPusherHubFace pusherHub = new DataPusherHubMockLog(PERIOD);
         DataServiceFace dataService = new DataService(retriever, pusherHub, pusherAuge);
@@ -48,7 +52,9 @@ public class DataServiceWithPusherMocksIOT {
     @Test
     public void test_datatypes_pipeline_from_retrieval_with_pusher_mock() throws Exception {
         // given
-        DataRetrieverFace retriever = new DataRetriever(new ConnectorConfig());
+        ConnectorConfig config = new ConnectorConfig();
+        config.mqtt_unit_test=true;
+        DataRetrieverFace retriever = new DataRetriever(config);
         DataPusherAugeFace pusherAuge = new DataPusherAugeMock();
         DataPusherHubFace pusherHub = new DataPusherHubMockLog(PERIOD);
         DataServiceFace dataService = new DataService(retriever, pusherHub, pusherAuge);

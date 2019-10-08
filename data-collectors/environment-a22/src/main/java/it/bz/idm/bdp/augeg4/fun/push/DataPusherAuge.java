@@ -22,10 +22,18 @@ public class DataPusherAuge implements DataPusherAugeFace {
 
     private static final Logger LOG = LogManager.getLogger(DataPusherAuge.class.getName());
 
+
     private AugeMqttConfiguration augeMqttConfiguration;
+
+    private MqttClient client;
 
     public DataPusherAuge(AugeMqttConfiguration augeMqttConfiguration) {
         this.augeMqttConfiguration = augeMqttConfiguration;
+        try {
+            client = AugeMqttClient.build(augeMqttConfiguration);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -35,10 +43,9 @@ public class DataPusherAuge implements DataPusherAugeFace {
 
         String content = jsonOf(list);
         try {
-            MqttClient client = AugeMqttClient.build(augeMqttConfiguration);
-            if (client.isConnected()) {
+            if (client != null && client.isConnected()) {
                 publish(topic, content, qos, client);
-                client.disconnect();
+                //client.disconnect();
             }
         } catch(MqttException me) {
             LOG.debug("reason "+me.getReasonCode());

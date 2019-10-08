@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.augeg4.integration;
+package it.bz.idm.bdp.augeg4;
 
 import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ProcessedDataToHubDto;
 import it.bz.idm.bdp.augeg4.face.DataPusherHubFace;
@@ -19,7 +19,7 @@ import java.util.List;
  * Requires real Data Hub.
  */
 @ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml"})
-public class DataPusherIOT extends AbstractJUnit4SpringContextTests {
+public class DataPusherIMT extends AbstractJUnit4SpringContextTests {
 
     @Autowired
     private DataPusherHubFace dataPusher;
