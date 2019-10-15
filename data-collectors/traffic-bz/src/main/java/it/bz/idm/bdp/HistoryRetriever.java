@@ -67,11 +67,14 @@ public class HistoryRetriever {
 				logger.debug("3rd party took" + (new Date().getTime()-now)/1000 +" s");
 
 				DataMapDto<RecordDtoImpl> dataMapDto = retrieveHistoricData.get(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER);
-				bdpClient.pushData(dataMapDto);
+				if (retrieveHistoricData.containsKey(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER))
+					bdpClient.pushData(dataMapDto);
 				logger.debug("traffic data sent");
-				bdpClient.pushData(TrafficPusher.METEOSTATION_IDENTIFIER,retrieveHistoricData.get(TrafficPusher.METEOSTATION_IDENTIFIER));
+				if (retrieveHistoricData.containsKey(TrafficPusher.METEOSTATION_IDENTIFIER))
+					bdpClient.pushData(TrafficPusher.METEOSTATION_IDENTIFIER,retrieveHistoricData.get(TrafficPusher.METEOSTATION_IDENTIFIER));
 				logger.debug("meteo data sent");
-				bdpClient.pushData(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER,retrieveHistoricData.get(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER));
+				if (retrieveHistoricData.containsKey(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER))
+					bdpClient.pushData(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER,retrieveHistoricData.get(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER));
 				logger.debug("environment data sent");
 				newestDateMidnight = LocalDateTime.ofInstant(Instant.ofEpochMilli(to.toGregorianCalendar().getTimeInMillis()),ZoneOffset.UTC);
 			}

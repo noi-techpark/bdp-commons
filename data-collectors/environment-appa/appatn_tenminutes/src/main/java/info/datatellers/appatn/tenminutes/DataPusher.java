@@ -3,14 +3,15 @@ package info.datatellers.appatn.tenminutes;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -21,11 +22,13 @@ import info.datatellers.appatn.helpers.APPADataFormatException;
 // import info.datatellers.appatn.helpers.CoordinateHelper;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.json.JSONPusher;
 
+@Component
 public class DataPusher extends JSONPusher {
 
 	private ResourceBundle rb = ResourceBundle.getBundle("config");
@@ -261,6 +264,11 @@ public class DataPusher extends JSONPusher {
 	public String initIntegreenTypology() {
 		rb = ResourceBundle.getBundle("config");
 		return rb.getString("odh.station.type");
+	}
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null, rb.getString("provenance.name"), rb.getString("provenance.version"), rb.getString("odh.station.origin"));
 	}
 
 }

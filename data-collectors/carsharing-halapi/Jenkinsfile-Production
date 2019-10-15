@@ -22,6 +22,8 @@ pipeline {
                 sh 'sed -i -e "s%\\(property.rootlevel\\s*=\\).*\\$%\\1INFO%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
 
                 sh 'cat "${CARSHARING_PROPS}" > ${PROJECT_FOLDER}/src/main/resources/app.properties'
+                sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/app.properties'''
+                sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/app.properties'''
             }
         }
 
@@ -31,7 +33,7 @@ pipeline {
             }
         }
 
-	    stage('Archive') {
+        stage('Archive') {
             steps {
                 sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
                 archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true

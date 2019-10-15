@@ -240,7 +240,8 @@ public class DataParser {
 		map.put(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER, trafficData);
 		map.put(TrafficPusher.METEOSTATION_IDENTIFIER, meteoData);
 		map.put(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER, environmentData);
-		for (int num : client.getStationIdentifiers()) {
+		List<Integer> stationIdentifiers = client.getStationIdentifiers();
+		for (int num : stationIdentifiers) {
 			List<XmlDataType> stationDataTypes = client.getStationDataTypes(num);
 			try {
 				List<cleanroadsdatatype.cleanroadswebservices.GetDataHistoricalResult.XmlRwData> historyData = client

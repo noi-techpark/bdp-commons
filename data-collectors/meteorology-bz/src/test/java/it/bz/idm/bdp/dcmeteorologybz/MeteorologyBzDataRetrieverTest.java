@@ -140,8 +140,8 @@ public class MeteorologyBzDataRetrieverTest extends AbstractJUnit4SpringContextT
                     checkEquals(11.20262D            , station.getLongitude()     , errs, "STATION_1: LONGITUDE is INCORRECT");
                     checkEquals(46.243333D           , station.getLatitude()      , errs, "STATION_1: LATITUDE is INCORRECT");
                     checkEquals(210D                 , station.getElevation()     , errs, "STATION_1: ELEVATION is INCORRECT");
-                    checkEquals("METEO_PAB"          , station.getOrigin()        , errs, "STATION_1: ORIGIN is INCORRECT");
-                    checkEquals("Meteostation"       , station.getStationType()   , errs, "STATION_1: STATION_TYPE is INCORRECT");
+                    checkEquals("SIAG"          , station.getOrigin()        , errs, "STATION_1: ORIGIN is INCORRECT");
+                    checkEquals("MeteoStation"       , station.getStationType()   , errs, "STATION_1: STATION_TYPE is INCORRECT");
                 }
             }
             if ( !station1Found ) {

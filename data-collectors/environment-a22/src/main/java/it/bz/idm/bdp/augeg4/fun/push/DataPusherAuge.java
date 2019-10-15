@@ -6,6 +6,8 @@ import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4ProcessedDataToAugeDto;
 import it.bz.idm.bdp.augeg4.face.DataPusherAugeFace;
 import it.bz.idm.bdp.augeg4.util.AugeMqttClient;
 import it.bz.idm.bdp.augeg4.util.AugeMqttConfiguration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -18,10 +20,21 @@ import java.util.TimeZone;
 
 public class DataPusherAuge implements DataPusherAugeFace {
 
+    private static final Logger LOG = LogManager.getLogger(DataPusherAuge.class.getName());
+
+
     private AugeMqttConfiguration augeMqttConfiguration;
+
+    private MqttClient client;
 
     public DataPusherAuge(AugeMqttConfiguration augeMqttConfiguration) {
         this.augeMqttConfiguration = augeMqttConfiguration;
+        try {
+            client = AugeMqttClient.build(augeMqttConfiguration);
+            LOG.info("Mqtt Auge connected.");
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -29,45 +42,51 @@ public class DataPusherAuge implements DataPusherAugeFace {
         String topic        = augeMqttConfiguration.getTopic();
         int qos             = 1;
 
-        String content = jsonOf(list);
         try {
-            MqttClient client = AugeMqttClient.build(augeMqttConfiguration);
-            if (client.isConnected()) {
-                publish(topic, content, qos, client);
-                client.disconnect();
+            if (client != null && client.isConnected()) {
+                for(AugeG4ProcessedDataToAugeDto augeDto: list) {
+                    String content = jsonOf(augeDto);
+                    LOG.debug(content);
+                    publish(topic, content, qos, client);
+                }
+            } else {
+                LOG.info("Can't push data: client not connected.");
             }
         } catch(MqttException me) {
-            System.out.println("reason "+me.getReasonCode());
-            System.out.println("msg "+me.getMessage());
-            System.out.println("loc "+me.getLocalizedMessage());
-            System.out.println("cause "+me.getCause());
-            System.out.println("excep "+me);
+            LOG.debug("reason "+me.getReasonCode());
+            LOG.debug("msg "+me.getMessage());
+            LOG.debug("loc "+me.getLocalizedMessage());
+            LOG.debug("cause "+me.getCause());
+            LOG.debug("excep "+me);
             me.printStackTrace();
         }
     }
 
-    private String jsonOf(List<AugeG4ProcessedDataToAugeDto> list) {
+    private String jsonOf(AugeG4ProcessedDataToAugeDto augeDto) {
         ObjectMapper mapper = new ObjectMapper();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Rome"));
         mapper.setDateFormat(dateFormat);
         String json = null;
+        if (augeDto== null) {
+            throw new IllegalArgumentException();
+        }
         try {
-            json = mapper.writeValueAsString(list);
+            json = mapper.writeValueAsString(augeDto);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return json;
     }
 
-    private void publish(String topic, String content, int qos, MqttClient client) throws MqttException {
-        System.out.println("Publishing message: "+content);
+    protected void publish(String topic, String content, int qos, MqttClient client) throws MqttException {
+        LOG.debug("Publishing message: "+content);
         MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(qos);
         client.publish(topic, message);
-        System.out.println("topic ["+topic+"]");
-        System.out.println("message ["+message+"]");
-        System.out.println("Message published");
+        LOG.debug("topic ["+topic+"]");
+        LOG.debug("message ["+message+"]");
+        LOG.debug("Message published");
     }
 
 

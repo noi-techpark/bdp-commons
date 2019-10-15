@@ -12,7 +12,7 @@ import it.bz.idm.bdp.dcparkingtn.dto.ParkingTnDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.util.LocationLookupUtil;
+import it.bz.idm.bdp.util.NominatimLocationLookupUtil;
 
 /**
  * Cronjob configuration can be found under src/main/resources/META-INF/spring/applicationContext.xml
@@ -29,7 +29,7 @@ public class ParkingTnJobScheduler {
     @Autowired
     private ParkingTnDataRetriever retrieval;
 
-	private LocationLookupUtil lookupUtil = new LocationLookupUtil();
+	private NominatimLocationLookupUtil lookupUtil = new NominatimLocationLookupUtil();
 
     /** JOB 1 */
     public void pushStations() throws Exception {

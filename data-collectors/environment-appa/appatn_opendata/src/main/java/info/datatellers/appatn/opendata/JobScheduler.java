@@ -1,11 +1,5 @@
 package info.datatellers.appatn.opendata;
 
-import info.datatellers.appatn.helpers.DateHelper;
-import it.bz.idm.bdp.dto.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
-
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -14,6 +8,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import info.datatellers.appatn.helpers.DateHelper;
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
 
 /**
  * @author Nicolò Molinari, Datatellers.
@@ -25,19 +31,22 @@ public class JobScheduler {
     private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
     static double numberOfRecords = 0;
     static double numberOfInvalidRecord = 0;
+    
+    @Autowired
+	private DataPusher dataPusher;
 
     @SuppressWarnings("Duplicates")
     public void pushData()
     {
         LOG.info("Starting Data Collector execution...");
         DataMapDto<RecordDtoImpl> rootMap = constructRootMap();
-        String fromDate = String.valueOf(new DataPusher().getDateOfLastRecord(rb.getString("odh.station.origin")+DataPusher.SEPARATOR+"2","co2",3600));
-        String toDate = String.valueOf(new DataPusher().getLastRetrievedDate());
+		String fromDate = String.valueOf(dataPusher.getDateOfLastRecord(rb.getString("odh.station.origin")+DataPusher.SEPARATOR+"2","co2",3600));
+        String toDate = String.valueOf(dataPusher.getLastRetrievedDate());
         if (fromDate.contains("1970"))
         {
             //Database doesn't contain data. Historic function calling from 2017-01-01 to last retrieving date (yesterday).
             LOG.info("Historic function called.");
-            new DataPusher().mapData(rootMap, rb.getString("odh.scheduler.historic.from"), toDate, false);
+            dataPusher.mapData(rootMap, rb.getString("odh.scheduler.historic.from"), toDate, false);
             LOG.info("Historic function execution terminated.");
         }else{
             //Database contains data. Historic function calling from last date of entry in database to yesterday
@@ -47,7 +56,7 @@ public class JobScheduler {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 if (simpleDateFormat.parse(new DateHelper().formatDate(fromDate)).compareTo(simpleDateFormat.parse(toDate)) <= 0)
                 {
-                    new DataPusher().mapData(rootMap, new DateHelper().formatDate(fromDate), toDate, false);
+                	dataPusher.mapData(rootMap, new DateHelper().formatDate(fromDate), toDate, false);
                 }
             } catch (ParseException e) {
                 LOG.error("Unrecognized date format.");
@@ -63,14 +72,13 @@ public class JobScheduler {
      * See Tester class for documentation.
      */
     @SuppressWarnings("Duplicates")
-    private static DataMapDto<RecordDtoImpl> constructRootMap() {
+    private DataMapDto<RecordDtoImpl> constructRootMap() {
         LOG.info("Starting to construct rootMap.");
-        DataPusher pusher = new DataPusher();
-        StationList stationList = pusher.mapStations();
+        StationList stationList = dataPusher.mapStations();
         String pollutersRaw;
 
         DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
-        HashMap<String, DataTypeDto> sensorsMap = pusher.mapTypes();
+        HashMap<String, DataTypeDto> sensorsMap = dataPusher.mapTypes();
         for (StationDto station : stationList)
         {
             DataMapDto<RecordDtoImpl> stationMap = map.upsertBranch(station.getId());

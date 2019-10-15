@@ -36,11 +36,11 @@ This will run only slow integration test suitable for integration env.
 
 ## Run manual test
 
-Inside integration test folder there are IOT tests, that have to be launched manually if/when needed.
+Inside integration test folder there are IMT tests, that have to be launched manually if/when needed.
 Those tests are slow, have a required environment context and usually they change the context,
 e.g. consuming mqtt messages or  writing on webservices.
 
-## Run locally
+## Run locally on port 9999
 
        mvn jetty:run
 

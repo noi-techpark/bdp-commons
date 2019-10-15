@@ -75,13 +75,15 @@ class StationsDelegate {
 
 
     void prepareStationsForHub(List<AugeG4ProcessedDataToHubDto> data) {
-        LOG.info("prepareStationsForHub() called");
+        LOG.info("prepareStationsForHub() called. Try to insert a new station if new. Size ["+data.size()+"]");
         data.forEach(this::insertStationFromConvertedData);
     }
 
 
     private void insertStationFromConvertedData(AugeG4ProcessedDataToHubDto dto) {
         StationId id = dto.getStationId();
+        LOG.debug("insertStationFromConvertedData stationsMap size ["+stationsMap.size()+"]");
+        LOG.debug("insertStationFromConvertedData id ["+id.toString()+"]");
         if (!stationsMap.containsKey(id)) {
             insertStationFromConvertedData(dto, id);
         }
@@ -89,18 +91,21 @@ class StationsDelegate {
 
 
     private void insertStationFromConvertedData(AugeG4ProcessedDataToHubDto dto, StationId id) {
+        LOG.debug("insertStationFromConvertedData dto ["+dto.toString()+"] id ["+id.toString()+"]");
         Optional<StationDto> station = createStationDtoFromConvertedData(dto);
         station.ifPresent(stationDto -> stationsMap.put(id, stationDto));
     }
 
 
     private Optional<StationDto> createStationDtoFromConvertedData(AugeG4ProcessedDataToHubDto dto) {
+        LOG.debug("createStationDtoFromConvertedData dto ["+dto.toString()+"] ");
         return stationMappings.getMapping(dto.getStationId().getControlUnitId())
                 .map(mapping -> mapStationMappingToStationDto(dto, mapping));
     }
 
 
     private StationDto mapStationMappingToStationDto(AugeG4ProcessedDataToHubDto dto, StationMapping stationMapping) {
+        LOG.debug("mapStationMappingToStationDto dto ["+dto.toString()+"] ");
         StationDto station = new StationDto(
                 dto.getStationId().getValue(),
                 stationMapping.getName(),
@@ -109,6 +114,7 @@ class StationsDelegate {
         );
         station.setOrigin(dataService.getDataPusherHub().getOrigin());
         station.setStationType(dataService.getDataPusherHub().getStationType());
+        LOG.debug("mapStationMappingToStationDto station ["+station.toString()+"] ");
         return station;
     }
 

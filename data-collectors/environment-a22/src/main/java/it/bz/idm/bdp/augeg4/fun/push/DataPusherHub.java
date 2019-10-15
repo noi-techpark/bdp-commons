@@ -1,16 +1,20 @@
 package it.bz.idm.bdp.augeg4.fun.push;
 
+import java.util.List;
+
+import it.bz.idm.bdp.dto.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
+
 import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ProcessedDataToHubDto;
 import it.bz.idm.bdp.augeg4.face.DataPusherHubFace;
 import it.bz.idm.bdp.augeg4.face.DataPusherMapperFace;
-import it.bz.idm.bdp.dto.*;
+//import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.json.JSONPusher;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class DataPusherHub extends JSONPusher implements DataPusherHubFace {
@@ -24,6 +28,9 @@ public class DataPusherHub extends JSONPusher implements DataPusherHubFace {
     private final DataPusherMapperFace mapper;
 
     private DataMapDto<RecordDtoImpl> rootMap;
+
+    @Autowired
+    private Environment env;
 
     public DataPusherHub(@Value("${station.period}") int period) {
         mapper = new DataPusherMapper(period);
@@ -42,6 +49,7 @@ public class DataPusherHub extends JSONPusher implements DataPusherHubFace {
             LOG.warn("pushData() rootMap.getBranch().keySet().isEmpty()");
         } else {
             // FIXME integreenTypology substitute with real value
+            LOG.debug("PUSH Typology: ["+this.integreenTypology+"]");
             super.pushData(this.integreenTypology, rootMap);
         }
     }
@@ -84,4 +92,9 @@ public class DataPusherHub extends JSONPusher implements DataPusherHubFace {
     protected DataMapDto<RecordDtoImpl>  getRootMap() {
         return this.rootMap;
     }
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"),  env.getProperty("origin"));
+	}
 }

@@ -1,16 +1,17 @@
 package info.datatellers.appatn.tenminutes;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Date;
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonArray;
@@ -29,6 +30,9 @@ import it.bz.idm.bdp.dto.StationList;
 public class JobScheduler {
 
 	private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
+	
+	@Autowired
+	private DataPusher pusher;
 
 	public void collectData() {
 		try {
@@ -39,10 +43,9 @@ public class JobScheduler {
 	}
 
 	@SuppressWarnings("Duplicates")
-	public static void pushData() throws Exception {
+	public void pushData() throws Exception {
 
 		DataMapDto<RecordDtoImpl> rootMap;
-		DataPusher pusher = new DataPusher();
 
 		ResourceBundle rb = ResourceBundle.getBundle("config");
 
@@ -116,9 +119,8 @@ public class JobScheduler {
 	}
 
 	@SuppressWarnings("Duplicates")
-	private static DataMapDto<RecordDtoImpl> constructRootMap() {
+	private DataMapDto<RecordDtoImpl> constructRootMap() {
 		ResourceBundle rb = ResourceBundle.getBundle("config");
-		DataPusher pusher = new DataPusher();
 		DataFetcher fetcher = new DataFetcher();
 		JsonElement station;
 

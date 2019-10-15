@@ -3,16 +3,22 @@ package it.bz.idm.bdp.augeg4.fun.retrieve;
 import it.bz.idm.bdp.augeg4.ConnectorConfig;
 import it.bz.idm.bdp.augeg4.util.AugeMqttClient;
 import it.bz.idm.bdp.augeg4.util.AugeMqttConfiguration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class AugeSubscriber {
 
+    private static final Logger LOG = LogManager.getLogger(AugeSubscriber.class.getName());
+
     MqttClient client;
 
     public static void main(String[] args) {
+        ConnectorConfig config = new ConnectorConfig();
+        config.mqtt_unit_test=true;
         new AugeSubscriber().listen(
-            AugeMqttConfiguration.buildMqttSubscriberConfiguration(new ConnectorConfig()));
+            AugeMqttConfiguration.buildMqttSubscriberConfiguration(config));
     }
 
     public AugeCallback listen(AugeMqttConfiguration mqttConfiguration) {
@@ -21,7 +27,7 @@ public class AugeSubscriber {
             callback = new AugeCallback();
             client = AugeMqttClient.build(mqttConfiguration, callback);
             if (client.isConnected()) {
-                System.out.println("subscribe...:");
+                LOG.debug("subscribe...:");
                 /*
                 Quality:
                     At most once (0)
@@ -30,7 +36,7 @@ public class AugeSubscriber {
                  */
                 int quality = 1;
                 client.subscribe(mqttConfiguration.getTopic(), quality);
-                System.out.println("listening...");
+                LOG.debug("listening...");
             }
         } catch (MqttException e) {
             e.printStackTrace();

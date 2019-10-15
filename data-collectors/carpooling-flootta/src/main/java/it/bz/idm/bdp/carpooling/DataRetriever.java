@@ -8,8 +8,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
@@ -77,7 +79,7 @@ public class DataRetriever {
 				if (hubExpires.after(new Date())){
 					StationDto dto = new StationDto();
 					dto.setId(CARPOOLING_NAMESPACE+hub.getId().toString());
-					dto.setName(hub.getName());
+					dto.setName(hub.getNameDe());
 					Double parsedLon, parsedLat;
 					parsedLon = hub.getLongitude();
 					parsedLat = hub.getLatitude();
@@ -85,8 +87,30 @@ public class DataRetriever {
 					dto.setLatitude(parsedLat);
 					dto.setStationType("CarpoolingHub");
 					dto.setOrigin(DATA_ORIGIN);
-					dto.getMetaData().put("address", hub.getAddress());
-					dto.getMetaData().put("city", hub.getCity());
+
+					HashMap<String, Object> addressMap = new HashMap<String, Object>(), cityMap = new HashMap<String, Object>(), nameMap = new HashMap<String, Object>();
+					addressMap.computeIfAbsent("de", val -> hub.getAddressDe());
+					addressMap.computeIfAbsent("it", val -> hub.getAddressIt());
+					addressMap.computeIfAbsent("en", val -> hub.getAddressIt());
+					cityMap.computeIfAbsent("de", val -> hub.getCityDe());
+					cityMap.computeIfAbsent("it", val -> hub.getCityIt());
+					cityMap.computeIfAbsent("en", val -> hub.getCityIt());
+					nameMap.computeIfAbsent("de", val -> hub.getNameDe());
+					nameMap.computeIfAbsent("it", val -> hub.getNameIt());
+					nameMap.computeIfAbsent("en", val -> hub.getNameIt());
+					if (!addressMap.isEmpty())
+						dto.getMetaData().put("address", addressMap);
+					if (!cityMap.isEmpty())
+						dto.getMetaData().put("city", cityMap);
+					if (!nameMap.isEmpty())
+						dto.getMetaData().put("hubName", nameMap);
+
+					if (!hub.getAdditionalProperties().isEmpty())
+						dto.getMetaData().put("more", hub.getAdditionalProperties());
+					dto.getMetaData().computeIfAbsent("cap", val -> hub.getCap());
+					dto.getMetaData().computeIfAbsent("country", val -> hub.getCountry());
+					dto.getMetaData().computeIfAbsent("isEvent", val -> hub.getIsEvent());
+					dto.getMetaData().computeIfAbsent("numberOfUsers", val -> hub.getUsers());
 					dtos.add(dto);
 				}
 			}
@@ -105,7 +129,7 @@ public class DataRetriever {
 			dtos = new StationList();
 			for (User user: response.getUser()){
 				Date userExpires = dateFormatter.parse(user.getUserAvailability());
-				if (user.getUserPendular().equals("true") || userExpires.after(new Date())){
+				if (user.getUserPendular().equals("True") || userExpires.after(new Date())){
 					StationDto dto = new StationDto();
 					dto.setId(CARPOOLING_NAMESPACE + user.getId().toString());
 					dto.setOrigin(DATA_ORIGIN);
@@ -117,12 +141,15 @@ public class DataRetriever {
 					dto.getMetaData().put("arrival",user.getTripArrival());
 					dto.getMetaData().put("departure",user.getTripDeparture());
 					dto.getMetaData().put("tripFrom",user.getTripFrom());
-					dto.getMetaData().put("tripToName",user.getTripToName());
+					Map<String,String> tripToMap = new HashMap<String, String>();
+					tripToMap.put("it", user.getTripToName());
+					tripToMap.put("en", user.getTripToName());
+					tripToMap.put("de", user.getTripToNameDe());
+					dto.getMetaData().put("tripToName",tripToMap);
 					dto.getMetaData().put("added",user.getAdded());
 					dto.getMetaData().put("additionalProperties",user.getAdditionalProperties());
 					dto.getMetaData().put("userAvailability",user.getUserAvailability());
 					dto.getMetaData().put("userRating",format.parse(user.getUserRating()));
-					dto.getMetaData().put("tripToName",user.getTripToName());
 					dto.setStationType("CarpoolingUser");
 					dto.setLongitude(user.getTripLongitude());
 					dto.setLatitude(user.getTripLatitude());
@@ -185,6 +212,7 @@ public class DataRetriever {
 	public StationList generateOriginStation() {
 		return new StationList() {{
 			StationDto dto =new StationDto(CARPOOLING_NAMESPACE + "innovie", "Car pooling Innovie", null, null);
+			dto.setStationType("CarpoolingService");
 			dto.setOrigin("FLOOTA");
 			add(dto);
 			}};

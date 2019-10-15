@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.carpooling.dto.generated.JServices;
 import it.bz.idm.bdp.carpooling.dto.generated.Stats;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.json.JSONPusher;
@@ -20,6 +24,13 @@ public class CarpoolingPusher extends JSONPusher {
 	private static final Integer DEFAULT_PERIOD = 3600;
 	private static final String INNOVIE_STATION_IDENTIFIER = "carpooling:innovie";
 
+	@Value("${provenance.name}")
+	private String provenanceName;
+	@Value("${provenance.version}")
+	private String provenanceVersion;
+	@Value("${data.origin}")
+	private String origin;
+	
 	private static DataTypeDto co2 		= new DataTypeDto("avoided-co2","kg","avoided carbon dioxide consumption","Instantaneous"),
 			registeredUsers = new DataTypeDto("carpooling-users",null,"number of registered users in the carpooling system","Instantaneous"),
 			confirmedTrips  = new DataTypeDto("carpooling-trips",null,"Number of car pooling trips","Instantaneous"),
@@ -68,6 +79,11 @@ public class CarpoolingPusher extends JSONPusher {
 		dataMap.getBranch().put(INNOVIE_STATION_IDENTIFIER, typeMap);
 
 		return dataMap;
+	}
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null, provenanceName,provenanceVersion, origin);
 	}
 
 }
