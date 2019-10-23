@@ -1,6 +1,7 @@
 --CALL DATE: 2019-10-23 11:50:35
 
 Bike           Parking Name                    Latitude           Longitude          Loc Kind         Mainten  Avail    AvailFrom             AvailUntil            Durat  
+-------------  ------------------------------  -----------------  -----------------  ---------------  -------  -------  --------------------  --------------------  -------
                Bahnhof Untermais_Stazione Mai  46.6562883693751   11.1484115141975                  
                Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644                  
 60- 825813160  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-11-23_01-09-14                                
