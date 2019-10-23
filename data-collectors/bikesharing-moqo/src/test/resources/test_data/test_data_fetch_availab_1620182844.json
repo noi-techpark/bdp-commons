@@ -1,0 +1,22 @@
+{
+	"availability_slots": [
+		{
+			"available": false,
+			"from": "2019-10-23T08:09:28+02:00",
+			"until": "2019-10-23T10:45:00+02:00",
+			"duration": 9332,
+			"driver": {
+				"first_name": null,
+				"last_name": null,
+				"team": "Service Team"
+			}
+		},
+		{
+			"available": true,
+			"from": "2019-10-23T10:45:00+02:00",
+			"until": null,
+			"duration": null,
+			"driver": null
+		}
+	]
+}

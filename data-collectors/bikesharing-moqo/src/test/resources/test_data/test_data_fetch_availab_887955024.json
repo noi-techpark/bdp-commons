@@ -1,0 +1,11 @@
+{
+	"availability_slots": [
+		{
+			"available": true,
+			"from": "2019-10-23T09:31:29+02:00",
+			"until": null,
+			"duration": null,
+			"driver": null
+		}
+	]
+}
