@@ -68,6 +68,12 @@ public class BikesharingMoqoDataRetrieverIT extends AbstractJUnit4SpringContextT
                         "  "+DCUtils.rpad("Mainten",7,' ')+"  "+DCUtils.rpad("Avail",7,' ')+
                         "  "+DCUtils.rpad("AvailFrom",20,' ')+"  "+DCUtils.rpad("AvailUntil",20,' ')+"  "+DCUtils.rpad("Durat",7,' ')+
                         "");
+                System.out.println(
+                        DCUtils.rpad("-",13,'-')+"  "+DCUtils.rpad("-",30,'-')+
+                        "  "+DCUtils.rpad("-",17,'-')+"  "+DCUtils.rpad("-",17,'-')+"  "+DCUtils.rpad("-",15,'-')+
+                        "  "+DCUtils.rpad("-", 7,'-')+"  "+DCUtils.rpad("-", 7,'-')+
+                        "  "+DCUtils.rpad("-",20,'-')+"  "+DCUtils.rpad("-",20,'-')+"  "+DCUtils.rpad("-", 7,'-')+
+                        "");
                 Map<String, LocationDto> m = moqoDto.getLocationMap();
                 for (String n : m.keySet()) {
                     LocationDto l = m.get(n);
@@ -85,7 +91,7 @@ public class BikesharingMoqoDataRetrieverIT extends AbstractJUnit4SpringContextT
                                     DCUtils.lpad(b.getLicense(),2,' ')+"-"+DCUtils.lpad(b.getId(),10,' ')+"  "+DCUtils.rpad(l.getName(),30,' ')+
                                     "  "+DCUtils.rpad(bl.getLatitude(),17,' ')+"  "+DCUtils.rpad(bl.getLongitude(),17,' ')+"  "+DCUtils.rpad(bl.getKind(),15,' ')+
                                     "  "+DCUtils.rpad(b.getInMaintenance(),7,' ')+"  "+DCUtils.rpad(b.getAvailable(),7,' ')+
-                                    "  "+DCUtils.rpad(DCUtils.convertDateToString(b.getAvailableFrom()),20,' ')+"  "+DCUtils.rpad(DCUtils.convertDateToString(b.getAvailableUntil()),20,' ')+"  "+DCUtils.rpad(b.getAvailableDuration(),7,' ')+
+                                    "  "+DCUtils.rpad(DCUtils.convertDateToString(b.getAvailableFrom(),"yyyy-MM-dd_HH:mm:ss"),20,' ')+"  "+DCUtils.rpad(DCUtils.convertDateToString(b.getAvailableUntil(),"yyyy-MM-dd_HH:mm:ss"),20,' ')+"  "+DCUtils.rpad(b.getAvailableDuration(),7,' ')+
                                     ""
                                     );
                         }

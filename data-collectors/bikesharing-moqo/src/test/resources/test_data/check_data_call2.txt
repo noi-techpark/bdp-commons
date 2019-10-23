@@ -1,0 +1,67 @@
+--CALL DATE: 2019-10-23 14:15:13
+Bike           Parking Name                    Latitude           Longitude          Loc Kind         Mainten  Avail    AvailFrom             AvailUntil            Durat  
+-------------  ------------------------------  -----------------  -----------------  ---------------  -------  -------  --------------------  --------------------  -------
+               Bahnhof Untermais_Stazione Mai  46.6562883693751   11.1484115141975                  
+               Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644                  
+60- 825813160  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-11-23_01:09:14                                
+59- 887955024  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:55:02                                
+58-  77694183  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:14:58                                
+57-1359037427  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:14:58                                
+56-1886942532  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+55- 864868739  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+54-1610831303  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+53-1021591541  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_18:30:00                                
+52-2127216321  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+51-2069269466  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:14:59                                
+50-1620182844  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:36:08                                
+49-1041071595  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:36:08                                
+47-1601645294  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:51:38                                
+45- 358209492  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:15:01                                
+44- 367229908  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:56:17                                
+43-  43814071  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:44:57                                
+42-1859289626  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:44:57                                
+41- 743374378  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:44:57                                
+40- 153499966  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-11-22_08:19:02                                
+39-1516382296  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+38-   9584424  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+37-1631287731  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-11-22_22:55:14                                
+36- 627756204  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-11-22_23:24:44                                
+35- 194765756  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:44:57                                
+34-1683478213  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+33- 751956172  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+32-1804321953  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:15:05                                
+31-2146287732  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:15:05                                
+30- 274511459  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_15:45:00                                
+28- 251752694  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+27- 413504599  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+26- 752372352  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:15:07                                
+24-1048632756  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+23-1112277873  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+22- 898683578  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+20-1302357886  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:15:09                                
+19- 919816254  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+18- 385407687  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+17-1406153788  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+16- 305755006  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:15:10                                
+13-1281821998  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+12-1207849776  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+11- 119860741  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+10- 882548390  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:15:12                                
+ 9- 174456788  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+ 8- 393520761  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+ 5-1524760848  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:15:13                                
+ 3- 734332577  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    false    2019-10-23_14:15:13                                
+ 2-1128009659  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+ 1-1891943972  Meran Bahnhof_Stazione Merano   46.6724745760751   11.1500811721644   expected_pickup  false    true                                                        
+               Sandplatz_Piazza Rena           46.6701322102183   11.1651819301242                  
+48-1711801370  Sandplatz_Piazza Rena           46.6701322102183   11.1651819301242   expected_pickup  false    false    2019-11-22_23:24:42                                
+21-2043505637  Sandplatz_Piazza Rena           46.6701322102183   11.1651819301242   expected_pickup  false    true                                                        
+15-2056667079  Sandplatz_Piazza Rena           46.6701322102183   11.1651819301242   expected_pickup  false    false    2019-10-23_14:15:10                                
+14-2070070248  Sandplatz_Piazza Rena           46.6701322102183   11.1651819301242   expected_pickup  false    false    2019-10-23_14:15:10                                
+               Kornplatz_Piazza del Grano      46.6725259496189   11.1591598904964                  
+46-1108091915  Kornplatz_Piazza del Grano      46.6725259496189   11.1591598904964   expected_pickup  false    false    2019-10-23_14:51:38                                
+29-1851966409  Kornplatz_Piazza del Grano      46.6725259496189   11.1591598904964   expected_pickup  false    true                                                        
+25-2090974598  Kornplatz_Piazza del Grano      46.6725259496189   11.1591598904964   expected_pickup  false    false    2019-10-23_14:15:07                                
+ 7-2053521138  Kornplatz_Piazza del Grano      46.6725259496189   11.1591598904964   expected_pickup  false    true                                                        
+ 6-1063205539  Kornplatz_Piazza del Grano      46.6725259496189   11.1591598904964   expected_pickup  false    true                                                        
+ 4-1549688608  Kornplatz_Piazza del Grano      46.6725259496189   11.1591598904964   expected_pickup  false    false    2019-10-23_14:15:13                                
