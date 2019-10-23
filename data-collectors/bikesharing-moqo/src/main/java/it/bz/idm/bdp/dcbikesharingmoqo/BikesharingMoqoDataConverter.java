@@ -1,5 +1,7 @@
 package it.bz.idm.bdp.dcbikesharingmoqo;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import it.bz.idm.bdp.dcbikesharingmoqo.dto.AvailabilityDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikeDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikesharingMoqoPageDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.LocationDto;
@@ -252,8 +255,8 @@ public class BikesharingMoqoDataConverter {
             String bigImageUrl    = DCUtils.allowNulls(DCUtils.getJsonObjectValue( carObject, "image.url"            ));
             String medImageUrl    = DCUtils.allowNulls(DCUtils.getJsonObjectValue( carObject, "image.medium_url"     ));
             String tmbImageUrl    = DCUtils.allowNulls(DCUtils.getJsonObjectValue( carObject, "image.thumb_url"      ));
-            String inMaintenance  = DCUtils.allowNulls(DCUtils.getJsonBooleanValue(carObject, "in_maintenance"       ));
-            String available      = DCUtils.allowNulls(DCUtils.getJsonStringValue( carObject, "available"            ));
+            Boolean inMaintenance = DCUtils.getJsonBooleanValue(carObject, "in_maintenance"       );
+            //String available      = DCUtils.allowNulls(DCUtils.getJsonStringValue( carObject, "available"            ));
 
             bikeDto.setId           (carId        );
             bikeDto.setCarType      (carType      );
@@ -265,7 +268,7 @@ public class BikesharingMoqoDataConverter {
             bikeDto.setMedImageUrl  (medImageUrl  );
             bikeDto.setTmbImageUrl  (tmbImageUrl  );
             bikeDto.setInMaintenance(inMaintenance);
-            bikeDto.setAvailable    (available    );
+            //bikeDto.setAvailable    (available    );
 
             JSONObject locationObject = carObject.getJSONObject("location");
             LocationDto carLocation = convertExternalLocationJsonToLocationDto(locationObject);
@@ -452,6 +455,68 @@ public class BikesharingMoqoDataConverter {
             LOG.debug("dto: "+dto); 
         }
         return dto;
+    }
+
+    /**
+     * Converts the string returned by the Bikesharing "/cars/{id}/availability" service in a more useful internal representation
+     * 
+     * @param responseString
+     * @return
+     * @throws Exception
+     */
+    /**
+     * @param responseString
+     * @return
+     * @throws Exception
+     */
+    public List<AvailabilityDto> convertAvailabilityResponseToInternalDTO(String responseString) throws Exception {
+
+        List<AvailabilityDto> dtoList = new ArrayList<AvailabilityDto>();
+
+        long jsonStart = System.currentTimeMillis();
+        JSONObject joMain = new JSONObject(responseString);
+        long jsonEnd = System.currentTimeMillis();
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Time to parse with org.json: " + (jsonEnd-jsonStart));
+        }
+
+//        long jacksonStart = System.currentTimeMillis();
+//        CarsList cars = mapper.readValue(responseString, new TypeReference<CarsList>() {});
+//        long jacksonEnd = System.currentTimeMillis();
+//        if ( LOG.isDebugEnabled() ) {
+//            LOG.info("Time to parse with jackson: " + (jacksonEnd-jacksonStart));
+//        }
+
+        //Get information to store as AvailabilityDto
+        JSONArray availArray = joMain.getJSONArray("availability_slots");
+        int availLength = availArray!=null ? availArray.length() : 0;
+        for ( int i=0 ; i<availLength ; i++ ) {
+            AvailabilityDto dto = new AvailabilityDto();
+
+            JSONObject availObject = availArray.getJSONObject(i);
+            Boolean available = DCUtils.getJsonBooleanValue(availObject, "available");
+            String  strFrom   = DCUtils.getJsonStringValue( availObject, "from");
+            String  strUntil  = DCUtils.getJsonStringValue( availObject, "until");
+            Long    duration  = DCUtils.getJsonLongValue(   availObject, "duration");
+
+            Date    from      = DCUtils.convertStringTimezoneToDate(strFrom);
+            Date    until     = DCUtils.convertStringTimezoneToDate(strUntil);
+
+            dto.setAvailable(available);
+            dto.setStrFrom(  strFrom  );
+            dto.setStrUntil( strUntil );
+            dto.setDuration( duration );
+            dto.setFrom(     from     );
+            dto.setUntil(    until    );
+
+            dtoList.add(dto);
+
+        }
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("dtoList: "+dtoList); 
+        }
+        return dtoList;
     }
 
     public Map<String, LocationDto> getDistinctLocations(List<BikeDto> bikeList) {

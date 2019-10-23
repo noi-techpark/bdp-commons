@@ -63,22 +63,29 @@ public class BikesharingMoqoDataRetrieverIT extends AbstractJUnit4SpringContextT
             LOG.setLevel(Level.DEBUG);
             if ( LOG.isDebugEnabled() ) {
                 System.out.println(
-                        DCUtils.rpad("Bike",13,' ')+"  "+DCUtils.rpad("Parking Name",30,' ')+"  "+DCUtils.rpad("Latitude",17,' ')+"  "+DCUtils.rpad("Longitude",17,' ')+
-                        "  "+DCUtils.rpad("Available",10,' ')+"  "+DCUtils.rpad("Mainten",7,' ')+
+                        DCUtils.rpad("Bike",13,' ')+"  "+DCUtils.rpad("Parking Name",30,' ')+
+                        "  "+DCUtils.rpad("Latitude",17,' ')+"  "+DCUtils.rpad("Longitude",17,' ')+"  "+DCUtils.rpad("Loc Kind",15,' ')+
+                        "  "+DCUtils.rpad("Mainten",7,' ')+"  "+DCUtils.rpad("Avail",7,' ')+
+                        "  "+DCUtils.rpad("AvailFrom",20,' ')+"  "+DCUtils.rpad("AvailUntil",20,' ')+"  "+DCUtils.rpad("Durat",7,' ')+
                         "");
                 Map<String, LocationDto> m = moqoDto.getLocationMap();
                 for (String n : m.keySet()) {
                     LocationDto l = m.get(n);
                     String name = l.getName();
                     //System.out.println("");
-                    System.out.println(DCUtils.rpad(" ",13,' ')+"  "+DCUtils.rpad(name,30,' ')+"  "+DCUtils.rpad(l.getLatitude(),17,' ')+"  "+DCUtils.rpad(l.getLongitude(),17,' '));
+                    System.out.println(
+                            DCUtils.rpad(" ",13,' ')+"  "+DCUtils.rpad(name,30,' ')+
+                            "  "+DCUtils.rpad(l.getLatitude(),17,' ')+"  "+DCUtils.rpad(l.getLongitude(),17,' ')+"  "+DCUtils.rpad(l.getKind(),15,' ')+
+                            "");
                     for (BikeDto b : fetchData) {
                         LocationDto bl = b.getLocation();
                         String bname = bl.getName();
                         if ( name.equals(bname) ) {
                             System.out.println(
-                                    DCUtils.lpad(b.getLicense(),2,' ')+"-"+DCUtils.lpad(b.getId(),10,' ')+"  "+DCUtils.rpad(l.getName(),30,' ')+"  "+DCUtils.rpad(l.getLatitude(),17,' ')+"  "+DCUtils.rpad(l.getLongitude(),17,' ')+
-                                    "  "+DCUtils.rpad(b.getAvailable(),10,' ')+"  "+DCUtils.rpad(b.getInMaintenance(),7,' ')+
+                                    DCUtils.lpad(b.getLicense(),2,' ')+"-"+DCUtils.lpad(b.getId(),10,' ')+"  "+DCUtils.rpad(l.getName(),30,' ')+
+                                    "  "+DCUtils.rpad(bl.getLatitude(),17,' ')+"  "+DCUtils.rpad(bl.getLongitude(),17,' ')+"  "+DCUtils.rpad(bl.getKind(),15,' ')+
+                                    "  "+DCUtils.rpad(b.getInMaintenance(),7,' ')+"  "+DCUtils.rpad(b.getAvailable(),7,' ')+
+                                    "  "+DCUtils.rpad(DCUtils.convertDateToString(b.getAvailableFrom()),20,' ')+"  "+DCUtils.rpad(DCUtils.convertDateToString(b.getAvailableUntil()),20,' ')+"  "+DCUtils.rpad(b.getAvailableDuration(),7,' ')+
                                     ""
                                     );
                         }

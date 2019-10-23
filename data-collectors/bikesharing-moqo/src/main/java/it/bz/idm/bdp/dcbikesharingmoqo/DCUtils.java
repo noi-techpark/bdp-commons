@@ -236,6 +236,9 @@ public class DCUtils {
 
     public static Date convertStringTimezoneToDate(String inval) {
         Date retval = null;
+        if ( inval == null ) {
+            return null;
+        }
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
             retval = sdf.parse(inval);
@@ -448,6 +451,20 @@ public class DCUtils {
             value = jsonObj.getDouble(attrName);
         } catch (Throwable tx) {
             LOG.debug("Exception converting to Double attribute "+attrName+" for JSONObject. value="+jsonObj.get(attrName)+"  Exception: "+ tx);
+        }
+        return value;
+    }
+
+    public static Date getJsonDateValue(JSONObject jsonObj, String attrName) {
+        if ( jsonObj==null || paramNull(attrName) || jsonObj.isNull(attrName) ) {
+            return null;
+        }
+        Date value = null;
+        try {
+            String strValue = jsonObj.getString(attrName);
+            value = convertStringTimezoneToDate(strValue);
+        } catch (Throwable tx) {
+            LOG.debug("Exception converting to Date attribute "+attrName+" for JSONObject. value="+jsonObj.get(attrName)+"  Exception: "+ tx);
         }
         return value;
     }

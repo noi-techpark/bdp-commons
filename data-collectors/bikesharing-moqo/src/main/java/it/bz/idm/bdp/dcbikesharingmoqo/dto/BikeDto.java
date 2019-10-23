@@ -1,26 +1,33 @@
 package it.bz.idm.bdp.dcbikesharingmoqo.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BikeDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String id           ;
-    private String carType      ;
-    private String name         ;
-    private String license      ;
-    private String cleanness    ;
-    private String exchangeType ;
-    private String bigImageUrl  ;
-    private String medImageUrl  ;
-    private String tmbImageUrl  ;
-    private String inMaintenance;
-    private String available    ;
-    private LocationDto location;
+    private String id             ;
+    private String carType        ;
+    private String name           ;
+    private String license        ;
+    private String cleanness      ;
+    private String exchangeType   ;
+    private String bigImageUrl    ;
+    private String medImageUrl    ;
+    private String tmbImageUrl    ;
+    private Boolean inMaintenance ;
+    private Boolean available     ;
+    private Date    availableFrom ;
+    private Date    availableUntil;
+    private Long    availableDuration;
+    private LocationDto location  ;
 
+    private List<AvailabilityDto> availabilityList;
     private Map<String, LocationDto> parkingAreaMap;
 
     public BikeDto() {
@@ -98,20 +105,44 @@ public class BikeDto implements Serializable {
         this.tmbImageUrl = tmbImageUrl;
     }
 
-    public String getInMaintenance() {
+    public Boolean getInMaintenance() {
         return inMaintenance;
     }
 
-    public void setInMaintenance(String inMaintenance) {
+    public void setInMaintenance(Boolean inMaintenance) {
         this.inMaintenance = inMaintenance;
     }
 
-    public String getAvailable() {
+    public Boolean getAvailable() {
         return available;
     }
 
-    public void setAvailable(String available) {
+    public void setAvailable(Boolean available) {
         this.available = available;
+    }
+
+    public Date getAvailableFrom() {
+        return availableFrom;
+    }
+
+    public void setAvailableFrom(Date availableFrom) {
+        this.availableFrom = availableFrom;
+    }
+
+    public Date getAvailableUntil() {
+        return availableUntil;
+    }
+
+    public void setAvailableUntil(Date availableUntil) {
+        this.availableUntil = availableUntil;
+    }
+
+    public Long getAvailableDuration() {
+        return availableDuration;
+    }
+
+    public void setAvailableDuration(Long availableDuration) {
+        this.availableDuration = availableDuration;
     }
 
     public LocationDto getLocation() {
@@ -120,6 +151,17 @@ public class BikeDto implements Serializable {
 
     public void setLocation(LocationDto location) {
         this.location = location;
+    }
+
+    public List<AvailabilityDto> getAvailabilityList() {
+        if ( availabilityList == null ) {
+            availabilityList = new ArrayList<AvailabilityDto>();
+        }
+        return availabilityList;
+    }
+
+    public void setAvailabilityList(List<AvailabilityDto> availabilityList) {
+        this.availabilityList = availabilityList;
     }
 
     public Map<String, LocationDto> getParkingAreaMap() {
@@ -136,7 +178,8 @@ public class BikeDto implements Serializable {
     @Override
     public String toString() {
         return "BikeDto [id=" + id + ", carType=" + carType + ", name=" + name + ", license=" + license + ", cleanness=" + cleanness + ", exchangeType=" + exchangeType + ", bigImageUrl=" + bigImageUrl
-                + ", medImageUrl=" + medImageUrl + ", tmbImageUrl=" + tmbImageUrl + ", inMaintenance=" + inMaintenance + ", available=" + available + ", location=" + location + "]";
+                + ", medImageUrl=" + medImageUrl + ", tmbImageUrl=" + tmbImageUrl + ", inMaintenance=" + inMaintenance + ", available=" + available + ", availableFrom=" + availableFrom
+                + ", availableUntil=" + availableUntil + ", availableDuration=" + availableDuration + ", location=" + location + "]";
     }
 
 }

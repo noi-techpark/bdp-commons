@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import it.bz.idm.bdp.dcbikesharingmoqo.dto.AvailabilityDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikeDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikesharingMoqoDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikesharingMoqoPageDto;
@@ -52,11 +54,10 @@ public class BikesharingMoqoDataRetriever {
 //    private BikesharingMoqoDataPusher pusher;
 
     private HttpClientBuilder builderStations = HttpClients.custom();
-//    private HttpClientBuilder builderSensors = HttpClients.custom();
-//    private HttpClientBuilder builderMeasurements = HttpClients.custom();
+    private HttpClientBuilder builderMeasurements = HttpClients.custom();
+
     private CloseableHttpClient clientStations;
-//    private CloseableHttpClient clientSensors;
-//    private CloseableHttpClient clientMeasurements;
+    private CloseableHttpClient clientMeasurements;
 
 //    private ObjectMapper mapper = new ObjectMapper();
 
@@ -64,12 +65,9 @@ public class BikesharingMoqoDataRetriever {
     private String serviceUrlStations;
     private List<ServiceCallParam> stationsParams;
 
-//    private String endpointMethodSensors;
-//    private String serviceUrlSensors;
-//
-//    private String endpointMethodMeasurements;
-//    private String serviceUrlMeasurements;
-//    private List<ServiceCallParam> measurementsParams;
+    private String endpointMethodMeasurements;
+    private String serviceUrlMeasurements;
+    //private List<ServiceCallParam> measurementsParams;
 
     public BikesharingMoqoDataRetriever() {
         LOG.debug("Create instance");
@@ -137,61 +135,32 @@ public class BikesharingMoqoDataRetriever {
             LOG.debug("Http Client Stations created");
         }
 
-//        if (clientSensors==null) {
-//            //Read config data from external bundle
-//            String strEndpointMethod   = env.getProperty("endpoint.sensors.method");
-//            String strEndpointProtocol = env.getProperty("endpoint.sensors.protocol");
-//            String strEndpointHost     = env.getProperty("endpoint.sensors.host");
-//            String strEndpointPort     = env.getProperty("endpoint.sensors.port");
-//            String strEndpointPath     = env.getProperty("endpoint.sensors.path");
-//
-//            LOG.debug("Read config:"+
-//                    "  endpoint.sensors.protocol='"+strEndpointProtocol+"'"+
-//                    "  endpoint.sensors.method='"+strEndpointMethod+"'"+
-//                    "  endpoint.sensors.host='"+strEndpointHost+"'"+
-//                    "  endpoint.sensors.port='"+strEndpointPort+"'"+
-//                    "  endpoint.sensors.path='"+strEndpointPath+"'");
-//
-//            //Create HTTP Client
-//            endpointMethodSensors   = DCUtils.allowNulls(strEndpointMethod).trim();
-//            String  endpointProtocol = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "http" : "https";
-//            String  defaultPort      = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "80" : "443";
-//            String  endpointHost = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointHost).trim());
-//            String  endpointPath = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointPath).trim());
-//            Integer endpointPort = DCUtils.convertStringToInteger(DCUtils.defaultNulls(strEndpointPort, defaultPort));
-//            serviceUrlSensors = endpointProtocol + "://" + endpointHost + ":" + endpointPort + "/" + endpointPath;
-//
-//            clientSensors = builderSensors.build();
-//
-//            LOG.debug("Http Client Sensors created");
-//        }
+        if (clientMeasurements==null) {
+            //Read config data from external bundle
+            String strEndpointMethod   = env.getProperty("endpoint.measurements.method");
+            String strEndpointProtocol = env.getProperty("endpoint.measurements.protocol");
+            String strEndpointHost     = env.getProperty("endpoint.measurements.host");
+            String strEndpointPort     = env.getProperty("endpoint.measurements.port");
+            String strEndpointPath     = env.getProperty("endpoint.measurements.path");
 
-//        if (clientMeasurements==null) {
-//            //Read config data from external bundle
-//            String strEndpointMethod   = env.getProperty("endpoint.measurements.method");
-//            String strEndpointProtocol = env.getProperty("endpoint.measurements.protocol");
-//            String strEndpointHost     = env.getProperty("endpoint.measurements.host");
-//            String strEndpointPort     = env.getProperty("endpoint.measurements.port");
-//            String strEndpointPath     = env.getProperty("endpoint.measurements.path");
-//
-//            LOG.debug("Read config:"+
-//                    "  endpoint.measurements.protocol='"+strEndpointProtocol+"'"+
-//                    "  endpoint.measurements.method='"+strEndpointMethod+"'"+
-//                    "  endpoint.measurements.host='"+strEndpointHost+"'"+
-//                    "  endpoint.measurements.port='"+strEndpointPort+"'"+
-//                    "  endpoint.measurements.path='"+strEndpointPath+"'");
-//
-//            //Create HTTP Client
-//            endpointMethodMeasurements = DCUtils.allowNulls(strEndpointMethod).trim();
-//            String  endpointProtocol = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "http" : "https";
-//            String  defaultPort      = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "80" : "443";
-//            String  endpointHost = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointHost).trim());
-//            String  endpointPath = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointPath).trim());
-//            Integer endpointPort = DCUtils.convertStringToInteger(DCUtils.defaultNulls(strEndpointPort, defaultPort));
-//            serviceUrlMeasurements = endpointProtocol + "://" + endpointHost + ":" + endpointPort + "/" + endpointPath;
-//
-//            clientMeasurements = builderMeasurements.build();
-//
+            LOG.debug("Read config:"+
+                    "  endpoint.measurements.protocol='"+strEndpointProtocol+"'"+
+                    "  endpoint.measurements.method='"+strEndpointMethod+"'"+
+                    "  endpoint.measurements.host='"+strEndpointHost+"'"+
+                    "  endpoint.measurements.port='"+strEndpointPort+"'"+
+                    "  endpoint.measurements.path='"+strEndpointPath+"'");
+
+            //Create HTTP Client
+            endpointMethodMeasurements = DCUtils.allowNulls(strEndpointMethod).trim();
+            String  endpointProtocol = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "http" : "https";
+            String  defaultPort      = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "80" : "443";
+            String  endpointHost = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointHost).trim());
+            String  endpointPath = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointPath).trim());
+            Integer endpointPort = DCUtils.convertStringToInteger(DCUtils.defaultNulls(strEndpointPort, defaultPort));
+            serviceUrlMeasurements = endpointProtocol + "://" + endpointHost + ":" + endpointPort + "/" + endpointPath;
+
+            clientMeasurements = builderMeasurements.build();
+
 //            measurementsParams = new ArrayList<ServiceCallParam>();
 //            boolean hasNext = true;
 //            int i=0;
@@ -229,9 +198,9 @@ public class BikesharingMoqoDataRetriever {
 //                    hasNext = false;
 //                }
 //            }
-//
-//            LOG.debug("Http Client Measurements created");
-//        }
+
+            LOG.debug("Http Client Measurements created");
+        }
     }
 
     /**
@@ -504,13 +473,80 @@ public class BikesharingMoqoDataRetriever {
                     }
                 }
 
-                String responseString = callRemoteService(clientStations, serviceUrlStations, endpointMethodStations, endpointParams);
+                String responseStringCars = callRemoteService(clientStations, serviceUrlStations, endpointMethodStations, endpointParams);
 
                 //Convert to internal representation
-                BikesharingMoqoPageDto pageDto = converter.convertCarsResponseToInternalDTO(responseString);
+                BikesharingMoqoPageDto pageDto = converter.convertCarsResponseToInternalDTO(responseStringCars);
                 List<BikeDto> pageList = pageDto.getBikeList();
                 PaginationDto pagination = pageDto.getPagination();
                 dtoList.addAll(pageList);
+
+                //Call service to get availability for each bike
+                for (BikeDto bikeDto : pageList) {
+                    String bikeId = bikeDto.getId();
+                    String bikeLicense = bikeDto.getLicense();
+                    String bikeUrl = serviceUrlMeasurements.replace(ServiceCallParam.FUNCTION_NAME_STATION_ID, bikeId);
+                    String responseStringAvail = callRemoteService(clientMeasurements, bikeUrl, endpointMethodMeasurements, null);
+                    List<AvailabilityDto> availDtoList = converter.convertAvailabilityResponseToInternalDTO(responseStringAvail);
+                    bikeDto.setAvailabilityList(availDtoList);
+
+                    //Evaluate attributes available, until and from for the bike, looking into the Availability slots
+                    Boolean bikeAvailable   = false;
+                    Date bikeAvailableFrom  = null;
+                    Date bikeAvailableUntil = null;
+                    Long bikeAvailableDuration = null;
+                    long dtNowMillis = System.currentTimeMillis();
+                    //Date dtNow = new Date(dtNowMillis);
+                    for ( int i=0 ; availDtoList!=null && i<availDtoList.size() ; i++ ) {
+                        AvailabilityDto availDto = availDtoList.get(i);
+                        Boolean slotAvailable = availDto.getAvailable();
+                        Date slotFrom = availDto.getFrom();
+                        Date slotUntil = availDto.getUntil();
+                        Long slotDuration = availDto.getDuration();
+                        long slotFromMillis  = slotFrom!=null  ? slotFrom.getTime()  : 0;
+                        long slotUntilMillis = slotUntil!=null ? slotUntil.getTime() : 0;
+                        boolean slotFromBeforeNow = slotFrom == null  || slotFromMillis <= dtNowMillis;
+                        boolean slotUntilAfterNow = slotUntil == null || slotUntilMillis > dtNowMillis;
+                        if ( LOG.isDebugEnabled() ) {
+                            LOG.debug("Bike id="+bikeId+"  rn="+bikeLicense+" : "+availDto);
+                        }
+
+                        if ( slotFromBeforeNow && slotUntilAfterNow ) {
+                            //NOW is BETWEEN current slot ==> take values from it
+                            LOG.debug("Bike id="+bikeId+"  rn="+bikeLicense+" SLOT IS BETWEEN NOW: "+availDto);
+                            bikeAvailable = slotAvailable;
+                            bikeAvailableFrom = null;
+                            bikeAvailableUntil = slotUntil;
+                            if ( Boolean.TRUE.equals(slotAvailable) ) {
+                                bikeAvailableDuration = slotDuration;
+                            }
+                        } else if ( !slotFromBeforeNow && slotUntilAfterNow ) {
+                            //NOW is BEFORE  current slot ==> 
+                            LOG.debug("Bike id="+bikeId+"  rn="+bikeLicense+" SLOT IS BEFORE  NOW: "+availDto);
+                            if ( Boolean.TRUE.equals(slotAvailable) ) {
+                                //Bike will be available in the future, take "from" and "until" but do not change value of available
+                                bikeAvailableFrom = slotFrom;
+                                bikeAvailableUntil = slotUntil;
+                                //bikeAvailableDuration = (slotFromMillis-dtNowMillis) / 1000;
+                            } else {
+                                //Bike will be unavailable in the future, take "from" and calculate availability duration
+                                bikeAvailableUntil = slotFrom;
+                                bikeAvailableDuration = (slotFromMillis-dtNowMillis) / 1000;
+                            }
+                        } else if ( slotFromBeforeNow && !slotUntilAfterNow ) {
+                            //NOW is AFTER   current slot, DO NOT CONSIDER IT!!!
+                        } else {
+                            //Impossible situation!!!
+                            LOG.warn("Inconsistent availability slot for bike id="+bikeId+"  rn="+bikeLicense+" : "+availDto);
+                        }
+
+                    }
+
+                    bikeDto.setAvailable(bikeAvailable);
+                    bikeDto.setAvailableFrom(bikeAvailableFrom);
+                    bikeDto.setAvailableUntil(bikeAvailableUntil);
+                    bikeDto.setAvailableDuration(bikeAvailableDuration);
+                }
 
                 //Exit if this is the last page, otherwise continue loop with next page
                 Long nextPage = pagination.getNextPage();
