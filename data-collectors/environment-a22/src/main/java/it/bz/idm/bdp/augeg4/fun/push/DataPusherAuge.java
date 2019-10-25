@@ -39,15 +39,19 @@ public class DataPusherAuge implements DataPusherAugeFace {
 
     @Override
     public void pushData(List<AugeG4ProcessedDataToAugeDto> list) {
-        String topic        = augeMqttConfiguration.getTopic();
-        int qos             = 1;
-
+        int QUALITY_OF_SERVICE = 1;
+        try {
+            client = AugeMqttClient.build(augeMqttConfiguration);
+            LOG.info("Mqtt Auge connected. ["+client.isConnected()+"]");
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
         try {
             if (client != null && client.isConnected()) {
                 for(AugeG4ProcessedDataToAugeDto augeDto: list) {
                     String content = jsonOf(augeDto);
                     LOG.debug(content);
-                    publish(topic, content, qos, client);
+                    publish(augeMqttConfiguration.getTopic(), content, QUALITY_OF_SERVICE, client);
                 }
             } else {
                 LOG.info("Can't push data: client not connected.");
