@@ -185,7 +185,7 @@ pipeline {
         stage('Configure - origin-destination') {
             environment {
                 ARTIFACT_NAME = "origin-destination"
-                STATION_TYPE = "Linkstation"
+                STATION_TYPE = "LinkStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
