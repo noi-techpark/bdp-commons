@@ -64,6 +64,7 @@ public class BluetoothMappingUtil {
 
 	public List<Map<String, String>> getValidEntries() {
 		List<Map<String, String>> validEntries = new ArrayList<Map<String,String>>();
+		reader.authenticate();
 		List<Map<String, String>> objs = convertToMap(reader.getWholeSheet("boxes"));
 		for (Map<String, String> obj : objs){
 			if (isValid(obj))

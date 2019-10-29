@@ -45,12 +45,6 @@ public class SpreadsheetReader {
 
     @Value("${spreadsheet.range}")
 	private String spreadsheetRange;
-    
-    @PostConstruct
-    private void init() {
-    	this.authenticate();
-    }
-    
 
     private Credential getCredentials() throws IOException {
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(clientSecret.getInputStream()));
