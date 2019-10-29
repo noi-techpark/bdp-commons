@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,6 +31,7 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.idm.bdp.service.OddsPusher;
+import it.bz.idm.bdp.util.BluetoothMappingUtil;
 import it.bz.idm.bdp.util.IntegreenException;
 
 @RequestMapping("/json")
@@ -42,6 +44,9 @@ public class ODController {
 
 	@Autowired
 	private OddsPusher pusher;
+
+	@Autowired
+	private BluetoothMappingUtil metaUtil;
 
 	@ExceptionHandler({ RestClientException.class })
     public ResponseEntity<Object> handleException(RestClientException ex, WebRequest request) {
@@ -66,6 +71,11 @@ public class ODController {
 			StationList stationList = new StationList();
 			for (String stationName : dataMap.getBranch().keySet()) {
 				StationDto station = new StationDto();
+				Double[] coordinatesByIdentifier = metaUtil.getCoordinatesByIdentifier(stationName);
+				station.setLongitude(coordinatesByIdentifier[0]);
+				station.setLatitude(coordinatesByIdentifier[1]);
+				Map<String, Object> metaDataByIdentifier = metaUtil.getMetaDataByIdentifier(stationName);
+				station.getMetaData().putAll(metaDataByIdentifier);
 				station.setName(stationName);
 				station.setId(stationName);
 				station.setStationType(env.getRequiredProperty("stationtype"));
