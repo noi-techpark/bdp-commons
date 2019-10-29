@@ -34,11 +34,13 @@ public class DataDelegate {
     private final DataConverterHubFace dataConverterHub = new DataConverterHub();
     private final DataConverterAugeFace dataConverterAuge = new DataConverterAuge();
 
-    private final FixedQueue<AugeG4ProcessedDataToHubDto> queuedDataToHub = new FixedQueue<>(MAX_QUEUE_SIZE);
-    private final FixedQueue<AugeG4ProcessedDataToAugeDto> queuedDataToAuge = new FixedQueue<>(MAX_QUEUE_SIZE);
+    private final FixedQueue<AugeG4ProcessedDataToHubDto> queuedDataToHub;
+    private final FixedQueue<AugeG4ProcessedDataToAugeDto> queuedDataToAuge;
 
     DataDelegate(DataService dataService) {
         this.dataService = dataService;
+        this.queuedDataToHub = new FixedQueue<>(MAX_QUEUE_SIZE);
+        this.queuedDataToAuge = new FixedQueue<>(MAX_QUEUE_SIZE);
     }
 
 
