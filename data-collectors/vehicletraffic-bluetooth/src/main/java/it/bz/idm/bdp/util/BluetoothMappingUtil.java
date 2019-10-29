@@ -63,6 +63,8 @@ public class BluetoothMappingUtil {
 	}
 
 	public List<Map<String, String>> getValidEntries() {
+		if (cachedData != null)
+				return cachedData;
 		List<Map<String, String>> validEntries = new ArrayList<Map<String,String>>();
 		reader.authenticate();
 		List<Map<String, String>> objs = convertToMap(reader.getWholeSheet("boxes"));
@@ -70,7 +72,7 @@ public class BluetoothMappingUtil {
 			if (isValid(obj))
 				validEntries.add(obj);
 		}
-		cachedData = validEntries;
+		setCachedData(validEntries);
 		return validEntries;
 	}
 
@@ -90,7 +92,7 @@ public class BluetoothMappingUtil {
 	}
 
 	public Double[] getCoordinatesByIdentifier(String id) {
-		for (Map<String, String> entry :getValidEntries())
+		for (Map<String, String> entry : getValidEntries())
 			if (entry.get("id")!= null && entry.get("id").equals(id)) {
 				Double lon = Double.parseDouble(entry.get("longitude"));
 				Double lat = Double.parseDouble(entry.get("latitude"));
@@ -113,6 +115,14 @@ public class BluetoothMappingUtil {
 				return metaDataObj;
 			}
 		return null;
+	}
+
+	public List<Map<String, String>> getCachedData() {
+		return cachedData;
+	}
+
+	public void setCachedData(List<Map<String, String>> cachedData) {
+		this.cachedData = cachedData;
 	}
 
 }

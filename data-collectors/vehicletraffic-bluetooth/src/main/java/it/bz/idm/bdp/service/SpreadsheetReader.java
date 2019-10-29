@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -30,11 +28,11 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 @Component
 public class SpreadsheetReader {
 
-	@Value("classpath:/META-INF/spring/client_secret.json")
-	private Resource clientSecret;
+    @Value("classpath:/META-INF/spring/client_secret.json")
+    private Resource clientSecret;
 
-	@Value("${spreadsheetId}")
-	private String spreadhSheetId;
+    @Value("${spreadsheetId}")
+    private String spreadhSheetId;
 
     Sheets service;
     NetHttpTransport HTTP_TRANSPORT ;
