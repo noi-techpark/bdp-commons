@@ -3,6 +3,7 @@ package it.bz.idm.bdp.service;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -14,6 +15,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 
 import it.bz.idm.bdp.util.GoogleAuthenticator;
 
+@Lazy
 @Component
 public class SpreadsheetReader extends GoogleAuthenticator {
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -14,6 +15,7 @@ import com.google.api.services.drive.model.Channel;
 
 import it.bz.idm.bdp.util.GoogleAuthenticator;
 
+@Lazy
 @Service
 public class SpreadsheetWatcher extends GoogleAuthenticator{
 

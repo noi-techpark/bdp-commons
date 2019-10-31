@@ -38,7 +38,6 @@ public class OddsPusher extends JSONPusher {
 		for (OddsRecordDto dto : dtos){
 			DataMapDto<RecordDtoImpl> stationMap = dataMap.upsertBranch(dto.getStationcode());
 			DataMapDto<RecordDtoImpl> typeMap = stationMap.upsertBranch(env.getRequiredProperty("datatype"));
-
 			SimpleRecordDto textDto = new SimpleRecordDto();
 			String stringValue = dto.getMac();
 			if (cryptUtil.isValid())

@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.google.api.services.sheets.v4.model.ValueRange;
@@ -21,9 +22,11 @@ public class BluetoothMappingUtil {
 
 	@Value("${spreadsheet.requiredFields}")
 	private String requiredFields;
+
+	@Lazy
 	@Autowired
 	private SpreadsheetReader reader;
-	
+
 	@Value("${spreadsheet.sheetName}")
 	private String SHEETNAME;
 
