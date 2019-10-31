@@ -40,7 +40,9 @@ public class BluetoothMappingUtil {
 		for (i = 1; i < size; i++) {
 			Map<String,String> object = new HashMap<String, String>();
 			for (j=0;j<headerRow.size();j++) {
-				object.put(headerRow.get(j).toString(), valueRange.getValues().get(i).get(j).toString());
+				List<Object> row = valueRange.getValues().get(i);
+				if (j<row.size())
+					object.put(headerRow.get(j).toString(), row.get(j).toString());
 			}
 			boxes.add(object);
 		}
