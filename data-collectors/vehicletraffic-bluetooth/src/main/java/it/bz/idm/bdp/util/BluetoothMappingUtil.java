@@ -21,7 +21,7 @@ import it.bz.idm.bdp.service.SpreadsheetReader;
 public class BluetoothMappingUtil {
 
 	@Value("${spreadsheet.requiredFields}")
-	private String requiredFields;
+	private String[] requiredFields;
 
 	@Lazy
 	@Autowired
