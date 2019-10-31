@@ -24,6 +24,9 @@ public class BluetoothMappingUtil {
 	@Autowired
 	private SpreadsheetReader reader;
 	
+	@Value("${spreadsheet.sheetName}")
+	private String SHEETNAME;
+
 	private List<Map<String, String>> cachedData;
 	
 	public List<Map<String,String>> convertToMap(ValueRange valueRange) {
@@ -66,8 +69,7 @@ public class BluetoothMappingUtil {
 		if (cachedData != null)
 				return cachedData;
 		List<Map<String, String>> validEntries = new ArrayList<Map<String,String>>();
-		reader.authenticate();
-		List<Map<String, String>> objs = convertToMap(reader.getWholeSheet("boxes"));
+		List<Map<String, String>> objs = convertToMap(reader.getWholeSheet(SHEETNAME));
 		for (Map<String, String> obj : objs){
 			if (isValid(obj))
 				validEntries.add(obj);
