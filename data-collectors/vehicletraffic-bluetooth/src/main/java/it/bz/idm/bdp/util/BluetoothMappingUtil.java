@@ -113,7 +113,7 @@ public class BluetoothMappingUtil {
 			if (obj.get("id")!= null && obj.get("id").equals(id)) {
 				Map<String, Object> metaDataObj = new HashMap<String, Object>();
 				for (Map.Entry<String, String> entry : obj.entrySet()){
-					if (!(req.contains(entry.getKey()))){
+					if (!(req.contains(entry.getKey().toLowerCase()))){
 						metaDataObj.put(entry.getKey(), entry.getValue());
 					}
 				}
