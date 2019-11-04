@@ -1,6 +1,8 @@
 package it.bz.idm.bdp.web;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,9 +40,13 @@ public class TriggerController {
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto){
 		metaUtil.setCachedData(null);
+		List<StationDto> odhStations = pusher.fetchStations(pusher.getIntegreenTypology(), null);
+		List<String> stationIds= odhStations.stream().map(StationDto::getId).collect(Collectors.toList());
 		StationList stations = new StationList();
 		for (Map<String,String> entry : metaUtil.getValidEntries()) {
 			String stationId = entry.get("id");
+			if (!stationIds.contains(stationId))
+				continue;
 			Double[] coordinatesByIdentifier = metaUtil.getCoordinatesByIdentifier(stationId);
 			Map<String, Object> metaDataByIdentifier = metaUtil.getMetaDataByIdentifier(stationId);
 
