@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,9 +26,17 @@ public class TriggerController {
 	@Autowired
 	private BluetoothMappingUtil metaUtil;
 
-
+	/**
+	 * Endpoint call for google notification service
+	 * https://developers.google.com/drive/api/v3/push. As soon as the call is
+	 * triggered the cache gets invalidated and station synchronize with
+	 * the existing BluetoothStations in ODH.
+	 *
+	 * @param gDto request body of push notification by google as defined in
+	 *             https://developers.google.com/drive/api/v3/push
+	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody void post(){
+	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto){
 		metaUtil.setCachedData(null);
 		StationList stations = new StationList();
 		for (Map<String,String> entry : metaUtil.getValidEntries()) {
