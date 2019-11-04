@@ -46,7 +46,7 @@ public class ODController {
 	private OddsPusher pusher;
 
 	@Autowired
-	private BluetoothMappingUtil metaUtil;
+	private BluetoothMappingUtil mappingUtil;
 
 	@ExceptionHandler({ RestClientException.class })
     public ResponseEntity<Object> handleException(RestClientException ex, WebRequest request) {
@@ -57,6 +57,11 @@ public class ODController {
 		return new ResponseEntity<>(dto,HttpStatus.GATEWAY_TIMEOUT);
     }
 
+	/**
+	 * Endpoint for Bluetoothboxes which synchronizes single BluetoothStations
+	 *
+	 * @param records
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody void post(@RequestBody RecordList records){
 		if (records == null || records.isEmpty()) {
@@ -71,11 +76,14 @@ public class ODController {
 			StationList stationList = new StationList();
 			for (String stationName : dataMap.getBranch().keySet()) {
 				StationDto station = new StationDto();
-				Double[] coordinatesByIdentifier = metaUtil.getCoordinatesByIdentifier(stationName);
-				station.setLongitude(coordinatesByIdentifier[0]);
-				station.setLatitude(coordinatesByIdentifier[1]);
-				Map<String, Object> metaDataByIdentifier = metaUtil.getMetaDataByIdentifier(stationName);
-				station.getMetaData().putAll(metaDataByIdentifier);
+				Double[] coordinatesByIdentifier = mappingUtil.getCoordinatesByIdentifier(stationName);
+				if (coordinatesByIdentifier != null) {
+					station.setLongitude(coordinatesByIdentifier[0]);
+					station.setLatitude(coordinatesByIdentifier[1]);
+				}
+				Map<String, Object> metaDataByIdentifier = mappingUtil.getMetaDataByIdentifier(stationName);
+				if (metaDataByIdentifier!= null)
+					station.getMetaData().putAll(metaDataByIdentifier);
 				station.setName(stationName);
 				station.setId(stationName);
 				station.setStationType(env.getRequiredProperty("stationtype"));
@@ -94,6 +102,12 @@ public class ODController {
 		}
 	}
 
+	/**
+	 * @param id BluetoothStation identifier
+	 * @param httpResponse
+	 * @return unix timestamp of the last inserted record of that station and type
+	 * @throws MalformedURLException
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody Date getLastRecord(@RequestParam("station-id")String id, HttpServletResponse httpResponse) throws MalformedURLException {
 		Object bdpResponse = pusher.getDateOfLastRecord(id, env.getRequiredProperty("datatype"), null);
