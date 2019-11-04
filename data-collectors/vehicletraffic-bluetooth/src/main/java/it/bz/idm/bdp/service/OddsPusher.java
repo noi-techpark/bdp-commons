@@ -30,6 +30,9 @@ public class OddsPusher extends JSONPusher {
 		return "BluetoothStation";
 	}
 
+	/**
+	 * maps received data from bluetoothbox to ODH and encrypts mac addresses
+	 */
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
 		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();

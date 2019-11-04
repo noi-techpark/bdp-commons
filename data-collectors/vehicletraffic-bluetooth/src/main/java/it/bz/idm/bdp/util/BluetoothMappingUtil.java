@@ -31,7 +31,11 @@ public class BluetoothMappingUtil {
 	private String SHEETNAME;
 
 	private List<Map<String, String>> cachedData;
-	
+
+	/** converts data matrix to list of data objects
+	 * @param valueRange google spreadsheet rows
+	 * @return rows as list of objects
+	 */
 	public List<Map<String,String>> convertToMap(ValueRange valueRange) {
 		int i,j;
 		List<String> headerRow = normalize(valueRange.getValues().get(0));
@@ -58,6 +62,9 @@ public class BluetoothMappingUtil {
 		return stringList;
 	}
 
+	/**
+	 * @param objs checks if data objects have a valid format
+	 */
 	public void validate(List<Map<String, String>> objs) {
 		int i=0;
 		Set<Integer> errorRows = new HashSet<Integer>();
@@ -70,6 +77,9 @@ public class BluetoothMappingUtil {
 			throw new IllegalStateException("Rows " + errorRows + " contain unparsable data.");
 	}
 
+	/**
+	 * @return all rows as objects which are deemed as valid data
+	 */
 	public List<Map<String, String>> getValidEntries() {
 		if (cachedData != null)
 				return cachedData;
@@ -98,6 +108,10 @@ public class BluetoothMappingUtil {
 		return (!(obj.get("id")==null) && !(obj.get("id").isEmpty()) && validCoordinates);
 	}
 
+	/**
+	 * @param id identifier of BluetoothStation
+	 * @return coordinates in EPSG:4326 in the order lon,lat as defined in spreadsheet
+	 */
 	public Double[] getCoordinatesByIdentifier(String id) {
 		for (Map<String, String> entry : getValidEntries())
 			if (entry.get("id")!= null && entry.get("id").equals(id)) {
@@ -109,6 +123,10 @@ public class BluetoothMappingUtil {
 		
 	}
 
+	/**
+	 * @param id identifier of BluetoothStation
+	 * @return all key values which are optional and therfore metadata
+	 */
 	public Map<String, Object> getMetaDataByIdentifier(String id) {
 		List<String> req = Arrays.asList(requiredFields);
 		for (Map<String, String> obj :getValidEntries())

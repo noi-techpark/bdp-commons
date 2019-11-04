@@ -58,7 +58,7 @@ public class ODController {
     }
 
 	/**
-	 * Endpoint for Bluetoothboxes which synchronizes single BluetoothStations
+	 * Endpoint for Bluetoothboxes which synchronizes single BluetoothStations and sends data records to ODH
 	 *
 	 * @param records
 	 */
