@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.langdetect.OptimaizeLangDetector;
 import org.apache.tika.language.detect.LanguageDetector;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -28,6 +29,7 @@ import it.bz.idm.bdp.json.JSONPusher;
 import it.bz.idm.bdp.util.LocationLookup;
 import it.bz.idm.bdp.util.NominatimLocationLookupUtil;
 
+@Lazy
 @Component
 public class ODHClient extends JSONPusher{
 
@@ -40,8 +42,6 @@ public class ODHClient extends JSONPusher{
 	private String provenanceName;
 	@Value("${provenance.version}")
 	private String provenanceVersion;
-	@Value("${origin}")
-	private String dataOrigin;
 	
 	@Value(value="${suportedLanguages}")
 	private String[] supportedLanguages;
