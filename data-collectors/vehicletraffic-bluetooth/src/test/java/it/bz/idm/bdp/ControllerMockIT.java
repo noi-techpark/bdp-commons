@@ -28,7 +28,7 @@ import it.bz.idm.bdp.dto.OddsRecordDto;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext*.xml" })
 @WebAppConfiguration
-public class ControllerMockTest {
+public class ControllerMockIT {
 
 	@Autowired
 	private WebApplicationContext context;

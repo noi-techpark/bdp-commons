@@ -13,9 +13,4 @@
 	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd ">
     <context:spring-configured/>
     <context:component-scan base-package="it.bz.idm.bdp"/>
-    <bean class="it.bz.idm.bdp.service.ScheduledJob" id="jobScheduler"/>
-    <task:scheduler id="Scheduler" pool-size="10" />
-    <task:scheduled-tasks scheduler="Scheduler">
-	     <task:scheduled ref="jobScheduler" method="watchBluetoothBoxesSpreadsheet" fixed-rate="3540000"/>
-    </task:scheduled-tasks>
 </beans>

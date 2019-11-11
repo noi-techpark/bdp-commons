@@ -24,6 +24,10 @@ public class TimeConvertingUtility {
         return delta;
     }
 
+	/**
+	 * converts record timestamp from italian locale to utc
+	 * @param recs records send by a single BluetoothBox
+	 */
 	public static void convert(List<OddsRecordDto> recs) {
 		for (OddsRecordDto dto : recs) {
 			dto.setUtcInMs(converLocalTimeToUtcTime(dto.getGathered_on().getTime()));
