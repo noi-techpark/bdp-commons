@@ -23,7 +23,7 @@ public class SpreadsheetWatcher extends GoogleAuthenticator {
 	@Value("${spreadsheetId}")
 	private String spreadsheetId;
 	
-	@Value("${notificationUrl}")
+	@Value("${spreadsheet.notificationUrl}")
 	private String notificationUrl;
 
 	public void registerWatch() {
