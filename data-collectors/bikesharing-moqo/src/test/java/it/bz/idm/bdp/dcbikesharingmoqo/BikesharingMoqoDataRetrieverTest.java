@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
+import it.bz.idm.bdp.dcbikesharingmoqo.dto.AvailabilityDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikeDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikesharingMoqoPageDto;
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -43,77 +45,43 @@ public class BikesharingMoqoDataRetrieverTest extends AbstractJUnit4SpringContex
 //    @Autowired
 //    private BikesharingMoqoDataRetriever reader;
 
-    private static final String TEST_FILE_FETCH_STATIONS     = "/test_data/test_data_fetch_stations.json";
-    private static final String TEST_FILE_FETCH_DATATYPES    = "/test_data/test_data_fetch_datatypes.json";
-    private static final String TEST_FILE_FETCH_MEASUREMENTS = "/test_data/test_data_fetch_measurements.json";
+    private static final String TEST_FILE_FETCH_STATIONS     = "/test_data/test_data_fetch_page_PAGE_NUM.json";
+    private static final String TEST_FILE_FETCH_MEASUREMENTS = "/test_data/test_data_fetch_availab_STATION_ID.json";
 
-    private static final String TEST_FILE_PUSH_STATIONS      = "/test_data/test_data_push_stations.json";
-    private static final String TEST_FILE_PUSH_DATATYPES     = "/test_data/test_data_push_datatypes.json";
-    private static final String TEST_FILE_PUSH_MEASUREMENTS  = "/test_data/test_data_push_measurements.json";
+    private static final String TEST_FILE_PUSH_STATIONS      = "/test_data/test_data_push_page_PAGE_NUM.json";
+    private static final String TEST_FILE_PUSH_MEASUREMENTS  = "/test_data/test_data_push_availab_STATION_ID.json";
 
     public static final String DATA_FETCH_STATIONS     = "FETCH_STATIONS";
-    public static final String DATA_FETCH_DATA_TYPES   = "FETCH_DATA_TYPES";
     public static final String DATA_FETCH_MEASUREMENTS = "FETCH_MEASUREMENTS";
 
     public static final String DATA_PUSH_STATIONS      = "PUSH_STATIONS";
-    public static final String DATA_PUSH_DATA_TYPES    = "PUSH_DATA_TYPES";
     public static final String DATA_PUSH_MEASUREMENTS  = "PUSH_MEASUREMENTS";
-//    public static final String DATA_PUSH_STATION_CODE  = "89940PG";
-    public static final String[] DATA_PUSH_TYPE_CODES  = new String[] {"Q", "W", "WT"};
 
-    public static final String MUNICIPALITY = "FETCH_MUNICIPALITY";
-
-    private static final String TEST_STATION_ID_1 = "ST_001";
-    private static final Integer TEST_PERIOD = new Integer(600);
-
-    private static final String[][] TEST_DATA_TYPE_WS = new String[][] {
-            new String [] {"WG"       ,           "wind-speed"                     , "m/s"     , "Velocità del vento"    }
-           ,new String [] {"WG.BOE"   ,           "wind-gust-speed"                , "m/s"     , "Velocitá raffica"      }
-           ,new String [] {"GS"       ,           "global-radiation"               , "W/mq"    , "[gr desc]"             }
-           ,new String [] {"SD"       ,           "sunshine-duration"              , "s"       , "Durata soleggiamento"  }
-           ,new String [] {"WR"       ,           "wind-direction"                 , "°"       , "Direzione del vento"   }
-           ,new String [] {"LD"       ,           "atmospheric-pressure"           , "[ap]"    , "[ap desc]"             }
-           ,new String [] {"LD.RED"   ,           "atmospheric-pressure-reduced"   , "hPa"     , "Pressione atmosferica" }
-           ,new String [] {"LT"       ,           "air-temperature"                , "°C"      , "[at desc]"             }
-           ,new String [] {"LF"       ,           "air-humidity"                   , "%"       , "Umidità relativa"      }
-           ,new String [] {"N"        ,           "precipitation"                  , "mm"      , "Precipitazioni"        }
-           ,new String [] {"W"        ,           "water-level"                    , "cm"      , "Livello idrometrico"   }
-           ,new String [] {"HS"       ,           "snow-level"                     , "cm"      , "Altezza neve al suolo" }
-           ,new String [] {"W.ABST"   ,           "hydrometric-level"              , "m"       , "Altezza freatimetrica" }
-           ,new String [] {"WT"       ,           "water-temperature"              , "°C"      , "Temperatura acqua"     }
-           ,new String [] {"Q"        ,           "flow-rate"                      , "m³/s"    , "Portata"               }
-           ,new String [] {"ND"       ,           "rainfall-duration"              , "[rd]"    , "[rd desc]"             }
-           ,new String [] {"LT.050"   ,           "air-temperature-50-cm"          , "[at50]"  , "[at50 desc]"           }
-           ,new String [] {"BT.025"   ,           "ground-temperature-25-cm"       , "[gt25]"  , "[gt25 desc]"           }
-           ,new String [] {"BT.050"   ,           "ground-temperature-50-cm"       , "[gt50]"  , "[gt50 desc]"           }
-           ,new String [] {"BT.010"   ,           "ground-temperature-10-cm"       , "[gt10]"  , "[gt10 desc]"           }
-           ,new String [] {"SSTF"     ,           "suspended-solids-in-watercourse", "[ssw]"   , "[ssw desc]"            }
-           ,new String [] {"Z.BOE"    ,           "wind-gust-speed-time"           , "m/s"     , "Velocitá raffica"      }
-           ,new String [] {"WR.BOE"   ,           "wind-gust-direction"            , "[wgd]"   , "[wgd desc]"            }
-           ,new String [] {"TD"       ,           "dew.temperature"                , "[dt]"    , "[dt desc]"             }
-           ,new String [] {"U.W.ABST" ,           "groundwater-level"              , "[gw]"    , "[gw desc]"             }
-           ,new String [] {"BN"       ,           "foliar-wetting"                 , "[fw]"    , "[fw desc]"             }
-    };
+    private static final String TEST_STATION_ID_1 = "825813160";
+    private static final String TEST_STATION_TYPE = BikesharingMoqoDataConverter.STATION_TYPE;
 
     @Test
     public void testConvertDate() {
         String str1 = "2019-06-01T13:20:00CEST";
         String str2 = "2019-03-31T01:40:00CET";
         String str3 = "2019-01-12T20:50:00CET";
+        String str4 = "2019-10-23T08:09:28+02:00";
         Date d1 = DCUtils.convertStringTimezoneToDate(str1);
         Date d2 = DCUtils.convertStringTimezoneToDate(str2);
         Date d3 = DCUtils.convertStringTimezoneToDate(str3);
-        LOG.info("d1="+d1);
-        LOG.info("d2="+d2);
-        LOG.info("d3="+d3);
+        Date d4 = DCUtils.convertStringTimezoneToDate(str4);
+        LOG.debug("d1="+d1);
+        LOG.debug("d2="+d2);
+        LOG.debug("d3="+d3);
+        LOG.debug("d4="+d4);
 
         Date d9 = new Date();
         String str9_1 = DCUtils.convertDateToString(d9, "yyyy-MM-dd'T'HH:mm:ssX");
         String str9_2 = DCUtils.convertDateToString(d9, "yyyy-MM-dd'T'HH:mm:ssZ");
         String str9_3 = DCUtils.convertDateToString(d9, "yyyy-MM-dd'T'HH:mm:ss");
-        LOG.info("str9_1="+str9_1);
-        LOG.info("str9_2="+str9_2);
-        LOG.info("str9_3="+str9_3);
+        LOG.debug("str9_1="+str9_1);
+        LOG.debug("str9_2="+str9_2);
+        LOG.debug("str9_3="+str9_3);
 
     }
 
@@ -121,15 +89,12 @@ public class BikesharingMoqoDataRetrieverTest extends AbstractJUnit4SpringContex
     public void testConvertStationData() {
 
         try {
-            String responseString = getTestData(DATA_FETCH_STATIONS);
-
-            BikesharingMoqoPageDto bikesharingMoqoPageDto = converter.convertCarsResponseToInternalDTO(responseString);
-            List<BikeDto> data = bikesharingMoqoPageDto.getBikeList();
+            List<BikeDto> data = readFetchData();
 
             StationList stations = pusher.mapStations2Bdp(data);
 
             //Test data contains 4 records
-            assertEquals(4, data.size());
+            assertEquals(10, data.size());
 
             //Check that station list contains a station with ID=TEST_IDX and that input data is converted correctly
             StringBuffer errs = new StringBuffer();
@@ -140,12 +105,11 @@ public class BikesharingMoqoDataRetrieverTest extends AbstractJUnit4SpringContex
                 if ( TEST_STATION_ID_1.equals(id) ) {
                     station1Found = true;
                     checkEquals(TEST_STATION_ID_1    , station.getId()            , errs, "STATION_1: ID is INCORRECT");
-                    checkEquals("DESC ST_001 IT"     , station.getName()          , errs, "STATION_1: NAME is INCORRECT");
-                    checkEquals(11.20262D            , station.getLongitude()     , errs, "STATION_1: LONGITUDE is INCORRECT");
-                    checkEquals(46.243333D           , station.getLatitude()      , errs, "STATION_1: LATITUDE is INCORRECT");
-                    checkEquals(210D                 , station.getElevation()     , errs, "STATION_1: ELEVATION is INCORRECT");
-                    checkEquals("SIAG"          , station.getOrigin()        , errs, "STATION_1: ORIGIN is INCORRECT");
-                    checkEquals("MeteoStation"       , station.getStationType()   , errs, "STATION_1: STATION_TYPE is INCORRECT");
+                    checkEquals("City Standard 60"   , station.getName()          , errs, "STATION_1: NAME is INCORRECT");
+                    checkEquals(11.1500811721644D    , station.getLongitude()     , errs, "STATION_1: LONGITUDE is INCORRECT");
+                    checkEquals(46.6724745760751D    , station.getLatitude()      , errs, "STATION_1: LATITUDE is INCORRECT");
+                    checkEquals("BIKE_SHARING_MERANO", station.getOrigin()        , errs, "STATION_1: ORIGIN is INCORRECT");
+                    checkEquals(TEST_STATION_TYPE    , station.getStationType()   , errs, "STATION_1: STATION_TYPE is INCORRECT");
                 }
             }
             if ( !station1Found ) {
@@ -164,79 +128,20 @@ public class BikesharingMoqoDataRetrieverTest extends AbstractJUnit4SpringContex
     }
 
     @Test
-    public void testConvertDataTypeData() {
-
-        try {
-            String responseString = getTestData(DATA_FETCH_DATA_TYPES);
-
-            List<DataTypeDto> dataTypes = new ArrayList<>();
-//            dataTypes = reader.convertSensorsResponseToInternalDTO(responseString, null);
-
-            //Test data contains 26 records
-            assertEquals(TEST_DATA_TYPE_WS.length, dataTypes.size());
-
-            //Check that dataTypes list contains all data types and that input data is converted correctly
-            StringBuffer errs = new StringBuffer();
-            for ( int i=0 ; i<dataTypes.size() ; i++ ) {
-                DataTypeDto dataTypeDto = dataTypes.get(i);
-
-                String name = dataTypeDto.getName();
-                String desc = dataTypeDto.getDescription();
-                String unit = dataTypeDto.getUnit();
-                Integer period = dataTypeDto.getPeriod();
-                boolean found = false;
-
-                for ( int j=0 ; !found && j<TEST_DATA_TYPE_WS.length ; j++ ) {
-                    String[] attrs = TEST_DATA_TYPE_WS[j];
-                    if ( name.equals(attrs[1]) ) {
-                        found = true;
-                        checkEquals(unit    , attrs[2]            , errs, "DataType["+name+"]: unit   is INCORRECT");
-                        checkEquals(desc    , attrs[3]            , errs, "DataType["+name+"]: desc   is INCORRECT");
-                        checkEquals(period  , TEST_PERIOD         , errs, "DataType["+name+"]: period is INCORRECT");
-                    }
-                }
-            }
-            if ( errs.length() > 0 ) {
-                Assert.fail("Station converter failure: " + errs);
-            }
-
-        } catch (Exception e) {
-            String msg = "Exception in testConvertStationData: " + e;
-            LOG.error(msg, e);
-            Assert.fail(msg);
-        }
-
-    }
-
-    @Test
     public void testConvertMeasurements() {
 
         try {
 
-            //Create one station
-            StationDto stationDto = new StationDto();
-            stationDto.setId(TEST_STATION_ID_1);
-            BikeDto data = new BikeDto();
-            List<BikeDto> stationList = new ArrayList<BikeDto>();
-            stationList.add(data);
+            //Get data of first Station (Bike)
+            List<BikeDto> data = readFetchData();
+            BikeDto bikeDto = data.get(0);
 
-            //Add all datatypes to the station
-            String responseStringDataTypes = getTestData(DATA_FETCH_DATA_TYPES);
-            List<DataTypeDto> dataTypes = new ArrayList<>();
-//            dataTypes = reader.convertSensorsResponseToInternalDTO(responseStringDataTypes, stationList);
-
-//            //Add all measurements for each data type
-//            String responseStringMeasurements = getTestData(DATA_FETCH_MEASUREMENTS);
-//            List<TimeSerieDto> measurementList = new ArrayList<>();
-//            Map<String, List<TimeSerieDto>> timeSeriesMap = data.getTimeSeriesMap();
-//            for ( int j=0 ; j<TEST_DATA_TYPE_WS.length ; j++ ) {
-//                String[] attrs = TEST_DATA_TYPE_WS[j];
-//                String code = attrs[0];
-//                timeSeriesMap.put(code, measurementList);
-//            }
+            List<DataTypeDto> allDataTypes = pusher.mapDataTypes2Bdp();
 
             //Convert in Data Hub data structure
-            DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(data);
+            List<BikeDto> list = new ArrayList<BikeDto>();
+            list.add(bikeDto);
+            DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(list);
 
             //Check there is a branch for TEST_STATION_ID_1 station
             Map<String, DataMapDto<RecordDtoImpl>> branch1 = stationRec.getBranch();
@@ -249,9 +154,9 @@ public class BikesharingMoqoDataRetrieverTest extends AbstractJUnit4SpringContex
             //Check there is data measurements in the map
             StringBuffer errs = new StringBuffer();
             Map<String, DataMapDto<RecordDtoImpl>> branch2 = dataMapDto1.getBranch();
-            for ( int j=0 ; j<TEST_DATA_TYPE_WS.length ; j++ ) {
-                String[] attrs = TEST_DATA_TYPE_WS[j];
-                String dataTypeName = attrs[1];
+            for ( int j=0 ; j<allDataTypes.size() ; j++ ) {
+                DataTypeDto dataTypeDto = allDataTypes.get(j);
+                String dataTypeName = dataTypeDto.getName();
                 DataMapDto<RecordDtoImpl> dataMapDto2 = branch2.get(dataTypeName);
                 checkNotEmpty(dataMapDto2          , errs, "Measures for type "+dataTypeName);
             }
@@ -268,7 +173,29 @@ public class BikesharingMoqoDataRetrieverTest extends AbstractJUnit4SpringContex
 
     }
 
-    public static String getTestData(String dataType) {
+    private List<BikeDto> readFetchData() throws Exception {
+        //Convert station data
+        String responseString = getTestData(DATA_FETCH_STATIONS, ServiceCallParam.FUNCTION_NAME_PAGE_NUM, "1");
+        BikesharingMoqoPageDto bikesharingMoqoPageDto = converter.convertCarsResponseToInternalDTO(responseString);
+        List<BikeDto> data = bikesharingMoqoPageDto.getBikeList();
+
+        //Convert availability data
+        for (BikeDto bikeDto : data) {
+            String bikeId = bikeDto.getId();
+            String responseStringAvail = getTestData(DATA_FETCH_MEASUREMENTS, ServiceCallParam.FUNCTION_NAME_STATION_ID, bikeId);
+            if ( DCUtils.paramNotNull(responseStringAvail) ) {
+                List<AvailabilityDto> availDtoList = converter.convertAvailabilityResponseToInternalDTO(responseStringAvail);
+                bikeDto.setAvailabilityList(availDtoList);
+                //Evaluate attributes available, until and from for the bike, looking into the Availability slots
+                converter.calculateBikeAvailability_FromUntil(bikeDto, availDtoList);
+                converter.calculateBikeAvailability(bikeDto, availDtoList);
+            }
+        }
+
+        return data;
+    }
+
+    public static String getTestData(String dataType, String paramName, String paramValue) {
         StringBuffer retval = new StringBuffer();
 
         Reader rr = null;
@@ -278,14 +205,17 @@ public class BikesharingMoqoDataRetrieverTest extends AbstractJUnit4SpringContex
             LOG.debug("START read test data");
             String fileName =
                     DATA_PUSH_STATIONS.equals(dataType)      ? TEST_FILE_PUSH_STATIONS :
-                    DATA_PUSH_DATA_TYPES.equals(dataType)    ? TEST_FILE_PUSH_DATATYPES :
                     DATA_PUSH_MEASUREMENTS.equals(dataType)  ? TEST_FILE_PUSH_MEASUREMENTS :
                     DATA_FETCH_STATIONS.equals(dataType)     ? TEST_FILE_FETCH_STATIONS :
-                    DATA_FETCH_DATA_TYPES.equals(dataType)   ? TEST_FILE_FETCH_DATATYPES :
                     DATA_FETCH_MEASUREMENTS.equals(dataType) ? TEST_FILE_FETCH_MEASUREMENTS :
                     TEST_FILE_FETCH_STATIONS;
-            String URL = BikesharingMoqoDataRetrieverTest.class.getResource(fileName).getFile();
-            File file = new File(URL);
+            fileName = fileName.replace(paramName, paramValue);
+            URL url = BikesharingMoqoDataRetrieverTest.class.getResource(fileName);
+            if ( url == null ) {
+                return null;
+            }
+            String filePath = url.getFile();
+            File file = new File(filePath);
             String testFilePath = file.getAbsolutePath();
             rr = new FileReader(testFilePath);
             br = new BufferedReader(rr);
@@ -336,13 +266,6 @@ public class BikesharingMoqoDataRetrieverTest extends AbstractJUnit4SpringContex
         }
         if ( !expected.equals(actual) ) {
             sb.append("\n - "+errMsg+" (EXPECTED:'"+expected+"'  ACTUAL:'"+actual+"')");
-            return;
-        }
-    }
-
-    private void checkNotExists(Object actual, StringBuffer sb, String errMsg) {
-        if (actual != null ) {
-            sb.append("\n - "+errMsg+" IS NOT NULL (should be NULL)");
             return;
         }
     }

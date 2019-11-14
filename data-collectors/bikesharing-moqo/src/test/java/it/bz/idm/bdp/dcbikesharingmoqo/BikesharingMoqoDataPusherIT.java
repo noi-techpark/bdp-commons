@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
+import it.bz.idm.bdp.dcbikesharingmoqo.dto.AvailabilityDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikeDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikesharingMoqoPageDto;
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -32,9 +33,6 @@ public class BikesharingMoqoDataPusherIT extends AbstractJUnit4SpringContextTest
     @Autowired
     private BikesharingMoqoDataConverter converter;
 
-//    @Autowired
-//    private BikesharingMoqoDataRetriever reader;
-
     private boolean doPush = true;
 
     @Test
@@ -45,8 +43,6 @@ public class BikesharingMoqoDataPusherIT extends AbstractJUnit4SpringContextTest
             return;
         }
         try {
-            scheduler.pushStations();
-            scheduler.pushDataTypes();
             scheduler.pushData();
         } catch (Exception e) {
             LOG.error("Exception in testSchedulerPush: "+e, e);
@@ -65,31 +61,18 @@ public class BikesharingMoqoDataPusherIT extends AbstractJUnit4SpringContextTest
 
         List<String> errors = new ArrayList<String>();
         List<BikeDto> dataStations = null;
-        List<DataTypeDto> dataTypes = null;
         BikeDto dataMeasurements = null;
 
         try {
-            String responseStringStations = BikesharingMoqoDataRetrieverTest.getTestData(BikesharingMoqoDataRetrieverTest.DATA_PUSH_STATIONS);
-            BikesharingMoqoPageDto bikesharingMoqoPageDto = converter.convertCarsResponseToInternalDTO(responseStringStations);
-            dataStations = bikesharingMoqoPageDto.getBikeList();
-
-//            String responseStringDataTypes = BikesharingMoqoDataRetrieverTest.getTestData(BikesharingMoqoDataRetrieverTest.DATA_PUSH_DATA_TYPES);
-//            dataTypes = reader.convertSensorsResponseToInternalDTO(responseStringDataTypes, dataStations);
-//
-//            String responseStringMeasurements = BikesharingMoqoDataRetrieverTest.getTestData(BikesharingMoqoDataRetrieverTest.DATA_PUSH_MEASUREMENTS);
-//            List<TimeSerieDto> timeSeries = reader.convertMeasurementsResponseToInternalDTO(responseStringMeasurements);
-//
-//            dataMeasurements = dataStations.get(0);
-//            for (String typeCode : BikesharingMoqoDataRetrieverTest.DATA_PUSH_TYPE_CODES) {
-//                dataMeasurements.getTimeSeriesMap().put(typeCode, timeSeries);
-//            }
+            dataStations = readPushData();
+            dataMeasurements = dataStations.get(0);
         } catch (Exception e) {
             LOG.error("Exception in testPush: "+e, e);
             Assert.fail();
         }
 
         pushStations(dataStations, errors);
-        pushDataTypes(dataTypes, errors);
+        pushDataTypes(errors);
         pushStationData(dataMeasurements, errors);
 
         if ( errors.size() > 0 ) {
@@ -113,9 +96,9 @@ public class BikesharingMoqoDataPusherIT extends AbstractJUnit4SpringContextTest
         }
     }
 
-    private void pushDataTypes(List<DataTypeDto> dataTypes, List<String> errors) {
+    private void pushDataTypes(List<String> errors) {
         try {
-            List<DataTypeDto> dataTypeList = dataTypes;
+            List<DataTypeDto> dataTypeList = pusher.mapDataTypes2Bdp();
             LOG.debug(dataTypeList);
             if (dataTypeList != null) {
                 pusher.syncDataTypes(dataTypeList);
@@ -128,7 +111,9 @@ public class BikesharingMoqoDataPusherIT extends AbstractJUnit4SpringContextTest
 
     private void pushStationData(BikeDto data, List<String> errors) {
         try {
-            DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(data);
+            List<BikeDto> list = new ArrayList<BikeDto>();
+            list.add(data);
+            DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(list);
             if (stationRec != null) {
                 pusher.pushData(stationRec);
             }
@@ -137,4 +122,25 @@ public class BikesharingMoqoDataPusherIT extends AbstractJUnit4SpringContextTest
         }
     }
 
+    private List<BikeDto> readPushData() throws Exception {
+        //Convert station data
+        String responseString = BikesharingMoqoDataRetrieverTest.getTestData(BikesharingMoqoDataRetrieverTest.DATA_FETCH_STATIONS, ServiceCallParam.FUNCTION_NAME_PAGE_NUM, "1");
+        BikesharingMoqoPageDto bikesharingMoqoPageDto = converter.convertCarsResponseToInternalDTO(responseString);
+        List<BikeDto> data = bikesharingMoqoPageDto.getBikeList();
+
+        //Convert availability data
+        for (BikeDto bikeDto : data) {
+            String bikeId = bikeDto.getId();
+            String responseStringAvail = BikesharingMoqoDataRetrieverTest.getTestData(BikesharingMoqoDataRetrieverTest.DATA_FETCH_MEASUREMENTS, ServiceCallParam.FUNCTION_NAME_STATION_ID, bikeId);
+            if ( DCUtils.paramNotNull(responseStringAvail) ) {
+                List<AvailabilityDto> availDtoList = converter.convertAvailabilityResponseToInternalDTO(responseStringAvail);
+                bikeDto.setAvailabilityList(availDtoList);
+                //Evaluate attributes available, until and from for the bike, looking into the Availability slots
+                converter.calculateBikeAvailability_FromUntil(bikeDto, availDtoList);
+                converter.calculateBikeAvailability(bikeDto, availDtoList);
+            }
+        }
+
+        return data;
+    }
 }

@@ -20,6 +20,7 @@ import it.bz.idm.bdp.dcbikesharingmoqo.dto.AvailabilityDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikeDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikesharingMoqoPageDto;
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.LocationDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.StationDto;
 
 @Service
@@ -27,12 +28,16 @@ public class BikesharingMoqoDataConverter {
 
     private static final Logger LOG = LogManager.getLogger(BikesharingMoqoDataConverter.class.getName());
 
-    public static final long   MILLIS_ONE_DAY            = 24 * 60 * 60 * 1000;
+    public static final String DATA_TYPE_AVAILABILITY        = DataTypeDto.AVAILABILITY;
+    public static final String DATA_TYPE_FUTURE_AVAILABILITY = DataTypeDto.FUTURE_AVAILABILITY;
+    public static final String DATA_TYPE_IN_MAINTENANCE      = "in-maintenance";
+
+    public static final String STATION_TYPE              = "Bicycle";
 
     public static final String ORIGIN_KEY                = "app.origin";
     public static final String PERIOD_KEY                = "app.period";
-//    public static final String FETCH_PERIOD              = "app.fetch_period";
-    public static final String STATION_TYPE_KEY          = "app.station.type";
+
+    public static final String STATION_FUTURE_AVAIL_MINS = "app.station.future_availability.minutes";
 
     public static final String AUTH_TOKEN_KEY            = "app.auth.token";
     public static final String SELECTED_TEAM_KEY         = "app.auth.selectedTeam";
@@ -40,12 +45,12 @@ public class BikesharingMoqoDataConverter {
     @Autowired
     private Environment env;
 
-    //This must be initialized in application.properties file (for example "Meteotrentino")
+    //This must be initialized in application.properties file (for example "BIKE_SHARING_MERANO")
     private String origin;
-    //This must be initialized in application.properties file (for example "Meteostation")
-    private String stationType;
     //This must be initialized in application.properties file (for example 300)
     private Integer period;
+    //This must be initialized in application.properties file (for example 60)
+    private Integer futureAvailMinutes;
 
     //This must be initialized in application.properties file
     private String authToken;
@@ -60,28 +65,21 @@ public class BikesharingMoqoDataConverter {
         }
         return this.origin;
     }
-    public String getStationType() {
-        if ( this.stationType == null ) {
-            this.stationType = env.getProperty(STATION_TYPE_KEY);
-        }
-        return this.stationType;
-    }
     public Integer getPeriod() {
         if ( this.period == null ) {
             this.period = env.getProperty(PERIOD_KEY, Integer.class);
         }
         return this.period;
     }
-//    public Integer getFetchPeriod() {
-//        if ( this.fetchPeriod == null ) {
-//            String strFetchPeriod = env.getProperty(FETCH_PERIOD);
-//            this.fetchPeriod = DCUtils.convertStringToInteger(strFetchPeriod);
-//            if ( this.fetchPeriod == null ) {
-//                this.fetchPeriod = 1;
-//            }
-//        }
-//        return this.fetchPeriod;
-//    }
+    public String getStationType() {
+        return STATION_TYPE;
+    }
+    public Integer getFutureAvailMinutes() {
+        if ( this.futureAvailMinutes == null ) {
+            this.futureAvailMinutes = env.getProperty(STATION_FUTURE_AVAIL_MINS, Integer.class);
+        }
+        return this.futureAvailMinutes;
+    }
 
     public String getAuthToken() {
         if ( this.authToken == null ) {
@@ -96,110 +94,8 @@ public class BikesharingMoqoDataConverter {
         return this.selectedTeam;
     }
 
-//    /**
-//     * Converts External DTO (FeatureDto coming from JSON) to Internal DTO (List<BikesharingMoqoDto> to send to the dataHub).
-//     *
-//     * @param stationsArray
-//     * @return
-//     */
-//    public List<BikesharingMoqoDto> convertExternalStationDtoListToInternalDtoList(FeaturesDto stationsArray) {
-//        if ( LOG.isDebugEnabled() ) {
-//            LOG.debug("stationsArray: "+stationsArray);
-//        }
-//        List<BikesharingMoqoDto> extDtoList = new ArrayList<BikesharingMoqoDto>();
-//        if ( stationsArray == null ) {
-//            return extDtoList;
-//        }
-//
-//        List<Feature> stationList = stationsArray.getFeatures();
-//        for (Feature stationObj : stationList) {
-//            StationDto stationDto = convertExternalStationDtoToStationDto(stationObj);
-//            BikesharingMoqoDto extDto = new BikesharingMoqoDto(stationDto, stationObj);
-//            extDtoList.add(extDto);
-//        }
-//
-//        if ( LOG.isDebugEnabled() ) {
-//            LOG.debug("extDtoList: "+extDtoList);
-//        }
-//        return extDtoList;
-//    }
-
-//    /**
-//     * Converts External DTO (Feature coming from JSON) to Internal DTO (StationDto to send to the dataHub).
-//     * 
-//     *  Example of JSON provided by the service
-//     * {
-//     *   "type": "Feature",
-//     *   "geometry": {
-//     *     "type": "Point",
-//     *     "coordinates": [
-//     *       669803.015640121,
-//     *       5123442.04315501
-//     *     ]
-//     *   },
-//     *   "properties": {
-//     *     "SCODE": "89940PG",
-//     *     "NAME_D": "ETSCH BEI SALURN",
-//     *     "NAME_I": "ADIGE A SALORNO",
-//     *     "NAME_L": "ETSCH BEI SALURN",
-//     *     "NAME_E": "ETSCH BEI SALURN",
-//     *     "ALT": 210,
-//     *     "LONG": 11.20262,
-//     *     "LAT": 46.243333
-//     *   }
-//     * }
-//     *
-//     * @param stationObj
-//     * @return
-//     */
-//    public StationDto convertExternalStationDtoToStationDto(Feature stationObj) {
-//        if ( LOG.isDebugEnabled() ) {
-//            LOG.debug("stationObj: "+stationObj);
-//        }
-//        StationDto stationDto = null;
-//        if ( stationObj != null ) {
-//
-//            Properties stationProps = stationObj.getProperties();
-//
-//            if ( stationProps == null ) {
-//                LOG.warn("Station properties are null!: stationObj: "+stationObj);
-//                return stationDto;
-//            }
-//
-//            stationDto = new StationDto();
-//
-//            //From StationDTO
-//            stationDto.setId(stationProps.getSCODE());
-//            stationDto.setName(DCUtils.trunc(stationProps.getNAMEI(), 255));
-//            stationDto.setLongitude(stationProps.getLONG());
-//            stationDto.setLatitude(stationProps.getLAT());
-//            stationDto.setElevation(DCUtils.convertIntegerToDouble(stationProps.getALT()));
-//            //OMITTED: protected String crs;
-//            stationDto.setOrigin(DCUtils.trunc(getOrigin(), 255));
-//            //TODO: get municipality from coordinates....... station.setMunicipality(DCUtils.trunc(map.get("city"), 255));
-//            stationDto.setStationType(getStationType());
-//
-//            //MetaData must be flat, if we try to add a structure like "name": {"it":"...","de":"..."} we get an error
-//            Map<String, Object> metaData = new HashMap<String, Object>();
-//            metaData.put("name_it", stationProps.getNAMEI());
-//            metaData.put("name_de", stationProps.getNAMED());
-//            metaData.put("name_en", stationProps.getNAMEE());
-//            //TODO: ladino????
-//            //names.put("it", stationProps.getNAMEL());
-//            stationDto.setMetaData(metaData);
-//
-//            //From MeteoStationDto
-//            //OMITTED: station.setArea(extDto.getSlotsTotal());
-//        }
-//
-//        if ( LOG.isDebugEnabled() ) {
-//            LOG.debug("stationDto: "+stationDto);
-//        }
-//        return stationDto;
-//    }
-
     /**
-     * Converts External DTO (Location coming from JSON) to Internal DTO (LocationDto to send to the dataHub).
+     * Converts External DTO (Car coming from JSON) to a more convenient internal DTO (BikeDto).
      * 
      * Example of JSON provided by the service
      * {
@@ -283,7 +179,7 @@ public class BikesharingMoqoDataConverter {
     }
 
     /**
-     * Converts External DTO (Location coming from JSON) to Internal DTO (LocationDto to send to the dataHub).
+     * Converts External DTO (Location coming from JSON) to a more convenient internal DTO (LocationDto).
      * 
      * Example of JSON provided by the service
      * "location": {
@@ -340,6 +236,12 @@ public class BikesharingMoqoDataConverter {
         return locationDto;
     }
 
+    /**
+     * Converts the internal representation of the Bike in StationDto user by the Open Data Hub.
+     * 
+     * @param bikeDto
+     * @return
+     */
     public StationDto convertBikeDtoToStationDto(BikeDto bikeDto) {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("bikeDto: "+bikeDto);
@@ -356,15 +258,15 @@ public class BikesharingMoqoDataConverter {
             //OMITTED: protected String crs;
             stationDto.setOrigin(DCUtils.trunc(getOrigin(), 255));
             stationDto.setStationType(getStationType());
-            stationDto.setMetaData(stationMetaData);
 
-            stationMetaData.put("cleanness"             , bikeDto.getCleanness()     );
-            stationMetaData.put("exchange_type"         , bikeDto.getExchangeType()  );
-            stationMetaData.put("big_image_url"         , bikeDto.getBigImageUrl()   );
-            stationMetaData.put("medium_image_url"      , bikeDto.getMedImageUrl()   );
-            stationMetaData.put("thumb_image_url"       , bikeDto.getTmbImageUrl()   );
-            stationMetaData.put("in_maintenance"        , bikeDto.getInMaintenance() );
-            stationMetaData.put("available"             , bikeDto.getAvailable()     );
+            //stationMetaData.put("cleanness"             , bikeDto.getCleanness()          );
+            stationMetaData.put("exchange_type"         , bikeDto.getExchangeType()       );
+            stationMetaData.put("big_image_url"         , bikeDto.getBigImageUrl()        );
+            stationMetaData.put("medium_image_url"      , bikeDto.getMedImageUrl()        );
+            stationMetaData.put("thumb_image_url"       , bikeDto.getTmbImageUrl()        );
+            stationMetaData.put(BikesharingMoqoDataConverter.DATA_TYPE_IN_MAINTENANCE       , DCUtils.convertBooleanToLong(bikeDto.getInMaintenance())      );
+            stationMetaData.put(BikesharingMoqoDataConverter.DATA_TYPE_AVAILABILITY         , DCUtils.convertBooleanToLong(bikeDto.getAvailability())       );
+            stationMetaData.put(BikesharingMoqoDataConverter.DATA_TYPE_FUTURE_AVAILABILITY  , DCUtils.convertBooleanToLong(bikeDto.getFutureAvailability()) );
 
             if ( bikeDto.getLocation() != null ) {
                 LocationDto locationDto = bikeDto.getLocation();
@@ -380,6 +282,9 @@ public class BikesharingMoqoDataConverter {
                 stationDto.setLongitude(locationDto.getLongitude());
                 stationDto.setLatitude( locationDto.getLatitude() );
             }
+
+            //Call to setMetaData must be done when the Map is completely filled
+            stationDto.setMetaData(stationMetaData);
 
         }
         return stationDto;
@@ -401,6 +306,7 @@ public class BikesharingMoqoDataConverter {
 
         BikesharingMoqoPageDto dto = new BikesharingMoqoPageDto();
 
+        //How much does it take to parse the JSON String with org.json?
         long jsonStart = System.currentTimeMillis();
         JSONObject joMain = new JSONObject(responseString);
         long jsonEnd = System.currentTimeMillis();
@@ -408,6 +314,7 @@ public class BikesharingMoqoDataConverter {
             LOG.debug("Time to parse with org.json: " + (jsonEnd-jsonStart));
         }
 
+        //How much does it take to parse the JSON String with Jackson (5-10 times slower than org.json)?
 //        long jacksonStart = System.currentTimeMillis();
 //        CarsList cars = mapper.readValue(responseString, new TypeReference<CarsList>() {});
 //        long jacksonEnd = System.currentTimeMillis();
@@ -473,6 +380,7 @@ public class BikesharingMoqoDataConverter {
 
         List<AvailabilityDto> dtoList = new ArrayList<AvailabilityDto>();
 
+        //How much does it take to parse the JSON String with org.json?
         long jsonStart = System.currentTimeMillis();
         JSONObject joMain = new JSONObject(responseString);
         long jsonEnd = System.currentTimeMillis();
@@ -480,6 +388,7 @@ public class BikesharingMoqoDataConverter {
             LOG.debug("Time to parse with org.json: " + (jsonEnd-jsonStart));
         }
 
+        //How much does it take to parse the JSON String with Jackson?
 //        long jacksonStart = System.currentTimeMillis();
 //        CarsList cars = mapper.readValue(responseString, new TypeReference<CarsList>() {});
 //        long jacksonEnd = System.currentTimeMillis();
@@ -519,6 +428,212 @@ public class BikesharingMoqoDataConverter {
         return dtoList;
     }
 
+    /**
+     * Evaluate attributes availability and future_avalilability, looking into the Availability slots
+     * return true if consistent availability data is found, false otherwise
+     * 
+     * @param bikeDto
+     * @param availDtoList
+     */
+    public boolean calculateBikeAvailability(BikeDto bikeDto, List<AvailabilityDto> availDtoList) {
+        if ( bikeDto == null || availDtoList == null ) {
+            return false;
+        }
+
+        String bikeId = bikeDto.getId();
+        String bikeLicense = bikeDto.getLicense();
+
+        //1. get an ordered list of Availabilities, make a loop to check all items
+        //   get also current avalilability, it is used to understand if the bike is available NOW.
+        List<AvailabilityDto> orderedAvailDtoList = new ArrayList<AvailabilityDto>();
+        AvailabilityDto currentBikeAvailability = null;
+        //Add 1 second to current time, measurements can have a slot that starts exactly now
+        long dtNowMillis = System.currentTimeMillis() + 1 * 1000;
+        for ( int i=0 ; i<availDtoList.size() ; i++ ) {
+            AvailabilityDto availDto = availDtoList.get(i);
+            Boolean slotAvailable = availDto.getAvailable();
+            Date slotFrom = availDto.getFrom();
+            Date slotUntil = availDto.getUntil();
+            long slotFromMillis  = slotFrom!=null  ? slotFrom.getTime()  : 0;
+            long slotUntilMillis = slotUntil!=null ? slotUntil.getTime() : Long.MAX_VALUE;
+            boolean slotFromBeforeNow = slotFrom == null  || slotFromMillis <= dtNowMillis;
+            boolean slotUntilAfterNow = slotUntil == null || slotUntilMillis > dtNowMillis;
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug("Bike id="+bikeId+"  rn="+bikeLicense+" : "+availDto);
+            }
+            //Slot contains NOW, take value
+            if ( slotFromBeforeNow && slotUntilAfterNow ) {
+                if ( currentBikeAvailability == null ) {
+                    currentBikeAvailability = availDto;
+                    if ( LOG.isDebugEnabled() ) {
+                        LOG.debug("Bike id="+bikeId+"  rn="+bikeLicense+" : "+"Found currentBikeAvailability="+currentBikeAvailability);
+                    }
+                } else {
+                    LOG.warn("INCONSISTENT BEHAVIOUR: Check Availability, found another slot that contains current time! New value="+slotAvailable+" currentValue="+currentBikeAvailability);
+                }
+            } else if ( slotFromMillis > dtNowMillis && slotUntilMillis > dtNowMillis ) {
+                //Put slot in the ordered list, consider only future slots
+                int idx = -1;
+                for ( int j=0 ; idx<0 && j<orderedAvailDtoList.size() ; j++ ) {
+                    AvailabilityDto checkDto = availDtoList.get(j);
+                    Date checkFrom  = checkDto.getFrom();
+                    Date checkUntil = checkDto.getUntil();
+                    long checkFromMillis  = checkFrom!=null  ? checkFrom.getTime()  : 0;
+                    long checkUntilMillis = checkUntil!=null ? checkUntil.getTime() : Long.MAX_VALUE;
+                    if ( LOG.isDebugEnabled() ) {
+                        LOG.debug("Order Availability for Bike id="+bikeId+"  rn="+bikeLicense+" : "+"checkFrom="+checkFrom+" checkUntil="+checkUntil);
+                    }
+                    //if slotDto.from < checkDto.from we must insert the item before examined one
+                    if ( slotFromMillis < checkFromMillis ) {
+                        if ( LOG.isDebugEnabled() ) {
+                            LOG.debug("Check From is lesser: slotFrom="+slotFrom+" checkFrom="+checkFrom);
+                        }
+                        idx = j;
+                    } else if ( checkFromMillis == slotFromMillis ) {
+                        //if slotDto.from == checkDto.from, compare also until
+                        if ( slotUntilMillis <= checkUntilMillis ) {
+                            if ( LOG.isDebugEnabled() ) {
+                                LOG.debug("Check until is lesser: slotFrom="+slotFrom+" checkFrom="+checkFrom+"  slotUntil="+slotUntil+" checkUntil="+checkUntil);
+                            }
+                            idx = j;
+                        }
+                    }
+                }
+                //If slotDto has lesser from or until then insert the item in found position, otherwise add it at the end
+                if ( idx >= 0 ) {
+                    orderedAvailDtoList.add(idx, availDto);
+                } else {
+                    orderedAvailDtoList.add(availDto);
+                }
+            }
+        }
+
+        //If we do not find any information about currentAvalilability, set the bike in maintenance
+        if ( currentBikeAvailability == null || currentBikeAvailability.getAvailable() == null ) {
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug("Exit check, null values found: currentBikeAvailability="+currentBikeAvailability);
+            }
+            bikeDto.setAvailability(false);
+            bikeDto.setFutureAvailability(false);
+            bikeDto.setInMaintenance(true);
+            return false;
+        }
+
+        //2. having currentBikeAvailability, look for next AvailabilityDto that has a different value to calculate future_availability
+        //   Take only slots where dateFrom is less than NOW + STATION_FUTURE_AVAIL_MINS
+        Boolean availability = currentBikeAvailability.getAvailable();
+        Boolean futureAvailability = null;
+        long deltaFuture = 60 * 1000 * getFutureAvailMinutes();
+        for ( int i=0 ; futureAvailability==null && i<orderedAvailDtoList.size() ; i++ ) {
+            AvailabilityDto nextAvailDto = orderedAvailDtoList.get(i);
+            Boolean currentAvailable = currentBikeAvailability.getAvailable();
+            Boolean nextAvailable = nextAvailDto.getAvailable();
+            Date nextFrom = nextAvailDto.getFrom();
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug("Check next, currentAvailable="+currentAvailable+"  nextFrom="+nextFrom+"  nextAvailable="+nextAvailable);
+            }
+            if ( nextAvailable!=null && !nextAvailable.equals(currentAvailable) ) {
+                long nextFromMillis = nextFrom!=null ? nextFrom.getTime() : 0;
+                if ( LOG.isDebugEnabled() ) {
+                    LOG.debug("Check next, nextFromMillis="+nextFromMillis+"  dtNowMillis + deltaFuture="+(dtNowMillis + deltaFuture));
+                }
+                if ( nextFromMillis <= (dtNowMillis + deltaFuture) ) {
+                    futureAvailability = nextAvailable;
+                    if ( LOG.isDebugEnabled() ) {
+                        LOG.debug("Found change in future_availability, futureAvailability="+futureAvailability+"  availability="+availability);
+                    }
+                }
+            }
+        }
+        if ( futureAvailability == null ) {
+            futureAvailability = availability;
+        }
+
+        bikeDto.setMeasurementTimestamp(dtNowMillis);
+        bikeDto.setAvailability(availability);
+        bikeDto.setFutureAvailability(futureAvailability);
+        return true;
+    }
+
+    /**
+     * Evaluate attributes available, until and from for the bike, looking into the Availability slots.
+     * FOR NOW THIS IS NOT USED!
+     * 
+     * @param bikeDto
+     * @param availDtoList
+     */
+    public void calculateBikeAvailability_FromUntil(BikeDto bikeDto, List<AvailabilityDto> availDtoList) {
+        if ( bikeDto == null || availDtoList == null ) {
+            return;
+        }
+
+        String bikeId = bikeDto.getId();
+        String bikeLicense = bikeDto.getLicense();
+
+        Boolean bikeAvailable   = false;
+        Date bikeAvailableFrom  = null;
+        Date bikeAvailableUntil = null;
+        Long bikeAvailableDuration = null;
+        long dtNowMillis = System.currentTimeMillis() + 1 * 1000;
+        //Date dtNow = new Date(dtNowMillis);
+        for ( int i=0 ; i<availDtoList.size() ; i++ ) {
+            AvailabilityDto availDto = availDtoList.get(i);
+            Boolean slotAvailable = availDto.getAvailable();
+            Date slotFrom = availDto.getFrom();
+            Date slotUntil = availDto.getUntil();
+            Long slotDuration = availDto.getDuration();
+            long slotFromMillis  = slotFrom!=null  ? slotFrom.getTime()  : 0;
+            long slotUntilMillis = slotUntil!=null ? slotUntil.getTime() : 0;
+            boolean slotFromBeforeNow = slotFrom == null  || slotFromMillis <= dtNowMillis;
+            boolean slotUntilAfterNow = slotUntil == null || slotUntilMillis > dtNowMillis;
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug("Bike id="+bikeId+"  rn="+bikeLicense+" : "+availDto);
+            }
+
+            if ( slotFromBeforeNow && slotUntilAfterNow ) {
+                //NOW is BETWEEN current slot ==> take values from it
+                LOG.debug("Bike id="+bikeId+"  rn="+bikeLicense+" SLOT IS BETWEEN NOW: "+availDto);
+                bikeAvailable = slotAvailable;
+                bikeAvailableFrom = null;
+                bikeAvailableUntil = slotUntil;
+                if ( Boolean.TRUE.equals(slotAvailable) ) {
+                    bikeAvailableDuration = slotDuration;
+                }
+            } else if ( !slotFromBeforeNow && slotUntilAfterNow ) {
+                //NOW is BEFORE  current slot ==> 
+                LOG.debug("Bike id="+bikeId+"  rn="+bikeLicense+" SLOT IS BEFORE  NOW: "+availDto);
+                if ( Boolean.TRUE.equals(slotAvailable) ) {
+                    //Bike will be available in the future, take "from" and "until" but do not change value of available
+                    bikeAvailableFrom = slotFrom;
+                    bikeAvailableUntil = slotUntil;
+                    //bikeAvailableDuration = (slotFromMillis-dtNowMillis) / 1000;
+                } else {
+                    //Bike will be unavailable in the future, take "from" and calculate availability duration
+                    bikeAvailableUntil = slotFrom;
+                    bikeAvailableDuration = (slotFromMillis-dtNowMillis) / 1000;
+                }
+            } else if ( slotFromBeforeNow && !slotUntilAfterNow ) {
+                //NOW is AFTER   current slot, DO NOT CONSIDER IT!!!
+            } else {
+                //Impossible situation!!!
+                LOG.warn("Inconsistent availability slot for bike id="+bikeId+"  rn="+bikeLicense+" : "+availDto);
+            }
+
+        }
+
+        bikeDto.setMeasurementTimestamp(dtNowMillis);
+        bikeDto.setAvailability(bikeAvailable);
+        bikeDto.setAvailableFrom(bikeAvailableFrom);
+        bikeDto.setAvailableUntil(bikeAvailableUntil);
+        bikeDto.setAvailableDuration(bikeAvailableDuration);
+    }
+
+    /**
+     * Create a map with only one instance of each possible location (parking station).
+     * 
+     * @param bikeList
+     * @return
+     */
     public Map<String, LocationDto> getDistinctLocations(List<BikeDto> bikeList) {
         Map<String, LocationDto> locationMap = new HashMap<String, LocationDto>();
 

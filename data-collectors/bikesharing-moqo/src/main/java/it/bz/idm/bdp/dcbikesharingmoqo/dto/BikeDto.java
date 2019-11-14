@@ -21,11 +21,14 @@ public class BikeDto implements Serializable {
     private String medImageUrl    ;
     private String tmbImageUrl    ;
     private Boolean inMaintenance ;
-    private Boolean available     ;
+    private Boolean availability  ;
+    private Boolean futureAvailability;
     private Date    availableFrom ;
     private Date    availableUntil;
     private Long    availableDuration;
     private LocationDto location  ;
+
+    private Long measurementTimestamp;
 
     private List<AvailabilityDto> availabilityList;
     private Map<String, LocationDto> parkingAreaMap;
@@ -113,12 +116,20 @@ public class BikeDto implements Serializable {
         this.inMaintenance = inMaintenance;
     }
 
-    public Boolean getAvailable() {
-        return available;
+    public Boolean getAvailability() {
+        return availability;
     }
 
-    public void setAvailable(Boolean available) {
-        this.available = available;
+    public void setAvailability(Boolean availability) {
+        this.availability = availability;
+    }
+
+    public Boolean getFutureAvailability() {
+        return futureAvailability;
+    }
+
+    public void setFutureAvailability(Boolean futureAvailability) {
+        this.futureAvailability = futureAvailability;
     }
 
     public Date getAvailableFrom() {
@@ -153,6 +164,14 @@ public class BikeDto implements Serializable {
         this.location = location;
     }
 
+    public Long getMeasurementTimestamp() {
+        return measurementTimestamp;
+    }
+
+    public void setMeasurementTimestamp(Long measurementTimestamp) {
+        this.measurementTimestamp = measurementTimestamp;
+    }
+
     public List<AvailabilityDto> getAvailabilityList() {
         if ( availabilityList == null ) {
             availabilityList = new ArrayList<AvailabilityDto>();
@@ -178,7 +197,7 @@ public class BikeDto implements Serializable {
     @Override
     public String toString() {
         return "BikeDto [id=" + id + ", carType=" + carType + ", name=" + name + ", license=" + license + ", cleanness=" + cleanness + ", exchangeType=" + exchangeType + ", bigImageUrl=" + bigImageUrl
-                + ", medImageUrl=" + medImageUrl + ", tmbImageUrl=" + tmbImageUrl + ", inMaintenance=" + inMaintenance + ", available=" + available + ", availableFrom=" + availableFrom
+                + ", medImageUrl=" + medImageUrl + ", tmbImageUrl=" + tmbImageUrl + ", inMaintenance=" + inMaintenance + ", availability=" + availability + ", futureAvailability=" + futureAvailability + ", availableFrom=" + availableFrom
                 + ", availableUntil=" + availableUntil + ", availableDuration=" + availableDuration + ", location=" + location + "]";
     }
 

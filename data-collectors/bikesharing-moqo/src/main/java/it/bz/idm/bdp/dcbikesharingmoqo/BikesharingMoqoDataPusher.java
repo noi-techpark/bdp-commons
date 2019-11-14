@@ -1,13 +1,8 @@
 package it.bz.idm.bdp.dcbikesharingmoqo;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -16,7 +11,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dcbikesharingmoqo.dto.BikeDto;
-import it.bz.idm.bdp.dcbikesharingmoqo.dto.TimeSerieDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
@@ -37,33 +31,16 @@ public class BikesharingMoqoDataPusher extends JSONPusher {
     @Autowired
     private BikesharingMoqoDataConverter converter;
 
+    private List<DataTypeDto> dataTypes;
+
     public BikesharingMoqoDataPusher() {
         LOG.debug("START.constructor.");
         LOG.debug("END.constructor.");
     }
 
-	@PostConstruct
-    private void initMeteo() {
-        LOG.debug("START.init.");
-//        //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTTP 415 error)
-//        //this must be done because we added dependencies to com.fasterxml.jackson.dataformat.xml.XmlMapper to read data from IIT web service!
-//        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
-//        List<HttpMessageConverter<?>> newMessageConverters = new ArrayList<HttpMessageConverter<?>>();
-//        for (HttpMessageConverter<?> messageConverter : messageConverters) {
-//            if ( messageConverter instanceof MappingJackson2XmlHttpMessageConverter || messageConverter instanceof Jaxb2RootElementHttpMessageConverter ) {
-//                LOG.debug("REMOVE   converter: " + messageConverter.getClass().getName());
-//            } else {
-//                LOG.debug("PRESERVE converter: " + messageConverter.getClass().getName());
-//                newMessageConverters.add(messageConverter);
-//            }
-//        }
-//        restTemplate.setMessageConverters(newMessageConverters);
-        LOG.debug("END.init.");
-    }
-
     @Override
     public String initIntegreenTypology() {
-        String stationType = "Meteostation";
+        String stationType = BikesharingMoqoDataConverter.STATION_TYPE;
         return stationType;
     }
 
@@ -84,16 +61,15 @@ public class BikesharingMoqoDataPusher extends JSONPusher {
         int countBranches = 0;
         int countMeasures = 0;
 
+        //All necessary information is stored in BikeDto
         for (BikeDto dto : data) {
 
             StationDto stationDto = converter.convertBikeDtoToStationDto(dto);
 
             String stationId = stationDto.getId();
-//            Map<String, List<TimeSerieDto>> measurementsByType = dto.getTimeSeriesMap();
-//            Map<String, DataTypeDto> dataTypeMap = dto.getDataTypeMap();
-            Map<String, List<TimeSerieDto>> measurementsByType = null;
-            Map<String, DataTypeDto> dataTypeMap = null;
-            Set<String> dataTypeNames = dataTypeMap!=null ? dataTypeMap.keySet() : new HashSet<>();
+            Long measurementTimestamp = dto.getMeasurementTimestamp();
+            Map<String, Object> stationMetaData = stationDto.getMetaData();
+            List<DataTypeDto> dataTypes = mapDataTypes2Bdp();
 
             //Check if we already treated this station (branch), if not found create the map and the list of records
             DataMapDto<RecordDtoImpl> recordsByStation = map.getBranch().get(stationId);
@@ -105,45 +81,36 @@ public class BikesharingMoqoDataPusher extends JSONPusher {
                 countStations++;
             }
 
-            for (String dataTypeName : dataTypeNames) {
+            //Get measurement values for each data type, we stored them in stationMetaData
+            for (DataTypeDto dataTypeDto : dataTypes) {
 
-                List<TimeSerieDto> measurements = measurementsByType.get(dataTypeName);
-                DataTypeDto dataType = dataTypeMap.get(dataTypeName);
+                String dataTypeName = dataTypeDto.getName();
 
-                for (TimeSerieDto measurementDto : measurements) {
+                //We put values in station metadata map ("availability" and "future-availability")
+                Object measurementValue = stationMetaData.get(dataTypeName);
 
-                    //Get values from MeasutementDto and convert to SimpleRecordDto
-                    String typeName = dataType.getName();
-                    String strDate = measurementDto.getDATE();
-                    Date date = DCUtils.convertStringTimezoneToDate(strDate);
-                    long timestamp = date!=null ? date.getTime() : -1;
-                    Object value = measurementDto.getVALUE();
+                if ( measurementValue!=null && measurementTimestamp!=null ) {
+                    SimpleRecordDto record = new SimpleRecordDto();
+                    record.setValue(measurementValue);
+                    record.setTimestamp(measurementTimestamp);
+                    record.setPeriod(period);
 
-                    if ( timestamp>0 && date!=null && value!=null ) {
-                        SimpleRecordDto record = new SimpleRecordDto();
-                        record.setValue(value);
-                        record.setTimestamp(timestamp);
-                        record.setPeriod(period);
-
-                        //Check if we already treated this type (branch), if not found create the map and the list of records
-                        DataMapDto<RecordDtoImpl> recordsByType = recordsByStation.getBranch().get(typeName);
-                        if ( recordsByType == null ) {
-                            recordsByType = new DataMapDto<RecordDtoImpl>();
-                            recordsByStation.getBranch().put(typeName, recordsByType);
-                            List<RecordDtoImpl> dataList = new ArrayList<RecordDtoImpl>();
-                            recordsByType.setData(dataList);
-                            countBranches++;
-                        }
-
-                        //Add the measure in the list
-                        List<RecordDtoImpl> records = recordsByType.getData();
-                        records.add(record);
-                        countMeasures++;
-                        LOG.debug("ADD  MEASURE:  id="+stationDto.getId()+", typeName="+typeName+"  value="+value);
-                    } else {
-                        LOG.warn( "SKIP MEASURE:  id="+stationDto.getId()+", typeName="+typeName+"  value="+value+"  timestamp="+timestamp+"  date="+date+"  strDate="+strDate);
+                    //Check if we already treated this type (branch), if not found create the map and the list of records
+                    DataMapDto<RecordDtoImpl> recordsByType = recordsByStation.getBranch().get(dataTypeName);
+                    if ( recordsByType == null ) {
+                        recordsByType = new DataMapDto<RecordDtoImpl>();
+                        recordsByStation.getBranch().put(dataTypeName, recordsByType);
+                        List<RecordDtoImpl> dataList = new ArrayList<RecordDtoImpl>();
+                        recordsByType.setData(dataList);
+                        countBranches++;
                     }
 
+                    //Add the measure in the list
+                    List<RecordDtoImpl> records = recordsByType.getData();
+                    records.add(record);
+                    countMeasures++;
+
+                    LOG.debug("ADD  MEASURE:  id="+stationDto.getId()+", typeName="+dataTypeName+"  value="+measurementValue);
                 }
 
             }
@@ -153,20 +120,6 @@ public class BikesharingMoqoDataPusher extends JSONPusher {
         LOG.debug("countStations="+countStations+"  countBranches="+countBranches+", countMeasures="+countMeasures);
         LOG.debug("map: "+map);
         LOG.debug("END.mapData");
-        return map;
-    }
-
-    public <T> DataMapDto<RecordDtoImpl> mapSingleStationData2Bdp(BikeDto data) {
-        LOG.debug("START.mapSingleStationData2Bdp");
-        if (data == null) {
-            return null;
-        }
-
-        List<BikeDto> list = new ArrayList<BikeDto>();
-        list.add(data);
-        DataMapDto<RecordDtoImpl> map = mapData(list);
-
-        LOG.debug("END.mapSingleStationData2Bdp");
         return map;
     }
 
@@ -191,24 +144,23 @@ public class BikesharingMoqoDataPusher extends JSONPusher {
         return stations;
     }
 
-    public Date getLastSavedRecordForStationAndDataType(StationDto station, DataTypeDto dataType) {
-        LOG.debug("START.getLastSavedRecordForStation");
-        if (station==null || dataType==null) {
-            return null;
+    /**
+     * Return a static list of DataTypeDtos:
+     * "availability", "future-availability", "in-maintenance"
+     * 
+     * @return
+     */
+    public List<DataTypeDto> mapDataTypes2Bdp() {
+        if ( dataTypes == null ) {
+            dataTypes = new ArrayList<DataTypeDto>();
+            //availability
+            dataTypes.add(new DataTypeDto(BikesharingMoqoDataConverter.DATA_TYPE_AVAILABILITY, "boolean", BikesharingMoqoDataConverter.DATA_TYPE_AVAILABILITY, null, converter.getPeriod()));
+            //future-availability
+            dataTypes.add(new DataTypeDto(BikesharingMoqoDataConverter.DATA_TYPE_FUTURE_AVAILABILITY, "boolean", BikesharingMoqoDataConverter.DATA_TYPE_FUTURE_AVAILABILITY, null, converter.getPeriod()));
+            //in_maintenance
+            dataTypes.add(new DataTypeDto(BikesharingMoqoDataConverter.DATA_TYPE_IN_MAINTENANCE, "boolean", BikesharingMoqoDataConverter.DATA_TYPE_IN_MAINTENANCE, null, converter.getPeriod()));
         }
-
-        Date lastSavedRecord = null;
-        Integer period = converter.getPeriod();
-        String stationCode = station.getId();
-        String typeName = dataType.getName();
-        Object dateOfLastRecord = super.getDateOfLastRecord(stationCode, typeName, null);
-        if ( dateOfLastRecord instanceof Date ) {
-            lastSavedRecord = (Date) dateOfLastRecord;
-        }
-
-        LOG.debug("stationCode="+stationCode+"  typeName="+typeName+"  lastSavedRecord="+lastSavedRecord);
-        LOG.debug("END.getLastSavedRecordForStation");
-        return lastSavedRecord;
+        return dataTypes;
     }
 
     @Override
@@ -223,8 +175,9 @@ public class BikesharingMoqoDataPusher extends JSONPusher {
         return str2 + " ---> " + str1;
     }
 
-	@Override
-	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,env.getProperty("provenance.name"), env.getProperty("provenance.version"),  env.getProperty("app.origin"));
-	}
+    @Override
+    public ProvenanceDto defineProvenance() {
+        return new ProvenanceDto(null,env.getProperty("provenance.name"), env.getProperty("provenance.version"),  env.getProperty("app.origin"));
+    }
+
 }

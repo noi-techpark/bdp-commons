@@ -30,21 +30,24 @@ public class BikesharingMoqoJobScheduler {
     @Autowired
     private BikesharingMoqoDataRetriever retriever;
 
-//    @Autowired
-//    private BikesharingMoqoDataConverter converter;
-
     /** JOB 1 */
-    public void pushStations() throws Exception {
-        LOG.info("START.pushStations");
+    public void pushData() throws Exception {
+        LOG.info("START.pushData");
 
         try {
-            BikesharingMoqoDto moqoDto = retriever.fetchStations();
+            BikesharingMoqoDto moqoDto = retriever.fetchData();
             List<BikeDto> data = moqoDto.getBikeList();
 
             StationList stations = pusher.mapStations2Bdp(data);
             if (stations != null) {
                 pusher.syncStations(stations);
             }
+
+            DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(data);
+            if (stationRec != null){
+                pusher.pushData(stationRec);
+            }
+
         } catch (HttpClientErrorException e) {
             LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
             throw e;
@@ -52,7 +55,7 @@ public class BikesharingMoqoJobScheduler {
             LOG.error(pusher + " - " + e, e);
             throw e;
         }
-        LOG.info("END.pushStations");
+        LOG.info("END.pushData");
     }
 
     /** JOB 2 */
@@ -60,7 +63,7 @@ public class BikesharingMoqoJobScheduler {
         LOG.info("START.pushDataTypes");
 
         try {
-            List<DataTypeDto> dataTypes = retriever.fetchDataTypes(null);
+            List<DataTypeDto> dataTypes = pusher.mapDataTypes2Bdp();
 
             if (dataTypes != null){
                 pusher.syncDataTypes(dataTypes);
@@ -76,29 +79,29 @@ public class BikesharingMoqoJobScheduler {
         LOG.info("END.pushDataTypes");
     }
 
-    /** JOB 3 */
-    public void pushData() throws Exception {
-        LOG.info("START.pushData");
-
-        try {
-
-            //Fetch all measurements
-            List<BikeDto> data = retriever.fetchData();
-
-            //Push all measurements in a single call
-            DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(data);
-
-            if (stationRec != null){
-                pusher.pushData(stationRec);
-            }
-
-        } catch (HttpClientErrorException e) {
-            LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
-            throw e;
-        } catch (Exception e) {
-            LOG.error(pusher + " - " + e, e);
-            throw e;
-        }
-        LOG.info("END.pushData");
-    }
+//    /** JOB 3 */
+//    public void pushData() throws Exception {
+//        LOG.info("START.pushData");
+//
+//        try {
+//
+//            //Fetch all measurements
+//            List<BikeDto> data = retriever.fetchData();
+//
+//            //Push all measurements in a single call
+//            DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(data);
+//
+//            if (stationRec != null){
+//                pusher.pushData(stationRec);
+//            }
+//
+//        } catch (HttpClientErrorException e) {
+//            LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
+//            throw e;
+//        } catch (Exception e) {
+//            LOG.error(pusher + " - " + e, e);
+//            throw e;
+//        }
+//        LOG.info("END.pushData");
+//    }
 }
