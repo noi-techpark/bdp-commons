@@ -1,0 +1,5294 @@
+{
+	"cars": [
+		{
+			"id": 882548390,
+			"license": "10",
+			"exchange_type": "i_lock_it_v2",
+			"car_type": "bike",
+			"fuel_type": "other_fuel",
+			"transmission": null,
+			"current_parking_hint": null,
+			"allow_rfid_card_access": false,
+			"distance": null,
+			"requires_terms_acceptance": null,
+			"legal_documents": [
+				{
+					"kind": "general_business_terms",
+					"title": "Condizioni generali di contratto",
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/attachment/file/3371/1f9c351469f74823f8073830b45b7e65.pdf"
+				},
+				{
+					"kind": "privacy_policy",
+					"title": "disposizioni in materia di protezione dei dati",
+					"url": "https://portal.moqo.de/privacy_policy?provider_id=1219977750"
+				},
+				{
+					"kind": "penalties",
+					"title": "catalogo a pagamento",
+					"url": "https://portal.moqo.de/cars/882548390/penalties.pdf"
+				},
+				{
+					"kind": "insurance_conditions",
+					"title": "condizioni di assicurazione",
+					"url": null
+				}
+			],
+			"location": {
+				"city": "Meran",
+				"postcode": "39012",
+				"created_at": "2019-08-08T15:08:35+02:00",
+				"street": "Bahnhofsplatz",
+				"lat": 46.6724745760751,
+				"lng": 11.1500811721644,
+				"kind": "expected_pickup",
+				"name": "Meran Bahnhof_Stazione Merano",
+				"center_lat": 46.6724745760751,
+				"center_lng": 11.1500811721644,
+				"radius": 71,
+				"polygon": [
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					},
+					{
+						"lat": 46.67187143858226,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67243464716671,
+						"lng": 11.15102264533231
+					},
+					{
+						"lat": 46.67306988701523,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					}
+				],
+				"parking_name": "Meran Bahnhof_Stazione Merano",
+				"navigational_lat": null,
+				"navigational_lng": null
+			},
+			"provider": {
+				"id": 1219977750,
+				"name": "Meran Bikes",
+				"image": {
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"medium_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/medium_ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"thumb_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/thumb_ab13a8e558c1a66fa0a61cdbc82e5850.JPG"
+				}
+			},
+			"cleanness": "good",
+			"car_model": {
+				"id": 979334833,
+				"name": "Standard",
+				"car_type": null,
+				"model_name": "City Standard",
+				"car_manufacturer": {
+					"id": 1671070861,
+					"name": "City"
+				}
+			},
+			"image": {
+				"url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/882548390/5f0b71e16393596bceb56b1104671278.png",
+				"medium_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/882548390/medium_5f0b71e16393596bceb56b1104671278.png",
+				"thumb_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/882548390/thumb_5f0b71e16393596bceb56b1104671278.png"
+			},
+			"fuel": null,
+			"return_requirements": {
+				"areas": [
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:08:35+02:00",
+							"street": "Bahnhofsplatz",
+							"lat": 46.6724745760751,
+							"lng": 11.1500811721644,
+							"kind": null,
+							"name": "Meran Bahnhof_Stazione Merano",
+							"center_lat": 46.6724745760751,
+							"center_lng": 11.1500811721644,
+							"radius": 71,
+							"polygon": [
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								},
+								{
+									"lat": 46.67187143858226,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67243464716671,
+									"lng": 11.15102264533231
+								},
+								{
+									"lat": 46.67306988701523,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								}
+							],
+							"parking_name": "Meran Bahnhof_Stazione Merano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 71,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							},
+							{
+								"lat": 46.67187143858226,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67243464716671,
+								"lng": 11.15102264533231
+							},
+							{
+								"lat": 46.67306988701523,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:01:54+02:00",
+							"street": "Kornplatz 3",
+							"lat": 46.6725259496189,
+							"lng": 11.1591598904964,
+							"kind": null,
+							"name": "Kornplatz_Piazza del Grano",
+							"center_lat": 46.6725259496189,
+							"center_lng": 11.1591598904964,
+							"radius": 50,
+							"polygon": [
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								},
+								{
+									"lat": 46.67224247491092,
+									"lng": 11.158698607088768
+								},
+								{
+									"lat": 46.672235214448165,
+									"lng": 11.15951864458651
+								},
+								{
+									"lat": 46.672712973768796,
+									"lng": 11.159758898877095
+								},
+								{
+									"lat": 46.672796921455245,
+									"lng": 11.159399445235264
+								},
+								{
+									"lat": 46.67280457641655,
+									"lng": 11.15873937169436
+								},
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								}
+							],
+							"parking_name": "Kornplatz_Piazza del Grano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 50,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							},
+							{
+								"lat": 46.67224247491092,
+								"lng": 11.158698607088768
+							},
+							{
+								"lat": 46.672235214448165,
+								"lng": 11.15951864458651
+							},
+							{
+								"lat": 46.672712973768796,
+								"lng": 11.159758898877095
+							},
+							{
+								"lat": 46.672796921455245,
+								"lng": 11.159399445235264
+							},
+							{
+								"lat": 46.67280457641655,
+								"lng": 11.15873937169436
+							},
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T14:58:04+02:00",
+							"street": "Sandplatz",
+							"lat": 46.6701322102183,
+							"lng": 11.1651819301242,
+							"kind": null,
+							"name": "Sandplatz_Piazza Rena",
+							"center_lat": 46.6701322102183,
+							"center_lng": 11.1651819301242,
+							"radius": 60,
+							"polygon": [
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								},
+								{
+									"lat": 46.66996560698374,
+									"lng": 11.164518628914742
+								},
+								{
+									"lat": 46.66973581943779,
+									"lng": 11.164993026729205
+								},
+								{
+									"lat": 46.66973964923824,
+									"lng": 11.165612534463385
+								},
+								{
+									"lat": 46.670120713025,
+									"lng": 11.165821827616826
+								},
+								{
+									"lat": 46.67046730639743,
+									"lng": 11.165757644383103
+								},
+								{
+									"lat": 46.670502093383135,
+									"lng": 11.164604072513173
+								},
+								{
+									"lat": 46.67037871300022,
+									"lng": 11.164586403911192
+								},
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								}
+							],
+							"parking_name": "Sandplatz_Piazza Rena",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 60,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							},
+							{
+								"lat": 46.66996560698374,
+								"lng": 11.164518628914742
+							},
+							{
+								"lat": 46.66973581943779,
+								"lng": 11.164993026729205
+							},
+							{
+								"lat": 46.66973964923824,
+								"lng": 11.165612534463385
+							},
+							{
+								"lat": 46.670120713025,
+								"lng": 11.165821827616826
+							},
+							{
+								"lat": 46.67046730639743,
+								"lng": 11.165757644383103
+							},
+							{
+								"lat": 46.670502093383135,
+								"lng": 11.164604072513173
+							},
+							{
+								"lat": 46.67037871300022,
+								"lng": 11.164586403911192
+							},
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:05:16+02:00",
+							"street": "Gampenstraße 107",
+							"lat": 46.6562883693751,
+							"lng": 11.1484115141975,
+							"kind": null,
+							"name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"center_lat": 46.6562883693751,
+							"center_lng": 11.1484115141975,
+							"radius": 42,
+							"polygon": [
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								},
+								{
+									"lat": 46.656331841081595,
+									"lng": 11.148737347234862
+								},
+								{
+									"lat": 46.656052812786044,
+									"lng": 11.148633723266585
+								},
+								{
+									"lat": 46.655957067450885,
+									"lng": 11.148342779047956
+								},
+								{
+									"lat": 46.656257980790514,
+									"lng": 11.147992051770707
+								},
+								{
+									"lat": 46.656567099114056,
+									"lng": 11.148358721196924
+								},
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								}
+							],
+							"parking_name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 42,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							},
+							{
+								"lat": 46.656331841081595,
+								"lng": 11.148737347234862
+							},
+							{
+								"lat": 46.656052812786044,
+								"lng": 11.148633723266585
+							},
+							{
+								"lat": 46.655957067450885,
+								"lng": 11.148342779047956
+							},
+							{
+								"lat": 46.656257980790514,
+								"lng": 11.147992051770707
+							},
+							{
+								"lat": 46.656567099114056,
+								"lng": 11.148358721196924
+							},
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							}
+						]
+					}
+				],
+				"fuel": 0,
+				"central_lock": "locked",
+				"fuel_ignored_when_charging": false,
+				"must_be_charging": null
+			},
+			"cruising_range": {
+				"source": null,
+				"value": null
+			},
+			"minimum_pricing": {
+				"from": "2019-10-22T17:00:00+02:00",
+				"until": "2019-10-22T18:00:00+02:00",
+				"km": 0,
+				"km_to_charge": 0,
+				"km_included": 0,
+				"base_fee": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"to_pay_per_km": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"km_charge": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"total_to_pay": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"details": [],
+				"coupon": null
+			},
+			"rfid_slot_1": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"rfid_slot_2": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"available": null,
+			"private_bookings_allowed": true,
+			"commercial_bookings_allowed": false,
+			"feature_number_of_doors": null,
+			"feature_number_of_seats": null,
+			"feature_has_air_condition": false,
+			"feature_has_navigation_system": false,
+			"feature_has_range_extender": false,
+			"feature_number_of_bags": null,
+			"feature_has_seat_for_child": false,
+			"feature_payload": null,
+			"feature_loading_volume": null,
+			"feature_tire_type": null,
+			"feature_plug_type": [],
+			"feature_cable_plug_type": [],
+			"feature_battery_capacity": null,
+			"feature_fast_charge_compatible": false,
+			"feature_people_capacity": null,
+			"car_features": [],
+			"has_fuel_charge_card": false,
+			"has_parking_card": false,
+			"insurances": [
+				{
+					"title": "Entwendung/Verlust des Fahrrads",
+					"kind": "liability",
+					"minimum_age_requirement": 18,
+					"deductible_value": {
+						"cents": 38600,
+						"currency": "EUR",
+						"formatted": "386.00 €",
+						"vat_rate": null,
+						"vat_status": null
+					},
+					"description": "Bei Entwendung des Fahrrads (inkl. Schloss) wird eine Gebühr von 386,00 € fällig. ",
+					"attachment": {
+						"kind": "insurance_conditions",
+						"title": "condizioni di assicurazione",
+						"url": null
+					}
+				}
+			],
+			"minimum_age_insurance_requirement": 18,
+			"in_maintenance": false
+		},
+		{
+			"id": 174456788,
+			"license": "9",
+			"exchange_type": "i_lock_it_v2",
+			"car_type": "bike",
+			"fuel_type": "other_fuel",
+			"transmission": null,
+			"current_parking_hint": null,
+			"allow_rfid_card_access": false,
+			"distance": null,
+			"requires_terms_acceptance": null,
+			"legal_documents": [
+				{
+					"kind": "general_business_terms",
+					"title": "Condizioni generali di contratto",
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/attachment/file/3371/1f9c351469f74823f8073830b45b7e65.pdf"
+				},
+				{
+					"kind": "privacy_policy",
+					"title": "disposizioni in materia di protezione dei dati",
+					"url": "https://portal.moqo.de/privacy_policy?provider_id=1219977750"
+				},
+				{
+					"kind": "penalties",
+					"title": "catalogo a pagamento",
+					"url": "https://portal.moqo.de/cars/174456788/penalties.pdf"
+				},
+				{
+					"kind": "insurance_conditions",
+					"title": "condizioni di assicurazione",
+					"url": null
+				}
+			],
+			"location": {
+				"city": "Meran",
+				"postcode": "39012",
+				"created_at": "2019-08-08T15:08:35+02:00",
+				"street": "Bahnhofsplatz",
+				"lat": 46.6724745760751,
+				"lng": 11.1500811721644,
+				"kind": "expected_pickup",
+				"name": "Meran Bahnhof_Stazione Merano",
+				"center_lat": 46.6724745760751,
+				"center_lng": 11.1500811721644,
+				"radius": 71,
+				"polygon": [
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					},
+					{
+						"lat": 46.67187143858226,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67243464716671,
+						"lng": 11.15102264533231
+					},
+					{
+						"lat": 46.67306988701523,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					}
+				],
+				"parking_name": "Meran Bahnhof_Stazione Merano",
+				"navigational_lat": null,
+				"navigational_lng": null
+			},
+			"provider": {
+				"id": 1219977750,
+				"name": "Meran Bikes",
+				"image": {
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"medium_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/medium_ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"thumb_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/thumb_ab13a8e558c1a66fa0a61cdbc82e5850.JPG"
+				}
+			},
+			"cleanness": "good",
+			"car_model": {
+				"id": 979334833,
+				"name": "Standard",
+				"car_type": null,
+				"model_name": "City Standard",
+				"car_manufacturer": {
+					"id": 1671070861,
+					"name": "City"
+				}
+			},
+			"image": {
+				"url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/174456788/c30dddb8aff424943e6fd5a526ad6fdd.png",
+				"medium_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/174456788/medium_c30dddb8aff424943e6fd5a526ad6fdd.png",
+				"thumb_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/174456788/thumb_c30dddb8aff424943e6fd5a526ad6fdd.png"
+			},
+			"fuel": null,
+			"return_requirements": {
+				"areas": [
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:08:35+02:00",
+							"street": "Bahnhofsplatz",
+							"lat": 46.6724745760751,
+							"lng": 11.1500811721644,
+							"kind": null,
+							"name": "Meran Bahnhof_Stazione Merano",
+							"center_lat": 46.6724745760751,
+							"center_lng": 11.1500811721644,
+							"radius": 71,
+							"polygon": [
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								},
+								{
+									"lat": 46.67187143858226,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67243464716671,
+									"lng": 11.15102264533231
+								},
+								{
+									"lat": 46.67306988701523,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								}
+							],
+							"parking_name": "Meran Bahnhof_Stazione Merano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 71,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							},
+							{
+								"lat": 46.67187143858226,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67243464716671,
+								"lng": 11.15102264533231
+							},
+							{
+								"lat": 46.67306988701523,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:01:54+02:00",
+							"street": "Kornplatz 3",
+							"lat": 46.6725259496189,
+							"lng": 11.1591598904964,
+							"kind": null,
+							"name": "Kornplatz_Piazza del Grano",
+							"center_lat": 46.6725259496189,
+							"center_lng": 11.1591598904964,
+							"radius": 50,
+							"polygon": [
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								},
+								{
+									"lat": 46.67224247491092,
+									"lng": 11.158698607088768
+								},
+								{
+									"lat": 46.672235214448165,
+									"lng": 11.15951864458651
+								},
+								{
+									"lat": 46.672712973768796,
+									"lng": 11.159758898877095
+								},
+								{
+									"lat": 46.672796921455245,
+									"lng": 11.159399445235264
+								},
+								{
+									"lat": 46.67280457641655,
+									"lng": 11.15873937169436
+								},
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								}
+							],
+							"parking_name": "Kornplatz_Piazza del Grano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 50,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							},
+							{
+								"lat": 46.67224247491092,
+								"lng": 11.158698607088768
+							},
+							{
+								"lat": 46.672235214448165,
+								"lng": 11.15951864458651
+							},
+							{
+								"lat": 46.672712973768796,
+								"lng": 11.159758898877095
+							},
+							{
+								"lat": 46.672796921455245,
+								"lng": 11.159399445235264
+							},
+							{
+								"lat": 46.67280457641655,
+								"lng": 11.15873937169436
+							},
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T14:58:04+02:00",
+							"street": "Sandplatz",
+							"lat": 46.6701322102183,
+							"lng": 11.1651819301242,
+							"kind": null,
+							"name": "Sandplatz_Piazza Rena",
+							"center_lat": 46.6701322102183,
+							"center_lng": 11.1651819301242,
+							"radius": 60,
+							"polygon": [
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								},
+								{
+									"lat": 46.66996560698374,
+									"lng": 11.164518628914742
+								},
+								{
+									"lat": 46.66973581943779,
+									"lng": 11.164993026729205
+								},
+								{
+									"lat": 46.66973964923824,
+									"lng": 11.165612534463385
+								},
+								{
+									"lat": 46.670120713025,
+									"lng": 11.165821827616826
+								},
+								{
+									"lat": 46.67046730639743,
+									"lng": 11.165757644383103
+								},
+								{
+									"lat": 46.670502093383135,
+									"lng": 11.164604072513173
+								},
+								{
+									"lat": 46.67037871300022,
+									"lng": 11.164586403911192
+								},
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								}
+							],
+							"parking_name": "Sandplatz_Piazza Rena",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 60,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							},
+							{
+								"lat": 46.66996560698374,
+								"lng": 11.164518628914742
+							},
+							{
+								"lat": 46.66973581943779,
+								"lng": 11.164993026729205
+							},
+							{
+								"lat": 46.66973964923824,
+								"lng": 11.165612534463385
+							},
+							{
+								"lat": 46.670120713025,
+								"lng": 11.165821827616826
+							},
+							{
+								"lat": 46.67046730639743,
+								"lng": 11.165757644383103
+							},
+							{
+								"lat": 46.670502093383135,
+								"lng": 11.164604072513173
+							},
+							{
+								"lat": 46.67037871300022,
+								"lng": 11.164586403911192
+							},
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:05:16+02:00",
+							"street": "Gampenstraße 107",
+							"lat": 46.6562883693751,
+							"lng": 11.1484115141975,
+							"kind": null,
+							"name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"center_lat": 46.6562883693751,
+							"center_lng": 11.1484115141975,
+							"radius": 42,
+							"polygon": [
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								},
+								{
+									"lat": 46.656331841081595,
+									"lng": 11.148737347234862
+								},
+								{
+									"lat": 46.656052812786044,
+									"lng": 11.148633723266585
+								},
+								{
+									"lat": 46.655957067450885,
+									"lng": 11.148342779047956
+								},
+								{
+									"lat": 46.656257980790514,
+									"lng": 11.147992051770707
+								},
+								{
+									"lat": 46.656567099114056,
+									"lng": 11.148358721196924
+								},
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								}
+							],
+							"parking_name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 42,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							},
+							{
+								"lat": 46.656331841081595,
+								"lng": 11.148737347234862
+							},
+							{
+								"lat": 46.656052812786044,
+								"lng": 11.148633723266585
+							},
+							{
+								"lat": 46.655957067450885,
+								"lng": 11.148342779047956
+							},
+							{
+								"lat": 46.656257980790514,
+								"lng": 11.147992051770707
+							},
+							{
+								"lat": 46.656567099114056,
+								"lng": 11.148358721196924
+							},
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							}
+						]
+					}
+				],
+				"fuel": 0,
+				"central_lock": "locked",
+				"fuel_ignored_when_charging": false,
+				"must_be_charging": null
+			},
+			"cruising_range": {
+				"source": null,
+				"value": null
+			},
+			"minimum_pricing": {
+				"from": "2019-10-22T17:00:00+02:00",
+				"until": "2019-10-22T18:00:00+02:00",
+				"km": 0,
+				"km_to_charge": 0,
+				"km_included": 0,
+				"base_fee": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"to_pay_per_km": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"km_charge": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"total_to_pay": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"details": [],
+				"coupon": null
+			},
+			"rfid_slot_1": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"rfid_slot_2": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"available": null,
+			"private_bookings_allowed": true,
+			"commercial_bookings_allowed": false,
+			"feature_number_of_doors": null,
+			"feature_number_of_seats": null,
+			"feature_has_air_condition": false,
+			"feature_has_navigation_system": false,
+			"feature_has_range_extender": false,
+			"feature_number_of_bags": null,
+			"feature_has_seat_for_child": false,
+			"feature_payload": null,
+			"feature_loading_volume": null,
+			"feature_tire_type": null,
+			"feature_plug_type": [],
+			"feature_cable_plug_type": [],
+			"feature_battery_capacity": null,
+			"feature_fast_charge_compatible": false,
+			"feature_people_capacity": null,
+			"car_features": [],
+			"has_fuel_charge_card": false,
+			"has_parking_card": false,
+			"insurances": [
+				{
+					"title": "Entwendung/Verlust des Fahrrads",
+					"kind": "liability",
+					"minimum_age_requirement": 18,
+					"deductible_value": {
+						"cents": 38600,
+						"currency": "EUR",
+						"formatted": "386.00 €",
+						"vat_rate": null,
+						"vat_status": null
+					},
+					"description": "Bei Entwendung des Fahrrads (inkl. Schloss) wird eine Gebühr von 386,00 € fällig. ",
+					"attachment": {
+						"kind": "insurance_conditions",
+						"title": "condizioni di assicurazione",
+						"url": null
+					}
+				}
+			],
+			"minimum_age_insurance_requirement": 18,
+			"in_maintenance": false
+		},
+		{
+			"id": 393520761,
+			"license": "8",
+			"exchange_type": "i_lock_it_v2",
+			"car_type": "bike",
+			"fuel_type": "other_fuel",
+			"transmission": null,
+			"current_parking_hint": null,
+			"allow_rfid_card_access": false,
+			"distance": null,
+			"requires_terms_acceptance": null,
+			"legal_documents": [
+				{
+					"kind": "general_business_terms",
+					"title": "Condizioni generali di contratto",
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/attachment/file/3371/1f9c351469f74823f8073830b45b7e65.pdf"
+				},
+				{
+					"kind": "privacy_policy",
+					"title": "disposizioni in materia di protezione dei dati",
+					"url": "https://portal.moqo.de/privacy_policy?provider_id=1219977750"
+				},
+				{
+					"kind": "penalties",
+					"title": "catalogo a pagamento",
+					"url": "https://portal.moqo.de/cars/393520761/penalties.pdf"
+				},
+				{
+					"kind": "insurance_conditions",
+					"title": "condizioni di assicurazione",
+					"url": null
+				}
+			],
+			"location": {
+				"city": "Meran",
+				"postcode": "39012",
+				"created_at": "2019-08-08T15:08:35+02:00",
+				"street": "Bahnhofsplatz",
+				"lat": 46.6724745760751,
+				"lng": 11.1500811721644,
+				"kind": "expected_pickup",
+				"name": "Meran Bahnhof_Stazione Merano",
+				"center_lat": 46.6724745760751,
+				"center_lng": 11.1500811721644,
+				"radius": 71,
+				"polygon": [
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					},
+					{
+						"lat": 46.67187143858226,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67243464716671,
+						"lng": 11.15102264533231
+					},
+					{
+						"lat": 46.67306988701523,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					}
+				],
+				"parking_name": "Meran Bahnhof_Stazione Merano",
+				"navigational_lat": null,
+				"navigational_lng": null
+			},
+			"provider": {
+				"id": 1219977750,
+				"name": "Meran Bikes",
+				"image": {
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"medium_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/medium_ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"thumb_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/thumb_ab13a8e558c1a66fa0a61cdbc82e5850.JPG"
+				}
+			},
+			"cleanness": "good",
+			"car_model": {
+				"id": 979334833,
+				"name": "Standard",
+				"car_type": null,
+				"model_name": "City Standard",
+				"car_manufacturer": {
+					"id": 1671070861,
+					"name": "City"
+				}
+			},
+			"image": {
+				"url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/393520761/41d1e97e265d6d55e065fd1a34d22c04.png",
+				"medium_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/393520761/medium_41d1e97e265d6d55e065fd1a34d22c04.png",
+				"thumb_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/393520761/thumb_41d1e97e265d6d55e065fd1a34d22c04.png"
+			},
+			"fuel": null,
+			"return_requirements": {
+				"areas": [
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:08:35+02:00",
+							"street": "Bahnhofsplatz",
+							"lat": 46.6724745760751,
+							"lng": 11.1500811721644,
+							"kind": null,
+							"name": "Meran Bahnhof_Stazione Merano",
+							"center_lat": 46.6724745760751,
+							"center_lng": 11.1500811721644,
+							"radius": 71,
+							"polygon": [
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								},
+								{
+									"lat": 46.67187143858226,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67243464716671,
+									"lng": 11.15102264533231
+								},
+								{
+									"lat": 46.67306988701523,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								}
+							],
+							"parking_name": "Meran Bahnhof_Stazione Merano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 71,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							},
+							{
+								"lat": 46.67187143858226,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67243464716671,
+								"lng": 11.15102264533231
+							},
+							{
+								"lat": 46.67306988701523,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:01:54+02:00",
+							"street": "Kornplatz 3",
+							"lat": 46.6725259496189,
+							"lng": 11.1591598904964,
+							"kind": null,
+							"name": "Kornplatz_Piazza del Grano",
+							"center_lat": 46.6725259496189,
+							"center_lng": 11.1591598904964,
+							"radius": 50,
+							"polygon": [
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								},
+								{
+									"lat": 46.67224247491092,
+									"lng": 11.158698607088768
+								},
+								{
+									"lat": 46.672235214448165,
+									"lng": 11.15951864458651
+								},
+								{
+									"lat": 46.672712973768796,
+									"lng": 11.159758898877095
+								},
+								{
+									"lat": 46.672796921455245,
+									"lng": 11.159399445235264
+								},
+								{
+									"lat": 46.67280457641655,
+									"lng": 11.15873937169436
+								},
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								}
+							],
+							"parking_name": "Kornplatz_Piazza del Grano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 50,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							},
+							{
+								"lat": 46.67224247491092,
+								"lng": 11.158698607088768
+							},
+							{
+								"lat": 46.672235214448165,
+								"lng": 11.15951864458651
+							},
+							{
+								"lat": 46.672712973768796,
+								"lng": 11.159758898877095
+							},
+							{
+								"lat": 46.672796921455245,
+								"lng": 11.159399445235264
+							},
+							{
+								"lat": 46.67280457641655,
+								"lng": 11.15873937169436
+							},
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T14:58:04+02:00",
+							"street": "Sandplatz",
+							"lat": 46.6701322102183,
+							"lng": 11.1651819301242,
+							"kind": null,
+							"name": "Sandplatz_Piazza Rena",
+							"center_lat": 46.6701322102183,
+							"center_lng": 11.1651819301242,
+							"radius": 60,
+							"polygon": [
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								},
+								{
+									"lat": 46.66996560698374,
+									"lng": 11.164518628914742
+								},
+								{
+									"lat": 46.66973581943779,
+									"lng": 11.164993026729205
+								},
+								{
+									"lat": 46.66973964923824,
+									"lng": 11.165612534463385
+								},
+								{
+									"lat": 46.670120713025,
+									"lng": 11.165821827616826
+								},
+								{
+									"lat": 46.67046730639743,
+									"lng": 11.165757644383103
+								},
+								{
+									"lat": 46.670502093383135,
+									"lng": 11.164604072513173
+								},
+								{
+									"lat": 46.67037871300022,
+									"lng": 11.164586403911192
+								},
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								}
+							],
+							"parking_name": "Sandplatz_Piazza Rena",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 60,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							},
+							{
+								"lat": 46.66996560698374,
+								"lng": 11.164518628914742
+							},
+							{
+								"lat": 46.66973581943779,
+								"lng": 11.164993026729205
+							},
+							{
+								"lat": 46.66973964923824,
+								"lng": 11.165612534463385
+							},
+							{
+								"lat": 46.670120713025,
+								"lng": 11.165821827616826
+							},
+							{
+								"lat": 46.67046730639743,
+								"lng": 11.165757644383103
+							},
+							{
+								"lat": 46.670502093383135,
+								"lng": 11.164604072513173
+							},
+							{
+								"lat": 46.67037871300022,
+								"lng": 11.164586403911192
+							},
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:05:16+02:00",
+							"street": "Gampenstraße 107",
+							"lat": 46.6562883693751,
+							"lng": 11.1484115141975,
+							"kind": null,
+							"name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"center_lat": 46.6562883693751,
+							"center_lng": 11.1484115141975,
+							"radius": 42,
+							"polygon": [
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								},
+								{
+									"lat": 46.656331841081595,
+									"lng": 11.148737347234862
+								},
+								{
+									"lat": 46.656052812786044,
+									"lng": 11.148633723266585
+								},
+								{
+									"lat": 46.655957067450885,
+									"lng": 11.148342779047956
+								},
+								{
+									"lat": 46.656257980790514,
+									"lng": 11.147992051770707
+								},
+								{
+									"lat": 46.656567099114056,
+									"lng": 11.148358721196924
+								},
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								}
+							],
+							"parking_name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 42,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							},
+							{
+								"lat": 46.656331841081595,
+								"lng": 11.148737347234862
+							},
+							{
+								"lat": 46.656052812786044,
+								"lng": 11.148633723266585
+							},
+							{
+								"lat": 46.655957067450885,
+								"lng": 11.148342779047956
+							},
+							{
+								"lat": 46.656257980790514,
+								"lng": 11.147992051770707
+							},
+							{
+								"lat": 46.656567099114056,
+								"lng": 11.148358721196924
+							},
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							}
+						]
+					}
+				],
+				"fuel": 0,
+				"central_lock": "locked",
+				"fuel_ignored_when_charging": false,
+				"must_be_charging": null
+			},
+			"cruising_range": {
+				"source": null,
+				"value": null
+			},
+			"minimum_pricing": {
+				"from": "2019-10-22T17:00:00+02:00",
+				"until": "2019-10-22T18:00:00+02:00",
+				"km": 0,
+				"km_to_charge": 0,
+				"km_included": 0,
+				"base_fee": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"to_pay_per_km": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"km_charge": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"total_to_pay": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"details": [],
+				"coupon": null
+			},
+			"rfid_slot_1": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"rfid_slot_2": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"available": null,
+			"private_bookings_allowed": true,
+			"commercial_bookings_allowed": false,
+			"feature_number_of_doors": null,
+			"feature_number_of_seats": null,
+			"feature_has_air_condition": false,
+			"feature_has_navigation_system": false,
+			"feature_has_range_extender": false,
+			"feature_number_of_bags": null,
+			"feature_has_seat_for_child": false,
+			"feature_payload": null,
+			"feature_loading_volume": null,
+			"feature_tire_type": null,
+			"feature_plug_type": [],
+			"feature_cable_plug_type": [],
+			"feature_battery_capacity": null,
+			"feature_fast_charge_compatible": false,
+			"feature_people_capacity": null,
+			"car_features": [],
+			"has_fuel_charge_card": false,
+			"has_parking_card": false,
+			"insurances": [
+				{
+					"title": "Entwendung/Verlust des Fahrrads",
+					"kind": "liability",
+					"minimum_age_requirement": 18,
+					"deductible_value": {
+						"cents": 38600,
+						"currency": "EUR",
+						"formatted": "386.00 €",
+						"vat_rate": null,
+						"vat_status": null
+					},
+					"description": "Bei Entwendung des Fahrrads (inkl. Schloss) wird eine Gebühr von 386,00 € fällig. ",
+					"attachment": {
+						"kind": "insurance_conditions",
+						"title": "condizioni di assicurazione",
+						"url": null
+					}
+				}
+			],
+			"minimum_age_insurance_requirement": 18,
+			"in_maintenance": false
+		},
+		{
+			"id": 2053521138,
+			"license": "7",
+			"exchange_type": "i_lock_it_v2",
+			"car_type": "bike",
+			"fuel_type": "other_fuel",
+			"transmission": null,
+			"current_parking_hint": null,
+			"allow_rfid_card_access": false,
+			"distance": null,
+			"requires_terms_acceptance": null,
+			"legal_documents": [
+				{
+					"kind": "general_business_terms",
+					"title": "Condizioni generali di contratto",
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/attachment/file/3371/1f9c351469f74823f8073830b45b7e65.pdf"
+				},
+				{
+					"kind": "privacy_policy",
+					"title": "disposizioni in materia di protezione dei dati",
+					"url": "https://portal.moqo.de/privacy_policy?provider_id=1219977750"
+				},
+				{
+					"kind": "penalties",
+					"title": "catalogo a pagamento",
+					"url": "https://portal.moqo.de/cars/2053521138/penalties.pdf"
+				},
+				{
+					"kind": "insurance_conditions",
+					"title": "condizioni di assicurazione",
+					"url": null
+				}
+			],
+			"location": {
+				"city": "Meran",
+				"postcode": "39012",
+				"created_at": "2019-08-08T15:01:54+02:00",
+				"street": "Kornplatz 3",
+				"lat": 46.6725259496189,
+				"lng": 11.1591598904964,
+				"kind": "expected_pickup",
+				"name": "Kornplatz_Piazza del Grano",
+				"center_lat": 46.6725259496189,
+				"center_lng": 11.1591598904964,
+				"radius": 50,
+				"polygon": [
+					{
+						"lat": 46.67270351229894,
+						"lng": 11.15866157313726
+					},
+					{
+						"lat": 46.67224247491092,
+						"lng": 11.158698607088768
+					},
+					{
+						"lat": 46.672235214448165,
+						"lng": 11.15951864458651
+					},
+					{
+						"lat": 46.672712973768796,
+						"lng": 11.159758898877095
+					},
+					{
+						"lat": 46.672796921455245,
+						"lng": 11.159399445235264
+					},
+					{
+						"lat": 46.67280457641655,
+						"lng": 11.15873937169436
+					},
+					{
+						"lat": 46.67270351229894,
+						"lng": 11.15866157313726
+					}
+				],
+				"parking_name": "Kornplatz_Piazza del Grano",
+				"navigational_lat": null,
+				"navigational_lng": null
+			},
+			"provider": {
+				"id": 1219977750,
+				"name": "Meran Bikes",
+				"image": {
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"medium_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/medium_ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"thumb_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/thumb_ab13a8e558c1a66fa0a61cdbc82e5850.JPG"
+				}
+			},
+			"cleanness": "good",
+			"car_model": {
+				"id": 979334833,
+				"name": "Standard",
+				"car_type": null,
+				"model_name": "City Standard",
+				"car_manufacturer": {
+					"id": 1671070861,
+					"name": "City"
+				}
+			},
+			"image": {
+				"url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/2053521138/0cb628f9f97519b619c8e460936985e5.png",
+				"medium_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/2053521138/medium_0cb628f9f97519b619c8e460936985e5.png",
+				"thumb_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/2053521138/thumb_0cb628f9f97519b619c8e460936985e5.png"
+			},
+			"fuel": null,
+			"return_requirements": {
+				"areas": [
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:08:35+02:00",
+							"street": "Bahnhofsplatz",
+							"lat": 46.6724745760751,
+							"lng": 11.1500811721644,
+							"kind": null,
+							"name": "Meran Bahnhof_Stazione Merano",
+							"center_lat": 46.6724745760751,
+							"center_lng": 11.1500811721644,
+							"radius": 71,
+							"polygon": [
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								},
+								{
+									"lat": 46.67187143858226,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67243464716671,
+									"lng": 11.15102264533231
+								},
+								{
+									"lat": 46.67306988701523,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								}
+							],
+							"parking_name": "Meran Bahnhof_Stazione Merano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 71,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							},
+							{
+								"lat": 46.67187143858226,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67243464716671,
+								"lng": 11.15102264533231
+							},
+							{
+								"lat": 46.67306988701523,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:01:54+02:00",
+							"street": "Kornplatz 3",
+							"lat": 46.6725259496189,
+							"lng": 11.1591598904964,
+							"kind": null,
+							"name": "Kornplatz_Piazza del Grano",
+							"center_lat": 46.6725259496189,
+							"center_lng": 11.1591598904964,
+							"radius": 50,
+							"polygon": [
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								},
+								{
+									"lat": 46.67224247491092,
+									"lng": 11.158698607088768
+								},
+								{
+									"lat": 46.672235214448165,
+									"lng": 11.15951864458651
+								},
+								{
+									"lat": 46.672712973768796,
+									"lng": 11.159758898877095
+								},
+								{
+									"lat": 46.672796921455245,
+									"lng": 11.159399445235264
+								},
+								{
+									"lat": 46.67280457641655,
+									"lng": 11.15873937169436
+								},
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								}
+							],
+							"parking_name": "Kornplatz_Piazza del Grano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 50,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							},
+							{
+								"lat": 46.67224247491092,
+								"lng": 11.158698607088768
+							},
+							{
+								"lat": 46.672235214448165,
+								"lng": 11.15951864458651
+							},
+							{
+								"lat": 46.672712973768796,
+								"lng": 11.159758898877095
+							},
+							{
+								"lat": 46.672796921455245,
+								"lng": 11.159399445235264
+							},
+							{
+								"lat": 46.67280457641655,
+								"lng": 11.15873937169436
+							},
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T14:58:04+02:00",
+							"street": "Sandplatz",
+							"lat": 46.6701322102183,
+							"lng": 11.1651819301242,
+							"kind": null,
+							"name": "Sandplatz_Piazza Rena",
+							"center_lat": 46.6701322102183,
+							"center_lng": 11.1651819301242,
+							"radius": 60,
+							"polygon": [
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								},
+								{
+									"lat": 46.66996560698374,
+									"lng": 11.164518628914742
+								},
+								{
+									"lat": 46.66973581943779,
+									"lng": 11.164993026729205
+								},
+								{
+									"lat": 46.66973964923824,
+									"lng": 11.165612534463385
+								},
+								{
+									"lat": 46.670120713025,
+									"lng": 11.165821827616826
+								},
+								{
+									"lat": 46.67046730639743,
+									"lng": 11.165757644383103
+								},
+								{
+									"lat": 46.670502093383135,
+									"lng": 11.164604072513173
+								},
+								{
+									"lat": 46.67037871300022,
+									"lng": 11.164586403911192
+								},
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								}
+							],
+							"parking_name": "Sandplatz_Piazza Rena",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 60,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							},
+							{
+								"lat": 46.66996560698374,
+								"lng": 11.164518628914742
+							},
+							{
+								"lat": 46.66973581943779,
+								"lng": 11.164993026729205
+							},
+							{
+								"lat": 46.66973964923824,
+								"lng": 11.165612534463385
+							},
+							{
+								"lat": 46.670120713025,
+								"lng": 11.165821827616826
+							},
+							{
+								"lat": 46.67046730639743,
+								"lng": 11.165757644383103
+							},
+							{
+								"lat": 46.670502093383135,
+								"lng": 11.164604072513173
+							},
+							{
+								"lat": 46.67037871300022,
+								"lng": 11.164586403911192
+							},
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:05:16+02:00",
+							"street": "Gampenstraße 107",
+							"lat": 46.6562883693751,
+							"lng": 11.1484115141975,
+							"kind": null,
+							"name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"center_lat": 46.6562883693751,
+							"center_lng": 11.1484115141975,
+							"radius": 42,
+							"polygon": [
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								},
+								{
+									"lat": 46.656331841081595,
+									"lng": 11.148737347234862
+								},
+								{
+									"lat": 46.656052812786044,
+									"lng": 11.148633723266585
+								},
+								{
+									"lat": 46.655957067450885,
+									"lng": 11.148342779047956
+								},
+								{
+									"lat": 46.656257980790514,
+									"lng": 11.147992051770707
+								},
+								{
+									"lat": 46.656567099114056,
+									"lng": 11.148358721196924
+								},
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								}
+							],
+							"parking_name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 42,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							},
+							{
+								"lat": 46.656331841081595,
+								"lng": 11.148737347234862
+							},
+							{
+								"lat": 46.656052812786044,
+								"lng": 11.148633723266585
+							},
+							{
+								"lat": 46.655957067450885,
+								"lng": 11.148342779047956
+							},
+							{
+								"lat": 46.656257980790514,
+								"lng": 11.147992051770707
+							},
+							{
+								"lat": 46.656567099114056,
+								"lng": 11.148358721196924
+							},
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							}
+						]
+					}
+				],
+				"fuel": 0,
+				"central_lock": "locked",
+				"fuel_ignored_when_charging": false,
+				"must_be_charging": null
+			},
+			"cruising_range": {
+				"source": null,
+				"value": null
+			},
+			"minimum_pricing": {
+				"from": "2019-10-22T17:00:00+02:00",
+				"until": "2019-10-22T18:00:00+02:00",
+				"km": 0,
+				"km_to_charge": 0,
+				"km_included": 0,
+				"base_fee": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"to_pay_per_km": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"km_charge": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"total_to_pay": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"details": [],
+				"coupon": null
+			},
+			"rfid_slot_1": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"rfid_slot_2": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"available": null,
+			"private_bookings_allowed": true,
+			"commercial_bookings_allowed": false,
+			"feature_number_of_doors": null,
+			"feature_number_of_seats": null,
+			"feature_has_air_condition": false,
+			"feature_has_navigation_system": false,
+			"feature_has_range_extender": false,
+			"feature_number_of_bags": null,
+			"feature_has_seat_for_child": false,
+			"feature_payload": null,
+			"feature_loading_volume": null,
+			"feature_tire_type": null,
+			"feature_plug_type": [],
+			"feature_cable_plug_type": [],
+			"feature_battery_capacity": null,
+			"feature_fast_charge_compatible": false,
+			"feature_people_capacity": null,
+			"car_features": [],
+			"has_fuel_charge_card": false,
+			"has_parking_card": false,
+			"insurances": [
+				{
+					"title": "Entwendung/Verlust des Fahrrads",
+					"kind": "liability",
+					"minimum_age_requirement": 18,
+					"deductible_value": {
+						"cents": 38600,
+						"currency": "EUR",
+						"formatted": "386.00 €",
+						"vat_rate": null,
+						"vat_status": null
+					},
+					"description": "Bei Entwendung des Fahrrads (inkl. Schloss) wird eine Gebühr von 386,00 € fällig. ",
+					"attachment": {
+						"kind": "insurance_conditions",
+						"title": "condizioni di assicurazione",
+						"url": null
+					}
+				}
+			],
+			"minimum_age_insurance_requirement": 18,
+			"in_maintenance": false
+		},
+		{
+			"id": 1063205539,
+			"license": "6",
+			"exchange_type": "i_lock_it_v2",
+			"car_type": "bike",
+			"fuel_type": "other_fuel",
+			"transmission": null,
+			"current_parking_hint": null,
+			"allow_rfid_card_access": false,
+			"distance": null,
+			"requires_terms_acceptance": null,
+			"legal_documents": [
+				{
+					"kind": "general_business_terms",
+					"title": "Condizioni generali di contratto",
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/attachment/file/3371/1f9c351469f74823f8073830b45b7e65.pdf"
+				},
+				{
+					"kind": "privacy_policy",
+					"title": "disposizioni in materia di protezione dei dati",
+					"url": "https://portal.moqo.de/privacy_policy?provider_id=1219977750"
+				},
+				{
+					"kind": "penalties",
+					"title": "catalogo a pagamento",
+					"url": "https://portal.moqo.de/cars/1063205539/penalties.pdf"
+				},
+				{
+					"kind": "insurance_conditions",
+					"title": "condizioni di assicurazione",
+					"url": null
+				}
+			],
+			"location": {
+				"city": "Meran",
+				"postcode": "39012",
+				"created_at": "2019-08-08T15:01:54+02:00",
+				"street": "Kornplatz 3",
+				"lat": 46.6725259496189,
+				"lng": 11.1591598904964,
+				"kind": "expected_pickup",
+				"name": "Kornplatz_Piazza del Grano",
+				"center_lat": 46.6725259496189,
+				"center_lng": 11.1591598904964,
+				"radius": 50,
+				"polygon": [
+					{
+						"lat": 46.67270351229894,
+						"lng": 11.15866157313726
+					},
+					{
+						"lat": 46.67224247491092,
+						"lng": 11.158698607088768
+					},
+					{
+						"lat": 46.672235214448165,
+						"lng": 11.15951864458651
+					},
+					{
+						"lat": 46.672712973768796,
+						"lng": 11.159758898877095
+					},
+					{
+						"lat": 46.672796921455245,
+						"lng": 11.159399445235264
+					},
+					{
+						"lat": 46.67280457641655,
+						"lng": 11.15873937169436
+					},
+					{
+						"lat": 46.67270351229894,
+						"lng": 11.15866157313726
+					}
+				],
+				"parking_name": "Kornplatz_Piazza del Grano",
+				"navigational_lat": null,
+				"navigational_lng": null
+			},
+			"provider": {
+				"id": 1219977750,
+				"name": "Meran Bikes",
+				"image": {
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"medium_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/medium_ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"thumb_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/thumb_ab13a8e558c1a66fa0a61cdbc82e5850.JPG"
+				}
+			},
+			"cleanness": "good",
+			"car_model": {
+				"id": 979334833,
+				"name": "Standard",
+				"car_type": null,
+				"model_name": "City Standard",
+				"car_manufacturer": {
+					"id": 1671070861,
+					"name": "City"
+				}
+			},
+			"image": {
+				"url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1063205539/c01e2c9ae0646314c0f2394fb0b6cbde.png",
+				"medium_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1063205539/medium_c01e2c9ae0646314c0f2394fb0b6cbde.png",
+				"thumb_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1063205539/thumb_c01e2c9ae0646314c0f2394fb0b6cbde.png"
+			},
+			"fuel": null,
+			"return_requirements": {
+				"areas": [
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:08:35+02:00",
+							"street": "Bahnhofsplatz",
+							"lat": 46.6724745760751,
+							"lng": 11.1500811721644,
+							"kind": null,
+							"name": "Meran Bahnhof_Stazione Merano",
+							"center_lat": 46.6724745760751,
+							"center_lng": 11.1500811721644,
+							"radius": 71,
+							"polygon": [
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								},
+								{
+									"lat": 46.67187143858226,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67243464716671,
+									"lng": 11.15102264533231
+								},
+								{
+									"lat": 46.67306988701523,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								}
+							],
+							"parking_name": "Meran Bahnhof_Stazione Merano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 71,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							},
+							{
+								"lat": 46.67187143858226,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67243464716671,
+								"lng": 11.15102264533231
+							},
+							{
+								"lat": 46.67306988701523,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:01:54+02:00",
+							"street": "Kornplatz 3",
+							"lat": 46.6725259496189,
+							"lng": 11.1591598904964,
+							"kind": null,
+							"name": "Kornplatz_Piazza del Grano",
+							"center_lat": 46.6725259496189,
+							"center_lng": 11.1591598904964,
+							"radius": 50,
+							"polygon": [
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								},
+								{
+									"lat": 46.67224247491092,
+									"lng": 11.158698607088768
+								},
+								{
+									"lat": 46.672235214448165,
+									"lng": 11.15951864458651
+								},
+								{
+									"lat": 46.672712973768796,
+									"lng": 11.159758898877095
+								},
+								{
+									"lat": 46.672796921455245,
+									"lng": 11.159399445235264
+								},
+								{
+									"lat": 46.67280457641655,
+									"lng": 11.15873937169436
+								},
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								}
+							],
+							"parking_name": "Kornplatz_Piazza del Grano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 50,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							},
+							{
+								"lat": 46.67224247491092,
+								"lng": 11.158698607088768
+							},
+							{
+								"lat": 46.672235214448165,
+								"lng": 11.15951864458651
+							},
+							{
+								"lat": 46.672712973768796,
+								"lng": 11.159758898877095
+							},
+							{
+								"lat": 46.672796921455245,
+								"lng": 11.159399445235264
+							},
+							{
+								"lat": 46.67280457641655,
+								"lng": 11.15873937169436
+							},
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T14:58:04+02:00",
+							"street": "Sandplatz",
+							"lat": 46.6701322102183,
+							"lng": 11.1651819301242,
+							"kind": null,
+							"name": "Sandplatz_Piazza Rena",
+							"center_lat": 46.6701322102183,
+							"center_lng": 11.1651819301242,
+							"radius": 60,
+							"polygon": [
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								},
+								{
+									"lat": 46.66996560698374,
+									"lng": 11.164518628914742
+								},
+								{
+									"lat": 46.66973581943779,
+									"lng": 11.164993026729205
+								},
+								{
+									"lat": 46.66973964923824,
+									"lng": 11.165612534463385
+								},
+								{
+									"lat": 46.670120713025,
+									"lng": 11.165821827616826
+								},
+								{
+									"lat": 46.67046730639743,
+									"lng": 11.165757644383103
+								},
+								{
+									"lat": 46.670502093383135,
+									"lng": 11.164604072513173
+								},
+								{
+									"lat": 46.67037871300022,
+									"lng": 11.164586403911192
+								},
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								}
+							],
+							"parking_name": "Sandplatz_Piazza Rena",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 60,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							},
+							{
+								"lat": 46.66996560698374,
+								"lng": 11.164518628914742
+							},
+							{
+								"lat": 46.66973581943779,
+								"lng": 11.164993026729205
+							},
+							{
+								"lat": 46.66973964923824,
+								"lng": 11.165612534463385
+							},
+							{
+								"lat": 46.670120713025,
+								"lng": 11.165821827616826
+							},
+							{
+								"lat": 46.67046730639743,
+								"lng": 11.165757644383103
+							},
+							{
+								"lat": 46.670502093383135,
+								"lng": 11.164604072513173
+							},
+							{
+								"lat": 46.67037871300022,
+								"lng": 11.164586403911192
+							},
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:05:16+02:00",
+							"street": "Gampenstraße 107",
+							"lat": 46.6562883693751,
+							"lng": 11.1484115141975,
+							"kind": null,
+							"name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"center_lat": 46.6562883693751,
+							"center_lng": 11.1484115141975,
+							"radius": 42,
+							"polygon": [
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								},
+								{
+									"lat": 46.656331841081595,
+									"lng": 11.148737347234862
+								},
+								{
+									"lat": 46.656052812786044,
+									"lng": 11.148633723266585
+								},
+								{
+									"lat": 46.655957067450885,
+									"lng": 11.148342779047956
+								},
+								{
+									"lat": 46.656257980790514,
+									"lng": 11.147992051770707
+								},
+								{
+									"lat": 46.656567099114056,
+									"lng": 11.148358721196924
+								},
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								}
+							],
+							"parking_name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 42,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							},
+							{
+								"lat": 46.656331841081595,
+								"lng": 11.148737347234862
+							},
+							{
+								"lat": 46.656052812786044,
+								"lng": 11.148633723266585
+							},
+							{
+								"lat": 46.655957067450885,
+								"lng": 11.148342779047956
+							},
+							{
+								"lat": 46.656257980790514,
+								"lng": 11.147992051770707
+							},
+							{
+								"lat": 46.656567099114056,
+								"lng": 11.148358721196924
+							},
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							}
+						]
+					}
+				],
+				"fuel": 0,
+				"central_lock": "locked",
+				"fuel_ignored_when_charging": false,
+				"must_be_charging": null
+			},
+			"cruising_range": {
+				"source": null,
+				"value": null
+			},
+			"minimum_pricing": {
+				"from": "2019-10-22T17:00:00+02:00",
+				"until": "2019-10-22T18:00:00+02:00",
+				"km": 0,
+				"km_to_charge": 0,
+				"km_included": 0,
+				"base_fee": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"to_pay_per_km": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"km_charge": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"total_to_pay": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"details": [],
+				"coupon": null
+			},
+			"rfid_slot_1": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"rfid_slot_2": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"available": null,
+			"private_bookings_allowed": true,
+			"commercial_bookings_allowed": false,
+			"feature_number_of_doors": null,
+			"feature_number_of_seats": null,
+			"feature_has_air_condition": false,
+			"feature_has_navigation_system": false,
+			"feature_has_range_extender": false,
+			"feature_number_of_bags": null,
+			"feature_has_seat_for_child": false,
+			"feature_payload": null,
+			"feature_loading_volume": null,
+			"feature_tire_type": null,
+			"feature_plug_type": [],
+			"feature_cable_plug_type": [],
+			"feature_battery_capacity": null,
+			"feature_fast_charge_compatible": false,
+			"feature_people_capacity": null,
+			"car_features": [],
+			"has_fuel_charge_card": false,
+			"has_parking_card": false,
+			"insurances": [
+				{
+					"title": "Entwendung/Verlust des Fahrrads",
+					"kind": "liability",
+					"minimum_age_requirement": 18,
+					"deductible_value": {
+						"cents": 38600,
+						"currency": "EUR",
+						"formatted": "386.00 €",
+						"vat_rate": null,
+						"vat_status": null
+					},
+					"description": "Bei Entwendung des Fahrrads (inkl. Schloss) wird eine Gebühr von 386,00 € fällig. ",
+					"attachment": {
+						"kind": "insurance_conditions",
+						"title": "condizioni di assicurazione",
+						"url": null
+					}
+				}
+			],
+			"minimum_age_insurance_requirement": 18,
+			"in_maintenance": false
+		},
+		{
+			"id": 1524760848,
+			"license": "5",
+			"exchange_type": "i_lock_it_v2",
+			"car_type": "bike",
+			"fuel_type": "other_fuel",
+			"transmission": null,
+			"current_parking_hint": null,
+			"allow_rfid_card_access": false,
+			"distance": null,
+			"requires_terms_acceptance": null,
+			"legal_documents": [
+				{
+					"kind": "general_business_terms",
+					"title": "Condizioni generali di contratto",
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/attachment/file/3371/1f9c351469f74823f8073830b45b7e65.pdf"
+				},
+				{
+					"kind": "privacy_policy",
+					"title": "disposizioni in materia di protezione dei dati",
+					"url": "https://portal.moqo.de/privacy_policy?provider_id=1219977750"
+				},
+				{
+					"kind": "penalties",
+					"title": "catalogo a pagamento",
+					"url": "https://portal.moqo.de/cars/1524760848/penalties.pdf"
+				},
+				{
+					"kind": "insurance_conditions",
+					"title": "condizioni di assicurazione",
+					"url": null
+				}
+			],
+			"location": {
+				"city": "Meran",
+				"postcode": "39012",
+				"created_at": "2019-08-08T15:08:35+02:00",
+				"street": "Bahnhofsplatz",
+				"lat": 46.6724745760751,
+				"lng": 11.1500811721644,
+				"kind": "expected_pickup",
+				"name": "Meran Bahnhof_Stazione Merano",
+				"center_lat": 46.6724745760751,
+				"center_lng": 11.1500811721644,
+				"radius": 71,
+				"polygon": [
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					},
+					{
+						"lat": 46.67187143858226,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67243464716671,
+						"lng": 11.15102264533231
+					},
+					{
+						"lat": 46.67306988701523,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					}
+				],
+				"parking_name": "Meran Bahnhof_Stazione Merano",
+				"navigational_lat": null,
+				"navigational_lng": null
+			},
+			"provider": {
+				"id": 1219977750,
+				"name": "Meran Bikes",
+				"image": {
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"medium_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/medium_ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"thumb_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/thumb_ab13a8e558c1a66fa0a61cdbc82e5850.JPG"
+				}
+			},
+			"cleanness": "good",
+			"car_model": {
+				"id": 979334833,
+				"name": "Standard",
+				"car_type": null,
+				"model_name": "City Standard",
+				"car_manufacturer": {
+					"id": 1671070861,
+					"name": "City"
+				}
+			},
+			"image": {
+				"url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1524760848/0f0a3b2d2096be62f2e81c8350ec2f90.png",
+				"medium_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1524760848/medium_0f0a3b2d2096be62f2e81c8350ec2f90.png",
+				"thumb_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1524760848/thumb_0f0a3b2d2096be62f2e81c8350ec2f90.png"
+			},
+			"fuel": null,
+			"return_requirements": {
+				"areas": [
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:08:35+02:00",
+							"street": "Bahnhofsplatz",
+							"lat": 46.6724745760751,
+							"lng": 11.1500811721644,
+							"kind": null,
+							"name": "Meran Bahnhof_Stazione Merano",
+							"center_lat": 46.6724745760751,
+							"center_lng": 11.1500811721644,
+							"radius": 71,
+							"polygon": [
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								},
+								{
+									"lat": 46.67187143858226,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67243464716671,
+									"lng": 11.15102264533231
+								},
+								{
+									"lat": 46.67306988701523,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								}
+							],
+							"parking_name": "Meran Bahnhof_Stazione Merano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 71,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							},
+							{
+								"lat": 46.67187143858226,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67243464716671,
+								"lng": 11.15102264533231
+							},
+							{
+								"lat": 46.67306988701523,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:01:54+02:00",
+							"street": "Kornplatz 3",
+							"lat": 46.6725259496189,
+							"lng": 11.1591598904964,
+							"kind": null,
+							"name": "Kornplatz_Piazza del Grano",
+							"center_lat": 46.6725259496189,
+							"center_lng": 11.1591598904964,
+							"radius": 50,
+							"polygon": [
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								},
+								{
+									"lat": 46.67224247491092,
+									"lng": 11.158698607088768
+								},
+								{
+									"lat": 46.672235214448165,
+									"lng": 11.15951864458651
+								},
+								{
+									"lat": 46.672712973768796,
+									"lng": 11.159758898877095
+								},
+								{
+									"lat": 46.672796921455245,
+									"lng": 11.159399445235264
+								},
+								{
+									"lat": 46.67280457641655,
+									"lng": 11.15873937169436
+								},
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								}
+							],
+							"parking_name": "Kornplatz_Piazza del Grano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 50,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							},
+							{
+								"lat": 46.67224247491092,
+								"lng": 11.158698607088768
+							},
+							{
+								"lat": 46.672235214448165,
+								"lng": 11.15951864458651
+							},
+							{
+								"lat": 46.672712973768796,
+								"lng": 11.159758898877095
+							},
+							{
+								"lat": 46.672796921455245,
+								"lng": 11.159399445235264
+							},
+							{
+								"lat": 46.67280457641655,
+								"lng": 11.15873937169436
+							},
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T14:58:04+02:00",
+							"street": "Sandplatz",
+							"lat": 46.6701322102183,
+							"lng": 11.1651819301242,
+							"kind": null,
+							"name": "Sandplatz_Piazza Rena",
+							"center_lat": 46.6701322102183,
+							"center_lng": 11.1651819301242,
+							"radius": 60,
+							"polygon": [
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								},
+								{
+									"lat": 46.66996560698374,
+									"lng": 11.164518628914742
+								},
+								{
+									"lat": 46.66973581943779,
+									"lng": 11.164993026729205
+								},
+								{
+									"lat": 46.66973964923824,
+									"lng": 11.165612534463385
+								},
+								{
+									"lat": 46.670120713025,
+									"lng": 11.165821827616826
+								},
+								{
+									"lat": 46.67046730639743,
+									"lng": 11.165757644383103
+								},
+								{
+									"lat": 46.670502093383135,
+									"lng": 11.164604072513173
+								},
+								{
+									"lat": 46.67037871300022,
+									"lng": 11.164586403911192
+								},
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								}
+							],
+							"parking_name": "Sandplatz_Piazza Rena",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 60,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							},
+							{
+								"lat": 46.66996560698374,
+								"lng": 11.164518628914742
+							},
+							{
+								"lat": 46.66973581943779,
+								"lng": 11.164993026729205
+							},
+							{
+								"lat": 46.66973964923824,
+								"lng": 11.165612534463385
+							},
+							{
+								"lat": 46.670120713025,
+								"lng": 11.165821827616826
+							},
+							{
+								"lat": 46.67046730639743,
+								"lng": 11.165757644383103
+							},
+							{
+								"lat": 46.670502093383135,
+								"lng": 11.164604072513173
+							},
+							{
+								"lat": 46.67037871300022,
+								"lng": 11.164586403911192
+							},
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:05:16+02:00",
+							"street": "Gampenstraße 107",
+							"lat": 46.6562883693751,
+							"lng": 11.1484115141975,
+							"kind": null,
+							"name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"center_lat": 46.6562883693751,
+							"center_lng": 11.1484115141975,
+							"radius": 42,
+							"polygon": [
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								},
+								{
+									"lat": 46.656331841081595,
+									"lng": 11.148737347234862
+								},
+								{
+									"lat": 46.656052812786044,
+									"lng": 11.148633723266585
+								},
+								{
+									"lat": 46.655957067450885,
+									"lng": 11.148342779047956
+								},
+								{
+									"lat": 46.656257980790514,
+									"lng": 11.147992051770707
+								},
+								{
+									"lat": 46.656567099114056,
+									"lng": 11.148358721196924
+								},
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								}
+							],
+							"parking_name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 42,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							},
+							{
+								"lat": 46.656331841081595,
+								"lng": 11.148737347234862
+							},
+							{
+								"lat": 46.656052812786044,
+								"lng": 11.148633723266585
+							},
+							{
+								"lat": 46.655957067450885,
+								"lng": 11.148342779047956
+							},
+							{
+								"lat": 46.656257980790514,
+								"lng": 11.147992051770707
+							},
+							{
+								"lat": 46.656567099114056,
+								"lng": 11.148358721196924
+							},
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							}
+						]
+					}
+				],
+				"fuel": 0,
+				"central_lock": "locked",
+				"fuel_ignored_when_charging": false,
+				"must_be_charging": null
+			},
+			"cruising_range": {
+				"source": null,
+				"value": null
+			},
+			"minimum_pricing": {
+				"from": "2019-10-22T17:00:00+02:00",
+				"until": "2019-10-22T18:00:00+02:00",
+				"km": 0,
+				"km_to_charge": 0,
+				"km_included": 0,
+				"base_fee": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"to_pay_per_km": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"km_charge": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"total_to_pay": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"details": [],
+				"coupon": null
+			},
+			"rfid_slot_1": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"rfid_slot_2": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"available": null,
+			"private_bookings_allowed": true,
+			"commercial_bookings_allowed": false,
+			"feature_number_of_doors": null,
+			"feature_number_of_seats": null,
+			"feature_has_air_condition": false,
+			"feature_has_navigation_system": false,
+			"feature_has_range_extender": false,
+			"feature_number_of_bags": null,
+			"feature_has_seat_for_child": false,
+			"feature_payload": null,
+			"feature_loading_volume": null,
+			"feature_tire_type": null,
+			"feature_plug_type": [],
+			"feature_cable_plug_type": [],
+			"feature_battery_capacity": null,
+			"feature_fast_charge_compatible": false,
+			"feature_people_capacity": null,
+			"car_features": [],
+			"has_fuel_charge_card": false,
+			"has_parking_card": false,
+			"insurances": [
+				{
+					"title": "Entwendung/Verlust des Fahrrads",
+					"kind": "liability",
+					"minimum_age_requirement": 18,
+					"deductible_value": {
+						"cents": 38600,
+						"currency": "EUR",
+						"formatted": "386.00 €",
+						"vat_rate": null,
+						"vat_status": null
+					},
+					"description": "Bei Entwendung des Fahrrads (inkl. Schloss) wird eine Gebühr von 386,00 € fällig. ",
+					"attachment": {
+						"kind": "insurance_conditions",
+						"title": "condizioni di assicurazione",
+						"url": null
+					}
+				}
+			],
+			"minimum_age_insurance_requirement": 18,
+			"in_maintenance": false
+		},
+		{
+			"id": 1549688608,
+			"license": "4",
+			"exchange_type": "i_lock_it_v2",
+			"car_type": "bike",
+			"fuel_type": "other_fuel",
+			"transmission": null,
+			"current_parking_hint": null,
+			"allow_rfid_card_access": false,
+			"distance": null,
+			"requires_terms_acceptance": null,
+			"legal_documents": [
+				{
+					"kind": "general_business_terms",
+					"title": "Condizioni generali di contratto",
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/attachment/file/3371/1f9c351469f74823f8073830b45b7e65.pdf"
+				},
+				{
+					"kind": "privacy_policy",
+					"title": "disposizioni in materia di protezione dei dati",
+					"url": "https://portal.moqo.de/privacy_policy?provider_id=1219977750"
+				},
+				{
+					"kind": "penalties",
+					"title": "catalogo a pagamento",
+					"url": "https://portal.moqo.de/cars/1549688608/penalties.pdf"
+				},
+				{
+					"kind": "insurance_conditions",
+					"title": "condizioni di assicurazione",
+					"url": null
+				}
+			],
+			"location": {
+				"city": "Meran",
+				"postcode": "39012",
+				"created_at": "2019-08-08T15:01:54+02:00",
+				"street": "Kornplatz 3",
+				"lat": 46.6725259496189,
+				"lng": 11.1591598904964,
+				"kind": "expected_pickup",
+				"name": "Kornplatz_Piazza del Grano",
+				"center_lat": 46.6725259496189,
+				"center_lng": 11.1591598904964,
+				"radius": 50,
+				"polygon": [
+					{
+						"lat": 46.67270351229894,
+						"lng": 11.15866157313726
+					},
+					{
+						"lat": 46.67224247491092,
+						"lng": 11.158698607088768
+					},
+					{
+						"lat": 46.672235214448165,
+						"lng": 11.15951864458651
+					},
+					{
+						"lat": 46.672712973768796,
+						"lng": 11.159758898877095
+					},
+					{
+						"lat": 46.672796921455245,
+						"lng": 11.159399445235264
+					},
+					{
+						"lat": 46.67280457641655,
+						"lng": 11.15873937169436
+					},
+					{
+						"lat": 46.67270351229894,
+						"lng": 11.15866157313726
+					}
+				],
+				"parking_name": "Kornplatz_Piazza del Grano",
+				"navigational_lat": null,
+				"navigational_lng": null
+			},
+			"provider": {
+				"id": 1219977750,
+				"name": "Meran Bikes",
+				"image": {
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"medium_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/medium_ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"thumb_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/thumb_ab13a8e558c1a66fa0a61cdbc82e5850.JPG"
+				}
+			},
+			"cleanness": "good",
+			"car_model": {
+				"id": 979334833,
+				"name": "Standard",
+				"car_type": null,
+				"model_name": "City Standard",
+				"car_manufacturer": {
+					"id": 1671070861,
+					"name": "City"
+				}
+			},
+			"image": {
+				"url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1549688608/8d9704a62c5024835f6106be2676f4ec.png",
+				"medium_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1549688608/medium_8d9704a62c5024835f6106be2676f4ec.png",
+				"thumb_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1549688608/thumb_8d9704a62c5024835f6106be2676f4ec.png"
+			},
+			"fuel": null,
+			"return_requirements": {
+				"areas": [
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:08:35+02:00",
+							"street": "Bahnhofsplatz",
+							"lat": 46.6724745760751,
+							"lng": 11.1500811721644,
+							"kind": null,
+							"name": "Meran Bahnhof_Stazione Merano",
+							"center_lat": 46.6724745760751,
+							"center_lng": 11.1500811721644,
+							"radius": 71,
+							"polygon": [
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								},
+								{
+									"lat": 46.67187143858226,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67243464716671,
+									"lng": 11.15102264533231
+								},
+								{
+									"lat": 46.67306988701523,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								}
+							],
+							"parking_name": "Meran Bahnhof_Stazione Merano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 71,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							},
+							{
+								"lat": 46.67187143858226,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67243464716671,
+								"lng": 11.15102264533231
+							},
+							{
+								"lat": 46.67306988701523,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:01:54+02:00",
+							"street": "Kornplatz 3",
+							"lat": 46.6725259496189,
+							"lng": 11.1591598904964,
+							"kind": null,
+							"name": "Kornplatz_Piazza del Grano",
+							"center_lat": 46.6725259496189,
+							"center_lng": 11.1591598904964,
+							"radius": 50,
+							"polygon": [
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								},
+								{
+									"lat": 46.67224247491092,
+									"lng": 11.158698607088768
+								},
+								{
+									"lat": 46.672235214448165,
+									"lng": 11.15951864458651
+								},
+								{
+									"lat": 46.672712973768796,
+									"lng": 11.159758898877095
+								},
+								{
+									"lat": 46.672796921455245,
+									"lng": 11.159399445235264
+								},
+								{
+									"lat": 46.67280457641655,
+									"lng": 11.15873937169436
+								},
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								}
+							],
+							"parking_name": "Kornplatz_Piazza del Grano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 50,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							},
+							{
+								"lat": 46.67224247491092,
+								"lng": 11.158698607088768
+							},
+							{
+								"lat": 46.672235214448165,
+								"lng": 11.15951864458651
+							},
+							{
+								"lat": 46.672712973768796,
+								"lng": 11.159758898877095
+							},
+							{
+								"lat": 46.672796921455245,
+								"lng": 11.159399445235264
+							},
+							{
+								"lat": 46.67280457641655,
+								"lng": 11.15873937169436
+							},
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T14:58:04+02:00",
+							"street": "Sandplatz",
+							"lat": 46.6701322102183,
+							"lng": 11.1651819301242,
+							"kind": null,
+							"name": "Sandplatz_Piazza Rena",
+							"center_lat": 46.6701322102183,
+							"center_lng": 11.1651819301242,
+							"radius": 60,
+							"polygon": [
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								},
+								{
+									"lat": 46.66996560698374,
+									"lng": 11.164518628914742
+								},
+								{
+									"lat": 46.66973581943779,
+									"lng": 11.164993026729205
+								},
+								{
+									"lat": 46.66973964923824,
+									"lng": 11.165612534463385
+								},
+								{
+									"lat": 46.670120713025,
+									"lng": 11.165821827616826
+								},
+								{
+									"lat": 46.67046730639743,
+									"lng": 11.165757644383103
+								},
+								{
+									"lat": 46.670502093383135,
+									"lng": 11.164604072513173
+								},
+								{
+									"lat": 46.67037871300022,
+									"lng": 11.164586403911192
+								},
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								}
+							],
+							"parking_name": "Sandplatz_Piazza Rena",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 60,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							},
+							{
+								"lat": 46.66996560698374,
+								"lng": 11.164518628914742
+							},
+							{
+								"lat": 46.66973581943779,
+								"lng": 11.164993026729205
+							},
+							{
+								"lat": 46.66973964923824,
+								"lng": 11.165612534463385
+							},
+							{
+								"lat": 46.670120713025,
+								"lng": 11.165821827616826
+							},
+							{
+								"lat": 46.67046730639743,
+								"lng": 11.165757644383103
+							},
+							{
+								"lat": 46.670502093383135,
+								"lng": 11.164604072513173
+							},
+							{
+								"lat": 46.67037871300022,
+								"lng": 11.164586403911192
+							},
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:05:16+02:00",
+							"street": "Gampenstraße 107",
+							"lat": 46.6562883693751,
+							"lng": 11.1484115141975,
+							"kind": null,
+							"name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"center_lat": 46.6562883693751,
+							"center_lng": 11.1484115141975,
+							"radius": 42,
+							"polygon": [
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								},
+								{
+									"lat": 46.656331841081595,
+									"lng": 11.148737347234862
+								},
+								{
+									"lat": 46.656052812786044,
+									"lng": 11.148633723266585
+								},
+								{
+									"lat": 46.655957067450885,
+									"lng": 11.148342779047956
+								},
+								{
+									"lat": 46.656257980790514,
+									"lng": 11.147992051770707
+								},
+								{
+									"lat": 46.656567099114056,
+									"lng": 11.148358721196924
+								},
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								}
+							],
+							"parking_name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 42,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							},
+							{
+								"lat": 46.656331841081595,
+								"lng": 11.148737347234862
+							},
+							{
+								"lat": 46.656052812786044,
+								"lng": 11.148633723266585
+							},
+							{
+								"lat": 46.655957067450885,
+								"lng": 11.148342779047956
+							},
+							{
+								"lat": 46.656257980790514,
+								"lng": 11.147992051770707
+							},
+							{
+								"lat": 46.656567099114056,
+								"lng": 11.148358721196924
+							},
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							}
+						]
+					}
+				],
+				"fuel": 0,
+				"central_lock": "locked",
+				"fuel_ignored_when_charging": false,
+				"must_be_charging": null
+			},
+			"cruising_range": {
+				"source": null,
+				"value": null
+			},
+			"minimum_pricing": {
+				"from": "2019-10-22T17:00:00+02:00",
+				"until": "2019-10-22T18:00:00+02:00",
+				"km": 0,
+				"km_to_charge": 0,
+				"km_included": 0,
+				"base_fee": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"to_pay_per_km": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"km_charge": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"total_to_pay": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"details": [],
+				"coupon": null
+			},
+			"rfid_slot_1": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"rfid_slot_2": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"available": null,
+			"private_bookings_allowed": true,
+			"commercial_bookings_allowed": false,
+			"feature_number_of_doors": null,
+			"feature_number_of_seats": null,
+			"feature_has_air_condition": false,
+			"feature_has_navigation_system": false,
+			"feature_has_range_extender": false,
+			"feature_number_of_bags": null,
+			"feature_has_seat_for_child": false,
+			"feature_payload": null,
+			"feature_loading_volume": null,
+			"feature_tire_type": null,
+			"feature_plug_type": [],
+			"feature_cable_plug_type": [],
+			"feature_battery_capacity": null,
+			"feature_fast_charge_compatible": false,
+			"feature_people_capacity": null,
+			"car_features": [],
+			"has_fuel_charge_card": false,
+			"has_parking_card": false,
+			"insurances": [
+				{
+					"title": "Entwendung/Verlust des Fahrrads",
+					"kind": "liability",
+					"minimum_age_requirement": 18,
+					"deductible_value": {
+						"cents": 38600,
+						"currency": "EUR",
+						"formatted": "386.00 €",
+						"vat_rate": null,
+						"vat_status": null
+					},
+					"description": "Bei Entwendung des Fahrrads (inkl. Schloss) wird eine Gebühr von 386,00 € fällig. ",
+					"attachment": {
+						"kind": "insurance_conditions",
+						"title": "condizioni di assicurazione",
+						"url": null
+					}
+				}
+			],
+			"minimum_age_insurance_requirement": 18,
+			"in_maintenance": false
+		},
+		{
+			"id": 734332577,
+			"license": "3",
+			"exchange_type": "i_lock_it_v2",
+			"car_type": "bike",
+			"fuel_type": "other_fuel",
+			"transmission": null,
+			"current_parking_hint": null,
+			"allow_rfid_card_access": false,
+			"distance": null,
+			"requires_terms_acceptance": null,
+			"legal_documents": [
+				{
+					"kind": "general_business_terms",
+					"title": "Condizioni generali di contratto",
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/attachment/file/3371/1f9c351469f74823f8073830b45b7e65.pdf"
+				},
+				{
+					"kind": "privacy_policy",
+					"title": "disposizioni in materia di protezione dei dati",
+					"url": "https://portal.moqo.de/privacy_policy?provider_id=1219977750"
+				},
+				{
+					"kind": "penalties",
+					"title": "catalogo a pagamento",
+					"url": "https://portal.moqo.de/cars/734332577/penalties.pdf"
+				},
+				{
+					"kind": "insurance_conditions",
+					"title": "condizioni di assicurazione",
+					"url": null
+				}
+			],
+			"location": {
+				"city": "Meran",
+				"postcode": "39012",
+				"created_at": "2019-08-08T15:08:35+02:00",
+				"street": "Bahnhofsplatz",
+				"lat": 46.6724745760751,
+				"lng": 11.1500811721644,
+				"kind": "expected_pickup",
+				"name": "Meran Bahnhof_Stazione Merano",
+				"center_lat": 46.6724745760751,
+				"center_lng": 11.1500811721644,
+				"radius": 71,
+				"polygon": [
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					},
+					{
+						"lat": 46.67187143858226,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67243464716671,
+						"lng": 11.15102264533231
+					},
+					{
+						"lat": 46.67306988701523,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					}
+				],
+				"parking_name": "Meran Bahnhof_Stazione Merano",
+				"navigational_lat": null,
+				"navigational_lng": null
+			},
+			"provider": {
+				"id": 1219977750,
+				"name": "Meran Bikes",
+				"image": {
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"medium_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/medium_ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"thumb_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/thumb_ab13a8e558c1a66fa0a61cdbc82e5850.JPG"
+				}
+			},
+			"cleanness": "good",
+			"car_model": {
+				"id": 979334833,
+				"name": "Standard",
+				"car_type": null,
+				"model_name": "City Standard",
+				"car_manufacturer": {
+					"id": 1671070861,
+					"name": "City"
+				}
+			},
+			"image": {
+				"url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/734332577/502a511c43510a026732a96621bd3088.png",
+				"medium_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/734332577/medium_502a511c43510a026732a96621bd3088.png",
+				"thumb_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/734332577/thumb_502a511c43510a026732a96621bd3088.png"
+			},
+			"fuel": null,
+			"return_requirements": {
+				"areas": [
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:08:35+02:00",
+							"street": "Bahnhofsplatz",
+							"lat": 46.6724745760751,
+							"lng": 11.1500811721644,
+							"kind": null,
+							"name": "Meran Bahnhof_Stazione Merano",
+							"center_lat": 46.6724745760751,
+							"center_lng": 11.1500811721644,
+							"radius": 71,
+							"polygon": [
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								},
+								{
+									"lat": 46.67187143858226,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67243464716671,
+									"lng": 11.15102264533231
+								},
+								{
+									"lat": 46.67306988701523,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								}
+							],
+							"parking_name": "Meran Bahnhof_Stazione Merano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 71,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							},
+							{
+								"lat": 46.67187143858226,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67243464716671,
+								"lng": 11.15102264533231
+							},
+							{
+								"lat": 46.67306988701523,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:01:54+02:00",
+							"street": "Kornplatz 3",
+							"lat": 46.6725259496189,
+							"lng": 11.1591598904964,
+							"kind": null,
+							"name": "Kornplatz_Piazza del Grano",
+							"center_lat": 46.6725259496189,
+							"center_lng": 11.1591598904964,
+							"radius": 50,
+							"polygon": [
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								},
+								{
+									"lat": 46.67224247491092,
+									"lng": 11.158698607088768
+								},
+								{
+									"lat": 46.672235214448165,
+									"lng": 11.15951864458651
+								},
+								{
+									"lat": 46.672712973768796,
+									"lng": 11.159758898877095
+								},
+								{
+									"lat": 46.672796921455245,
+									"lng": 11.159399445235264
+								},
+								{
+									"lat": 46.67280457641655,
+									"lng": 11.15873937169436
+								},
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								}
+							],
+							"parking_name": "Kornplatz_Piazza del Grano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 50,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							},
+							{
+								"lat": 46.67224247491092,
+								"lng": 11.158698607088768
+							},
+							{
+								"lat": 46.672235214448165,
+								"lng": 11.15951864458651
+							},
+							{
+								"lat": 46.672712973768796,
+								"lng": 11.159758898877095
+							},
+							{
+								"lat": 46.672796921455245,
+								"lng": 11.159399445235264
+							},
+							{
+								"lat": 46.67280457641655,
+								"lng": 11.15873937169436
+							},
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T14:58:04+02:00",
+							"street": "Sandplatz",
+							"lat": 46.6701322102183,
+							"lng": 11.1651819301242,
+							"kind": null,
+							"name": "Sandplatz_Piazza Rena",
+							"center_lat": 46.6701322102183,
+							"center_lng": 11.1651819301242,
+							"radius": 60,
+							"polygon": [
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								},
+								{
+									"lat": 46.66996560698374,
+									"lng": 11.164518628914742
+								},
+								{
+									"lat": 46.66973581943779,
+									"lng": 11.164993026729205
+								},
+								{
+									"lat": 46.66973964923824,
+									"lng": 11.165612534463385
+								},
+								{
+									"lat": 46.670120713025,
+									"lng": 11.165821827616826
+								},
+								{
+									"lat": 46.67046730639743,
+									"lng": 11.165757644383103
+								},
+								{
+									"lat": 46.670502093383135,
+									"lng": 11.164604072513173
+								},
+								{
+									"lat": 46.67037871300022,
+									"lng": 11.164586403911192
+								},
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								}
+							],
+							"parking_name": "Sandplatz_Piazza Rena",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 60,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							},
+							{
+								"lat": 46.66996560698374,
+								"lng": 11.164518628914742
+							},
+							{
+								"lat": 46.66973581943779,
+								"lng": 11.164993026729205
+							},
+							{
+								"lat": 46.66973964923824,
+								"lng": 11.165612534463385
+							},
+							{
+								"lat": 46.670120713025,
+								"lng": 11.165821827616826
+							},
+							{
+								"lat": 46.67046730639743,
+								"lng": 11.165757644383103
+							},
+							{
+								"lat": 46.670502093383135,
+								"lng": 11.164604072513173
+							},
+							{
+								"lat": 46.67037871300022,
+								"lng": 11.164586403911192
+							},
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:05:16+02:00",
+							"street": "Gampenstraße 107",
+							"lat": 46.6562883693751,
+							"lng": 11.1484115141975,
+							"kind": null,
+							"name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"center_lat": 46.6562883693751,
+							"center_lng": 11.1484115141975,
+							"radius": 42,
+							"polygon": [
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								},
+								{
+									"lat": 46.656331841081595,
+									"lng": 11.148737347234862
+								},
+								{
+									"lat": 46.656052812786044,
+									"lng": 11.148633723266585
+								},
+								{
+									"lat": 46.655957067450885,
+									"lng": 11.148342779047956
+								},
+								{
+									"lat": 46.656257980790514,
+									"lng": 11.147992051770707
+								},
+								{
+									"lat": 46.656567099114056,
+									"lng": 11.148358721196924
+								},
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								}
+							],
+							"parking_name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 42,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							},
+							{
+								"lat": 46.656331841081595,
+								"lng": 11.148737347234862
+							},
+							{
+								"lat": 46.656052812786044,
+								"lng": 11.148633723266585
+							},
+							{
+								"lat": 46.655957067450885,
+								"lng": 11.148342779047956
+							},
+							{
+								"lat": 46.656257980790514,
+								"lng": 11.147992051770707
+							},
+							{
+								"lat": 46.656567099114056,
+								"lng": 11.148358721196924
+							},
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							}
+						]
+					}
+				],
+				"fuel": 0,
+				"central_lock": "locked",
+				"fuel_ignored_when_charging": false,
+				"must_be_charging": null
+			},
+			"cruising_range": {
+				"source": null,
+				"value": null
+			},
+			"minimum_pricing": {
+				"from": "2019-10-22T17:00:00+02:00",
+				"until": "2019-10-22T18:00:00+02:00",
+				"km": 0,
+				"km_to_charge": 0,
+				"km_included": 0,
+				"base_fee": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"to_pay_per_km": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"km_charge": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"total_to_pay": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"details": [],
+				"coupon": null
+			},
+			"rfid_slot_1": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"rfid_slot_2": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"available": null,
+			"private_bookings_allowed": true,
+			"commercial_bookings_allowed": false,
+			"feature_number_of_doors": null,
+			"feature_number_of_seats": null,
+			"feature_has_air_condition": false,
+			"feature_has_navigation_system": false,
+			"feature_has_range_extender": false,
+			"feature_number_of_bags": null,
+			"feature_has_seat_for_child": false,
+			"feature_payload": null,
+			"feature_loading_volume": null,
+			"feature_tire_type": null,
+			"feature_plug_type": [],
+			"feature_cable_plug_type": [],
+			"feature_battery_capacity": null,
+			"feature_fast_charge_compatible": false,
+			"feature_people_capacity": null,
+			"car_features": [],
+			"has_fuel_charge_card": false,
+			"has_parking_card": false,
+			"insurances": [
+				{
+					"title": "Entwendung/Verlust des Fahrrads",
+					"kind": "liability",
+					"minimum_age_requirement": 18,
+					"deductible_value": {
+						"cents": 38600,
+						"currency": "EUR",
+						"formatted": "386.00 €",
+						"vat_rate": null,
+						"vat_status": null
+					},
+					"description": "Bei Entwendung des Fahrrads (inkl. Schloss) wird eine Gebühr von 386,00 € fällig. ",
+					"attachment": {
+						"kind": "insurance_conditions",
+						"title": "condizioni di assicurazione",
+						"url": null
+					}
+				}
+			],
+			"minimum_age_insurance_requirement": 18,
+			"in_maintenance": false
+		},
+		{
+			"id": 1128009659,
+			"license": "2",
+			"exchange_type": "i_lock_it_v2",
+			"car_type": "bike",
+			"fuel_type": "other_fuel",
+			"transmission": null,
+			"current_parking_hint": null,
+			"allow_rfid_card_access": false,
+			"distance": null,
+			"requires_terms_acceptance": null,
+			"legal_documents": [
+				{
+					"kind": "general_business_terms",
+					"title": "Condizioni generali di contratto",
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/attachment/file/3371/1f9c351469f74823f8073830b45b7e65.pdf"
+				},
+				{
+					"kind": "privacy_policy",
+					"title": "disposizioni in materia di protezione dei dati",
+					"url": "https://portal.moqo.de/privacy_policy?provider_id=1219977750"
+				},
+				{
+					"kind": "penalties",
+					"title": "catalogo a pagamento",
+					"url": "https://portal.moqo.de/cars/1128009659/penalties.pdf"
+				},
+				{
+					"kind": "insurance_conditions",
+					"title": "condizioni di assicurazione",
+					"url": null
+				}
+			],
+			"location": {
+				"city": "Meran",
+				"postcode": "39012",
+				"created_at": "2019-08-08T15:08:35+02:00",
+				"street": "Bahnhofsplatz",
+				"lat": 46.6724745760751,
+				"lng": 11.1500811721644,
+				"kind": "expected_pickup",
+				"name": "Meran Bahnhof_Stazione Merano",
+				"center_lat": 46.6724745760751,
+				"center_lng": 11.1500811721644,
+				"radius": 71,
+				"polygon": [
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					},
+					{
+						"lat": 46.67187143858226,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67243464716671,
+						"lng": 11.15102264533231
+					},
+					{
+						"lat": 46.67306988701523,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					}
+				],
+				"parking_name": "Meran Bahnhof_Stazione Merano",
+				"navigational_lat": null,
+				"navigational_lng": null
+			},
+			"provider": {
+				"id": 1219977750,
+				"name": "Meran Bikes",
+				"image": {
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"medium_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/medium_ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"thumb_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/thumb_ab13a8e558c1a66fa0a61cdbc82e5850.JPG"
+				}
+			},
+			"cleanness": "good",
+			"car_model": {
+				"id": 979334833,
+				"name": "Standard",
+				"car_type": null,
+				"model_name": "City Standard",
+				"car_manufacturer": {
+					"id": 1671070861,
+					"name": "City"
+				}
+			},
+			"image": {
+				"url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1128009659/fbc946b2941a87d18ac065ecd827c52b.png",
+				"medium_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1128009659/medium_fbc946b2941a87d18ac065ecd827c52b.png",
+				"thumb_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1128009659/thumb_fbc946b2941a87d18ac065ecd827c52b.png"
+			},
+			"fuel": null,
+			"return_requirements": {
+				"areas": [
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:08:35+02:00",
+							"street": "Bahnhofsplatz",
+							"lat": 46.6724745760751,
+							"lng": 11.1500811721644,
+							"kind": null,
+							"name": "Meran Bahnhof_Stazione Merano",
+							"center_lat": 46.6724745760751,
+							"center_lng": 11.1500811721644,
+							"radius": 71,
+							"polygon": [
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								},
+								{
+									"lat": 46.67187143858226,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67243464716671,
+									"lng": 11.15102264533231
+								},
+								{
+									"lat": 46.67306988701523,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								}
+							],
+							"parking_name": "Meran Bahnhof_Stazione Merano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 71,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							},
+							{
+								"lat": 46.67187143858226,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67243464716671,
+								"lng": 11.15102264533231
+							},
+							{
+								"lat": 46.67306988701523,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:01:54+02:00",
+							"street": "Kornplatz 3",
+							"lat": 46.6725259496189,
+							"lng": 11.1591598904964,
+							"kind": null,
+							"name": "Kornplatz_Piazza del Grano",
+							"center_lat": 46.6725259496189,
+							"center_lng": 11.1591598904964,
+							"radius": 50,
+							"polygon": [
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								},
+								{
+									"lat": 46.67224247491092,
+									"lng": 11.158698607088768
+								},
+								{
+									"lat": 46.672235214448165,
+									"lng": 11.15951864458651
+								},
+								{
+									"lat": 46.672712973768796,
+									"lng": 11.159758898877095
+								},
+								{
+									"lat": 46.672796921455245,
+									"lng": 11.159399445235264
+								},
+								{
+									"lat": 46.67280457641655,
+									"lng": 11.15873937169436
+								},
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								}
+							],
+							"parking_name": "Kornplatz_Piazza del Grano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 50,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							},
+							{
+								"lat": 46.67224247491092,
+								"lng": 11.158698607088768
+							},
+							{
+								"lat": 46.672235214448165,
+								"lng": 11.15951864458651
+							},
+							{
+								"lat": 46.672712973768796,
+								"lng": 11.159758898877095
+							},
+							{
+								"lat": 46.672796921455245,
+								"lng": 11.159399445235264
+							},
+							{
+								"lat": 46.67280457641655,
+								"lng": 11.15873937169436
+							},
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T14:58:04+02:00",
+							"street": "Sandplatz",
+							"lat": 46.6701322102183,
+							"lng": 11.1651819301242,
+							"kind": null,
+							"name": "Sandplatz_Piazza Rena",
+							"center_lat": 46.6701322102183,
+							"center_lng": 11.1651819301242,
+							"radius": 60,
+							"polygon": [
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								},
+								{
+									"lat": 46.66996560698374,
+									"lng": 11.164518628914742
+								},
+								{
+									"lat": 46.66973581943779,
+									"lng": 11.164993026729205
+								},
+								{
+									"lat": 46.66973964923824,
+									"lng": 11.165612534463385
+								},
+								{
+									"lat": 46.670120713025,
+									"lng": 11.165821827616826
+								},
+								{
+									"lat": 46.67046730639743,
+									"lng": 11.165757644383103
+								},
+								{
+									"lat": 46.670502093383135,
+									"lng": 11.164604072513173
+								},
+								{
+									"lat": 46.67037871300022,
+									"lng": 11.164586403911192
+								},
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								}
+							],
+							"parking_name": "Sandplatz_Piazza Rena",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 60,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							},
+							{
+								"lat": 46.66996560698374,
+								"lng": 11.164518628914742
+							},
+							{
+								"lat": 46.66973581943779,
+								"lng": 11.164993026729205
+							},
+							{
+								"lat": 46.66973964923824,
+								"lng": 11.165612534463385
+							},
+							{
+								"lat": 46.670120713025,
+								"lng": 11.165821827616826
+							},
+							{
+								"lat": 46.67046730639743,
+								"lng": 11.165757644383103
+							},
+							{
+								"lat": 46.670502093383135,
+								"lng": 11.164604072513173
+							},
+							{
+								"lat": 46.67037871300022,
+								"lng": 11.164586403911192
+							},
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:05:16+02:00",
+							"street": "Gampenstraße 107",
+							"lat": 46.6562883693751,
+							"lng": 11.1484115141975,
+							"kind": null,
+							"name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"center_lat": 46.6562883693751,
+							"center_lng": 11.1484115141975,
+							"radius": 42,
+							"polygon": [
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								},
+								{
+									"lat": 46.656331841081595,
+									"lng": 11.148737347234862
+								},
+								{
+									"lat": 46.656052812786044,
+									"lng": 11.148633723266585
+								},
+								{
+									"lat": 46.655957067450885,
+									"lng": 11.148342779047956
+								},
+								{
+									"lat": 46.656257980790514,
+									"lng": 11.147992051770707
+								},
+								{
+									"lat": 46.656567099114056,
+									"lng": 11.148358721196924
+								},
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								}
+							],
+							"parking_name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 42,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							},
+							{
+								"lat": 46.656331841081595,
+								"lng": 11.148737347234862
+							},
+							{
+								"lat": 46.656052812786044,
+								"lng": 11.148633723266585
+							},
+							{
+								"lat": 46.655957067450885,
+								"lng": 11.148342779047956
+							},
+							{
+								"lat": 46.656257980790514,
+								"lng": 11.147992051770707
+							},
+							{
+								"lat": 46.656567099114056,
+								"lng": 11.148358721196924
+							},
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							}
+						]
+					}
+				],
+				"fuel": 0,
+				"central_lock": "locked",
+				"fuel_ignored_when_charging": false,
+				"must_be_charging": null
+			},
+			"cruising_range": {
+				"source": null,
+				"value": null
+			},
+			"minimum_pricing": {
+				"from": "2019-10-22T17:00:00+02:00",
+				"until": "2019-10-22T18:00:00+02:00",
+				"km": 0,
+				"km_to_charge": 0,
+				"km_included": 0,
+				"base_fee": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"to_pay_per_km": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"km_charge": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"total_to_pay": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"details": [],
+				"coupon": null
+			},
+			"rfid_slot_1": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"rfid_slot_2": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"available": null,
+			"private_bookings_allowed": true,
+			"commercial_bookings_allowed": false,
+			"feature_number_of_doors": null,
+			"feature_number_of_seats": null,
+			"feature_has_air_condition": false,
+			"feature_has_navigation_system": false,
+			"feature_has_range_extender": false,
+			"feature_number_of_bags": null,
+			"feature_has_seat_for_child": false,
+			"feature_payload": null,
+			"feature_loading_volume": null,
+			"feature_tire_type": null,
+			"feature_plug_type": [],
+			"feature_cable_plug_type": [],
+			"feature_battery_capacity": null,
+			"feature_fast_charge_compatible": false,
+			"feature_people_capacity": null,
+			"car_features": [],
+			"has_fuel_charge_card": false,
+			"has_parking_card": false,
+			"insurances": [
+				{
+					"title": "Entwendung/Verlust des Fahrrads",
+					"kind": "liability",
+					"minimum_age_requirement": 18,
+					"deductible_value": {
+						"cents": 38600,
+						"currency": "EUR",
+						"formatted": "386.00 €",
+						"vat_rate": null,
+						"vat_status": null
+					},
+					"description": "Bei Entwendung des Fahrrads (inkl. Schloss) wird eine Gebühr von 386,00 € fällig. ",
+					"attachment": {
+						"kind": "insurance_conditions",
+						"title": "condizioni di assicurazione",
+						"url": null
+					}
+				}
+			],
+			"minimum_age_insurance_requirement": 18,
+			"in_maintenance": false
+		},
+		{
+			"id": 1891943972,
+			"license": "1",
+			"exchange_type": "i_lock_it_v2",
+			"car_type": "bike",
+			"fuel_type": "other_fuel",
+			"transmission": null,
+			"current_parking_hint": null,
+			"allow_rfid_card_access": false,
+			"distance": null,
+			"requires_terms_acceptance": null,
+			"legal_documents": [
+				{
+					"kind": "general_business_terms",
+					"title": "Condizioni generali di contratto",
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/attachment/file/3371/1f9c351469f74823f8073830b45b7e65.pdf"
+				},
+				{
+					"kind": "privacy_policy",
+					"title": "disposizioni in materia di protezione dei dati",
+					"url": "https://portal.moqo.de/privacy_policy?provider_id=1219977750"
+				},
+				{
+					"kind": "penalties",
+					"title": "catalogo a pagamento",
+					"url": "https://portal.moqo.de/cars/1891943972/penalties.pdf"
+				},
+				{
+					"kind": "insurance_conditions",
+					"title": "condizioni di assicurazione",
+					"url": null
+				}
+			],
+			"location": {
+				"city": "Meran",
+				"postcode": "39012",
+				"created_at": "2019-08-08T15:08:35+02:00",
+				"street": "Bahnhofsplatz",
+				"lat": 46.6724745760751,
+				"lng": 11.1500811721644,
+				"kind": "expected_pickup",
+				"name": "Meran Bahnhof_Stazione Merano",
+				"center_lat": 46.6724745760751,
+				"center_lng": 11.1500811721644,
+				"radius": 71,
+				"polygon": [
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					},
+					{
+						"lat": 46.67187143858226,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67243464716671,
+						"lng": 11.15102264533231
+					},
+					{
+						"lat": 46.67306988701523,
+						"lng": 11.150030052416756
+					},
+					{
+						"lat": 46.67253288062102,
+						"lng": 11.149190166103594
+					}
+				],
+				"parking_name": "Meran Bahnhof_Stazione Merano",
+				"navigational_lat": null,
+				"navigational_lng": null
+			},
+			"provider": {
+				"id": 1219977750,
+				"name": "Meran Bikes",
+				"image": {
+					"url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"medium_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/medium_ab13a8e558c1a66fa0a61cdbc82e5850.JPG",
+					"thumb_url": "https://fleetbutler.s3.eu-central-1.amazonaws.com/uploads/provider/image/1219977750/thumb_ab13a8e558c1a66fa0a61cdbc82e5850.JPG"
+				}
+			},
+			"cleanness": "good",
+			"car_model": {
+				"id": 979334833,
+				"name": "Standard",
+				"car_type": null,
+				"model_name": "City Standard",
+				"car_manufacturer": {
+					"id": 1671070861,
+					"name": "City"
+				}
+			},
+			"image": {
+				"url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1891943972/fe469224bfffe7cfea20ffeef38a108b.png",
+				"medium_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1891943972/medium_fe469224bfffe7cfea20ffeef38a108b.png",
+				"thumb_url": "https://s3.eu-central-1.amazonaws.com/fleetbutler/uploads/car/image/1891943972/thumb_fe469224bfffe7cfea20ffeef38a108b.png"
+			},
+			"fuel": null,
+			"return_requirements": {
+				"areas": [
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:08:35+02:00",
+							"street": "Bahnhofsplatz",
+							"lat": 46.6724745760751,
+							"lng": 11.1500811721644,
+							"kind": null,
+							"name": "Meran Bahnhof_Stazione Merano",
+							"center_lat": 46.6724745760751,
+							"center_lng": 11.1500811721644,
+							"radius": 71,
+							"polygon": [
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								},
+								{
+									"lat": 46.67187143858226,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67243464716671,
+									"lng": 11.15102264533231
+								},
+								{
+									"lat": 46.67306988701523,
+									"lng": 11.150030052416756
+								},
+								{
+									"lat": 46.67253288062102,
+									"lng": 11.149190166103594
+								}
+							],
+							"parking_name": "Meran Bahnhof_Stazione Merano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 71,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							},
+							{
+								"lat": 46.67187143858226,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67243464716671,
+								"lng": 11.15102264533231
+							},
+							{
+								"lat": 46.67306988701523,
+								"lng": 11.150030052416756
+							},
+							{
+								"lat": 46.67253288062102,
+								"lng": 11.149190166103594
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:01:54+02:00",
+							"street": "Kornplatz 3",
+							"lat": 46.6725259496189,
+							"lng": 11.1591598904964,
+							"kind": null,
+							"name": "Kornplatz_Piazza del Grano",
+							"center_lat": 46.6725259496189,
+							"center_lng": 11.1591598904964,
+							"radius": 50,
+							"polygon": [
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								},
+								{
+									"lat": 46.67224247491092,
+									"lng": 11.158698607088768
+								},
+								{
+									"lat": 46.672235214448165,
+									"lng": 11.15951864458651
+								},
+								{
+									"lat": 46.672712973768796,
+									"lng": 11.159758898877095
+								},
+								{
+									"lat": 46.672796921455245,
+									"lng": 11.159399445235264
+								},
+								{
+									"lat": 46.67280457641655,
+									"lng": 11.15873937169436
+								},
+								{
+									"lat": 46.67270351229894,
+									"lng": 11.15866157313726
+								}
+							],
+							"parking_name": "Kornplatz_Piazza del Grano",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 50,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							},
+							{
+								"lat": 46.67224247491092,
+								"lng": 11.158698607088768
+							},
+							{
+								"lat": 46.672235214448165,
+								"lng": 11.15951864458651
+							},
+							{
+								"lat": 46.672712973768796,
+								"lng": 11.159758898877095
+							},
+							{
+								"lat": 46.672796921455245,
+								"lng": 11.159399445235264
+							},
+							{
+								"lat": 46.67280457641655,
+								"lng": 11.15873937169436
+							},
+							{
+								"lat": 46.67270351229894,
+								"lng": 11.15866157313726
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T14:58:04+02:00",
+							"street": "Sandplatz",
+							"lat": 46.6701322102183,
+							"lng": 11.1651819301242,
+							"kind": null,
+							"name": "Sandplatz_Piazza Rena",
+							"center_lat": 46.6701322102183,
+							"center_lng": 11.1651819301242,
+							"radius": 60,
+							"polygon": [
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								},
+								{
+									"lat": 46.66996560698374,
+									"lng": 11.164518628914742
+								},
+								{
+									"lat": 46.66973581943779,
+									"lng": 11.164993026729205
+								},
+								{
+									"lat": 46.66973964923824,
+									"lng": 11.165612534463385
+								},
+								{
+									"lat": 46.670120713025,
+									"lng": 11.165821827616826
+								},
+								{
+									"lat": 46.67046730639743,
+									"lng": 11.165757644383103
+								},
+								{
+									"lat": 46.670502093383135,
+									"lng": 11.164604072513173
+								},
+								{
+									"lat": 46.67037871300022,
+									"lng": 11.164586403911192
+								},
+								{
+									"lat": 46.67032943526684,
+									"lng": 11.164616299053012
+								}
+							],
+							"parking_name": "Sandplatz_Piazza Rena",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 60,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							},
+							{
+								"lat": 46.66996560698374,
+								"lng": 11.164518628914742
+							},
+							{
+								"lat": 46.66973581943779,
+								"lng": 11.164993026729205
+							},
+							{
+								"lat": 46.66973964923824,
+								"lng": 11.165612534463385
+							},
+							{
+								"lat": 46.670120713025,
+								"lng": 11.165821827616826
+							},
+							{
+								"lat": 46.67046730639743,
+								"lng": 11.165757644383103
+							},
+							{
+								"lat": 46.670502093383135,
+								"lng": 11.164604072513173
+							},
+							{
+								"lat": 46.67037871300022,
+								"lng": 11.164586403911192
+							},
+							{
+								"lat": 46.67032943526684,
+								"lng": 11.164616299053012
+							}
+						]
+					},
+					{
+						"center": {
+							"city": "Meran",
+							"postcode": "39012",
+							"created_at": "2019-08-08T15:05:16+02:00",
+							"street": "Gampenstraße 107",
+							"lat": 46.6562883693751,
+							"lng": 11.1484115141975,
+							"kind": null,
+							"name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"center_lat": 46.6562883693751,
+							"center_lng": 11.1484115141975,
+							"radius": 42,
+							"polygon": [
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								},
+								{
+									"lat": 46.656331841081595,
+									"lng": 11.148737347234862
+								},
+								{
+									"lat": 46.656052812786044,
+									"lng": 11.148633723266585
+								},
+								{
+									"lat": 46.655957067450885,
+									"lng": 11.148342779047956
+								},
+								{
+									"lat": 46.656257980790514,
+									"lng": 11.147992051770707
+								},
+								{
+									"lat": 46.656567099114056,
+									"lng": 11.148358721196924
+								},
+								{
+									"lat": 46.6566519011771,
+									"lng": 11.148573940207964
+								}
+							],
+							"parking_name": "Bahnhof Untermais_Stazione Maia Bassa",
+							"navigational_lat": null,
+							"navigational_lng": null
+						},
+						"max_distance": 42,
+						"hint_required": false,
+						"hint_examples": null,
+						"polygon": [
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							},
+							{
+								"lat": 46.656331841081595,
+								"lng": 11.148737347234862
+							},
+							{
+								"lat": 46.656052812786044,
+								"lng": 11.148633723266585
+							},
+							{
+								"lat": 46.655957067450885,
+								"lng": 11.148342779047956
+							},
+							{
+								"lat": 46.656257980790514,
+								"lng": 11.147992051770707
+							},
+							{
+								"lat": 46.656567099114056,
+								"lng": 11.148358721196924
+							},
+							{
+								"lat": 46.6566519011771,
+								"lng": 11.148573940207964
+							}
+						]
+					}
+				],
+				"fuel": 0,
+				"central_lock": "locked",
+				"fuel_ignored_when_charging": false,
+				"must_be_charging": null
+			},
+			"cruising_range": {
+				"source": null,
+				"value": null
+			},
+			"minimum_pricing": {
+				"from": "2019-10-22T17:00:00+02:00",
+				"until": "2019-10-22T18:00:00+02:00",
+				"km": 0,
+				"km_to_charge": 0,
+				"km_included": 0,
+				"base_fee": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"to_pay_per_km": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"km_charge": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"total_to_pay": {
+					"cents": 0,
+					"currency": "EUR",
+					"formatted": "0.00 €",
+					"vat_rate": 1900,
+					"vat_status": "gross"
+				},
+				"details": [],
+				"coupon": null
+			},
+			"rfid_slot_1": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"rfid_slot_2": {
+				"label": null,
+				"kind": "no_card",
+				"vendor": null,
+				"pin": null
+			},
+			"available": null,
+			"private_bookings_allowed": true,
+			"commercial_bookings_allowed": false,
+			"feature_number_of_doors": null,
+			"feature_number_of_seats": null,
+			"feature_has_air_condition": false,
+			"feature_has_navigation_system": false,
+			"feature_has_range_extender": false,
+			"feature_number_of_bags": null,
+			"feature_has_seat_for_child": false,
+			"feature_payload": null,
+			"feature_loading_volume": null,
+			"feature_tire_type": null,
+			"feature_plug_type": [],
+			"feature_cable_plug_type": [],
+			"feature_battery_capacity": null,
+			"feature_fast_charge_compatible": false,
+			"feature_people_capacity": null,
+			"car_features": [],
+			"has_fuel_charge_card": false,
+			"has_parking_card": false,
+			"insurances": [
+				{
+					"title": "Entwendung/Verlust des Fahrrads",
+					"kind": "liability",
+					"minimum_age_requirement": 18,
+					"deductible_value": {
+						"cents": 38600,
+						"currency": "EUR",
+						"formatted": "386.00 €",
+						"vat_rate": null,
+						"vat_status": null
+					},
+					"description": "Bei Entwendung des Fahrrads (inkl. Schloss) wird eine Gebühr von 386,00 € fällig. ",
+					"attachment": {
+						"kind": "insurance_conditions",
+						"title": "condizioni di assicurazione",
+						"url": null
+					}
+				}
+			],
+			"minimum_age_insurance_requirement": 18,
+			"in_maintenance": false
+		}
+	],
+	"pagination": {
+		"total_pages": 6,
+		"current_page": 6,
+		"next_page": null,
+		"prev_page": 5
+	}
+}

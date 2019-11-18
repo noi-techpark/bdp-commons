@@ -2,6 +2,7 @@ package it.bz.idm.bdp.augeg4.fun.push;
 
 import java.util.List;
 
+import it.bz.idm.bdp.dto.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,7 @@ import org.springframework.stereotype.Service;
 import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ProcessedDataToHubDto;
 import it.bz.idm.bdp.augeg4.face.DataPusherHubFace;
 import it.bz.idm.bdp.augeg4.face.DataPusherMapperFace;
-import it.bz.idm.bdp.dto.DataMapDto;
-import it.bz.idm.bdp.dto.DataTypeDto;
-import it.bz.idm.bdp.dto.ProvenanceDto;
-import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.StationList;
+//import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.json.JSONPusher;
 
 @Service
@@ -53,6 +49,7 @@ public class DataPusherHub extends JSONPusher implements DataPusherHubFace {
             LOG.warn("pushData() rootMap.getBranch().keySet().isEmpty()");
         } else {
             // FIXME integreenTypology substitute with real value
+            LOG.debug("PUSH Typology: ["+this.integreenTypology+"]");
             super.pushData(this.integreenTypology, rootMap);
         }
     }

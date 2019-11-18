@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.google.api.services.sheets.v4.model.Sheet;
@@ -19,9 +20,11 @@ import it.bz.idm.bdp.dto.StationList;
 @Service
 public class JobScheduler {
 
+	@Lazy
 	@Autowired
 	private GoogleSpreadSheetDataFetcher googleClient;
 
+	@Lazy
 	@Autowired
 	private ODHClient odhClient;
 
@@ -40,6 +43,11 @@ public class JobScheduler {
 	@Value("${headers.latitudeId}")
 	private String latitudeId;
 
+	@Lazy
+	@Autowired
+	private SpreadsheetWatcher watcher;
+
+
 
     @Value("${spreadsheet.sheets.names}")
     private String[] sheetsIdentifier;
@@ -47,7 +55,6 @@ public class JobScheduler {
 	 * scheduled job which syncs odh with the spreadsheet
 	 */
 	public void syncData() {
-		googleClient.authenticate();
 		Spreadsheet fetchedSheet = (Spreadsheet) googleClient.fetchSheet();
 		StationList dtos = new StationList();
 	    List<StationDto> odhStations = odhClient.fetchStations(odhClient.getIntegreenTypology(), origin);
@@ -90,7 +97,7 @@ public class JobScheduler {
 					i++;
 					continue;
 				}
-				if (!existingOdhStations.contains(dto) && dto.getLongitude() == null) {
+				if (dto.getLongitude() == null) {
 					try {
 						odhClient.guessPositionByAddress(dto);
 					}catch(final IllegalStateException ex) {
@@ -118,5 +125,8 @@ public class JobScheduler {
 		return dtos;
 	}
 
+	public void watchBluetoothBoxesSpreadsheet() {
+		watcher.registerWatch();
+	}
 
 }

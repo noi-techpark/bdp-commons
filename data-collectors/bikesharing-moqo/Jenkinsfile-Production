@@ -1,0 +1,40 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile-java'
+            additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
+    }
+    
+    environment {
+        PROJECT = "bikesharing-moqo"
+        PROJECT_FOLDER = "data-collectors/${PROJECT}"
+        LOG_FOLDER = "/var/log/opendatahub/data-collectors"
+        ARTIFACT_NAME = "dc-${PROJECT}"
+    }
+
+    stages {
+        stage('Configure') {
+            steps {
+                sh 'sed -i -e "s%\\(log4j.rootLogger\\s*=\\).*\\$%\\1INFO,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+	            sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+                sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify package'
+            }
+        }
+
+	    stage('Archive') {
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+    }
+}

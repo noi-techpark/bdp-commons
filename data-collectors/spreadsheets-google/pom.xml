@@ -6,13 +6,13 @@
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>dc-spreadsheets-google</artifactId>
 	<packaging>war</packaging>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 	<name>Creative Industries data collector</name>
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>5.1.8.RELEASE</spring.version>
-        <finalName>googleSpreadsheets</finalName>
+		<finalName>googleSpreadsheets</finalName>
 	</properties>
 	<repositories>
 		<repository>
@@ -35,8 +35,8 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -88,7 +88,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>3.2.0</version>
+			<version>3.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -115,7 +115,11 @@
 			<artifactId>google-oauth-client-jetty</artifactId>
 			<version>1.30.1</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-drive</artifactId>
+			<version>v3-rev173-1.25.0</version>
+		</dependency>
 		<dependency>
 			<groupId>com.google.apis</groupId>
 			<artifactId>google-api-services-sheets</artifactId>
@@ -139,7 +143,7 @@
 
 	</dependencies>
 	<build>
-        <finalName>${finalName}</finalName>
+		<finalName>${finalName}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

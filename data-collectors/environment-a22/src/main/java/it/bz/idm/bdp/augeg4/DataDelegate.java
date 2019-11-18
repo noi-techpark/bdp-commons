@@ -34,11 +34,13 @@ public class DataDelegate {
     private final DataConverterHubFace dataConverterHub = new DataConverterHub();
     private final DataConverterAugeFace dataConverterAuge = new DataConverterAuge();
 
-    private final FixedQueue<AugeG4ProcessedDataToHubDto> queuedDataToHub = new FixedQueue<>(MAX_QUEUE_SIZE);
-    private final FixedQueue<AugeG4ProcessedDataToAugeDto> queuedDataToAuge = new FixedQueue<>(MAX_QUEUE_SIZE);
+    private final FixedQueue<AugeG4ProcessedDataToHubDto> queuedDataToHub;
+    private final FixedQueue<AugeG4ProcessedDataToAugeDto> queuedDataToAuge;
 
     DataDelegate(DataService dataService) {
         this.dataService = dataService;
+        this.queuedDataToHub = new FixedQueue<>(MAX_QUEUE_SIZE);
+        this.queuedDataToAuge = new FixedQueue<>(MAX_QUEUE_SIZE);
     }
 
 
@@ -58,7 +60,9 @@ public class DataDelegate {
                 return;
             }
             List<AugeG4RawData> rawData = delinearizer.delinearize(elaboratedData);
+            LOG.debug("FETCH fetchData rawData size ["+rawData.size()+"]");
             List<AugeG4ProcessedData> processedData = dataProcessor.process(rawData);
+            LOG.debug("FETCH fetchData processedData size ["+processedData.size()+"]");
             prepareProcessedDataForAuge(processedData);
             prepareProcessedDataForHub(processedData);
         } catch (Exception e) {
@@ -69,8 +73,10 @@ public class DataDelegate {
 
     private void prepareProcessedDataForAuge(List<AugeG4ProcessedData> processedData) {
         try {
+            LOG.debug("prepareProcessedDataForAuge size ["+processedData.size()+"]");
             List<AugeG4ProcessedDataToAugeDto> convertedData = dataConverterAuge.convert(processedData);
             queuedDataToAuge.addAll(convertedData);
+            LOG.debug("prepareProcessedDataForAuge queued size ["+queuedDataToAuge.size()+"]");
         } catch (Exception e) {
             LOG.error("Processing of processed data for Auge failed: {}.", e);
         }
@@ -78,8 +84,10 @@ public class DataDelegate {
 
     private void prepareProcessedDataForHub(List<AugeG4ProcessedData> processedData) {
         try {
+            LOG.debug("prepareProcessedDataForHub size ["+processedData.size()+"]");
             List<AugeG4ProcessedDataToHubDto> convertedData = dataConverterHub.convert(processedData);
             queuedDataToHub.addAll(convertedData);
+            LOG.debug("prepareProcessedDataForHub queued size ["+queuedDataToHub.size()+"]");
             dataService.getStationsDelegate().prepareStationsForHub(convertedData);
         } catch (Exception e) {
             LOG.error("Processing of processed data for HUB failed: {}.", e);

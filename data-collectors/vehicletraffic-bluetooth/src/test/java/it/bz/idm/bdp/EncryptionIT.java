@@ -25,6 +25,6 @@ public class EncryptionIT {
 		assertTrue(util.isValid());
 		String mac="whatever";
 		String encryptedString = util.encrypt(mac);
-		assertEquals("73c0611fced8cc3a8c890e649b461ce0a76dd6207b161458887332af2ee97133", encryptedString);
+		assertEquals("9621cfdc02848c049bd094b801e3b8ac675db4cdce2ad7348fb5254c9e05d96b", encryptedString);
 	}
 }

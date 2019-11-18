@@ -22,23 +22,39 @@ public class DataPusherAuge implements DataPusherAugeFace {
 
     private static final Logger LOG = LogManager.getLogger(DataPusherAuge.class.getName());
 
+
     private AugeMqttConfiguration augeMqttConfiguration;
+
+    private MqttClient client;
 
     public DataPusherAuge(AugeMqttConfiguration augeMqttConfiguration) {
         this.augeMqttConfiguration = augeMqttConfiguration;
+        try {
+            client = AugeMqttClient.build(augeMqttConfiguration);
+            LOG.info("Mqtt Auge connected.");
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void pushData(List<AugeG4ProcessedDataToAugeDto> list) {
-        String topic        = augeMqttConfiguration.getTopic();
-        int qos             = 1;
-
-        String content = jsonOf(list);
+        int QUALITY_OF_SERVICE = 1;
         try {
-            MqttClient client = AugeMqttClient.build(augeMqttConfiguration);
-            if (client.isConnected()) {
-                publish(topic, content, qos, client);
-                client.disconnect();
+            client = AugeMqttClient.build(augeMqttConfiguration);
+            LOG.info("Mqtt Auge connected. ["+client.isConnected()+"]");
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (client != null && client.isConnected()) {
+                for(AugeG4ProcessedDataToAugeDto augeDto: list) {
+                    String content = jsonOf(augeDto);
+                    LOG.debug(content);
+                    publish(augeMqttConfiguration.getTopic(), content, QUALITY_OF_SERVICE, client);
+                }
+            } else {
+                LOG.info("Can't push data: client not connected.");
             }
         } catch(MqttException me) {
             LOG.debug("reason "+me.getReasonCode());
@@ -50,21 +66,24 @@ public class DataPusherAuge implements DataPusherAugeFace {
         }
     }
 
-    private String jsonOf(List<AugeG4ProcessedDataToAugeDto> list) {
+    private String jsonOf(AugeG4ProcessedDataToAugeDto augeDto) {
         ObjectMapper mapper = new ObjectMapper();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Rome"));
         mapper.setDateFormat(dateFormat);
         String json = null;
+        if (augeDto== null) {
+            throw new IllegalArgumentException();
+        }
         try {
-            json = mapper.writeValueAsString(list);
+            json = mapper.writeValueAsString(augeDto);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return json;
     }
 
-    private void publish(String topic, String content, int qos, MqttClient client) throws MqttException {
+    protected void publish(String topic, String content, int qos, MqttClient client) throws MqttException {
         LOG.debug("Publishing message: "+content);
         MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(qos);

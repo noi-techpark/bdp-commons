@@ -30,6 +30,9 @@ public class OddsPusher extends JSONPusher {
 		return "BluetoothStation";
 	}
 
+	/**
+	 * maps received data from bluetoothbox to ODH and encrypts mac addresses
+	 */
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
 		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
@@ -38,7 +41,6 @@ public class OddsPusher extends JSONPusher {
 		for (OddsRecordDto dto : dtos){
 			DataMapDto<RecordDtoImpl> stationMap = dataMap.upsertBranch(dto.getStationcode());
 			DataMapDto<RecordDtoImpl> typeMap = stationMap.upsertBranch(env.getRequiredProperty("datatype"));
-
 			SimpleRecordDto textDto = new SimpleRecordDto();
 			String stringValue = dto.getMac();
 			if (cryptUtil.isValid())
