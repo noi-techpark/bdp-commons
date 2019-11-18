@@ -24,6 +24,11 @@ pipeline {
                         sh 'cd data-collectors/bikesharing-algorab && mvn -B -U clean compile test'
                     }
                 }
+                stage('bikesharing-moqo') {
+                    steps {
+                        sh 'cd data-collectors/bikesharing-moqo && mvn -B -U clean compile test'
+                    }
+                }
                 stage('carpooling-flootta'){
                     steps {
                         sh 'cd data-collectors/carpooling-flootta && mvn -B -U clean compile test'
