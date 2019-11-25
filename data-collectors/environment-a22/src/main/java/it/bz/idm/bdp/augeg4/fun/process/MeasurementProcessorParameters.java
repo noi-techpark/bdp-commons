@@ -23,6 +23,8 @@ public class MeasurementProcessorParameters {
     private static final String COLUMN_TEMPERATURE_LEVEL = "Temperatura";
 
     private static final Logger LOG = LogManager.getLogger(MeasurementProcessorParameters.class.getName());
+    public static final double HIGH_TEMPERATURE_VALUE = 20.0;
+    public static final String HIGH_TEMPERATURE_LABEL = "20";
 
     private final Map<MeasurementParametersId, MeasurementParameters> parametersByMeasurementParametersId = new HashMap<>();
 
@@ -64,7 +66,7 @@ public class MeasurementProcessorParameters {
 
     Optional<MeasurementParameters> getMeasurementParameters(String controlUnitId, MeasurementId measurementId, Double temperature) {
         String temperatureLevel;
-        if (temperature>=20.0) temperatureLevel = "20";
+        if (temperature>= HIGH_TEMPERATURE_VALUE) temperatureLevel = HIGH_TEMPERATURE_LABEL;
         else temperatureLevel = "";
         MeasurementParametersId id = new MeasurementParametersId(controlUnitId, measurementId,temperatureLevel);
         MeasurementParameters parameters = parametersByMeasurementParametersId.get(id);

@@ -17,9 +17,14 @@ public class MeasurementProcessor {
 
     private static final Logger LOG = LogManager.getLogger(MeasurementProcessor.class.getName());
 
+    public static final MeasurementId MEASUREMENT_ID_TEMPERATURA = new MeasurementId(2);
+    public static final MeasurementId MEASUREMENT_ID_RH = new MeasurementId(3);
     public static final MeasurementId MEASUREMENT_ID_O3 = new MeasurementId(8);
     public static final MeasurementId MEASUREMENT_ID_NO2 = new MeasurementId(9);
-    public static final MeasurementId MEASUREMENT_ID_TEMPERATURA = new MeasurementId(2);
+    public static final MeasurementId MEASUREMENT_ID_PM10 = new MeasurementId(12);
+    public static final int NESSUNA_FORMULA = 0;
+    public static final int FORMULA_PER_NO_E_NO2 = 1;
+    public static final int FORMULA_PER_PM10 = 2;
 
     private final MeasurementProcessorParameters measurementProcessorParameters = new MeasurementProcessorParameters();
     private final int RAD = 1;
@@ -61,8 +66,17 @@ public class MeasurementProcessor {
     private Optional<Double> applyFunction(AugeG4RawData rawData, RawMeasurement rawMeasurement) {
         Optional<Double> O3 = getMeasurementFromRawData(rawData, MEASUREMENT_ID_O3);
         Optional<Double> temperature = getMeasurementFromRawData(rawData, MEASUREMENT_ID_TEMPERATURA);
-        if (!O3.isPresent() || !temperature.isPresent()) {
-            return Optional.empty();
+        Optional<Double> RH = getMeasurementFromRawData(rawData, MEASUREMENT_ID_RH);
+        Optional<Double> PM10 = getMeasurementFromRawData(rawData, MEASUREMENT_ID_PM10);
+        int formula;
+        if (O3.isPresent() && temperature.isPresent()) {
+            formula = FORMULA_PER_NO_E_NO2;
+        } else if (RH.isPresent() && PM10.isPresent() && temperature.isPresent()) {
+            formula = FORMULA_PER_PM10;
+            if (temperature.get()>=20.0 && PM10.get()>100.0) formula = NESSUNA_FORMULA;
+            if (temperature.get()<20.0 && RH.get()>97.0) formula = NESSUNA_FORMULA;
+        } else {
+            formula = NESSUNA_FORMULA;
         }
         Optional<MeasurementParameters> parametersContainer= measurementProcessorParameters.getMeasurementParameters(
                 rawData.getControlUnitId(),
@@ -73,18 +87,35 @@ public class MeasurementProcessor {
             return Optional.empty();
         }
         MeasurementParameters parameters = parametersContainer.get();
-        return Optional.of(applyFunction(
-                BigDecimal.valueOf(rawMeasurement.getValue()),
-                parameters.getA(),
-                parameters.getB(),
-                parameters.getC(),
-                parameters.getD(),
-                parameters.getE(),
-                parameters.getF(),
-                BigDecimal.valueOf(O3.get()),
-                BigDecimal.valueOf(temperature.get()),
-                BigDecimal.valueOf(RAD)
-        ));
+        switch (formula) {
+            case 1: return Optional.of(applyFunction(
+                    BigDecimal.valueOf(rawMeasurement.getValue()),
+                    parameters.getA(),
+                    parameters.getB(),
+                    parameters.getC(),
+                    parameters.getD(),
+                    parameters.getE(),
+                    parameters.getF(),
+                    BigDecimal.valueOf(O3.get()),
+                    BigDecimal.valueOf(temperature.get()),
+                    BigDecimal.valueOf(RAD)
+            ));
+            case 2: return Optional.of(applyFunction2(
+                    BigDecimal.valueOf(rawMeasurement.getValue()),
+                    parameters.getA(),
+                    parameters.getB(),
+                    parameters.getC(),
+                    parameters.getD(),
+                    parameters.getE(),
+                    parameters.getF(),
+                    BigDecimal.valueOf(RH.get()),
+                    BigDecimal.valueOf(temperature.get()),
+                    BigDecimal.valueOf(RAD)
+            ));
+            default:
+                return Optional.empty();
+        }
+
     }
 
     public double applyFunction(BigDecimal x,
@@ -133,16 +164,16 @@ public class MeasurementProcessor {
         BigDecimal uno = a.multiply(BigDecimalMath.pow(x, new BigDecimal("0.7")), mathContext);
         LOG.debug("uno:"+uno);
 
-        BigDecimal due = b.multiply(x, mathContext);
+        BigDecimal due = b.multiply(BigDecimalMath.pow(RH, new BigDecimal("0.75")), mathContext);
         LOG.debug("due:"+due);
 
-        BigDecimal tre = c.multiply(BigDecimalMath.pow(RH, new BigDecimal("0.75")), mathContext);
+        BigDecimal tre = c.multiply(BigDecimalMath.pow(T_int, new BigDecimal("0.3")), mathContext);
         LOG.debug("tre:"+tre);
 
-        BigDecimal quattro = d.multiply(BigDecimalMath.pow(T_int, new BigDecimal("0.3")), mathContext);
+        BigDecimal quattro = new BigDecimal(0);
         LOG.debug("quattro:"+quattro);
 
-        BigDecimal cinque = e.multiply(Rad, mathContext);
+        BigDecimal cinque = new BigDecimal(0);
         LOG.debug("cinque:"+cinque);
         BigDecimal somma = uno
                 .add(due, mathContext)
