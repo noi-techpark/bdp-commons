@@ -36,7 +36,8 @@ public class MeasurementProcessor {
     private boolean isToProcess(AugeG4RawData rawData, RawMeasurement rawMeasurement) {
         return measurementProcessorParameters.hasMeasurementParameters(
                 rawData.getControlUnitId(),
-                rawMeasurement.getId()
+                rawMeasurement.getId(),
+                ""
         );
     }
 
@@ -63,10 +64,11 @@ public class MeasurementProcessor {
         if (!O3.isPresent() || !temperature.isPresent()) {
             return Optional.empty();
         }
-        Optional<MeasurementParameters> parametersContainer = measurementProcessorParameters.getMeasurementParameters(
+        Optional<MeasurementParameters> parametersContainer= measurementProcessorParameters.getMeasurementParameters(
                 rawData.getControlUnitId(),
-                rawMeasurement.getId()
-        );
+                rawMeasurement.getId(),
+                temperature.get()
+            );
         if(!parametersContainer.isPresent()) {
             return Optional.empty();
         }
@@ -105,6 +107,39 @@ public class MeasurementProcessor {
         LOG.debug("tre:"+tre);
 
         BigDecimal quattro = d.multiply(T_int.pow(4), mathContext);
+        LOG.debug("quattro:"+quattro);
+
+        BigDecimal cinque = e.multiply(Rad, mathContext);
+        LOG.debug("cinque:"+cinque);
+        BigDecimal somma = uno
+                .add(due, mathContext)
+                .add(tre, mathContext)
+                .add(quattro, mathContext)
+                .add(cinque, mathContext);
+        LOG.debug("somma:"+somma);
+        return somma.doubleValue();
+    }
+
+    public double applyFunction2(BigDecimal x,
+                                BigDecimal a,
+                                BigDecimal b,
+                                BigDecimal c,
+                                BigDecimal d,
+                                BigDecimal e,
+                                BigDecimal f,
+                                BigDecimal RH,
+                                BigDecimal T_int,
+                                BigDecimal Rad) {
+        BigDecimal uno = a.multiply(BigDecimalMath.pow(x, new BigDecimal("0.7")), mathContext);
+        LOG.debug("uno:"+uno);
+
+        BigDecimal due = b.multiply(x, mathContext);
+        LOG.debug("due:"+due);
+
+        BigDecimal tre = c.multiply(BigDecimalMath.pow(RH, new BigDecimal("0.75")), mathContext);
+        LOG.debug("tre:"+tre);
+
+        BigDecimal quattro = d.multiply(BigDecimalMath.pow(T_int, new BigDecimal("0.3")), mathContext);
         LOG.debug("quattro:"+quattro);
 
         BigDecimal cinque = e.multiply(Rad, mathContext);
