@@ -24,7 +24,8 @@ public class MeasurementProcessorParametersTest {
 
         // expect
         assertTrue(parameters.isPresent());
-        assertEquals(-450.3, parameters.get().getA().doubleValue());
+        assertEquals(-1075.7313, parameters.get().getA().doubleValue());
+        assertEquals(2.802068E-6, parameters.get().getE().doubleValue());
 
     }
 
@@ -41,7 +42,8 @@ public class MeasurementProcessorParametersTest {
 
         // expect
         assertTrue(parameters.isPresent());
-        assertEquals(-2450.3, parameters.get().getA().doubleValue());
+        assertEquals(-5400.2488, parameters.get().getA().doubleValue());
+        assertEquals(-8.956467E-5, parameters.get().getE().doubleValue());
 
     }
 }
