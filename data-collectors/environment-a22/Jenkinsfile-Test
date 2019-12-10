@@ -43,7 +43,8 @@ pipeline {
         }
         stage('Archive') {
             steps {
-                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war' archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
     }
