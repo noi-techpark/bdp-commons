@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
-	<artifactId>dc-algorab-a22</artifactId>
+	<artifactId>dc-environment-a22</artifactId>
 	<version>0.1.0</version>
 	<packaging>war</packaging>
 	<name>AugeG4 Data Collector</name>
@@ -141,7 +141,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>dc-augeg4-algorab</finalName>
+		<finalName>dc-environment-a22</finalName>
 		<testSourceDirectory>src/test/java/</testSourceDirectory>
 		<plugins>
 			<plugin>
