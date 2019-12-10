@@ -36,9 +36,14 @@ pipeline {
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean compile test' //add verify step, once integration tests work properly
             }
         }
-        stage('Deploy') {
+        stage('Build') {
             steps {
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -U tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+                sh 'cd ${PROJECT_FOLDER} && mvn package'
+            }
+        }
+        stage('Archive') {
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war' archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
             }
         }
     }
