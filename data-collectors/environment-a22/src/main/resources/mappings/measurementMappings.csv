@@ -1,7 +1,7 @@
 id,processedId,dataType,unit,description,rtype
 1,101,CO2,,CO2,Mean
 2,2,temperature,°C,Temperatura,Mean
-3,3,humidity,,Umidità relativa,Mean
+3,3,RH,,Umidità relativa,Mean
 7,7,temperature,°C,Temperatura interna,Mean
 8,102,O3,,O3,Mean
 9,103,NO2,,NO2,Mean

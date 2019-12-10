@@ -20,8 +20,11 @@ public class MeasurementProcessorParameters {
 
     private static final String COLUMN_CONTROL_UNIT_ID = "Stazione";
     private static final String COLUMN_MEASUREMENT_ID = "Inquinante";
+    private static final String COLUMN_TEMPERATURE_LEVEL = "Temperatura";
 
     private static final Logger LOG = LogManager.getLogger(MeasurementProcessorParameters.class.getName());
+    public static final double HIGH_TEMPERATURE_VALUE = 20.0;
+    public static final String HIGH_TEMPERATURE_LABEL = "20";
 
     private final Map<MeasurementParametersId, MeasurementParameters> parametersByMeasurementParametersId = new HashMap<>();
 
@@ -54,14 +57,18 @@ public class MeasurementProcessorParameters {
     }
 
     private MeasurementParametersId getMeasurementParametersId(CSVRecord record) {
+        //System.out.println("temp_level="+record.get(COLUMN_TEMPERATURE_LEVEL));
         return new MeasurementParametersId(
                 record.get(COLUMN_CONTROL_UNIT_ID),
-                new MeasurementId(Integer.parseInt(record.get(COLUMN_MEASUREMENT_ID)))
-        );
+                new MeasurementId(Integer.parseInt(record.get(COLUMN_MEASUREMENT_ID))),
+                record.get(COLUMN_TEMPERATURE_LEVEL));
     }
 
-    Optional<MeasurementParameters> getMeasurementParameters(String controlUnitId, MeasurementId measurementId) {
-        MeasurementParametersId id = new MeasurementParametersId(controlUnitId, measurementId);
+    Optional<MeasurementParameters> getMeasurementParameters(String controlUnitId, MeasurementId measurementId, Double temperature) {
+        String temperatureLevel;
+        if (temperature>= HIGH_TEMPERATURE_VALUE) temperatureLevel = HIGH_TEMPERATURE_LABEL;
+        else temperatureLevel = "";
+        MeasurementParametersId id = new MeasurementParametersId(controlUnitId, measurementId,temperatureLevel);
         MeasurementParameters parameters = parametersByMeasurementParametersId.get(id);
         if (parameters == null) {
             LOG.warn("getMeasurementParameters() called with an unknown id: {}", id);
@@ -69,9 +76,9 @@ public class MeasurementProcessorParameters {
         return Optional.ofNullable(parameters);
     }
 
-    boolean hasMeasurementParameters(String controlUnitId, MeasurementId measurementId){
+    boolean hasMeasurementParameters(String controlUnitId, MeasurementId measurementId, String temperature_level){
         return parametersByMeasurementParametersId.containsKey(
-                new MeasurementParametersId(controlUnitId, measurementId));
+                new MeasurementParametersId(controlUnitId, measurementId, temperature_level));
     }
 
 
