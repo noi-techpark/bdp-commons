@@ -1,0 +1,74 @@
+[
+  {
+    "id": "TEST_ID01",
+    "address": "Viale Stazione, 5",
+    "name": "TEST_Viale della Stazione - Bahnhofsallee",
+    "state": "READY",
+    "lat": 46.497459,
+    "lng": 11.355516
+  },
+  {
+    "id": "TEST_ID02",
+    "address": "Via Claudia Augusta, 42",
+    "name": "TEST_Claudia Augusta",
+    "state": "OFFLINE",
+    "lat": 46.483579,
+    "lng": 11.343183
+  },
+  {
+    "id": "TEST_ID03",
+    "address": "Piazzetta Caduti Nassirija",
+    "name": "TEST_Via Maso della Pieve - Pfarrhofstrasse",
+    "state": "READY",
+    "lat": 46.46461,
+    "lng": 11.333071
+  },
+  {
+    "id": "TEST_ID04",
+    "address": "Via Buozzi, 31",
+    "name": "TEST_Fiera - Messe",
+    "state": "OUT_OF_SERVICE",
+    "lat": 46.473876,
+    "lng": 11.325996
+  },
+  {
+    "id": "TEST_ID05",
+    "address": "Via Galilei, 23",
+    "name": "TEST_Via Galilei - Galilei-Strasse",
+    "state": "READY",
+    "lat": 46.485846,
+    "lng": 11.335918
+  },
+  {
+    "id": "TEST_ID06",
+    "address": "Via Resia, 39/A",
+    "name": "TEST_Palasport - Stadthalle",
+    "state": "READY",
+    "lat": 46.491091,
+    "lng": 11.316234
+  },
+  {
+    "id": "TEST_ID07",
+    "address": "Via Lorenz Böhler, 4",
+    "name": "TEST_Ospedale - Krankenhaus",
+    "state": "READY",
+    "lat": 46.499597,
+    "lng": 11.308948
+  },
+  {
+    "id": "TEST_ID08",
+    "address": "Corso della Libertà, 117",
+    "name": "TEST_Piazza Gries - Grieserplatz",
+    "state": "READY",
+    "lat": 46.502365,
+    "lng": 11.335204
+  },
+  {
+    "id": "TEST_ID09",
+    "address": "Via A.Volta, 13A",
+    "name": "TEST_NOI Techpark Alto Adige",
+    "state": "READY",
+    "lat": 46.479306,
+    "lng": 11.333139
+  }
+]

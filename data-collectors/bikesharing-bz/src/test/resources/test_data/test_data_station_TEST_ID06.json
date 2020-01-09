@@ -1,0 +1,206 @@
+{
+  "id": "TEST_ID06",
+  "name": "TEST_Palasport - Stadthalle",
+  "address": "Via Resia, 39/A",
+  "state": "READY",
+  "lat": 46.491091,
+  "lng": 11.316234,
+  "totalBays": 12,
+  "freeBay": 5,
+  "availableVehicles": 6,
+  "bays": {
+    "nodes": [
+      {
+        "label": "TEST_Palasport - Stadthalle:1",
+        "state": "OUT_OF_SERVICE",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 14",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Palasport - Stadthalle:2",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 39",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Palasport - Stadthalle:3",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 28",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Palasport - Stadthalle:4",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 56",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Palasport - Stadthalle:5",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Palasport - Stadthalle:6",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Palasport - Stadthalle:7",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 40",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Palasport - Stadthalle:8",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 45",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Palasport - Stadthalle:9",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 69",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Palasport - Stadthalle:10",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Firmiano:11",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Palasport - Stadthalle:12",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      }
+    ]
+  }
+}

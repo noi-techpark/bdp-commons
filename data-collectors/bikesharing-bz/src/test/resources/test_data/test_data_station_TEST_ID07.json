@@ -1,0 +1,187 @@
+{
+  "id": "TEST_ID07",
+  "name": "TEST_Ospedale - Krankenhaus",
+  "address": "Via Lorenz Böhler, 4",
+  "state": "READY",
+  "lat": 46.499597,
+  "lng": 11.308948,
+  "totalBays": 12,
+  "freeBay": 8,
+  "availableVehicles": 4,
+  "bays": {
+    "nodes": [
+      {
+        "label": "TEST_Ospedale - Krankenhaus:1",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 57",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Ospedale - Krankenhaus:2",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 63",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Ospedale - Krankenhaus:3",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 52",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Ospedale - Krankenhaus:4",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 58",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Ospedale - Krankenhaus:5",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Ospedale - Krankenhaus:6",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Ospedale - Krankenhaus:7",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Ospedale - Krankenhaus:8",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Ospedale San Maurizio:9",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Ospedale San Maurizio:10",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Ospedale San Maurizio:11",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Ospedale - Krankenhaus:12",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      }
+    ]
+  }
+}

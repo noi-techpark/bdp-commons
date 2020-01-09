@@ -1,0 +1,194 @@
+{
+  "id": "TEST_ID03",
+  "name": "TEST_Via Maso della Pieve - Pfarrhofstrasse",
+  "address": "Piazzetta Caduti Nassirija",
+  "state": "READY",
+  "lat": 46.46461,
+  "lng": 11.333071,
+  "totalBays": 12,
+  "freeBay": 7,
+  "availableVehicles": 5,
+  "bays": {
+    "nodes": [
+      {
+        "label": "TEST_Via Maso della Pieve - Pfarrhofstrasse:1",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 65",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Via Maso della Pieve - Pfarrhofstrasse:2",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGING",
+          "code": "Triciclo 03",
+          "vehicleType": {
+            "name": "TEST_Triciclo",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Via Maso della Pieve - Pfarrhofstrasse:3",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGING",
+          "code": "City 61",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Via Maso della Pieve - Pfarrhofstrasse:4",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGING",
+          "code": "City 29",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Via Maso della Pieve - Pfarrhofstrasse:5",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 66",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Via Maso della Pieve - Pfarrhofstrasse:6",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Maso della Pieve - Pfarrhofstrasse:7",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Maso della Pieve - Pfarrhofstrasse:8",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Maso della Pieve - Pfarrhofstrasse:9",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Maso della Pieve - Pfarrhofstrasse:10",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Maso della Pieve - Pfarrhofstrasse:11",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Maso Della Pieve:12",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      }
+    ]
+  }
+}

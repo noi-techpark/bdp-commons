@@ -1,0 +1,187 @@
+{
+  "id": "TEST_ID02",
+  "name": "TEST_Claudia Augusta",
+  "address": "Via Claudia Augusta, 42",
+  "state": "OFFLINE",
+  "lat": 46.483579,
+  "lng": 11.343183,
+  "totalBays": 12,
+  "freeBay": 8,
+  "availableVehicles": 4,
+  "bays": {
+    "nodes": [
+      {
+        "label": "TEST_Claudia Augusta:1",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 27",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Claudia Augusta:2",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Claudia Augusta:3",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 54",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Claudia Augusta:4",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "Triciclo 01",
+          "vehicleType": {
+            "name": "TEST_Triciclo",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Claudia Augusta:5",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 49",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Claudia Augusta:6",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Claudia Augusta:7",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Claudia Augusta:8",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Claudia Augusta:9",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Claudia Augusta:10",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Claudia Augusta:11",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Claudia Augusta:12",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      }
+    ]
+  }
+}
