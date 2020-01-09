@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
-	<artifactId>dc-algorab-a22</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<artifactId>dc-environment-a22</artifactId>
+	<version>0.1.0</version>
 	<packaging>war</packaging>
 	<name>AugeG4 Data Collector</name>
 	<properties>
@@ -11,8 +11,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.3.20.RELEASE</spring.version>
 		<spring.integration.version>5.1.2.RELEASE</spring.integration.version>
-		<paho.mqttclient.version>1.2.0</paho.mqttclient.version>
-		<jackson.version>2.9.9</jackson.version>
+		<paho.mqttclient.version>1.2.1</paho.mqttclient.version>
+		<jackson.version>2.10.0</jackson.version>
 	</properties>
 
 	<repositories>
@@ -25,8 +25,8 @@
 			<url>https://repo.eclipse.org/content/repositories/paho-releases/</url>
 		</repository>
 		<repository>
-			<id>maven-repo.opendatahub.bz.it-SNAPSHOT</id>
-			<url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/snapshot</url>
+			<id>maven-repo.opendatahub.bz.it</id>
+			<url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
 		</repository>
 	</repositories>
 
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>3.2.0-SNAPSHOT</version>
+			<version>3.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -141,7 +141,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>dc-augeg4-algorab</finalName>
+		<finalName>dc-environment-a22</finalName>
 		<testSourceDirectory>src/test/java/</testSourceDirectory>
 		<plugins>
 			<plugin>

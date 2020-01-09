@@ -12,6 +12,8 @@ pipeline {
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
         ARTIFACT_NAME = "dc-${PROJECT}"
         ENCRYPTION_KEY = credentials('bluetooth-encryption-key')
+        GOOGLE_SECRET=credentials('spreadsheets.client_secret.json')
+        GOOGLE_CREDENTIAL_FOLDER=credentials('google-spreadsheet-api-credential-store-folder')
     }
 
     stages {
@@ -20,6 +22,11 @@ pipeline {
                 sh 'sed -i -e "s%\\(log4j.rootLogger\\s*=\\).*\\$%\\1INFO,stdout,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'sed -i -e "s%\\(encryption.key=\\).*\\$%\\1${ENCRYPTION_KEY}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(credentialsFolder=\\).*\\$%\\1${GOOGLE_CREDENTIAL_FOLDER}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json'
+                sh 'cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/client_secret.json'
+
                 sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
 
@@ -28,7 +35,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test verify package'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test  package'
             }
         }
 

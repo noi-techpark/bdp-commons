@@ -185,7 +185,7 @@ pipeline {
         stage('Configure - origin-destination') {
             environment {
                 ARTIFACT_NAME = "origin-destination"
-                STATION_TYPE = "Linkstation"
+                STATION_TYPE = "LinkStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
@@ -218,7 +218,7 @@ pipeline {
         stage('Configure - meteorology') {
             environment {
                 ARTIFACT_NAME = "meteorology"
-                STATION_TYPE = "Meteostation"
+                STATION_TYPE = "MeteoStation"
                 CHILD_STATION_TYPE = "/"
                 CHILDREN_PATH = "/"
             }
@@ -405,6 +405,38 @@ pipeline {
         stage('Archive - carpooling') {
             environment {
                 ARTIFACT_NAME = "carpooling"
+            }
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+        stage('Configure - vms') {
+            environment {
+                ARTIFACT_NAME = "vms"
+                STATION_TYPE = "VMS"
+                CHILD_STATION_TYPE = "/"
+                CHILDREN_PATH = "/"
+            }
+            steps {
+                sh 'sed -i -e "s%\\(bdp.stationtype\\s*=\\).*\\$%\\1${STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childstationtype\\s*=\\).*\\$%\\1${CHILD_STATION_TYPE}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh 'sed -i -e "s%\\(bdp.childrenpath\\s*=\\).*\\$%\\1${CHILDREN_PATH}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+
+                sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1/var/log/opendatahub/webservices/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+            }
+        }
+        stage('Build - VMS') {
+            environment {
+                ARTIFACT_NAME = "vms"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean test package -Dwebservice=${ARTIFACT_NAME}'
+            }
+        }
+        stage('Archive - VMS') {
+            environment {
+                ARTIFACT_NAME = "vms"
             }
             steps {
                 sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'

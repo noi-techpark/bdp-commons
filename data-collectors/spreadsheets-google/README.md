@@ -12,7 +12,7 @@ Name and address, together **must** create a unique composite key.
 ### Skills
 The spreadsheet reader does some magic but tries to not influence to much. These are things happening when you sync:
 - if the column **description** exists it gets analyzed and all contents gets associated to a language (en,de or it)
-- each column can be prefixed with a valid ISO 639 locale(eg. de,en,it,fr,cz...) to hint to the correct language of that column; a prefixed column has always precedence on a non prefixed(do not prefix required columns. In that case create new ones)
+- each column can be prefixed with a valid ISO 639 locale(eg. de,en,it,fr,cz...) to define the correct language of that column; a prefixed column has always precedence on a non prefixed(do not prefix required columns. In that case create new ones)
 -if you have specified an address the app will try to find the correct coordinate informations using Openstreetmaps data which may not have fancy things like google has(word stamming, multiple language recognition...), but has the correct housenumbers of southtyrol, which google has not(does some strange approximation which rarely work). 
 
 Each **address must** ...
@@ -29,7 +29,7 @@ If after the import, the **address** cell in the spreadsheet displays with a red
 - check if your change is being displayed on https://geodata.integreen-life.bz.it/edi/wms?service=WMS&version=1.1.0&request=GetMap&layers=edi%3Acreative%20points%20on%20map&bbox=11.1433265%2C46.3395693%2C11.9563958%2C46.8330732&width=768&height=466&srs=EPSG%3A4326&format=application/openlayers
 and if the cell is still displayed in red.
 
-### Features for the future (pay attention to pronunciation ;-))
+### Features for the future
 - additional prefixes for validation (email,address,website ...)
 - handle data without position information
 - do further quality checks on language

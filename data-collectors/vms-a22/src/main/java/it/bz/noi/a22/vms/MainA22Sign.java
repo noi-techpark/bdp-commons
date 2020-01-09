@@ -140,6 +140,7 @@ public class MainA22Sign implements Job
 									sign_lon);
 							station.getMetaData().put("pmv_type", pmv_type);
 							station.setOrigin(a22stationProperties.getProperty("origin")); // 2019-06-26 d@vide.bz: required to make fetchStations work!
+							station.setStationType(a22stationProperties.getProperty("stationtype"));
 							// add other metadata
 							station.getMetaData().put("direction_id", direction_id);
 							station.getMetaData().put("segment_start", segment_start);

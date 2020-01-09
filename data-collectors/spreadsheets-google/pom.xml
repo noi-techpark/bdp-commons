@@ -6,7 +6,7 @@
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>dc-spreadsheets-google</artifactId>
 	<packaging>war</packaging>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<name>Creative Industries data collector</name>
 	<properties>
 		<java.version>8</java.version>
@@ -16,7 +16,7 @@
 	</properties>
 	<repositories>
 		<repository>
-			<id>maven-repo.opendatahub.bz.it-SNAPSHOT</id>
+			<id>maven-repo.opendatahub.bz.it</id>
 			<url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
 		</repository>
 	</repositories>
@@ -77,11 +77,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
@@ -133,11 +128,6 @@
 		<dependency>
 			<groupId>org.apache.tika</groupId>
 			<artifactId>tika-langdetect</artifactId>
-			<version>1.21</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tika</groupId>
-			<artifactId>tika-parsers</artifactId>
 			<version>1.21</version>
 		</dependency>
 		<dependency>
