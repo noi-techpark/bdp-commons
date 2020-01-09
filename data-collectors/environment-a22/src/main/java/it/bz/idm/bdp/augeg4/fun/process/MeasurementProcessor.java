@@ -20,7 +20,7 @@ public class MeasurementProcessor {
     public static final MeasurementId MEASUREMENT_ID_TEMPERATURA = new MeasurementId(2);
     public static final MeasurementId MEASUREMENT_ID_RH = new MeasurementId(3);
     public static final MeasurementId MEASUREMENT_ID_O3 = new MeasurementId(8);
-    public static final MeasurementId MEASUREMENT_ID_NO2 = new MeasurementId(9);
+    public static final MeasurementId MEASUREMENT_ID_NO2 = new MeasurementId(14);
     public static final MeasurementId MEASUREMENT_ID_PM10 = new MeasurementId(12);
     public static final int NESSUNA_FORMULA = 0;
     public static final int FORMULA_PER_NO_E_NO2 = 1;
