@@ -18,7 +18,7 @@ public class MeasurementProcessor {
     private static final Logger LOG = LogManager.getLogger(MeasurementProcessor.class.getName());
 
     public static final MeasurementId MEASUREMENT_ID_O3 = new MeasurementId(8);
-    public static final MeasurementId MEASUREMENT_ID_NO2 = new MeasurementId(9);
+    public static final MeasurementId MEASUREMENT_ID_NO2 = new MeasurementId(14);
     public static final MeasurementId MEASUREMENT_ID_TEMPERATURA = new MeasurementId(2);
 
     private final MeasurementProcessorParameters measurementProcessorParameters = new MeasurementProcessorParameters();
