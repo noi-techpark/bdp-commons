@@ -1,0 +1,220 @@
+{
+  "id": "TEST_ID01",
+  "name": "TEST_Viale della Stazione - Bahnhofsallee",
+  "address": "Viale Stazione, 5",
+  "state": "READY",
+  "lat": 46.497459,
+  "lng": 11.355516,
+  "totalBays": 12,
+  "freeBay": 3,
+  "availableVehicles": 8,
+  "bays": {
+    "nodes": [
+      {
+        "label": "TEST_ID01_BAY01",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "TEST_ID01_BAY01_BIKE",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_ID01_BAY02",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGING",
+          "code": "TEST_ID01_BAY02_BIKE",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_ID01_BAY03",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGING",
+          "code": "TEST_ID01_BAY03_BIKE",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_ID01_BAY04",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGING",
+          "code": "TEST_ID01_BAY04_BIKE",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_ID01_BAY05",
+        "state": "OUT_OF_SERVICE",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [],
+        "vehicle": {
+          "batteryState": "CHARGING",
+          "code": "TEST_ID01_BAY05_BIKE",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_ID01_BAY06",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "TEST_ID01_BAY06_BIKE",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_ID01_BAY07",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGING",
+          "code": "TEST_ID01_BAY07_BIKE",
+          "vehicleType": {
+            "name": "TEST_Triciclo",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_ID01_BAY08",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "TEST_ID01_BAY08_BIKE",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_ID01_BAY09",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_ID01_BAY10",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_ID01_BAY11",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGING",
+          "code": "City 68",
+          "vehicleType": {
+            "name": "TEST_ID01_BAY11_BIKE",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_ID01_BAY12",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      }
+    ]
+  }
+}

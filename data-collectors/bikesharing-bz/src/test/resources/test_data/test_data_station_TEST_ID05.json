@@ -1,0 +1,176 @@
+{
+  "id": "TEST_ID05",
+  "name": "TEST_Via Galilei - Galilei-Strasse",
+  "address": "Via Galilei, 23",
+  "state": "READY",
+  "lat": 46.485846,
+  "lng": 11.335918,
+  "totalBays": 12,
+  "freeBay": 8,
+  "availableVehicles": 2,
+  "bays": {
+    "nodes": [
+      {
+        "label": "TEST_Via Galilei - Galilei-Strasse:1",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 67",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Via Galilei - Galilei-Strasse:2",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "PRELIEVO"
+        ],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 05",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Via Galilei - Galilei-Strasse:3",
+        "state": "OUT_OF_SERVICE",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Galilei - Galilei-Strasse:4",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Galilei - Galilei-Strasse:5",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Galilei - Galilei-Strasse:6",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Galilei - Galilei-Strasse:7",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Galilei - Galilei-Strasse:8",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Galilei - Galilei-Strasse:9",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via Galilei - Galilei-Strasse:10",
+        "state": "OUT_OF_SERVICE",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [],
+        "vehicle": {
+          "batteryState": "CHARGED",
+          "code": "City 12",
+          "vehicleType": {
+            "name": "TEST_Sunshine",
+            "electric": true
+          }
+        }
+      },
+      {
+        "label": "TEST_Via G. Galilei:11",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      },
+      {
+        "label": "TEST_Via G. Galilei:12",
+        "state": "READY",
+        "charger": true,
+        "use": [
+          "SHARING"
+        ],
+        "usageState": [
+          "RICONSEGNA"
+        ],
+        "vehicle": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,159 @@
+{
+	"id": "TEST_ID04",
+	"name": "TEST_Fiera - Messe",
+	"address": "Via Buozzi, 31",
+	"state": "OUT_OF_SERVICE",
+	"lat": 46.473876,
+	"lng": 11.325996,
+	"totalBays": 12,
+	"freeBay": 12,
+	"availableVehicles": 0,
+	"bays": {
+		"nodes": [
+			{
+				"label": "TEST_Fiera - Messe:1",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			},
+			{
+				"label": "TEST_Fiera - Messe:2",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			},
+			{
+				"label": "TEST_Fiera Messe:3",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			},
+			{
+				"label": "TEST_Fiera Messe:4",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			},
+			{
+				"label": "TEST_Fiera Messe:5",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			},
+			{
+				"label": "TEST_Fiera Messe:6",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			},
+			{
+				"label": "TEST_Fiera Messe:7",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			},
+			{
+				"label": "TEST_Fiera Messe:8",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			},
+			{
+				"label": "TEST_Fiera Messe:9",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			},
+			{
+				"label": "TEST_Fiera Messe:10",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			},
+			{
+				"label": "TEST_Fiera Messe:11",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			},
+			{
+				"label": "TEST_Fiera Messe:12",
+				"state": "READY",
+				"charger": true,
+				"use": [
+					"SHARING"
+				],
+				"usageState": [
+					"RICONSEGNA"
+				],
+				"vehicle": null
+			}
+		]
+	}
+}
