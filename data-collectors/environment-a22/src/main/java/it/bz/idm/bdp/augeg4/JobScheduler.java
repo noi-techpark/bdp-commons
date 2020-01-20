@@ -25,15 +25,11 @@ public class JobScheduler {
 
     private DataServiceFace dataService;
 
+	private ConnectorConfig config;
 
+	private DataRetrieverFace retriever;
 
-    public JobScheduler(
-            DataRetrieverFace retriever,
-            DataPusherHub pusherHub,
-            DataPusherAuge pusherAuge
-    ) {
-        dataService = new DataService(retriever, pusherHub, pusherAuge);
-    }
+	private DataPusherHub pusherHub;
 
     @Autowired
     public JobScheduler(
@@ -47,8 +43,9 @@ public class JobScheduler {
         LOG.info("mqtt push port:"+config.mqtt_publisher_port);
         LOG.info("mqtt push topic:"+config.mqtt_publisher_topic);
         LOG.info("mqtt push uri:"+config.mqtt_publisher_uri);
-        DataPusherAuge pusherAuge = new DataPusherAuge(AugeMqttConfiguration.buildMqttPublisherConfiguration(config));
-        dataService = new DataService(retriever, pusherHub, pusherAuge);
+        this.config = config;
+        this.retriever =retriever;
+        this.pusherHub = pusherHub;
     }
 
 
@@ -58,7 +55,8 @@ public class JobScheduler {
     @PostConstruct
     public void onDeploy() throws Exception {
         LOG.info("onDeploy() called");
-        dataService.loadPreviouslySyncedStations();
+        DataPusherAuge pusherAuge = new DataPusherAuge(AugeMqttConfiguration.buildMqttPublisherConfiguration(config));
+        dataService = new DataService(retriever, pusherHub, pusherAuge);
     }
 
 
@@ -76,6 +74,7 @@ public class JobScheduler {
      */
     public void pushStations() throws Exception {
         LOG.info("pushStations() called");
+        dataService.loadPreviouslySyncedStations();
         dataService.syncStations();
     }
 
