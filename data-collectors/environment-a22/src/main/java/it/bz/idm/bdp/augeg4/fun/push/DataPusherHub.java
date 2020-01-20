@@ -19,9 +19,11 @@ import it.bz.idm.bdp.json.JSONPusher;
 @Service
 public class DataPusherHub extends JSONPusher implements DataPusherHubFace {
 
-    private static final String STATION_TYPE = "EnvironmentStation";
 
-    private static final String STATION_ORIGIN = "A22_algorab";
+    @Value("${station.type}")
+    private  String stationType;
+    @Value("${origin}")
+    private String stationOrigin;
 
     private static final Logger LOG = LogManager.getLogger(DataPusherHub.class.getName());
 
@@ -64,12 +66,12 @@ public class DataPusherHub extends JSONPusher implements DataPusherHubFace {
 
     @Override
     public String getStationType() {
-        return STATION_TYPE;
+        return stationType;
     }
 
     @Override
     public String getOrigin() {
-        return STATION_ORIGIN;
+        return stationOrigin;
     }
 
     @Override
