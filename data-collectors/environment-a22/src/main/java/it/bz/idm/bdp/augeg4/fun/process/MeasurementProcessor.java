@@ -20,11 +20,14 @@ public class MeasurementProcessor {
     public static final MeasurementId MEASUREMENT_ID_TEMPERATURA = new MeasurementId(2);
     public static final MeasurementId MEASUREMENT_ID_RH = new MeasurementId(3);
     public static final MeasurementId MEASUREMENT_ID_O3 = new MeasurementId(8);
-    public static final MeasurementId MEASUREMENT_ID_NO2 = new MeasurementId(9);
+    public static final MeasurementId MEASUREMENT_ID_NO2 = new MeasurementId(14);
+    public static final MeasurementId MEASUREMENT_ID_NO = new MeasurementId(15);
     public static final MeasurementId MEASUREMENT_ID_PM10 = new MeasurementId(12);
+    public static final MeasurementId MEASUREMENT_ID_PM25 = new MeasurementId(13);
     public static final int NESSUNA_FORMULA = 0;
     public static final int FORMULA_PER_NO_E_NO2 = 1;
-    public static final int FORMULA_PER_PM10 = 2;
+    public static final int FORMULA_PER_PM10_E_PM25 = 2;
+     public static final int FORMULA_PER_03 = 3;
 
     private final MeasurementProcessorParameters measurementProcessorParameters = new MeasurementProcessorParameters();
     private final int RAD = 1;
@@ -65,17 +68,24 @@ public class MeasurementProcessor {
 
     private Optional<Double> applyFunction(AugeG4RawData rawData, RawMeasurement rawMeasurement) {
         Optional<Double> O3 = getMeasurementFromRawData(rawData, MEASUREMENT_ID_O3);
+        Optional<Double> NO = getMeasurementFromRawData(rawData, MEASUREMENT_ID_NO);
+        Optional<Double> NO2 = getMeasurementFromRawData(rawData, MEASUREMENT_ID_NO2);
         Optional<Double> temperature = getMeasurementFromRawData(rawData, MEASUREMENT_ID_TEMPERATURA);
         Optional<Double> RH = getMeasurementFromRawData(rawData, MEASUREMENT_ID_RH);
         Optional<Double> PM10 = getMeasurementFromRawData(rawData, MEASUREMENT_ID_PM10);
+        Optional<Double> PM25 = getMeasurementFromRawData(rawData, MEASUREMENT_ID_PM25);
         int formula;
-        if (O3.isPresent() && temperature.isPresent()) {
+        if (O3.isPresent() && temperature.isPresent() && NO.isPresent() && NO2.isPresent()) {
             formula = FORMULA_PER_NO_E_NO2;
         } else if (RH.isPresent() && PM10.isPresent() && temperature.isPresent()) {
-            formula = FORMULA_PER_PM10;
+            formula = FORMULA_PER_PM10_E_PM25;
             if (temperature.get()>=20.0 && PM10.get()>100.0) formula = NESSUNA_FORMULA;
             if (temperature.get()<20.0 && RH.get()>97.0) formula = NESSUNA_FORMULA;
-        } else {
+        } else if (RH.isPresent() && PM10.isPresent() && temperature.isPresent()) {
+            formula = FORMULA_PER_03;
+            if (temperature.get()>=20.0) formula = NESSUNA_FORMULA;
+        }        
+        else {
             formula = NESSUNA_FORMULA;
         }
         Optional<MeasurementParameters> parametersContainer= measurementProcessorParameters.getMeasurementParameters(
@@ -110,6 +120,20 @@ public class MeasurementProcessor {
                     parameters.getF(),
                     BigDecimal.valueOf(RH.get()),
                     BigDecimal.valueOf(temperature.get()),
+                    BigDecimal.valueOf(RAD)
+            ));
+            case 3: return Optional.of(applyFunction3(
+                    BigDecimal.valueOf(rawMeasurement.getValue()),
+                    parameters.getA(),
+                    parameters.getB(),
+                    parameters.getC(),
+                    parameters.getD(),
+                    parameters.getE(),
+                    parameters.getF(),
+                    BigDecimal.valueOf(RH.get()),
+                    BigDecimal.valueOf(temperature.get()),
+                    BigDecimal.valueOf(NO2.get()),
+                    BigDecimal.valueOf(O3.get()),
                     BigDecimal.valueOf(RAD)
             ));
             default:
@@ -183,6 +207,43 @@ public class MeasurementProcessor {
         LOG.debug("somma:"+somma);
         return somma.doubleValue();
     }
+    
+    public double applyFunction3(BigDecimal x,
+                                BigDecimal a,
+                                BigDecimal b,
+                                BigDecimal c,
+                                BigDecimal d,
+                                BigDecimal e,
+                                BigDecimal f,
+                                BigDecimal RH,
+                                BigDecimal T_int,
+                                BigDecimal NO2,
+                                BigDecimal O3,
+                                BigDecimal Rad) {
+        BigDecimal uno = a.multiply(BigDecimalMath.pow(x, new BigDecimal("0.44")), mathContext);
+        LOG.debug("uno:"+uno);
+
+        BigDecimal due = b.multiply(BigDecimalMath.pow(NO2, new BigDecimal("0.58")), mathContext);
+        LOG.debug("due:"+due);
+
+        BigDecimal tre = c.multiply(BigDecimalMath.pow(RH, new BigDecimal("0.54")), mathContext);
+        LOG.debug("tre:"+tre);
+        
+        BigDecimal quattro = c.multiply(BigDecimalMath.pow(T_int, new BigDecimal("1.2")), mathContext);
+        LOG.debug("quattro:"+quattro);
+
+        BigDecimal cinque = new BigDecimal(0);
+        LOG.debug("cinque:"+cinque);
+        
+        BigDecimal somma = uno
+                .add(due, mathContext)
+                .add(tre, mathContext)
+                .add(quattro, mathContext)
+                .add(cinque, mathContext);
+        LOG.debug("somma:"+somma);
+        return somma.doubleValue();
+    }
+    
 
     private Optional<Double> getMeasurementFromRawData(AugeG4RawData rawData, MeasurementId measurementId) {
         for (RawMeasurement measurement : rawData.getMeasurements()) {
