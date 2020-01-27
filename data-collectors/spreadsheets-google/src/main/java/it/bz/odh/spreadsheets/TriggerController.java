@@ -1,5 +1,9 @@
 package it.bz.odh.spreadsheets;
 
+import java.util.Date;
+
+import org.apache.log4j.Logger;
+import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,8 +17,14 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 public class TriggerController {
 
+	private static final int MIN_SYNC_PAUSE = 60;
+
 	@Autowired
 	private JobScheduler scheduler;
+
+	private Long lastRequest;
+
+	private Logger logger = Logger.getLogger(TriggerController.class);
 
 	/**
 	 * Endpoint call for google notification service
@@ -25,7 +35,12 @@ public class TriggerController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto){
-		scheduler.syncData();
+		Long now = new Date().getTime();
+		if (lastRequest == null || lastRequest > now - MIN_SYNC_PAUSE *1000) {
+			lastRequest = now;
+			scheduler.syncData();
+			logger.info("Synching executed at:"+lastRequest);
+		}
 	}
 
 }
