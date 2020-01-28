@@ -34,6 +34,7 @@ public class TriggerController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto){
+		logger.info("Trigger spreadsheet synchronization");
 		Long now = new Date().getTime();
 		if (lastRequest == null || lastRequest < now - (MINIMAL_SYNC_PAUSE_SECONDS *1000)) {
 			lastRequest = now;
