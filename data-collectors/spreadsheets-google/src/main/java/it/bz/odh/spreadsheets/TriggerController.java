@@ -2,7 +2,6 @@ package it.bz.odh.spreadsheets;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
@@ -20,6 +19,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Controller
 @EnableWebMvc
 public class TriggerController {
+
+	private static final String GOOGLE_CONTENT_ID = "content";
 
 	private static final int MINIMAL_SYNC_PAUSE_SECONDS = 60;
 
@@ -43,11 +44,14 @@ public class TriggerController {
 			logger.debug(entry.getKey()+":"+ String.join(";",entry.getValue()));
 		}
 		logger.debug("Trigger spreadsheet synchronization");
-		Long now = new Date().getTime();
-		if (lastRequest == null || lastRequest < now - (MINIMAL_SYNC_PAUSE_SECONDS *1000)) {
-			lastRequest = now;
-			scheduler.syncData();
-			logger.info("Synching executed at:"+lastRequest);
+		List<String> changeDetails = httpHeaders.get("x-goog-changed");
+		if (changeDetails != null && changeDetails.size()==1 && changeDetails.contains(GOOGLE_CONTENT_ID)){
+			Long now = new Date().getTime();
+			if (lastRequest == null || lastRequest < now - (MINIMAL_SYNC_PAUSE_SECONDS *1000)) {
+				lastRequest = now;
+				scheduler.syncData();
+				logger.info("Synching executed at:"+lastRequest);
+			}
 		}
 	}
 
