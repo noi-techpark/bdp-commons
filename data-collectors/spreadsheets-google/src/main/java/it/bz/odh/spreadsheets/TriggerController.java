@@ -16,12 +16,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 public class TriggerController {
 
-	private static final int MIN_SYNC_PAUSE = 60;
+	private static final int MINIMAL_SYNC_PAUSE_SECONDS = 60;
 
 	@Autowired
 	private JobScheduler scheduler;
 
-	private Long lastRequest;
+	private static Long lastRequest;
 
 	private Logger logger = Logger.getLogger(TriggerController.class);
 
@@ -35,7 +35,7 @@ public class TriggerController {
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto){
 		Long now = new Date().getTime();
-		if (lastRequest == null || lastRequest > now - MIN_SYNC_PAUSE *1000) {
+		if (lastRequest == null || lastRequest < now - (MINIMAL_SYNC_PAUSE_SECONDS *1000)) {
 			lastRequest = now;
 			scheduler.syncData();
 			logger.info("Synching executed at:"+lastRequest);
