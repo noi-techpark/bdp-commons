@@ -45,7 +45,7 @@ public class TriggerController {
 		}
 		logger.debug("Trigger spreadsheet synchronization");
 		List<String> changeDetails = httpHeaders.get("x-goog-changed");
-		if (changeDetails != null && changeDetails.size()==1 && changeDetails.contains(GOOGLE_CONTENT_ID)){
+		if (changeDetails != null && changeDetails.contains(GOOGLE_CONTENT_ID)){
 			Long now = new Date().getTime();
 			if (lastRequest == null || lastRequest < now - (MINIMAL_SYNC_PAUSE_SECONDS *1000)) {
 				lastRequest = now;
