@@ -3,6 +3,7 @@ package it.bz.odh.spreadsheets;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -19,20 +20,24 @@ public class SpreadsheetWatcher extends GoogleAuthenticator {
 	private static final String NOTIFICATION_TYPE = "web_hook";
 
 	private Drive service;
-	
+
 	@Value("${spreadsheetId}")
 	private String spreadsheetId;
-	
+
 	@Value("${spreadsheet.notificationUrl}")
 	private String notificationUrl;
 
+	private Logger logger = Logger.getLogger(SpreadsheetWatcher.class);
+
 	public void registerWatch() {
 		try {
+			logger.debug("Start creating notification channel");
 			Channel channel = new Channel();
 			channel.setId(UUID.randomUUID().toString());
 			channel.setType(NOTIFICATION_TYPE);
 			channel.setAddress(notificationUrl);
 			service.files().watch(spreadsheetId, channel).execute();
+			logger.debug("Created notification channel for spreadsheet"+spreadsheetId);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
