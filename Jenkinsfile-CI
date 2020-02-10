@@ -89,11 +89,6 @@ pipeline {
                         sh 'test -d data-collectors/parking-tn && { cd data-collectors/parking-tn; mvn -B -U clean compile test; } || true'
                     }
                 }
-                stage('roadweather-famas') {
-                    steps {
-                        sh 'cd data-collectors/roadweather-famas && mvn -B -U clean compile test'
-                    }
-                }
                 stage('traffic-a22') {
                     steps {
                         sh 'cd data-collectors/traffic-a22/a22elaborations/ && mvn -B -U clean compile test'
