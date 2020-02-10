@@ -19,14 +19,14 @@ pipeline {
                         sh 'cd data-collectors/airquality-appabz && mvn -B -U clean compile test'
                     }
                 }
-                stage('bikesharing-algorab') {
-                    steps {
-                        sh 'cd data-collectors/bikesharing-algorab && mvn -B -U clean compile test'
-                    }
-                }
                 stage('bikesharing-moqo') {
                     steps {
                         sh 'cd data-collectors/bikesharing-moqo && mvn -B -U clean compile test'
+                    }
+                }
+                stage('bikesharing-bz') {
+                    steps {
+                        sh 'cd data-collectors/bikesharing-bz && mvn -B -U clean compile test'
                     }
                 }
                 stage('carpooling-flootta'){
