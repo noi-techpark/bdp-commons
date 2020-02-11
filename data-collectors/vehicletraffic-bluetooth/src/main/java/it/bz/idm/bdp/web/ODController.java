@@ -118,4 +118,8 @@ public class ODController {
 			httpResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
 		return null;
 	}
+	@RequestMapping(method = RequestMethod.POST,value="hash")
+	public @ResponseBody List<String> hash(@RequestBody RecordList records){
+	    return pusher.hash(records);
+	}
 }
