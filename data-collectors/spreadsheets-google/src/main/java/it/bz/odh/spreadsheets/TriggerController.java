@@ -1,5 +1,6 @@
 package it.bz.odh.spreadsheets;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
@@ -39,12 +40,12 @@ public class TriggerController {
 	 *             https://developers.google.com/drive/api/v3/push
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto,@RequestHeader HttpHeaders httpHeaders){
+	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto,@RequestHeader HttpHeaders httpHeaders,@RequestHeader("x-goog-changed") String googleState){
 		for (Entry<String, List<String>> entry: httpHeaders.entrySet()) {
 			logger.debug(entry.getKey()+":"+ String.join(";",entry.getValue()));
 		}
-		logger.debug("Trigger spreadsheet synchronization");
-		List<String> changeDetails = httpHeaders.get("x-goog-changed");
+		logger.debug("Trigger spreadsheet synchronization at " + lastRequest);
+		List<String> changeDetails = Arrays.asList(googleState.split(","));
 		if (changeDetails != null && changeDetails.contains(GOOGLE_CONTENT_ID)){
 			Long now = new Date().getTime();
 			if (lastRequest == null || lastRequest < now - (MINIMAL_SYNC_PAUSE_SECONDS *1000)) {
