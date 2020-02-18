@@ -125,7 +125,7 @@ public class JobScheduler {
 		return dtos;
 	}
 
-	public void watchBluetoothBoxesSpreadsheet() {
+    public void watchBluetoothBoxesSpreadsheet() {
 		watcher.registerWatch();
 	}
 

@@ -120,6 +120,7 @@ public class ODHClient extends JSONPusher{
 				e.printStackTrace();
 			}
 		}
+		// map non required fileds to metadata
 		Map<String, Object> metaData = new HashMap<>();
 		for (Map.Entry<String, Short> entry : headerMapping.entrySet()) {
 			Object value = null;
@@ -145,7 +146,7 @@ public class ODHClient extends JSONPusher{
 		return dto;
 	}
 
-	private String normalizeKey(String keyValue) {
+    private String normalizeKey(String keyValue) {
 		String accentFreeString = StringUtils.stripAccents(keyValue).replaceAll(" ", "_");
 		String asciiString = accentFreeString.replaceAll("[^\\x00-\\x7F]", "");
 		String validVar = asciiString.replaceAll("[^\\w0-9]", "");
@@ -169,6 +170,8 @@ public class ODHClient extends JSONPusher{
 		StringBuffer uniqueId = new StringBuffer();
 		uniqueId.append(dto.getOrigin()).append(":");
 		for(String idField:uniqueIdFields) {
+		    if (dto.getMetaData().get(idField)==null)
+		        throw new IllegalStateException("Impossible to create unique identifiert since required filed "+idField+" is missing");
 			String value= dto.getMetaData().get(idField).toString();
 			if (value!=null && !value.isEmpty()) {
 				uniqueId.append(value);
