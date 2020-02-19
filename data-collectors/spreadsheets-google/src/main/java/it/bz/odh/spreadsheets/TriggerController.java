@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import it.bz.odh.spreadsheets.dto.GooglePushDto;
+
 @RequestMapping("/trigger")
 @Controller
 @EnableWebMvc
@@ -26,7 +28,7 @@ public class TriggerController {
 	private static final int MINIMAL_SYNC_PAUSE_SECONDS = 60;
 
 	@Autowired
-	private JobScheduler scheduler;
+	private Main main;
 
 	private static Long lastRequest;
 
@@ -50,7 +52,7 @@ public class TriggerController {
 			Long now = new Date().getTime();
 			if (lastRequest == null || lastRequest < now - (MINIMAL_SYNC_PAUSE_SECONDS *1000)) {
 				lastRequest = now;
-				scheduler.syncData();
+				main.syncData();
 				logger.info("Synching executed at:"+lastRequest);
 			}
 		}

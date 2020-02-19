@@ -1,4 +1,4 @@
-package it.bz.odh.spreadsheets;
+package it.bz.odh.spreadsheets.dto;
 
 public class GooglePushDto {
 	private String kind;
