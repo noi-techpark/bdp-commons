@@ -3,14 +3,12 @@ package it.bz.odh.spreadsheets.util;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
 
@@ -51,11 +49,11 @@ public class DataMappingUtil {
     @Value("${spreadsheetId}")
     private String origin;
     
+    @Value("${headers.metaDataId}")
+    private String metadataId;
+
     @Value("${composite.unique.key}")
     private String[] uniqueIdFields;
-    
-    @Value("${spreadsheet.sheets.metadataId}")
-    private String metadataId;
 
     public Set<String> excludeFromMetaData = new HashSet<>();
 
