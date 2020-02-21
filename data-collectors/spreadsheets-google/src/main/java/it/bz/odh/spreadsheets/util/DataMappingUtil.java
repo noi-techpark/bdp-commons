@@ -99,9 +99,11 @@ public class DataMappingUtil {
 	    values.remove(0);
 	    dto.setName(origin + ":" + sheetName);
 	    for (List<Object> row: values) {
-	        String key = row.get(metaDataPosition)!= null ? row.get(metaDataPosition).toString() : null;
-	        row.remove(metaDataPosition);
-	        dto.getMetaData().put(key, row);
+	        if (!row.isEmpty()) {
+	            String key = row.get(metaDataPosition)!= null ? row.get(metaDataPosition).toString() : null;
+	            row.remove(metaDataPosition.shortValue());
+	            dto.getMetaData().put(key, row);
+	        }
 	    }
         return dto;
     }
@@ -169,7 +171,7 @@ public class DataMappingUtil {
             }
             i++;
         }
-        if (headerMapping.get(addressId) != null) {
+        if (headerMapping.get(addressId) != null && !missingPositions.isEmpty()) {
             googleClient.markMissing(missingPositions,headerMapping.get(addressId).intValue(),sheetId);
         }
         return dtos;
