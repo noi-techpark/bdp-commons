@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
 
@@ -102,12 +103,14 @@ public class DataMappingUtil {
 	        if (!row.isEmpty()) {
 	            String key = row.get(metaDataPosition)!= null ? row.get(metaDataPosition).toString() : null;
 	            row.remove(metaDataPosition.shortValue());
-	            dto.getMetaData().put(key, row);
+	            Map<String, Object> metaDataMap = buildMetaDataMap(headerMapping,row);
+	            langUtil.mergeTranslations(metaDataMap,headerMapping);
+                dto.getMetaData().put(key, metaDataMap);
 	        }
 	    }
+        odhClient.normalizeMetaData(dto.getMetaData());
         return dto;
     }
-
     /**
 	 * @param list values
 	 * @return mapping element in list with it's position in list
@@ -204,6 +207,15 @@ public class DataMappingUtil {
                 e.printStackTrace();
             }
         }
+        Map<String, Object> metaData = buildMetaDataMap(headerMapping, row);
+        dto.setMetaData(metaData);
+        dto.setOrigin(origin);
+        dto.setStationType(odhClient.getIntegreenTypology());
+        dto.setId(generateUniqueId(dto));
+        return dto;
+    }
+
+    private Map<String, Object> buildMetaDataMap(Map<String, Short> headerMapping, List<Object> row) {
         // map non required fileds to metadata
         Map<String, Object> metaData = new HashMap<>();
         for (Map.Entry<String, Short> entry : headerMapping.entrySet()) {
@@ -223,11 +235,7 @@ public class DataMappingUtil {
                 }
             }
         }
-        dto.setMetaData(metaData);
-        dto.setOrigin(origin);
-        dto.setStationType(odhClient.getIntegreenTypology());
-        dto.setId(generateUniqueId(dto));
-        return dto;
+        return metaData;
     }
 
     private String generateUniqueId(StationDto dto) {
