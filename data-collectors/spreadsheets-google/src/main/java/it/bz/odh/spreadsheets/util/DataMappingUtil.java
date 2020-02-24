@@ -24,6 +24,7 @@ import com.google.api.services.sheets.v4.model.Sheet;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
+import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
 import it.bz.odh.spreadsheets.services.GoogleSpreadSheetDataFetcher;
 import it.bz.odh.spreadsheets.services.ODHClient;
@@ -87,18 +88,19 @@ public class DataMappingUtil {
             result.setStationDtos(mappedStations);
         }
         else if (isValidDataTypeSheet(headerMapping)) {
-            DataTypeDto type = mapDataType(values, sheet.getProperties().getTitle(), headerMapping);
-            result.setDataType(type);
+            DataTypeDto type = mapDataType(values, sheet.getProperties().getSheetId(), headerMapping);
+            DataTypeWrapperDto w = new DataTypeWrapperDto(type,sheet.getProperties().getTitle());
+            result.setDataType(w);
         }
         return result;
     }
 
-	private DataTypeDto mapDataType(List<List<Object>> values, String sheetName, Map<String, Short> headerMapping) {
+	private DataTypeDto mapDataType(List<List<Object>> values, Integer sheetId, Map<String, Short> headerMapping) {
 	    DataTypeDto dto = new DataTypeDto();
 	    Short metaDataPosition = headerMapping.get(metadataId);
 	    //remove header row
 	    values.remove(0);
-	    dto.setName(origin + ":" + sheetName);
+	    dto.setName(origin + ":" + sheetId);
 	    for (List<Object> row: values) {
 	        if (!row.isEmpty()) {
 	            String key = row.get(metaDataPosition)!= null ? row.get(metaDataPosition).toString() : null;
