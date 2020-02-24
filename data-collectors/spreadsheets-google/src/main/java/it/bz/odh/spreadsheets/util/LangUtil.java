@@ -61,11 +61,10 @@ public class LangUtil {
     public void mergeTranslations(Map<String, Object> metaData, Map<String, Short> headerMapping) {
         for (Map.Entry<String, Short> entry : headerMapping.entrySet()) {
             String[] split = entry.getKey().split(":");
-            Locale locale = null;
             if (split.length<2)
                 continue;
             try {
-                locale = LocaleUtils.toLocale(split[0]);
+                LocaleUtils.toLocale(split[0]); // check if it's a valid locale
                 Object object = metaData.get(split[1]);
                 Object content = metaData.get(entry.getKey());
                 if (content == null || content.toString().isEmpty())
