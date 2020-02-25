@@ -73,7 +73,7 @@ public class Main {
         }
         DataMapDto<? extends RecordDtoImpl> dto = new DataMapDto<RecordDtoImpl>();
         for (DataTypeWrapperDto typeDto: types) {
-            SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(), typeDto.getSheetName());
+            SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(), typeDto.getSheetName(),0);
             dto.addRecord(dtos.get(0).getId(), typeDto.getType().getName(), simpleRecordDto);
         }
         odhClient.pushData(dto);
