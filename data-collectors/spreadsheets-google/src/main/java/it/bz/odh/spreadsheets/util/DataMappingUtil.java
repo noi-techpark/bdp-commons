@@ -107,6 +107,7 @@ public class DataMappingUtil {
 	            row.remove(metaDataPosition.shortValue());
 	            Map<String, Object> metaDataMap = buildMetaDataMap(headerMapping,row);
 	            langUtil.mergeTranslations(metaDataMap,headerMapping);
+	            odhClient.normalizeMetaData(metaDataMap);
                 dto.getMetaData().put(key, metaDataMap);
 	        }
 	    }
