@@ -20,6 +20,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import it.bz.idm.bdp.dto.StationDto;
+import it.bz.odh.spreadsheets.services.ODHClient;
+import it.bz.odh.spreadsheets.util.DataMappingUtil;
+import it.bz.odh.spreadsheets.util.LangUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext*.xml" })
@@ -29,8 +32,14 @@ public class UtilityTest{
 	@Lazy
 	@Autowired
 	private ODHClient odhClient;
+	
+    @Lazy
+    @Autowired
+    private LangUtil langUtil;
 
-	private DataMappingUtil util = new DataMappingUtil();
+    @Lazy
+    @Autowired
+	private DataMappingUtil util;
 
 	private List<Object> headerRow;
 	private List<Object> dataRow;
@@ -66,7 +75,7 @@ public class UtilityTest{
 	@Test
 	public void testStationDtoMapping() {
 		Map<String, Short> headerMap = util.listToMap(headerRow);
-		StationDto station = odhClient.mapStation(headerMap, dataRow);
+		StationDto station = util.mapStation(headerMap, dataRow);
 		assertNotNull(station);
 		assertEquals(dataRow.get(0), station.getName());
 		assertEquals(dataRow.get(1), station.getMetaData().get("address"));
@@ -77,8 +86,8 @@ public class UtilityTest{
 	@Test
 	public void testMapTextToLanguage() {
 		Map<String, Short> headerMap = util.listToMap(headerRow);
-		StationDto station = odhClient.mapStation(headerMap, dataRow);
-		odhClient.guessLanguages(station.getMetaData());
+		StationDto station = util.mapStation(headerMap, dataRow);
+		langUtil.guessLanguages(station.getMetaData());
 		assertNotNull(station.getMetaData().get("description"));
 		assertNotNull(station.getMetaData().get("description")instanceof Map);
 		Map<String,String> langMap = (Map<String, String>) station.getMetaData().get("description");

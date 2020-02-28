@@ -28,7 +28,7 @@ public class MainA22Sign implements Job
 	private final A22Properties a22stationProperties;
 	private HashMap<String, Long> signIdLastTimestampMap;
 	private A22SignJSONPusher pusher = new A22SignJSONPusher();
-
+	private StreetSignalsImporter signalsUtil = new StreetSignalsImporter();
 
 	public MainA22Sign() {
 		this.datatypesProperties = new A22Properties("a22vmsdatatypes.properties");
@@ -231,10 +231,18 @@ public class MainA22Sign implements Job
 	private void setupDataType(A22SignJSONPusher pusher)
 	{
 		List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
+		Map<String, Object> map = null;
+        try {
+            map = Collections.singletonMap("signal-codes", signalsUtil.getStreetCodes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.warn("Unable to parse additional metadata from csv file");
+        }
 		DataTypeDto esportazione = new DataTypeDto(datatypesProperties.getProperty("a22vms.datatype.esposizione.key"),
 				datatypesProperties.getProperty("a22vms.datatype.esposizione.unit"),
 				datatypesProperties.getProperty("a22vms.datatype.esposizione.description"),
 				datatypesProperties.getProperty("a22vms.datatype.esposizione.rtype"));
+		esportazione.setMetaData(map);
 		dataTypeDtoList.add(esportazione);
 		DataTypeDto stato = new DataTypeDto(datatypesProperties.getProperty("a22vms.datatype.stato.key"),
 				datatypesProperties.getProperty("a22vms.datatype.stato.unit"),

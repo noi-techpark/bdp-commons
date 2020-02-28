@@ -1,5 +1,6 @@
 package it.bz.idm.bdp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.json.JSONPusher;
 import it.bz.idm.bdp.util.EncryptUtil;
+import it.bz.idm.bdp.web.RecordList;
 
 @Component
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
@@ -57,4 +59,13 @@ public class OddsPusher extends JSONPusher {
 	public ProvenanceDto defineProvenance() {
 		return new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"),  env.getProperty("origin"));
 	}
+
+    public List<String> hash(RecordList records) {
+        List<String> hashes = new ArrayList<String>();
+        for (OddsRecordDto r : records) {
+            String hash = cryptUtil.encrypt(r.getMac());
+            hashes.add(hash);
+        }
+        return hashes;
+    }
 }
