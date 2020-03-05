@@ -119,7 +119,7 @@ public class OnstreetParkingBzDataConverter {
         //Get useful info for this sensor, we need only few fields. jsonStr is in the form:
         /*
         {
-            "devEUI": "001bc50670100603",
+==>         "devEUI": "001bc50670100603",
             "appEUI": "70b3d59b60000003",
             "fPort": 1,
             "gatewayCount": 1,
@@ -130,7 +130,7 @@ public class OnstreetParkingBzDataConverter {
                 "Payload": "MEASURE",
                 "Progtx": 13815,
                 "Retries": 0,
-==>             "Sensor-address": "0000032c",
+                "Sensor-address": "0000032c",
 ==>             "Status": "free",
                 "Time": 1582552162,
                 "Version": 58
@@ -170,19 +170,19 @@ public class OnstreetParkingBzDataConverter {
         }
          */
 
-        String sensorAddress = null;
+        String devEUI = null;
         String status = null;
         String time = null;
         Long timestamp = null;
 
         JSONObject joParsedData = joMain.getJSONObject("parsedData");
         JSONArray gatewaysArray = joMain.getJSONArray("gateways");
-        sensorAddress = DCUtils.getJsonStringValue(joParsedData, "Sensor-address");
         status = DCUtils.getJsonStringValue(joParsedData, "Status");
+        devEUI = DCUtils.getJsonStringValue(joMain, "devEUI");
         time = DCUtils.getJsonStringValue(joMain, "time");
-        LOG.debug("sensorAddress = '"+sensorAddress+"'");
-        LOG.debug("status        = '"+status+"'");
-        LOG.debug("time          = '"+time+"'");
+        LOG.debug("devEUI  = '"+devEUI+"'");
+        LOG.debug("status  = '"+status+"'");
+        LOG.debug("time    = '"+time+"'");
 
         int gatewaysLength = gatewaysArray!=null ? gatewaysArray.length() : 0;
         for ( int i=0 ; i<gatewaysLength ; i++ ) {
@@ -201,9 +201,9 @@ public class OnstreetParkingBzDataConverter {
 
         dto.setValueOccupied(valueOccupied);
         dto.setValueTimestamp(valueTimestamp);
-        dto.setValueId(sensorAddress);
+        dto.setValueId(devEUI);
 
-        dto.setJsonSensorAddress(sensorAddress);
+        dto.setJsonDevEUI(devEUI);
         dto.setJsonStatus(status);
         dto.setJsonTime(time);
         dto.setJsonTimestamp(timestamp);
@@ -259,7 +259,8 @@ public class OnstreetParkingBzDataConverter {
                         String str = DCUtils.allowNulls(value);
                         LOG.debug("Google Spreadsheet: colIdx="+c+"  colName='"+colName+"'  colvalue='"+str+"'");
                         if (        STATION_ATTR_ID_NAME.equalsIgnoreCase(colName) ) {
-                            String id = DCUtils.lpad(str, 8, '0');
+                            //String id = DCUtils.lpad(str, 8, '0');
+                            String id = str;
                             stationDto.setId(id);
                         } else if ( STATION_ATTR_ID2_NAME.equalsIgnoreCase(colName) ) {
                             stationMetaData.put("id2", str);

@@ -6,7 +6,7 @@ public class OnstreetParkingBzSensorDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String jsonSensorAddress;
+    private String jsonDevEUI;
     private String jsonStatus;
     private String jsonTime;
     private Long jsonTimestamp;
@@ -18,12 +18,12 @@ public class OnstreetParkingBzSensorDto implements Serializable {
     public OnstreetParkingBzSensorDto() {
     }
 
-    public String getJsonSensorAddress() {
-        return jsonSensorAddress;
+    public String getJsonDevEUI() {
+        return jsonDevEUI;
     }
 
-    public void setJsonSensorAddress(String jsonSensorAddress) {
-        this.jsonSensorAddress = jsonSensorAddress;
+    public void setJsonDevEUI(String jsonDevEUI) {
+        this.jsonDevEUI = jsonDevEUI;
     }
 
     public String getJsonStatus() {
@@ -76,7 +76,7 @@ public class OnstreetParkingBzSensorDto implements Serializable {
 
     @Override
     public String toString() {
-        return "OnstreetParkingBzSensorDto [jsonSensorAddress=" + jsonSensorAddress + ", jsonStatus=" + jsonStatus + ", jsonTime=" + jsonTime + ", jsonTimestamp=" + jsonTimestamp + ", valueOccupied="
+        return "OnstreetParkingBzSensorDto [jsonDevEUI=" + jsonDevEUI + ", jsonStatus=" + jsonStatus + ", jsonTime=" + jsonTime + ", jsonTimestamp=" + jsonTimestamp + ", valueOccupied="
                 + valueOccupied + ", valueId=" + valueId + ", valueTimestamp=" + valueTimestamp + "]";
     }
 

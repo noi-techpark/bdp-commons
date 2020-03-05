@@ -54,26 +54,27 @@ public class OnstreetParkingBzDataPusherIT extends AbstractJUnit4SpringContextTe
         }
 
         try {
-            //Sync Station "sensor-1"
-            StationList stations = new StationList();
-            StationDto stationDto = new StationDto();
-            stationDto.setId(OnstreetParkingBzDataConverterTest.TEST_STATION_ID_1);
-            stationDto.setName(OnstreetParkingBzDataConverterTest.TEST_STATION_ID_1);
-            stationDto.setOrigin(DCUtils.trunc(converter.getOrigin(), 255));
-            stationDto.setStationType(converter.getStationType());
-            stationDto.setLatitude(46.494825D);
-            stationDto.setLongitude(11.33998888888889D);
-            stations.add(stationDto);
-            pusher.syncStations(stations);
-
-            //Sync DataType "occupied"
-            List<DataTypeDto> dataTypes = pusher.mapDataTypes2Bdp();
-            pusher.syncDataTypes(dataTypes);
+//            //Sync Station "sensor-1"
+//            StationList stations = new StationList();
+//            StationDto stationDto = new StationDto();
+//            stationDto.setId(OnstreetParkingBzDataConverterTest.TEST_STATION_ID_1);
+//            stationDto.setName(OnstreetParkingBzDataConverterTest.TEST_STATION_ID_1);
+//            stationDto.setOrigin(DCUtils.trunc(converter.getOrigin(), 255));
+//            stationDto.setStationType(converter.getStationType());
+//            stationDto.setLatitude(46.494825D);
+//            stationDto.setLongitude(11.33998888888889D);
+//            stations.add(stationDto);
+//            pusher.syncStations(stations);
+//
+//            //Sync DataType "occupied"
+//            List<DataTypeDto> dataTypes = pusher.mapDataTypes2Bdp();
+//            pusher.syncDataTypes(dataTypes);
 
             //Get json string and push data to the controller
             String jsonStr = OnstreetParkingBzDataConverterTest.getTestData(OnstreetParkingBzDataConverterTest.DATA_PUSH_MEASUREMENTS_2, null, null);
-            String url = OnstreetParkingBzDataConverterTest.CONTROLLER_URL;
-            //String url = "https://www.edp-progetti.it:443/parking";
+            //String url = OnstreetParkingBzDataConverterTest.CONTROLLER_URL;
+            
+            String url = "https://www.edp-progetti.it:443/parking";
             LOG.info("url = '"+url+"'");
             LOG.info("jsonStr = '"+jsonStr+"'");
 
