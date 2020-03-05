@@ -1,8 +1,5 @@
 package it.bz.idm.bdp.dconstreetparkingbz;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.LogManager;
@@ -10,12 +7,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.google.api.services.sheets.v4.model.ValueRange;
 
-import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
 @Component
@@ -26,9 +21,6 @@ public class OnstreetParkingBzDataRetriever {
 
     @Value("${spreadsheet.sheetName}")
     private String SHEETNAME;
-
-    @Autowired
-    private Environment env;
 
     @Autowired
     private OnstreetParkingBzDataConverter converter;
