@@ -9,7 +9,7 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>4.3.20.RELEASE</spring.version>
+		<spring.version>5.2.3.RELEASE</spring.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>3.2.1</version>
+			<version>4.0.1</version>
 		</dependency>
 <!-- 
 		<dependency>
