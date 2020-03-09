@@ -209,7 +209,9 @@ public class BikesharingMoqoDataRetrieverTest extends AbstractJUnit4SpringContex
                     DATA_FETCH_STATIONS.equals(dataType)     ? TEST_FILE_FETCH_STATIONS :
                     DATA_FETCH_MEASUREMENTS.equals(dataType) ? TEST_FILE_FETCH_MEASUREMENTS :
                     TEST_FILE_FETCH_STATIONS;
-            fileName = fileName.replace(paramName, paramValue);
+            if ( DCUtils.paramNotNull(paramName) && paramValue != null ) {
+                fileName = fileName.replace(paramName, paramValue);
+            }
             URL url = BikesharingMoqoDataRetrieverTest.class.getResource(fileName);
             if ( url == null ) {
                 return null;
