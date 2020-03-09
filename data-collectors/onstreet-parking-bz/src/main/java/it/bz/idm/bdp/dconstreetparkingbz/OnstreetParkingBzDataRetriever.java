@@ -6,6 +6,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 
 import it.bz.idm.bdp.dto.StationList;
 
+@Lazy
 @Component
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class OnstreetParkingBzDataRetriever {
@@ -25,6 +27,7 @@ public class OnstreetParkingBzDataRetriever {
     @Autowired
     private OnstreetParkingBzDataConverter converter;
 
+    @Lazy
     @Autowired
     private OnstreetParkingBzSpreadsheetReader sheetReader;
 
