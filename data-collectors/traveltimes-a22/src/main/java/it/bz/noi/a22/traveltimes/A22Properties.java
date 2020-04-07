@@ -2,7 +2,6 @@ package it.bz.noi.a22.traveltimes;
 
 import org.apache.log4j.Logger;
 
-import javax.annotation.PostConstruct;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;

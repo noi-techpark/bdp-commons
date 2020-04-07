@@ -10,9 +10,10 @@ import org.quartz.JobExecutionException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 @DisallowConcurrentExecution
 public class MainA22Traveltimes implements Job

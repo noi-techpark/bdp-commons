@@ -16,11 +16,18 @@
  */
 package it.bz.noi.a22.traveltimes;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
-import org.json.simple.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * encapsulates the A22 API to query travel times

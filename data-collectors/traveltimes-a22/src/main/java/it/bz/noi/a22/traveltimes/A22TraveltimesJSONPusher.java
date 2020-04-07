@@ -1,15 +1,12 @@
 package it.bz.noi.a22.traveltimes;
 
 import it.bz.idm.bdp.dto.DataMapDto;
-import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.json.JSONPusher;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 @Component
 public class A22TraveltimesJSONPusher extends JSONPusher
