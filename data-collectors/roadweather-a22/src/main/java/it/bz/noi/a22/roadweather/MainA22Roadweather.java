@@ -66,6 +66,7 @@ public class MainA22Roadweather implements Job {
                                 Double.parseDouble(station.get("latitudine")),
                                 Double.parseDouble(station.get("longitudine")));
                         stationDto.setOrigin(a22RoadweatherProperties.getProperty("origin"));
+                        stationDto.setStationType(a22RoadweatherProperties.getProperty("stationtype"));
                         // add other metadata
                         String idDirezione = "";
                         switch (Integer.parseInt(station.get("iddirezione"))) {
