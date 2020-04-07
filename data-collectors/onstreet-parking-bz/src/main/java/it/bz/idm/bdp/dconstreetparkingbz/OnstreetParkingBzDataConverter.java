@@ -21,6 +21,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 import it.bz.idm.bdp.dconstreetparkingbz.dto.OnstreetParkingBzSensorDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
+import it.bz.idm.bdp.util.NominatimLocationLookupUtil;
 
 @Service
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
@@ -65,6 +66,8 @@ public class OnstreetParkingBzDataConverter {
     private Integer period;
     //This must be initialized in application.properties file (for example 300)
     private Boolean checkMissingStations;
+    
+    private NominatimLocationLookupUtil placeLookupUtil = new NominatimLocationLookupUtil(); 
 
     public String getOrigin() {
         if ( this.origin == null ) {
@@ -278,6 +281,7 @@ public class OnstreetParkingBzDataConverter {
                             LOG.error("Found UNKNOWN column in spreadsheet: '"+colName+"'  index="+c);
                         }
                     }
+                    stationMetaData.put("municipality", placeLookupUtil.lookupLocation(stationDto.getLongitude(), stationDto.getLatitude()));
                     stationDto.setMetaData(stationMetaData);
                     retval.add(stationDto);
 
