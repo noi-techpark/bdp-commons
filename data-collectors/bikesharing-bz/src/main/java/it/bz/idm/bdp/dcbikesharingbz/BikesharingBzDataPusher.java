@@ -55,7 +55,7 @@ public class BikesharingBzDataPusher extends JSONPusher {
     }
 
     public <T> DataMapDto<RecordDtoImpl> mapStationData(T rawData) {
-        LOG.debug("START.mapData");
+        LOG.debug("START.mapStationData");
 
         @SuppressWarnings("unchecked")
         List<BikesharingBzStationDto> data = (List<BikesharingBzStationDto>) rawData;
@@ -83,8 +83,8 @@ public class BikesharingBzDataPusher extends JSONPusher {
         }
 
         if ( LOG.isDebugEnabled() ) {
-            LOG.debug("map: "+map);
-            LOG.debug("END.mapData");
+            logMapData(map);
+            LOG.debug("END.mapStationData");
         }
         return map;
     }
@@ -121,7 +121,7 @@ public class BikesharingBzDataPusher extends JSONPusher {
         }
 
         if ( LOG.isDebugEnabled() ) {
-            LOG.debug("map: "+map);
+            logMapData(map);
             LOG.debug("END.mapBayData");
         }
         return map;
@@ -160,7 +160,7 @@ public class BikesharingBzDataPusher extends JSONPusher {
         }
 
         if ( LOG.isDebugEnabled() ) {
-            LOG.debug("map: "+map);
+            logMapData(map);
             LOG.debug("END.mapBicycleData");
         }
         return map;
@@ -305,6 +305,19 @@ public class BikesharingBzDataPusher extends JSONPusher {
             records.add(record);
 
             LOG.debug("ADD  MEASURE:  id="+stationId+", typeName="+dataTypeName+"  value="+measurementValue);
+        }
+    }
+
+    private void logMapData(DataMapDto<RecordDtoImpl> map) {
+        String name = map!=null ? map.getName() : null;
+        List<RecordDtoImpl> list = map!=null ? map.getData() : null;
+        int size = list!=null ? list.size() : 0;
+        LOG.debug("map: "+map+"  name="+name+"  dataSize="+size);
+        if ( size > 0 ) {
+            for ( int i = 0 ; i < size ; i++ ) {
+                RecordDtoImpl r = list.get(i);
+                LOG.debug(i+")  value="+r.getValue()+"  ts="+r.getTimestamp());
+            }
         }
     }
 }
