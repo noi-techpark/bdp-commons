@@ -100,7 +100,7 @@ public class ParkingClient {
 			stationDto.setId(metaDataParkingPlace.get(0).toString());
 			stationDto.setName(metaDataParkingPlace.get(1).toString());
 			stationDto.getMetaData().put("capacity",Integer.valueOf(metaDataParkingPlace.get(2).toString()));
-			stationDto.getMetaData().put("municipality", "Bozen - Bolzano");
+			stationDto.getMetaData().put("municipality", "Bolzano - Bozen");
 			stationDto.setOrigin(origin);
 		} catch (XmlRpcException e) {
 			e.printStackTrace();
