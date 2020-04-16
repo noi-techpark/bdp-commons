@@ -109,6 +109,16 @@ pipeline {
                         sh 'cd data-collectors/vms-a22/ && mvn -B -U clean compile test'
                     }
                 }
+                stage('roadweather-a22') {
+                    steps {
+                        sh 'cd data-collectors/roadweather-a22/ && mvn -B -U clean compile test'
+                    }
+                }
+                stage('traveltimes-a22') {
+                    steps {
+                        sh 'cd data-collectors/traveltimes-a22/ && mvn -B -U clean compile test'
+                    }
+                }
             }
         }
     }

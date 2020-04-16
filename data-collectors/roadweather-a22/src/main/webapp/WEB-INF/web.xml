@@ -1,0 +1,13 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+
+	<!-- start the scheduler when the webapp starts -->
+	<servlet>
+		<servlet-name>it.bz.noi.a22.roadweather.A22Scheduler</servlet-name>
+		<servlet-class>it.bz.noi.a22.roadweather.A22Scheduler</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+</web-app>
