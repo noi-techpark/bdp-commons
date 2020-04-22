@@ -7,7 +7,7 @@ pipeline {
     }
     
     environment {
-        PROJECT = "roadweather-a22"
+        PROJECT = "traveltimes-a22"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
         ARTIFACT_NAME = "dc-${PROJECT}"
@@ -19,7 +19,7 @@ pipeline {
             steps {
                 sh 'sed -i -e "s%\\(log4j.rootLogger\\s*=\\).*\\$%\\1INFO,stdout,file%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
 	            sh 'sed -i -e "s%\\(log4j.appender.file.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
-                sh 'cat "${A22_CONNECTOR}" > ${PROJECT_FOLDER}/src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties'
+                sh 'cat "${A22_CONNECTOR}" > ${PROJECT_FOLDER}/src/main/resources/it/bz/noi/a22/traveltimes/a22connector.properties'
                 sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/it/bz/noi/a22/traveltimes/a22traveltimes.properties'''
                 sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/it/bz/noi/a22/traveltimes/a22traveltimes.properties'''
             }
