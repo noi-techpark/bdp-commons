@@ -14,6 +14,8 @@ public class AugeSubscriber {
 
     MqttClient client;
 
+    private AugeCallback callback;
+
     public static void main(String[] args) {
         ConnectorConfig config = new ConnectorConfig();
         config.mqtt_unit_test=true;
@@ -22,25 +24,25 @@ public class AugeSubscriber {
     }
 
     public AugeCallback listen(AugeMqttConfiguration mqttConfiguration) {
-        AugeCallback callback = null;
-        try {
-            callback = new AugeCallback();
-            client = AugeMqttClient.build(mqttConfiguration, callback);
-            if (client.isConnected()) {
-                LOG.debug("subscribe...:");
-                /*
+        if (callback == null)
+            try {
+                callback = new AugeCallback();
+                client = AugeMqttClient.build(mqttConfiguration, callback);
+                if (client.isConnected()) {
+                    LOG.debug("subscribe...:");
+                    /*
                 Quality:
                     At most once (0)
                     At least once (1)
                     Exactly once (2).
-                 */
-                int quality = 1;
-                client.subscribe(mqttConfiguration.getTopic(), quality);
-                LOG.debug("listening...");
+                     */
+                    int quality = 1;
+                    client.subscribe(mqttConfiguration.getTopic(), quality);
+                    LOG.debug("listening...");
+                }
+            } catch (MqttException e) {
+                e.printStackTrace();
             }
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
         return callback;
     } 
 
