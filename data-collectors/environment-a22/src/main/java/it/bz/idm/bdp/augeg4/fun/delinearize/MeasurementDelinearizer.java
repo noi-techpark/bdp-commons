@@ -19,7 +19,7 @@ public class MeasurementDelinearizer {
     static final int LINEAR_FUNCTION_4_LINFUNCID = 4;
 
     private interface LinearFunction {
-        double apply(double a, double b, double x);
+        Double apply(double a, double b, double x);
     }
 
     private final Map<Integer, LinearFunction> inverseFunctionByLinFuncId = new HashMap<>();
@@ -29,10 +29,10 @@ public class MeasurementDelinearizer {
     }
 
     private void initFunctionByLinFuncIdMap() {
-        inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_1_LINFUNCID, (a, b, y) -> (y - b) / a); // y = (a * x) + b
-        inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_2_LINFUNCID, (a, b, y) -> Math.exp((y - b) / a)); // (a * ln(x)) + b
-        inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_3_LINFUNCID, (a, b, y) -> Math.log10(y / a) / Math.log10(b)); // a * (x^b)
-        inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_4_LINFUNCID, (a, b, y) -> Math.log(y / a) / b); // a * (e^(x * b))
+        inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_1_LINFUNCID, (a, b, y) -> (a != 0) ? (y - b) / a : null); // y = (a * x) + b
+        inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_2_LINFUNCID, (a, b, y) -> (a != 0) ? Math.exp((y - b) / a):null); // (a * ln(x)) + b
+        inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_3_LINFUNCID, (a, b, y) -> (a != 0 && b>0 && b!=1 && y/a > 0) ? Math.log10(y / a) / Math.log10(b) : null); // a * (x^b)
+        inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_4_LINFUNCID, (a, b, y) -> (a != 0 && b!=0 && y/a > 0) ? Math.log(y / a) / b : null); // a * (e^(x * b))
     }
 
     Optional<RawMeasurement> delinearize(ElaboratedResVal elaboratedResVal) {
@@ -51,10 +51,13 @@ public class MeasurementDelinearizer {
 
     private Optional<RawMeasurement> delinearizeLinearizedResVal(ElaboratedResVal elaboratedResVal) {
         return getLinearFunctionOrNull(elaboratedResVal.getLinFuncId())
-                .map(linearFunction -> new RawMeasurement(
-                        getMeasurementId(elaboratedResVal),
-                        delinearizeValue(linearFunction, elaboratedResVal)
-                ));
+                .map(linearFunction -> {
+                    Double delinearizeValue = delinearizeValue(linearFunction, elaboratedResVal);
+                    if (delinearizeValue!= null && Double.isFinite(delinearizeValue))
+                        return new RawMeasurement(getMeasurementId(elaboratedResVal),delinearizeValue);
+                    else
+                        return null;
+                });
     }
 
     private MeasurementId getMeasurementId(ElaboratedResVal elaboratedResVal) {
@@ -62,7 +65,7 @@ public class MeasurementDelinearizer {
     }
 
 
-    private double delinearizeValue(LinearFunction linearFunction, ElaboratedResVal elaboratedResVal) {
+    private Double delinearizeValue(LinearFunction linearFunction, ElaboratedResVal elaboratedResVal) {
         double a = elaboratedResVal.getParamA();
         double b = elaboratedResVal.getParamB();
         double y = elaboratedResVal.getValue();
