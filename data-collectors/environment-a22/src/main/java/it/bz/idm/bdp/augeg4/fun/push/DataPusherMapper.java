@@ -12,6 +12,7 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DataPusherMapper implements DataPusherMapperFace {
 
@@ -56,6 +57,7 @@ public class DataPusherMapper implements DataPusherMapperFace {
     private void mapProcessedMeasurement(AugeG4ProcessedDataToHubDto measurementsByStation, DataMapDto<RecordDtoImpl> stationMap, ProcessedMeasurementToHub processedMeasurementToHub) {
         String dataType = processedMeasurementToHub.getDataType() + DATA_TYPE_NAME_SUFFIX_PROCESSED;
         List<RecordDtoImpl> values = getRecordDtoList(stationMap, dataType);
+        if (values.stream().filter(r -> r.getTimestamp().equals(measurementsByStation.getAcquisition().getTime())).collect(Collectors.toList()).isEmpty())
         values.add(getSimpleRecordDto(
                 processedMeasurementToHub.getProcessedValue(),
                 measurementsByStation.getAcquisition()
