@@ -9,7 +9,7 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>4.3.20.RELEASE</spring.version>
+		<spring.version>5.2.7.RELEASE</spring.version>
 		<spring.integration.version>5.1.2.RELEASE</spring.integration.version>
 		<paho.mqttclient.version>1.2.1</paho.mqttclient.version>
 		<jackson.version>2.10.0</jackson.version>
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>4.1.2</version>
+			<version>4.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -114,6 +114,12 @@
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-core</artifactId>
 			<version>${spring.integration.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>io.projectreactor</groupId>
+					<artifactId>reactor-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
@@ -170,7 +176,6 @@
 				<version>9.4.15.v20190215</version>
 				<configuration>
 					<httpConnector>
-						<!--host>localhost</host-->
 						<port>9999</port>
 					</httpConnector>
 				</configuration>
