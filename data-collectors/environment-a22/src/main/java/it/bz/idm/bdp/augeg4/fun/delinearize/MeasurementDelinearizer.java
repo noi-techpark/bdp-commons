@@ -31,7 +31,7 @@ public class MeasurementDelinearizer {
     private void initFunctionByLinFuncIdMap() {
         inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_1_LINFUNCID, (a, b, y) -> (a != 0) ? (y - b) / a : null); // y = (a * x) + b
         inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_2_LINFUNCID, (a, b, y) -> (a != 0) ? Math.exp((y - b) / a):null); // (a * ln(x)) + b
-        inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_3_LINFUNCID, (a, b, y) -> (a != 0 && b>0 && b!=1 && y/a > 0) ? Math.log10(y / a) / Math.log10(b) : null); // a * (x^b)
+        inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_3_LINFUNCID, (a, b, y) -> (a != 0 && b!=0) ? Math.round(Math.pow(y / a,1./b)*100)/100. : null); // a * (x^b)
         inverseFunctionByLinFuncId.put(LINEAR_FUNCTION_4_LINFUNCID, (a, b, y) -> (a != 0 && b!=0 && y/a > 0) ? Math.log(y / a) / b : null); // a * (e^(x * b))
     }
 
