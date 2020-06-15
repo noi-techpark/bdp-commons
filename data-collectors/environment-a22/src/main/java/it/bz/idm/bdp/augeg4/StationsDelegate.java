@@ -69,7 +69,7 @@ class StationsDelegate {
 
     private StationList dequeueStations() {
         Map<StationId, StationDto> oldStationsMap = this.stationsMap;
-        this.stationsMap = new ConcurrentHashMap<>();
+        //this.stationsMap = new ConcurrentHashMap<>(); //this may be removed
         return new StationList(oldStationsMap.values());
     }
 
