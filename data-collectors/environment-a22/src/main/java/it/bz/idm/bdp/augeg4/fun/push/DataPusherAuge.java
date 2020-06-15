@@ -69,7 +69,7 @@ public class DataPusherAuge implements DataPusherAugeFace {
     private String jsonOf(AugeG4ProcessedDataToAugeDto augeDto) {
         ObjectMapper mapper = new ObjectMapper();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Rome"));
+        //dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Rome"));
         mapper.setDateFormat(dateFormat);
         String json = null;
         if (augeDto== null) {

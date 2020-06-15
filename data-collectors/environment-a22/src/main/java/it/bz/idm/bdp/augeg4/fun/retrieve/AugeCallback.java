@@ -22,12 +22,9 @@ public class AugeCallback implements MqttCallback {
     private static final Logger LOG = LogManager.getLogger(AugeCallback.class.getName());
 
     private ObjectMapper mapper = new ObjectMapper();
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     private FixedQueue<AugeG4ElaboratedDataDto> buffer;
 
     public  AugeCallback() {
-        dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Rome"));
-        mapper.setDateFormat(dateFormat);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.buffer = new FixedQueue<>(1000);
