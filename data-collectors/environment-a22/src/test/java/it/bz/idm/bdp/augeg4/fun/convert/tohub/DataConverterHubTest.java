@@ -22,7 +22,7 @@ public class DataConverterHubTest {
     @Test
     public void test_convertion_of_valid_data () {
         // given
-        ProcessedMeasurement measurement = new ProcessedMeasurement(MEASUREMENT_ID_TEMPERATURA, 1, 2);
+        ProcessedMeasurement measurement = new ProcessedMeasurement(MEASUREMENT_ID_TEMPERATURA, 1, 2.);
         List<ProcessedMeasurement> measurements = Collections.singletonList(measurement);
         Date aquisitionDate = new Date();
         AugeG4ProcessedData processed = new AugeG4ProcessedData("AIRQ01", aquisitionDate, new Date(), measurements);
@@ -47,7 +47,7 @@ public class DataConverterHubTest {
     @Test
     public void should_ignore_processed_data_with_invalid_MeasurementId () {
         // given
-        ProcessedMeasurement measurement = new ProcessedMeasurement(new MeasurementId(-123), 1, 2);
+        ProcessedMeasurement measurement = new ProcessedMeasurement(new MeasurementId(-123), 1, 2.);
         List<ProcessedMeasurement> measurements = Collections.singletonList(measurement);
         AugeG4ProcessedData processed = new AugeG4ProcessedData("AIRQ01", new Date(), new Date(), measurements);
         List<AugeG4ProcessedData> processedData = Collections.singletonList(processed);

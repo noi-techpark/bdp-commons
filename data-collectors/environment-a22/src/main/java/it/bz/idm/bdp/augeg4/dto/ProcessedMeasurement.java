@@ -3,9 +3,9 @@ package it.bz.idm.bdp.augeg4.dto;
 public class ProcessedMeasurement {
     private final MeasurementId id;
     private final double rawValue;
-    private final double processedValue;
+    private final Double processedValue;
 
-    public ProcessedMeasurement(MeasurementId id, double rawValue, double processedValue) {
+    public ProcessedMeasurement(MeasurementId id, double rawValue, Double processedValue) {
         this.id = id;
         this.rawValue = rawValue;
         this.processedValue = processedValue;
@@ -19,7 +19,7 @@ public class ProcessedMeasurement {
         return rawValue;
     }
 
-    public double getProcessedValue() {
+    public Double getProcessedValue() {
         return processedValue;
     }
 

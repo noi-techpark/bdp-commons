@@ -24,7 +24,7 @@ public class DataConverterTest {
     @Test
     public void convert_AugeG4LinearizedData_to_AugeG4ToHubData () {
         // given
-        ProcessedMeasurement measurement = new ProcessedMeasurement(MEASUREMENT_ID_O3, 1, 2);
+        ProcessedMeasurement measurement = new ProcessedMeasurement(MEASUREMENT_ID_O3, 1, 2.);
         List<ProcessedMeasurement> measurements = Collections.singletonList(measurement);
         Date acquisition = new Date();
         Date linearization = new Date();

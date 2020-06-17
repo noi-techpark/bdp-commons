@@ -53,7 +53,7 @@ public class MeasurementProcessor {
         return Optional.of(new ProcessedMeasurement(
                 rawMeasurement.getId(),
                 rawMeasurement.getValue(),
-                rawMeasurement.getValue()
+                null
         ));
     }
 
