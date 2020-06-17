@@ -152,25 +152,22 @@ public class MeasurementProcessor {
                                  BigDecimal O3,
                                  BigDecimal T_int,
                                  BigDecimal Rad) {
-        BigDecimal uno = a.multiply(x.pow(2, mathContext), mathContext);
+        BigDecimal uno = b.multiply(x.pow(2, mathContext), mathContext);
         LOG.debug("uno:"+uno);
 
-        BigDecimal due = b.multiply(x, mathContext);
+        BigDecimal due = c.multiply(x, mathContext);
         LOG.debug("due:"+due);
 
-        BigDecimal tre = c.multiply(BigDecimalMath.pow(O3, new BigDecimal("0.1")), mathContext);
+        BigDecimal tre = d.multiply(BigDecimalMath.pow(O3, new BigDecimal("0.1")), mathContext);
         LOG.debug("tre:"+tre);
 
-        BigDecimal quattro = d.multiply(T_int.pow(4), mathContext);
+        BigDecimal quattro = e.multiply(T_int.pow(4), mathContext);
         LOG.debug("quattro:"+quattro);
 
-        BigDecimal cinque = e.multiply(Rad, mathContext);
-        LOG.debug("cinque:"+cinque);
-        BigDecimal somma = uno
+        BigDecimal somma = a.add(uno,mathContext)
                 .add(due, mathContext)
                 .add(tre, mathContext)
-                .add(quattro, mathContext)
-                .add(cinque, mathContext);
+                .add(quattro, mathContext);
         LOG.debug("somma:"+somma);
         return somma.doubleValue();
     }
@@ -185,25 +182,19 @@ public class MeasurementProcessor {
                                 BigDecimal RH,
                                 BigDecimal T_int,
                                 BigDecimal Rad) {
-        BigDecimal uno = a.multiply(BigDecimalMath.pow(x, new BigDecimal("0.7")), mathContext);
+        BigDecimal uno = b.multiply(BigDecimalMath.pow(x, new BigDecimal("0.7")), mathContext);
         LOG.debug("uno:"+uno);
 
-        BigDecimal due = b.multiply(BigDecimalMath.pow(RH, new BigDecimal("0.75")), mathContext);
+        BigDecimal due = c.multiply(BigDecimalMath.pow(RH, new BigDecimal("0.75")), mathContext);
         LOG.debug("due:"+due);
 
-        BigDecimal tre = c.multiply(BigDecimalMath.pow(T_int, new BigDecimal("0.3")), mathContext);
+        BigDecimal tre = d.multiply(BigDecimalMath.pow(T_int, new BigDecimal("0.3")), mathContext);
         LOG.debug("tre:"+tre);
 
-        BigDecimal quattro = new BigDecimal(0);
-        LOG.debug("quattro:"+quattro);
-
-        BigDecimal cinque = new BigDecimal(0);
-        LOG.debug("cinque:"+cinque);
-        BigDecimal somma = uno
+        BigDecimal somma = a
+                .add(uno, mathContext)
                 .add(due, mathContext)
-                .add(tre, mathContext)
-                .add(quattro, mathContext)
-                .add(cinque, mathContext);
+                .add(tre, mathContext);
         LOG.debug("somma:"+somma);
         return somma.doubleValue();
     }
@@ -220,26 +211,23 @@ public class MeasurementProcessor {
                                 BigDecimal NO2,
                                 BigDecimal O3,
                                 BigDecimal Rad) {
-        BigDecimal uno = a.multiply(BigDecimalMath.pow(x, new BigDecimal("0.44")), mathContext);
+        BigDecimal uno = b.multiply(BigDecimalMath.pow(x, new BigDecimal("0.44")), mathContext);
         LOG.debug("uno:"+uno);
 
-        BigDecimal due = b.multiply(BigDecimalMath.pow(NO2, new BigDecimal("0.58")), mathContext);
+        BigDecimal due = c.multiply(BigDecimalMath.pow(NO2, new BigDecimal("0.58")), mathContext);
         LOG.debug("due:"+due);
 
-        BigDecimal tre = c.multiply(BigDecimalMath.pow(RH, new BigDecimal("0.54")), mathContext);
+        BigDecimal tre = d.multiply(BigDecimalMath.pow(RH, new BigDecimal("0.54")), mathContext);
         LOG.debug("tre:"+tre);
         
-        BigDecimal quattro = c.multiply(BigDecimalMath.pow(T_int, new BigDecimal("1.2")), mathContext);
+        BigDecimal quattro = e.multiply(BigDecimalMath.pow(T_int, new BigDecimal("1.2")), mathContext);
         LOG.debug("quattro:"+quattro);
 
-        BigDecimal cinque = new BigDecimal(0);
-        LOG.debug("cinque:"+cinque);
-        
-        BigDecimal somma = uno
+        BigDecimal somma = a
+                .add(uno, mathContext)
                 .add(due, mathContext)
                 .add(tre, mathContext)
-                .add(quattro, mathContext)
-                .add(cinque, mathContext);
+                .add(quattro, mathContext);
         LOG.debug("somma:"+somma);
         return somma.doubleValue();
     }
