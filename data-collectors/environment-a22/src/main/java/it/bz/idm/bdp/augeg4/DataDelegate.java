@@ -24,7 +24,7 @@ public class DataDelegate {
 
     private static final Logger LOG = LogManager.getLogger(DataDelegate.class.getName());
 
-    private static final int MAX_QUEUE_SIZE = 1000;
+    private static final int MAX_QUEUE_SIZE = 100000;
     private static boolean first_error_stack_logged = false;
 
     private final DataService dataService;

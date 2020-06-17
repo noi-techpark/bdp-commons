@@ -27,7 +27,7 @@ public class AugeCallback implements MqttCallback {
     public  AugeCallback() {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        this.buffer = new FixedQueue<>(1000);
+        this.buffer = new FixedQueue<>(100000);
     }
 
     @Override
