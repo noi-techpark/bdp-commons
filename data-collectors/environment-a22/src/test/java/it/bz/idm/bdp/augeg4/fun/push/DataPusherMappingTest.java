@@ -63,15 +63,11 @@ public class DataPusherMappingTest {
         List<DataTypeDto> mapped = mapper.mapDataTypes(Collections.singletonList(dataTypeDto));
 
         // then
-        assertEquals(2, mapped.size());
+        assertEquals(1, mapped.size());
 
         DataTypeDto raw = mapped.get(0);
-        assertEquals("temperature_raw", raw.getName());
-        assertNull(raw.getUnit());
-
-        DataTypeDto processed = mapped.get(1);
-        assertEquals("temperature_processed", processed.getName());
-        assertEquals("°C", processed.getUnit());
+        assertEquals("temperature", raw.getName());
+        assertNotNull(raw.getUnit());
     }
 
 }

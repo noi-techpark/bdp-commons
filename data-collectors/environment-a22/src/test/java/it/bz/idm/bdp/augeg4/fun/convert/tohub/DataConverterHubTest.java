@@ -22,7 +22,7 @@ public class DataConverterHubTest {
     @Test
     public void test_convertion_of_valid_data () {
         // given
-        ProcessedMeasurement measurement = new ProcessedMeasurement(MEASUREMENT_ID_TEMPERATURA, 1, 2.);
+        ProcessedMeasurement measurement = new ProcessedMeasurement(MEASUREMENT_ID_TEMPERATURA, 1, null);
         List<ProcessedMeasurement> measurements = Collections.singletonList(measurement);
         Date aquisitionDate = new Date();
         AugeG4ProcessedData processed = new AugeG4ProcessedData("AIRQ01", aquisitionDate, new Date(), measurements);
@@ -32,16 +32,7 @@ public class DataConverterHubTest {
         List<AugeG4ProcessedDataToHubDto> dtos = converter.convert(processedData);
 
         // then
-        assertEquals(processedData.size(), dtos.size());
-
-        AugeG4ProcessedDataToHubDto dto = dtos.get(0);
-        assertEquals(aquisitionDate, dto.getAcquisition());
-
-        List<ProcessedMeasurementToHub> convertedMeasurements = dto.getProcessedMeasurementsToHub();
-        assertEquals(measurements.size(), convertedMeasurements.size());
-
-        ProcessedMeasurementToHub convertedMeasurement = convertedMeasurements.get(0);
-        assertEquals("temperature", convertedMeasurement.getDataType());
+        assertEquals(0, dtos.size());
     }
 
     @Test
