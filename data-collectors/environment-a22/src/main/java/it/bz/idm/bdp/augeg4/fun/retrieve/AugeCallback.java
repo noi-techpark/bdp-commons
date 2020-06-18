@@ -1,21 +1,20 @@
 package it.bz.idm.bdp.augeg4.fun.retrieve;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4ElaboratedDataDto;
-import it.bz.idm.bdp.augeg4.util.FixedQueue;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TimeZone;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4ElaboratedDataDto;
+import it.bz.idm.bdp.augeg4.util.FixedQueue;
 
 public class AugeCallback implements MqttCallback {
 
