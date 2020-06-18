@@ -56,10 +56,10 @@ public class DataConverterAuge implements DataConverterAugeFace {
 
     private Optional<ProcessedResValToAuge> convertMeasurement(ProcessedMeasurement processedMeasurement) {
         return mapMeasurementIdToLinearizedId(processedMeasurement.getId())
-                .map(linearizedId -> new ProcessedResValToAuge(
+                .map(linearizedId ->processedMeasurement.getProcessedValue()!=null ? new ProcessedResValToAuge(
                         linearizedId,
                         processedMeasurement.getProcessedValue()
-                ));
+                ):null).filter(obj -> obj!=null);
     }
 
     private Optional<Integer> mapMeasurementIdToLinearizedId(MeasurementId measurementId) {
