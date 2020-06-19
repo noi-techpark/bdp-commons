@@ -19,9 +19,7 @@ public class MeasurementMappings {
     private static final String COLUMN_UNIT = "unit";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_RTYPE = "rtype";
-    private static final String COLUMN_TO_PROCESS = "toProcess";
-    private static final String DATA_TYPE_NAME_SUFFIX_RAW = "_raw";
-    private static final String DATA_TYPE_NAME_SUFFIX_PROCESSED = "_processed";
+
     private static final Logger LOG = LogManager.getLogger(MeasurementMappings.class.getName());
 
     private static final String MEASUREMENT_MAPPINGS_FILE_NAME = "/mappings/measurementMappings.csv";
@@ -43,27 +41,19 @@ public class MeasurementMappings {
     }
 
     private void insertMappingInMapByCsvRecord(CSVRecord record) {
-                MeasurementMapping rawDatatype = new MeasurementMapping(
-                        new MeasurementId(Integer.parseInt(record.get(COLUMN_ID))),
-                        Integer.parseInt(record.get(COLUMN_PROCESSED_ID)),
-                        record.get(COLUMN_DATA_TYPE)+DATA_TYPE_NAME_SUFFIX_RAW,
-                        record.get(COLUMN_UNIT),
-                        record.get(COLUMN_DESCRIPTION),
-                        record.get(COLUMN_RTYPE)
-                );
-                mappingById.put(rawDatatype.getId(), rawDatatype);
-                if ("true".equals(record.get(COLUMN_TO_PROCESS).toLowerCase())) {
-                    MeasurementMapping processedDatatype = new MeasurementMapping(
-                            new MeasurementId(Integer.parseInt(record.get(COLUMN_ID))*-1),
-                            Integer.parseInt(record.get(COLUMN_PROCESSED_ID)),
-                            record.get(COLUMN_DATA_TYPE)+DATA_TYPE_NAME_SUFFIX_PROCESSED,
-                            record.get(COLUMN_UNIT),
-                            record.get(COLUMN_DESCRIPTION),
-                            record.get(COLUMN_RTYPE)
-                    );
-                    mappingById.put(processedDatatype.getId(), processedDatatype);
+        MeasurementMapping mapping = getMappingFromCsvRecord(record);
+        mappingById.put(mapping.getId(), mapping);
+    }
 
-                }
+    private MeasurementMapping getMappingFromCsvRecord(CSVRecord record) {
+        return new MeasurementMapping(
+                new MeasurementId(Integer.parseInt(record.get(COLUMN_ID))),
+                Integer.parseInt(record.get(COLUMN_PROCESSED_ID)),
+                record.get(COLUMN_DATA_TYPE),
+                record.get(COLUMN_UNIT),
+                record.get(COLUMN_DESCRIPTION),
+                record.get(COLUMN_RTYPE)
+        );
     }
 
     public Optional<MeasurementMapping> getMapping(MeasurementId id) {

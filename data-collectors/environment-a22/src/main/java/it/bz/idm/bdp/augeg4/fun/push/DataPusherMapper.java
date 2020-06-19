@@ -80,6 +80,31 @@ public class DataPusherMapper implements DataPusherMapperFace {
      */
     @Override
     public List<DataTypeDto> mapDataTypes(List<DataTypeDto> dataTypeDtoList) {
-        return dataTypeDtoList;
+        List<DataTypeDto> mapped = new ArrayList<>();
+        dataTypeDtoList.forEach(dataTypeDto -> {
+            mapped.add(getRawDataType(dataTypeDto));
+            mapped.add(getProcessedDataType(dataTypeDto));
+        });
+        return mapped;
+    }
+
+    private DataTypeDto getRawDataType(DataTypeDto dataTypeDto) {
+        return new DataTypeDto(
+                dataTypeDto.getName() + DATA_TYPE_NAME_SUFFIX_RAW,
+                null,
+                dataTypeDto.getDescription(),
+                dataTypeDto.getRtype(),
+                dataTypeDto.getPeriod()
+        );
+    }
+
+    private DataTypeDto getProcessedDataType(DataTypeDto dataTypeDto) {
+        return new DataTypeDto(
+                dataTypeDto.getName() + DATA_TYPE_NAME_SUFFIX_PROCESSED,
+                dataTypeDto.getUnit(),
+                dataTypeDto.getDescription(),
+                dataTypeDto.getRtype(),
+                dataTypeDto.getPeriod()
+        );
     }
 }
