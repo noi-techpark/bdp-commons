@@ -63,11 +63,11 @@ public class DataConverterHub implements DataConverterHubFace {
 
     private Optional<ProcessedMeasurementToHub> convertMeasurement(ProcessedMeasurement measurement) {
         return mapMeasurementIdToDataType(measurement.getId())
-                .map(dataType -> (measurement.getProcessedValue() != null) ? new ProcessedMeasurementToHub(
+                .map(dataType -> new ProcessedMeasurementToHub(
                         dataType,
                         measurement.getRawValue(),
                         measurement.getProcessedValue()
-                ):null).filter(x -> x != null);
+                ));
     }
 
     private Optional<String> mapMeasurementIdToDataType(MeasurementId measurementId) {
