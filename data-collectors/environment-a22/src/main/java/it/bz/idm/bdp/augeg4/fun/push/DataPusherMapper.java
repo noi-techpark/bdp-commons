@@ -4,6 +4,7 @@ import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ProcessedDataToHubDto;
 import it.bz.idm.bdp.augeg4.dto.tohub.ProcessedMeasurementToHub;
 import it.bz.idm.bdp.augeg4.dto.tohub.StationId;
 import it.bz.idm.bdp.augeg4.face.DataPusherMapperFace;
+import it.bz.idm.bdp.augeg4.fun.convert.MeasurementMappings;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
@@ -18,6 +19,7 @@ public class DataPusherMapper implements DataPusherMapperFace {
 
     private static final String DATA_TYPE_NAME_SUFFIX_RAW = "_raw";
     private static final String DATA_TYPE_NAME_SUFFIX_PROCESSED = "_processed";
+    private final MeasurementMappings measurementMappings = new MeasurementMappings();
 
     private final int period;
 
@@ -55,13 +57,15 @@ public class DataPusherMapper implements DataPusherMapperFace {
     }
 
     private void mapProcessedMeasurement(AugeG4ProcessedDataToHubDto measurementsByStation, DataMapDto<RecordDtoImpl> stationMap, ProcessedMeasurementToHub processedMeasurementToHub) {
-        String dataType = processedMeasurementToHub.getDataType() + DATA_TYPE_NAME_SUFFIX_PROCESSED;
-        List<RecordDtoImpl> values = getRecordDtoList(stationMap, dataType);
-        if (values.stream().filter(r -> r.getTimestamp().equals(measurementsByStation.getAcquisition().getTime())).collect(Collectors.toList()).isEmpty())
-        values.add(getSimpleRecordDto(
-                processedMeasurementToHub.getProcessedValue(),
-                measurementsByStation.getAcquisition()
-        ));
+        if (measurementMappings.getTypesToProcess().contains(processedMeasurementToHub.getDataType())) {
+            String dataType = processedMeasurementToHub.getDataType() + DATA_TYPE_NAME_SUFFIX_PROCESSED;
+            List<RecordDtoImpl> values = getRecordDtoList(stationMap, dataType);
+            if (values.stream().filter(r -> r.getTimestamp().equals(measurementsByStation.getAcquisition().getTime())).collect(Collectors.toList()).isEmpty() && processedMeasurementToHub.getProcessedValue()!=null)
+            values.add(getSimpleRecordDto(
+                    processedMeasurementToHub.getProcessedValue(),
+                    measurementsByStation.getAcquisition()
+            ));
+        }
     }
 
     private List<RecordDtoImpl> getRecordDtoList(DataMapDto<RecordDtoImpl> stationMap, String dataType) {
@@ -83,7 +87,8 @@ public class DataPusherMapper implements DataPusherMapperFace {
         List<DataTypeDto> mapped = new ArrayList<>();
         dataTypeDtoList.forEach(dataTypeDto -> {
             mapped.add(getRawDataType(dataTypeDto));
-            mapped.add(getProcessedDataType(dataTypeDto));
+            if (measurementMappings.getTypesToProcess().contains(dataTypeDto.getName()))
+                mapped.add(getProcessedDataType(dataTypeDto));
         });
         return mapped;
     }

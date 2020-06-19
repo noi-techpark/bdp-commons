@@ -8,8 +8,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class MeasurementMappings {
 
@@ -19,12 +21,15 @@ public class MeasurementMappings {
     private static final String COLUMN_UNIT = "unit";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_RTYPE = "rtype";
+    private static final String COLUMN_TOPROCESS = "toProcess";
+
 
     private static final Logger LOG = LogManager.getLogger(MeasurementMappings.class.getName());
 
     private static final String MEASUREMENT_MAPPINGS_FILE_NAME = "/mappings/measurementMappings.csv";
 
     private final Map<MeasurementId, MeasurementMapping> mappingById = new HashMap<>();
+    private Set<String> typesToProcess = new HashSet<String>();
 
     public MeasurementMappings() {
         loadMappingsFromCsvFile();
@@ -46,8 +51,11 @@ public class MeasurementMappings {
     }
 
     private MeasurementMapping getMappingFromCsvRecord(CSVRecord record) {
+        MeasurementId measurementId = new MeasurementId(Integer.parseInt(record.get(COLUMN_ID)));
+        if ("true".equals(record.get(COLUMN_TOPROCESS).toLowerCase()))
+                typesToProcess.add(record.get(COLUMN_DATA_TYPE));
         return new MeasurementMapping(
-                new MeasurementId(Integer.parseInt(record.get(COLUMN_ID))),
+                measurementId,
                 Integer.parseInt(record.get(COLUMN_PROCESSED_ID)),
                 record.get(COLUMN_DATA_TYPE),
                 record.get(COLUMN_UNIT),
@@ -66,5 +74,9 @@ public class MeasurementMappings {
 
     public Collection<MeasurementMapping> getMappings() {
         return mappingById.values();
+    }
+
+    public Set<String> getTypesToProcess() {
+        return typesToProcess;
     }
 }

@@ -6,9 +6,9 @@ public class ProcessedMeasurementToHub {
 
     private final double rawValue;
 
-    private final double processedValue;
+    private final Double processedValue;
 
-    public ProcessedMeasurementToHub(String dataType, double rawValue, double processedValue) {
+    public ProcessedMeasurementToHub(String dataType, double rawValue, Double processedValue) {
         this.dataType = dataType;
         this.rawValue = rawValue;
         this.processedValue = processedValue;
@@ -22,7 +22,7 @@ public class ProcessedMeasurementToHub {
         return rawValue;
     }
 
-    public double getProcessedValue() {
+    public Double getProcessedValue() {
         return processedValue;
     }
 
