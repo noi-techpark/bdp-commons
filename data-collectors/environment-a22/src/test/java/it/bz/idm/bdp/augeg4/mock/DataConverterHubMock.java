@@ -19,7 +19,7 @@ public class DataConverterHubMock implements DataConverterHubFace {
     public List<AugeG4ProcessedDataToHubDto> convert(List<AugeG4ProcessedData> data) {
         Date acquisitionDate = new Date();
         List<ProcessedMeasurementToHub> processedMeasurementsToHub = Collections.singletonList(
-                new ProcessedMeasurementToHub("temperature", MOCKED_VALUE_RAW, MOCKED_VALUE_PROCESSED)
+                new ProcessedMeasurementToHub("temperature-external", MOCKED_VALUE_RAW, MOCKED_VALUE_PROCESSED)
         );
         AugeG4ProcessedDataToHubDto station = new AugeG4ProcessedDataToHubDto(
                 new StationId("AUGEG4_", "STATION A"),

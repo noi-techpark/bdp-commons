@@ -48,7 +48,7 @@ public class DataConverterTest {
         ProcessedMeasurementToHub convertedMeasurement = convertedMeasurements.get(0);
         assertEquals(measurement.getRawValue(), convertedMeasurement.getRawValue(), ASSERT_EQUALS_DOUBLE_DELTA);
         assertEquals(measurement.getProcessedValue(), convertedMeasurement.getProcessedValue(), ASSERT_EQUALS_DOUBLE_DELTA);
-        assertEquals("O3_raw", convertedMeasurement.getDataType());
+        assertEquals("O3", convertedMeasurement.getDataType());
     }
 
 

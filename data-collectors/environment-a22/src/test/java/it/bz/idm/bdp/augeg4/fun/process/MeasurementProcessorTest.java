@@ -46,7 +46,7 @@ public class MeasurementProcessorTest {
         Optional<ProcessedMeasurement> processedMeasurementContainer = measurementProcessor.process(rawData, O3);
 
         // then
-        assertTrue(processedMeasurementContainer.isPresent());
+        assertTrue(!processedMeasurementContainer.isPresent());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class MeasurementProcessorTest {
         Optional<ProcessedMeasurement> processedMeasurementContainer = measurementProcessor.process(rawData, O3);
 
         // then
-        assertTrue(processedMeasurementContainer.isPresent());
+        assertTrue(!processedMeasurementContainer.isPresent());
     }
 
 

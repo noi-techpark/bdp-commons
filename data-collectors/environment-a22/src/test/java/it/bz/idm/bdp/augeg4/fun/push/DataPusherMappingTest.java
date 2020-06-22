@@ -37,8 +37,7 @@ public class DataPusherMappingTest {
         DataMapDto<RecordDtoImpl> stationMap = rootMap.getBranch().get("AUGEG4_STATION A");
         assertNotNull(stationMap);
 
-        assertMeasurementEquals(stationMap, "temperature_raw", MOCKED_VALUE_RAW);
-        assertMeasurementEquals(stationMap, "temperature_processed", MOCKED_VALUE_PROCESSED);
+        assertMeasurementEquals(stationMap, "temperature-external_raw", MOCKED_VALUE_RAW);
     }
 
     private void assertMeasurementEquals(DataMapDto<RecordDtoImpl> stationMap, String dataType, double value) {
@@ -66,8 +65,8 @@ public class DataPusherMappingTest {
         assertEquals(1, mapped.size());
 
         DataTypeDto raw = mapped.get(0);
-        assertEquals("temperature", raw.getName());
-        assertNotNull(raw.getUnit());
+        assertEquals("temperature_raw", raw.getName());
+        assertNull(raw.getUnit());
     }
 
 }

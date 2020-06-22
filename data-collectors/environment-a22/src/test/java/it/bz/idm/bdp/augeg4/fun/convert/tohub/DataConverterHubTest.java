@@ -32,7 +32,7 @@ public class DataConverterHubTest {
         List<AugeG4ProcessedDataToHubDto> dtos = converter.convert(processedData);
 
         // then
-        assertEquals(0, dtos.size());
+        assertEquals(1, dtos.size());
     }
 
     @Test
