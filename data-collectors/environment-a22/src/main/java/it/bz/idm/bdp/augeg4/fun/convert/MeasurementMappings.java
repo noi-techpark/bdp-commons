@@ -1,17 +1,18 @@
 package it.bz.idm.bdp.augeg4.fun.convert;
 
-import it.bz.idm.bdp.augeg4.dto.MeasurementId;
-import it.bz.idm.bdp.augeg4.fun.utils.CsvUtils;
-import org.apache.commons.csv.CSVRecord;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import org.apache.commons.csv.CSVRecord;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import it.bz.idm.bdp.augeg4.dto.MeasurementId;
+import it.bz.idm.bdp.augeg4.fun.utils.CsvUtils;
 
 public class MeasurementMappings {
 

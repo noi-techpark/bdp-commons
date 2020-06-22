@@ -1,17 +1,20 @@
 package it.bz.idm.bdp.augeg4.fun.process;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import it.bz.idm.bdp.augeg4.dto.AugeG4RawData;
 import it.bz.idm.bdp.augeg4.dto.MeasurementId;
 import it.bz.idm.bdp.augeg4.dto.ProcessedMeasurement;
 import it.bz.idm.bdp.augeg4.dto.RawMeasurement;
 import it.bz.idm.bdp.augeg4.util.math.BigDecimalMath;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
-import java.util.Optional;
 
 public class MeasurementProcessor {
 
@@ -42,10 +45,11 @@ public class MeasurementProcessor {
     }
 
     private boolean isToProcess(AugeG4RawData rawData, RawMeasurement rawMeasurement) {
+        List<RawMeasurement> measurements = rawData.getMeasurements().stream().filter(x->x.getId().getValue()==2).collect(Collectors.toList());
         return measurementProcessorParameters.hasMeasurementParameters(
                 rawData.getControlUnitId(),
                 rawMeasurement.getId(),
-                ""
+                !measurements.isEmpty() && measurements.get(0).getValue()<20 ? "20" : ""
         );
     }
 
@@ -77,7 +81,7 @@ public class MeasurementProcessor {
         int formula;
         if (O3.isPresent() && temperature.isPresent() && NO.isPresent() && NO2.isPresent()) {
             formula = FORMULA_PER_NO_E_NO2;
-        } else if (RH.isPresent() && PM10.isPresent() && temperature.isPresent()) {
+        } else if (RH.isPresent() && PM10.isPresent() && PM25.isPresent() && temperature.isPresent()) {
             formula = FORMULA_PER_PM10_E_PM25;
             if (temperature.get()>=20.0 && PM10.get()>100.0) formula = NESSUNA_FORMULA;
             if (temperature.get()<20.0 && RH.get()>97.0) formula = NESSUNA_FORMULA;
@@ -91,7 +95,7 @@ public class MeasurementProcessor {
         Optional<MeasurementParameters> parametersContainer= measurementProcessorParameters.getMeasurementParameters(
                 rawData.getControlUnitId(),
                 rawMeasurement.getId(),
-                temperature.get()
+                temperature.isPresent()?temperature.get():null
             );
         if(!parametersContainer.isPresent()) {
             return Optional.empty();
