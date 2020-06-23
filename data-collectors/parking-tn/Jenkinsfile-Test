@@ -13,6 +13,12 @@ pipeline {
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
         ARTIFACT_NAME = "dc-${PROJECT}"
+        ODH_TEST_AUTHORIZATION_URI = credentials('odh-test-authorization-uri')
+        ODH_TEST_TOKEN_URI = credentials('odh-test-token-uri')
+        ODH_TEST_DC_CLIENT_NAME = credentials('odh-test-dc-client-name')
+        ODH_TEST_DC_CLIENT_ID = credentials('odh-test-dc-client-id')
+        ODH_TEST_DC_CLIENT_SECRET = credentials('odh-test-dc-client-secret')
+        CATALINA_ENVS = " -DauthorizationUri=${ODH_TEST_AUTHORIZATION_URI} -DtokenUri=${ODH_TEST_TOKEN_URI} -DclientName=${ODH_TEST_DC_CLIENT_NAME} -DclientId=${ODH_TEST_DC_CLIENT_ID} -DclientSecret=${ODH_TEST_DC_CLIENT_SECRET} -Dodh.base-uri=http://tomcat.testingmachine.eu/writer/json"
     }
 
     stages {
@@ -39,7 +45,7 @@ pipeline {
 
 	    stage('Deploy') {
             steps {
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -U tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer'
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer ${CATALINA_ENVS}'
             }
         }
     }
