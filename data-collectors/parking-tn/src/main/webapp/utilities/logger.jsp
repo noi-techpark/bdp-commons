@@ -1,10 +1,10 @@
+<%@page import="org.apache.logging.log4j.LogManager"%>
+<%@page import="org.apache.logging.log4j.Level"%>
+<%@page import="org.apache.logging.log4j.Logger"%>
 <%@ page language="java" import="java.sql.*"  %>
-<%@ page import="org.apache.log4j.*"%>
-<%@ page import="org.apache.log4j.spi.LoggerFactory"%>
-
 <%!
 public Level getCurrentLevel(String loggerName) {
-    Logger logger = "ROOT".equals(loggerName) ? Logger.getRootLogger() : Logger.getLogger(loggerName);
+    Logger logger = "ROOT".equals(loggerName) ? LogManager.getRootLogger() : LogManager.getLogger(loggerName);
     Level loggerLevel = null;
     if ( logger!=null ) {
         loggerLevel = logger.getLevel();
@@ -24,8 +24,7 @@ try {
         if ( loggerName==null || loggerName.trim().equals("") ) {
             loggerName = request.getParameter("LOGGER_NAME_INSERTED");
         }
-        Logger logger = "ROOT".equals(loggerName) ? Logger.getRootLogger() : Logger.getLogger(loggerName);
-        logger.setLevel(level);
+        Logger logger = "ROOT".equals(loggerName) ? LogManager.getRootLogger() : LogManager.getLogger(loggerName);
         msg.append("Logger '"+loggerName+"' set to '"+level+"'");
     }
 }
