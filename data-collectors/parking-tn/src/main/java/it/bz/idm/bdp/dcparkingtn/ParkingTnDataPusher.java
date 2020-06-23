@@ -22,10 +22,10 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Service
-public class ParkingTnDataPusher extends JSONPusher {
+public class ParkingTnDataPusher extends NonBlockingJSONPusher {
 
     public static final String PARKING_TYPE_IDENTIFIER = "occupied";
 
@@ -37,25 +37,6 @@ public class ParkingTnDataPusher extends JSONPusher {
     public ParkingTnDataPusher() {
         LOG.debug("START.constructor.");
         LOG.debug("END.constructor.");
-    }
-
-    @PostConstruct
-    private void initParking() {
-        LOG.debug("START.init.");
-        //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTTP 415 error)
-        //this must be done because we added dependencies to com.fasterxml.jackson.dataformat.xml.XmlMapper to read data from IIT web service!
-        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
-        List<HttpMessageConverter<?>> newMessageConverters = new ArrayList<HttpMessageConverter<?>>();
-        for (HttpMessageConverter<?> messageConverter : messageConverters) {
-            if ( messageConverter instanceof MappingJackson2XmlHttpMessageConverter || messageConverter instanceof Jaxb2RootElementHttpMessageConverter ) {
-                LOG.debug("REMOVE   converter: " + messageConverter.getClass().getName());
-            } else {
-                LOG.debug("PRESERVE converter: " + messageConverter.getClass().getName());
-                newMessageConverters.add(messageConverter);
-            }
-        }
-        restTemplate.setMessageConverters(newMessageConverters);
-        LOG.debug("END.init.");
     }
 
     @Override
