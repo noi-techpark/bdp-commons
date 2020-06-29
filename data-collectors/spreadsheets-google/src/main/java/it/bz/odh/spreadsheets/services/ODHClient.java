@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Lazy
 @Component
-public class ODHClient extends JSONPusher{
+public class ODHClient extends NonBlockingJSONPusher{
 
 	@Value(value="${stationtype}")
 	private String stationtype;
