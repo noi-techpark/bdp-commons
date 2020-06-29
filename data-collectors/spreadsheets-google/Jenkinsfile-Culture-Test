@@ -20,7 +20,7 @@ pipeline {
         ODH_TEST_DC_CLIENT_NAME = credentials('odh-test-dc-client-name')
         ODH_TEST_DC_CLIENT_ID = credentials('odh-test-dc-client-id')
         ODH_TEST_DC_CLIENT_SECRET = credentials('odh-test-dc-client-secret')
-        ODH_TESET_BASE_URI=http://tomcat.testingmachine.eu/writer/json"
+        ODH_TESET_BASE_URI="http://tomcat.testingmachine.eu/writer/json"
     }
 
     stages {
