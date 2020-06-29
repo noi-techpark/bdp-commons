@@ -34,25 +34,6 @@ pipeline {
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger\\s*=\\).*\\$%\\1DEBUG,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json'
-
-            }
-        }
-        stage('Test - Culture') {
-            environment {
-                VENDOR = "creativeIndustries"
-                CONFIG = "${CULTURE_CONFIG}"
-            }
-            steps {
-                sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
-                sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean test'
-            }
-        }
-        stage('Deploy - Culture') {
-            environment {
-                VENDOR = "culture"
-                CONFIG = "${CULTURE_CONFIG}"
-            }
-            steps {
                 sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
                 sh '''sed -i -e "s%\\(authorizationUri\\s*=\\).*\\?%\\1${ODH_TEST_AUTHORIZATION_URI}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh '''sed -i -e "s%\\(tokenUri\\s*=\\).*\\?%\\1${ODH_TEST_TOKEN_URI}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
@@ -63,6 +44,24 @@ pipeline {
                 sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
+
+            }
+        }
+        stage('Test - Culture') {
+            environment {
+                VENDOR = "creativeIndustries"
+                CONFIG = "${CULTURE_CONFIG}"
+            }
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean test'
+            }
+        }
+        stage('Deploy - Culture') {
+            environment {
+                VENDOR = "culture"
+                CONFIG = "${CULTURE_CONFIG}"
+            }
+            steps {
                 sh 'cd ${PROJECT_FOLDER} && mvn -B clean tomcat:redeploy -Dmaven.tomcat.url=${TESTSERVER_TOMCAT_ENDPOINT} -Dmaven.tomcat.server=testServer -Dmaven.tomcat.path=/${ARTIFACT_NAME}-${VENDOR}'
             }
         }
