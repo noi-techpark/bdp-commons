@@ -15,6 +15,12 @@ pipeline {
         ARTIFACT_NAME = "dc-${PROJECT}"
         CULTURE_CONFIG=credentials('spreadsheets.culture.test.config')
         GOOGLE_SECRET=credentials('spreadsheets.client_secret.json')
+        ODH_TEST_AUTHORIZATION_URI = credentials('odh-test-authorization-uri')
+        ODH_TEST_TOKEN_URI = credentials('odh-test-token-uri')
+        ODH_TEST_DC_CLIENT_NAME = credentials('odh-test-dc-client-name')
+        ODH_TEST_DC_CLIENT_ID = credentials('odh-test-dc-client-id')
+        ODH_TEST_DC_CLIENT_SECRET = credentials('odh-test-dc-client-secret')
+        ODH_TESET_BASE_URI=http://tomcat.testingmachine.eu/writer/json"
     }
 
     stages {
@@ -28,6 +34,7 @@ pipeline {
 
                 sh 'sed -i -e "s%\\(log4j.rootLogger\\s*=\\).*\\$%\\1DEBUG,R%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json'
+
             }
         }
         stage('Test - Culture') {
@@ -47,6 +54,12 @@ pipeline {
             }
             steps {
                 sh 'cat "${CONFIG}" > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'
+                sh '''sed -i -e "s%\\(authorizationUri\\s*=\\).*\\?%\\1${ODH_TEST_AUTHORIZATION_URI}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(tokenUri\\s*=\\).*\\?%\\1${ODH_TEST_TOKEN_URI}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(clientId\\s*=\\).*\\?%\\1${ODH_TEST_DC_CLIENT_ID}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(clientName\\s*=\\).*\\?%\\1${ODH_TEST_DC_CLIENT_NAME}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(clientSecret\\s*=\\).*\\?%\\1${ODH_TEST_DC_CLIENT_SECRET}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(base-uri\\s*=\\).*\\?%\\1${ODH_TESET_BASE_URI}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
