@@ -50,6 +50,7 @@ pipeline {
         }
         stage('Test - Culture') {
             steps {
+                sh 'cp ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/application.properties'
                 sh 'cd ${PROJECT_FOLDER} && mvn -B -U -DfinalName=${ARTIFACT_NAME}-${VENDOR} clean test'
             }
         }
