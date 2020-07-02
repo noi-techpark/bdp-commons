@@ -1,0 +1,56 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'docker/dockerfile-java'
+            additionalBuildArgs '--build-arg JENKINS_USER_ID=`id -u jenkins` --build-arg JENKINS_GROUP_ID=`id -g jenkins`'
+        }
+    }
+    
+    environment {
+        PROJECT = "environment-a22"
+        PROJECT_FOLDER = "data-collectors/${PROJECT}"
+        LOG_FOLDER = "/var/log/opendatahub/data-collectors"
+        ARTIFACT_NAME = "dc-${PROJECT}"
+        ODH_AUTHORIZATION_URI = credentials('odh-authorization-uri')
+        ODH_TOKEN_URI = credentials('odh-token-uri')
+        ODH_DC_CLIENT_NAME = credentials('odh-dc-client-name')
+        ODH_DC_CLIENT_ID = credentials('odh-dc-client-id')
+        ODH_DC_CLIENT_SECRET = credentials('odh-dc-client-secret')
+        ODH_BASE_URI= credentials('odh-writer-base-uri-mqtt')
+    }
+
+    stages {
+        stage('Configure') {
+            steps {
+                sh 'sed -i -e "s%\\(appender.file.fileName\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+                sh 'sed -i -e "s%\\(property.rootlevel\\s*=\\).*\\$%\\1DEBUG%" ${PROJECT_FOLDER}/src/main/resources/log4j2.properties'
+                sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                
+                sh '''sed -i -e "s%\\(authorizationUri\\s*=\\).*\\?%\\1${ODH_AUTHORIZATION_URI}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(tokenUri\\s*=\\).*\\?%\\1${ODH_TOKEN_URI}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(clientId\\s*=\\).*\\?%\\1${ODH_DC_CLIENT_ID}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(clientName\\s*=\\).*\\?%\\1${ODH_DC_CLIENT_NAME}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(clientSecret\\s*=\\).*\\?%\\1${ODH_DC_CLIENT_SECRET}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(base-uri\\s*=\\).*\\?%\\1${ODH_BASE_URI}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn -B -U clean compile test' //add verify step, once integration tests work properly
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'cd ${PROJECT_FOLDER} && mvn package'
+            }
+        }
+        stage('Archive') {
+            steps {
+                sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                archiveArtifacts artifacts: "${ARTIFACT_NAME}.war", onlyIfSuccessful: true
+            }
+        }
+    }
+}
