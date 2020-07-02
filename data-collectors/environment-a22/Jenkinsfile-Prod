@@ -17,6 +17,11 @@ pipeline {
         ODH_DC_CLIENT_ID = credentials('odh-dc-client-id')
         ODH_DC_CLIENT_SECRET = credentials('odh-dc-client-secret')
         ODH_BASE_URI= credentials('odh-writer-base-uri-mqtt')
+        A22_MQTT_USERNAME=credentials('a22-mqtt-username')
+        A22_MQTT_PASSWORD=credentials('a22-mqtt-password')
+        A22_MQTT_URI=credentials('a22-mqtt-uri')
+        A22_MQTT_PORT=credentials('a22-mqtt-port')
+
     }
 
     stages {
@@ -33,6 +38,15 @@ pipeline {
                 sh '''sed -i -e "s%\\(clientName\\s*=\\).*\\?%\\1${ODH_DC_CLIENT_NAME}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh '''sed -i -e "s%\\(clientSecret\\s*=\\).*\\?%\\1${ODH_DC_CLIENT_SECRET}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh '''sed -i -e "s%\\(base-uri\\s*=\\).*\\?%\\1${ODH_BASE_URI}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+
+                sh '''sed -i -e "s%\\(mqtt.subscriber.username\\s*=\\).*\\?%\\1${A22_MQTT_USERNAME}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(mqtt.publisher.username\\s*=\\).*\\?%\\1${A22_MQTT_USERNAME}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(mqtt.subscriber.password\\s*=\\).*\\?%\\1${A22_MQTT_PASSWORD}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(mqtt.publisher.password\\s*=\\).*\\?%\\1${A22_MQTT_PASSWORD}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(mqtt.subscriber.port\\s*=\\).*\\?%\\1${A22_MQTT_PORT}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(mqtt.publisher.port\\s*=\\).*\\?%\\1${A22_MQTT_PORT}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(mqtt.publisher.uri\\s*=\\).*\\?%\\1${A22_MQTT_URI}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
+                sh '''sed -i -e "s%\\(mqtt.subscriber.uri\\s*=\\).*\\?%\\1${A22_MQTT_URI}%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
             }
         }
 
