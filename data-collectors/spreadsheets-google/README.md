@@ -12,8 +12,8 @@ Name and address, together **must** create a unique composite key.
 ### Skills
 The spreadsheet reader does some magic but tries to not influence to much. These are things happening when you sync:
 - if the column **description** exists it gets analyzed and all contents gets associated to a language (en,de or it)
-- each column can be prefixed with a valid ISO 639 locale(eg. de,en,it,fr,cz...) to define the correct language of that column; a prefixed column has always precedence on a non prefixed(do not prefix required columns. In that case create new ones)
--if you have specified an address the app will try to find the correct coordinate informations using Openstreetmaps data which may not have fancy things like google has(word stamming, multiple language recognition...), but has the correct housenumbers of southtyrol, which google has not(does some strange approximation which rarely work). 
+- each column can be prefixed with a valid ISO 639 locale(eg. de,en,it,fr,cz...) to define the correct language of that column; a prefixed column has always precedence on a non prefixed(do not prefix required columns. In that case create new ones) Example: How can I translate the column `city` in english,german and italian? Create 3 columns with the following names:  `de:city`,`it:city`,`en:city`. The old column can be removed or used as replacement of one of the 3.
+- if you have specified an address the app will try to find the correct coordinate informations using Openstreetmaps data which may not have fancy things like google has(word stamming, multiple language recognition...), but has the correct housenumbers of southtyrol, which google has not(does some strange approximation which rarely work). 
 
 Each **address must** ...
 - ...be in a single language
