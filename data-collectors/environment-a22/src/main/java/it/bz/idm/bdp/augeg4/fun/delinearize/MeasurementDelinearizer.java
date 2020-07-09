@@ -6,7 +6,10 @@ import it.bz.idm.bdp.augeg4.dto.fromauge.ElaboratedResVal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,7 +20,7 @@ public class MeasurementDelinearizer {
     static final int LINEAR_FUNCTION_2_LINFUNCID = 2;
     static final int LINEAR_FUNCTION_3_LINFUNCID = 3;
     static final int LINEAR_FUNCTION_4_LINFUNCID = 4;
-
+    static List<Integer> LINEARIZED_VALUES_NOT_TO_DELINIERIZE = Arrays.asList(2,3,7);
     private interface LinearFunction {
         Double apply(double a, double b, double x);
     }
@@ -52,6 +55,8 @@ public class MeasurementDelinearizer {
     private Optional<RawMeasurement> delinearizeLinearizedResVal(ElaboratedResVal elaboratedResVal) {
         return getLinearFunctionOrNull(elaboratedResVal.getLinFuncId())
                 .map(linearFunction -> {
+                    if (LINEARIZED_VALUES_NOT_TO_DELINIERIZE.contains(elaboratedResVal.getId()))
+                        return new RawMeasurement(getMeasurementId(elaboratedResVal), elaboratedResVal.getValue());
                     Double delinearizeValue = delinearizeValue(linearFunction, elaboratedResVal);
                     if (delinearizeValue!= null && Double.isFinite(delinearizeValue))
                         return new RawMeasurement(getMeasurementId(elaboratedResVal),delinearizeValue);
