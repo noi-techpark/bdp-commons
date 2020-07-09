@@ -176,6 +176,7 @@
 				<version>9.4.15.v20190215</version>
 				<configuration>
 					<httpConnector>
+						<!--host>localhost</host-->
 						<port>9999</port>
 					</httpConnector>
 				</configuration>
