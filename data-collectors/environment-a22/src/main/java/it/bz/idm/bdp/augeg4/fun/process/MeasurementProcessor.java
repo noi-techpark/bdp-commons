@@ -20,7 +20,7 @@ public class MeasurementProcessor {
 
     private static final Logger LOG = LogManager.getLogger(MeasurementProcessor.class.getName());
 
-    public static final MeasurementId MEASUREMENT_ID_TEMPERATURA = new MeasurementId(2);
+    public static final MeasurementId MEASUREMENT_ID_TEMPERATURA = new MeasurementId(7);
     public static final MeasurementId MEASUREMENT_ID_RH = new MeasurementId(3);
     public static final MeasurementId MEASUREMENT_ID_O3 = new MeasurementId(8);
     public static final MeasurementId MEASUREMENT_ID_NO2 = new MeasurementId(14);
