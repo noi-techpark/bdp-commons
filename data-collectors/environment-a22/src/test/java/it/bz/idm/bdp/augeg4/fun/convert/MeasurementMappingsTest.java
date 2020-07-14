@@ -24,7 +24,7 @@ public class MeasurementMappingsTest {
         assertTrue(mappingContainer.isPresent());
 
         MeasurementMapping mapping = mappingContainer.get();
-        assertEquals("temperature-external", mapping.getDataType());
+        assertEquals("temperature-internal", mapping.getDataType());
     }
 
     @Test
