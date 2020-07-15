@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
 
@@ -84,7 +83,7 @@ public class DataMappingUtil {
         MappingResult result = new MappingResult();
         Map<String, Short> headerMapping = listToMap(values.get(0));
         if (isValidStationSheet(headerMapping)) {
-            StationList mappedStations = mapStations(values, sheet.getProperties().getIndex(), headerMapping);
+            StationList mappedStations = mapStations(values, sheet.getProperties().getIndex(), headerMapping,sheet.getProperties().getTitle());
             result.setStationDtos(mappedStations);
         }
         else if (isValidDataTypeSheet(headerMapping)) {
@@ -144,7 +143,7 @@ public class DataMappingUtil {
      * @param existingOdhStations {@link StationDto}'s of this spreadsheet which already exist in odh
      * @return list of all valid rows in form of {@link StationDto}
      */
-    public StationList mapStations(List<List<Object>> spreadSheetValues, Integer sheetId, Map<String, Short> headerMapping) {
+    public StationList mapStations(List<List<Object>> spreadSheetValues, Integer sheetId, Map<String, Short> headerMapping, String sheetName) {
         StationList dtos = new StationList();
         Set<Integer> missingPositions = new HashSet<>();
         int i = 0;
@@ -171,6 +170,7 @@ public class DataMappingUtil {
                 if (dto.getName()==null || dto.getName().isEmpty())
                     dto.setName(dto.getId());
                 Map<String, Object> normalizedMetaData = odhClient.normalizeMetaData(dto.getMetaData());
+                normalizedMetaData.put("sheetName", sheetName);
                 dto.getMetaData().clear();
                 dto.setMetaData(normalizedMetaData);
                 dtos.add(dto);
