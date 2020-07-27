@@ -16,7 +16,7 @@ public class MeasurementProcessorParametersTest {
         // given
         String controlUnitId = "AIRQ01";
         MeasurementId measurementId = MeasurementProcessor.MEASUREMENT_ID_NO2;
-        double temperature = 10.0;
+        double temperature = 31.0;
         MeasurementProcessorParameters processorParameters = new MeasurementProcessorParameters();
 
         // when
@@ -34,7 +34,7 @@ public class MeasurementProcessorParametersTest {
         // given
         String controlUnitId = "AIRQ01";
         MeasurementId measurementId = MeasurementProcessor.MEASUREMENT_ID_NO2;
-        double temperature = 30.0; // high temp >= 20.0
+        double temperature = 10.0; // high temp >= 20.0
         MeasurementProcessorParameters processorParameters = new MeasurementProcessorParameters();
 
         // when

@@ -1,6 +1,7 @@
 package it.bz.idm.bdp.augeg4.fun.process;
 
 import it.bz.idm.bdp.augeg4.dto.AugeG4RawData;
+import it.bz.idm.bdp.augeg4.dto.MeasurementId;
 import it.bz.idm.bdp.augeg4.dto.ProcessedMeasurement;
 import it.bz.idm.bdp.augeg4.dto.RawMeasurement;
 import org.junit.Test;
@@ -47,6 +48,25 @@ public class MeasurementProcessorTest {
 
         // then
         assertTrue(!processedMeasurementContainer.isPresent());
+    }
+
+    @Test
+    public void test_processing_of_no2() {
+        // given
+        MeasurementProcessor measurementProcessor = new MeasurementProcessor();
+        RawMeasurement temperatura = new RawMeasurement(MEASUREMENT_ID_TEMPERATURA, 34.9);
+        RawMeasurement temperaturaEsterna = new RawMeasurement( new MeasurementId(2), 22.6);
+
+        RawMeasurement O3 = new RawMeasurement(MEASUREMENT_ID_O3, 306);
+        RawMeasurement NO2 = new RawMeasurement(measurementProcessor.MEASUREMENT_ID_NO2, 92);
+        RawMeasurement NO = new RawMeasurement(measurementProcessor.MEASUREMENT_ID_NO, 79);
+        AugeG4RawData rawData = new AugeG4RawData("AIRQ10", new Date(), Arrays.asList(temperatura,temperaturaEsterna, O3,NO2,NO));
+
+        // when
+        Optional<ProcessedMeasurement> processedMeasurementContainer = measurementProcessor.process(rawData, NO2);
+
+        // then
+        assertTrue(processedMeasurementContainer.isPresent());
     }
 
     @Test
@@ -144,5 +164,13 @@ public class MeasurementProcessorTest {
         System.out.println(v_diff);
         //assertTrue(Math.abs(v_diff) < 0.5);
         System.out.println();
+    }
+    @Test
+    public void testStuff() {
+        MeasurementProcessor processor = new MeasurementProcessor();
+
+        double testvalue = processor.applyFunction(new BigDecimal("92"), new BigDecimal("1151.7749"),new BigDecimal("0.21352281"),new BigDecimal("-34.137851"),new BigDecimal("115.29568"),new BigDecimal("0.000009769465"),new BigDecimal("0"),new BigDecimal("363"),new BigDecimal("34.9"),new BigDecimal("1"));
+
+        System.out.println(testvalue);
     }
 }

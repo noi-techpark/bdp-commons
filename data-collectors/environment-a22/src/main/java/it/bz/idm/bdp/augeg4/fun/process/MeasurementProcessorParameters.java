@@ -66,7 +66,7 @@ public class MeasurementProcessorParameters {
 
     Optional<MeasurementParameters> getMeasurementParameters(String controlUnitId, MeasurementId measurementId, Double temperature) {
         String temperatureLevel;
-        if (temperature != null && temperature>= HIGH_TEMPERATURE_VALUE) temperatureLevel = HIGH_TEMPERATURE_LABEL;
+        if (temperature != null && temperature < HIGH_TEMPERATURE_VALUE) temperatureLevel = HIGH_TEMPERATURE_LABEL;
         else temperatureLevel = "";
         MeasurementParametersId id = new MeasurementParametersId(controlUnitId, measurementId,temperatureLevel);
         MeasurementParameters parameters = parametersByMeasurementParametersId.get(id);
