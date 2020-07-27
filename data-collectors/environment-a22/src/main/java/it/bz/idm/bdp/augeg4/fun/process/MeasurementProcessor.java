@@ -45,7 +45,7 @@ public class MeasurementProcessor {
     }
 
     private boolean isToProcess(AugeG4RawData rawData, RawMeasurement rawMeasurement) {
-        List<RawMeasurement> measurements = rawData.getMeasurements().stream().filter(x->x.getId().getValue()==2).collect(Collectors.toList());
+        List<RawMeasurement> measurements = rawData.getMeasurements().stream().filter(x->x.getId().getValue()==7).collect(Collectors.toList());
         return measurementProcessorParameters.hasMeasurementParameters(
                 rawData.getControlUnitId(),
                 rawMeasurement.getId(),
