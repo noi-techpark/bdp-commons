@@ -78,20 +78,7 @@ public class MeasurementProcessor {
         Optional<Double> RH = getMeasurementFromRawData(rawData, MEASUREMENT_ID_RH);
         Optional<Double> PM10 = getMeasurementFromRawData(rawData, MEASUREMENT_ID_PM10);
         Optional<Double> PM25 = getMeasurementFromRawData(rawData, MEASUREMENT_ID_PM25);
-        int formula;
-        if (O3.isPresent() && temperature.isPresent() && NO.isPresent() && NO2.isPresent()) {
-            formula = FORMULA_PER_NO_E_NO2;
-        } else if (RH.isPresent() && PM10.isPresent() && PM25.isPresent() && temperature.isPresent()) {
-            formula = FORMULA_PER_PM10_E_PM25;
-            if (temperature.get()>=20.0 && PM10.get()>100.0) formula = NESSUNA_FORMULA;
-            if (temperature.get()<20.0 && RH.get()>97.0) formula = NESSUNA_FORMULA;
-        } else if (RH.isPresent() && PM10.isPresent() && temperature.isPresent()) {
-            formula = FORMULA_PER_03;
-            if (temperature.get()>=20.0) formula = NESSUNA_FORMULA;
-        }        
-        else {
-            formula = NESSUNA_FORMULA;
-        }
+        int formula = chooseCorrectFormula(rawMeasurement.getId(), O3, NO, NO2, temperature, RH, PM10, PM25);
         Optional<MeasurementParameters> parametersContainer= measurementProcessorParameters.getMeasurementParameters(
                 rawData.getControlUnitId(),
                 rawMeasurement.getId(),
@@ -144,6 +131,24 @@ public class MeasurementProcessor {
                 return Optional.empty();
         }
 
+    }
+
+    private int chooseCorrectFormula(MeasurementId rawMeasurementId, Optional<Double> O3, Optional<Double> NO, Optional<Double> NO2, Optional<Double> temperature,
+            Optional<Double> RH, Optional<Double> PM10, Optional<Double> PM25) {
+        int formula = NESSUNA_FORMULA;
+        if ((MEASUREMENT_ID_NO2.equals(rawMeasurementId) || MEASUREMENT_ID_NO.equals(rawMeasurementId))
+                && (O3.isPresent() && temperature.isPresent() && NO.isPresent() && NO2.isPresent()))
+            formula = FORMULA_PER_NO_E_NO2;
+        else if ((MEASUREMENT_ID_PM10.equals(rawMeasurementId) || MEASUREMENT_ID_PM25.equals(rawMeasurementId))
+                && (RH.isPresent() && PM10.isPresent() && PM25.isPresent() && temperature.isPresent())
+                && (!(temperature.get()>=20.0 && PM10.get()>100.0))
+                && (!(temperature.get()<20.0 && RH.get()>97.0))
+                )
+            formula = FORMULA_PER_PM10_E_PM25;
+        else if (MEASUREMENT_ID_O3.equals(rawMeasurementId)
+                && (RH.isPresent() && PM10.isPresent() && temperature.isPresent()))
+            formula = FORMULA_PER_03;
+        return formula;
     }
 
     public double applyFunction(BigDecimal x,
