@@ -1,0 +1,13 @@
+version: "3.4"
+
+services:
+  tomcat:
+    env_file:
+      - .env
+    build:
+      context: ../
+      dockerfile: writer/docker/Dockerfile
+    volumes: 
+        - ./:/code
+    ports:
+      - "1010:8080"
