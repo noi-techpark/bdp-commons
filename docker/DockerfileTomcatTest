@@ -1,0 +1,16 @@
+FROM maven:3-jdk-8-alpine as build
+ARG JENKINS_GROUP_ID=1000
+ARG JENKINS_USER_ID=1000
+ARG collector
+ENV collector ${collector}
+RUN addgroup -g $JENKINS_GROUP_ID jenkins && \
+    adduser -D -u $JENKINS_USER_ID -G jenkins jenkins
+
+COPY docker/entrypoint-java.sh /entrypoint-java.sh
+
+WORKDIR /code
+COPY ${collector} /code/${collector}
+RUN cd /code/${collector}/ && mvn clean test package 
+
+FROM tomcat:8.5.57-jdk8-openjdk-buster
+COPY --from=build /code/${collector}/target/*.war /usr/local/tomcat/webapps/ROOT.war
