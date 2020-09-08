@@ -5,8 +5,10 @@ services:
     env_file:
       - .env
     build:
-      context: ../
-      dockerfile: writer/docker/Dockerfile
+      context: ../../
+      dockerfile: docker/DockerfileTomcatTest
+      args:
+        - collector:${collector}
     volumes: 
         - ./:/code
     ports:

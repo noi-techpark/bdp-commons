@@ -20,8 +20,8 @@ pipeline {
                 sh '''sed -i -e "s%\\(provenance.version\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
-                sh 'cat ${KEYCLOAK_CONFIG} > .env'
-                sh 'echo "collector=${PROJECT}" >> .env'
+                sh 'cat ${KEYCLOAK_CONFIG} > ${PROJECT_FOLDER}/.env'
+                sh 'echo "collector=${PROJECT}" >> ${PROJECT_FOLDER}/.env'
             }
         }
         stage('Build') {
