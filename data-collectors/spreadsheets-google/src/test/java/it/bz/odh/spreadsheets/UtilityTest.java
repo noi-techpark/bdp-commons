@@ -29,9 +29,7 @@ import it.bz.odh.spreadsheets.util.LangUtil;
 @WebAppConfiguration
 public class UtilityTest{
 
-	@Lazy
-	@Autowired
-	private ODHClient odhClient;
+
 	
     @Lazy
     @Autowired
@@ -99,7 +97,7 @@ public class UtilityTest{
 		Map<String, Object> metaData = new HashMap<String, Object>();
 		metaData.put("today.noi.bz.it", "Hello");
 		metaData.put("Blüschtier", "ßcharf");
-		Map<String, Object> result = odhClient.normalizeMetaData(metaData);
+		Map<String, Object> result = util.normalizeMetaData(metaData);
 		assertFalse(result.isEmpty());
 	}
 }

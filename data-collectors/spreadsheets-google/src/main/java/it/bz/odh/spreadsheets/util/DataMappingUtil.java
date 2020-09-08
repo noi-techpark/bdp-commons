@@ -106,11 +106,11 @@ public class DataMappingUtil {
 	            row.remove(metaDataPosition.shortValue());
 	            Map<String, Object> metaDataMap = buildMetaDataMap(headerMapping,row);
 	            langUtil.mergeTranslations(metaDataMap,headerMapping);
-	            odhClient.normalizeMetaData(metaDataMap);
+	            normalizeMetaData(metaDataMap);
                 dto.getMetaData().put(key, metaDataMap);
 	        }
 	    }
-        odhClient.normalizeMetaData(dto.getMetaData());
+        normalizeMetaData(dto.getMetaData());
         return dto;
     }
     /**
@@ -169,7 +169,7 @@ public class DataMappingUtil {
                 langUtil.mergeTranslations(dto.getMetaData(),headerMapping);
                 if (dto.getName()==null || dto.getName().isEmpty())
                     dto.setName(dto.getId());
-                Map<String, Object> normalizedMetaData = odhClient.normalizeMetaData(dto.getMetaData());
+                Map<String, Object> normalizedMetaData = normalizeMetaData(dto.getMetaData());
                 normalizedMetaData.put("sheetName", sheetName);
                 dto.getMetaData().clear();
                 dto.setMetaData(normalizedMetaData);
@@ -266,5 +266,21 @@ public class DataMappingUtil {
             return "true".equals(text);
 
         return text;
+    }
+    private String normalizeKey(String keyValue) {
+        String accentFreeString = StringUtils.stripAccents(keyValue).replaceAll(" ", "_");
+        String asciiString = accentFreeString.replaceAll("[^\\x00-\\x7F]", "");
+        String validVar = asciiString.replaceAll("[^\\w0-9]", "");
+        return validVar;
+    }
+
+
+    public Map<String, Object> normalizeMetaData(Map<String, Object> metaData) {
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        for (Map.Entry<String,Object> entry:metaData.entrySet()) {
+            String normalizedKey = normalizeKey(entry.getKey());
+            resultMap.put(normalizedKey, entry.getValue());
+        }
+        return resultMap;
     }
 }
