@@ -55,12 +55,11 @@ public class DataMappingUtil {
 
     @Value("${composite.unique.key}")
     private String[] uniqueIdFields;
-
+    
+    @Value(value="${stationtype}")
+    private String stationtype;
+    
     public Set<String> excludeFromMetaData = new HashSet<>();
-
-    @Lazy
-    @Autowired
-    private ODHClient odhClient;
         
     @Lazy
     @Autowired
@@ -213,7 +212,7 @@ public class DataMappingUtil {
         Map<String, Object> metaData = buildMetaDataMap(headerMapping, row);
         dto.setMetaData(metaData);
         dto.setOrigin(origin);
-        dto.setStationType(odhClient.getIntegreenTypology());
+        dto.setStationType(stationtype);
         dto.setId(generateUniqueId(dto));
         return dto;
     }

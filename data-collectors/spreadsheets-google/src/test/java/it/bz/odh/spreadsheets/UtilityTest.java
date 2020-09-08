@@ -20,7 +20,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import it.bz.idm.bdp.dto.StationDto;
-import it.bz.odh.spreadsheets.services.ODHClient;
 import it.bz.odh.spreadsheets.util.DataMappingUtil;
 import it.bz.odh.spreadsheets.util.LangUtil;
 
@@ -28,8 +27,6 @@ import it.bz.odh.spreadsheets.util.LangUtil;
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext*.xml" })
 @WebAppConfiguration
 public class UtilityTest{
-
-
 	
     @Lazy
     @Autowired

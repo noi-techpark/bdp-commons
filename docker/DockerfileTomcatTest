@@ -9,7 +9,8 @@ COPY docker/entrypoint-java.sh /entrypoint-java.sh
 
 WORKDIR /code
 COPY data-collectors/${COLLECTOR} /code/${COLLECTOR}
-RUN cd /code/${COLLECTOR}/ && mvn clean package
+RUN cd /code/${COLLECTOR}/ && mvn clean package -DfinalName=ROOT
 
 FROM tomcat:8.5.57-jdk8-openjdk-buster
-COPY --from=build /code/${COLLECTOR}/target/*.war /usr/local/tomcat/webapps/ROOT.war
+ARG COLLECTOR
+COPY --from=build /code/${COLLECTOR}/target/ROOT.war /usr/local/tomcat/webapps/ROOT.war

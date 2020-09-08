@@ -8,6 +8,7 @@ pipeline {
         ARTIFACT_NAME = "dc-${PROJECT}"
         NOIPLACES_CONFIG=credentials('spreadsheets.noiPlaces.config')
         GOOGLE_SECRET=credentials('spreadsheets.client_secret.json')
+        GOOGLE_CREDENTIALS=credentials('google-spreadsheet-api-credentials')
         KEYCLOAK_CONFIG=credentials('test-authserver-datacollector-client-config')
     }
 
@@ -21,6 +22,8 @@ pipeline {
                 sh '''sed -i -e "s%\\(provenance.name\\s*=\\).*\\?%\\1$(xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml;)%" ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/application.properties'''
                 sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cat ${KEYCLOAK_CONFIG} > ${PROJECT_FOLDER}/.env'
+                sh 'mkdir -p ${PROJECT_FOLDER}/src/main/resources/META-INF/credentials'
+                sh 'cat ${GOOGLE_CREDENTIALS} > ${PROJECT_FOLDER}/src/main/resources/META-INF/credentials/StoredCredentials'
             }
         }
         stage('Build') {
@@ -30,7 +33,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'cd data-collectors/spreadsheets-google && docker-compose --context test-docker -f docker-compose.NOIPlaces.yml up -d'
+                sh 'cd data-collectors/spreadsheets-google && docker-compose --context test-docker-01 -f docker-compose.NOIPlaces.yml up -d'
             }
         }
     }
