@@ -4,10 +4,10 @@ services:
   tomcat:
     env_file:
       - .env
-    args:
-      - COLLECTOR:${PROJECT}
     build:
       context: ../../
       dockerfile: docker/DockerfileTomcatTest
+      args:
+        - COLLECTOR=${PROJECT}
     ports:
       - "1010:8080"
