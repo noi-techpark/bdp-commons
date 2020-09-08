@@ -10,4 +10,4 @@ services:
       args:
         - COLLECTOR=${PROJECT}
     ports:
-      - "1010:8080"
+      - "1011:8080"
