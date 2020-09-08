@@ -3,7 +3,9 @@ version: "3.4"
 services:
   tomcat:
     env_file:
-      - data-collectors/spreadsheets-google/.env
+      - .env
+    args:
+      - COLLECTOR:${PROJECT}
     build:
       context: ../../
       dockerfile: docker/DockerfileTomcatTest
