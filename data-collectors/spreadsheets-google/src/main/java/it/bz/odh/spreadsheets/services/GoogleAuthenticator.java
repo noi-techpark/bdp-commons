@@ -44,7 +44,7 @@ public abstract class GoogleAuthenticator {
         Collections.addAll(scopes, SheetsScopes.SPREADSHEETS,SheetsScopes.DRIVE);
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, scopes)
-                .setDataStoreFactory(new FileDataStoreFactory(new File(CREDENTIALS_FOLDER)))
+                .setDataStoreFactory(new FileDataStoreFactory(new File("classpath:META-INF/credentials")))
                 .setAccessType("offline")
                 .build();
 

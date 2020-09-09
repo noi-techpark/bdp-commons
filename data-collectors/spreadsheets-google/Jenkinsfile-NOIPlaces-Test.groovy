@@ -23,17 +23,17 @@ pipeline {
                 sh 'sed -i -e "s%\\(log4j.appender.R.File\\s*=\\).*\\$%\\1${LOG_FOLDER}/${ARTIFACT_NAME}-${VENDOR}.log%" ${PROJECT_FOLDER}/src/main/resources/log4j.properties'
                 sh 'cat ${KEYCLOAK_CONFIG} > ${PROJECT_FOLDER}/.env'
                 sh 'mkdir -p ${PROJECT_FOLDER}/src/main/resources/META-INF/credentials'
-                sh 'cat ${GOOGLE_CREDENTIALS} > ${PROJECT_FOLDER}/src/main/resources/META-INF/credentials/StoredCredentials'
+                sh """cat "${GOOGLE_CREDENTIALS}" > "${PROJECT_FOLDER}"/src/main/resources/META-INF/credentials/StoredCredentials"""
             }
         }
         stage('Build') {
             steps {
-                sh 'cd data-collectors/spreadsheets-google && docker-compose -f docker-compose.NOIPlaces.yml build'
+                sh "cd ${PROJECT_FOLDER} && docker-compose -f docker-compose.NOIPlaces.yml build --no-cache"
             }
         }
         stage('Deploy') {
             steps {
-                sh 'cd data-collectors/spreadsheets-google && docker-compose --context test-docker-01 -f docker-compose.NOIPlaces.yml up -d'
+                sh "cd ${PROJECT_FOLDER} && docker-compose --context test-docker-01 -f docker-compose.NOIPlaces.yml up -d"
             }
         }
     }
