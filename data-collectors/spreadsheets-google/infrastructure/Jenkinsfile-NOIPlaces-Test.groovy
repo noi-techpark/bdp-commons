@@ -15,6 +15,7 @@ pipeline {
         stage('Configure') {
             steps {
                 sh """
+                    cd ${PROJECT_FOLDER}
                     echo 'LOG_LEVEL=DEBUG' >> .env
                     echo 'LOG_FOLDER=data-collectors/${PROJECT}' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
@@ -31,10 +32,10 @@ pipeline {
                     echo 'stationtype=NOI-Place' >> .env
                     echo 'composite.unique.key=beacon id' >> .env
                     echo 'origin=NOI Techpark' >> .env
-                    echo -n 'provenance.version=' >> .env 
-                    xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' ${PROJECT_FOLDER}/pom.xml >> .env
+                    echo -n 'provenance.version=' >> .env
+                    xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' pom.xml >> .env
                     echo -n 'provenance.name=' >> .env 
-                    xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' ${PROJECT_FOLDER}/pom.xml
+                    xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml
                 """
                 sh "cat ${KEYCLOAK_CONFIG} >> ${PROJECT_FOLDER}/.env"
                 
@@ -44,18 +45,20 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh """
-                    cd ${PROJECT_FOLDER} && docker-compose --no-ansi build --pull --build-arg JENKINS_USER_ID=$(id -u jenkins) --build-arg JENKINS_GROUP_ID=$(id -g jenkins)
-                    cd ${PROJECT_FOLDER} && docker-compose --no-ansi run --rm --no-deps -u $(id -u jenkins):$(id -g jenkins) app mvn clean test
-                """
+                sh ''' 
+                    cd ${PROJECT_FOLDER}
+                    docker-compose --no-ansi build --pull
+                    docker-compose --no-ansi run --rm --no-deps app mvn clean test
+                '''
             }
         }
         stage('Build') {
             steps {
                 sh """
+                    cd ${PROJECT_FOLDER}
                     aws ecr get-login --region eu-west-1 --no-include-email | bash
-                    docker-compose --no-ansi -f ${PROJECT_FOLDER}/infrastructure/docker-compose.build.yml build --pull
-                    docker-compose --no-ansi -f ${PROJECT_FOLDER}/infrastructure/docker-compose.build.yml push
+                    docker-compose --no-ansi -f infrastructure/docker-compose.build.yml build --pull
+                    docker-compose --no-ansi -f infrastructure/docker-compose.build.yml push
                 """
             }
         }

@@ -5,10 +5,6 @@ RUN mkdir -p /code
 # Dev
 FROM base as dev
 
-COPY infrastructure/docker/entrypoint.sh /entrypoint.sh
-
-ENTRYPOINT [ "/entrypoint.sh" ]
-
 # Build
 FROM base as build
 

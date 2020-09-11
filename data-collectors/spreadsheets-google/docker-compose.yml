@@ -1,0 +1,17 @@
+version: "3.4"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile
+      target: run
+    volumes:
+      - ./:/code
+    working_dir: /code
+    tty: true
+    env_file:
+      - .env
+    ports:
+      - "7070:8080"
+
