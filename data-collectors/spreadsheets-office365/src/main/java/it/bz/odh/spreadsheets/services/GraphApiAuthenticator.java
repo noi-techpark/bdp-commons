@@ -1,91 +1,77 @@
 package it.bz.odh.spreadsheets.services;
 
 
-import com.microsoft.aad.msal4j.DeviceCode;
-import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
-import com.microsoft.aad.msal4j.PublicClientApplication;
-import com.microsoft.graph.models.extensions.Drive;
-import com.microsoft.graph.models.extensions.IGraphServiceClient;
-import com.microsoft.graph.requests.extensions.GraphServiceClient;
-import org.springframework.beans.factory.annotation.Value;
+import com.microsoft.aad.msal4j.*;
+import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import org.springframework.stereotype.Service;
 
-import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.function.Consumer;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Collections;
+import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class GraphApiAuthenticator {
 
-    @Value("${api.id}")
-    private static String applicationId = "YOUR_API_ID";
 
-    // Set authority to allow only organizational accounts
-    // Device code flow only supports organizational accounts
-    private final static String authority = "https://login.microsoftonline.com/common/";
+    //TODO use ${value} to access properties
+    private static String authority;
+    private static String clientId;
+    private static String scope;
+    private static String keyPath;
+    private static String certPath;
 
 
-    public static String getUserAccessToken() {
-        if (applicationId == null) {
-            System.out.println("You must initialize Authentication before calling getUserAccessToken");
-            return null;
-        }
+    public static IAuthenticationResult getAccessTokenByClientCredentialGrant() throws Exception {
 
-        Set<String> scopeSet = new HashSet<>(Arrays.asList("User.Read", "Files.Read"));
+        setUpSampleData();
 
-        ExecutorService pool = Executors.newFixedThreadPool(1);
-        PublicClientApplication app;
-        try {
-            // Build the MSAL application object with
-            // app ID and authority
-            app = PublicClientApplication.builder(applicationId)
-                    .authority(authority)
-                    .executorService(pool)
-                    .build();
-        } catch (MalformedURLException e) {
-            return null;
-        }
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Files.readAllBytes(Paths.get(keyPath)));
+        PrivateKey key = KeyFactory.getInstance("RSA").generatePrivate(spec);
 
-        // Create consumer to receive the DeviceCode object
-        // This method gets executed during the flow and provides
-        // the URL the user logs into and the device code to enter
-        Consumer<DeviceCode> deviceCodeConsumer = (DeviceCode deviceCode) -> {
-            // Print the login information to the console
-            System.out.println(deviceCode.message());
-        };
+        InputStream certStream = new ByteArrayInputStream(Files.readAllBytes(Paths.get(certPath)));
+        X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(certStream);
 
-        // Request a token, passing the requested permission scopes
-        IAuthenticationResult result = app.acquireToken(
-                DeviceCodeFlowParameters
-                        .builder(scopeSet, deviceCodeConsumer)
-                        .build()
-        ).exceptionally(ex -> {
-            System.out.println("Unable to authenticate - " + ex.getMessage());
-            return null;
-        }).join();
+        ConfidentialClientApplication app = ConfidentialClientApplication.builder(
+                clientId,
+                ClientCredentialFactory.createFromCertificate(key, cert))
+                .authority(authority)
+                .build();
 
-        pool.shutdown();
+        // With client credentials flows the scope is ALWAYS of the shape "resource/.default", as the
+        // application permissions need to be set statically (in the portal), and then granted by a tenant administrator
 
-        if (result != null) {
-            return result.accessToken();
-        }
+        ClientCredentialParameters clientCredentialParam = ClientCredentialParameters.builder(
+                Collections.singleton(scope))
+                .build();
 
-        return null;
+        CompletableFuture<IAuthenticationResult> future = app.acquireToken(clientCredentialParam);
+        return future.get();
     }
 
-//    public static void fetchData(){
-//        IGraphServiceClient graphClient = GraphServiceClient.builder().authenticationProvider( authProvider ).buildClient();
-//
-//        WorkbookRange workbookRange = graphClient.me().drive().items("{id}").workbook().worksheets("{id|name}")
-//                .usedRange()
-//                .buildRequest()
-//                .get();
-//    }
+    /**
+     * Helper function unique to this sample setting. In a real application these wouldn't be so hardcoded, for example
+     * different users may need different authority endpoints and the key/cert paths could come from a secure keyvault
+     */
+    private static void setUpSampleData() throws IOException {
+        // Load properties file and set properties used throughout the sample
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(Thread.currentThread().getContextClassLoader().getResource("").getPath() + "application.properties"));
+        authority = properties.getProperty("AUTHORITY");
+        clientId = properties.getProperty("CLIENT_ID");
+        keyPath = properties.getProperty("KEY_PATH");
+        certPath = properties.getProperty("CERT_PATH");
+        scope = properties.getProperty("SCOPE");
+    }
 
 
 }
