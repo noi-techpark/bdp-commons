@@ -19,7 +19,7 @@ pipeline {
             steps {
                 sh """
                     cd ${PROJECT_FOLDER}
-                    echo 'SERVER_PORT='
+                    echo 'SERVER_PORT=${SERVER_PORT}'
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
                     echo 'LOG_LEVEL=DEBUG' >> .env
