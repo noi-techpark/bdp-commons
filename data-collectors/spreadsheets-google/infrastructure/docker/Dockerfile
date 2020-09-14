@@ -15,5 +15,5 @@ COPY pom.xml /code/pom.xml
 RUN mvn package -DfinalName=ROOT
 
 # Run
-FROM tomcat:8.5.57-jdk8-openjdk-buster as run
+FROM tomcat:8.5-jdk8-openjdk-slim-buster as run
 COPY --from=build /code/target/ROOT.war /usr/local/tomcat/webapps/ROOT.war

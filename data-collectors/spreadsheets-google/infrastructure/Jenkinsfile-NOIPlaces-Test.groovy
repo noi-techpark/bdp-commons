@@ -2,6 +2,7 @@ pipeline {
     agent any
     
     environment {
+        SERVER_PORT="1006"
         PROJECT = "spreadsheets-google"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
@@ -18,6 +19,7 @@ pipeline {
             steps {
                 sh """
                     cd ${PROJECT_FOLDER}
+                    echo 'SERVER_PORT='
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
                     echo 'LOG_LEVEL=DEBUG' >> .env
