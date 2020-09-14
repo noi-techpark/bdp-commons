@@ -3,11 +3,9 @@ package it.bz.odh.spreadsheets;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -42,10 +40,7 @@ public class TriggerController {
 	 *             https://developers.google.com/drive/api/v3/push
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto,@RequestHeader HttpHeaders httpHeaders,@RequestHeader("x-goog-changed") String googleState){
-		for (Entry<String, List<String>> entry: httpHeaders.entrySet()) {
-			logger.debug(entry.getKey()+":"+ String.join(";",entry.getValue()));
-		}
+	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto,@RequestHeader("x-goog-changed") String googleState){
 		logger.debug("Trigger spreadsheet synchronization at " + lastRequest);
 		List<String> changeDetails = Arrays.asList(googleState.split(","));
 		if (changeDetails != null && changeDetails.contains(GOOGLE_CONTENT_ID)){

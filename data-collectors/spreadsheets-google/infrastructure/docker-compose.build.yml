@@ -6,4 +6,4 @@ services:
     build:
       context: ../
       dockerfile: infrastructure/docker/Dockerfile
-      target: build
+      target: archive

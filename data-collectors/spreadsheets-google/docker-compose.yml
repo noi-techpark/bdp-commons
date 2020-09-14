@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: infrastructure/docker/Dockerfile
-      target: run
+      target: archive
     volumes:
       - ./:/code
     working_dir: /code

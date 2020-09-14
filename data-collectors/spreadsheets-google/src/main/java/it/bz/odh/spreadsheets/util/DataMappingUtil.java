@@ -35,25 +35,25 @@ public class DataMappingUtil {
     @Autowired
     private GoogleSpreadSheetDataFetcher googleClient;
 
-    @Value("${headers.addressId}")
+    @Value("${headers_addressId}")
     private String addressId;
     
-    @Value("${headers.nameId}")
+    @Value("${headers_nameId}")
     private String nameId;
 
-    @Value("${headers.longitudeId}")
+    @Value("${headers_longitudeId}")
     private String longitudeId;
 
-    @Value("${headers.latitudeId}")
+    @Value("${headers_latitudeId}")
     private String latitudeId;
     
     @Value("${spreadsheetId}")
     private String origin;
     
-    @Value("${headers.metaDataId}")
+    @Value("${headers_metaDataId}")
     private String metadataId;
 
-    @Value("${composite.unique.key}")
+    @Value("${composite_unique_key}")
     private String[] uniqueIdFields;
     
     @Value(value="${stationtype}")

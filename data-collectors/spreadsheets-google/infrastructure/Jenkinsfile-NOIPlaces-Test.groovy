@@ -19,7 +19,7 @@ pipeline {
             steps {
                 sh """
                     cd ${PROJECT_FOLDER}
-                    echo 'SERVER_PORT=${SERVER_PORT}' >> .env
+                    echo 'SERVER_PORT=${SERVER_PORT}' > .env
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
                     echo 'LOG_LEVEL=DEBUG' >> .env
@@ -28,25 +28,27 @@ pipeline {
                     echo 'VENDOR=noiPlaces' >> .env
                     echo 'spreadsheetId=1SSXusoMlNpQd-_CtKjft2Zh2yaWhoqNes4GzZl_X0GI' >> .env
                     echo 'suportedLanguages=en,de,it,lad' >> .env
-                    echo 'headers.nameId=en:name' >> .env
-                    echo 'headers.addressId=beacon id' >> .env
-                    echo 'headers.longitudeId=longitude' >> .env
-                    echo 'headers.latitudeId=latitude' >> .env
-                    echo 'headers.metaDataId=metadata-id' >> .env
-                    echo 'spreadsheet.range=A1:Z' >> .env
-                    echo 'spreadsheet.notificationUrl=https://spreadsheets.opendatahub.bz.it/dc-spreadsheets-google-noiPlaces/trigger' >> .env
+                    echo 'headers_nameId=en:name' >> .env
+                    echo 'headers_addressId=beacon id' >> .env
+                    echo 'headers_longitudeId=longitude' >> .env
+                    echo 'headers_latitudeId=latitude' >> .env
+                    echo 'headers_metaDataId=metadata-id' >> .env
+                    echo 'spreadsheet_range=A1:Z' >> .env
+                    echo 'spreadsheet_notificationUrl=https://spreadsheets.testingmachine.eu/trigger' >> .env
                     echo 'stationtype=NOI-Place' >> .env
-                    echo 'composite.unique.key=beacon id' >> .env
+                    echo 'composite_unique_key=beacon id' >> .env
                     echo 'origin=NOI Techpark' >> .env
-                    echo -n 'provenance.version=' >> .env
+                    echo -n 'provenance_version=' >> .env
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' pom.xml >> .env
-                    echo -n 'provenance.name=' >> .env 
+                    echo '' >> .env
+                    echo -n 'provenance_name=' >> .env 
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml
+                    echo '' >> .env
                 """
                 sh "cat ${KEYCLOAK_CONFIG} >> ${PROJECT_FOLDER}/.env"
                 
                 sh "cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json"
-                sh """cat "${GOOGLE_CREDENTIALS}" > "${PROJECT_FOLDER}"/src/main/resources/META-INF/credentials/StoredCredentials"""
+                sh """cat "${GOOGLE_CREDENTIALS}" > "${PROJECT_FOLDER}"/src/main/resources/META-INF/credentials/StoredCredential"""
             }
         }
         stage('Test & Build') {
@@ -54,8 +56,8 @@ pipeline {
                 sh """
                     cd ${PROJECT_FOLDER}
                     aws ecr get-login --region eu-west-1 --no-include-email | bash
-                    docker-compose --no-ansi -f infrastructure/docker-compose.run.yml build --pull
-                    docker-compose --no-ansi -f infrastructure/docker-compose.run.yml push
+                    docker-compose --no-ansi -f infrastructure/docker-compose.build.yml build --pull
+                    docker-compose --no-ansi -f infrastructure/docker-compose.build.yml push
                 """
             }
         }

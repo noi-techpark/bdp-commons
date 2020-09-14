@@ -37,7 +37,7 @@ public class GoogleSpreadSheetDataFetcher extends GoogleAuthenticator{
 
     Sheets service;
 
-    @Value("${spreadsheet.range}")
+    @Value("${spreadsheet_range}")
 	private String spreadsheetRange;
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");

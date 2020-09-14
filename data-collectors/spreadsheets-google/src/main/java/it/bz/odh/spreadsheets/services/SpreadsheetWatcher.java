@@ -24,7 +24,7 @@ public class SpreadsheetWatcher extends GoogleAuthenticator {
 	@Value("${spreadsheetId}")
 	private String spreadsheetId;
 
-	@Value("${spreadsheet.notificationUrl}")
+	@Value("${spreadsheet_notificationUrl}")
 	private String notificationUrl;
 
 	private Logger logger = Logger.getLogger(SpreadsheetWatcher.class);
