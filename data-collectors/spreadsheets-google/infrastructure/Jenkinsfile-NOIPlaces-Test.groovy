@@ -56,8 +56,8 @@ pipeline {
                 sh """
                     cd ${PROJECT_FOLDER}
                     aws ecr get-login --region eu-west-1 --no-include-email | bash
-                    docker-compose --no-ansi -f infrastructure/docker-compose.build.yml build --pull
-                    docker-compose --no-ansi -f infrastructure/docker-compose.build.yml push
+                    docker-compose --no-ansi -f infrastructure/docker-compose.run.yml build --pull
+                    docker-compose --no-ansi -f infrastructure/docker-compose.run.yml push
                 """
             }
         }
