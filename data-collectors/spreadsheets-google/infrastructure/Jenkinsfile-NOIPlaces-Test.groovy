@@ -48,7 +48,7 @@ pipeline {
                 sh ''' 
                     cd ${PROJECT_FOLDER}
                     docker-compose --no-ansi build --pull
-                    docker-compose --no-ansi run --rm --no-deps app mvn clean test
+                    docker-compose -f infrastructure/docker-compose.build.yml --no-ansi run --rm --no-deps app mvn clean test
                 '''
             }
         }
