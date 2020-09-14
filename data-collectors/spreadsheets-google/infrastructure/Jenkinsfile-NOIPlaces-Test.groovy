@@ -9,6 +9,8 @@ pipeline {
         GOOGLE_SECRET=credentials('spreadsheets.client_secret.json')
         GOOGLE_CREDENTIALS=credentials('google-spreadsheet-api-credentials')
         KEYCLOAK_CONFIG=credentials('test-authserver-datacollector-client-config')
+        DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/spreadsheets-google-noiplaces'
+        DOCKER_TAG = "test-$BUILD_NUMBER"
     }
 
     stages {
@@ -16,6 +18,8 @@ pipeline {
             steps {
                 sh """
                     cd ${PROJECT_FOLDER}
+                    echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
+                    echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
                     echo 'LOG_LEVEL=DEBUG' >> .env
                     echo 'LOG_FOLDER=data-collectors/${PROJECT}' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
@@ -43,16 +47,7 @@ pipeline {
                 sh """cat "${GOOGLE_CREDENTIALS}" > "${PROJECT_FOLDER}"/src/main/resources/META-INF/credentials/StoredCredentials"""
             }
         }
-        stage('Test') {
-            steps {
-                sh ''' 
-                    cd ${PROJECT_FOLDER}
-                    docker-compose --no-ansi build --pull
-                    docker-compose -f infrastructure/docker-compose.build.yml --no-ansi run --rm --no-deps app mvn clean test
-                '''
-            }
-        }
-        stage('Build') {
+        stage('Test & Build') {
             steps {
                 sh """
                     cd ${PROJECT_FOLDER}
