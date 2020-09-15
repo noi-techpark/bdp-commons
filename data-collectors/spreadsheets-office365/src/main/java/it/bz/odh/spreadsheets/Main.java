@@ -1,27 +1,15 @@
 package it.bz.odh.spreadsheets;
 
 
-import it.bz.odh.spreadsheets.services.GraphApiAuthenticator;
-import it.bz.odh.spreadsheets.utils.GraphDataFetcher;
-import it.bz.odh.spreadsheets.utils.GraphDataMapper;
-import it.bz.odh.spreadsheets.utils.XLSXReader;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-//@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-//@EnableScheduling
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@EnableScheduling
 public class Main {
     public static void main(String[] args) throws Exception {
-
-
-        String token = GraphApiAuthenticator.getAccessTokenByClientCredentialGrant().accessToken();
-
-        String user = GraphDataFetcher.getUser(token);
-        String userId = GraphDataMapper.getUserId(user);
-
-        String driveIdResponse = GraphDataFetcher.getDriveId(token, userId);
-        String downloadLink = GraphDataMapper.getDownloadLink(driveIdResponse);
-
-        GraphDataFetcher.fetchSheet(downloadLink);
-
-        XLSXReader.readSheet();
+        SpringApplication.run(Main.class, args);
     }
 }

@@ -3,8 +3,11 @@ package it.bz.odh.spreadsheets.services;
 
 import com.microsoft.aad.msal4j.*;
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,22 +22,36 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 
-@Service
+@Component
 public class GraphApiAuthenticator {
 
+    @Value("${AUTHORITY}")
+    private String authority;
 
-    //TODO use ${value} to access properties
-    private static String authority;
-    private static String clientId;
-    private static String scope;
-    private static String keyPath;
-    private static String certPath;
+    @Value("${CLIENT_ID}")
+    private String clientId;
+
+    private String scope = "https://graph.microsoft.com/.default";
+
+    @Value("${KEY_PATH}")
+    private String keyPath;
+
+    @Value("${CERT_PATH}")
+    private String certPath;
+
+    private String token;
+
+    @PostConstruct
+    private void postConstruct() throws Exception {
+        token = getAccessTokenByClientCredentialGrant().accessToken();
+    }
+
+    public String token(){
+        return token;
+    }
 
 
-    public static IAuthenticationResult getAccessTokenByClientCredentialGrant() throws Exception {
-
-        setUpSampleData();
-
+    private IAuthenticationResult getAccessTokenByClientCredentialGrant() throws Exception {
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Files.readAllBytes(Paths.get(keyPath)));
         PrivateKey key = KeyFactory.getInstance("RSA").generatePrivate(spec);
 
@@ -49,28 +66,12 @@ public class GraphApiAuthenticator {
 
         // With client credentials flows the scope is ALWAYS of the shape "resource/.default", as the
         // application permissions need to be set statically (in the portal), and then granted by a tenant administrator
-
         ClientCredentialParameters clientCredentialParam = ClientCredentialParameters.builder(
                 Collections.singleton(scope))
                 .build();
 
         CompletableFuture<IAuthenticationResult> future = app.acquireToken(clientCredentialParam);
         return future.get();
-    }
-
-    /**
-     * Helper function unique to this sample setting. In a real application these wouldn't be so hardcoded, for example
-     * different users may need different authority endpoints and the key/cert paths could come from a secure keyvault
-     */
-    private static void setUpSampleData() throws IOException {
-        // Load properties file and set properties used throughout the sample
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(Thread.currentThread().getContextClassLoader().getResource("").getPath() + "application.properties"));
-        authority = properties.getProperty("AUTHORITY");
-        clientId = properties.getProperty("CLIENT_ID");
-        keyPath = properties.getProperty("KEY_PATH");
-        certPath = properties.getProperty("CERT_PATH");
-        scope = properties.getProperty("SCOPE");
     }
 
 

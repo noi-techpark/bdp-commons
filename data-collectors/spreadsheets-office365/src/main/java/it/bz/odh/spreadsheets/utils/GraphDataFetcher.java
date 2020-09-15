@@ -1,13 +1,11 @@
-
 package it.bz.odh.spreadsheets.utils;
 
 
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
+import it.bz.odh.spreadsheets.services.GraphApiAuthenticator;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -19,8 +17,14 @@ import java.net.URL;
 @Component
 public class GraphDataFetcher {
 
+    @Autowired
+    private GraphApiAuthenticator graphApiAuthenticator;
 
-    public static String getUser(String accessToken) throws IOException {
+    @Autowired
+    private GraphDataMapper graphDataMapper;
+
+
+    private String getUser(String accessToken) throws IOException {
         URL url = new URL("https://graph.microsoft.com/v1.0/users");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -48,7 +52,7 @@ public class GraphDataFetcher {
         }
     }
 
-    public static String getDriveId(String accessToken, String userId) throws IOException {
+    private String getDriveId(String accessToken, String userId) throws IOException {
         URL url = new URL("https://graph.microsoft.com/v1.0/users/" + userId + "/drive/root/children");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -76,12 +80,21 @@ public class GraphDataFetcher {
         }
     }
 
-    public static void fetchSheet(String downloadLink) throws IOException {
+    public void fetchSheet() throws IOException {
+        String downloadLink = getDownloadLink();
+
         FileUtils.copyURLToFile(
                 new URL(downloadLink),
                 new File("Book.xlsx"),
                 10000,
                 10000);
+    }
+
+    private String getDownloadLink() throws IOException {
+        String user = getUser(graphApiAuthenticator.token());
+        String userId = graphDataMapper.getUserId(user);
+        String driveIdResponse = getDriveId(graphApiAuthenticator.token(), userId);
+        return graphDataMapper.getDownloadLink(driveIdResponse);
     }
 
 
