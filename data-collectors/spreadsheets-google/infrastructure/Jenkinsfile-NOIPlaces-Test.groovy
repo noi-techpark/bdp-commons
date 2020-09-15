@@ -42,7 +42,7 @@ pipeline {
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' pom.xml >> .env
                     echo '' >> .env
                     echo -n 'provenance_name=' >> .env 
-                    xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml
+                    xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
                 """
                 sh "cat ${KEYCLOAK_CONFIG} >> ${PROJECT_FOLDER}/.env"

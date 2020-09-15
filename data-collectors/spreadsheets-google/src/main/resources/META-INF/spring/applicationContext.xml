@@ -11,6 +11,6 @@
 	<task:scheduled-tasks scheduler="Scheduler">
 		<task:scheduled ref="jobScheduler" method="watchBluetoothBoxesSpreadsheet" fixed-rate="3595000" />
  	</task:scheduled-tasks>
-    <context:component-scan base-package="it.bz.odh.spreadsheets"/>
+    <context:component-scan base-package="it.bz.odh.spreadsheets,it.bz.idm.bdp"/>
     <context:property-placeholder location="classpath:META-INF/spring/*.properties" />
 </beans>
