@@ -32,11 +32,38 @@ To build the project, the following prerequisites must be met:
 
 If you want to run the application using [Docker](https://www.docker.com/), the environment is already set up with all dependencies for you. You only have to install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) and follow the instruction in the [dedicated section](#execute-with-docker).
 
+### Source code
+
+Get a copy of the repository:
+
+```bash
+git clone https://github.com/noi-techpark/bdp-commons.git
+```
+
+Change directory:
+
+```bash
+cd bdp-commons/data-collectors/spreadsheets-office365
+```
+
+
 ### Set Up
 
 #### Microsoft Account
 
 You need a microsoft account to make this app works, so if you don't have one please register.
+
+
+#### Excel Spreadsheet
+
+Create a Excel Spreadsheet in Office 365 and take note of name and the sheets you want to print.
+The put the values in **application.properties**
+
+```
+SHEET_NAME=YourSpreadsheet.xlsx
+SINGLE_SHEET_NAMES=Sheet1,Sheet2,Sheet3
+```
+NOTE: If you leave  SINGLE_SHEET_NAMES empty, all sheets get printed to console
 
 #### Azure Active Directory
 
@@ -44,8 +71,9 @@ A new Application needs to be created in Azure Active Directories:
 1. Open [Azure Admin Center](https://aad.portal.azure.com/) and Select Azure Active Directory on the left Sidebar
 2. Then select App Registrations under Manager
 3. Select New registration:
+   - Set Name as you like
    - Set Supported account types to Accounts in any organizational directory and personal Microsoft accounts.
-   - Under Redirect URI, change the dropdown to Public client (mobile & desktop), and set the value to 
+   - Under Redirect URI, change the dropdown to Public client/native (mobile & desktop), and set the value to 
     ```https://login.microsoftonline.com/common/oauth2/nativeclient```
     
 4. Set permissions in API permissions by clicking the "+" button, selecting Graph API
@@ -54,9 +82,8 @@ A new Application needs to be created in Azure Active Directories:
     Users.Read.All
     Files.Read.All
     ```
-   Then grant admin constent to your user
 5. Create a certificate to be able to call the Graph API
-Generate the private key in PEM format (used to make the certificate) and create a PKCS8 version (use by the sample application)
+    Generate the private key in PEM format (used to make the certificate) and create a PKCS8 version (use by the sample application)
     ```
     openssl genrsa -out private_key.pem 2048
     openssl pkcs8 -topk8 -inform PEM -outform DER -in private_key.pem -nocrypt > pkcs8_key
@@ -69,25 +96,19 @@ Generate the private key in PEM format (used to make the certificate) and create
     openssl x509 -req -days 365 -in cert.csr -signkey private_key.pem -out cert.crt
     Finally, go back to the Azure portalIn the Application menu blade, click on the Certificates & secrets, in the Certificates section, upload the certificate you created.
 
-6. Take note of Client ID, Tenant ID and put it into application.properties
-
-#### Excel Spreadsheet
-
-Create a excel Spreadsheet as you desire
-
-### Source code
-
-Get a copy of the repository:
-
-```bash
-ToDo: git clone https://github.com/noi-techpark/project-name.git
-```
-
-Change directory:
-
-```bash
-ToDo: cd project-name/
-```
+6. Take note of Client ID, Tenant ID you can find in Overview in Active Directory and put it into **application.properties**.
+    Put also the path to the generated certificate and key and add your Account E-Mail you used to *create the Spreadsheet*
+    ```
+    AUTHORITY=https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/token
+    CLIENT_ID=YOUR_CLIENT_ID
+    KEY_PATH=YOUR_KEY_PATH
+    CERT_PATH=YOUR_CERT_PATH
+    EMAIL=YOUR_MICOROSFT_EMAIL
+    ```
+7. Config cron to change Scheduler timing in **application.properties** as you desire. When executed, the sheet gets fetched and printed to console
+    ```dtd
+    CRON=0 0/1 * * * *
+    ```
 
 ### Execute without Docker
 

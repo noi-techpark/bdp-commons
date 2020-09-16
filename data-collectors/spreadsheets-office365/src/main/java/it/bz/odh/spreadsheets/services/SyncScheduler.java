@@ -19,11 +19,15 @@ public class SyncScheduler {
     private GraphDataFetcher graphDataFetcher;
 
     @Autowired
+    private GraphApiAuthenticator graphApiAuthenticator;
+
+    @Autowired
     XLSXReader xlsxReader;
 
     @Scheduled(cron = "${CRON}")
-    public void fetchSheet() throws IOException {
+    public void fetchSheet() throws Exception {
         logger.debug("Fetch sheet started");
+        graphApiAuthenticator.getAccessTokenByClientCredentialGrant();
         graphDataFetcher.fetchSheet();
         xlsxReader.readSheet();
         logger.debug("Fetch sheet done");

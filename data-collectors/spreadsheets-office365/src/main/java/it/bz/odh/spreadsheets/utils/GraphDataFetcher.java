@@ -80,7 +80,7 @@ public class GraphDataFetcher {
         }
     }
 
-    public void fetchSheet() throws IOException {
+    public void fetchSheet() throws Exception {
         String downloadLink = getDownloadLink();
 
         FileUtils.copyURLToFile(
@@ -90,10 +90,11 @@ public class GraphDataFetcher {
                 10000);
     }
 
-    private String getDownloadLink() throws IOException {
-        String user = getUser(graphApiAuthenticator.token());
+    private String getDownloadLink() throws Exception {
+        String token = graphApiAuthenticator.getAccessTokenByClientCredentialGrant();
+        String user = getUser(token);
         String userId = graphDataMapper.getUserId(user);
-        String driveIdResponse = getDriveId(graphApiAuthenticator.token(), userId);
+        String driveIdResponse = getDriveId(token, userId);
         return graphDataMapper.getDownloadLink(driveIdResponse);
     }
 
