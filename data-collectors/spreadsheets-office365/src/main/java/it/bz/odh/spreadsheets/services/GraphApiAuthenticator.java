@@ -1,46 +1,40 @@
 package it.bz.odh.spreadsheets.services;
 
 
-import com.microsoft.aad.msal4j.*;
-import com.nimbusds.oauth2.sdk.http.HTTPResponse;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Collections;
-import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 @Component
 public class GraphApiAuthenticator {
 
-    @Value("${AUTHORITY}")
+    @Value("${auth.authority}")
     private String authority;
 
-    @Value("${CLIENT_ID}")
+    @Value("${auth.clientId}")
     private String clientId;
 
     private String scope = "https://graph.microsoft.com/.default";
 
-    @Value("${KEY_PATH}")
+    @Value("${auth.keyPath}")
     private String keyPath;
 
-    @Value("${CERT_PATH}")
+    @Value("${auth.certPath}")
     private String certPath;
 
 

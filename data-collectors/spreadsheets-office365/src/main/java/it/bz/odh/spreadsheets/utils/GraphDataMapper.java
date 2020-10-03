@@ -13,11 +13,11 @@ import java.io.IOException;
 @Component
 public class GraphDataMapper {
 
-    @Value("${EMAIL}")
+    @Value("${graph.email}")
     private String mail;
 
-    @Value("${SHEET_NAME}")
-    private String sheet_name;
+    @Value("${graph.sheetName}")
+    private String sheetName;
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -40,7 +40,7 @@ public class GraphDataMapper {
         JsonNode downloadLinkNode = mapper.readTree(driveIdResponse);
         if(downloadLinkNode.get("value").isArray()) {
             for (JsonNode jsonNode : downloadLinkNode.get("value")) {
-                if(sheet_name.equals(jsonNode.get("name").asText().replace("\"",""))){
+                if(sheetName.equals(jsonNode.get("name").asText().replace("\"",""))){
                     downloadLink = jsonNode.get("@microsoft.graph.downloadUrl").asText().replace("\"","");
                 }
             }
