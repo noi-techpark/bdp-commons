@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -32,9 +33,13 @@ public class SyncScheduler {
     @Autowired
     private GraphDataFetcher graphDataFetcher;
 
-    @Lazy
+
+//    @Lazy
     @Autowired
     private ODHClient odhClient;
+
+    @Autowired
+    private GraphChangeNotificationClient graphChangeNotificationClient;
 
 
     @Autowired
@@ -46,19 +51,38 @@ public class SyncScheduler {
     @Autowired
     private DataMappingUtil mappingUtil;
 
+//    @PostConstruct
+//    public void postConstruct() throws Exception {
+//        String token = graphDataFetcher.getToken();
+//        graphChangeNotificationClient.makeSubscription(token);
+//    }
+
+//    @Scheduled(cron = "${cron.fetch}")
     @Scheduled(cron = "${cron}")
     public void fetchSheet() throws Exception {
         logger.debug("Fetch sheet started");
-        graphDataFetcher.fetchSheet();
-        syncData();
+        String token = graphDataFetcher.getToken();
+        logger.debug("TOKEN: " + token);
+//        String itemId = graphDataFetcher.getItemId(token);
+//        graphDataFetcher.fetchSheet(token);
+//        graphDataFetcher.get
+        graphChangeNotificationClient.makeSubscription(token);
+//        syncData();
         logger.debug("Fetch sheet done");
     }
+
+//    @Scheduled(cron = "${cron.subscription}")
+    public void renewSubscription() throws Exception {
+        logger.debug("Fetch sheet started");
+        logger.debug("Fetch sheet done");
+    }
+
 
     /**
      * scheduled job which syncs odh with the spreadsheet
      */
-    private void syncData() throws Exception {
-        graphDataFetcher.fetchSheet();
+    private void syncData(String token) throws Exception {
+        graphDataFetcher.fetchSheet(token);
         XSSFWorkbook workbook = xlsxReader.getSheet();
         Iterator<Sheet> sheetIterator = workbook.sheetIterator();
         StationList dtos = new StationList();
@@ -66,19 +90,24 @@ public class SyncScheduler {
         int index = 0;
         while (sheetIterator.hasNext()){
             Sheet sheet = sheetIterator.next();
-            try {
-                List<List<Object>> values = new ArrayList<>();
-                Iterator<Row> rowIterator = sheet.rowIterator();
-                while (rowIterator.hasNext()){
-                    Row row = rowIterator.next();
-                    Iterator<Cell> cellIterator = row.cellIterator();
-                    List<Object> rowList = new ArrayList<>();
-                    while (cellIterator.hasNext()){
-                        Cell cell = cellIterator.next();
-                        rowList.add(cell);
-                    }
-                    values.add(rowList);
+
+            //convert values of sheet to List<List<Object>> to be able to map data with data-mapping of dc-googlespreadsheets
+            List<List<Object>> values = new ArrayList<>();
+            Iterator<Row> rowIterator = sheet.rowIterator();
+            while (rowIterator.hasNext()){
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+                List<Object> rowList = new ArrayList<>();
+                while (cellIterator.hasNext()){
+                    Cell cell = cellIterator.next();
+                    rowList.add(cell);
                 }
+                values.add(rowList);
+            }
+
+
+            try {
+
                 if (values.isEmpty() || values.get(0) == null)
                     throw new IllegalStateException("Spreadsheet "+sheet.getSheetName()+" has no header row. Needs to start on top left.");
                 MappingResult result = mappingUtil.mapSheet(values,sheet.getSheetName(),index);

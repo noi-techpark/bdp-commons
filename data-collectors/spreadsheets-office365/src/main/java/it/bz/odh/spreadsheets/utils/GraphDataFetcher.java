@@ -6,6 +6,8 @@ import it.bz.odh.spreadsheets.services.GraphApiAuthenticator;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +24,12 @@ public class GraphDataFetcher {
 
     @Autowired
     private GraphDataMapper graphDataMapper;
+    
+    @PostConstruct
+    public void posContruct() throws Exception {
+        String token = getToken();
+        System.out.println("TOKEN: " + token);
+    }
 
 
     private String getUser(String accessToken) throws IOException {
@@ -52,7 +60,7 @@ public class GraphDataFetcher {
         }
     }
 
-    private String getDriveId(String accessToken, String userId) throws IOException {
+    private String makeDriveRequest(String accessToken, String userId) throws IOException {
         URL url = new URL("https://graph.microsoft.com/v1.0/users/" + userId + "/drive/root/children");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -80,8 +88,8 @@ public class GraphDataFetcher {
         }
     }
 
-    public void fetchSheet() throws Exception {
-        String downloadLink = getDownloadLink();
+    public void fetchSheet(String token) throws Exception {
+        String downloadLink = getDownloadLink(token);
 
         FileUtils.copyURLToFile(
                 new URL(downloadLink),
@@ -90,12 +98,25 @@ public class GraphDataFetcher {
                 10000);
     }
 
-    private String getDownloadLink() throws Exception {
-        String token = graphApiAuthenticator.getAccessTokenByClientCredentialGrant();
+    public String getToken() throws Exception {
+        return  graphApiAuthenticator.getAccessTokenByClientCredentialGrant();
+    }
+
+    public String getItemId(String token) throws Exception {
+        String userId = getUserId(getUser(token));
+        String driveRequest = makeDriveRequest(token, userId);
+        return graphDataMapper.getItemId(driveRequest);
+    }
+
+    public String getUserId(String token) throws Exception {
+        return graphDataMapper.getUserId(token);
+    }
+
+    private String getDownloadLink(String token) throws Exception {
         String user = getUser(token);
         String userId = graphDataMapper.getUserId(user);
-        String driveIdResponse = getDriveId(token, userId);
-        return graphDataMapper.getDownloadLink(driveIdResponse);
+        String driveRequest = makeDriveRequest(token, userId);
+        return graphDataMapper.getDownloadLink(driveRequest);
     }
 
 
