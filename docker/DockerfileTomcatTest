@@ -13,5 +13,4 @@ COPY data-collectors/${COLLECTOR} /code/${COLLECTOR}/
 RUN cd /code/${COLLECTOR}/ && mvn clean package -DfinalName=ROOT
 
 FROM tomcat:8.5.57-jdk8-openjdk-buster
-ARG COLLECTOR
-COPY --from=build /code/${COLLECTOR}/target/ROOT.war /usr/local/tomcat/webapps/ROOT.war
+COPY --from=build /code/${COLLECTOR}/target/*.war /usr/local/tomcat/webapps/ROOT.war

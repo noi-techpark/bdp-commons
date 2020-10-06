@@ -76,6 +76,7 @@ public class DataMappingUtil {
     public void initMetadata() throws IOException {
         excludeFromMetaData.add(longitudeId);
         excludeFromMetaData.add(latitudeId);
+        excludeFromMetaData.add(metadataId);
     }
 
     public MappingResult mapSheet(List<List<Object>> values, Sheet sheet) {
@@ -102,7 +103,6 @@ public class DataMappingUtil {
 	    for (List<Object> row: values) {
 	        if (!row.isEmpty()) {
 	            String key = row.get(metaDataPosition)!= null ? row.get(metaDataPosition).toString() : null;
-	            row.remove(metaDataPosition.shortValue());
 	            Map<String, Object> metaDataMap = buildMetaDataMap(headerMapping,row);
 	            langUtil.mergeTranslations(metaDataMap,headerMapping);
 	            normalizeMetaData(metaDataMap);
