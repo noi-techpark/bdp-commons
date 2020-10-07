@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -26,11 +27,12 @@ import it.bz.idm.bdp.dto.StationList;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
 import it.bz.odh.spreadsheets.services.GoogleSpreadSheetDataFetcher;
-import it.bz.odh.spreadsheets.services.ODHClient;
 
 @Component
 public class DataMappingUtil {
-    
+
+    private Logger logger = Logger.getLogger(DataMappingUtil.class);
+
     @Lazy
     @Autowired
     private GoogleSpreadSheetDataFetcher googleClient;
@@ -83,11 +85,15 @@ public class DataMappingUtil {
         MappingResult result = new MappingResult();
         Map<String, Short> headerMapping = listToMap(values.get(0));
         if (isValidStationSheet(headerMapping)) {
+            logger.debug("Start mapping stations of sheet "+sheet.getProperties().getTitle());
             StationList mappedStations = mapStations(values, sheet.getProperties().getIndex(), headerMapping,sheet.getProperties().getTitle());
+            logger.debug("Finished mapping of sheet "+sheet.getProperties().getTitle());
             result.setStationDtos(mappedStations);
         }
         else if (isValidDataTypeSheet(headerMapping)) {
+            logger.debug("Start mapping datatypes of sheet "+sheet.getProperties().getTitle());
             DataTypeDto type = mapDataType(values, sheet.getProperties().getSheetId(), headerMapping);
+            logger.debug("Finish mapping datatypes of sheet "+sheet.getProperties().getTitle());
             DataTypeWrapperDto w = new DataTypeWrapperDto(type,sheet.getProperties().getTitle());
             result.setDataType(w);
         }

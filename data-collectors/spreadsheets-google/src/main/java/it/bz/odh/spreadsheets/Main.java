@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -28,6 +29,8 @@ import it.bz.odh.spreadsheets.util.DataMappingUtil;
 @Service
 public class Main {
     
+    private Logger logger = Logger.getLogger(Main.class);
+
     @Lazy
     @Autowired
     private GoogleSpreadSheetDataFetcher googleClient;
@@ -46,9 +49,11 @@ public class Main {
      * scheduled job which syncs odh with the spreadsheet
      */
     public void syncData() {
+        logger.info("Start data syncronization");
         Spreadsheet fetchedSpreadSheet = (Spreadsheet) googleClient.fetchSheet();
         StationList dtos = new StationList();
         List <DataTypeWrapperDto> types = new ArrayList<DataTypeWrapperDto>();
+        logger.debug("Start reading spreadsheet");
         for (Sheet sheet : fetchedSpreadSheet.getSheets()){
             try {
                 List<List<Object>> values = googleClient.getWholeSheet(sheet.getProperties().getTitle()).getValues();
@@ -62,21 +67,29 @@ public class Main {
                 }
             }catch(Exception ex) {
                 ex.printStackTrace();
+                logger.debug("Failed to read sheet(tab). Start reading next");
                 continue;
             }
         }
         if (!dtos.isEmpty())
+            logger.debug("Syncronize stations if some where fetched and successfully parsed");
             odhClient.syncStations(dtos);
+            logger.debug("Syncronize stations completed");
         if (!types.isEmpty()) {
+            logger.debug("Syncronize data types/type-metadata if some where fetched and successfully parsed");
             List<DataTypeDto> dTypes = types.stream().map(mapper).collect(Collectors.toList());
             odhClient.syncDataTypes(dTypes);
+            logger.debug("Syncronize datatypes completed");
         }
         DataMapDto<? extends RecordDtoImpl> dto = new DataMapDto<RecordDtoImpl>();
+        logger.debug("Connect datatypes with stations through record");
         for (DataTypeWrapperDto typeDto: types) {
             SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(), typeDto.getSheetName(),0);
+            logger.trace("Connect"+dtos.get(0).getId()+"with"+typeDto.getType().getName());
             dto.addRecord(dtos.get(0).getId(), typeDto.getType().getName(), simpleRecordDto);
         }
         odhClient.pushData(dto);
+        logger.info("Data syncronization completed");
     }
     Function<DataTypeWrapperDto,DataTypeDto> mapper = (dto) -> {
         return dto.getType();
