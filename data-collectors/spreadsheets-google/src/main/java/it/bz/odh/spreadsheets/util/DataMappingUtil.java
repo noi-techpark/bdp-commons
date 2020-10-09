@@ -43,10 +43,10 @@ public class DataMappingUtil {
     @Value("${headers_nameId}")
     private String nameId;
 
-    @Value("${headers_longitudeId}")
+    @Value("${headers_longitudeId:#{null}}")
     private String longitudeId;
 
-    @Value("${headers_latitudeId}")
+    @Value("${headers_latitudeId:#{null}}")
     private String latitudeId;
     
     @Value("${spreadsheetId}")
