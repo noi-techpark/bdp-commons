@@ -10,8 +10,9 @@ pipeline {
         GOOGLE_SECRET=credentials('spreadsheets.client_secret.json')
         GOOGLE_CREDENTIALS=credentials('google-spreadsheet-api-credentials')
         KEYCLOAK_CONFIG=credentials('test-authserver-datacollector-client-config')
-        DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/spreadsheets-google-centrotrevi'
+        DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/spreadsheets-google-noiplaces'
         DOCKER_TAG = "test-$BUILD_NUMBER"
+        VENDOR = "centroTrevi"
     }
 
     stages {
@@ -20,12 +21,13 @@ pipeline {
                 sh """
                     cd ${PROJECT_FOLDER}
                     echo 'SERVER_PORT=${SERVER_PORT}' > .env
+                    echo 'COMPOSE_PROJECT_NAME=${VENDOR} >> .env'
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
                     echo 'LOG_LEVEL=DEBUG' >> .env
                     echo 'LOG_FOLDER=data-collectors/${PROJECT}' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
-                    echo 'VENDOR=centroTrevi' >> .env
+                    echo 'VENDOR=${VENDOR}' >> .env
                     echo 'spreadsheetId=1aJW6sEGo40hWeL_B2yK4N7CIGwRlmwVpAkwqxjF1ruA' >> .env
                     echo 'suportedLanguages=en,de,it,lad' >> .env
                     echo 'headers_nameId=it:name' >> .env

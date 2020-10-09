@@ -12,6 +12,7 @@ pipeline {
         KEYCLOAK_CONFIG=credentials('test-authserver-datacollector-client-config')
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/spreadsheets-google-noiplaces'
         DOCKER_TAG = "test-$BUILD_NUMBER"
+        VENDOR = "noiPlaces"
     }
 
     stages {
@@ -20,12 +21,13 @@ pipeline {
                 sh """
                     cd ${PROJECT_FOLDER}
                     echo 'SERVER_PORT=${SERVER_PORT}' > .env
+                    echo 'COMPOSE_PROJECT_NAME=${VENDOR} >> .env'
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
                     echo 'LOG_LEVEL=DEBUG' >> .env
                     echo 'LOG_FOLDER=data-collectors/${PROJECT}' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
-                    echo 'VENDOR=noiPlaces' >> .env
+                    echo 'VENDOR=${VENDOR}' >> .env
                     echo 'spreadsheetId=1SSXusoMlNpQd-_CtKjft2Zh2yaWhoqNes4GzZl_X0GI' >> .env
                     echo 'suportedLanguages=en,de,it,lad' >> .env
                     echo 'headers_nameId=en:name' >> .env
