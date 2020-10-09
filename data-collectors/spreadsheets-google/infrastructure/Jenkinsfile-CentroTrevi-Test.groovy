@@ -30,12 +30,12 @@ pipeline {
                     echo 'spreadsheetId=1aJW6sEGo40hWeL_B2yK4N7CIGwRlmwVpAkwqxjF1ruA' >> .env
                     echo 'suportedLanguages=en,de,it,lad' >> .env
                     echo 'headers_nameId=it:name' >> .env
-                    echo 'headers_addressId=it:Address' >> .env
-                    echo 'headers_metaDataId=Event-ID' >> .env
+                    echo 'headers_addressId=it:address' >> .env
+                    echo 'headers_metaDataId=event-id' >> .env
                     echo 'spreadsheet_range=A1:Z' >> .env
                     echo 'spreadsheet_notificationUrl=https://spreadsheets.testingmachine.eu/centro-trevi/trigger' >> .env
                     echo 'stationtype=Culture' >> .env
-                    echo 'composite_unique_key=Place-ID' >> .env
+                    echo 'composite_unique_key=id' >> .env
                     echo 'origin=municipality bolzano' >> .env
                     echo -n 'provenance_version=' >> .env
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' pom.xml >> .env

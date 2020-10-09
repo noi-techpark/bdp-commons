@@ -82,14 +82,16 @@ public class Main {
             odhClient.syncDataTypes(dTypes);
             logger.debug("Syncronize datatypes completed");
         }
-        DataMapDto<? extends RecordDtoImpl> dto = new DataMapDto<RecordDtoImpl>();
-        logger.debug("Connect datatypes with stations through record");
-        for (DataTypeWrapperDto typeDto: types) {
-            SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(), typeDto.getSheetName(),0);
-            logger.trace("Connect"+dtos.get(0).getId()+"with"+typeDto.getType().getName());
-            dto.addRecord(dtos.get(0).getId(), typeDto.getType().getName(), simpleRecordDto);
+        if (!dtos.isEmpty() && !types.isEmpty()){
+            DataMapDto<? extends RecordDtoImpl> dto = new DataMapDto<RecordDtoImpl>();
+            logger.debug("Connect datatypes with stations through record");
+            for (DataTypeWrapperDto typeDto: types) {
+                SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(), typeDto.getSheetName(),0);
+                logger.trace("Connect"+dtos.get(0).getId()+"with"+typeDto.getType().getName());
+                dto.addRecord(dtos.get(0).getId(), typeDto.getType().getName(), simpleRecordDto);
+            }
+            odhClient.pushData(dto);
         }
-        odhClient.pushData(dto);
         logger.info("Data syncronization completed");
     }
     Function<DataTypeWrapperDto,DataTypeDto> mapper = (dto) -> {
