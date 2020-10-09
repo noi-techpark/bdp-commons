@@ -34,7 +34,7 @@ pipeline {
                     echo 'headers_latitudeId=latitude' >> .env
                     echo 'headers_metaDataId=metadata-id' >> .env
                     echo 'spreadsheet_range=A1:Z' >> .env
-                    echo 'spreadsheet_notificationUrl=https://spreadsheets.testingmachine.eu/trigger' >> .env
+                    echo 'spreadsheet_notificationUrl=https://spreadsheets.testingmachine.eu/noi-places/trigger' >> .env
                     echo 'stationtype=NOI-Place' >> .env
                     echo 'composite_unique_key=beacon id' >> .env
                     echo 'origin=NOI Techpark' >> .env
