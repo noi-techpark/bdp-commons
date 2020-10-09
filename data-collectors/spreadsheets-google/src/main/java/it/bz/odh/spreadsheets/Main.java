@@ -71,10 +71,11 @@ public class Main {
                 continue;
             }
         }
-        if (!dtos.isEmpty())
+        if (!dtos.isEmpty()) {
             logger.debug("Syncronize stations if some where fetched and successfully parsed");
             odhClient.syncStations(dtos);
             logger.debug("Syncronize stations completed");
+        }
         if (!types.isEmpty()) {
             logger.debug("Syncronize data types/type-metadata if some where fetched and successfully parsed");
             List<DataTypeDto> dTypes = types.stream().map(mapper).collect(Collectors.toList());

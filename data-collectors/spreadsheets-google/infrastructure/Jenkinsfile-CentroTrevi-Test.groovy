@@ -30,7 +30,7 @@ pipeline {
                     echo 'spreadsheetId=1aJW6sEGo40hWeL_B2yK4N7CIGwRlmwVpAkwqxjF1ruA' >> .env
                     echo 'suportedLanguages=en,de,it,lad' >> .env
                     echo 'headers_nameId=it:name' >> .env
-                    echo 'headers_addressId=it:address' >> .env
+                    echo 'headers_addressId=it:Address' >> .env
                     echo 'headers_metaDataId=Event-ID' >> .env
                     echo 'spreadsheet_range=A1:Z' >> .env
                     echo 'spreadsheet_notificationUrl=https://spreadsheets.testingmachine.eu/centro-trevi/trigger' >> .env
