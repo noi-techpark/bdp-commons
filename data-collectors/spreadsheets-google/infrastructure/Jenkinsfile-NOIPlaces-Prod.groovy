@@ -24,7 +24,7 @@ pipeline {
                     echo 'COMPOSE_PROJECT_NAME=${VENDOR}' >> .env
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
-                    echo 'LOG_LEVEL=DEBUG' >> .env
+                    echo 'LOG_LEVEL=INFO' >> .env
                     echo 'LOG_FOLDER=data-collectors/${PROJECT}' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
                     echo 'VENDOR=${VENDOR}' >> .env
