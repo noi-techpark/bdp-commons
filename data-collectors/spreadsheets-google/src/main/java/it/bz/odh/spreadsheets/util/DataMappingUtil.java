@@ -266,7 +266,7 @@ public class DataMappingUtil {
     private Object jsonTypeGuessing(String text) {
          if (NumberUtils.isParsable(text))
 	        try {
-	           numberFormatter.parse(text);
+	           return numberFormatter.parse(text);
 	        } catch (ParseException e) {
 	            // Do not do anything since we just want to check if string is parsable to a
 	            // number
