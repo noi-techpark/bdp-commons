@@ -128,7 +128,7 @@ public class DataMappingUtil {
 		short count = 0;
 		for (Object header : list) {
 			if (header != null) {
-				if (!header.toString().isBlank())
+				if (!header.toString().trim().isEmpty())
 					mapping.put(header.toString().toLowerCase(), count);
 				count++;
 			}
