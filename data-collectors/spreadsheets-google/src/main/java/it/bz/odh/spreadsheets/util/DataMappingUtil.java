@@ -84,9 +84,10 @@ public class DataMappingUtil {
     public MappingResult mapSheet(List<List<Object>> values, Sheet sheet) {
         MappingResult result = new MappingResult();
         Map<String, Short> headerMapping = listToMap(values.get(0));
+
         if (isValidStationSheet(headerMapping)) {
             logger.debug("Start mapping stations of sheet "+sheet.getProperties().getTitle());
-            StationList mappedStations = mapStations(values, sheet.getProperties().getIndex(), headerMapping,sheet.getProperties().getTitle());
+            StationList mappedStations = mapStations(values, sheet.getProperties().getIndex(), headerMapping, sheet.getProperties().getTitle());
             logger.debug("Finished mapping of sheet "+sheet.getProperties().getTitle());
             result.setStationDtos(mappedStations);
         }
@@ -126,8 +127,9 @@ public class DataMappingUtil {
 		Map<String, Short> mapping = new HashMap<>();
 		short count = 0;
 		for (Object header : list) {
-			if (header != null && !header.toString().isEmpty()) {
-				mapping.put(header.toString().toLowerCase(), count);
+			if (header != null) {
+				if (!header.toString().isBlank())
+					mapping.put(header.toString().toLowerCase(), count);
 				count++;
 			}
 		}
