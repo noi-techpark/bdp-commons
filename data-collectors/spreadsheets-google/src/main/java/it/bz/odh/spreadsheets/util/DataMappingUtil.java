@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -263,12 +264,13 @@ public class DataMappingUtil {
     }
     
     private Object jsonTypeGuessing(String text) {
-        try {
-            return numberFormatter.parse(text);
-        } catch (ParseException e) {
-            // Do not do anything since we just want to check if string is parsable to a
-            // number
-        }
+         if (NumberUtils.isParsable(text))
+	        try {
+	           numberFormatter.parse(text);
+	        } catch (ParseException e) {
+	            // Do not do anything since we just want to check if string is parsable to a
+	            // number
+	        }
         if ("true".equals(text) || "false".equals(text))
             return "true".equals(text);
 
