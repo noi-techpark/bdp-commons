@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import it.bz.idm.bdp.dto.DataTypeDto;
 
 public class SyncDatatype
@@ -23,7 +26,7 @@ public class SyncDatatype
 	static final String AVERAGE_DENSITY = "Average Density";
 	static final String AVERAGE_FLOW = "Average Flow";
 
-	private static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(SyncDatatype.class);
+	private static Logger log = LogManager.getLogger(SyncDatatype.class);
 
 	/**
 	 * Saves all data types to the bdp-core

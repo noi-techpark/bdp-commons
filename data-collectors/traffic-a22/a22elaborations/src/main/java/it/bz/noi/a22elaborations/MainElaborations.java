@@ -13,7 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -37,7 +38,7 @@ public class MainElaborations implements Job
 		int length;
 	}
 
-	private static Logger log = Logger.getLogger(MainElaborations.class);
+	private static Logger log = LogManager.getLogger(MainElaborations.class);
 
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException
 	{

@@ -5,7 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -22,7 +23,7 @@ import it.bz.idm.bdp.dto.StationList;
 public class MainA22Sign implements Job
 {
 	
-	private static Logger log = Logger.getLogger(MainA22Sign.class);
+	private static Logger log = LogManager.getLogger(MainA22Sign.class);
 
 	private final A22Properties datatypesProperties;
 	private final A22Properties a22stationProperties;

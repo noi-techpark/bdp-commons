@@ -14,6 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.json.JSONPusher;
@@ -80,5 +81,11 @@ public class MeteoPusher extends JSONPusher{
 			}
 		}
 		return dataMap;
+	}
+
+	@Override
+	public ProvenanceDto defineProvenance() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

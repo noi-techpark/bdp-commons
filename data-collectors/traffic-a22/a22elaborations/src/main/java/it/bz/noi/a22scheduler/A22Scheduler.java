@@ -12,7 +12,8 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -24,7 +25,7 @@ import it.bz.noi.a22elaborations.MainElaborations;
 public class A22Scheduler extends HttpServlet
 {
 
-	private static Logger log = Logger.getLogger(A22Scheduler.class);
+	private static Logger log = LogManager.getLogger(A22Scheduler.class);
 
 	Scheduler scheduler = null;
 

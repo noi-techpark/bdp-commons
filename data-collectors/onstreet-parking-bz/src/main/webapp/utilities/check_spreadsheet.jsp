@@ -5,8 +5,7 @@
 <%@page import="it.bz.idm.bdp.dto.StationList"%>
 <%@page import="it.bz.idm.bdp.dconstreetparkingbz.OnstreetParkingBzDataRetriever"%>
 <%@ page language="java" import="java.sql.*"  %>
-<%@ page import="org.apache.log4j.*"%>
-<%@ page import="org.apache.log4j.spi.LoggerFactory"%>
+<%@ page import="org.apache.logging.log4j.*"%>
 
 <HTML>
 <HEAD>

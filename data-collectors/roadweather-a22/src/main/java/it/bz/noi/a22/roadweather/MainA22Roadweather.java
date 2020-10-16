@@ -1,21 +1,31 @@
 package it.bz.noi.a22.roadweather;
 
-import it.bz.idm.bdp.dto.*;
-import org.apache.log4j.Logger;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
 
 @DisallowConcurrentExecution
 public class MainA22Roadweather implements Job {
 
-    private static Logger log = Logger.getLogger(MainA22Roadweather.class);
+    private static Logger log = LogManager.getLogger(MainA22Roadweather.class);
 
     private final A22Properties datatypesProperties;
     private final A22Properties a22RoadweatherProperties;

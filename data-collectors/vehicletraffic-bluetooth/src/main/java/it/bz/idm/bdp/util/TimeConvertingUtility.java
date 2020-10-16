@@ -4,12 +4,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import it.bz.idm.bdp.dto.OddsRecordDto;
 
 public class TimeConvertingUtility {
-    public static Logger loggstuff = Logger.getLogger(TimeConvertingUtility.class);
+    public static Logger loggstuff = LogManager.getLogger(TimeConvertingUtility.class);
     public static long getLocalToUtcDelta() {
         Calendar local = Calendar.getInstance();
         local.clear();

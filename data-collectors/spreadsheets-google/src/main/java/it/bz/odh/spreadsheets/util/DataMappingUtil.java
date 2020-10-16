@@ -14,7 +14,8 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -32,7 +33,7 @@ import it.bz.odh.spreadsheets.services.GoogleSpreadSheetDataFetcher;
 @Component
 public class DataMappingUtil {
 
-    private Logger logger = Logger.getLogger(DataMappingUtil.class);
+    private Logger logger = LogManager.getLogger(DataMappingUtil.class);
 
     @Lazy
     @Autowired

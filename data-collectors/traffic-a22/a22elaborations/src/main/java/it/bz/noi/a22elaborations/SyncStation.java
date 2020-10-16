@@ -8,7 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
@@ -16,7 +17,7 @@ import it.bz.idm.bdp.dto.StationList;
 public class SyncStation
 {
 
-	private static Logger log = Logger.getLogger(SyncStation.class);
+	private static Logger log = LogManager.getLogger(SyncStation.class);
 	private static String origin;
 	private static String stationtype;
 

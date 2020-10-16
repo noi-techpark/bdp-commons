@@ -9,8 +9,10 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
@@ -46,8 +48,7 @@ public class OnstreetParkingBzDataConverterTest extends AbstractJUnit4SpringCont
 
     @Test
     public void testConvertDate() {
-        LOG.setLevel(org.apache.log4j.Level.DEBUG);
-
+        Configurator.setLevel(OnstreetParkingBzDataConverterTest.class.getName(), Level.DEBUG);
         String str1 = "2020-02-24T13:37:00.436096605Z";
         String str2 = "2019-06-01T13:20:00CEST";
         String str3 = "2019-01-12T20:50:00CET";

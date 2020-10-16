@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>4.1.2</version>
+			<version>5.0.3</version>
 		</dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

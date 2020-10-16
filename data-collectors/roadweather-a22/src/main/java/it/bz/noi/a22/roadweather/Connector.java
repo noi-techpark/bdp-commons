@@ -16,19 +16,27 @@
  */
 package it.bz.noi.a22.roadweather;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import org.apache.log4j.Logger;
-import org.json.simple.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  * encapsulates the A22 API to query road weather conditions
  */
 public class Connector {
 
-    private static Logger log = Logger.getLogger(Connector.class);
+    private static Logger log = LogManager.getLogger(Connector.class);
 
     private static final String user_agent = "NOI/A22RoadWeatherConnector";
     private static final int WS_CONN_TIMEOUT_MSEC = 30000;

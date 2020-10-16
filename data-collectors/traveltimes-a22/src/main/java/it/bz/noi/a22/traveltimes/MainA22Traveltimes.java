@@ -1,12 +1,5 @@
 package it.bz.noi.a22.traveltimes;
 
-import it.bz.idm.bdp.dto.*;
-import org.apache.log4j.Logger;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,11 +8,25 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.quartz.DisallowConcurrentExecution;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
+
 @DisallowConcurrentExecution
 public class MainA22Traveltimes implements Job
 {
 
-	private static Logger log = Logger.getLogger(MainA22Traveltimes.class);
+	private static Logger log = LogManager.getLogger(MainA22Traveltimes.class);
 
 	private final A22Properties datatypesProperties;
 	private final A22Properties a22TraveltimesProperties;
