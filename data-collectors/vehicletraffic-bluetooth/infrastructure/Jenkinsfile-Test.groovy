@@ -28,7 +28,6 @@ pipeline {
                     echo 'spreadsheet_requiredFields=id,longitude,latitude' >> .env
                     echo 'spreadsheet_sheetName=boxes' >> .env
                     echo 'encryption_key=${ENCRYPTION_KEY}' >> .env
-                    echo 'spreadsheet_notificationUrl=https://spreadsheets.testingmachine.eu/centro-trevi/trigger' >> .env
                     echo 'stationtype=BluetoothStation' >> .env
                     echo 'datatype=vehicle detection' >> .env
                     echo 'origin=bluetoothbox' >> .env
