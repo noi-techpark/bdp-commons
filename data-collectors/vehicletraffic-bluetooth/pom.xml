@@ -11,6 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>5.2.9.RELEASE</spring.version>
 		<log4j.version>2.13.3</log4j.version>
+        <finalName>ROOT</finalName>
 	</properties>
 	<repositories>
 		<repository>
@@ -153,7 +154,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>dc-vehicletraffic-bluetooth</finalName>
+		<finalName>${finalName}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
