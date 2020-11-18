@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.LocaleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -15,19 +16,20 @@ import org.springframework.stereotype.Component;
 
 import com.google.api.services.sheets.v4.model.ValueRange;
 
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.service.SpreadsheetReader;
 
 @Component
 public class BluetoothMappingUtil {
 
-	@Value("${spreadsheet.requiredFields}")
+	@Value("${spreadsheet_requiredFields}")
 	private String[] requiredFields;
 
 	@Lazy
 	@Autowired
 	private SpreadsheetReader reader;
 
-	@Value("${spreadsheet.sheetName}")
+	@Value("${spreadsheet_sheetName}")
 	private String SHEETNAME;
 
 	private List<Map<String, String>> cachedData;
@@ -149,5 +151,35 @@ public class BluetoothMappingUtil {
 	public void setCachedData(List<Map<String, String>> cachedData) {
 		this.cachedData = cachedData;
 	}
+
+    /**
+     * handle multiple languages in multiple columns
+     * @param metaData current metadata of {@link StationDto}
+     */
+    public void mergeTranslations(Map<String, Object> metaData) {
+        for (Map.Entry<String, Object> entry : metaData.entrySet()) {
+            String key = entry.getKey();
+            String[] split = key.split(":");
+            if (split.length<2)
+                continue;
+            try {
+                LocaleUtils.toLocale(split[0]); // check if it's a valid locale
+                Object value = entry.getValue();
+                if (value == null || value.toString().isEmpty())
+                    continue;
+                if (value instanceof String) {
+                    Map<String, String> langMap = new HashMap<>();
+                    langMap.put(split[0], value.toString());
+                    metaData.put(split[1], langMap);
+                }
+                metaData.remove(entry.getKey());
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+
+    }
 
 }

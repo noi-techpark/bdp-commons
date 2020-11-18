@@ -13,13 +13,13 @@ import it.bz.idm.bdp.dto.OddsRecordDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 import it.bz.idm.bdp.util.EncryptUtil;
 import it.bz.idm.bdp.web.RecordList;
 
 @Component
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
-public class OddsPusher extends JSONPusher {
+public class OddsPusher extends NonBlockingJSONPusher {
 
 	@Autowired
 	private Environment env;

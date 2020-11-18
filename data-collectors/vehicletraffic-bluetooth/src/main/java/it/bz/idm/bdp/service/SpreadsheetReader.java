@@ -22,7 +22,7 @@ public class SpreadsheetReader extends GoogleAuthenticator {
     @Value("${spreadsheetId}")
     private String spreadhSheetId;
 
-    @Value("${spreadsheet.range}")
+    @Value("${spreadsheet_range}")
 	private String spreadsheetRange;
 
     private Sheets service;

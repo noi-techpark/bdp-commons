@@ -49,7 +49,7 @@ public class TriggerController {
 				continue;
 			Double[] coordinatesByIdentifier = metaUtil.getCoordinatesByIdentifier(stationId);
 			Map<String, Object> metaDataByIdentifier = metaUtil.getMetaDataByIdentifier(stationId);
-
+			metaUtil.mergeTranslations(metaDataByIdentifier);
 			StationDto dto = new StationDto();
 			dto.setName(stationId);
 			dto.setId(stationId);
