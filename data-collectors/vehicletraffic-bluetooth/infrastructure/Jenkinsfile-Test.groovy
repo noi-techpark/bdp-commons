@@ -11,6 +11,7 @@ pipeline {
         ENCRYPTION_KEY = credentials('bluetooth-encryption-key')
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/dc-vehicletraffic-bluetooth'
         DOCKER_TAG = "test-$BUILD_NUMBER"
+        DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
     }
 
     stages {
@@ -31,6 +32,13 @@ pipeline {
                     echo 'stationtype=BluetoothStation' >> .env
                     echo 'datatype=vehicle detection' >> .env
                     echo 'origin=bluetoothbox' >> .env
+                    echo 'authorizationUri=https://auth.opendatahub.testingmachine.eu/auth' >> .env
+                    echo 'tokenUri=https://auth.opendatahub.testingmachine.eu/auth/realms/noi/protocol/openid-connect/token' >> .env 
+                    echo 'base-uri=https://share.opendatahub.testingmachine.eu/json' >> .env
+                    echo 'clientId=odh-mobility-datacollector' >> .env
+                    echo 'clientName=odh-mobility-datacollector' >> .env
+                    echo 'clientSecret=${DATACOLLECTORS_CLIENT_SECRET}' >> .env
+                    echo 'scope=openid' >> .env 
                     echo -n 'provenance_version=' >> .env
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' pom.xml >> .env
                     echo '' >> .env
