@@ -12,10 +12,15 @@ import org.apache.commons.lang3.LocaleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.google.api.services.sheets.v4.model.ValueRange;
 
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.OddsRecordDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.service.SpreadsheetReader;
 
@@ -24,7 +29,10 @@ public class BluetoothMappingUtil {
 
 	@Value("${spreadsheet_requiredFields}")
 	private String[] requiredFields;
-
+	@Autowired
+	private EncryptUtil cryptUtil;
+	@Autowired
+	private Environment env;
 	@Lazy
 	@Autowired
 	private SpreadsheetReader reader;
@@ -53,7 +61,6 @@ public class BluetoothMappingUtil {
 			boxes.add(object);
 		}
 		return boxes;
-		
 	}
 
 	private List<String> normalize(List<Object> list) {
@@ -64,6 +71,24 @@ public class BluetoothMappingUtil {
 		return stringList;
 	}
 
+	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
+		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
+		@SuppressWarnings("unchecked")
+		List<OddsRecordDto> dtos = (List<OddsRecordDto>) data;
+		for (OddsRecordDto dto : dtos){
+			DataMapDto<RecordDtoImpl> stationMap = dataMap.upsertBranch(dto.getStationcode());
+			DataMapDto<RecordDtoImpl> typeMap = stationMap.upsertBranch(env.getRequiredProperty("datatype"));
+			SimpleRecordDto textDto = new SimpleRecordDto();
+			String stringValue = dto.getMac();
+			if (cryptUtil.isValid())
+				stringValue = cryptUtil.encrypt(stringValue);
+			textDto.setValue(stringValue);
+			textDto.setTimestamp(dto.getGathered_on().getTime());
+			textDto.setPeriod(1);
+			typeMap.getData().add(textDto);
+		}
+		return dataMap;
+	}
 	/**
 	 * @param objs checks if data objects have a valid format
 	 */

@@ -22,7 +22,7 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.OddsRecordDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
-import it.bz.idm.bdp.service.OddsPusher;
+import it.bz.idm.bdp.util.BluetoothMappingUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext*.xml" })
@@ -30,7 +30,7 @@ import it.bz.idm.bdp.service.OddsPusher;
 public class ODDSTest {
 
 	@Autowired
-	private OddsPusher pusher;
+	private BluetoothMappingUtil util;
 
 	private List<OddsRecordDto> records = new ArrayList<OddsRecordDto>();
 
@@ -64,7 +64,7 @@ public class ODDSTest {
 	@Test
 	public void testDataCast(){
 		OddsRecordDto.removeCorruptedData(records);
-		DataMapDto<RecordDtoImpl> parsedData = pusher.mapData(records);
+		DataMapDto<RecordDtoImpl> parsedData = util.mapData(records);
 		assertNotNull(parsedData);
 		for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry : parsedData.getBranch().entrySet()){
 
