@@ -12,7 +12,6 @@ import org.apache.commons.lang3.LocaleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.google.api.services.sheets.v4.model.ValueRange;
@@ -31,8 +30,8 @@ public class BluetoothMappingUtil {
 	private String[] requiredFields;
 	@Autowired
 	private EncryptUtil cryptUtil;
-	@Autowired
-	private Environment env;
+	@Value("${datatype}")
+	private String datatype;
 	@Lazy
 	@Autowired
 	private SpreadsheetReader reader;
@@ -77,7 +76,7 @@ public class BluetoothMappingUtil {
 		List<OddsRecordDto> dtos = (List<OddsRecordDto>) data;
 		for (OddsRecordDto dto : dtos){
 			DataMapDto<RecordDtoImpl> stationMap = dataMap.upsertBranch(dto.getStationcode());
-			DataMapDto<RecordDtoImpl> typeMap = stationMap.upsertBranch(env.getRequiredProperty("datatype"));
+			DataMapDto<RecordDtoImpl> typeMap = stationMap.upsertBranch(datatype);
 			SimpleRecordDto textDto = new SimpleRecordDto();
 			String stringValue = dto.getMac();
 			if (cryptUtil.isValid())
