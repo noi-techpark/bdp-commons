@@ -28,13 +28,12 @@ pipeline {
                     echo 'spreadsheet_range=A1:Z' >> .env
                     echo 'spreadsheet_requiredFields=id,longitude,latitude' >> .env
                     echo 'spreadsheet_sheetName=boxes' >> .env
-                    echo 'encryption_key="${ENCRYPTION_KEY}"' >> .env
+                    echo 'encryption_key=${ENCRYPTION_KEY}' >> .env
                     echo 'stationtype=BluetoothStation' >> .env
                     echo 'datatype=vehicle detection' >> .env
                     echo 'origin=bluetoothbox' >> .env
                     echo 'authorizationUri=https://auth.opendatahub.testingmachine.eu/auth' >> .env
                     echo 'tokenUri=https://auth.opendatahub.testingmachine.eu/auth/realms/noi/protocol/openid-connect/token' >> .env 
-                    echo 'base-uri=https://share.opendatahub.testingmachine.eu/json' >> .env
                     echo 'clientId=odh-mobility-datacollector' >> .env
                     echo 'clientName=odh-mobility-datacollector' >> .env
                     echo 'clientSecret=${DATACOLLECTORS_CLIENT_SECRET}' >> .env
@@ -45,6 +44,7 @@ pipeline {
                     echo -n 'provenance_name=' >> .env 
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
+                    echo 'base-uri=https://share.opendatahub.testingmachine.eu/json' >> .env
                 """
                 
                 sh "cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json"
