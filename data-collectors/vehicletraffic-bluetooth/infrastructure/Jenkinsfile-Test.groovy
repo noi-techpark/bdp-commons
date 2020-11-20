@@ -44,7 +44,7 @@ pipeline {
                     echo -n 'provenance_name=' >> .env 
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
-                    echo 'base-uri=https://share.opendatahub.testingmachine.eu/json' >> .env
+                    echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
                 """
                 
                 sh "cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json"
