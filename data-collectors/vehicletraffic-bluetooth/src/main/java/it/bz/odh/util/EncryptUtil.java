@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.util;
+package it.bz.odh.util;
 
 import javax.annotation.PostConstruct;
 

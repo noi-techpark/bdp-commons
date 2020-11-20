@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.util;
+package it.bz.odh.util;
 
 import java.util.Calendar;
 import java.util.List;

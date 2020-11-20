@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.util;
+package it.bz.odh.util;
 
 import java.io.File;
 import java.io.IOException;

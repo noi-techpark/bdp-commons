@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.web;
+package it.bz.odh.web;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -30,9 +30,9 @@ import it.bz.idm.bdp.dto.OddsRecordDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.service.OddsPusher;
-import it.bz.idm.bdp.util.BluetoothMappingUtil;
 import it.bz.idm.bdp.util.IntegreenException;
+import it.bz.odh.service.OddsPusher;
+import it.bz.odh.util.BluetoothMappingUtil;
 
 @RequestMapping("/json")
 @Controller

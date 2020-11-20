@@ -1,4 +1,4 @@
-package it.bz.idm.bdp;
+package it.bz.odh;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -22,7 +22,7 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.OddsRecordDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
-import it.bz.idm.bdp.util.BluetoothMappingUtil;
+import it.bz.odh.util.BluetoothMappingUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext*.xml" })

@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.service;
+package it.bz.odh.service;
 
 import java.util.UUID;
 

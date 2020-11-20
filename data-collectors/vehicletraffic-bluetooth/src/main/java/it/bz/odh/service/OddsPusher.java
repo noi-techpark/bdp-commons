@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.service;
+package it.bz.odh.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +13,8 @@ import it.bz.idm.bdp.dto.OddsRecordDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.json.NonBlockingJSONPusher;
-import it.bz.idm.bdp.util.EncryptUtil;
-import it.bz.idm.bdp.web.RecordList;
+import it.bz.odh.util.EncryptUtil;
+import it.bz.odh.web.RecordList;
 
 @Lazy
 @Component

@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.web;
+package it.bz.odh.web;
 
 import java.util.List;
 import java.util.Map;
@@ -14,8 +14,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.service.OddsPusher;
-import it.bz.idm.bdp.util.BluetoothMappingUtil;
+import it.bz.odh.service.OddsPusher;
+import it.bz.odh.util.BluetoothMappingUtil;
 
 @RequestMapping("/trigger")
 @Controller

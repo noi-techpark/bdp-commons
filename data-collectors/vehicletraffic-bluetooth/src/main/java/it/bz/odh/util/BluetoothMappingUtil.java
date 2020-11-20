@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.util;
+package it.bz.odh.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import it.bz.idm.bdp.dto.OddsRecordDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.service.SpreadsheetReader;
+import it.bz.odh.service.SpreadsheetReader;
 
 @Component
 public class BluetoothMappingUtil {

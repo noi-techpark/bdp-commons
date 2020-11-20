@@ -1,4 +1,4 @@
-package it.bz.idm.bdp;
+package it.bz.odh;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -21,9 +21,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.google.api.services.drive.model.Channel;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
-import it.bz.idm.bdp.service.SpreadsheetReader;
-import it.bz.idm.bdp.service.SpreadsheetWatcher;
-import it.bz.idm.bdp.util.BluetoothMappingUtil;
+import it.bz.odh.service.SpreadsheetReader;
+import it.bz.odh.service.SpreadsheetWatcher;
+import it.bz.odh.util.BluetoothMappingUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext*.xml" })

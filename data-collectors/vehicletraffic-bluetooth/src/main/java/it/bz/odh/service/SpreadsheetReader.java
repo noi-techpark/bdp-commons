@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.service;
+package it.bz.odh.service;
 
 import java.io.IOException;
 
@@ -13,7 +13,7 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
-import it.bz.idm.bdp.util.GoogleAuthenticator;
+import it.bz.odh.util.GoogleAuthenticator;
 
 @Lazy
 @Component

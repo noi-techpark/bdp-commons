@@ -1,4 +1,4 @@
-package it.bz.idm.bdp;
+package it.bz.odh;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

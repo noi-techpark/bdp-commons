@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.service;
+package it.bz.odh.service;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.Channel;
 
-import it.bz.idm.bdp.util.GoogleAuthenticator;
+import it.bz.odh.util.GoogleAuthenticator;
 
 @Lazy
 @Service

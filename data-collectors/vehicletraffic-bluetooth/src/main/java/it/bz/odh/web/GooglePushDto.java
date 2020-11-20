@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.web;
+package it.bz.odh.web;
 
 public class GooglePushDto {
 	private String kind;
