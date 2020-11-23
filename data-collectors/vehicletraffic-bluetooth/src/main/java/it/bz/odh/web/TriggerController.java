@@ -30,7 +30,7 @@ public class TriggerController {
 	@Autowired
 	private BluetoothMappingUtil metaUtil;
 
-    @Value("origin")
+    @Value("${origin}")
 	private String origin;
 
 	/**
