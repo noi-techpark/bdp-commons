@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -34,9 +33,6 @@ public class TriggerController {
 	@Autowired
 	private BluetoothMappingUtil metaUtil;
 
-    @Value("${origin}")
-	private String origin;
-
 	/**
 	 * Endpoint call for google notification service
 	 * https://developers.google.com/drive/api/v3/push. As soon as the call is
@@ -54,7 +50,7 @@ public class TriggerController {
 			logger.debug("Call is content related");
 			metaUtil.setCachedData(null);
 			logger.debug("Fetch Stations from odh");
-			List<StationDto> odhStations = pusher.fetchStations(pusher.getIntegreenTypology(), origin);
+			List<StationDto> odhStations = pusher.fetchStations(pusher.getIntegreenTypology(), null);
 			List<String> stationIds = odhStations.stream().map(StationDto::getId).collect(Collectors.toList());
 			logger.debug("Found "+stationIds.size()+" Bluetoothboxes");
 			StationList stations = new StationList();
