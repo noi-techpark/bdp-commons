@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -29,6 +30,9 @@ public class TriggerController {
 	@Autowired
 	private BluetoothMappingUtil metaUtil;
 
+    @Value("origin")
+	private String origin;
+
 	/**
 	 * Endpoint call for google notification service
 	 * https://developers.google.com/drive/api/v3/push. As soon as the call is
@@ -43,7 +47,7 @@ public class TriggerController {
 			@RequestHeader(required = true, value = "x-goog-changed") String whatChanged) {
 		if ("content".equals(whatChanged)) {
 			metaUtil.setCachedData(null);
-			List<StationDto> odhStations = pusher.fetchStations(pusher.getIntegreenTypology(), null);
+			List<StationDto> odhStations = pusher.fetchStations(pusher.getIntegreenTypology(), origin);
 			List<String> stationIds = odhStations.stream().map(StationDto::getId).collect(Collectors.toList());
 			StationList stations = new StationList();
 			for (Map<String, String> entry : metaUtil.getValidEntries()) {
