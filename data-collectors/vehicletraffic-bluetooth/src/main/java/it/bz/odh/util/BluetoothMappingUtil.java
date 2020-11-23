@@ -179,13 +179,17 @@ public class BluetoothMappingUtil {
     /**
      * handle multiple languages in multiple columns
      * @param metaData current metadata of {@link StationDto}
+     * @return
      */
-    public void mergeTranslations(Map<String, Object> metaData) {
+    public Map<String, Object> mergeTranslations(Map<String, Object> metaData) {
+        Map<String, Object> cleanMap = new HashMap<>();
         for (Map.Entry<String, Object> entry : metaData.entrySet()) {
             String key = entry.getKey();
             String[] split = key.split(":");
-            if (split.length<2)
+            if (split.length<2) {
+                cleanMap.put(key,entry.getValue());
                 continue;
+            }
             try {
                 LocaleUtils.toLocale(split[0]); // check if it's a valid locale
                 Object value = entry.getValue();
@@ -194,16 +198,16 @@ public class BluetoothMappingUtil {
                 if (value instanceof String) {
                     Map<String, String> langMap = new HashMap<>();
                     langMap.put(split[0], value.toString());
-                    metaData.put(split[1], langMap);
+                    cleanMap.put(split[1], langMap);
                 }
-                metaData.remove(entry.getKey());
+                cleanMap.remove(entry.getKey());
             }
             catch (Exception e) {
                 e.printStackTrace();
                 continue;
             }
         }
-
+        return cleanMap;
     }
 
 }

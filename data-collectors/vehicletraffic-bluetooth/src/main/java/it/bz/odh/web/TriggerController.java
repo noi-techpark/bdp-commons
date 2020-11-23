@@ -63,14 +63,14 @@ public class TriggerController {
 				Double[] coordinatesByIdentifier = metaUtil.getCoordinatesByIdentifier(stationId);
 				Map<String, Object> metaDataByIdentifier = metaUtil.getMetaDataByIdentifier(stationId);
 				logger.debug("Start merging translations");
-				metaUtil.mergeTranslations(metaDataByIdentifier);
+				Map<String,Object> cleanedMap = metaUtil.mergeTranslations(metaDataByIdentifier);
 				StationDto dto = new StationDto();
 				dto.setName(stationId);
 				dto.setId(stationId);
 				dto.setLongitude(coordinatesByIdentifier[0]);
 				dto.setLatitude(coordinatesByIdentifier[1]);
-				if (!metaDataByIdentifier.isEmpty())
-					dto.setMetaData(metaDataByIdentifier);
+				if (!cleanedMap.isEmpty())
+					dto.setMetaData(cleanedMap);
 				stations.add(dto);
 				logger.debug("Dto created and added");
 			}
