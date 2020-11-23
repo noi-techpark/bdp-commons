@@ -1,6 +1,5 @@
 package it.bz.odh.util;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
@@ -35,8 +34,8 @@ public abstract class GoogleAuthenticator {
     private Resource clientSecret;
     private NetHttpTransport HTTP_TRANSPORT;
     private JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    @Value("${credentialsFolder:classpath:/META-INF/credentials}")
-    private String CREDENTIALS_FOLDER;
+    @Value("classpath:/META-INF/credentials")
+    private Resource CREDENTIALS_FOLDER;
 
     protected Credential getCredentials() throws IOException {
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(clientSecret.getInputStream()));
@@ -44,7 +43,7 @@ public abstract class GoogleAuthenticator {
         Collections.addAll(scopes, SheetsScopes.SPREADSHEETS,SheetsScopes.DRIVE);
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, scopes)
-                .setDataStoreFactory(new FileDataStoreFactory(new File(CREDENTIALS_FOLDER)))
+                .setDataStoreFactory(new FileDataStoreFactory(CREDENTIALS_FOLDER.getFile()))
                 .setAccessType("offline")
                 .build();
 
