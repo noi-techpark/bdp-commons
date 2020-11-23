@@ -35,7 +35,7 @@ public abstract class GoogleAuthenticator {
     private Resource clientSecret;
     private NetHttpTransport HTTP_TRANSPORT;
     private JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    @Value("${credentialsFolder}")
+    @Value("${credentialsFolder:classpath:/META-INF/credentials}")
     private String CREDENTIALS_FOLDER;
 
     protected Credential getCredentials() throws IOException {
