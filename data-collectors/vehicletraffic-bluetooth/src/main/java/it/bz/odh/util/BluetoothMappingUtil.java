@@ -196,11 +196,11 @@ public class BluetoothMappingUtil {
                 if (value == null || value.toString().isEmpty())
                     continue;
                 if (value instanceof String) {
-                    Map<String, String> langMap = new HashMap<>();
-                    langMap.put(split[0], value.toString());
-                    cleanMap.put(split[1], langMap);
+                	Object object = cleanMap.get(split[1]);
+                	Map<String,Object> existingMap = (object != null && object instanceof Map) ? (Map) object: new HashMap<>();
+                	existingMap.put(split[0], value.toString());                		
+                    cleanMap.put(split[1], existingMap);
                 }
-                cleanMap.remove(entry.getKey());
             }
             catch (Exception e) {
                 e.printStackTrace();
