@@ -23,7 +23,7 @@ pipeline {
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
                     echo 'stationtype=ParkingStation' >> .env
                     echo 'pbz_origin=FAMAS' >> .env
-                    echo 'parking_mearno.endpoint=http://84.18.132.129/trafficstudiorestwebservice/getParkingAreasSituation' >> .env
+                    echo 'parking_mearno_endpoint=http://84.18.132.129/trafficstudiorestwebservice/getParkingAreasSituation' >> .env
                     echo 'pbz_default_server_host=109.117.22.203'>>.env
                     echo 'pbz_default_server_port=7075'>>.env
                     echo 'pbz_default_site_name=/RPC2'>>.env
