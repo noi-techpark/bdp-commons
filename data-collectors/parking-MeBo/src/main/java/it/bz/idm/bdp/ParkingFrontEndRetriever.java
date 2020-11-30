@@ -13,10 +13,9 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-@PropertySource("classpath:/META-INF/spring/app.properties")
 public class ParkingFrontEndRetriever {
 	
-	@Value("${parking.url.stations}")
+	@Value("${parking_url_stations}")
 	private String parking_url_stations;
 	
 	private static ObjectMapper mapper = new ObjectMapper(); 

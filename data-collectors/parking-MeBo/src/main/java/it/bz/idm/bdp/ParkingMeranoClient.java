@@ -20,6 +20,7 @@ import it.bz.idm.bdp.dto.StationDto;
 @Component
 public class ParkingMeranoClient {
 
+	private static final int PERIOD = 300;
 	private static final String OCCUPIED_TYPE = "occupied";
 	private RestTemplate restTemplate;
 	private String endpoint;
@@ -28,7 +29,7 @@ public class ParkingMeranoClient {
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 	@Autowired
-	public ParkingMeranoClient(@Value("${parking_mearno.endpoint}") String endpoint) {
+	public ParkingMeranoClient(@Value("${parking_mearno_endpoint}") String endpoint) {
 		restTemplate = new RestTemplate();
 		this.endpoint = endpoint;
 		format.setTimeZone(TimeZone.getTimeZone("Europe/Rome"));
@@ -70,7 +71,7 @@ public class ParkingMeranoClient {
 			try {
 				date = format.parse(e.getCurrentDateTime());
 				record.setTimestamp(date.getTime());
-				record.setPeriod(600);
+				record.setPeriod(PERIOD);
 			} catch (ParseException e1) {
 				e1.printStackTrace();
 			}

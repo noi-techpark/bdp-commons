@@ -1,10 +1,10 @@
 package it.bz.idm.bdp;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -12,14 +12,14 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.forecast.domain.ParkingForecast;
 import it.bz.idm.bdp.forecast.domain.ParkingForecasts;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
+import it.bz.idm.bdp.util.MappingUtil;
 
 @Component
-public class ParkingPusher extends JSONPusher{
+@Lazy
+public class ParkingPusher extends NonBlockingJSONPusher{
 
 	private static final String MUNICIPALITY_MERANO = "Municipality Merano";
 
@@ -57,7 +57,6 @@ public class ParkingPusher extends JSONPusher{
 		parkingClient.connect();
 	}
 
-
 	public void pushParkingMetaData() {
 		connectToParkingServer();
 		StationList stations = new StationList();
@@ -75,41 +74,22 @@ public class ParkingPusher extends JSONPusher{
 			DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
 			for (String stationIdentifier:identifers){
 				ParkingForecasts predictions = predictionRetriever.predict(stationIdentifier);
-				DataMapDto<RecordDtoImpl> typeMap = generateTypeMap(predictions);
+				DataMapDto<RecordDtoImpl> typeMap = MappingUtil.generateTypeMap(predictions);
 				dataMap.getBranch().put(stationIdentifier, typeMap);
 			}
 			pushData(dataMap);
 		}
 	}
 
-	public DataMapDto<RecordDtoImpl> generateTypeMap(ParkingForecasts predictions) {
-		DataMapDto<RecordDtoImpl> typeMap = new DataMapDto<>();
-		if (predictions != null){
-			for (Integer period : ParkingPusher.PREDICTION_FORECAST_TIMES_IN_MINUTES){
-				List<RecordDtoImpl> records = new ArrayList<>();
-				ParkingForecast prediction = predictions.findByTime(period);
-				Date date = new Date(prediction.getStartDate().getTime());
-				Double value = new Double(prediction.getPrediction().getPredictedFreeSlots().doubleValue());
-				SimpleRecordDto dto = new SimpleRecordDto(date.getTime(), value);
-				dto.setPeriod(period*60);
-				records.add(dto);
-				DataMapDto<RecordDtoImpl> recordMap = new DataMapDto<>();
-				recordMap.setData(records);
-				typeMap.getBranch().put(FORECAST_PREFIX+period, recordMap);
-			}
-		}
-		return typeMap;
-	}
-
 	public void pushData() {
 		connectToParkingServer();
 		connectToDataCenterCollector();
 		DataMapDto<RecordDtoImpl> bolzanoDataMap = new DataMapDto<RecordDtoImpl>(), meranoDataMap = new DataMapDto<>();
-		this.provenance = new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("pbz_origin"));
+		this.provenance = new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"), env.getProperty("pbz_origin"));
 		parkingClient.insertDataInto(bolzanoDataMap);
 		pushData(bolzanoDataMap);
 
-		this.provenance = new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"), MUNICIPALITY_MERANO);;
+		this.provenance = new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"), MUNICIPALITY_MERANO);;
 		parkingMeranoClient.insertDataInto(meranoDataMap);
 		pushData(meranoDataMap);
 	}
@@ -140,6 +120,6 @@ public class ParkingPusher extends JSONPusher{
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("pbz_origin"));
+		return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"), env.getProperty("pbz_origin"));
 	}
 }

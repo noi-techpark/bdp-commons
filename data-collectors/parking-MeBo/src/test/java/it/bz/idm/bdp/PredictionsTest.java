@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,13 +20,11 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.forecast.domain.ParkingForecast;
 import it.bz.idm.bdp.forecast.domain.ParkingForecasts;
 import it.bz.idm.bdp.forecast.domain.TSPrediction;
+import it.bz.idm.bdp.util.MappingUtil;
 
 @ContextConfiguration(locations = { "/META-INF/spring/applicationContext.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PredictionsTest extends AbstractJUnit4SpringContextTests{
-
-	@Autowired
-	private ParkingPusher pusher;
 
 	@Test
 	public void testTypeMapGeneration() {
@@ -75,7 +72,7 @@ public class PredictionsTest extends AbstractJUnit4SpringContextTests{
 		predictions.getParkingForecasts().add(p7);
 		predictions.getParkingForecasts().add(p8);
 
-		DataMapDto<RecordDtoImpl> typeMap = pusher.generateTypeMap(predictions);
+		DataMapDto<RecordDtoImpl> typeMap = MappingUtil.generateTypeMap(predictions);
 		assertNotNull(typeMap);
 		assertEquals(ParkingPusher.PREDICTION_FORECAST_TIMES_IN_MINUTES.length, typeMap.getBranch().entrySet().size());
 		for (Entry<String, DataMapDto<RecordDtoImpl>> entry: typeMap.getBranch().entrySet()) {

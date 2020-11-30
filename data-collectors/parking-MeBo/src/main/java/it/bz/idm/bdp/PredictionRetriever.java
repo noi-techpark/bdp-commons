@@ -8,7 +8,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,14 +16,13 @@ import it.bz.idm.bdp.forecast.domain.ForecastStep;
 import it.bz.idm.bdp.forecast.domain.ParkingForecasts;
 
 @Service
-@PropertySource("classpath:/META-INF/spring/app.properties")
 public class PredictionRetriever {
 
 	
-	@Value("${prediction.url.time}")
+	@Value("${prediction_url_time}")
 	private String prediction_url_time;
 	
-	@Value("${prediction.url.station}")
+	@Value("${prediction_url_station}")
 	private String prediction_url_station;
 	
 	

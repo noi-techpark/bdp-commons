@@ -20,6 +20,7 @@ import it.bz.idm.bdp.dto.StationDto;
 
 @Service
 public class ParkingClient {
+	private static final int PERIOD = 600;
 	private String origin;
 	private static final String PROTOCOLL = "http://";
 	private static final String P_GUIDE_GET_PARKING_METADATA = "pGuide.getCaratteristicheParcheggio";
@@ -174,7 +175,7 @@ public class ParkingClient {
 					if(!communicationState && !controlUnit && !totalChangeAllarm && !inactiveAllarm && !occupiedSlotsAllarm) {
 						record.setValue(capacity - (Integer)objects.get(5));
 						record.setTimestamp((Integer) objects.get(6)*1000l);
-						record.setPeriod(600);
+						record.setPeriod(PERIOD);
 						records.add(record);
 						dataMap.setData(records);
 						if (typeMap.getBranch().get(OCCUPIED_TYPE) == null)
