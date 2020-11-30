@@ -20,7 +20,7 @@ import it.bz.idm.bdp.dto.StationDto;
 
 @Service
 public class ParkingClient {
-	private static final int PERIOD = 600;
+	private static final int PERIOD = 300;
 	private String origin;
 	private static final String PROTOCOLL = "http://";
 	private static final String P_GUIDE_GET_PARKING_METADATA = "pGuide.getCaratteristicheParcheggio";
