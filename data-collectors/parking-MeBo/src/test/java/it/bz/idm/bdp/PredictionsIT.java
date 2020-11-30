@@ -24,7 +24,7 @@ import it.bz.idm.bdp.util.MappingUtil;
 
 @ContextConfiguration(locations = { "/META-INF/spring/applicationContext.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
-public class PredictionsTest extends AbstractJUnit4SpringContextTests{
+public class PredictionsIT extends AbstractJUnit4SpringContextTests{
 
 	@Test
 	public void testTypeMapGeneration() {
