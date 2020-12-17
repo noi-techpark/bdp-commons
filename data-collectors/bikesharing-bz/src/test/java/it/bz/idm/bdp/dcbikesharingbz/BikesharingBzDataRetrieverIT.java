@@ -25,7 +25,7 @@ public class BikesharingBzDataRetrieverIT extends AbstractJUnit4SpringContextTes
     private BikesharingBzDataRetriever reader;
 
     @Autowired
-    private BikesharingBzDataPusher pusher;
+    private BikesharingMappingUtil mappingUtil;
 
     @Test
     public void testFetchData() {
@@ -89,7 +89,7 @@ public class BikesharingBzDataRetrieverIT extends AbstractJUnit4SpringContextTes
     public void testFetchDataTypes() {
         try {
             //Fetch data from source origin
-            List<DataTypeDto> fetchData = pusher.mapDataTypes2Bdp();
+            List<DataTypeDto> fetchData = mappingUtil.mapDataTypes2Bdp();
 
             //Check there is at least one item in the list
             assertNotNull("Fetched data IS NULL", fetchData);

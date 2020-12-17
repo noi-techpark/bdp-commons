@@ -27,6 +27,8 @@ public class BikesharingBzDataPusherIT extends AbstractJUnit4SpringContextTests 
     private BikesharingBzJobScheduler scheduler;
 
     @Autowired
+    private BikesharingMappingUtil mappingUtil;
+    @Autowired
     private BikesharingBzDataPusher pusher;
 
     @Autowired
@@ -87,20 +89,20 @@ public class BikesharingBzDataPusherIT extends AbstractJUnit4SpringContextTests 
     private void pushStations(List<BikesharingBzStationDto> data, List<String> errors) {
         try {
             //Push station data, we have three Station Types: Station, Bay, Bicycle
-            StationList stations = pusher.mapStations2Bdp(data);
+            StationList stations = mappingUtil.mapStations2Bdp(data);
             LOG.debug(stations);
             if (stations != null) {
-                pusher.syncStations(BikesharingBzDataConverter.STATION_TYPE_STATION, stations);
+            	pusher.syncStations(BikesharingBzDataConverter.STATION_TYPE_STATION, stations);
             }
-            StationList bays = pusher.mapBays2Bdp(data);
+            StationList bays = mappingUtil.mapBays2Bdp(data);
             LOG.debug(bays);
             if (bays != null) {
-                pusher.syncStations(BikesharingBzDataConverter.STATION_TYPE_BAY, bays);
+            	pusher.syncStations(BikesharingBzDataConverter.STATION_TYPE_BAY, bays);
             }
-            StationList bicycles = pusher.mapBicycles2Bdp(data);
+            StationList bicycles = mappingUtil.mapBicycles2Bdp(data);
             LOG.debug(bicycles);
             if (bicycles != null) {
-                pusher.syncStations(BikesharingBzDataConverter.STATION_TYPE_BICYCLE, bicycles);
+            	pusher.syncStations(BikesharingBzDataConverter.STATION_TYPE_BICYCLE, bicycles);
             }
 
         } catch (Exception e) {
@@ -110,10 +112,10 @@ public class BikesharingBzDataPusherIT extends AbstractJUnit4SpringContextTests 
 
     private void pushDataTypes(List<String> errors) {
         try {
-            List<DataTypeDto> dataTypeList = pusher.mapDataTypes2Bdp();
+            List<DataTypeDto> dataTypeList = mappingUtil.mapDataTypes2Bdp();
             LOG.debug(dataTypeList);
             if (dataTypeList != null) {
-                pusher.syncDataTypes(dataTypeList);
+            	pusher.syncDataTypes(dataTypeList);
             }
         } catch (Exception e) {
             errors.add("DATA-TYPE-REC: "+e);
@@ -125,9 +127,9 @@ public class BikesharingBzDataPusherIT extends AbstractJUnit4SpringContextTests 
         try {
             List<BikesharingBzStationDto> list = new ArrayList<BikesharingBzStationDto>();
             list.add(data);
-            DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(list);
+            DataMapDto<RecordDtoImpl> stationRec = mappingUtil.mapData(list);
             if (stationRec != null) {
-                pusher.pushData(stationRec);
+            	pusher.pushData(stationRec);
             }
         } catch (Exception e) {
             errors.add("MEASUREMENTS-REC: "+e);
@@ -136,7 +138,7 @@ public class BikesharingBzDataPusherIT extends AbstractJUnit4SpringContextTests 
 
     private List<BikesharingBzStationDto> readPushData() throws Exception {
         //Convert station data
-        String responseString = BikesharingBzDataRetrieverTest.getTestData(BikesharingBzDataRetrieverTest.DATA_FETCH_STATIONS, null, null);
+        String responseString = BikesharingBzDataRetrieverAuthIT.getTestData(BikesharingBzDataRetrieverAuthIT.DATA_FETCH_STATIONS, null, null);
         BikesharingBzDto bikesharingBzDto = converter.convertStationsResponseToInternalDTO(responseString);
         List<BikesharingBzStationDto> data = bikesharingBzDto.getStationList();
 
@@ -144,7 +146,7 @@ public class BikesharingBzDataPusherIT extends AbstractJUnit4SpringContextTests 
         //Convert availability data
         for (BikesharingBzStationDto bikeDto : data) {
             String bikeId = bikeDto.getId();
-            String responseStringDetails = BikesharingBzDataRetrieverTest.getTestData(BikesharingBzDataRetrieverTest.DATA_FETCH_MEASUREMENTS, ServiceCallParam.FUNCTION_NAME_STATION_ID, bikeId);
+            String responseStringDetails = BikesharingBzDataRetrieverAuthIT.getTestData(BikesharingBzDataRetrieverAuthIT.DATA_FETCH_MEASUREMENTS, ServiceCallParam.FUNCTION_NAME_STATION_ID, bikeId);
             if ( DCUtils.paramNotNull(responseStringDetails) ) {
                 BikesharingBzStationDto bzStationDto = converter.convertStationDetailResponseToInternalDTO(responseStringDetails);
                 retval.add(bzStationDto);

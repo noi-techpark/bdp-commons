@@ -30,12 +30,12 @@ import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class BikesharingBzDataRetrieverTest extends AbstractJUnit4SpringContextTests {
+public class BikesharingBzDataRetrieverAuthIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(BikesharingBzDataRetrieverTest.class.getName());
+    private static final Logger LOG = LogManager.getLogger(BikesharingBzDataRetrieverAuthIT.class.getName());
 
     @Autowired
-    private BikesharingBzDataPusher pusher;
+    private BikesharingMappingUtil mappingUtil;
 
     @Autowired
     private BikesharingBzDataConverter converter;
@@ -95,7 +95,7 @@ public class BikesharingBzDataRetrieverTest extends AbstractJUnit4SpringContextT
         try {
             List<BikesharingBzStationDto> data = readFetchData();
 
-            StationList stations = pusher.mapStations2Bdp(data);
+            StationList stations = mappingUtil.mapStations2Bdp(data);
 
             //Test data is not null and contains 9 records
             assertNotNull(stations);
@@ -133,7 +133,7 @@ public class BikesharingBzDataRetrieverTest extends AbstractJUnit4SpringContextT
         try {
             List<BikesharingBzStationDto> data = readFetchData();
 
-            StationList bays = pusher.mapBays2Bdp(data);
+            StationList bays = mappingUtil.mapBays2Bdp(data);
 
             //Test data is not null
             assertNotNull(bays);
@@ -180,7 +180,7 @@ public class BikesharingBzDataRetrieverTest extends AbstractJUnit4SpringContextT
         try {
             List<BikesharingBzStationDto> data = readFetchData();
 
-            StationList bicycles = pusher.mapBicycles2Bdp(data);
+            StationList bicycles = mappingUtil.mapBicycles2Bdp(data);
 
             //Test data is not null
             assertNotNull(bicycles);
@@ -220,7 +220,7 @@ public class BikesharingBzDataRetrieverTest extends AbstractJUnit4SpringContextT
             List<BikesharingBzStationDto> data = readFetchData();
 
             //Convert in Data Hub data structure
-            DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(data);
+            DataMapDto<RecordDtoImpl> stationRec = mappingUtil.mapData(data);
 
             //Check there is a branch for TEST_STATION_ID_1 station
             Map<String, DataMapDto<RecordDtoImpl>> branch1 = stationRec.getBranch();
@@ -269,7 +269,7 @@ public class BikesharingBzDataRetrieverTest extends AbstractJUnit4SpringContextT
                     BikesharingBzDataConverter.DATA_TYPE_BAY_USAGE_STATE};
 
             //Convert in Data Hub data structure
-            DataMapDto<RecordDtoImpl> stationRec = pusher.mapBayData(data);
+            DataMapDto<RecordDtoImpl> stationRec = mappingUtil.mapBayData(data);
 
             //Check there is a branch for TEST_BAY_ID_1 station
             Map<String, DataMapDto<RecordDtoImpl>> branch1 = stationRec.getBranch();
@@ -312,7 +312,7 @@ public class BikesharingBzDataRetrieverTest extends AbstractJUnit4SpringContextT
             List<BikesharingBzStationDto> data = readFetchData();
 
             //Convert in Data Hub data structure
-            DataMapDto<RecordDtoImpl> stationRec = pusher.mapBicycleData(data);
+            DataMapDto<RecordDtoImpl> stationRec = mappingUtil.mapBicycleData(data);
 
             //Check there is a branch for TEST_BICYCLE_ID_1 station
             Map<String, DataMapDto<RecordDtoImpl>> branch1 = stationRec.getBranch();
@@ -408,7 +408,7 @@ public class BikesharingBzDataRetrieverTest extends AbstractJUnit4SpringContextT
             if ( paramName != null && paramValue != null ) {
                 fileName = fileName.replace(paramName, paramValue);
             }
-            URL url = BikesharingBzDataRetrieverTest.class.getResource(fileName);
+            URL url = BikesharingBzDataRetrieverAuthIT.class.getResource(fileName);
             if ( url == null ) {
                 return null;
             }
