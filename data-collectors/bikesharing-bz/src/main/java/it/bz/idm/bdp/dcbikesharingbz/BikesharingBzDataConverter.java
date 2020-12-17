@@ -63,7 +63,7 @@ public class BikesharingBzDataConverter {
     public static final String ORIGIN_KEY                = "app.origin";
     public static final String PERIOD_KEY                = "app.period";
 
-    public static final String AUTH_TOKEN_KEY            = "app.auth.token";
+    public static final String AUTH_TOKEN_KEY            = "app_auth_token";
 
     @Autowired
     private Environment env;
