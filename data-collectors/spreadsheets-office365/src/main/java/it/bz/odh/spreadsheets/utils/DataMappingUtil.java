@@ -37,8 +37,10 @@ public class DataMappingUtil {
     private String metadataId;
     @Value("${composite.unique.key}")
     private String[] uniqueIdFields;
-//    @Lazy
-//    @Autowired
+
+
+    @Lazy
+    @Autowired
     private ODHClient odhClient;
 
     @Lazy

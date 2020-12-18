@@ -38,8 +38,8 @@ public class SyncScheduler {
     @Autowired
     private ODHClient odhClient;
 
-    @Autowired
-    private GraphChangeNotificationClient graphChangeNotificationClient;
+//    @Autowired
+//    private GraphChangeNotificationClient graphChangeNotificationClient;
 
 
     @Autowired
@@ -61,13 +61,16 @@ public class SyncScheduler {
     @Scheduled(cron = "${cron}")
     public void fetchSheet() throws Exception {
         logger.debug("Fetch sheet started");
-        String token = graphDataFetcher.getToken();
-        logger.debug("TOKEN: " + token);
+
+        // Commented out to be bae to test O-Auth without having to set up al the rest
+
+//        String token = graphDataFetcher.getToken();
+//        logger.debug("TOKEN: " + token);
 //        String itemId = graphDataFetcher.getItemId(token);
 //        graphDataFetcher.fetchSheet(token);
 //        graphDataFetcher.get
-        graphChangeNotificationClient.makeSubscription(token);
-//        syncData();
+//        graphChangeNotificationClient.makeSubscription(token);
+//        syncData(token);
         logger.debug("Fetch sheet done");
     }
 

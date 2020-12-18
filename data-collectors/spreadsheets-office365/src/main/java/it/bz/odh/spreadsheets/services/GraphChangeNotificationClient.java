@@ -15,7 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
-@Component
+//@Component
 public class GraphChangeNotificationClient {
 
     private static final String SUBSCRIPTION_URL = "https://graph.microsoft.com/v1.0/subscriptions";

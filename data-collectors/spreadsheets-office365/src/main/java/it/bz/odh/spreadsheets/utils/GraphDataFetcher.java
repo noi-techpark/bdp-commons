@@ -27,8 +27,9 @@ public class GraphDataFetcher {
     
     @PostConstruct
     public void posContruct() throws Exception {
-        String token = getToken();
-        System.out.println("TOKEN: " + token);
+        // Commented out to be bae to test O-Auth without having to set up al the rest
+//        String token = getToken();
+//        System.out.println("TOKEN: " + token);
     }
 
 

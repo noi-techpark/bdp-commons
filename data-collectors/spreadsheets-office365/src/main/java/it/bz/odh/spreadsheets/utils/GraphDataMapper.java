@@ -24,6 +24,8 @@ public class GraphDataMapper {
 
     public String  getUserId(String user) throws IOException {
         String userId = null;
+
+        // throw exception, if userId not found
         JsonNode downloadLinkNode = mapper.readTree(user);
         if (downloadLinkNode.get("value").isArray()) {
             for (JsonNode jsonNode : downloadLinkNode.get("value")) {
