@@ -10,6 +10,7 @@
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>5.2.7.RELEASE</spring.version>
+        <finalName>ROOT</finalName>
 	</properties>
 	<repositories>
 		<repository>
@@ -114,7 +115,7 @@
 
 	<build>
 		<!-- Final names should be of the following pattern: dc-<type of data>-<origin of data> -->
-		<finalName>dc-parking-tn</finalName>
+		<finalName>${finalName}</finalName>
 		<testSourceDirectory>src/test/java/</testSourceDirectory>
 		<plugins>
 			<plugin>
