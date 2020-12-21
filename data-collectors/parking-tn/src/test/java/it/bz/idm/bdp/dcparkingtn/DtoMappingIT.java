@@ -20,7 +20,7 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationDto;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class DtoMappingTest extends AbstractJUnit4SpringContextTests {
+public class DtoMappingIT extends AbstractJUnit4SpringContextTests {
 
 	@Autowired
 	private ParkingTnDataPusher pusher;
