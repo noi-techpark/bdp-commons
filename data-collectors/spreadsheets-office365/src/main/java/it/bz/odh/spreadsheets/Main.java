@@ -4,10 +4,12 @@ package it.bz.odh.spreadsheets;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @EnableScheduling
+@ComponentScan({"it.bz.odh.spreadsheets","it.bz.idm.bdp"})
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -21,10 +23,4 @@ public class Main {
 //        bean.setLoadOnStartup(1);
 //        return bean;
 //    }
-
-    @Bean
-    public WebClient webClient() {
-        WebClient webClient = WebClient.builder().build();
-        return webClient;
-    }
 }
