@@ -3,13 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>dc-airquality-appabz</artifactId>
-	<version>2.0.0</version>
+	<version>3.0.0</version>
 	<packaging>war</packaging>
 	<name>AirQuality data collector</name>
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>5.0.12.RELEASE</spring.version>
+		<spring.version>5.2.11.RELEASE</spring.version>
+		<finalName>ROOT</finalName>
 	</properties>
 	<repositories>
                 <repository>
@@ -40,7 +41,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>3.3.5</version>
+			<version>5.1.1</version>
 		</dependency>
 		<!-- Apache dependencies -->
 		<dependency>
@@ -85,7 +86,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>dc-airquality-appabz</finalName>
+		<finalName>${finalName}</finalName>
 		<testSourceDirectory>src/test/java/</testSourceDirectory>
 		<plugins>
 			<plugin>
@@ -108,8 +109,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.21.0</version>
 				<configuration>
-                                        <useSystemClassLoader>false</useSystemClassLoader>
-                                </configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

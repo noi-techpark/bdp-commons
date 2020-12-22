@@ -20,7 +20,7 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.StationDto;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class ParserTest extends AbstractJUnit4SpringContextTests {
+public class ParserIT extends AbstractJUnit4SpringContextTests {
 
 	private static final String FTP_LOCAL_TESTFOLDER = "/mapping-files";
 	private static final String FTP_LOCAL_TESTFILE = FTP_LOCAL_TESTFOLDER + File.separator + "20170103_0030.dat";

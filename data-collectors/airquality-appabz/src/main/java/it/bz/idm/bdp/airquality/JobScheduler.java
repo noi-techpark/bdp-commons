@@ -98,7 +98,7 @@ public class JobScheduler {
 								.getRequiredProperty("ftp.folder.remote.failed"));
 			}
 		}
-		com.sendFeedbackToFTP(RESPONSEFILE);
+		// com.sendFeedbackToFTP(RESPONSEFILE);
 	}
 
 	public void deleteOldFiles() throws Exception {

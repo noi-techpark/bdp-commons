@@ -31,8 +31,8 @@ public class A22SignJSONPusher extends JSONPusher
 
 			stationtype = prop.getProperty("stationtype");
 			origin = prop.getProperty("origin");
-			provenanceName = prop.getProperty("provenance.name");
-			provenanceVersion = prop.getProperty("provenance.version");
+			provenanceName = prop.getProperty("provenance_name");
+			provenanceVersion = prop.getProperty("provenance_version");
 			
 		}
 

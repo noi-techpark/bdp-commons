@@ -15,10 +15,10 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
-public class DataPusherTest {
+public class DataPusherIT {
 
     private DataPusher pusher = new DataPusher();
-    private static final Logger LOG = LogManager.getLogger(DataPusherTest.class.getName());
+    private static final Logger LOG = LogManager.getLogger(DataPusherIT.class.getName());
     private final ResourceBundle rb = ResourceBundle.getBundle("test");
 
     @Test

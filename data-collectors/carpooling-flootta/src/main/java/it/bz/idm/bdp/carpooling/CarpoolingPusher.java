@@ -24,9 +24,9 @@ public class CarpoolingPusher extends JSONPusher {
 	private static final Integer DEFAULT_PERIOD = 3600;
 	private static final String INNOVIE_STATION_IDENTIFIER = "carpooling:innovie";
 
-	@Value("${provenance.name}")
+	@Value("${provenance_name}")
 	private String provenanceName;
-	@Value("${provenance.version}")
+	@Value("${provenance_version}")
 	private String provenanceVersion;
 	@Value("${data.origin}")
 	private String origin;
