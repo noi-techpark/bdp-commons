@@ -8,6 +8,7 @@
 	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd">
 
 <context:component-scan base-package="info.datatellers.appabz,it.bz.idm.bdp"/>
+<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
 
 <task:scheduler id="Scheduler" pool-size="10" />
 <task:scheduled-tasks scheduler="Scheduler">
