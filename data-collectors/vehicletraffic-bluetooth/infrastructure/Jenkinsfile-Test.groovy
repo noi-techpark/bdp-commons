@@ -23,7 +23,7 @@ pipeline {
                     echo 'SERVER_PORT=${SERVER_PORT}' >> .env
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
-                    echo 'LOG_LEVEL=DEBUG' >> .env
+                    echo 'LOG_LEVEL=debug' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
                     echo 'spreadsheetId=10qBMw28HFWJZen6_CBKT1ln5s8XdygcoC3buXas_8SA' >> .env
                     echo 'spreadsheet_range=A1:Z' >> .env
