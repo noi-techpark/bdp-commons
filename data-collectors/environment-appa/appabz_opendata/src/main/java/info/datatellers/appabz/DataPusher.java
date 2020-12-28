@@ -33,6 +33,7 @@ import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Component
 public class DataPusher extends NonBlockingJSONPusher {
+	
     @Autowired
     private Environment env;
     private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
@@ -227,7 +228,7 @@ public class DataPusher extends NonBlockingJSONPusher {
 
     @Override
     public String initIntegreenTypology() {
-        return env.getProperty("odh.station.type");
+        return env.getProperty("stationtype");
     }
 
     @Override
@@ -242,6 +243,6 @@ public class DataPusher extends NonBlockingJSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,env.getProperty("provenance_name"), env.getProperty("provenance_version"), env.getProperty("odh.station.origin"));
+		return new ProvenanceDto(null,env.getProperty("provenance_name"), env.getProperty("provenance_version"), env.getProperty("origin"));
 	}
 }
