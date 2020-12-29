@@ -10,8 +10,9 @@ import java.util.TreeMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
 
@@ -31,14 +32,26 @@ import it.bz.idm.bdp.json.NonBlockingJSONPusher;
  * This class will map stations, sensors and measurements data into a many levels deep DataMapDto map and return it.
  */
 
-@Component
+@Service
 public class DataPusher extends NonBlockingJSONPusher {
 	
     @Autowired
-    private Environment env;
+    Environment env;
     private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
     private int stationMeasurements = 0;
     private int totalMeasurements = 0;
+
+    @Value("${odh.station.projection}")
+    private String coordinateReferenceSystem;
+
+    @Value("${odh.station.origin}")
+    private String origin;
+
+    @Value("${odh.station.type}")
+    private String stationtype;
+
+    @Value("${odh.station.rtype}")
+    private String rtype;
 
     /**
      * This method uses the DataFetcher class to retrieve stations metadata from the endpoint-provided
@@ -57,10 +70,10 @@ public class DataPusher extends NonBlockingJSONPusher {
             try {
                 station.setId(rawStation.getAsJsonObject().get("SCODE").getAsString());
                 station.setName(rawStation.getAsJsonObject().get("NAME_I").getAsString());
-                station.setCoordinateReferenceSystem(env.getProperty("odh.station.projection"));
-                station.setOrigin(env.getProperty("odh.station.origin"));
+                station.setCoordinateReferenceSystem(coordinateReferenceSystem);
+                station.setOrigin(origin);
                 station.getMetaData().put("municipality", this.guessMunicipality(station.getId()));
-                station.setStationType(env.getProperty("odh.station.type"));
+                station.setStationType(stationtype);
 
                 station.setLongitude(Double.valueOf(rawStation.getAsJsonObject().get("LONG").getAsString()));
                 station.setLatitude(Double.valueOf(rawStation.getAsJsonObject().get("LAT").getAsString()));
@@ -103,7 +116,7 @@ public class DataPusher extends NonBlockingJSONPusher {
 
             typeDto.setName(types.keySet().toArray()[looper].toString().replace("\"", ""));
             typeDto.setUnit(types.get(types.keySet().toArray()[looper].toString()).replace("\"", ""));
-            typeDto.setRtype(env.getProperty("odh.station.rtype"));
+            typeDto.setRtype(rtype);
             typeDto.setPeriod(3600);
 
             typesDto.add(typeDto);
@@ -176,7 +189,7 @@ public class DataPusher extends NonBlockingJSONPusher {
         LOG.info("RootMap filled: " + totalMeasurements + " records collected.");
         if (!test)
         {
-            this.pushData(env.getProperty("odh.station.type"), rootMap);
+            this.pushData(stationtype, rootMap);
         }
     }
 
@@ -228,7 +241,7 @@ public class DataPusher extends NonBlockingJSONPusher {
 
     @Override
     public String initIntegreenTypology() {
-        return env.getProperty("stationtype");
+        return stationtype;
     }
 
     @Override
@@ -243,6 +256,6 @@ public class DataPusher extends NonBlockingJSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,env.getProperty("provenance_name"), env.getProperty("provenance_version"), env.getProperty("origin"));
+		return new ProvenanceDto(null,env.getProperty("provenance_name"), env.getProperty("provenance_version"), origin);
 	}
 }
