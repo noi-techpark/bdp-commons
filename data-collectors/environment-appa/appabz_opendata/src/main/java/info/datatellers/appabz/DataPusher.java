@@ -5,12 +5,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
 
@@ -22,7 +24,7 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 /**
  * @author Nicolò Molinari, Datatellers.
@@ -30,12 +32,26 @@ import it.bz.idm.bdp.json.JSONPusher;
  * This class will map stations, sensors and measurements data into a many levels deep DataMapDto map and return it.
  */
 
-@Component
-public class DataPusher extends JSONPusher {
-    private final ResourceBundle rb = ResourceBundle.getBundle("config");
+@Service
+public class DataPusher extends NonBlockingJSONPusher {
+	
+    @Autowired
+    Environment env;
     private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
     private int stationMeasurements = 0;
     private int totalMeasurements = 0;
+
+    @Value("${odh.station.projection}")
+    private String coordinateReferenceSystem;
+
+    @Value("${odh.station.origin}")
+    private String origin;
+
+    @Value("${odh.station.type}")
+    private String stationtype;
+
+    @Value("${odh.station.rtype}")
+    private String rtype;
 
     /**
      * This method uses the DataFetcher class to retrieve stations metadata from the endpoint-provided
@@ -54,10 +70,10 @@ public class DataPusher extends JSONPusher {
             try {
                 station.setId(rawStation.getAsJsonObject().get("SCODE").getAsString());
                 station.setName(rawStation.getAsJsonObject().get("NAME_I").getAsString());
-                station.setCoordinateReferenceSystem(rb.getString("odh.station.projection"));
-                station.setOrigin(rb.getString("odh.station.origin"));
+                station.setCoordinateReferenceSystem(coordinateReferenceSystem);
+                station.setOrigin(origin);
                 station.getMetaData().put("municipality", this.guessMunicipality(station.getId()));
-                station.setStationType(rb.getString("odh.station.type"));
+                station.setStationType(stationtype);
 
                 station.setLongitude(Double.valueOf(rawStation.getAsJsonObject().get("LONG").getAsString()));
                 station.setLatitude(Double.valueOf(rawStation.getAsJsonObject().get("LAT").getAsString()));
@@ -100,7 +116,7 @@ public class DataPusher extends JSONPusher {
 
             typeDto.setName(types.keySet().toArray()[looper].toString().replace("\"", ""));
             typeDto.setUnit(types.get(types.keySet().toArray()[looper].toString()).replace("\"", ""));
-            typeDto.setRtype(rb.getString("odh.station.rtype"));
+            typeDto.setRtype(rtype);
             typeDto.setPeriod(3600);
 
             typesDto.add(typeDto);
@@ -173,7 +189,7 @@ public class DataPusher extends JSONPusher {
         LOG.info("RootMap filled: " + totalMeasurements + " records collected.");
         if (!test)
         {
-            this.pushData(rb.getString("odh.station.type"), rootMap);
+            this.pushData(stationtype, rootMap);
         }
     }
 
@@ -225,8 +241,7 @@ public class DataPusher extends JSONPusher {
 
     @Override
     public String initIntegreenTypology() {
-        ResourceBundle bundle = ResourceBundle.getBundle("config");
-        return bundle.getString("odh.station.type");
+        return stationtype;
     }
 
     @Override
@@ -241,6 +256,6 @@ public class DataPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,rb.getString("provenance.name"), rb.getString("provenance.version"), rb.getString("odh.station.origin"));
+		return new ProvenanceDto(null,env.getProperty("provenance_name"), env.getProperty("provenance_version"), origin);
 	}
 }

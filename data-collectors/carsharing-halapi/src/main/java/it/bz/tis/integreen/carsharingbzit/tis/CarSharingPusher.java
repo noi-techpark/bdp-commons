@@ -49,8 +49,8 @@ public class CarSharingPusher extends JSONPusher
 		try {
 			URL resource = getClass().getClassLoader().getResource("app.properties");
 			props.load(new FileInputStream(resource.getFile()));
-			provenanceName = props.getProperty("provenance.name");
-			provenanceVersion = props.getProperty("provenance.version");
+			provenanceName = props.getProperty("provenance_name");
+			provenanceVersion = props.getProperty("provenance_version");
 			super.init();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

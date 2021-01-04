@@ -62,7 +62,7 @@ public class DataCom {
 
 			ftp = new FtpTools(knownHostsFile, privateKeyFile,
 					env.getRequiredProperty("ftp.user"), env.getRequiredProperty("ftp.server"),
-					env.getRequiredProperty("ftp.port", Integer.class), env.getRequiredProperty("ftp.pass"),
+					env.getRequiredProperty("ftp.port", Integer.class), env.getRequiredProperty("ftp_pass"),
 					env.getRequiredProperty("ftp.stricthostkeychecking", Boolean.class));
 
 			ChannelSftp c = ftp.connect();
@@ -96,7 +96,7 @@ public class DataCom {
 
 			ftp = new FtpTools(knownHostsFile, privateKeyFile,
 					env.getRequiredProperty("ftp.user"), env.getRequiredProperty("ftp.server"),
-					env.getRequiredProperty("ftp.port", Integer.class), env.getRequiredProperty("ftp.pass"),
+					env.getRequiredProperty("ftp.port", Integer.class), env.getRequiredProperty("ftp_pass"),
 					env.getRequiredProperty("ftp.stricthostkeychecking", Boolean.class));
 
 			ChannelSftp c = ftp.connect();
@@ -136,7 +136,7 @@ public class DataCom {
 
 			ftp = new FtpTools(knownHostsFile, privateKeyFile, env.getRequiredProperty("ftp.user"),
 					env.getRequiredProperty("ftp.server"), env.getRequiredProperty("ftp.port", Integer.class),
-					env.getRequiredProperty("ftp.pass"),
+					env.getRequiredProperty("ftp_pass"),
 					env.getRequiredProperty("ftp.stricthostkeychecking", Boolean.class));
 
 			ChannelSftp c = ftp.connect();
@@ -160,7 +160,7 @@ public class DataCom {
 
 			ftp = new FtpTools(knownHostsFile, privateKeyFile, env.getRequiredProperty("ftp.user"),
 					env.getRequiredProperty("ftp.server"), env.getRequiredProperty("ftp.port", Integer.class),
-					env.getRequiredProperty("ftp.pass"),
+					env.getRequiredProperty("ftp_pass"),
 					env.getRequiredProperty("ftp.stricthostkeychecking", Boolean.class));
 
 			ChannelSftp c = ftp.connect();
@@ -282,7 +282,7 @@ public class DataCom {
 
 			ftp = new FtpTools(knownHostsFile, privateKeyFile, env.getRequiredProperty("ftp.user"),
 					env.getRequiredProperty("ftp.server"), env.getRequiredProperty("ftp.port", Integer.class),
-					env.getRequiredProperty("ftp.pass"),
+					env.getRequiredProperty("ftp_pass"),
 					env.getRequiredProperty("ftp.stricthostkeychecking", Boolean.class));
 
 			ChannelSftp c = ftp.connect();

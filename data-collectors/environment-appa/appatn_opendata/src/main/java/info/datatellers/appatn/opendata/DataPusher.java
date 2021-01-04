@@ -497,6 +497,6 @@ public class DataPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,  rb.getString("provenance.name"), rb.getString("provenance.version"), rb.getString("odh.station.origin"));
+		return new ProvenanceDto(null,  rb.getString("provenance_name"), rb.getString("provenance_version"), rb.getString("odh.station.origin"));
 	}
 }

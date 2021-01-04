@@ -38,8 +38,8 @@ public class A22TrafficJSONPusher extends JSONPusher
 		try {
 			prop.load(in);
 			origin = prop.getProperty("origin");
-			provenanceName = prop.getProperty("provenance.name");
-			provenanceVersion =prop.getProperty("provenance.version");
+			provenanceName = prop.getProperty("provenance_name");
+			provenanceVersion =prop.getProperty("provenance_version");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

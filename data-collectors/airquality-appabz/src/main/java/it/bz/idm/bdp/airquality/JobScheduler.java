@@ -3,6 +3,7 @@ package it.bz.idm.bdp.airquality;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ public class JobScheduler {
 	@Autowired
 	private DataModel model;
 
+
 	public void pushDataToCollector() throws Exception {
 		com.fetchMetaDataFromFTP();
 		model.parseMetaData(env.getRequiredProperty("ftp.folder.local.meta"));
@@ -60,6 +62,7 @@ public class JobScheduler {
 		if (files.length == 0) {
 			return;
 		}
+		Arrays.sort(files,new FileNameComparator());
 		for (File file : files) {
 
 			if (file.isDirectory() || (file.isFile() && !file.getName().endsWith(".dat"))) {
@@ -98,7 +101,7 @@ public class JobScheduler {
 								.getRequiredProperty("ftp.folder.remote.failed"));
 			}
 		}
-		com.sendFeedbackToFTP(RESPONSEFILE);
+		// com.sendFeedbackToFTP(RESPONSEFILE);
 	}
 
 	public void deleteOldFiles() throws Exception {

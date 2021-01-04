@@ -75,19 +75,16 @@ public class FileTools {
 		ZipEntry zipEntry = zipStream.getNextEntry();
 
 		while (zipEntry != null) {
-
-			String fileName = zipEntry.getName();
-			File newFile = new File(outputFolder + File.separator + fileName);
-
-			createWriteableFolderIfNotExists(newFile.getParent());
-			FileOutputStream fos = new FileOutputStream(newFile);
-
-			int len;
-			while ((len = zipStream.read(buffer)) > 0) {
-				fos.write(buffer, 0, len);
+			String[] fileName = zipEntry.getName().split("/");
+			File newFile = new File(outputFolder + File.separator + fileName[fileName.length-1]);
+			if (!zipEntry.isDirectory()){
+				FileOutputStream fos = new FileOutputStream(newFile);
+				int len;
+				while ((len = zipStream.read(buffer)) > 0) {
+					fos.write(buffer, 0, len);
+				}
+				fos.close();
 			}
-
-			fos.close();
 			zipEntry = zipStream.getNextEntry();
 			log.debug("File {} unzipped.", newFile.getAbsoluteFile());
 		}

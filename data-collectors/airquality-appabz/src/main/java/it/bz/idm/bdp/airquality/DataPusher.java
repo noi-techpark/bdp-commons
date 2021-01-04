@@ -15,10 +15,10 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Service
-public class DataPusher extends JSONPusher {
+public class DataPusher extends NonBlockingJSONPusher {
 
 	private static final Logger log = LogManager.getLogger(DataPusher.class.getName());
 
@@ -91,7 +91,7 @@ public class DataPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, env.getProperty("provenance.name"), env.getProperty("provenance.version"), env.getProperty("odh.station.origin"));
+		return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"), env.getProperty("odh.station.origin"));
 	}
 
 	/*

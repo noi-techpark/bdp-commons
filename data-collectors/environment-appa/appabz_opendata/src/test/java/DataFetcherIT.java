@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 
-public class DataFetcherTest {
+public class DataFetcherIT {
 
     private DataFetcher fetcher = new DataFetcher();
-    private static final Logger LOG = LogManager.getLogger(DataFetcherTest.class.getName());
+    private static final Logger LOG = LogManager.getLogger(DataFetcherIT.class.getName());
     private ResourceBundle rb = ResourceBundle.getBundle("test");
 
     @Test
