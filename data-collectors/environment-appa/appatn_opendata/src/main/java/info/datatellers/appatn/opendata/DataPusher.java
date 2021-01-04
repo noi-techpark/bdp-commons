@@ -12,6 +12,9 @@ import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonArray;
@@ -27,7 +30,7 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 /**
  * @author Nicolò Molinari, Datatellers.
@@ -35,15 +38,30 @@ import it.bz.idm.bdp.json.JSONPusher;
  * This class will map stations, sensors and measurements data into a many levels deep DataMapDto map and return it.
  */
 @Component
-public class DataPusher extends JSONPusher {
+public class DataPusher extends NonBlockingJSONPusher {
     public static final String SEPARATOR = "_";
-    private final ResourceBundle rb = ResourceBundle.getBundle("config");
     private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
     private ArrayList<JsonElement> stations;
     private ArrayList<String> pollutersNames = new CSVHandler().getPollutersNames();
-    public final String origin = rb.getString("odh.station.origin");
     private static int dayCounter = 0;
+    
+    @Autowired
+    private Environment env;
+    
+    @Value("${odh.station.projection}")
+    private String coordinateReferenceSystem;
 
+    @Value("${odh.station.origin}")
+    private String origin;
+
+    @Value("${odh.station.type}")
+    private String stationtype;
+    
+    @Value("${odh.station.description}")
+    private String description;
+
+    @Value("${odh.station.rtype}")
+    private String rtype;
     public DataPusher() {}
 
     /**
@@ -70,10 +88,10 @@ public class DataPusher extends JSONPusher {
             station.setName(stationMetadata.get(1));
             station.setLatitude(Double.valueOf(stationMetadata.get(2)));
             station.setLongitude(Double.valueOf(stationMetadata.get(3)));
-            station.getMetaData().put("crs",rb.getString("odh.station.projection"));
+            station.getMetaData().put("crs",coordinateReferenceSystem);
             station.setOrigin(origin);
             station.getMetaData().put("municipality",stationMetadata.get(4));
-            station.setStationType(rb.getString("odh.station.type"));
+            station.setStationType(stationtype);
 
             mappedStations.add(station);
         }
@@ -106,9 +124,9 @@ public class DataPusher extends JSONPusher {
 
             DataTypeDto typeDto = new DataTypeDto();
             typeDto.setName(metaData[1]);
-            typeDto.setDescription(rb.getString("odh.station.description"));
+            typeDto.setDescription(description);
             typeDto.setPeriod(3600);
-            typeDto.setRtype(rb.getString("odh.station.rtype"));
+            typeDto.setRtype(rtype);
             typeDto.setUnit(metaData[3]);
 
             typesMap.put(metaData[2], typeDto);
@@ -214,7 +232,7 @@ public class DataPusher extends JSONPusher {
         LOG.info("Map filled correctly. Syncing map...");
         if (!test){
             safePush(rootMap);
-            this.pushData(rb.getString("odh.station.type"), rootMap);
+            this.pushData(stationtype, rootMap);
         }
         LOG.info("Syncing completed.");
     }
@@ -315,7 +333,7 @@ public class DataPusher extends JSONPusher {
     private void safePush(DataMapDto<RecordDtoImpl> rootMap)
     {
         LOG.info("Syncing data.");
-        this.pushData(rb.getString("odh.station.type"), rootMap);
+        this.pushData(stationtype, rootMap);
 
         String[] rawStationIds = rootMap.getBranch().keySet().toString().replace("[", "").replace("]", "").replace(" ", "").split(",");
         int[] stationIds = new int[rawStationIds.length];
@@ -384,8 +402,7 @@ public class DataPusher extends JSONPusher {
 
     @Override
     public String initIntegreenTypology() {
-        ResourceBundle bundle = ResourceBundle.getBundle("config");
-        return bundle.getString("odh.station.type");
+        return stationtype;
     }
 
     @Override
@@ -497,6 +514,6 @@ public class DataPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,  rb.getString("provenance_name"), rb.getString("provenance_version"), rb.getString("odh.station.origin"));
+		return new ProvenanceDto(null,  env.getProperty("provenance_name"), env.getProperty("provenance_version"), origin);
 	}
 }

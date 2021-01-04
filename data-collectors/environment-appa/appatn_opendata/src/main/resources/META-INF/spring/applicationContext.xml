@@ -12,8 +12,9 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
 	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd " profile="execute">
 	<context:spring-configured/>
-
-	<context:component-scan base-package="info.datatellers.appatn.opendata"/>
+	<context:property-placeholder
+		location="classpath:META-INF/spring/application.properties" />
+	<context:component-scan base-package="it.bz.idm.bdp,info.datatellers.appatn.opendata"/>
 
 	<bean class="info.datatellers.appatn.opendata.JobScheduler" id="jobScheduler"/>
 
