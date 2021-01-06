@@ -4,13 +4,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 /**
  * To map the user and sheet data to a JSON Node and process data to fetch the spreadsheeet
  */
-@Component
+@Service
 public class GraphDataMapper {
 
     @Value("${graph.email}")
