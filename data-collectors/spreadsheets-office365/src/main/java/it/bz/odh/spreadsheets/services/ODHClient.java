@@ -7,13 +7,13 @@ import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
-//@Lazy
-@Component
+@Lazy
+@Service
 public class ODHClient extends NonBlockingJSONPusher {
 
     @Value("${stationtype}")

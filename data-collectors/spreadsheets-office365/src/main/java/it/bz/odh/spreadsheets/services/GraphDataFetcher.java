@@ -1,25 +1,35 @@
-package it.bz.odh.spreadsheets.utils;
+package it.bz.odh.spreadsheets.services;
 
 
-import com.microsoft.aad.msal4j.IAuthenticationResult;
-import com.nimbusds.oauth2.sdk.http.HTTPResponse;
-import it.bz.odh.spreadsheets.services.GraphApiAuthenticator;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
+import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
 
-
+/**
+ * Class that uses the @GraphApiAuthenticator to generate the token and then uses The @GraphDataMapper to extract the download link from the JSON.
+ * <p>
+ * The last change date gets compared, to see if changes where made since last fetch.
+ * So the data gets written to the ODH only if changes in the sheet were made.
+ * <p>
+ * This class is used in the @SyncScheduler to automate the above mentioned.
+ */
 @Service
 public class GraphDataFetcher {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(GraphDataFetcher.class);
+
+
+    @Value("${graph.sheetName}")
+    protected String sheetName;
 
     @Autowired
     private GraphApiAuthenticator graphApiAuthenticator;
@@ -27,113 +37,42 @@ public class GraphDataFetcher {
     @Autowired
     private GraphDataMapper graphDataMapper;
 
-    private String token;
 
+    @PostConstruct
+    private void posConstruct() throws Exception {
 
-//    @PostConstruct
-//    public void posContruct() throws Exception {
-//        // Commented out to be bae to test O-Auth without having to set up al the rest
-////        String token = getToken();
-////        System.out.println("TOKEN: " + token);
-//    }
-
-
-    private String getUser(String accessToken) throws IOException {
-        URL url = new URL("https://graph.microsoft.com/v1.0/users");
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-        conn.setRequestProperty("Accept", "application/json");
-
-        int httpResponseCode = conn.getResponseCode();
-        if (httpResponseCode == HTTPResponse.SC_OK) {
-
-            StringBuilder response;
-            try (BufferedReader in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()))) {
-
-                String inputLine;
-                response = new StringBuilder();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-            }
-            return response.toString();
-        } else {
-            return String.format("Connection returned HTTP code: %s with message: %s",
-                    httpResponseCode, conn.getResponseMessage());
-        }
+        //Check that sheetName property is set correct
+        if (sheetName == null || sheetName.length() == 0)
+            throw new InvalidConfigurationPropertyValueException("sheetName", sheetName, "sheetName must be set in .env file and can't be empty");
+        if (!sheetName.contains(".xlsx") || sheetName.length() < 6)
+            throw new InvalidConfigurationPropertyValueException("sheetName", sheetName, "sheetName must have correct format and end with: .xlsx");
     }
 
-    private String makeDriveRequest(String accessToken, String userId) throws IOException {
-        URL url = new URL("https://graph.microsoft.com/v1.0/users/" + userId + "/drive/root/children");
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-        conn.setRequestProperty("Accept", "application/json");
-
-        int httpResponseCode = conn.getResponseCode();
-        if (httpResponseCode == HTTPResponse.SC_OK) {
-
-            StringBuilder response;
-            try (BufferedReader in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()))) {
-
-                String inputLine;
-                response = new StringBuilder();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-            }
-            return response.toString();
-        } else {
-            return String.format("Connection returned HTTP code: %s with message: %s",
-                    httpResponseCode, conn.getResponseMessage());
-        }
-    }
-
-    public void fetchSheet() throws Exception {
-        checkToken();
-        String downloadLink = getDownloadLink();
-        FileUtils.copyURLToFile(
-                new URL(downloadLink),
-                new File("Book.xlsx"),
-                10000,
-                10000);
-    }
 
     /**
-     * Gets the token if not present yet or expired
+     * Checks token validity, then if sheet had changes it downloads the sheet in .xlsx format
      *
-     * @return true if new token created
+     * @return true if sheet was downloaded
      * @throws Exception
      */
-    private boolean checkToken() throws Exception {
-        if (tokenExpireDate == null || tokenExpireDate.before(new Date())) {
-            IAuthenticationResult result = graphApiAuthenticator.getAccessTokenByClientCredentialGrant();
-            token = result.accessToken();
-            tokenExpireDate = result.expiresOnDate();
+    public boolean fetchSheet() throws Exception {
+        logger.debug("Check if changes in spreadsheet where made");
+
+        String token = graphApiAuthenticator.checkToken();
+
+        String downloadLink = graphDataMapper.getDownloadLink(token);
+
+        // if download link is null, no changes detected
+        if (downloadLink != null) {
+            FileUtils.copyURLToFile(
+                    new URL(downloadLink),
+                    new File(sheetName));
+            logger.debug("Changes detected, downloading sheet");
             return true;
-        }
+        } else
+            logger.debug("No changes detected, download skipped");
+
         return false;
     }
 
-//    public String getItemId(String token) throws Exception {
-//        String userId = getUserId(getUser(token));
-//        String driveRequest = makeDriveRequest(token, userId);
-//        return graphDataMapper.getItemId(driveRequest);
-//    }
-
-//    public String getUserId(String token) throws Exception {
-//        return graphDataMapper.getUserId(token);
-//    }
-
-    private String getDownloadLink() throws Exception {
-        String user = getUser(token);
-        String userId = graphDataMapper.getUserId(user);
-        String driveRequest = makeDriveRequest(token, userId);
-        return graphDataMapper.getDownloadLink(driveRequest);
-    }
 }
