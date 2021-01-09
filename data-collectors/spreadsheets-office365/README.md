@@ -1,6 +1,11 @@
 # Spreadsheets Office365 DataCollector
 
-A data collector to fetch data from an Office 365 Sreadsheet and write the data to the BDP. At the moment the data-collector just prints the Spreadsheet to the console.
+A data collector to fetch data from an Office 365 Worksheet and write the data to the BDP.
+
+A cron job checks if changes were made in the worksheet and downloads the new version in case changes where made.
+Then the data in the sheet gets converted to the BDP.
+The the Writer of the BDP writes the data to the platform
+
 
 ## Table of contents
 
@@ -51,7 +56,7 @@ cd bdp-commons/data-collectors/spreadsheets-office365
 
 #### Microsoft Account
 
-You need a microsoft account to make this app works, so if you don't have one please register.
+You need a microsoft account to make this app works, so if you don't have one please create one.
 
 
 #### Excel Spreadsheet
@@ -61,7 +66,6 @@ The put the values in **application.properties**
 
 ```
 SHEET_NAME=YourSpreadsheet.xlsx
-SINGLE_SHEET_NAMES=Sheet1,Sheet2,Sheet3
 ```
 NOTE: If you leave  SINGLE_SHEET_NAMES empty, all sheets get printed to console
 
@@ -96,19 +100,26 @@ A new Application needs to be created in Azure Active Directories:
     openssl x509 -req -days 365 -in cert.csr -signkey private_key.pem -out cert.crt
     Finally, go back to the Azure portalIn the Application menu blade, click on the Certificates & secrets, in the Certificates section, upload the certificate you created.
 
-6. Take note of Client ID, Tenant ID you can find in Overview in Active Directory and put it into **application.properties**.
+6. Take note of Client ID, Tenant ID you can find in Overview in Active Directory and put it into **application.properties** or **.env** if using Docker.
     Put also the path to the generated certificate and key and add your Account E-Mail you used to *create the Spreadsheet*
     ```
-    AUTHORITY=https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/token
+    TENANT_ID=YOUR_TENANT_ID
     CLIENT_ID=YOUR_CLIENT_ID
     KEY_PATH=YOUR_KEY_PATH
     CERT_PATH=YOUR_CERT_PATH
     EMAIL=YOUR_MICOROSFT_EMAIL
     ```
-7. Config cron to change Scheduler timing in **application.properties** as you desire. When executed, the sheet gets fetched and printed to console
+7. Config cron to change Scheduler timing in **application.properties** or **.env** if using Docker. as you desire. When executed, the sheet gets fetched, compared and written to BDP.
     ```dtd
-    CRON=0 0/1 * * * *
+    CRON=0 6-20 * * 1-5
     ```
+   
+   
+#### O-Auth with ODH
+TBD
+
+#### ODH configuration
+TBD
 
 ### Execute without Docker
 
