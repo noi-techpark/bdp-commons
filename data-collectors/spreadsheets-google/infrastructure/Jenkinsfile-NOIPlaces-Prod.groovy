@@ -40,6 +40,13 @@ pipeline {
                     echo 'stationtype=NOI-Place' >> .env
                     echo 'composite_unique_key=beacon id' >> .env
                     echo 'origin=NOI Techpark' >> .env
+                    echo 'authorizationUri=https://auth.opendatahub.bz.it/auth' >> .env
+                    echo 'tokenUri=https://auth.opendatahub.bz.it/auth/realms/noi/protocol/openid-connect/token' >> .env 
+                    echo 'clientId=odh-mobility-datacollector' >> .env
+                    echo 'clientName=odh-mobility-datacollector' >> .env
+                    echo 'clientSecret=${DATACOLLECTORS_CLIENT_SECRET}' >> .env
+                    echo 'scope=openid' >> .env 
+                    echo 'BASE_URI=https://mobility.share.opendatahub.bz.it/json' >> .env
                     echo -n 'provenance_version=' >> .env
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' pom.xml >> .env
                     echo '' >> .env
@@ -47,7 +54,6 @@ pipeline {
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
                 """
-                sh "cat ${KEYCLOAK_CONFIG} >> ${PROJECT_FOLDER}/.env"
                 sh "cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json"
                 sh """cat "${GOOGLE_CREDENTIALS}" > "${PROJECT_FOLDER}"/src/main/resources/META-INF/credentials/StoredCredential"""
             }
