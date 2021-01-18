@@ -25,16 +25,22 @@ public class DataMappingUtil {
 
     @Value("${headers.addressId}")
     private String addressId;
+
     @Value("${headers.nameId}")
     private String nameId;
+
     @Value("${headers.longitudeId}")
     private String longitudeId;
+
     @Value("${headers.latitudeId}")
     private String latitudeId;
+
     @Value("${spreadsheetId}")
     private String origin;
+
     @Value("${headers.metaDataId}")
     private String metadataId;
+
     @Value("${composite.unique.key}")
     private String[] uniqueIdFields;
 
@@ -159,9 +165,8 @@ public class DataMappingUtil {
             }
             i++;
         }
-//        if (headerMapping.get(addressId) != null && !missingPositions.isEmpty()) {
-//            googleClient.markMissing(missingPositions,headerMapping.get(addressId).intValue(),sheetId);
-//        }
+
+        //TODO print missing positions to info logger
         return dtos;
     }
 
@@ -172,7 +177,7 @@ public class DataMappingUtil {
      */
     public StationDto mapStation(Map<String, Short> headerMapping, List<Object> row) {
         StationDto dto = new StationDto();
-        Short nameIndex = headerMapping.get(nameId.toLowerCase());
+        Short nameIndex = headerMapping.get(nameId);
         Short longIndex = headerMapping.get(longitudeId);
         Short latIndex = headerMapping.get(latitudeId);
         Integer rowSize = row.size();
@@ -196,10 +201,8 @@ public class DataMappingUtil {
         Map<String, Object> metaData = buildMetaDataMap(headerMapping, row);
         dto.setMetaData(metaData);
         dto.setOrigin(origin);
-//        dto.setStationType(odhClient.getIntegreenTypology());
-        dto.setStationType("NOI-Place");
-//        dto.setId(generateUniqueId(dto));
-        dto.setId("plapla");
+        dto.setStationType(odhClient.getIntegreenTypology());
+        dto.setId(generateUniqueId(dto));
         return dto;
     }
 
@@ -231,7 +234,7 @@ public class DataMappingUtil {
         uniqueId.append(dto.getOrigin()).append(":");
         for (String idField : uniqueIdFields) {
             if (dto.getMetaData().get(idField) == null)
-                throw new IllegalStateException("Impossible to create unique identifiert since required filed " + idField + " is missing");
+                throw new IllegalStateException("Impossible to create unique identifier since required filed " + idField + " is missing");
             String value = dto.getMetaData().get(idField).toString();
             if (value != null && !value.isEmpty()) {
                 uniqueId.append(value);

@@ -109,20 +109,20 @@ public class GraphApiAuthenticator {
      */
     protected String checkToken() throws Exception {
 
-        logger.debug("Checking validity of token");
+        logger.info("Checking validity of token");
 
         if (tokenExpireDate == null || tokenExpireDate.before(new Date())) {
 
-            logger.debug("Token expired, get new token");
+            logger.info("Token expired, get new token");
 
             IAuthenticationResult result = getAccessTokenByClientCredentialGrant();
             token = result.accessToken();
             tokenExpireDate = result.expiresOnDate();
 
-            logger.debug("New token, will expire " + tokenExpireDate);
+            logger.info("New token, will expire " + tokenExpireDate);
 
         } else
-            logger.debug("Token still valid until " + tokenExpireDate);
+            logger.info("Token still valid until " + tokenExpireDate);
 
         return token;
     }

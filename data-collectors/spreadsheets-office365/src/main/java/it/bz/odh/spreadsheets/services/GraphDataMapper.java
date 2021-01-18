@@ -65,7 +65,7 @@ public class GraphDataMapper {
     public String getDownloadLink(String token) throws IOException, ParseException {
         String downloadLink = null;
 
-        logger.debug("Getting download link from GraphAPI");
+        logger.info("Getting download link from GraphAPI");
 
         String userId = getUserId(token);
         String driveResponse = makeDriveRequest(userId, token);
@@ -92,7 +92,7 @@ public class GraphDataMapper {
             if (lastChangeDate == null || lastChangeDate.before(currentLastChangeDate)) {
                 // extract download link link from JSON
                 lastChangeDate = currentLastChangeDate;
-                logger.debug("Extracting download link");
+                logger.info("Extracting download link");
                 if (sheetName.equals(jsonNode.get("name").asText().replace("\"", ""))) {
                     downloadLink = jsonNode.get("@microsoft.graph.downloadUrl").asText().replace("\"", "");
                 }

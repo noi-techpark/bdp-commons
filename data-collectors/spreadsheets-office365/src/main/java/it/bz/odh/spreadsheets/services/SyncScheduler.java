@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,9 +40,6 @@ public class SyncScheduler {
     @Autowired
     private GraphDataFetcher graphDataFetcher;
 
-//    @Autowired
-//    private GraphChangeNotificationClient graphChangeNotificationClient;
-
     @Lazy
     @Autowired
     private ODHClient odhClient;
@@ -49,35 +47,28 @@ public class SyncScheduler {
     @Autowired
     private GraphApiAuthenticator graphApiAuthenticator;
 
-//    @PostConstruct
-//    private void postConstruct() throws Exception {
-//        String token = graphDataFetcher.getToken();
-//        graphChangeNotificationClient.makeSubscription(token);
-//    }
+    @PostConstruct
+    private void postConstruct() throws Exception {
+        fetchSheet();
+    }
 
 
     @Autowired
     private DataMappingUtil mappingUtil;
 
-    //    @Scheduled(cron = "${cron.fetch}")
     @Scheduled(cron = "${cron}")
     public void fetchSheet() throws Exception {
-        logger.debug("Cron job manual sync started");
+        logger.info("Cron job manual sync started");
         if (graphDataFetcher.fetchSheet()) {
-            logger.debug("Syncing data with BDP");
+            logger.info("Syncing data with BDP");
             syncData();
-            logger.debug("Done: Syncing data with BDP");
+            logger.info("Done: Syncing data with BDP");
         } else
-            logger.debug("No new changes detected, skip sync with BDP");
+            logger.info("No new changes detected, skip sync with BDP");
 
-        logger.debug("Cron job manual sync end");
+        logger.info("Cron job manual sync end");
     }
 
-    //    @Scheduled(cron = "${cron.subscription}")
-    public void renewSubscription() throws Exception {
-        logger.debug("Fetch sheet started");
-        logger.debug("Fetch sheet done");
-    }
 
     /**
      * Fetches the worksheet from Office365 and converts the data to BDP format
@@ -107,7 +98,7 @@ public class SyncScheduler {
                 List<Object> rowList = new ArrayList<>();
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
-                    rowList.add(cell);
+                    rowList.add(cell.toString());
                 }
                 values.add(rowList);
             }
@@ -117,7 +108,7 @@ public class SyncScheduler {
 
                 if (values.isEmpty() || values.get(0) == null)
                     throw new IllegalStateException("Spreadsheet " + sheet.getSheetName() + " has no header row. Needs to start on top left.");
-                MappingResult result = mappingUtil.mapSheet(values, sheet.getSheetName(), index);
+                MappingResult result = mappingUtil.mapSheet(values, sheet.getSheetName(), index); // TODO ask what id should be put here
                 index++;
                 if (!result.getStationDtos().isEmpty())
                     dtos.addAll(result.getStationDtos());

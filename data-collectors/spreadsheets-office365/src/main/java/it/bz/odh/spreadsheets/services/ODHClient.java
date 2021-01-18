@@ -19,9 +19,9 @@ public class ODHClient extends NonBlockingJSONPusher {
     @Value("${stationtype}")
     private String stationtype;
 
-
     @Value("${provenance.name}")
     private String provenanceName;
+
     @Value("${provenance.version}")
     private String provenanceVersion;
 

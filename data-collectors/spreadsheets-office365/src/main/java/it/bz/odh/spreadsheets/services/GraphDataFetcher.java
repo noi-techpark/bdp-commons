@@ -56,7 +56,7 @@ public class GraphDataFetcher {
      * @throws Exception
      */
     public boolean fetchSheet() throws Exception {
-        logger.debug("Check if changes in spreadsheet where made");
+        logger.info("Check if changes in spreadsheet where made");
 
         String token = graphApiAuthenticator.checkToken();
 
@@ -67,10 +67,10 @@ public class GraphDataFetcher {
             FileUtils.copyURLToFile(
                     new URL(downloadLink),
                     new File(sheetName));
-            logger.debug("Changes detected, downloading sheet");
+            logger.info("Changes detected, downloading sheet");
             return true;
         } else
-            logger.debug("No changes detected, download skipped");
+            logger.info("No changes detected, download skipped");
 
         return false;
     }
