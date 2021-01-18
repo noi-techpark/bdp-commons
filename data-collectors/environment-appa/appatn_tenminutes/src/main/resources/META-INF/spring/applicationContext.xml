@@ -6,8 +6,9 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
 	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd ">
 
-	<context:component-scan base-package="info.datatellers.appatn.tenminutes"/>
-
+	<context:component-scan base-package="info.datatellers.appatn.tenminutes,it.bz.idm.bdp"/>
+	<context:property-placeholder
+		location="classpath:META-INF/spring/application.properties" />
 	<bean class="info.datatellers.appatn.tenminutes.JobScheduler" id="jobScheduler"/>
 
 	<task:scheduler id="Scheduler" pool-size="10" />

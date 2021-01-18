@@ -17,7 +17,7 @@ import info.datatellers.appatn.tenminutes.DataFetcher;
 
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class DataFetcherTest extends AbstractJUnit4SpringContextTests {
+public class DataFetcherIT extends AbstractJUnit4SpringContextTests {
 	
 	DataFetcher fetcher = new DataFetcher();
 	

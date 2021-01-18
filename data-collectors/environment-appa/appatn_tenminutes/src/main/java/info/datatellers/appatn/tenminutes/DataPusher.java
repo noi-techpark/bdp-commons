@@ -7,10 +7,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonArray;
@@ -26,16 +28,38 @@ import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Component
-public class DataPusher extends JSONPusher {
-
-	private ResourceBundle rb = ResourceBundle.getBundle("config");
+public class DataPusher extends NonBlockingJSONPusher {
 
 	private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
+	
+	@Autowired
+	private Environment env;
 
 	private DataMapDto<RecordDtoImpl> rootMap = null;
+	
+	@Value("${odh.station.origin}")
+	private String origin;
+	
+	@Value("${odp.unit.availability.tenminutes}")
+	private String unitAvailability;
+	
+	@Value("${odp.unit.description.tenminutes}")
+	private String unitDescription;
+	
+	@Value("${odp.unit.rtype.tenminutes}")
+	private String unitRType;
+	
+	@Value("${odh.station.type}")
+	private String stationType;
+	
+	@Value("${odh.station.projection}")
+	private String coordinateReferenceSystem;
+	
+    @Autowired
+    private DataFetcher fetcher;
 
 	/**
 	 * Creates the necessary structure to push data via JSONPusher pushData(String,
@@ -69,7 +93,6 @@ public class DataPusher extends JSONPusher {
 		for (int i = 0; i < this.rootMap.getBranch().keySet().size(); i++) {
 			String stationKey = (String) this.rootMap.getBranch().keySet().toArray()[i];
 			DataMapDto<RecordDtoImpl> station = this.rootMap.getBranch().get(stationKey);
-			DataFetcher fetcher = new DataFetcher();
 			for (int a = 0; a < this.rootMap.getBranch().get(this.rootMap.getBranch().keySet().toArray()[i]).getBranch()
 					.keySet().size(); a = a + 2) {
 
@@ -96,7 +119,7 @@ public class DataPusher extends JSONPusher {
 				try {
 					String measurementId = measureMap.getName();
 
-					String stationId = stationKey.substring(rb.getString("odh.station.origin").length() + 1);
+					String stationId = stationKey.substring(origin.length() + 1);
 
 					if (historic) {
 						observations = ((JsonObject) new JsonParser()
@@ -194,20 +217,19 @@ public class DataPusher extends JSONPusher {
 	 * @return data types mapped as DataTypeDto with their source id as key
 	 */
 	public HashMap<String, DataTypeDto> mapDataType(JsonObject rawDataType) {
-		rb = ResourceBundle.getBundle("config");
 		DataTypeDto dataType = new DataTypeDto();
 		DataTypeDto dataTypeAvailability = new DataTypeDto();
 		try {
 			dataType.setName(rawDataType.get("description").getAsString());
 			dataType.setUnit(rawDataType.get("uom").getAsString());
-			dataType.setDescription(rb.getString("odp.unit.description.tenminutes"));
-			dataType.setRtype(rb.getString("odp.unit.rtype.tenminutes"));
+			dataType.setDescription(unitDescription);
+			dataType.setRtype(unitRType);
 
 			dataTypeAvailability.setName(
-					rawDataType.get("description").getAsString() + rb.getString("odp.unit.availability.tenminutes"));
+					rawDataType.get("description").getAsString() + unitAvailability);
 			dataTypeAvailability.setUnit("%");
-			dataTypeAvailability.setDescription(rb.getString("odp.unit.description.tenminutes.availability"));
-			dataTypeAvailability.setRtype(rb.getString("odp.unit.rtype.tenminutes.availability"));
+			dataTypeAvailability.setDescription(unitDescription);
+			dataTypeAvailability.setRtype(unitRType);
 		} catch (JsonParseException e) {
 			LOG.error("ERROR: Data type parsing error, {}", e.getMessage());
 			e.printStackTrace();
@@ -227,7 +249,6 @@ public class DataPusher extends JSONPusher {
 	 * @return StationDto filled with station info
 	 */
 	public StationDto mapStation(JsonObject fetchedStation) {
-		rb = ResourceBundle.getBundle("config");
 		try {
 			String latitude = ((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0))
 					.get("properties")).get("lat").getAsString();
@@ -236,16 +257,16 @@ public class DataPusher extends JSONPusher {
 					.get("properties")).get("lon").getAsString();
 
 			StationDto station = new StationDto(
-					rb.getString("odh.station.origin") + "_"
+					origin + "_"
 							+ ((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0))
 							.get("properties")).get("id").getAsString(),
 					((JsonObject) ((JsonObject) ((JsonArray) fetchedStation.get("features")).get(0)).get("properties"))
 							.get("name").getAsString(),
 					Double.parseDouble(latitude), Double.parseDouble(longitude));
 
-			station.setStationType(rb.getString("odh.station.type"));
-			station.setOrigin(rb.getString("odh.station.origin"));
-			station.setCoordinateReferenceSystem((rb.getString("odh.station.projection")));
+			station.setStationType(stationType);
+			station.setOrigin(origin);
+			station.setCoordinateReferenceSystem(coordinateReferenceSystem);
 
 			return station;
 		} catch (NumberFormatException e) {
@@ -262,13 +283,12 @@ public class DataPusher extends JSONPusher {
 
 	@Override
 	public String initIntegreenTypology() {
-		rb = ResourceBundle.getBundle("config");
-		return rb.getString("odh.station.type");
+		return stationType;
 	}
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, rb.getString("provenance_name"), rb.getString("provenance_version"), rb.getString("odh.station.origin"));
+		return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"), origin);
 	}
 
 }

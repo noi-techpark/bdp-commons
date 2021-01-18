@@ -7,11 +7,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonArray;
@@ -31,8 +31,20 @@ public class JobScheduler {
 
 	private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
 	
+	@Value("${odp.data.history.from.tenminutes}")
+	private String historyFrom;
+	
+	@Value("${odh.station.type}")
+	private String stationType;
+	
+	@Value("${odh.station.origin}")
+	private String origin;
+	
 	@Autowired
 	private DataPusher pusher;
+	
+	@Autowired
+	private DataFetcher fetcher;
 
 	public void collectData() {
 		try {
@@ -46,17 +58,13 @@ public class JobScheduler {
 	public void pushData() throws Exception {
 
 		DataMapDto<RecordDtoImpl> rootMap;
-
-		ResourceBundle rb = ResourceBundle.getBundle("config");
-
 		LOG.info("Scheduled APPATN ten minutes execution started");
 		LOG.debug("Started at {}", new Date());
 
 		rootMap = constructRootMap();
 
-		String startDate = rb.getString("odp.data.history.from.tenminutes");
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date from = format.parse(startDate);
+		Date from = format.parse(historyFrom);
 		Date lastDatabaseEntryDate = format.parse("1970-01-01");
 
 		for (String stationIndex : rootMap.getBranch().keySet()) {
@@ -98,7 +106,7 @@ public class JobScheduler {
 				to = c.getTime();
 				rootMap = pusher.mapDataWithDates(rootMap, from, to);
 
-				pusher.pushData(rb.getString("odh.station.type"), rootMap);
+				pusher.pushData(stationType, rootMap);
 				rootMap = constructRootMap();
 				from = to;
 				c.add(Calendar.DATE, 29);
@@ -111,7 +119,7 @@ public class JobScheduler {
 			c.add(Calendar.DATE, 1);
 			Date tomorrow = c.getTime();
 			rootMap = pusher.mapDataWithDates(rootMap, lastDatabaseEntryDate, tomorrow);
-			pusher.pushData(rb.getString("odh.station.type"), rootMap);
+			pusher.pushData(stationType, rootMap);
 		}
 
 		LOG.info("Scheduled APPATN ten minutes execution completed");
@@ -120,8 +128,6 @@ public class JobScheduler {
 
 	@SuppressWarnings("Duplicates")
 	private DataMapDto<RecordDtoImpl> constructRootMap() {
-		ResourceBundle rb = ResourceBundle.getBundle("config");
-		DataFetcher fetcher = new DataFetcher();
 		JsonElement station;
 
 		// only one station is available so it is not possible to predict the format for
@@ -148,7 +154,7 @@ public class JobScheduler {
 
 		for (StationDto singleStation : stations) {
 			JsonArray sensors = ((JsonArray) new JsonParser().parse(fetcher
-					.fetchSensors(singleStation.getId().substring(rb.getString("odh.station.origin").length() + 1))));
+					.fetchSensors(singleStation.getId().substring(origin.length() + 1))));
 
 			LOG.debug("Parsed JsonArray (sensors) {}", sensors);
 

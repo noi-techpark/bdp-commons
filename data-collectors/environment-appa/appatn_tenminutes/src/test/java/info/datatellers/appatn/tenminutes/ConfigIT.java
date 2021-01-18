@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class ConfigTest extends AbstractJUnit4SpringContextTests {
+public class ConfigIT extends AbstractJUnit4SpringContextTests {
 	
 	private final String[] resources = {
 			"odp.url.stations.tenminutes",

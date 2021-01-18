@@ -4,32 +4,42 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-
-import java.text.SimpleDateFormat;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-
-import java.util.ResourceBundle;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DataFetcher {
 
-	private final ResourceBundle rb = ResourceBundle.getBundle("config");
+	@Autowired
+	private Environment env;
 
 	private static final Logger LOG = LogManager.getLogger(DataFetcher.class.getName());
 
-	private final String endpoint = rb.getString("odp.url.stations.tenminutes");
-	private final String stations_endpoint = endpoint + "stations?key=" + rb.getString("odp.url.stations.tenminutes.key");
+	private String endpoint;
+	private String stations_endpoint;
 
-	private final String observations_endpoint = endpoint + "observations?key="
-			+ rb.getString("odp.url.stations.tenminutes.key");
+	private String observations_endpoint;
+	private String sensors_endpoint;
 
-	private final String sensors_endpoint = endpoint + "sensors?key=" + rb.getString("odp.url.stations.tenminutes.key");
+	@PostConstruct
+	private void init() {
+		endpoint = env.getProperty("odp_url_stations_tenminutes");
+		stations_endpoint = endpoint + "stations?key=" + env.getProperty("odp_url_stations_tenminutes_key");
+		observations_endpoint = endpoint + "observations?key="
+				+ env.getProperty("odp_url_stations_tenminutes_key");
+		sensors_endpoint = endpoint + "sensors?key=" + env.getProperty("odp_url_stations_tenminutes_key");
+	}
 
 	/**
 	 * fetches measurements from observations_endpoint getting station_ID, type_ID,

@@ -21,7 +21,7 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.StationDto;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class DataPusherTest extends AbstractJUnit4SpringContextTests {
+public class DataPusherIT extends AbstractJUnit4SpringContextTests {
 	
 	DataPusher pusher = new DataPusher();
 	
