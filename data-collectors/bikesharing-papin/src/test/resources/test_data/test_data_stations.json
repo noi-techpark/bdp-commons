@@ -1,0 +1,2331 @@
+[
+  {
+    "id":1,
+    "name":{
+      "en":"Papin Sport Villach",
+      "it":"Papin Sport Villach",
+      "de":"Papin Sport Villach"
+    },
+    "latitude":"46.612229",
+    "longitude":"13.849964",
+    "isClose":false,
+    "startHour":"08:00",
+    "endHour":"16:30",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":10,
+    "name":{
+      "en":"Charly's Seelounge",
+      "it":"Charly's Seelounge",
+      "de":"Charly's Seelounge"
+    },
+    "latitude":"46.766479",
+    "longitude":"13.645799",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":11,
+    "name":{
+      "en":"Armin's Bikeverleih",
+      "it":"Armin's Bikeverleih",
+      "de":"Armin's Bikeverleih"
+    },
+    "latitude":"46.803186",
+    "longitude":"13.707054",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":12,
+    "name":{
+      "en":"More - der Spezialist",
+      "it":"More - der Spezialist",
+      "de":"More - der Spezialist"
+    },
+    "latitude":"46.796790",
+    "longitude":"13.490292",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":13,
+    "name":{
+      "en":"Bergbahnen Goldeck - Vertical Lifestyle Goldeck",
+      "it":"Bergbahnen Goldeck - Vertical Lifestyle Goldeck",
+      "de":"Bergbahnen Goldeck - Vertical Lifestyle Goldeck"
+    },
+    "latitude":"46.791725",
+    "longitude":"13.470923",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":17,
+    "name":{
+      "en":"Tourismusinformation Bodensdorf",
+      "it":"Tourismusinformation Bodensdorf",
+      "de":"Tourismusinformation Bodensdorf"
+    },
+    "latitude":"46.685389",
+    "longitude":"13.973668",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":18,
+    "name":{
+      "en":"Tourismusinformation Drobollach",
+      "it":"Tourismusinformation Drobollach",
+      "de":"Tourismusinformation Drobollach"
+    },
+    "latitude":"46.587722",
+    "longitude":"13.917459",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":19,
+    "name":{
+      "en":"Tourismusinformation Ossiach",
+      "it":"Tourismusinformation Ossiach",
+      "de":"Tourismusinformation Ossiach"
+    },
+    "latitude":"46.676288",
+    "longitude":"13.983450",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":25,
+    "name":{
+      "en":"Gasthof Hüttenwirt",
+      "it":"Gasthof Hüttenwirt",
+      "de":"Gasthof Hüttenwirt"
+    },
+    "latitude":"46.636229",
+    "longitude":"14.955461",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":29,
+    "name":{
+      "en":"TVB St.Veit",
+      "it":"TVB St.Veit",
+      "de":"TVB St.Veit"
+    },
+    "latitude":"46.769844",
+    "longitude":"14.360858",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":30,
+    "name":{
+      "en":"Panoramadorf Saualpe",
+      "it":"Panoramadorf Saualpe",
+      "de":"Panoramadorf Saualpe"
+    },
+    "latitude":"46.818964",
+    "longitude":"14.572592",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":34,
+    "name":{
+      "en":"TVB Maria Wörth",
+      "it":"TVB Maria Wörth",
+      "de":"TVB Maria Wörth"
+    },
+    "latitude":"46.616087",
+    "longitude":"14.161691",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":36,
+    "name":{
+      "en":"Gemeinde Keutschach am See",
+      "it":"Gemeinde Keutschach am See",
+      "de":"Gemeinde Keutschach am See"
+    },
+    "latitude":"46.593383",
+    "longitude":"14.187403",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":40,
+    "name":{
+      "en":"Alpencamp Kötschach-Mauthen",
+      "it":"Alpencamp Kötschach-Mauthen",
+      "de":"Alpencamp Kötschach-Mauthen"
+    },
+    "latitude":"46.669605",
+    "longitude":"12.991663",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":41,
+    "name":{
+      "en":"Auto Essl",
+      "it":"Auto Essl",
+      "de":"Auto Essl"
+    },
+    "latitude":"46.627575",
+    "longitude":"13.374635",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":44,
+    "name":{
+      "en":"Ski & Sportschule Katschberg1",
+      "it":"Ski & Sportschule Katschberg1",
+      "de":"Ski & Sportschule Katschberg1"
+    },
+    "latitude":"47.057620",
+    "longitude":"13.614539",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":46,
+    "name":{
+      "en":"Gasthof Post",
+      "it":"Gasthof Post",
+      "de":"Gasthof Post"
+    },
+    "latitude":"46.922463",
+    "longitude":"13.575408",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":49,
+    "name":{
+      "en":"Nationalpark-Info Mautturm Winklern",
+      "it":"Nationalpark-Info Mautturm Winklern",
+      "de":"Nationalpark-Info Mautturm Winklern"
+    },
+    "latitude":"46.871401",
+    "longitude":"12.875589",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":50,
+    "name":{
+      "en":"Penkerwirt",
+      "it":"Penkerwirt",
+      "de":"Penkerwirt"
+    },
+    "latitude":"46.897368",
+    "longitude":"13.260177",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":51,
+    "name":{
+      "en":"Radlerstation Sandhof",
+      "it":"Radlerstation Sandhof",
+      "de":"Radlerstation Sandhof"
+    },
+    "latitude":"46.734423",
+    "longitude":"13.121974",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":52,
+    "name":{
+      "en":"Camping am Waldbad",
+      "it":"Camping am Waldbad",
+      "de":"Camping am Waldbad"
+    },
+    "latitude":"46.731088",
+    "longitude":"13.078691",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":53,
+    "name":{
+      "en":"Touristikbüro Feldkirchen",
+      "it":"Touristikbüro Feldkirchen",
+      "de":"Touristikbüro Feldkirchen"
+    },
+    "latitude":"46.723292",
+    "longitude":"14.091878",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":58,
+    "name":{
+      "en":"Ski & Sportschule Katschberg2",
+      "it":"Ski & Sportschule Katschberg2",
+      "de":"Ski & Sportschule Katschberg2"
+    },
+    "latitude":"47.057620",
+    "longitude":"13.614539",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":59,
+    "name":{
+      "en":"Hotel Royal X",
+      "it":"Hotel Royal X",
+      "de":"Hotel Royal X"
+    },
+    "latitude":"46.813842",
+    "longitude":"13.510227",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":60,
+    "name":{
+      "en":"Gasthaus-Gostisce-Trattoria Ogris",
+      "it":"Gasthaus-Gostisce-Trattoria Ogris",
+      "de":"Gasthaus-Gostisce-Trattoria Ogris"
+    },
+    "latitude":"46.541600",
+    "longitude":"14.136117",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":64,
+    "name":{
+      "en":"Kletterhalle Mühldorf",
+      "it":"Kletterhalle Mühldorf",
+      "de":"Kletterhalle Mühldorf"
+    },
+    "latitude":"46.855400",
+    "longitude":"13.353444",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":65,
+    "name":{
+      "en":"Kinderhotel Benjamin",
+      "it":"Kinderhotel Benjamin",
+      "de":"Kinderhotel Benjamin"
+    },
+    "latitude":"47.006021",
+    "longitude":"13.443039",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":68,
+    "name":{
+      "en":"Papin Sport Innichen Bahnhof",
+      "it":"Papin Sport San Candido Stazione",
+      "de":"Papin Sport Innichen Bahnhof"
+    },
+    "latitude":"46.732841",
+    "longitude":"12.272869",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":69,
+    "name":{
+      "en":"Papin Sport Pension Haunold",
+      "it":"Papin Sport San Candido Baranci",
+      "de":"Papin Sport Pension Haunold"
+    },
+    "latitude":"46.730807",
+    "longitude":"12.277592",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":70,
+    "name":{
+      "en":"Papin Sport Toblach Bahnhof",
+      "it":"Papin Sport Dobbiaco Stazione",
+      "de":"Papin Sport Toblach Bahnhof"
+    },
+    "latitude":"46.724655",
+    "longitude":"12.226446",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":71,
+    "name":{
+      "en":"Papin Sport Winnebach Camping",
+      "it":"Papin Sport Prato alla Drava Camping",
+      "de":"Papin Sport Winnebach Camping"
+    },
+    "latitude":"46.739240",
+    "longitude":"12.365535",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":72,
+    "name":{
+      "en":"Papin Sport Sillian Bahnhof",
+      "it":"Papin Sport Sillian Stazione",
+      "de":"Papin Sport Sillian Bahnhof"
+    },
+    "latitude":"46.745569",
+    "longitude":"12.424967",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":73,
+    "name":{
+      "en":"Papin Sport Lienz Bahnhof",
+      "it":"Papin Sport Lienz Stazione",
+      "de":"Papin Sport Lienz Bahnhof"
+    },
+    "latitude":"46.828551",
+    "longitude":"12.770913",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":76,
+    "name":{
+      "en":"Papin Sport Alpinhotel Keil",
+      "it":"Papin Sport Alpinhotel Keil",
+      "de":"Papin Sport Alpinhotel Keil"
+    },
+    "latitude":"46.757939",
+    "longitude":"12.038106",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":78,
+    "name":{
+      "en":"Papin Sport Bruneck Bahnhof",
+      "it":"Papin Sport Brunico Stazione",
+      "de":"Papin Sport Bruneck Bahnhof"
+    },
+    "latitude":"46.794052",
+    "longitude":"11.929590",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":80,
+    "name":{
+      "en":"Papin Sport Kreaktiv Basecamp Taufers",
+      "it":"Papin Sport Kreaktiv Basecamp Campo Tures",
+      "de":"Papin Sport Kreaktiv Basecamp Taufers"
+    },
+    "latitude":"46.917748",
+    "longitude":"11.954110",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":81,
+    "name":{
+      "en":"Papin Sport St.Lorenzen Camping",
+      "it":"Papin Sport San Lorenzo Camping",
+      "de":"Papin Sport St.Lorenzen Camping"
+    },
+    "latitude":"46.781351",
+    "longitude":"11.898700",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":82,
+    "name":{
+      "en":"Papin Sport Hotel Post",
+      "it":"Papin Sport Hotel Post",
+      "de":"Papin Sport Hotel Post"
+    },
+    "latitude":"46.805728",
+    "longitude":"11.836188",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":83,
+    "name":{
+      "en":"Papin Sport Bahnhof Mühlbach",
+      "it":"Papin Sport Rio Pusteria Stazione",
+      "de":"Papin Sport Bahnhof Mühlbach"
+    },
+    "latitude":"46.797260",
+    "longitude":"11.669784",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":84,
+    "name":{
+      "en":"Papin Sport Cimabanche",
+      "it":"Papin Sport Cimabanche",
+      "de":"Papin Sport Cimabanche"
+    },
+    "latitude":"46.619855",
+    "longitude":"12.182784",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":85,
+    "name":{
+      "en":"Papin Sport Cortina",
+      "it":"Papin Sport Cortina",
+      "de":"Papin Sport Cortina"
+    },
+    "latitude":"46.537886",
+    "longitude":"12.140586",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":86,
+    "name":{
+      "en":"Papin Sport Calalzo",
+      "it":"Papin Sport Calalzo",
+      "de":"Papin Sport Calalzo"
+    },
+    "latitude":"46.442503",
+    "longitude":"12.385697",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":87,
+    "name":{
+      "en":"Papin Bike Center Bozen",
+      "it":"Papin Bike Center Bolzano",
+      "de":"Papin Bike Center Bozen"
+    },
+    "latitude":"46.473456",
+    "longitude":"11.323157",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":88,
+    "name":{
+      "en":"Papin Sport Hotel Mandelhof",
+      "it":"Papin Sport Hotel Mandelhof",
+      "de":"Papin Sport Hotel Mandelhof"
+    },
+    "latitude":"46.463408",
+    "longitude":"11.278448",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":89,
+    "name":{
+      "en":"Marta Sportbar",
+      "it":"Marta Sportbar",
+      "de":"Marta Sportbar"
+    },
+    "latitude":"46.463408",
+    "longitude":"11.278448",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":90,
+    "name":{
+      "en":"Papin Sport Camping Gretl am See",
+      "it":"Papin Sport Camping Gretl am See",
+      "de":"Papin Sport Camping Gretl am See"
+    },
+    "latitude":"46.382263",
+    "longitude":"11.258006",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":93,
+    "name":{
+      "en":"Papin Sport Mals Bahnhof",
+      "it":"Papin Sport Malles Stazione",
+      "de":"Papin Sport Mals Bahnhof"
+    },
+    "latitude":"46.684191",
+    "longitude":"10.549219",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":96,
+    "name":{
+      "en":"Papin Sport Bahnhof Meran",
+      "it":"Papin Sport Merano Stazione",
+      "de":"Papin Sport Bahnhof Meran"
+    },
+    "latitude":"46.673946",
+    "longitude":"11.148322",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"18:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"14:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":97,
+    "name":{
+      "en":"Ferlacher Kommunal GmbH",
+      "it":"Ferlacher Kommunal GmbH",
+      "de":"Ferlacher Kommunal GmbH"
+    },
+    "latitude":"46.525556",
+    "longitude":"14.299855",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":102,
+    "name":{
+      "en":"Albergo da Michele Venzone",
+      "it":"Albergo da Michele Venzone",
+      "de":"Albergo da Michele Venzone"
+    },
+    "latitude":"46.325068",
+    "longitude":"13.132769",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":103,
+    "name":{
+      "en":"Hotel Edenhof Tarvisio",
+      "it":"Hotel Edenhof Tarvisio",
+      "de":"Hotel Edenhof Tarvisio"
+    },
+    "latitude":"46.504652",
+    "longitude":"13.570853",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":104,
+    "name":{
+      "en":"Ambassador Palace Hotel Udine",
+      "it":"Ambassador Palace Hotel Udine",
+      "de":"Ambassador Palace Hotel Udine"
+    },
+    "latitude":"46.058981",
+    "longitude":"13.240550",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":105,
+    "name":{
+      "en":"Hotel Savoy Grado",
+      "it":"Hotel Savoy Grado",
+      "de":"Hotel Savoy Grado"
+    },
+    "latitude":"45.678339",
+    "longitude":"13.393010",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":107,
+    "name":{
+      "en":"Papin Sport Halle Innichen",
+      "it":"Papin Sport Halle San Candido",
+      "de":"Papin Sport Halle Innichen"
+    },
+    "latitude":"46.730885",
+    "longitude":"12.270419",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":111,
+    "name":{
+      "en":"FuGo Freizeitpark am See",
+      "it":"FuGo Freizeitpark am See",
+      "de":"FuGo Freizeitpark am See"
+    },
+    "latitude":"46.762041",
+    "longitude":"13.318733",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":112,
+    "name":{
+      "en":"Freizeitanlage Metnitz",
+      "it":"Freizeitanlage Metnitz",
+      "de":"Freizeitanlage Metnitz"
+    },
+    "latitude":"46.979743",
+    "longitude":"14.201094",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":113,
+    "name":{
+      "en":"Hotel Weidenhof",
+      "it":"Hotel Weidenhof",
+      "de":"Hotel Weidenhof"
+    },
+    "latitude":"46.606993",
+    "longitude":"14.252939",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":116,
+    "name":{
+      "en":"Hotel Holunderhof",
+      "it":"Hotel Holunderhof",
+      "de":"Hotel Holunderhof"
+    },
+    "latitude":"46.841347",
+    "longitude":"12.775655",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":117,
+    "name":{
+      "en":"Alla Vecchia Stazione Ugovizza",
+      "it":"Alla Vecchia Stazione Ugovizza",
+      "de":"Alla Vecchia Stazione Ugovizza"
+    },
+    "latitude":"46.509873",
+    "longitude":"13.474141",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":118,
+    "name":{
+      "en":"Papin Sport Bahnhof Boscoverde",
+      "it":"Papin Sport Bahnhof Boscoverde",
+      "de":"Papin Sport Bahnhof Boscoverde"
+    },
+    "latitude":"46.505986",
+    "longitude":"13.607720",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":183,
+    "name":{
+      "en":"Tourismusinformation Faak am See",
+      "it":"Tourismusinformation Faak am See",
+      "de":"Tourismusinformation Faak am See"
+    },
+    "latitude":"46.565931",
+    "longitude":"13.907876",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":211,
+    "name":{
+      "en":"Gartenhotel Moser",
+      "it":"Gartenhotel Moser",
+      "de":"Gartenhotel Moser"
+    },
+    "latitude":"46.418793",
+    "longitude":"11.283648",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":212,
+    "name":{
+      "en":"Sport Folie",
+      "it":"Sport Folie",
+      "de":"Sport Folie"
+    },
+    "latitude":"46.829814",
+    "longitude":"10.516010",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":243,
+    "name":{
+      "en":"Drausport",
+      "it":"Drausport",
+      "de":"Drausport"
+    },
+    "latitude":"46.773052",
+    "longitude":"13.156807",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":244,
+    "name":{
+      "en":"Test Verleih",
+      "it":"Test Verleih",
+      "de":"Test Verleih"
+    },
+    "latitude":"",
+    "longitude":"",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":245,
+    "name":{
+      "en":"BASECAMP DOLOMITES",
+      "it":"BASECAMP DOLOMITES",
+      "de":"BASECAMP DOLOMITES"
+    },
+    "latitude":"",
+    "longitude":"",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":247,
+    "name":{
+      "en":"Papin Sport Kreaktiv Basecamp Steinhaus",
+      "it":"Papin Sport Kreaktiv Basecamp Cadipietra",
+      "de":"Papin Sport Kreaktiv Basecamp Steinhaus"
+    },
+    "latitude":"",
+    "longitude":"",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":248,
+    "name":{
+      "en":"Tourismusinformation Sattendorf",
+      "it":"Tourismusinformation Sattendorf",
+      "de":"Tourismusinformation Sattendorf"
+    },
+    "latitude":"46.663312",
+    "longitude":"13.915971",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":294,
+    "name":{
+      "en":"Sport Schiffer",
+      "it":"Sport Schiffer",
+      "de":"Sport Schiffer"
+    },
+    "latitude":"46.971574",
+    "longitude":"13.745042",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":295,
+    "name":{
+      "en":"Bäckerei Stocklauser",
+      "it":"Bäckerei Stocklauser",
+      "de":"Bäckerei Stocklauser"
+    },
+    "latitude":"46.849094",
+    "longitude":"14.193240",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":296,
+    "name":{
+      "en":"Pizzeria Bar Ristorante Bucaneve",
+      "it":"Pizzeria Bar Ristorante Bucaneve",
+      "de":"Pizzeria Bar Ristorante Bucaneve"
+    },
+    "latitude":"46.390600",
+    "longitude":"13.473594",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":301,
+    "name":{
+      "en":"Osteria al Fogolar",
+      "it":"Osteria al Fogolar",
+      "de":"Osteria al Fogolar"
+    },
+    "latitude":"46.336811",
+    "longitude":"13.140167",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":303,
+    "name":{
+      "en":"Gardawake",
+      "it":"Gardawake",
+      "de":"Gardawake"
+    },
+    "latitude":"45.501978",
+    "longitude":"10.733291",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":304,
+    "name":{
+      "en":"Gasthof Michal",
+      "it":"Gasthof Michal",
+      "de":"Gasthof Michal"
+    },
+    "latitude":"46.636349",
+    "longitude":"13.141620",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":339,
+    "name":{
+      "en":"Papin Sport Haunold E-Bike",
+      "it":"Papin Sport Baranci E-Bike",
+      "de":"Papin Sport Haunold E-Bike"
+    },
+    "latitude":"46.73079",
+    "longitude":"12.278284",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":340,
+    "name":{
+      "en":"Gasthof Pontiller",
+      "it":"Gasthof Pontiller",
+      "de":"Gasthof Pontiller"
+    },
+    "latitude":"46.748279",
+    "longitude":"12.971162",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":341,
+    "name":{
+      "en":"E-Bike Center Gasthof Tuscherhof",
+      "it":"E-Bike Center Gasthof Tuscherhof",
+      "de":"E-Bike Center Gasthof Tuscherhof"
+    },
+    "latitude":"46.720767",
+    "longitude":"12.139188",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":342,
+    "name":{
+      "en":"Spiel&Rad Kienzl",
+      "it":"Spiel&Rad Kienzl",
+      "de":"Spiel&Rad Kienzl"
+    },
+    "latitude":"46.699945",
+    "longitude":"14.870974",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":344,
+    "name":{
+      "en":"Kaffeehaus Liftstüberl",
+      "it":"Kaffeehaus Liftstüberl",
+      "de":"Kaffeehaus Liftstüberl"
+    },
+    "latitude":"46.541521",
+    "longitude":"13.714282",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":345,
+    "name":{
+      "en":"INTERSPORT Brandstätter",
+      "it":"INTERSPORT Brandstätter",
+      "de":"INTERSPORT Brandstätter"
+    },
+    "latitude":"46.918160",
+    "longitude":"13.873591",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":355,
+    "name":{
+      "en":"Zona Trenta",
+      "it":"Zona Trenta",
+      "de":"Zona Trenta"
+    },
+    "latitude":"45.906805",
+    "longitude":"13.312428",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":359,
+    "name":{
+      "en":"Papin Sport Spondinig Bahnhof",
+      "it":"Papin Sport Spondigna Stazione",
+      "de":"Papin Sport Spondinig Bahnhof"
+    },
+    "latitude":"46.634644",
+    "longitude":"10.610182",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":360,
+    "name":{
+      "en":"Papin Sport Schlanders Bahnhof",
+      "it":"Papin Sport Silandro Stazione",
+      "de":"Papin Sport Schlanders Bahnhof"
+    },
+    "latitude":"46.625623",
+    "longitude":"10.766218",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":361,
+    "name":{
+      "en":"Papin Sport Latsch Bahnhof",
+      "it":"Papin Sport Laces Stazione",
+      "de":"Papin Sport Latsch Bahnhof"
+    },
+    "latitude":"46.619247",
+    "longitude":"10.860385",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":368,
+    "name":{
+      "en":"Alpago",
+      "it":"Alpago",
+      "de":"Alpago"
+    },
+    "latitude":"46.127212",
+    "longitude":"12.350558",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":369,
+    "name":{
+      "en":"Busche",
+      "it":"Busche",
+      "de":"Busche"
+    },
+    "latitude":"46.040248",
+    "longitude":"11.982835",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":370,
+    "name":{
+      "en":"Belluno",
+      "it":"Belluno",
+      "de":"Belluno"
+    },
+    "latitude":"46.140820",
+    "longitude":"12.215905",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":371,
+    "name":{
+      "en":"Sedico",
+      "it":"Sedico",
+      "de":"Sedico"
+    },
+    "latitude":"46.105532",
+    "longitude":"12.094715",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":372,
+    "name":{
+      "en":"Feltre",
+      "it":"Feltre",
+      "de":"Feltre"
+    },
+    "latitude":"46.017409",
+    "longitude":"11.903652",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":373,
+    "name":{
+      "en":"Agordo",
+      "it":"Agordo",
+      "de":"Agordo"
+    },
+    "latitude":"46.279815",
+    "longitude":"12.026068",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":374,
+    "name":{
+      "en":"Quero",
+      "it":"Quero",
+      "de":"Quero"
+    },
+    "latitude":"45.922781",
+    "longitude":"11.931502",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":375,
+    "name":{
+      "en":"Arsie",
+      "it":"Arsie",
+      "de":"Arsie"
+    },
+    "latitude":"45.960610",
+    "longitude":"11.764369",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":378,
+    "name":{
+      "en":"Wolligger Sports KG",
+      "it":"Wolligger Sports KG",
+      "de":"Wolligger Sports KG"
+    },
+    "latitude":"46.989196",
+    "longitude":"13.168759",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":379,
+    "name":{
+      "en":"STS Sport & Travel Service Reisebüro",
+      "it":"STS Sport & Travel Service Reisebüro",
+      "de":"STS Sport & Travel Service Reisebüro"
+    },
+    "latitude":"47.677753",
+    "longitude":"11.200734",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":380,
+    "name":{
+      "en":"Hotel Alpenhof Murnau",
+      "it":"Hotel Alpenhof Murnau",
+      "de":"Hotel Alpenhof Murnau"
+    },
+    "latitude":"47.668527",
+    "longitude":"11.194978",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":381,
+    "name":{
+      "en":"Gasthof zum Stern",
+      "it":"Gasthof zum Stern",
+      "de":"Gasthof zum Stern"
+    },
+    "latitude":"47.689054",
+    "longitude":"11.184498",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":382,
+    "name":{
+      "en":"Hotel am Wald Bad Tölz",
+      "it":"Hotel am Wald Bad Tölz",
+      "de":"Hotel am Wald Bad Tölz"
+    },
+    "latitude":"47.768509",
+    "longitude":"11.558847",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":383,
+    "name":{
+      "en":"Sport Mühlstrasser",
+      "it":"Sport Mühlstrasser",
+      "de":"Sport Mühlstrasser"
+    },
+    "latitude":"47.598914",
+    "longitude":"11.064323",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":384,
+    "name":{
+      "en":"Hotel Terofal Schliersee",
+      "it":"Hotel Terofal Schliersee",
+      "de":"Hotel Terofal Schliersee"
+    },
+    "latitude":"47.733213",
+    "longitude":"11.866259",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":385,
+    "name":{
+      "en":"Schmied von Kochel",
+      "it":"Schmied von Kochel",
+      "de":"Schmied von Kochel"
+    },
+    "latitude":"47.659852",
+    "longitude":"11.367304",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":386,
+    "name":{
+      "en":"Hotel Alpenblick Ohlstadt",
+      "it":"Hotel Alpenblick Ohlstadt",
+      "de":"Hotel Alpenblick Ohlstadt"
+    },
+    "latitude":"47.631650",
+    "longitude":"11.234894",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":387,
+    "name":{
+      "en":"Alpenhof Wallgau",
+      "it":"Alpenhof Wallgau",
+      "de":"Alpenhof Wallgau"
+    },
+    "latitude":"47.516160",
+    "longitude":"11.281818",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":388,
+    "name":{
+      "en":"Sporerhof",
+      "it":"Sporerhof",
+      "de":"Sporerhof"
+    },
+    "latitude":"47.683957",
+    "longitude":"11.195246",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":390,
+    "name":{
+      "en":"Gemeinde Ohlstadt",
+      "it":"Gemeinde Ohlstadt",
+      "de":"Gemeinde Ohlstadt"
+    },
+    "latitude":"47.633839",
+    "longitude":"11.234403",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":391,
+    "name":{
+      "en":"Hotel Maximilian Schwangau",
+      "it":"Hotel Maximilian Schwangau",
+      "de":"Hotel Maximilian Schwangau"
+    },
+    "latitude":"47.587236",
+    "longitude":"10.732488",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":397,
+    "name":{
+      "en":"Stazione Chiusaforte",
+      "it":"Stazione Chiusaforte",
+      "de":"Bahnhof Chiusaforte"
+    },
+    "latitude":"46.409395",
+    "longitude":"13.310772",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":400,
+    "name":{
+      "en":"Das Johannesbad",
+      "it":"Das Johannesbad",
+      "de":"Das Johannesbad"
+    },
+    "latitude":"47.668243",
+    "longitude":"11.047709",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":401,
+    "name":{
+      "en":"Das Graseck",
+      "it":"Das Graseck",
+      "de":"Das Graseck"
+    },
+    "latitude":"47.466760",
+    "longitude":"11.122231",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":402,
+    "name":{
+      "en":"Hotel Alt Wirt",
+      "it":"Hotel Alt Wirt",
+      "de":"Hotel Alt Wirt"
+    },
+    "latitude":"47.845141",
+    "longitude":"11.677708",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":403,
+    "name":{
+      "en":"Hotel Alte Post",
+      "it":"Hotel Alte Post",
+      "de":"Hotel Alte Post"
+    },
+    "latitude":"47.811741",
+    "longitude":"10.896885",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":404,
+    "name":{
+      "en":"Hotel Böld",
+      "it":"Hotel Böld",
+      "de":"Hotel Böld"
+    },
+    "latitude":"47.594505",
+    "longitude":"11.064861",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":405,
+    "name":{
+      "en":"Die Gams Hotel Resort",
+      "it":"Die Gams Hotel Resort",
+      "de":"Die Gams Hotel Resort"
+    },
+    "latitude":"47.506943",
+    "longitude":"10.356944",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":406,
+    "name":{
+      "en":"Hotel Alpchalet Schwanstein",
+      "it":"Hotel Alpchalet Schwanstein",
+      "de":"Hotel Alpchalet Schwanstein"
+    },
+    "latitude":"47.619583",
+    "longitude":"10.809340",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":407,
+    "name":{
+      "en":"Ferien auf dem Bauenhof",
+      "it":"Ferien auf dem Bauenhof",
+      "de":"Ferien auf dem Bauenhof"
+    },
+    "latitude":"47.740731",
+    "longitude":"11.213304",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":408,
+    "name":{
+      "en":"Parkhotel",
+      "it":"Parkhotel",
+      "de":"Parkhotel"
+    },
+    "latitude":"47.694999",
+    "longitude":"11.003336",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":409,
+    "name":{
+      "en":"Hotel zur schönen Aussicht",
+      "it":"Hotel zur schönen Aussicht",
+      "de":"Hotel zur schönen Aussicht"
+    },
+    "latitude":"47.918198",
+    "longitude":"11.904553",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":410,
+    "name":{
+      "en":"Hotel Holl",
+      "it":"Hotel Holl",
+      "de":"Hotel Holl"
+    },
+    "latitude":"47.817782",
+    "longitude":"10.886618",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":411,
+    "name":{
+      "en":"Gasthof Post Raisting",
+      "it":"Gasthof Post Raisting",
+      "de":"Gasthof Post Raisting"
+    },
+    "latitude":"47.911899",
+    "longitude":"11.106679",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":412,
+    "name":{
+      "en":"Stücklhof",
+      "it":"Stücklhof",
+      "de":"Stücklhof"
+    },
+    "latitude":"47.855721",
+    "longitude":"11.403214",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":413,
+    "name":{
+      "en":"Infinity München",
+      "it":"Infinity München",
+      "de":"Infinity München"
+    },
+    "latitude":"48.284332",
+    "longitude":"11.561789",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":414,
+    "name":{
+      "en":"Marienhof",
+      "it":"Marienhof",
+      "de":"Marienhof"
+    },
+    "latitude":"47.757202",
+    "longitude":"11.545682",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":415,
+    "name":{
+      "en":"Arabella Alpenhotel",
+      "it":"Arabella Alpenhotel",
+      "de":"Arabella Alpenhotel"
+    },
+    "latitude":"47.662335",
+    "longitude":"11.887606",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":416,
+    "name":{
+      "en":"Haflinger Hof",
+      "it":"Haflinger Hof",
+      "de":"Haflinger Hof"
+    },
+    "latitude":"47.657370",
+    "longitude":"10.669804",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":417,
+    "name":{
+      "en":"Hotel Sonnenspitz",
+      "it":"Hotel Sonnenspitz",
+      "de":"Hotel Sonnenspitz"
+    },
+    "latitude":"47.655001",
+    "longitude":"11.365590",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":418,
+    "name":{
+      "en":"Vital Hotel die Mittelburg",
+      "it":"Vital Hotel die Mittelburg",
+      "de":"Vital Hotel die Mittelburg"
+    },
+    "latitude":"47.640027",
+    "longitude":"10.437507",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":419,
+    "name":{
+      "en":"Hotel Alpina",
+      "it":"Hotel Alpina",
+      "de":"Hotel Alpina"
+    },
+    "latitude":"47.489712",
+    "longitude":"11.087078",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":420,
+    "name":{
+      "en":"Karma Bavaria",
+      "it":"Karma Bavaria",
+      "de":"Karma Bavaria"
+    },
+    "latitude":"47.740337",
+    "longitude":"11.856242",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":422,
+    "name":{
+      "en":"Minigolfclub Murnau",
+      "it":"Minigolfclub Murnau",
+      "de":"Minigolfclub Murnau"
+    },
+    "latitude":"47.679786",
+    "longitude":"11.190410",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":423,
+    "name":{
+      "en":"Allo Spiedo",
+      "it":"Allo Spiedo",
+      "de":"Allo Spiedo"
+    },
+    "latitude":"46.328850",
+    "longitude":"13.135219",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":430,
+    "name":{
+      "en":"Brauereigasthof Aying",
+      "it":"Brauereigasthof Aying",
+      "de":"Brauereigasthof Aying"
+    },
+    "latitude":"47.970829",
+    "longitude":"11.780824",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":433,
+    "name":{
+      "en":"Papin Sport San Vito",
+      "it":"Papin Sport San Vito",
+      "de":"Papin Sport San Vito"
+    },
+    "latitude":"46.459494",
+    "longitude":"12.205521",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":434,
+    "name":{
+      "en":"Luitpoldpark Hotel",
+      "it":"Luitpoldpark Hotel",
+      "de":"Luitpoldpark Hotel"
+    },
+    "latitude":"47.569748",
+    "longitude":"10.699213",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":441,
+    "name":{
+      "en":"FeWo Staffelsee",
+      "it":"FeWo Staffelsee",
+      "de":"FeWo Staffelsee"
+    },
+    "latitude":"47.744259",
+    "longitude":"11.177579",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":444,
+    "name":{
+      "en":"Hotel Alpenhof Bad Wiessee",
+      "it":"Hotel Alpenhof Bad Wiessee",
+      "de":"Hotel Alpenhof Bad Wiessee"
+    },
+    "latitude":"47.721439",
+    "longitude":"11.723887",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":445,
+    "name":{
+      "en":"Post Hotel Mittenwald",
+      "it":"Post Hotel Mittenwald",
+      "de":"Post Hotel Mittenwald"
+    },
+    "latitude":"47.440519",
+    "longitude":"11.259335",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":447,
+    "name":{
+      "en":"Hotel 4 Jahreszeiten Starnberg",
+      "it":"Hotel 4 Jahreszeiten Starnberg",
+      "de":"Hotel 4 Jahreszeiten Starnberg"
+    },
+    "latitude":"48.001624",
+    "longitude":"48.001624",
+    "isClose":false,
+    "startHour":"09:00",
+    "endHour":"19:00",
+    "lunchBreakStart":"12:00",
+    "lunchBreakEnd":"13:00",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  },
+  {
+    "id":449,
+    "name":{
+      "en":"Papin Sport Welsberg Bahnhof",
+      "it":"Papin Sport Welsberg Bahnhof",
+      "de":"Papin Sport Welsberg Bahnhof"
+    },
+    "latitude":"46.753329",
+    "longitude":"12.107926",
+    "isClose":true,
+    "startHour":"",
+    "endHour":"",
+    "lunchBreakStart":"",
+    "lunchBreakEnd":"",
+    "bikeAvailable":true,
+    "url":"https://www.papinsport.com/"
+  }
+]
