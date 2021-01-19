@@ -1,50 +1,84 @@
 package it.bz.odh.spreadsheets.services;
 
 
-import com.microsoft.aad.msal4j.*;
-import com.nimbusds.oauth2.sdk.http.HTTPResponse;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Collections;
-import java.util.Properties;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
-@Component
+
+/**
+ * Authenticates the client with Microsoft Graph API and handles token generation and validation
+ *
+ * Token is valid for X time, then simply a new token gets requested
+ */
+@Service
 public class GraphApiAuthenticator {
 
-    @Value("${AUTHORITY}")
-    private String authority;
+    private static final Logger logger = LoggerFactory.getLogger(GraphApiAuthenticator.class);
 
-    @Value("${CLIENT_ID}")
+    @Value("${auth.tenant_id}")
+    private String tenantId;
+
+    @Value("${auth.clientId}")
     private String clientId;
 
     private String scope = "https://graph.microsoft.com/.default";
 
-    @Value("${KEY_PATH}")
+    @Value("${auth.keyPath}")
     private String keyPath;
 
-    @Value("${CERT_PATH}")
+    @Value("${auth.certPath}")
     private String certPath;
 
+    private String authority = "https://login.microsoftonline.com/%s/oauth2/token";
 
-    public String getAccessTokenByClientCredentialGrant() throws Exception {
+    private String token;
+
+    private Date tokenExpireDate;
+
+
+    @PostConstruct
+    private void postConstruct() throws Exception {
+
+        //check that properties are set correct
+        if (tenantId == null || tenantId.length() == 0)
+            throw new InvalidConfigurationPropertyValueException("tenantId", tenantId, "tenantId must be set in .env file and can't be empty");
+
+        if (clientId == null || clientId.length() == 0)
+            throw new InvalidConfigurationPropertyValueException("clientId", clientId, "clientId must be set in .env file and can't be empty");
+
+        if (keyPath == null || keyPath.length() == 0)
+            throw new InvalidConfigurationPropertyValueException("keyPath", keyPath, "keyPath must be set in .env file and can't be empty");
+
+        if (certPath == null || certPath.length() == 0)
+            throw new InvalidConfigurationPropertyValueException("certPath", certPath, "certPath must be set in .env file and can't be empty");
+
+
+        authority = String.format(authority, tenantId);
+    }
+
+
+    private IAuthenticationResult getAccessTokenByClientCredentialGrant() throws Exception {
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Files.readAllBytes(Paths.get(keyPath)));
         PrivateKey key = KeyFactory.getInstance("RSA").generatePrivate(spec);
 
@@ -64,7 +98,33 @@ public class GraphApiAuthenticator {
                 .build();
 
         CompletableFuture<IAuthenticationResult> future = app.acquireToken(clientCredentialParam);
-        return future.get().accessToken();
+        return future.get();
+    }
+
+    /**
+     * Gets the token if not present yet or expired
+     *
+     * @return returns the token
+     * @throws Exception
+     */
+    protected String checkToken() throws Exception {
+
+        logger.info("Checking validity of token");
+
+        if (tokenExpireDate == null || tokenExpireDate.before(new Date())) {
+
+            logger.info("Token expired, get new token");
+
+            IAuthenticationResult result = getAccessTokenByClientCredentialGrant();
+            token = result.accessToken();
+            tokenExpireDate = result.expiresOnDate();
+
+            logger.info("New token, will expire " + tokenExpireDate);
+
+        } else
+            logger.info("Token still valid until " + tokenExpireDate);
+
+        return token;
     }
 
 

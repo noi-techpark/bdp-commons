@@ -1,0 +1,7 @@
+.env
+/src/main/resources/application-local.properties
+*.xlsx
+
+# exclude auth keys but keep directory
+/src/main/resources/auth/*
+!/src/main/resources/auth/.gitkeep
