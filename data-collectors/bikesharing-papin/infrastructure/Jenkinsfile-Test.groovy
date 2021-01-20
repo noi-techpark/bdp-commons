@@ -24,7 +24,7 @@ pipeline {
                     echo 'LOG_LEVEL=debug' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
                     echo 'app_auth_token=${AUTH_TOKEN}' >> .env
-                    echo 'app_origin=BIKE_SHARING_BOLZANO' >> .env
+                    echo 'app_origin=BIKE_SHARING_PAPIN' >> .env
                     echo 'authorizationUri=https://auth.opendatahub.testingmachine.eu/auth' >> .env
                     echo 'tokenUri=https://auth.opendatahub.testingmachine.eu/auth/realms/noi/protocol/openid-connect/token' >> .env 
                     echo 'clientId=odh-mobility-datacollector' >> .env
