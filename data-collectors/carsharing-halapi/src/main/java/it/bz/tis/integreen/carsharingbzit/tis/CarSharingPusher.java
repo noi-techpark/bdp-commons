@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 /**
  *
@@ -38,7 +38,7 @@ import it.bz.idm.bdp.json.JSONPusher;
  */
 
 @Component
-public class CarSharingPusher extends JSONPusher
+public class CarSharingPusher extends NonBlockingJSONPusher
 {
 	
 	private String provenanceName;
@@ -49,8 +49,8 @@ public class CarSharingPusher extends JSONPusher
 		try {
 			URL resource = getClass().getClassLoader().getResource("app.properties");
 			props.load(new FileInputStream(resource.getFile()));
-			provenanceName = props.getProperty("provenance_name");
-			provenanceVersion = props.getProperty("provenance_version");
+			provenanceName = props.getProperty("provenance.name");
+			provenanceVersion = props.getProperty("provenance.version");
 			super.init();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
