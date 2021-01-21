@@ -124,14 +124,14 @@ public class BikesharingMoqoDataPusherIT extends AbstractJUnit4SpringContextTest
 
     private List<BikeDto> readPushData() throws Exception {
         //Convert station data
-        String responseString = BikesharingMoqoDataRetrieverTest.getTestData(BikesharingMoqoDataRetrieverTest.DATA_FETCH_STATIONS, ServiceCallParam.FUNCTION_NAME_PAGE_NUM, "1");
+        String responseString = BikesharingMoqoDataRetrieverTestIT.getTestData(BikesharingMoqoDataRetrieverTestIT.DATA_FETCH_STATIONS, ServiceCallParam.FUNCTION_NAME_PAGE_NUM, "1");
         BikesharingMoqoPageDto bikesharingMoqoPageDto = converter.convertCarsResponseToInternalDTO(responseString);
         List<BikeDto> data = bikesharingMoqoPageDto.getBikeList();
 
         //Convert availability data
         for (BikeDto bikeDto : data) {
             String bikeId = bikeDto.getId();
-            String responseStringAvail = BikesharingMoqoDataRetrieverTest.getTestData(BikesharingMoqoDataRetrieverTest.DATA_FETCH_MEASUREMENTS, ServiceCallParam.FUNCTION_NAME_STATION_ID, bikeId);
+            String responseStringAvail = BikesharingMoqoDataRetrieverTestIT.getTestData(BikesharingMoqoDataRetrieverTestIT.DATA_FETCH_MEASUREMENTS, ServiceCallParam.FUNCTION_NAME_STATION_ID, bikeId);
             if ( DCUtils.paramNotNull(responseStringAvail) ) {
                 List<AvailabilityDto> availDtoList = converter.convertAvailabilityResponseToInternalDTO(responseStringAvail);
                 bikeDto.setAvailabilityList(availDtoList);

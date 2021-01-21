@@ -32,9 +32,9 @@ import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class BikesharingMoqoDataRetrieverTest extends AbstractJUnit4SpringContextTests {
+public class BikesharingMoqoDataRetrieverTestIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(BikesharingMoqoDataRetrieverTest.class.getName());
+    private static final Logger LOG = LogManager.getLogger(BikesharingMoqoDataRetrieverTestIT.class.getName());
 
     @Autowired
     private BikesharingMoqoDataPusher pusher;
@@ -212,7 +212,7 @@ public class BikesharingMoqoDataRetrieverTest extends AbstractJUnit4SpringContex
             if ( DCUtils.paramNotNull(paramName) && paramValue != null ) {
                 fileName = fileName.replace(paramName, paramValue);
             }
-            URL url = BikesharingMoqoDataRetrieverTest.class.getResource(fileName);
+            URL url = BikesharingMoqoDataRetrieverTestIT.class.getResource(fileName);
             if ( url == null ) {
                 return null;
             }

@@ -39,8 +39,8 @@ public class BikesharingMoqoDataConverter {
 
     public static final String STATION_FUTURE_AVAIL_MINS = "app.station.future_availability.minutes";
 
-    public static final String AUTH_TOKEN_KEY            = "app.auth.token";
-    public static final String SELECTED_TEAM_KEY         = "app.auth.selectedTeam";
+    public static final String AUTH_TOKEN_KEY            = "app_auth_token";
+    public static final String SELECTED_TEAM_KEY         = "app_auth_selectedTeam";
 
     @Autowired
     private Environment env;

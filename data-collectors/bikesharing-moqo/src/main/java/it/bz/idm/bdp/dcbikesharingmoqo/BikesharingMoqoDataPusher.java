@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +19,10 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Service
-public class BikesharingMoqoDataPusher extends JSONPusher {
+public class BikesharingMoqoDataPusher extends NonBlockingJSONPusher {
 
     private static final Logger LOG = LogManager.getLogger(BikesharingMoqoDataPusher.class.getName());
 
@@ -31,6 +32,8 @@ public class BikesharingMoqoDataPusher extends JSONPusher {
     @Autowired
     private BikesharingMoqoDataConverter converter;
 
+    @Value("${app.origin}")
+    private String origin;
     private List<DataTypeDto> dataTypes;
 
     public BikesharingMoqoDataPusher() {
@@ -177,7 +180,7 @@ public class BikesharingMoqoDataPusher extends JSONPusher {
 
     @Override
     public ProvenanceDto defineProvenance() {
-        return new ProvenanceDto(null,env.getProperty("provenance_name"), env.getProperty("provenance_version"),  env.getProperty("app.origin"));
+        return new ProvenanceDto(null,env.getProperty("provenance_name"), env.getProperty("provenance_version"), origin);
     }
 
 }
