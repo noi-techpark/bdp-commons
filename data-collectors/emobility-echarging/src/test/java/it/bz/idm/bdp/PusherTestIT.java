@@ -28,7 +28,7 @@ import it.bz.idm.bdp.service.dto.ChargingPositionDto;
 import it.bz.idm.bdp.service.dto.OutletDtoV2;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class PusherTest extends AbstractJUnit4SpringContextTests{
+public class PusherTestIT extends AbstractJUnit4SpringContextTests{
 
 	@Autowired
 	private ChargePusher pusher;

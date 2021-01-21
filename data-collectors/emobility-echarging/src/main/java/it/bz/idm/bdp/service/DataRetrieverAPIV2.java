@@ -44,14 +44,14 @@ public class DataRetrieverAPIV2 {
 	@PostConstruct
 	private void initClient(){
 		if (client==null){
-			endPoint = new HttpHost(env.getRequiredProperty("endpoint.host"), env.getProperty("endpoint.port", Integer.class, 443) , ("yes").equals(env.getProperty("endpoint.ssl"))?"https":"http");
+			endPoint = new HttpHost(env.getRequiredProperty("endpoint_host"), env.getProperty("endpoint_port", Integer.class, 443) , ("yes").equals(env.getProperty("endpoint_ssl"))?"https":"http");
 			localContext = HttpClientContext.create();
 			client = builder.build();
 		}
 	}
 	private String fetchResponseEntity(String path) {
 		HttpGet get = new HttpGet(path);
-		String xcallerHeader = env.getProperty("app.callerId");
+		String xcallerHeader = env.getProperty("app_callerId");
 		String apikey = env.getProperty("app.apikey");
 		if (xcallerHeader != null)
 			get.setHeader("X-Caller-ID",xcallerHeader);
@@ -75,7 +75,7 @@ public class DataRetrieverAPIV2 {
 	}
 	public List<ChargerDtoV2> fetchStations() {
 		if (stations == null){
-			String responseEntity = fetchResponseEntity(env.getProperty("endpoint.path"));
+			String responseEntity = fetchResponseEntity(env.getProperty("endpoint_path"));
 			try {
 				stations = mapper.readValue(responseEntity,new TypeReference<List<ChargerDtoV2>>() {});
 			} catch (JsonParseException e) {

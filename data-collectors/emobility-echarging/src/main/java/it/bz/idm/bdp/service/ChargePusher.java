@@ -15,16 +15,16 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 import it.bz.idm.bdp.service.dto.ChargerDtoV2;
 import it.bz.idm.bdp.service.dto.ChargingPointsDtoV2;
 
 @Service
-public class ChargePusher extends JSONPusher {
+public class ChargePusher extends NonBlockingJSONPusher {
 
 	private static final String E_CHARGING_PLUG_TYPOLOGY = "EChargingPlug";
 
-	private static final String ORIGIN_KEY = "app.dataOrigin";
+	private static final String ORIGIN_KEY = "app_dataOrigin";
 
 	@Autowired
 	private Environment env;
@@ -50,7 +50,7 @@ public class ChargePusher extends JSONPusher {
 		List<ChargerDtoV2> data = (List<ChargerDtoV2>) rawData;
 		DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
 		Date now = new Date();
-
+		Integer period = env.getProperty("app_period", Integer.class);
 		for(ChargerDtoV2 dto : data) {
 
 			if ("REMOVED".equals(dto.getState()))
@@ -63,7 +63,7 @@ public class ChargePusher extends JSONPusher {
 				if (env.getRequiredProperty("plug.status.available").equals(point.getState()))
 					availableStations++;
 				SimpleRecordDto record = new SimpleRecordDto(now.getTime(),availableStations.doubleValue());
-				record.setPeriod(env.getProperty("app.period", Integer.class));
+				record.setPeriod(period);
 				records.add(record);
 				DataMapDto<RecordDtoImpl> dataSet = new DataMapDto<>(records);
 				recordsByType.getBranch().put(DataTypeDto.NUMBER_AVAILABE, dataSet);
@@ -128,19 +128,24 @@ public class ChargePusher extends JSONPusher {
 	public DataMapDto<RecordDtoImpl> mapPlugData2Bdp(List<ChargerDtoV2> data) {
 		if (data == null)
 			return null;
+		Integer period = env.getProperty("app_period", Integer.class);
+
 		DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
 		Date now = new Date();
 		for(ChargerDtoV2 dto: data ){
 			for (ChargingPointsDtoV2 point:dto.getChargingPoints()){
-				DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<RecordDtoImpl>();
-				List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
-				SimpleRecordDto record = new SimpleRecordDto();
-				record.setTimestamp(now.getTime());
-				record.setValue(point.getState().equals("AVAILABLE") ? 1. : 0);
-				record.setPeriod(env.getProperty("app.period", Integer.class));
-				records.add(record);
-				recordsByType.getBranch().put("echarging-plug-status", new DataMapDto<RecordDtoImpl>(records));
-				map.getBranch().put(dto.getId()+"-"+point.getOutlets().get(0).getId(), recordsByType);
+				if (point.getState() != null){
+					DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<RecordDtoImpl>();
+					List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
+					SimpleRecordDto record = new SimpleRecordDto();
+					record.setTimestamp(now.getTime());
+					
+					record.setValue(point.getState().equals("AVAILABLE") ? 1. : 0);
+					record.setPeriod(period);
+					records.add(record);
+					recordsByType.getBranch().put("echarging-plug-status", new DataMapDto<RecordDtoImpl>(records));
+					map.getBranch().put(dto.getId()+"-"+point.getOutlets().get(0).getId(), recordsByType);
+				}
 			}
 		}
 		return map;

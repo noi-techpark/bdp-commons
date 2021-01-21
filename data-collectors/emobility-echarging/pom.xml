@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>dc-emobility-echarging</artifactId>
@@ -9,9 +11,10 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>4.3.20.RELEASE</spring.version>
-		<!-- This property must be overwritten by Maven environment variables, i.e., -DfinalName=... -->
-		<finalName>dc-should-not-happen</finalName>
+		<spring.version>5.2.12.RELEASE</spring.version>
+		<!-- This property must be overwritten by Maven environment variables, 
+			i.e., -DfinalName=... -->
+		<finalName>ROOT</finalName>
 	</properties>
 	<repositories>
 		<repository>
@@ -98,7 +101,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>3.3.5</version>
+			<version>5.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -130,20 +133,20 @@
 				<version>2.21.0</version>
 				<configuration>
 					<useSystemClassLoader>false</useSystemClassLoader>
-		                </configuration>
+				</configuration>
 			</plugin>
 			<plugin>
-			        <groupId>org.apache.maven.plugins</groupId>
-			        <artifactId>maven-failsafe-plugin</artifactId>
-			        <version>2.20.1</version>
-			        <executions>
-			          <execution>
-			            <goals>
-			              <goal>integration-test</goal>
-			              <goal>verify</goal>
-			            </goals>
-			          </execution>
-			        </executions>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.20.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
