@@ -16,18 +16,17 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Component
-public class CarpoolingPusher extends JSONPusher {
+public class CarpoolingPusher extends NonBlockingJSONPusher {
 
 	private static final Integer DEFAULT_PERIOD = 3600;
 	private static final String INNOVIE_STATION_IDENTIFIER = "carpooling:innovie";
 
-	@Value("${provenance_name}")
-	private String provenanceName;
-	@Value("${provenance_version}")
-	private String provenanceVersion;
+	@Autowired
+	private Environment env;
+	
 	@Value("${data.origin}")
 	private String origin;
 	
@@ -83,7 +82,7 @@ public class CarpoolingPusher extends JSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, provenanceName,provenanceVersion, origin);
+		return new ProvenanceDto(null, env.getProperty("provenance_name"),env.getProperty("provenance_version"), origin);
 	}
 
 }
