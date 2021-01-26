@@ -4,10 +4,11 @@ pipeline {
     environment {
         PROJECT = "emobility-echarging"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
-        ARTIFACT_NAME = "dc-${PROJECT}-alperia"
+        ARTIFACT_NAME = "dc-${PROJECT}-nevicam"
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/dc-emobility-echarging'
         DOCKER_TAG = "prod-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret-prod')
+        API_KEY=credentials('nevicam-api-key')
     }
 
     stages {
@@ -31,12 +32,13 @@ pipeline {
                     echo '' >> .env
                     echo 'provenance_name=${ARTIFACT_NAME}' >> .env 
                     echo 'BASE_URI=https://mobility.share.opendatahub.bz.it/json' >> .env
-                    echo 'endpoint_host=api.alperia-emobility.eu' >> .env
-                    echo 'endpoint_port=80' >> .env
-                    echo 'endpoint_ssl=no' >> .env
-                    echo 'endpoint_path=/e-mobility/api/v3/chargingunits?includePartners=false' >> .env
+                    echo 'endpoint_host=mobility.nevicam.it' >> .env
+                    echo 'endpoint_port=443' >> .env
+                    echo 'endpoint_ssl=yes' >> .env
+                    echo 'endpoint_path=/apiv0/m2' >> .env
                     echo 'app_callerId=NOI-Techpark' >> .env
-                    echo 'app_dataOrigin=ALPERIA' >> .env
+                    echo 'app_apikey=${API_KEY}' >> .env
+                    echo 'app_dataOrigin=Nevicam' >> .env
                     echo 'app_period=600' >> .env
                 """
             }

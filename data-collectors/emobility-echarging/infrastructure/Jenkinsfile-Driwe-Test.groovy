@@ -2,7 +2,6 @@ pipeline {
     agent any
     
     environment {
-        SERVER_PORT="1021"
         PROJECT = "emobility-echarging"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}-driwe"
@@ -18,7 +17,6 @@ pipeline {
                 sh """
                     cd ${PROJECT_FOLDER}
                     echo 'COMPOSE_PROJECT_NAME=${ARTIFACT_NAME}' > .env
-                    echo 'SERVER_PORT=${SERVER_PORT}' >> .env
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
                     echo 'LOG_LEVEL=debug' >> .env
