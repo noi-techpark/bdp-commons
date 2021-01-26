@@ -52,7 +52,7 @@ public class DataRetrieverAPIV2 {
 	private String fetchResponseEntity(String path) {
 		HttpGet get = new HttpGet(path);
 		String xcallerHeader = env.getProperty("app_callerId");
-		String apikey = env.getProperty("app.apikey");
+		String apikey = env.getProperty("app_apikey");
 		if (xcallerHeader != null)
 			get.setHeader("X-Caller-ID",xcallerHeader);
 		if (apikey != null)
