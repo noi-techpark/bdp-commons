@@ -88,9 +88,11 @@ public class ODController {
 					station.setLatitude(coordinatesByIdentifier[1]);
 				}
 				Map<String, Object> metaDataByIdentifier = mappingUtil.getMetaDataByIdentifier(stationName);
-				Map<String, Object> cleanMap = mappingUtil.mergeTranslations(metaDataByIdentifier);
-				if (cleanMap != null)
-					station.getMetaData().putAll(cleanMap);
+				if (metaDataByIdentifier != null) {
+					Map<String, Object> cleanMap = mappingUtil.mergeTranslations(metaDataByIdentifier);
+					if (cleanMap != null)
+						station.getMetaData().putAll(cleanMap);
+				}
 				station.setName(stationName);
 				station.setId(stationName);
 				station.setStationType(env.getRequiredProperty("stationtype"));
