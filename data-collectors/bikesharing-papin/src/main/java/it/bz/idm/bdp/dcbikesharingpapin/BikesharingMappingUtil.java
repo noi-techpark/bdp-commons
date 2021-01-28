@@ -45,6 +45,20 @@ public class BikesharingMappingUtil {
         DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
         Integer period = converter.getPeriod();
 
+        //All necessary information is stored in BikesharingPapinStationDto
+        for (BikesharingPapinStationDto station : data) {
+
+            Long measurementTimestamp = station.getMeasurementTimestamp();
+
+            //Level 1. Station
+            String stationId = station.getId();
+            DataMapDto<RecordDtoImpl> recordsByStation = new DataMapDto<RecordDtoImpl>();
+            map.getBranch().put(stationId, recordsByStation);
+
+            addMeasurementForStationAndType(period, measurementTimestamp, stationId, recordsByStation, BikesharingPapinDataConverter.DATA_TYPE_STATION_AVAILABILITY,    station.getState());
+            addMeasurementForStationAndType(period, measurementTimestamp, stationId, recordsByStation, BikesharingPapinDataConverter.DATA_TYPE_STATION_IS_CLOSE,        station.getClose());
+        }
+
         if ( LOG.isDebugEnabled() ) {
             logMapData(map);
             LOG.debug("END.mapStationData");
@@ -77,7 +91,7 @@ public class BikesharingMappingUtil {
     }
 
     /**
-     * Return a static list of DataTypeDtos: Station
+     * Return a static list of DataTypeDtos, for the three type of stations: Station
      * 
      * @return
      */
@@ -85,9 +99,32 @@ public class BikesharingMappingUtil {
         if ( dataTypes == null ) {
             dataTypes = new ArrayList<DataTypeDto>();
             //Station
-            //dataTypes.add(new DataTypeDto(BikesharingPapinDataConverter.DATA_TYPE_STATION_AVAILABILITY,    null, BikesharingPapinDataConverter.DATA_TYPE_STATION_AVAILABILITY,    null, converter.getPeriod()));
+            dataTypes.add(new DataTypeDto(BikesharingPapinDataConverter.DATA_TYPE_STATION_AVAILABILITY,    null, BikesharingPapinDataConverter.DATA_TYPE_STATION_AVAILABILITY,    null, converter.getPeriod()));
+            dataTypes.add(new DataTypeDto(BikesharingPapinDataConverter.DATA_TYPE_STATION_IS_CLOSE,        null, BikesharingPapinDataConverter.DATA_TYPE_STATION_IS_CLOSE,        null, converter.getPeriod()));
         }
         return dataTypes;
+    }
+
+    private void addMeasurementForStationAndType(Integer period, Long measurementTimestamp, String stationId, DataMapDto<RecordDtoImpl> recordsByStation, String dataTypeName, Object measurementValue) {
+        if ( DCUtils.paramNotNull(measurementValue) && measurementTimestamp != null ) {
+            SimpleRecordDto record = new SimpleRecordDto();
+            record.setValue(measurementValue);
+            record.setTimestamp(measurementTimestamp);
+            record.setPeriod(period);
+
+            //Check if we already treated this type (branch), if not found create the map and the list of records
+            DataMapDto<RecordDtoImpl> recordsByType = recordsByStation.getBranch().get(dataTypeName);
+            if ( recordsByType == null ) {
+                recordsByType = new DataMapDto<RecordDtoImpl>();
+                recordsByStation.getBranch().put(dataTypeName, recordsByType);
+            }
+
+            //Add the measure in the list
+            List<RecordDtoImpl> records = recordsByType.getData();
+            records.add(record);
+
+            LOG.debug("ADD  MEASURE:  id="+stationId+", typeName="+dataTypeName+"  value="+measurementValue);
+        }
     }
 
     private void logMapData(DataMapDto<RecordDtoImpl> map) {

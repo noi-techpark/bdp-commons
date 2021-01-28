@@ -21,8 +21,8 @@ public class BikesharingPapinDataConverter {
 
     private static final Logger LOG = LogManager.getLogger(BikesharingPapinDataConverter.class.getName());
 
-    //public static final String DATA_TYPE_STATION_AVAILABILITY        = DataTypeDto.AVAILABILITY;
-    //public static final String DATA_TYPE_STATION_NUMBER_AVAILABE     = DataTypeDto.NUMBER_AVAILABE;
+    public static final String DATA_TYPE_STATION_AVAILABILITY             = DataTypeDto.AVAILABILITY;
+    public static final String DATA_TYPE_STATION_IS_CLOSE                 = "is-closed";
 
     public static final String STATION_METADATA_STATION_IS_CLOSE          = "isClose";
     public static final String STATION_METADATA_STATION_START_HOUR        = "startHour";
@@ -155,12 +155,12 @@ public class BikesharingPapinDataConverter {
             stationDto.setLatitude(bikesharingStationDto.getLatitude());
             stationDto.setLongitude(bikesharingStationDto.getLongitude());
 
-            stationMetaData.put(BikesharingPapinDataConverter.STATION_METADATA_STATION_IS_CLOSE, bikesharingStationDto.getIsClose() );
+            //stationMetaData.put(BikesharingPapinDataConverter.STATION_METADATA_STATION_IS_CLOSE, bikesharingStationDto.getIsClose() );
             stationMetaData.put(BikesharingPapinDataConverter.STATION_METADATA_STATION_START_HOUR, bikesharingStationDto.getStartHour() );
             stationMetaData.put(BikesharingPapinDataConverter.STATION_METADATA_STATION_END_HOUR, bikesharingStationDto.getEndHour() );
             stationMetaData.put(BikesharingPapinDataConverter.STATION_METADATA_STATION_LUNCH_BREAK_START, bikesharingStationDto.getLunchBreakStart() );
             stationMetaData.put(BikesharingPapinDataConverter.STATION_METADATA_STATION_LUNCH_BREAK_END, bikesharingStationDto.getLunchBreakEnd() );
-            stationMetaData.put(BikesharingPapinDataConverter.STATION_METADATA_STATION_BIKE_AVAILABLE, bikesharingStationDto.getBikeAvailable() );
+            //stationMetaData.put(BikesharingPapinDataConverter.STATION_METADATA_STATION_BIKE_AVAILABLE, bikesharingStationDto.getBikeAvailable() );
             stationMetaData.put(BikesharingPapinDataConverter.STATION_METADATA_STATION_URL, bikesharingStationDto.getUrl() );
 
             //Call to setMetaData must be done when the Map is completely filled
@@ -200,7 +200,7 @@ public class BikesharingPapinDataConverter {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("dto: "+dto); 
+            LOG.debug("dto: "+dto);
         }
         return dto;
     }
