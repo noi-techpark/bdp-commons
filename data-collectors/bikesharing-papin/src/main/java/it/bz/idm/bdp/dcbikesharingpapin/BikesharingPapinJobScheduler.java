@@ -49,6 +49,12 @@ public class BikesharingPapinJobScheduler {
                 pusher.syncStations(BikesharingPapinDataConverter.STATION_TYPE_STATION, stations);
             }
 
+            //Push measurements, we have three Station Types: Station
+            DataMapDto<RecordDtoImpl> stationRec = mapper.mapStationData(data);
+            if (stationRec != null){
+                pusher.pushData(BikesharingPapinDataConverter.STATION_TYPE_STATION, stationRec);
+            }
+
         } catch (HttpClientErrorException e) {
             LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
             throw e;
@@ -57,5 +63,26 @@ public class BikesharingPapinJobScheduler {
             throw e;
         }
         LOG.info("END.pushData");
+    }
+
+    /** JOB 2 */
+    public void pushDataTypes() throws Exception {
+        LOG.info("START.pushDataTypes");
+
+        try {
+            List<DataTypeDto> dataTypes = mapper.mapDataTypes2Bdp();
+
+            if (dataTypes != null){
+                pusher.syncDataTypes(dataTypes);
+            }
+
+        } catch (HttpClientErrorException e) {
+            LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
+            throw e;
+        } catch (Exception e) {
+            LOG.error(pusher + " - " + e, e);
+            throw e;
+        }
+        LOG.info("END.pushDataTypes");
     }
 }

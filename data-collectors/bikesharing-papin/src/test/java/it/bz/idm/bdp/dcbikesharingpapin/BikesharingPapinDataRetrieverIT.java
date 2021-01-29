@@ -47,4 +47,23 @@ public class BikesharingPapinDataRetrieverIT extends AbstractJUnit4SpringContext
         }
     }
 
+    @Test
+    public void testFetchDataTypes() {
+        try {
+            //Fetch data from source origin
+            List<DataTypeDto> fetchData = mappingUtil.mapDataTypes2Bdp();
+
+            //Check there is at least one item in the list
+            assertNotNull("Fetched data IS NULL", fetchData);
+            if ( fetchData.size() == 0 ) {
+                Assert.fail("Fetched data IS EMPTY");
+            }
+
+        } catch (Exception e) {
+            String msg = "Exception in testFetchData: " + e;
+            LOG.error(msg, e);
+            Assert.fail(msg);
+        }
+    }
+
 }

@@ -20,6 +20,8 @@ public class BikesharingPapinStationDto implements Serializable {
     private Boolean bikeAvailable ;
     private String url            ;
 
+    private Long measurementTimestamp;
+
     public String getId() {
         return id;
     }
@@ -108,9 +110,27 @@ public class BikesharingPapinStationDto implements Serializable {
         this.url = url;
     }
 
+    public Long getMeasurementTimestamp() { return measurementTimestamp; }
+
+    public void setMeasurementTimestamp(Long measurementTimestamp) { this.measurementTimestamp = measurementTimestamp; }
+
+    public String getState() {
+        if (this.getBikeAvailable()) {
+            return "READY";
+        }
+        return "OUT_OF_SERVICE";
+    }
+
+    public String getClose() {
+        if (this.getIsClose()) {
+            return "CLOSED";
+        }
+        return "OPEN";
+    }
+
     @Override
     public String toString() {
-        return "BikesharingPapinStationDto [id=" + id + ", name=" + name + "]";
+        return "BikesharingPapinStationDto [id=" + id + ", name=" + name + ", measurementTimestamp=" + measurementTimestamp + "]";
     }
 
 }

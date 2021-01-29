@@ -202,6 +202,13 @@ public class BikesharingPapinDataRetriever {
             retval = converter.convertStationsResponseToInternalDTO(responseStringStations);
             List<BikesharingPapinStationDto> stationList = retval.getStationList();
 
+            //Make a loop on all stations to get detail data
+            for (BikesharingPapinStationDto stationDto : stationList) {
+
+                //Update detail attributes
+                stationDto.setMeasurementTimestamp(tsNow);
+            }
+
             if ( (retval==null || stationList==null || stationList.size()<=0) && err.length()>0 ) {
                 throw new RuntimeException("NO DATA FETCHED: "+err);
             }

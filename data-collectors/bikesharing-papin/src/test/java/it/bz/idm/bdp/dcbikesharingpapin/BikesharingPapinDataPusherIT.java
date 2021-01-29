@@ -44,6 +44,7 @@ public class BikesharingPapinDataPusherIT extends AbstractJUnit4SpringContextTes
             return;
         }
         try {
+            scheduler.pushDataTypes();
             scheduler.pushData();
         } catch (Exception e) {
             LOG.error("Exception in testSchedulerPush: "+e, e);
@@ -62,15 +63,22 @@ public class BikesharingPapinDataPusherIT extends AbstractJUnit4SpringContextTes
 
         List<String> errors = new ArrayList<String>();
         List<BikesharingPapinStationDto> dataStations = null;
+        BikesharingPapinStationDto dataMeasurements = null;
 
         try {
+            Long tsNow = System.currentTimeMillis();
+
             dataStations = readPushData();
+            dataMeasurements = dataStations.get(0);
+            dataMeasurements.setMeasurementTimestamp(tsNow);
         } catch (Exception e) {
             LOG.error("Exception in testPush: "+e, e);
             Assert.fail();
         }
 
         pushStations(dataStations, errors);
+        pushDataTypes(errors);
+        pushStationData(dataMeasurements, errors);
 
         if ( errors.size() > 0 ) {
             for (String err : errors) {
@@ -95,13 +103,28 @@ public class BikesharingPapinDataPusherIT extends AbstractJUnit4SpringContextTes
         }
     }
 
+    private void pushDataTypes(List<String> errors) {
+        try {
+            List<DataTypeDto> dataTypeList = mappingUtil.mapDataTypes2Bdp();
+            LOG.debug(dataTypeList);
+            if (dataTypeList != null) {
+                pusher.syncDataTypes(dataTypeList);
+            }
+        } catch (Exception e) {
+            errors.add("DATA-TYPE-REC: "+e);
+        }
+
+    }
+
     private void pushStationData(BikesharingPapinStationDto data, List<String> errors) {
         try {
             List<BikesharingPapinStationDto> list = new ArrayList<BikesharingPapinStationDto>();
             list.add(data);
+
             DataMapDto<RecordDtoImpl> stationRec = mappingUtil.mapData(list);
+
             if (stationRec != null) {
-            	pusher.pushData(stationRec);
+                pusher.pushData(stationRec);
             }
         } catch (Exception e) {
             errors.add("MEASUREMENTS-REC: "+e);
@@ -111,9 +134,15 @@ public class BikesharingPapinDataPusherIT extends AbstractJUnit4SpringContextTes
     private List<BikesharingPapinStationDto> readPushData() throws Exception {
         //Convert station data
         String responseString = BikesharingPapinDataRetrieverAuthIT.getTestData(BikesharingPapinDataRetrieverAuthIT.DATA_FETCH_STATIONS, null, null);
-        BikesharingPapinDto BikesharingPapinDto = converter.convertStationsResponseToInternalDTO(responseString);
-        List<BikesharingPapinStationDto> data = BikesharingPapinDto.getStationList();
+        BikesharingPapinDto bikesharingBzDto = converter.convertStationsResponseToInternalDTO(responseString);
+        List<BikesharingPapinStationDto> data = bikesharingBzDto.getStationList();
 
-        return data;
+        List<BikesharingPapinStationDto> retval = new ArrayList<>();
+        //Convert availability data
+        for (BikesharingPapinStationDto bikeDto : data) {
+            retval.add(bikeDto);
+        }
+
+        return retval;
     }
 }

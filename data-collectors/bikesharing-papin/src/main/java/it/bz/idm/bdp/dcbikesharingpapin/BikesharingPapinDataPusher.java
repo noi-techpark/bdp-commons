@@ -38,22 +38,21 @@ public class BikesharingPapinDataPusher extends NonBlockingJSONPusher {
         String str1 = "http://" + config.getString(HOST_KEY) + ":" + config.getString(PORT_KEY) + config.getString("json_endpoint");
         String str2 =
                 "integreenTypology=" + this.integreenTypology   + "  " +
-                "DEFAULT_HOST="      + DEFAULT_HOST     + "  " +
-                "DEFAULT_PORT="      + DEFAULT_PORT     + "  " +
-                "DEFAULT_ENDPOINT="  + DEFAULT_ENDPOINT + "  " +
-                "";
+                        "DEFAULT_HOST="      + DEFAULT_HOST     + "  " +
+                        "DEFAULT_PORT="      + DEFAULT_PORT     + "  " +
+                        "DEFAULT_ENDPOINT="  + DEFAULT_ENDPOINT + "  " +
+                        "";
         return str2 + " ---> " + str1;
     }
 
     @Override
     public ProvenanceDto defineProvenance() {
-        LOG.debug("----> " + env.getProperty("app_origin"));
         return new ProvenanceDto(null,env.getProperty("provenance.name"), env.getProperty("provenance.version"),  env.getProperty("app_origin"));
     }
 
-	@Override
-	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
