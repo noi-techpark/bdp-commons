@@ -217,10 +217,17 @@ public class Connector {
                 h.put("autostrada", (String)segment.get("autostrada"));
                 h.put("idtratto", (String)segment.get("idtratto"));
                 h.put("descrizione", (String)segment.get("descrizione"));
-                h.put("latitudineinizio", String.valueOf((Double) segment.get("latitudineinizio")));
-                h.put("longitudininizio", String.valueOf((Double) segment.get("longitudininizio")));
-                h.put("latitudinefine", String.valueOf((Double) segment.get("latitudinefine")));
-                h.put("longitudinefine", String.valueOf((Double) segment.get("longitudinefine")));
+                try
+                {
+                   h.put("latitudineinizio", String.valueOf((Double) segment.get("latitudineinizio")));
+                   h.put("longitudininizio", String.valueOf((Double) segment.get("longitudininizio")));
+                   h.put("latitudinefine", String.valueOf((Double) segment.get("latitudinefine")));
+                   h.put("longitudinefine", String.valueOf((Double) segment.get("longitudinefine")));
+                }
+                catch (Exception exxx)
+                {
+                   continue;
+                }
                 h.put("iddirezione", String.valueOf((Long) segment.get("iddirezione")));
                 h.put("metroinizio", String.valueOf((Long) segment.get("metroinizio")));
                 h.put("metrofine", String.valueOf((Long) segment.get("metrofine")));
