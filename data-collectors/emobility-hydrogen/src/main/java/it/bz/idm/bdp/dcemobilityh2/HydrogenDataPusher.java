@@ -4,15 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
-import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dcemobilityh2.dto.ChargingPointsDtoV2;
@@ -24,10 +19,10 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Service
-public class HydrogenDataPusher extends JSONPusher {
+public class HydrogenDataPusher extends NonBlockingJSONPusher {
 
     private static final Logger LOG = LogManager.getLogger(HydrogenDataPusher.class.getName());
 
@@ -37,25 +32,6 @@ public class HydrogenDataPusher extends JSONPusher {
     public HydrogenDataPusher() {
         LOG.debug("START.constructor.");
         LOG.debug("END.constructor.");
-    }
-
-	@PostConstruct
-    private void initPusher() {
-        LOG.debug("START.init.");
-        //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTTP 415 error)
-        //this must be done because we added dependencies to com.fasterxml.jackson.dataformat.xml.XmlMapper to read data from IIT web service!
-        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
-        List<HttpMessageConverter<?>> newMessageConverters = new ArrayList<HttpMessageConverter<?>>();
-        for (HttpMessageConverter<?> converter : messageConverters) {
-            if ( converter instanceof MappingJackson2XmlHttpMessageConverter || converter instanceof Jaxb2RootElementHttpMessageConverter ) {
-                LOG.debug("REMOVE   converter: " + converter.getClass().getName());
-            } else {
-                LOG.debug("PRESERVE converter: " + converter.getClass().getName());
-                newMessageConverters.add(converter);
-            }
-        }
-        restTemplate.setMessageConverters(newMessageConverters);
-        LOG.debug("END.init.");
     }
 
     @Override
