@@ -10,6 +10,6 @@
     <bean class="it.bz.noi.a22.roadweather.MainA22Roadweather" id="jobScheduler"/>
     <task:scheduler id="Scheduler" pool-size="10" />
     <task:scheduled-tasks scheduler="Scheduler">
-        <task:scheduled ref="jobScheduler" method="execute"  cron="0 46 17 * * ?" /> <!-- Every day at 1pm -->
+        <task:scheduled ref="jobScheduler" method="execute"  cron="0 0 0 * * ?" /> <!-- Every day at 1pm -->
     </task:scheduled-tasks>
 </beans>
