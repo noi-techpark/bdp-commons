@@ -1,29 +1,29 @@
 package it.bz.noi.a22.roadweather;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
+
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.json.JSONPusher;
-import org.springframework.stereotype.Component;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
-import javax.annotation.PostConstruct;
-
-@Component
-public class A22RoadweatherJSONPusher extends JSONPusher
+@Service
+public class A22RoadweatherJSONPusher extends NonBlockingJSONPusher
 {
 
 	private String stationtype;
 	private String origin;
-	private String provenanceVersion;
-	private String provenanceName;
+
+	@Autowired
+	private Environment env;
 
 	public <T> DataMapDto<RecordDtoImpl> mapData(T arg0)
 	{
 		throw new IllegalStateException("it is used by who?");
-	}
-
-	public A22RoadweatherJSONPusher() {
-		init();
 	}
 
 	@PostConstruct
@@ -32,9 +32,6 @@ public class A22RoadweatherJSONPusher extends JSONPusher
 
 		stationtype = prop.getProperty("stationtype");
 		origin = prop.getProperty("origin");
-		provenanceName = prop.getProperty("provenance_name");
-		provenanceVersion = prop.getProperty("provenance_version");
-
 		super.init();
 	}
 
@@ -46,6 +43,6 @@ public class A22RoadweatherJSONPusher extends JSONPusher
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, provenanceName, provenanceVersion,  origin);
+		return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"),  origin);
 	}
 }

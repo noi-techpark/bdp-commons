@@ -10,10 +10,9 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
@@ -22,15 +21,16 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
-@DisallowConcurrentExecution
-public class MainA22Roadweather implements Job {
+@Component
+public class MainA22Roadweather{
 
     private static Logger log = LogManager.getLogger(MainA22Roadweather.class);
 
     private final A22Properties datatypesProperties;
     private final A22Properties a22RoadweatherProperties;
     private HashMap<String, Long> stationIdLastTimestampMap;
-    private A22RoadweatherJSONPusher pusher = new A22RoadweatherJSONPusher();
+    @Autowired
+    private A22RoadweatherJSONPusher pusher;
     private List<String> datatypeKeys;
     private StationList stationList;
 
@@ -40,8 +40,7 @@ public class MainA22Roadweather implements Job {
 
     }
 
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public void execute(){
         long startTime = System.currentTimeMillis();
         try {
             log.info("Start MainA22Roadweather");
@@ -163,7 +162,6 @@ public class MainA22Roadweather implements Job {
             a22Service.close();
         } catch (Exception e) {
             log.error(e);
-            throw new JobExecutionException(e);
         } finally {
             long stopTime = System.currentTimeMillis();
             log.debug("elaboration time (millis): " + (stopTime - startTime));
@@ -262,7 +260,7 @@ public class MainA22Roadweather implements Job {
      * Method used only for development/debugging
      */
     public static void main(String[] args) throws JobExecutionException {
-        new MainA22Roadweather().execute(null);
+        new MainA22Roadweather().execute();
     }
 
 }
