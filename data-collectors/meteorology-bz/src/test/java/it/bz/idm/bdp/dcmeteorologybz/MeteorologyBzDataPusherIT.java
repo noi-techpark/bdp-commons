@@ -66,17 +66,17 @@ public class MeteorologyBzDataPusherIT extends AbstractJUnit4SpringContextTests 
         MeteorologyBzDto dataMeasurements = null;
 
         try {
-            String responseStringStations = MeteorologyBzDataRetrieverTest.getTestData(MeteorologyBzDataRetrieverTest.DATA_PUSH_STATIONS);
+            String responseStringStations = MeteorologyBzDataRetrieverTestIT.getTestData(MeteorologyBzDataRetrieverTestIT.DATA_PUSH_STATIONS);
             dataStations = reader.convertStationsResponseToInternalDTO(responseStringStations);
 
-            String responseStringDataTypes = MeteorologyBzDataRetrieverTest.getTestData(MeteorologyBzDataRetrieverTest.DATA_PUSH_DATA_TYPES);
+            String responseStringDataTypes = MeteorologyBzDataRetrieverTestIT.getTestData(MeteorologyBzDataRetrieverTestIT.DATA_PUSH_DATA_TYPES);
             dataTypes = reader.convertSensorsResponseToInternalDTO(responseStringDataTypes, dataStations);
 
-            String responseStringMeasurements = MeteorologyBzDataRetrieverTest.getTestData(MeteorologyBzDataRetrieverTest.DATA_PUSH_MEASUREMENTS);
+            String responseStringMeasurements = MeteorologyBzDataRetrieverTestIT.getTestData(MeteorologyBzDataRetrieverTestIT.DATA_PUSH_MEASUREMENTS);
             List<TimeSerieDto> timeSeries = reader.convertMeasurementsResponseToInternalDTO(responseStringMeasurements);
 
             dataMeasurements = dataStations.get(0);
-            for (String typeCode : MeteorologyBzDataRetrieverTest.DATA_PUSH_TYPE_CODES) {
+            for (String typeCode : MeteorologyBzDataRetrieverTestIT.DATA_PUSH_TYPE_CODES) {
                 dataMeasurements.getTimeSeriesMap().put(typeCode, timeSeries);
             }
         } catch (Exception e) {

@@ -30,9 +30,9 @@ import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class MeteorologyBzDataRetrieverTest extends AbstractJUnit4SpringContextTests {
+public class MeteorologyBzDataRetrieverTestIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(MeteorologyBzDataRetrieverTest.class.getName());
+    private static final Logger LOG = LogManager.getLogger(MeteorologyBzDataRetrieverTestIT.class.getName());
 
     @Autowired
     private MeteorologyBzDataPusher pusher;
@@ -278,7 +278,7 @@ public class MeteorologyBzDataRetrieverTest extends AbstractJUnit4SpringContextT
                     DATA_FETCH_DATA_TYPES.equals(dataType)   ? TEST_FILE_FETCH_DATATYPES :
                     DATA_FETCH_MEASUREMENTS.equals(dataType) ? TEST_FILE_FETCH_MEASUREMENTS :
                     TEST_FILE_FETCH_STATIONS;
-            String URL = MeteorologyBzDataRetrieverTest.class.getResource(fileName).getFile();
+            String URL = MeteorologyBzDataRetrieverTestIT.class.getResource(fileName).getFile();
             File file = new File(URL);
             String testFilePath = file.getAbsolutePath();
             rr = new FileReader(testFilePath);

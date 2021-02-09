@@ -9,7 +9,8 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>4.3.20.RELEASE</spring.version>
+		<spring.version>5.2.12.RELEASE</spring.version>
+        <finalName>ROOT</finalName>
 	</properties>
 	<repositories>
 		<repository>
@@ -21,7 +22,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>3.3.5</version>
+			<version>5.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -117,7 +118,7 @@
 
 	<build>
 		<!-- Final names should be of the following pattern: dc-<type of data>-<origin of data> -->
-		<finalName>dc-meteorology-bz</finalName>
+		<finalName>${finalName}</finalName>
 		<testSourceDirectory>src/test/java/</testSourceDirectory>
 		<plugins>
 			<plugin>

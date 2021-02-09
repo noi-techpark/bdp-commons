@@ -24,10 +24,10 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Service
-public class MeteorologyBzDataPusher extends JSONPusher {
+public class MeteorologyBzDataPusher extends NonBlockingJSONPusher {
 
     private static final Logger LOG = LogManager.getLogger(MeteorologyBzDataPusher.class.getName());
 
