@@ -1,6 +1,8 @@
 package it.bz.odh.spreadsheets.services;
 
 
+import it.bz.odh.spreadsheets.services.graphapi.GraphApiAuthenticator;
+import it.bz.odh.spreadsheets.services.graphapi.GraphApiHandler;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,18 +16,20 @@ import java.io.File;
 import java.net.URL;
 
 /**
- * Class that uses the @GraphApiAuthenticator to generate the token and then uses The @GraphDataMapper to extract the download link from the JSON.
- * <p>
+ * Class to download a Office 365 Workbook from a given link
+ *
+ * Uses the @GraphApiAuthenticator to generate the token and then uses The @GraphDataMapper to extract the download link from the JSON.
+ *
  * The last change date gets compared, to see if changes where made since last fetch.
  * So the data gets written to the ODH only if changes in the sheet were made.
- * <p>
+ *
  * This class is used in the @SyncScheduler to automate the above mentioned.
  */
 @Service
-public class GraphDataFetcher {
+public class WorkbookFetcher {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(GraphDataFetcher.class);
+    private static final Logger logger = LoggerFactory.getLogger(WorkbookFetcher.class);
 
 
     @Value("${graph.sheetName}")
@@ -35,7 +39,7 @@ public class GraphDataFetcher {
     private GraphApiAuthenticator graphApiAuthenticator;
 
     @Autowired
-    private GraphDataMapper graphDataMapper;
+    private GraphApiHandler graphApiHandler;
 
 
     @PostConstruct
@@ -55,12 +59,12 @@ public class GraphDataFetcher {
      * @return true if sheet was downloaded
      * @throws Exception
      */
-    public boolean fetchSheet() throws Exception {
+    public boolean fetchWorkbook() throws Exception {
         logger.info("Check if changes in spreadsheet where made");
 
         String token = graphApiAuthenticator.checkToken();
 
-        String downloadLink = graphDataMapper.getDownloadLink(token);
+        String downloadLink = graphApiHandler.getDownloadLink(token);
 
         // if download link is null, no changes detected
         if (downloadLink != null) {

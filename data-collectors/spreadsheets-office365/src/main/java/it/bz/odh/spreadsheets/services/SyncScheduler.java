@@ -3,6 +3,7 @@ package it.bz.odh.spreadsheets.services;
 import it.bz.idm.bdp.dto.*;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
+import it.bz.odh.spreadsheets.services.graphapi.GraphApiAuthenticator;
 import it.bz.odh.spreadsheets.utils.DataMappingUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -38,7 +39,7 @@ public class SyncScheduler {
     };
 
     @Autowired
-    private GraphDataFetcher graphDataFetcher;
+    private WorkbookFetcher workbookFetcher;
 
     @Lazy
     @Autowired
@@ -59,7 +60,7 @@ public class SyncScheduler {
     @Scheduled(cron = "${cron}")
     public void fetchSheet() throws Exception {
         logger.info("Cron job manual sync started");
-        if (graphDataFetcher.fetchSheet()) {
+        if (workbookFetcher.fetchWorkbook()) {
             logger.info("Syncing data with BDP");
             syncData();
             logger.info("Done: Syncing data with BDP");

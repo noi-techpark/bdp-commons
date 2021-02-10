@@ -1,4 +1,4 @@
-package it.bz.odh.spreadsheets.services;
+package it.bz.odh.spreadsheets.services.graphapi;
 
 
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -107,7 +107,7 @@ public class GraphApiAuthenticator {
      * @return returns the token
      * @throws Exception
      */
-    protected String checkToken() throws Exception {
+    public String checkToken() throws Exception {
 
         logger.info("Checking validity of token");
 

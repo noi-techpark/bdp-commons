@@ -1,4 +1,4 @@
-package it.bz.odh.spreadsheets.services;
+package it.bz.odh.spreadsheets.services.graphapi;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,15 +20,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Class to make the Graph requests to get user, drive and sheet data.
- * <p>
- * First, all users get fetched, then the drive of the user in .env gets extracted and a drive request to get all files in drive gets made.
- * Then the download link for the sheet defined in .env gets extracted.
+ * Class to make the Graph requests to get the Download link of the Office 365 Workbook saved on Sharepoint
  */
 @Service
-public class GraphDataMapper {
+public class GraphApiHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(GraphDataMapper.class);
+    private static final Logger logger = LoggerFactory.getLogger(GraphApiHandler.class);
 
     private static ObjectMapper mapper = new ObjectMapper();
 
