@@ -19,10 +19,11 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Service
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
-public class OnstreetParkingBzDataPusher extends JSONPusher {
+public class OnstreetParkingBzDataPusher extends NonBlockingJSONPusher{
 
     private static final Logger LOG = LogManager.getLogger(OnstreetParkingBzDataPusher.class.getName());
 
@@ -122,24 +123,4 @@ public class OnstreetParkingBzDataPusher extends JSONPusher {
         return dataTypes;
     }
 
-    public StationDto getStationDetails(String stationType, String stationId) {
-
-        StationDto stationDto = null;
-
-//        reader.setStationType(stationType);
-//        List<StationDto> stationDetails = reader.fetchStationDetails(stationId);
-//        if ( stationDetails != null && stationDetails.size() > 0 ) {
-//            stationDto = stationDetails.get(0);
-//        }
-
-        String url = "http://" + config.getString(HOST_KEY)+":"+config.getString(PORT_KEY)+"/reader"; //+config.getString("json_endpoint");
-        url += "/station-details" +"?stationType={stationType}&stationId={stationId}";
-        LOG.debug("getStationDetails: url="+url + "  stationType="+stationType+"  stationId="+stationId);
-        StationDto[] stations = restTemplate.getForObject(url,StationDto[].class, stationType, stationId);
-        if ( stations != null && stations.length > 0 ) {
-            stationDto = stations[0];
-        }
-
-        return stationDto;
-    }
 }

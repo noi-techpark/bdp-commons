@@ -21,9 +21,9 @@ import it.bz.idm.bdp.dconstreetparkingbz.DCUtils;
 import it.bz.idm.bdp.dconstreetparkingbz.OnstreetParkingBzDataConverter;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class OnstreetParkingBzDataConverterTest extends AbstractJUnit4SpringContextTests {
+public class OnstreetParkingBzDataConverterTestIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(OnstreetParkingBzDataConverterTest.class.getName());
+    private static final Logger LOG = LogManager.getLogger(OnstreetParkingBzDataConverterTestIT.class.getName());
 
 //    @Autowired
 //    private OnstreetParkingBzDataPusher pusher;
@@ -48,7 +48,7 @@ public class OnstreetParkingBzDataConverterTest extends AbstractJUnit4SpringCont
 
     @Test
     public void testConvertDate() {
-        Configurator.setLevel(OnstreetParkingBzDataConverterTest.class.getName(), Level.DEBUG);
+        Configurator.setLevel(OnstreetParkingBzDataConverterTestIT.class.getName(), Level.DEBUG);
         String str1 = "2020-02-24T13:37:00.436096605Z";
         String str2 = "2019-06-01T13:20:00CEST";
         String str3 = "2019-01-12T20:50:00CET";
@@ -104,7 +104,7 @@ public class OnstreetParkingBzDataConverterTest extends AbstractJUnit4SpringCont
             if ( DCUtils.paramNotNull(paramName) && paramValue != null ) {
                 fileName = fileName.replace(paramName, paramValue);
             }
-            URL url = OnstreetParkingBzDataConverterTest.class.getResource(fileName);
+            URL url = OnstreetParkingBzDataConverterTestIT.class.getResource(fileName);
             if ( url == null ) {
                 return null;
             }

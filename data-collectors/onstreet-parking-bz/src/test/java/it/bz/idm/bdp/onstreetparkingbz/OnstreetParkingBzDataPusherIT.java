@@ -71,7 +71,7 @@ public class OnstreetParkingBzDataPusherIT extends AbstractJUnit4SpringContextTe
 //            pusher.syncDataTypes(dataTypes);
 
             //Get json string and push data to the controller
-            String jsonStr = OnstreetParkingBzDataConverterTest.getTestData(OnstreetParkingBzDataConverterTest.DATA_PUSH_MEASUREMENTS_2, null, null);
+            String jsonStr = OnstreetParkingBzDataConverterTestIT.getTestData(OnstreetParkingBzDataConverterTestIT.DATA_PUSH_MEASUREMENTS_2, null, null);
             //String url = OnstreetParkingBzDataConverterTest.CONTROLLER_URL;
             
             String url = "https://www.edp-progetti.it:443/parking";
