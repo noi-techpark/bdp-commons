@@ -7,15 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
-import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnDto;
@@ -28,10 +23,10 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Service
-public class MeteoTnDataPusher extends JSONPusher {
+public class MeteoTnDataPusher extends NonBlockingJSONPusher {
 
     private static final Logger LOG = LogManager.getLogger(MeteoTnDataPusher.class.getName());
 
@@ -47,25 +42,6 @@ public class MeteoTnDataPusher extends JSONPusher {
     public MeteoTnDataPusher() {
         LOG.debug("START.constructor.");
         LOG.debug("END.constructor.");
-    }
-
-    @PostConstruct
-    private void initScript() {
-        LOG.debug("START.init.");
-        //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTTP 415 error)
-        //this must be done because we added dependencies to com.fasterxml.jackson.dataformat.xml.XmlMapper to read data from IIT web service!
-        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
-        List<HttpMessageConverter<?>> newMessageConverters = new ArrayList<HttpMessageConverter<?>>();
-        for (HttpMessageConverter<?> messageConverter : messageConverters) {
-            if ( messageConverter instanceof MappingJackson2XmlHttpMessageConverter || messageConverter instanceof Jaxb2RootElementHttpMessageConverter ) {
-                LOG.debug("REMOVE   converter: " + messageConverter.getClass().getName());
-            } else {
-                LOG.debug("PRESERVE converter: " + messageConverter.getClass().getName());
-                newMessageConverters.add(messageConverter);
-            }
-        }
-        restTemplate.setMessageConverters(newMessageConverters);
-        LOG.debug("END.init.");
     }
 
     @Override

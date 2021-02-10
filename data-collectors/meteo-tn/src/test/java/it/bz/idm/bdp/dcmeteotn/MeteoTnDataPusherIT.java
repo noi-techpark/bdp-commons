@@ -65,11 +65,11 @@ public class MeteoTnDataPusherIT extends AbstractJUnit4SpringContextTests {
         MeteoTnDto dataMeasurements = null;
 
         try {
-            String responseStringStations = MeteoTnDataRetrieverTest.getTestData(MeteoTnDataRetrieverTest.DATA_PUSH_STATIONS);
+            String responseStringStations = MeteoTnDataRetrieverTestIT.getTestData(MeteoTnDataRetrieverTestIT.DATA_PUSH_STATIONS);
             dataStations = reader.convertStationsResponseToInternalDTO(responseStringStations);
 
             Map<String, String> stationAttrs = dataStations.get(0).getStationAttributes();
-            String responseStringMeasurements = MeteoTnDataRetrieverTest.getTestData(MeteoTnDataRetrieverTest.DATA_PUSH_MEASUREMENTS);
+            String responseStringMeasurements = MeteoTnDataRetrieverTestIT.getTestData(MeteoTnDataRetrieverTestIT.DATA_PUSH_MEASUREMENTS);
             dataMeasurements = reader.convertMeasurementsResponseToInternalDTO(responseStringMeasurements, stationAttrs);
         } catch (Exception e) {
             LOG.error("Exception in testPush: "+e, e);
