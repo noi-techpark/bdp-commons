@@ -10,7 +10,7 @@ pipeline {
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret-prod')
         SERVER_PORT="1001"
         GOOGLE_SECRET=credentials('spreadsheets.client_secret.json')
-        GOOGLE_CREDENTIAL_FOLDER=credentials('google-spreadsheet-api-credential-store-folder')
+        GOOGLE_CREDENTIALS=credentials('google-spreadsheet-api-credentials')
     }
 
     stages {
@@ -37,10 +37,10 @@ pipeline {
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
                     echo 'BASE_URI=https://mobility.share.opendatahub.bz.it/json' >> .env
-                    echo 'credentialsFolder=${GOOGLE_CREDENTIAL_FOLDER}' >> .env
                 """
                 sh 'cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json'
                 sh 'cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/client_secret.json'
+                sh """cat "${GOOGLE_CREDENTIALS}" > "${PROJECT_FOLDER}"/src/main/resources/META-INF/credentials/StoredCredential"""
             }
         }
         stage('Test & Build') {
