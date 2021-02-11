@@ -34,7 +34,7 @@ pipeline {
                     echo 'headers_addressId=address' >> .env
                     echo 'headers_metaDataId=metadata-id' >> .env
                     echo 'spreadsheet_range=A1:Z' >> .env
-                    echo 'spreadsheet_notificationUrl=https://spreadsheets.opendatahub.bz.it/creative-industries/trigger' >> .env
+                    echo 'spreadsheet_notificationUrl=https://spreadsheets.testingmachine.eu/creative-industries/trigger' >> .env
                     echo 'stationtype=CreativeIndustry' >> .env
                     echo 'composite_unique_key=name,address' >> .env
                     echo 'origin=municipality bolzano' >> .env
