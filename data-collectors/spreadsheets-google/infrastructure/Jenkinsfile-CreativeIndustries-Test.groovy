@@ -25,25 +25,26 @@ pipeline {
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
                     echo 'LOG_LEVEL=DEBUG' >> .env
-                    echo 'LOG_FOLDER=data-collectors/${PROJECT}' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
                     echo 'VENDOR=${VENDOR}' >> .env
                     echo 'spreadsheetId=1I5Zj7JHprwLhzl9ktXJO-7v7x3rh1ysGbiblZgZYCXU' >> .env
                     echo 'suportedLanguages=en,de,it,lad' >> .env
                     echo 'headers_nameId=name' >> .env
                     echo 'headers_addressId=address' >> .env
+                    echo 'headers_longitudeId=longitude' >> .env
+                    echo 'headers_latitudeId=latitude' >> .env
                     echo 'headers_metaDataId=metadata-id' >> .env
                     echo 'spreadsheet_range=A1:Z' >> .env
                     echo 'spreadsheet_notificationUrl=https://spreadsheets.testingmachine.eu/creative-industries/trigger' >> .env
                     echo 'stationtype=CreativeIndustry' >> .env
                     echo 'composite_unique_key=name,address' >> .env
-                    echo 'origin=municipality bolzano' >> .env
                     echo -n 'provenance_version=' >> .env
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' pom.xml >> .env
                     echo '' >> .env
                     echo -n 'provenance_name=' >> .env 
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
+                    echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
                 """
                 sh "cat ${KEYCLOAK_CONFIG} >> ${PROJECT_FOLDER}/.env"
                 
