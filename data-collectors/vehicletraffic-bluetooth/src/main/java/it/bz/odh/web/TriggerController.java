@@ -1,5 +1,7 @@
 package it.bz.odh.web;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,8 +26,14 @@ import it.bz.odh.util.BluetoothMappingUtil;
 @Controller
 @EnableWebMvc
 public class TriggerController {
-	
+
+	private static final String GOOGLE_CONTENT_ID = "content";
+
+	private static final int MINIMAL_SYNC_PAUSE_SECONDS = 60;
+
 	private Logger logger = LogManager.getLogger(TriggerController.class);
+
+	private static Long lastRequest;
 
 	@Autowired
 	private OddsPusher pusher;
@@ -46,38 +54,43 @@ public class TriggerController {
 	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto,
 			@RequestHeader(required = true, value = "x-goog-changed") String whatChanged) {
 		logger.debug("Sync triggered");
-		if ("content".equals(whatChanged)) {
-			logger.debug("Call is content related");
-			metaUtil.setCachedData(null);
-			logger.debug("Fetch Stations from odh");
-			List<StationDto> odhStations = pusher.fetchStations(pusher.getIntegreenTypology(), null);
-			List<String> stationIds = odhStations.stream().map(StationDto::getId).collect(Collectors.toList());
-			logger.debug("Found "+stationIds.size()+" Bluetoothboxes");
-			StationList stations = new StationList();
-			for (Map<String, String> entry : metaUtil.getValidEntries()) {
-				String stationId = entry.get("id");
-				logger.debug("Extract station with id: "+stationId);
-				if (!stationIds.contains(stationId))
-					continue;
-				logger.debug("Map station with id "+stationId);
-				Double[] coordinatesByIdentifier = metaUtil.getCoordinatesByIdentifier(stationId);
-				Map<String, Object> metaDataByIdentifier = metaUtil.getMetaDataByIdentifier(stationId);
-				logger.debug("Start merging translations");
-				Map<String,Object> cleanedMap = metaUtil.mergeTranslations(metaDataByIdentifier);
-				StationDto dto = new StationDto();
-				dto.setName(stationId);
-				dto.setId(stationId);
-				dto.setLongitude(coordinatesByIdentifier[0]);
-				dto.setLatitude(coordinatesByIdentifier[1]);
-				if (!cleanedMap.isEmpty())
-					dto.setMetaData(cleanedMap);
-				stations.add(dto);
-				logger.debug("Dto created and added");
-			}
-			if (!stations.isEmpty()) {
-				logger.debug("Push data to odh");
-				pusher.syncStations(stations);
-				logger.debug("Finished pushing to odh");
+		List<String> changeDetails = Arrays.asList(whatChanged.split(","));
+		Long now = new Date().getTime();
+		if (lastRequest == null || lastRequest < now - (MINIMAL_SYNC_PAUSE_SECONDS *1000)) {
+			lastRequest = now;
+			if (changeDetails.contains(GOOGLE_CONTENT_ID)) {
+				logger.debug("Call is content related");
+				metaUtil.setCachedData(null);
+				logger.debug("Fetch Stations from odh");
+				List<StationDto> odhStations = pusher.fetchStations(pusher.getIntegreenTypology(), null);
+				List<String> stationIds = odhStations.stream().map(StationDto::getId).collect(Collectors.toList());
+				logger.debug("Found "+stationIds.size()+" Bluetoothboxes");
+				StationList stations = new StationList();
+				for (Map<String, String> entry : metaUtil.getValidEntries()) {
+					String stationId = entry.get("id");
+					logger.debug("Extract station with id: "+stationId);
+					if (!stationIds.contains(stationId))
+						continue;
+					logger.debug("Map station with id "+stationId);
+					Double[] coordinatesByIdentifier = metaUtil.getCoordinatesByIdentifier(stationId);
+					Map<String, Object> metaDataByIdentifier = metaUtil.getMetaDataByIdentifier(stationId);
+					logger.debug("Start merging translations");
+					Map<String,Object> cleanedMap = metaUtil.mergeTranslations(metaDataByIdentifier);
+					StationDto dto = new StationDto();
+					dto.setName(stationId);
+					dto.setId(stationId);
+					dto.setLongitude(coordinatesByIdentifier[0]);
+					dto.setLatitude(coordinatesByIdentifier[1]);
+					if (!cleanedMap.isEmpty())
+						dto.setMetaData(cleanedMap);
+					stations.add(dto);
+					logger.debug("Dto created and added");
+				}
+				if (!stations.isEmpty()) {
+					logger.debug("Push data to odh");
+					pusher.syncStations(stations);
+					logger.debug("Finished pushing to odh");
+				}
 			}
 		}
 	}
