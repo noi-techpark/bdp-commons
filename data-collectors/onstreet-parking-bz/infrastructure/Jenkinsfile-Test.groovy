@@ -9,6 +9,7 @@ pipeline {
         DOCKER_TAG = "test-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
         GOOGLE_SECRET=credentials('spreadsheets.client_secret.json')
+        GOOGLE_CREDENTIALS=credentials('google-spreadsheet-api-credentials')
         SERVER_PORT="1001"
     }
 
@@ -39,6 +40,7 @@ pipeline {
                 """
                 sh 'cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json'
                 sh 'cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/client_secret.json'
+                sh """cat "${GOOGLE_CREDENTIALS}" > "${PROJECT_FOLDER}"/src/main/resources/META-INF/credentials/StoredCredential"""
             }
         }
         stage('Test & Build') {
