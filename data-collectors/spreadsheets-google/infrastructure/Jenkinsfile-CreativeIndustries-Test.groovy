@@ -45,6 +45,7 @@ pipeline {
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
                     echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
+                    echo 'scope=openid' >> .env
                 """
                 sh "cat ${KEYCLOAK_CONFIG} >> ${PROJECT_FOLDER}/.env"
                 
