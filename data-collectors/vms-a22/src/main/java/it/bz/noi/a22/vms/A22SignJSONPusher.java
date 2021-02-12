@@ -2,13 +2,14 @@ package it.bz.noi.a22.vms;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.json.JSONPusher;
 import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
+@Service
 public class A22SignJSONPusher extends NonBlockingJSONPusher
 {
 	private String stationtype;
@@ -16,10 +17,6 @@ public class A22SignJSONPusher extends NonBlockingJSONPusher
 	
 	@Autowired
 	private Environment env;
-	
-	public A22SignJSONPusher() {
-		super.init();
-	}
 	
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T arg0)

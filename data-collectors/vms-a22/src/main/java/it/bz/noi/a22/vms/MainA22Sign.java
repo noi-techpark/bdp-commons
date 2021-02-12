@@ -12,6 +12,8 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
@@ -20,6 +22,7 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
+@Component
 public class MainA22Sign
 {
 	
@@ -28,7 +31,9 @@ public class MainA22Sign
 	private final A22Properties datatypesProperties;
 	private final A22Properties a22stationProperties;
 	private HashMap<String, Long> signIdLastTimestampMap;
-	private A22SignJSONPusher pusher = new A22SignJSONPusher();
+	
+	@Autowired
+	private A22SignJSONPusher pusher;
 	private StreetSignalsImporter signalsUtil = new StreetSignalsImporter();
 
 	public MainA22Sign() {
