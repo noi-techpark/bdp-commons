@@ -7,7 +7,7 @@
     <context:spring-configured/>
 
     <context:component-scan base-package="it.bz.idm.bdp,it.bz.noi.a22"/>
-    <bean class="it.bz.noi.a22.roadweather.MainA22Roadweather" id="jobScheduler"/>
+    <bean class="it.bz.noi.a22.vms.MainA22Sign" id="jobScheduler"/>
     <task:scheduler id="Scheduler" pool-size="10" />
     <task:scheduled-tasks scheduler="Scheduler">
         <task:scheduled ref="jobScheduler" method="execute"  cron="0 */5 * * * ?" /> <!-- Every day at 1pm -->

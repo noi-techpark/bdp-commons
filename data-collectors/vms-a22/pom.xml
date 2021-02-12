@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.noi.a22.vms</groupId>
 	<artifactId>dc-vms-a22</artifactId>
@@ -10,6 +12,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<finalName>ROOT</finalName>
+		<spring.version>5.2.12.RELEASE</spring.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -43,16 +46,21 @@
 			<artifactId>log4j-core</artifactId>
 			<version>2.13.3</version>
 		</dependency>
-
-		<!-- embedded tomcat for development, provided: not included in the final jar/war -->
 		<dependency>
-			<groupId>com.github.jsimone</groupId>
-			<artifactId>webapp-runner-main</artifactId>
-			<version>8.5.11.3</version>
-			<scope>provided</scope>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
+		<!-- embedded tomcat for development, provided: not included in the final 
+				jar/war -->
+			<dependency>
+				<groupId>com.github.jsimone</groupId>
+				<artifactId>webapp-runner-main</artifactId>
+				<version>8.5.11.3</version>
+				<scope>provided</scope>
+			</dependency>
 	</dependencies>
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<finalName>${finalName}</finalName>
 	</build>
 </project>
