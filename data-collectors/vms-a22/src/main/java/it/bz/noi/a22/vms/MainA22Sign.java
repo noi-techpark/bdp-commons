@@ -3,14 +3,15 @@ package it.bz.noi.a22.vms;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
@@ -19,8 +20,7 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
-@DisallowConcurrentExecution
-public class MainA22Sign implements Job
+public class MainA22Sign
 {
 	
 	private static Logger log = LogManager.getLogger(MainA22Sign.class);
@@ -37,8 +37,7 @@ public class MainA22Sign implements Job
 
 	}
 
-	@Override
-	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException
+	public void execute()
 	{
 		long startTime = System.currentTimeMillis();
 		try
@@ -159,7 +158,7 @@ public class MainA22Sign implements Job
 		}
 		catch (IOException e)
 		{
-			throw new JobExecutionException(e);
+			throw new IllegalStateException(e);
 		}
 		finally
 		{
@@ -256,9 +255,9 @@ public class MainA22Sign implements Job
 	/*
 	 * Method used only for development/debugging
 	 */
-	public static void main(String[] args) throws JobExecutionException
+	public static void main(String[] args) 
 	{
-		new MainA22Sign().execute(null);
+		new MainA22Sign().execute();
 	}
 
 }
