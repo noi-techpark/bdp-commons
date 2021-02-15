@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 @Component
-public class TrafficPusher extends JSONPusher {
+public class TrafficPusher extends NonBlockingJSONPusher {
 
 	@Autowired
 	private Environment env;

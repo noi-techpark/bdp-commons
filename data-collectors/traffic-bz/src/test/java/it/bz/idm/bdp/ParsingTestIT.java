@@ -20,7 +20,7 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/META-INF/spring/applicationContext*.xml" })
-public class ParsingTest {
+public class ParsingTestIT {
 
 	@Test
 	public void testEmptyMapRemoval() {
