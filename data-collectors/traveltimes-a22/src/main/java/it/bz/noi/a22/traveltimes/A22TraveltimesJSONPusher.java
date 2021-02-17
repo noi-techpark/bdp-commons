@@ -31,6 +31,7 @@ public class A22TraveltimesJSONPusher extends NonBlockingJSONPusher
 		A22Properties prop = new A22Properties("a22traveltimes.properties");
 		stationtype = prop.getProperty("stationtype");
 		origin = prop.getProperty("origin");
+		super.init();
 	}
 
 	@Override
