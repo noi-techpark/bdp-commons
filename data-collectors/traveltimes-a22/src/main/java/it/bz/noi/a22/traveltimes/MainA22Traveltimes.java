@@ -10,10 +10,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
@@ -22,8 +19,7 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
-@DisallowConcurrentExecution
-public class MainA22Traveltimes implements Job
+public class MainA22Traveltimes
 {
 
 	private static Logger log = LogManager.getLogger(MainA22Traveltimes.class);
@@ -31,7 +27,8 @@ public class MainA22Traveltimes implements Job
 	private final A22Properties datatypesProperties;
 	private final A22Properties a22TraveltimesProperties;
 	private HashMap<String, Long> stationIdLastTimestampMap;
-	A22TraveltimesJSONPusher pusher = new A22TraveltimesJSONPusher();
+	@Autowired
+	A22TraveltimesJSONPusher pusher;
 
 	private List<DataTypeDto> dataTypeDtoList;
 	private StationList stationList;
@@ -42,8 +39,7 @@ public class MainA22Traveltimes implements Job
 
 	}
 
-	@Override
-	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException
+	public void execute()
 	{
 		long startTime = System.currentTimeMillis();
 		try
@@ -206,7 +202,7 @@ public class MainA22Traveltimes implements Job
 		catch (Exception e)
 		{
 			log.error(e);
-			throw new JobExecutionException(e);
+			throw new IllegalStateException(e);
 		}
 		finally
 		{
@@ -298,9 +294,9 @@ public class MainA22Traveltimes implements Job
 	/*
 	 * Method used only for development/debugging
 	 */
-	public static void main(String[] args) throws JobExecutionException
+	public static void main(String[] args)
 	{
-		new MainA22Traveltimes().execute(null);
+		new MainA22Traveltimes().execute();
 	}
 
 }
