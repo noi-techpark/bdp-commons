@@ -6,9 +6,12 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataTypeDto;
 
+@Component
 public class SyncDatatype
 {
 	static final String NR_LIGHT_VEHICLES = "Nr. Light Vehicles";
@@ -27,11 +30,14 @@ public class SyncDatatype
 	static final String AVERAGE_FLOW = "Average Flow";
 
 	private static Logger log = LogManager.getLogger(SyncDatatype.class);
+	
+	@Autowired
+	private A22TrafficJSONPusher pusher;
 
 	/**
 	 * Saves all data types to the bdp-core
 	 */
-	public static void saveDatatypes() throws IOException
+	public void saveDatatypes() throws IOException
 	{
 
 		List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
@@ -69,8 +75,6 @@ public class SyncDatatype
 		DataTypeDto averageFlow = new DataTypeDto(AVERAGE_FLOW, "vehicles / hour", "Average Flow", "Mean");
 		dataTypeDtoList.add(averageFlow);
 
-		A22TrafficJSONPusher pusher = new A22TrafficJSONPusher();
-
 		pusher.syncDataTypes(dataTypeDtoList);
 
 	}
@@ -81,7 +85,7 @@ public class SyncDatatype
 	public static void main(String[] args) throws IOException
 	{
 		log.info("Start MainSaveDatatype");
-		saveDatatypes();
+		//saveDatatypes();
 	}
 
 }

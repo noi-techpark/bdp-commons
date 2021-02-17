@@ -4,21 +4,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
+
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.json.JSONPusher;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
-public class A22TrafficJSONPusher extends JSONPusher
-{
+@Service
+public class A22TrafficJSONPusher extends NonBlockingJSONPusher{
+
+	@Autowired
+	private Environment env;
 
 	private String origin;
-	private String provenanceVersion;
-	private String provenanceName;
-
-	public A22TrafficJSONPusher() {
-		super.init();
-	}
 
 	public <T> DataMapDto<RecordDtoImpl> mapData(T arg0)
 	{
@@ -38,12 +39,10 @@ public class A22TrafficJSONPusher extends JSONPusher
 		try {
 			prop.load(in);
 			origin = prop.getProperty("origin");
-			provenanceName = prop.getProperty("provenance_name");
-			provenanceVersion =prop.getProperty("provenance_version");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	return new ProvenanceDto(null, provenanceName, provenanceVersion, origin);
+	return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"),  origin);
 	}
 
 }

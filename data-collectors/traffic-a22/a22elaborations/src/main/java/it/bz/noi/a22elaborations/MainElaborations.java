@@ -15,10 +15,7 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
@@ -26,8 +23,7 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
-@DisallowConcurrentExecution
-public class MainElaborations implements Job
+public class MainElaborations
 {
 
 	private static final int NULL_VALUE = -999;
@@ -39,23 +35,30 @@ public class MainElaborations implements Job
 	}
 
 	private static Logger log = LogManager.getLogger(MainElaborations.class);
+	
+	@Autowired
+	private A22TrafficJSONPusher pusher;
+	
+	@Autowired
+	private SyncStation syncStation;
+	
+	@Autowired
+	private SyncDatatype syncDataType;
 
-	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException
+	public void execute()
 	{
 		try
 		{
 			log.debug("Start MainElaborations");
 
-			A22TrafficJSONPusher pusher = new A22TrafficJSONPusher();
-
 			log.debug("Sync datatypes");
-			SyncDatatype.saveDatatypes();
+			syncDataType.saveDatatypes();
 
 			log.debug("Create connection");
 			Connection connection = Utility.createConnection();
 
 			log.debug("Sync stations");
-			StationList stations = SyncStation.saveStations(connection);
+			StationList stations = syncStation.saveStations(connection);
 			log.debug("Length stationList: "  + stations.size());
 
 			log.debug("Read elaboration properties");
@@ -107,7 +110,7 @@ public class MainElaborations implements Job
 		catch (Exception exxx )
 		{
 			log.error(exxx);
-			throw new JobExecutionException(exxx);
+			throw new IllegalStateException(exxx);
 		}
 		log.debug("Finish writing.");
 	}
@@ -134,8 +137,6 @@ public class MainElaborations implements Job
 	 */
 	private void saveMeasurementAndCalculation(StationDto station, ArrayList<Vehicle> vehicles, long lastTimestamp, long windowLength)
 	{
-		A22TrafficJSONPusher pusher = new A22TrafficJSONPusher();
-
 		DataMapDto<RecordDtoImpl> dataMapDto = new DataMapDto<>();
 
 		log.debug("Create vehicle classes");
@@ -503,9 +504,9 @@ public class MainElaborations implements Job
 	/*
 	 * Method used only for development/debugging
 	 */
-	public static void main(String[] args) throws JobExecutionException
+	public static void main(String[] args)
 	{
-		new MainElaborations().execute(null);
+		new MainElaborations().execute();
 	}
 
 }

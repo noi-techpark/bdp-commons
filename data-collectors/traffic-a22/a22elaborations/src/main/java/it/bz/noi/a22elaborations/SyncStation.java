@@ -10,21 +10,27 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
+@Component
 public class SyncStation
 {
 
 	private static Logger log = LogManager.getLogger(SyncStation.class);
 	private static String origin;
 	private static String stationtype;
+	
+	@Autowired
+	private A22TrafficJSONPusher pusher;
 
 	public static void main(String[] args) throws IOException, SQLException
 	{
 		Connection connection = Utility.createConnection();
-		saveStations(connection);
+		//saveStations(connection);
 		connection.close();
 		InputStream in = Utility.class.getResourceAsStream("elaborations.properties");
 		Properties prop = new Properties();
@@ -41,7 +47,7 @@ public class SyncStation
 	 * @param connection 
 	 * @throws SQLException 
 	 */
-	public static StationList saveStations(Connection connection) throws IOException, SQLException
+	public StationList saveStations(Connection connection) throws IOException, SQLException
 	{
 		log.debug("Start MainSaveStation");
 
@@ -50,7 +56,6 @@ public class SyncStation
 		log.debug("Size stationlist: " + stationList.size());
 
 		log.debug("Push stations");
-		A22TrafficJSONPusher pusher = new A22TrafficJSONPusher();
 		pusher.syncStations(stationList);
 
 		return stationList;
