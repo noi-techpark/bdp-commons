@@ -21,6 +21,7 @@
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <finalName>ROOT</finalName>
+        <spring.version>5.2.12.RELEASE</spring.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -51,6 +52,11 @@
 			<artifactId>dc-interface</artifactId>
 			<version>5.1.2</version>
 		</dependency>
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 	</dependencies>
 	<build>
 		<finalName>${finalName}</finalName>

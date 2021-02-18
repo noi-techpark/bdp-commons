@@ -77,7 +77,8 @@ public class ApiClient
 
       String requestJson = sw.getBuffer().toString();
 
-      logger.debug("callWebService(): jsonRequest:" + requestJson);
+      //Avoid logging credentials
+      //logger.debug("callWebService(): jsonRequest:" + requestJson);
 
       URL url = new URL(this.endpoint);
       HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
