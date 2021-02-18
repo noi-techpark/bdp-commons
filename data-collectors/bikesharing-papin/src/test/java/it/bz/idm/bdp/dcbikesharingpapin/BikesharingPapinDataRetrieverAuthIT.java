@@ -109,8 +109,8 @@ public class BikesharingPapinDataRetrieverAuthIT extends AbstractJUnit4SpringCon
             Object valueAvailability = findMeasure(branch2, BikesharingPapinDataConverter.DATA_TYPE_STATION_AVAILABILITY);
             Object valueIsClose      = findMeasure(branch2, BikesharingPapinDataConverter.DATA_TYPE_STATION_IS_CLOSE);
 
-            Assert.assertEquals("READY", valueAvailability);
-            Assert.assertEquals("OPEN", valueIsClose);
+            Assert.assertEquals(1.0, valueAvailability);
+            Assert.assertEquals(0.0, valueIsClose);
 
             if ( errs.length() > 0 ) {
                 Assert.fail("Station converter failure: " + errs);

@@ -114,18 +114,12 @@ public class BikesharingPapinStationDto implements Serializable {
 
     public void setMeasurementTimestamp(Long measurementTimestamp) { this.measurementTimestamp = measurementTimestamp; }
 
-    public String getState() {
-        if (this.getBikeAvailable()) {
-            return "READY";
-        }
-        return "OUT_OF_SERVICE";
+    public Double getState() {
+        return (this.getBikeAvailable() ? 1.0 : 0.0);
     }
 
-    public String getClose() {
-        if (this.getIsClose()) {
-            return "CLOSED";
-        }
-        return "OPEN";
+    public Double getClose() {
+        return (this.getIsClose() ? 1.0 : 0.0);
     }
 
     @Override
