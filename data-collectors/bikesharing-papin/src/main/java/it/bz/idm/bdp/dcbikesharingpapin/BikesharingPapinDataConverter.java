@@ -111,7 +111,7 @@ public class BikesharingPapinDataConverter {
             Boolean bikeAvailable    = DCUtils.getJsonBooleanValue(stationObject, "bikeAvailable"    );
             String url               = DCUtils.getJsonStringValue(stationObject, "url"               );
 
-            stationDto.setId               ( id                );
+            stationDto.setId               ( DCUtils.trunc(getOrigin(), 255)+":"+id                );
             stationDto.setName             ( name              );
             stationDto.setLongitude        ( longitude         );
             stationDto.setLatitude         ( latitude          );
@@ -146,7 +146,7 @@ public class BikesharingPapinDataConverter {
             stationDto = new StationDto();
             Map<String, Object> stationMetaData = new HashMap<String, Object>();
 
-            stationDto.setId(DCUtils.trunc(getOrigin(), 255)+":"+bikesharingStationDto.getId());
+            stationDto.setId(bikesharingStationDto.getId());
             stationDto.setName(bikesharingStationDto.getName());
             //OMITTED: protected Double elevation;
             //OMITTED: protected String crs;
