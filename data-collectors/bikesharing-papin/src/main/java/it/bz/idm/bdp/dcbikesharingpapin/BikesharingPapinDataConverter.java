@@ -22,7 +22,7 @@ public class BikesharingPapinDataConverter {
     private static final Logger LOG = LogManager.getLogger(BikesharingPapinDataConverter.class.getName());
 
     public static final String DATA_TYPE_STATION_AVAILABILITY             = DataTypeDto.AVAILABILITY;
-    public static final String DATA_TYPE_STATION_IS_CLOSE                 = "is-closed";
+    public static final String DATA_TYPE_STATION_IS_CLOSE                 = "isClosed";
 
     public static final String STATION_METADATA_STATION_IS_CLOSE          = "isClose";
     public static final String STATION_METADATA_STATION_START_HOUR        = "startHour";
