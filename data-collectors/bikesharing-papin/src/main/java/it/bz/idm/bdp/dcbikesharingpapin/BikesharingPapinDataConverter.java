@@ -146,7 +146,7 @@ public class BikesharingPapinDataConverter {
             stationDto = new StationDto();
             Map<String, Object> stationMetaData = new HashMap<String, Object>();
 
-            stationDto.setId(bikesharingStationDto.getId());
+            stationDto.setId(DCUtils.trunc(getOrigin(), 255)+":"+bikesharingStationDto.getId());
             stationDto.setName(bikesharingStationDto.getName());
             //OMITTED: protected Double elevation;
             //OMITTED: protected String crs;
