@@ -129,15 +129,5 @@ public class SyncScheduler {
         odhClient.pushData(dto);
     }
 
-
-//    public XSSFWorkbook readSheetFromDisk() throws IOException {
-////        File file = new File(sheetName);
-//
-////        FileInputStream fis = new FileInputStream(file);
-//
-//        // we create an XSSF Workbook object for our XLSX Excel File
-//        XSSFWorkbook workbook = new XSSFWorkbook(fis);
-//        return workbook;
-//    }
 }
 

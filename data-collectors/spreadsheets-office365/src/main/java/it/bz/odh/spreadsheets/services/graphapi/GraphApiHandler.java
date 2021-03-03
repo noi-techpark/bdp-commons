@@ -34,26 +34,31 @@ public class GraphApiHandler {
     @Autowired
     private GraphApiAuthenticator graphApiAuthenticator;
 
-    @Value("${sharepoint.timeLastModifiedUrl}")
-    private String modifiedUrl;
+    @Value("${sharepoint.host}")
+    private String sharePointHost;
 
-    @Value("${sharepoint.fetchUrl}")
-    private String fetchUrl;
+    @Value("${sharepoint.site-id}")
+    private String siteId;
+
+    @Value("${sharepoint.path-to-doc}")
+    private String pathToDoc;
 
     // to be able to only write values, if sheet changed after last writing
     private Date lastChangeDate;
 
+    private URL timeLastModified;
+    private URL downloadSpreadsheet;
+
     @PostConstruct
     private void postConstruct() throws MalformedURLException, URISyntaxException {
 
+        downloadSpreadsheet = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/$value");
+        timeLastModified = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/TimeLastModified/$value");
+
         //Check that both URLs are valid
-        URL modifiedUrlTest = new URL(modifiedUrl); // this would check for the protocol
-        modifiedUrlTest.toURI(); // does the extra checking required for validation of URI
+        downloadSpreadsheet.toURI(); // does the extra checking required for validation of URI
+        timeLastModified.toURI(); // does the extra checking required for validation of URI
 
-        URL fetchUrlTest = new URL(fetchUrl); // this would check for the protocol
-        fetchUrlTest.toURI(); // does the extra checking required for validation of URI
-
-//        checkSpreadsheet();
     }
 
     /**
@@ -82,9 +87,8 @@ public class GraphApiHandler {
 
 
     private XSSFWorkbook getSpreadsheet(String token) throws IOException {
-        URL url = new URL(fetchUrl);
 
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) downloadSpreadsheet.openConnection();
 
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Authorization", "Bearer " + token);
@@ -100,9 +104,8 @@ public class GraphApiHandler {
 
 
     private String getTimeLastModified(String token) throws IOException {
-        URL url = new URL(modifiedUrl);
 
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) timeLastModified.openConnection();
 
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Authorization", "Bearer " + token);
@@ -135,5 +138,6 @@ public class GraphApiHandler {
         Date javaDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
         return javaDate;
     }
+
 
 }
