@@ -36,13 +36,14 @@ public class GraphApiAuthenticator {
 
     private static final Logger logger = LoggerFactory.getLogger(GraphApiAuthenticator.class);
 
-    @Value("${auth.tenant_id}")
+    @Value("${auth.tenantId}")
     private String tenantId;
 
     @Value("${auth.clientId}")
     private String clientId;
 
-    private String scope = "https://graph.microsoft.com/.default";
+    @Value("${auth.scope}")
+    private String scope;
 
     @Value("${auth.keyPath}")
     private String keyPath;
@@ -51,6 +52,7 @@ public class GraphApiAuthenticator {
     private String certPath;
 
     private String authority = "https://login.microsoftonline.com/%s/oauth2/token";
+
 
     private String token;
 
@@ -73,8 +75,40 @@ public class GraphApiAuthenticator {
         if (certPath == null || certPath.length() == 0)
             throw new InvalidConfigurationPropertyValueException("certPath", certPath, "certPath must be set in .env file and can't be empty");
 
+        if (scope == null || scope.length() == 0)
+            throw new InvalidConfigurationPropertyValueException("scope", scope, "scope must be set in .env file and can't be empty");
+
+        if (!scope.contains("/.default"))
+            throw new InvalidConfigurationPropertyValueException("scope", scope, "scope must contain /.default");
 
         authority = String.format(authority, tenantId);
+    }
+
+    /**
+     * Gets the token if not present yet or expired
+     * Otherwise it just returns the existing token
+     *
+     * @return returns the token
+     * @throws Exception
+     */
+    public String getToken() throws Exception {
+
+        logger.info("Checking validity of token");
+
+        if (tokenExpireDate == null || tokenExpireDate.before(new Date())) {
+
+            logger.info("Token expired, get new token");
+
+            IAuthenticationResult result = getAccessTokenByClientCredentialGrant();
+            token = result.accessToken();
+            tokenExpireDate = result.expiresOnDate();
+
+            logger.info("New token, will expire " + tokenExpireDate);
+
+        } else
+            logger.info("Token still valid until " + tokenExpireDate);
+
+        return token;
     }
 
 
@@ -101,31 +135,7 @@ public class GraphApiAuthenticator {
         return future.get();
     }
 
-    /**
-     * Gets the token if not present yet or expired
-     *
-     * @return returns the token
-     * @throws Exception
-     */
-    public String checkToken() throws Exception {
 
-        logger.info("Checking validity of token");
-
-        if (tokenExpireDate == null || tokenExpireDate.before(new Date())) {
-
-            logger.info("Token expired, get new token");
-
-            IAuthenticationResult result = getAccessTokenByClientCredentialGrant();
-            token = result.accessToken();
-            tokenExpireDate = result.expiresOnDate();
-
-            logger.info("New token, will expire " + tokenExpireDate);
-
-        } else
-            logger.info("Token still valid until " + tokenExpireDate);
-
-        return token;
-    }
 
 
 }
