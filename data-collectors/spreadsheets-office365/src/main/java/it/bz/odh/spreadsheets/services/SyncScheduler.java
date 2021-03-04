@@ -8,7 +8,7 @@ import it.bz.odh.spreadsheets.utils.DataMappingUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class SyncScheduler {
     @Scheduled(cron = "${cron}")
     public void checkSharepoint() throws Exception {
         logger.info("Cron job manual sync started");
-        XSSFWorkbook sheet = graphApiHandler.checkSpreadsheet();
+        Workbook sheet = graphApiHandler.checkSpreadsheet();
 
         if (sheet != null) {
             logger.info("Syncing data with BDP");
@@ -73,7 +73,7 @@ public class SyncScheduler {
     /**
      * Converts a XSSFWorkbook to BDP Stations
      */
-    private void syncDataWithBdp(XSSFWorkbook workbook) {
+    private void syncDataWithBdp(Workbook workbook) {
         // fetch sheet
         //read from disk
         // iterate over values and

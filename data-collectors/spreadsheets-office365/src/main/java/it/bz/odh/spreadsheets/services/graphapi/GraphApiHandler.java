@@ -2,7 +2,8 @@ package it.bz.odh.spreadsheets.services.graphapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class GraphApiHandler {
      *
      * @return null if no changes where made, else it returns a XSSFWorkbook
      */
-    public XSSFWorkbook checkSpreadsheet() throws Exception {
+    public Workbook checkSpreadsheet() throws Exception {
 
         String token = graphApiAuthenticator.getToken();
 
@@ -78,15 +79,15 @@ public class GraphApiHandler {
             // extract download link link from JSON
             lastChangeDate = timeLastModified;
             logger.info("Downloading sheet...");
-            XSSFWorkbook spreadsheet = getSpreadsheet(token);
+            Workbook spreadsheet = getSpreadsheet(token);
             logger.info("Downloading sheet done");
-            return  spreadsheet;
+            return spreadsheet;
         }
         return null;
     }
 
 
-    private XSSFWorkbook getSpreadsheet(String token) throws IOException {
+    private Workbook getSpreadsheet(String token) throws IOException {
 
         HttpURLConnection conn = (HttpURLConnection) downloadSpreadsheet.openConnection();
 
@@ -95,7 +96,8 @@ public class GraphApiHandler {
 
         int httpResponseCode = conn.getResponseCode();
         if (httpResponseCode == HTTPResponse.SC_OK) {
-            return new XSSFWorkbook(conn.getInputStream());
+            Workbook workbook = WorkbookFactory.create(conn.getInputStream());
+            return workbook;
         } else {
             // TODO log that downloading failed
             return null;
