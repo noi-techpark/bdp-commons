@@ -3,23 +3,19 @@ package it.bz.odh.spreadsheets.services;
 import it.bz.idm.bdp.dto.*;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
+import it.bz.odh.spreadsheets.services.graphapi.GraphApiHandler;
 import it.bz.odh.spreadsheets.utils.DataMappingUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -31,37 +27,35 @@ import java.util.stream.Collectors;
 public class SyncScheduler {
 
     private static final Logger logger = LoggerFactory.getLogger(SyncScheduler.class);
-    @Value("${graph.sheetName}")
-    private String sheetName;
+
     private Function<DataTypeWrapperDto, DataTypeDto> mapper = (dto) -> {
         return dto.getType();
     };
-
-    @Autowired
-    private GraphDataFetcher graphDataFetcher;
 
     @Lazy
     @Autowired
     private ODHClient odhClient;
 
     @Autowired
-    private GraphApiAuthenticator graphApiAuthenticator;
-
-    @PostConstruct
-    private void postConstruct() throws Exception {
-        fetchSheet();
-    }
-
+    private GraphApiHandler graphApiHandler;
 
     @Autowired
     private DataMappingUtil mappingUtil;
 
+    /**
+     * Cron job to check changes of the Spreadsheet in Sharepoint
+     * If changes where made, data gets uploaded to the BDP
+     *
+     * @throws Exception
+     */
     @Scheduled(cron = "${cron}")
-    public void fetchSheet() throws Exception {
+    public void checkSharepoint() throws Exception {
         logger.info("Cron job manual sync started");
-        if (graphDataFetcher.fetchSheet()) {
+        Workbook sheet = graphApiHandler.checkSpreadsheet();
+
+        if (sheet != null) {
             logger.info("Syncing data with BDP");
-            syncData();
+            syncDataWithBdp(sheet);
             logger.info("Done: Syncing data with BDP");
         } else
             logger.info("No new changes detected, skip sync with BDP");
@@ -71,16 +65,11 @@ public class SyncScheduler {
 
 
     /**
-     * Fetches the worksheet from Office365 and converts the data to BDP format
-     * Then it writes the values to the BDP
-     *
-     * @throws Exception
+     * Converts a XSSFWorkbook to BDP Stations
      */
-    private void syncData() throws Exception {
+    private void syncDataWithBdp(Workbook workbook) {
         // fetch sheet
         //read from disk
-        XSSFWorkbook workbook = readSheetFromDisk();
-
         // iterate over values and
         Iterator<Sheet> sheetIterator = workbook.sheetIterator();
         StationList dtos = new StationList();
@@ -134,15 +123,5 @@ public class SyncScheduler {
         odhClient.pushData(dto);
     }
 
-
-    public XSSFWorkbook readSheetFromDisk() throws IOException {
-        File file = new File(sheetName);
-
-        FileInputStream fis = new FileInputStream(file);
-
-        // we create an XSSF Workbook object for our XLSX Excel File
-        XSSFWorkbook workbook = new XSSFWorkbook(fis);
-        return workbook;
-    }
 }
 
