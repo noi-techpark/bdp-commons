@@ -1,4 +1,4 @@
-package it.bz.odh.spreadsheets.services;
+package it.bz.odh.spreadsheets.services.graphapi;
 
 
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
@@ -36,13 +39,14 @@ public class GraphApiAuthenticator {
 
     private static final Logger logger = LoggerFactory.getLogger(GraphApiAuthenticator.class);
 
-    @Value("${auth.tenant_id}")
+    @Value("${auth.tenantId}")
     private String tenantId;
 
     @Value("${auth.clientId}")
     private String clientId;
 
-    private String scope = "https://graph.microsoft.com/.default";
+    @Value("${sharepoint.host}")
+    private String host;
 
     @Value("${auth.keyPath}")
     private String keyPath;
@@ -52,13 +56,15 @@ public class GraphApiAuthenticator {
 
     private String authority = "https://login.microsoftonline.com/%s/oauth2/token";
 
+    private String scope;
+
     private String token;
 
     private Date tokenExpireDate;
 
 
     @PostConstruct
-    private void postConstruct() throws Exception {
+    private void postConstruct() throws MalformedURLException, URISyntaxException, InvalidConfigurationPropertyValueException {
 
         //check that properties are set correct
         if (tenantId == null || tenantId.length() == 0)
@@ -73,8 +79,40 @@ public class GraphApiAuthenticator {
         if (certPath == null || certPath.length() == 0)
             throw new InvalidConfigurationPropertyValueException("certPath", certPath, "certPath must be set in .env file and can't be empty");
 
+        scope = " https://" + host + "/.default";
+
+        // Test if scope URL is valid
+        URL scopeTest = new URL(scope);
+        scopeTest.toURI();
 
         authority = String.format(authority, tenantId);
+    }
+
+    /**
+     * Gets the token if not present yet or expired
+     * Otherwise it just returns the existing token
+     *
+     * @return returns the token
+     * @throws Exception
+     */
+    public String getToken() throws Exception {
+
+        logger.info("Checking validity of token");
+
+        if (tokenExpireDate == null || tokenExpireDate.before(new Date())) {
+
+            logger.info("Token expired, get new token");
+
+            IAuthenticationResult result = getAccessTokenByClientCredentialGrant();
+            token = result.accessToken();
+            tokenExpireDate = result.expiresOnDate();
+
+            logger.info("New token, will expire " + tokenExpireDate);
+
+        } else
+            logger.info("Token still valid until " + tokenExpireDate);
+
+        return token;
     }
 
 
@@ -101,31 +139,7 @@ public class GraphApiAuthenticator {
         return future.get();
     }
 
-    /**
-     * Gets the token if not present yet or expired
-     *
-     * @return returns the token
-     * @throws Exception
-     */
-    protected String checkToken() throws Exception {
 
-        logger.info("Checking validity of token");
-
-        if (tokenExpireDate == null || tokenExpireDate.before(new Date())) {
-
-            logger.info("Token expired, get new token");
-
-            IAuthenticationResult result = getAccessTokenByClientCredentialGrant();
-            token = result.accessToken();
-            tokenExpireDate = result.expiresOnDate();
-
-            logger.info("New token, will expire " + tokenExpireDate);
-
-        } else
-            logger.info("Token still valid until " + tokenExpireDate);
-
-        return token;
-    }
 
 
 }

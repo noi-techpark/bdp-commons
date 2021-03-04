@@ -9,12 +9,17 @@ import org.junit.Test;
  */
 public class AppTest 
 {
-    /**
-     * Rigorous Test :-)
-     */
+
     @Test
-    public void shouldAnswerWithTrue()
+    public void mapStationTest()
     {
         assertTrue( true );
     }
+
+    @Test
+    public void mapDataType()
+    {
+        assertTrue( true );
+    }
+
 }
