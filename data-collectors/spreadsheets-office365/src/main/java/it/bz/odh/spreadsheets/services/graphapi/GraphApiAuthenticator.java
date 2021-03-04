@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
@@ -42,8 +45,8 @@ public class GraphApiAuthenticator {
     @Value("${auth.clientId}")
     private String clientId;
 
-    @Value("${auth.scope}")
-    private String scope;
+    @Value("${sharepoint.host}")
+    private String host;
 
     @Value("${auth.keyPath}")
     private String keyPath;
@@ -53,6 +56,7 @@ public class GraphApiAuthenticator {
 
     private String authority = "https://login.microsoftonline.com/%s/oauth2/token";
 
+    private String scope;
 
     private String token;
 
@@ -60,7 +64,7 @@ public class GraphApiAuthenticator {
 
 
     @PostConstruct
-    private void postConstruct() throws Exception {
+    private void postConstruct() throws MalformedURLException, URISyntaxException, InvalidConfigurationPropertyValueException {
 
         //check that properties are set correct
         if (tenantId == null || tenantId.length() == 0)
@@ -75,11 +79,11 @@ public class GraphApiAuthenticator {
         if (certPath == null || certPath.length() == 0)
             throw new InvalidConfigurationPropertyValueException("certPath", certPath, "certPath must be set in .env file and can't be empty");
 
-        if (scope == null || scope.length() == 0)
-            throw new InvalidConfigurationPropertyValueException("scope", scope, "scope must be set in .env file and can't be empty");
+        scope = " https://" + host + "/.default";
 
-        if (!scope.contains("/.default"))
-            throw new InvalidConfigurationPropertyValueException("scope", scope, "scope must contain /.default");
+        // Test if scope URL is valid
+        URL scopeTest = new URL(scope);
+        scopeTest.toURI();
 
         authority = String.format(authority, tenantId);
     }

@@ -39,12 +39,6 @@ public class SyncScheduler {
     @Autowired
     private GraphApiHandler graphApiHandler;
 
-    @PostConstruct
-    private void postConstruct() throws Exception {
-        checkSharepoint();
-    }
-
-
     @Autowired
     private DataMappingUtil mappingUtil;
 
