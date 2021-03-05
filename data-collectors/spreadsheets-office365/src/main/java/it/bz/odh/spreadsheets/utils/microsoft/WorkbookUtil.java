@@ -31,8 +31,6 @@ import java.util.Date;
 @Component
 public class WorkbookUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(WorkbookUtil.class);
-
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
@@ -50,6 +48,11 @@ public class WorkbookUtil {
 
     private URL timeLastModified;
     private URL downloadSpreadsheet;
+
+    private static final Logger logger = LoggerFactory.getLogger(WorkbookUtil.class);
+
+    // https://stackoverflow.com/questions/48594916/convert-2018-02-02t065457-744z-string-to-date-in-android
+    SimpleDateFormat microsoftDateConverter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     @PostConstruct
     private void postConstruct() throws MalformedURLException, URISyntaxException {
@@ -131,8 +134,8 @@ public class WorkbookUtil {
                 }
             }
             String dateTime = response.toString();
-            logger.info("Getting TimeLastModified done");
-            return convertMicrosoftDateToJavaDate(dateTime);
+            logger.info("Getting TimeLastModified done: " + dateTime);
+            return microsoftDateConverter.parse(dateTime);
         } else {
             String errorMessage = String.format("Get TimeLastModified failed. Connection returned HTTP code: %s with message: %s",
                     httpResponseCode, conn.getResponseMessage());
@@ -141,12 +144,6 @@ public class WorkbookUtil {
         }
     }
 
-    private Date convertMicrosoftDateToJavaDate(String date) throws ParseException {
-        // Java's Instant could be used, but for now date is preferred for here https://stackoverflow.com/questions/48594916/convert-2018-02-02t065457-744z-string-to-date-in-android
-        date = date.substring(0, date.length() - 1).replace("T", " ");
-        Date javaDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
-        return javaDate;
-    }
 
 
 }
