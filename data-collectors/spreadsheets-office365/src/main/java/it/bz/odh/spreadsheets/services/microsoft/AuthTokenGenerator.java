@@ -1,4 +1,4 @@
-package it.bz.odh.spreadsheets.services.graphapi;
+package it.bz.odh.spreadsheets.services.microsoft;
 
 
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -30,14 +28,19 @@ import java.util.concurrent.CompletableFuture;
 
 
 /**
- * Authenticates the client with Microsoft Graph API and handles token generation and validation
- *
- * Token is valid for X time, then simply a new token gets requested
+ * Generates the authentication token to make requests on Microsoft's resources like Sharepoint API, Graph API...
+ * It uses a Certificate to authenticate demon applications with no signed in user.
+ * <p>
+ * Microsoft Authentication Library (MSAL) for Java is used.
+ * https://github.com/AzureAD/microsoft-authentication-library-for-java/tree/v1.8.1
+ * <p>
+ * Further reading for authentication flow wit daemons:
+ * https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-daemon-overview
  */
 @Service
-public class GraphApiAuthenticator {
+public class AuthTokenGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(GraphApiAuthenticator.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthTokenGenerator.class);
 
     @Value("${auth.tenantId}")
     private String tenantId;
@@ -64,7 +67,7 @@ public class GraphApiAuthenticator {
 
 
     @PostConstruct
-    private void postConstruct() throws MalformedURLException, URISyntaxException, InvalidConfigurationPropertyValueException {
+    private void postConstruct() throws Exception {
 
         //check that properties are set correct
         if (tenantId == null || tenantId.length() == 0)
@@ -85,19 +88,33 @@ public class GraphApiAuthenticator {
         URL scopeTest = new URL(scope);
         scopeTest.toURI();
 
+
+        // create authority for authentication flow
         authority = String.format(authority, tenantId);
+
+
+        //create token on startup
+        logger.info("Creating token...");
+
+        IAuthenticationResult result = getAccessTokenByClientCredentialGrant();
+        token = result.accessToken();
+        tokenExpireDate = result.expiresOnDate();
+
+        logger.info("Token, will expire " + tokenExpireDate);
+
     }
 
     /**
-     * Gets the token if not present yet or expired
-     * Otherwise it just returns the existing token
+     * Returns the authentication token of the Tenant,
+     * to authenticate requests to Microsoft's Services
+     * that are associated to the Tenant
      *
-     * @return returns the token
+     * @return the token
      * @throws Exception
      */
     public String getToken() throws Exception {
 
-        logger.info("Checking validity of token");
+        logger.info("Checking validity of token...");
 
         if (tokenExpireDate == null || tokenExpireDate.before(new Date())) {
 
@@ -138,8 +155,6 @@ public class GraphApiAuthenticator {
         CompletableFuture<IAuthenticationResult> future = app.acquireToken(clientCredentialParam);
         return future.get();
     }
-
-
 
 
 }

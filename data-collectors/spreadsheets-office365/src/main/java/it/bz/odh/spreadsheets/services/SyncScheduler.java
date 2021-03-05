@@ -3,7 +3,7 @@ package it.bz.odh.spreadsheets.services;
 import it.bz.idm.bdp.dto.*;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
-import it.bz.odh.spreadsheets.services.graphapi.GraphApiHandler;
+import it.bz.odh.spreadsheets.utils.microsoft.WorkbookUtil;
 import it.bz.odh.spreadsheets.utils.DataMappingUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import javax.annotation.PostConstruct;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -37,7 +37,7 @@ public class SyncScheduler {
     private ODHClient odhClient;
 
     @Autowired
-    private GraphApiHandler graphApiHandler;
+    private WorkbookUtil workbookUtil;
 
     @Autowired
     private DataMappingUtil mappingUtil;
@@ -51,7 +51,7 @@ public class SyncScheduler {
     @Scheduled(cron = "${cron}")
     public void checkSharepoint() throws Exception {
         logger.info("Cron job manual sync started");
-        Workbook sheet = graphApiHandler.checkSpreadsheet();
+        Workbook sheet = workbookUtil.checkSpreadsheet();
 
         if (sheet != null) {
             logger.info("Syncing data with BDP");
