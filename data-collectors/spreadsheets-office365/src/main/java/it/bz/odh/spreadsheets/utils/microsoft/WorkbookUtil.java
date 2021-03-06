@@ -47,7 +47,7 @@ public class WorkbookUtil {
     private Date lastChangeDate;
 
     private URL timeLastModified;
-    private URL downloadSpreadsheet;
+    private URL downloadWorkbook;
 
     private static final Logger logger = LoggerFactory.getLogger(WorkbookUtil.class);
 
@@ -57,21 +57,24 @@ public class WorkbookUtil {
     @PostConstruct
     private void postConstruct() throws MalformedURLException, URISyntaxException {
 
-        downloadSpreadsheet = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/$value");
+        downloadWorkbook = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/$value");
         timeLastModified = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/TimeLastModified/$value");
 
-        //Check that both URLs are valid
-        downloadSpreadsheet.toURI(); // does the extra checking required for validation of URI
+        //Test that both URLs are valid
+        downloadWorkbook.toURI(); // does the extra checking required for validation of URI
         timeLastModified.toURI(); // does the extra checking required for validation of URI
 
     }
 
     /**
-     * Checks if changes where made in the Spreadsheet
+     * Checks for changes in the Workbook
+     * and returns it, if changes where made
+     * since the last time checked.
      *
-     * @return null if no changes where made, else it returns the Workbook
+     *
+     * @return the Workbook if changes where made, else null
      */
-    public Workbook checkSpreadsheet() throws Exception {
+    public Workbook checkWorkbook() throws Exception {
 
         String token = authTokenGenerator.getToken();
 
@@ -91,7 +94,7 @@ public class WorkbookUtil {
     private Workbook getWorkbook(String token) throws IOException {
         logger.info("Fetching workbook...");
 
-        HttpURLConnection conn = (HttpURLConnection) downloadSpreadsheet.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) downloadWorkbook.openConnection();
 
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Authorization", "Bearer " + token);
