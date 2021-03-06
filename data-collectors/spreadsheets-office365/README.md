@@ -1,12 +1,10 @@
 # Office 365 Spreadsheets DataCollector
 
-A data collector to automatically fetch data from an Office 365 Worksheet and write the data to a database.
+A data collector to synchronize an Office 365 Worksheet hosted on a Microsoft Sharepoint site, with a Big Data Platform
+using Keycloak.
 
-This application was written to be used with the [OpenDataHub](https://opendatahub.bz.it/) of NOI-Tech Park, but you can
-change the code and make it work with every database system you want. Just change the mapping and writing of the
-extracted data from the worksheet to your database.
-
-For Authentication with the Graph API msal4j is used. All other requests are made using the REST API.
+For Authentication with Microsoft's Services msal4j with certificates is used. All other requests are made using the
+REST API.
 
 For Authentication with the ODH, [Keycloak](https://www.keycloak.org/) is used.
 
@@ -50,8 +48,8 @@ To build the project, the following prerequisites must be met:
 
 - Java JDK 1.8 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
 - [Maven](https://maven.apache.org/) 3.x
-- Microsoft Business Account
-- Office 365 Worksheet in OneDrive
+- Microsoft Sharepoint site
+- Excel Document hosted on the Sharepoint site (in the Shared Documents Folder)
 
 If you want to run the application using [Docker](https://www.docker.com/), the environment is already set up with all
 dependencies for you. You only have to install [Docker](https://www.docker.com/)
@@ -74,32 +72,28 @@ cd bdp-commons/data-collectors/spreadsheets-office365
 
 ### Set Up
 
-#### Microsoft Account
+#### Create a Microsoft Sharepoint site
 
-You need a microsoft account to make this app works, so if you don't have one please create one.
+TBD
 
-#### Excel Spreadsheet
+#### Create Excel spreadsheet 
 
-Create an Office 365 spreadsheet in your OneDrive folder and take note of name. The put the values in **.env**
+Create a Excel spreadsheet in Sharepoint "Shared Documents" folder.  
+The spreadsheet can also be inside a folder of the "Shared Documents" folder.
 
-```
-SHEET_NAME=YourSpreadsheetName.xlsx
-```
+Note down the full path starting from the  "Shared Documents" folder.  
+So you can put it later in environment variables files.
 
-NOTE: If you leave SINGLE_SHEET_NAMES empty, all sheets get printed to console
+For example if you have the path `Shared Documents/Example/Example.xlsx` you put only `Example/Example.xlsx` into environment variables file.
 
 #### Azure Active Directory
-
-Attention: The Microsoft Java Auth API might change with time. If you have problems with the following guide please go
-to the official [example repo](https://github.com/microsoftgraph/msgraph-sdk-java-auth) and see if changes where made.
-Please consider updating also the guide here or contact the current developer of this application, to update the guides.
 
 A new Application needs to be created in Azure Active Directories:
 
 1. Open [Azure Admin Center](https://aad.portal.azure.com/) and Select Azure Active Directory on the left Sidebar
 2. Then select App Registrations under Manager
 3. Select New registration:
-    - Set Name as you like
+    - Set Name as you likes
     - Set Supported account types to Accounts in any organizational directory and personal Microsoft accounts.
     - Under Redirect URI, change the dropdown to Public client/native (mobile & desktop), and set the value to
       ```https://login.microsoftonline.com/common/oauth2/nativeclient```
@@ -107,8 +101,7 @@ A new Application needs to be created in Azure Active Directories:
 4. Set permissions in API permissions by clicking the "+" button, selecting Graph API and then in Application
    Permissions check the following Permissions
     ```
-    Users.Read.All
-    Files.Read.All
+    Sites.Read.All
     ```
 5. Create a certificate to be able to call the Graph API Generate the private key in PEM format and create a PKCS8
    version
@@ -127,20 +120,21 @@ A new Application needs to be created in Azure Active Directories:
     openssl x509 -req -days 365 -in cert.csr -signkey private_key.pem -out cert.crt
    ``` 
    Finally, go back to the Azure portalIn the Application menu blade, click on the **Certificates & secrets**, in the
-   Certificates section, **upload the certificate you created.**
+   Certificates section, **upload the certificate (cert.crt file) you created.**
 
-6. Take note of Client ID, Tenant ID you can find in Overview in Active Directory and put it into **application.properties** 
-   or **.env** if using Docker.
-   Put also the path to the generated certificate and key and add your Microsoft account E-Mail you used to *create the Spreadsheet*.
-   Note: You can put the certificates in /resources/auth but also wherever you want, just use an **absolute path** in configuration files.
+6. Take note of Client ID, Tenant ID you can find in Overview in Active Directory and put it into **
+   application.properties**
+   or **.env** if using Docker. Put also the path to the generated certificate and key and add your Microsoft account
+   E-Mail you used to *create the Spreadsheet*. Note: You can put the certificates in /resources/auth but also wherever
+   you want, just use an **absolute path** in configuration files.
     ```
     TENANT_ID=YOUR_TENANT_ID
-    #pkcs8_key
+    
     CLIENT_ID=YOUR_CLIENT_ID
-    #cert.crt
+    #pkcs8_key 
     KEY_PATH=YOUR_KEY_ABSOLUTE_PATH
+    #cert.crt 
     CERT_PATH=YOUR_CERT_ABSOLUTE_PATH
-    EMAIL=YOUR_MICOROSFT_EMAIL
     ```
 7. Config cron to change Scheduler timing in **application.properties** or **.env** if using Docker. as you desire. When
    executed, the sheet gets fetched, compared and written to BDP.
@@ -202,16 +196,27 @@ docker-compose run --rm app mvn clean test
 
 ### Possible optimizations
 
+#### Microsoft change notifications to replace cron scheduler
 The Microsoft graphs offers a [change notification system](https://docs.microsoft.com/en-us/graph/webhooks) to trigger
-an application over webhooks that changes where made. In this application a cron job is used to make this done, but it
-could be replaced by Microsoft's change notifications.
+an application over webhooks, when changes (for example on a document) where made.
 
-We preferred the cron job for now, because its simpler and more secure:
+In this application a cron job scheduler is used to see if changes where made on the Excel Document,
+but it could be replaced by Microsoft's change notifications.  
+The cron job is used at the moment, because its simpler and more secure:
 
 - Microsoft's Webhooks don't have any Authentication. So anybody knowing the link could trigger the Webhooks with a
   simple cURL.
 - Webhooks could be secured by Firewall and IP-blocking, but Microsoft IPs change periodically without notice, so it
   would break the application, without noticing it.
+
+See [here](https://docs.microsoft.com/en-us/graph/webhooks) for the official statement about the security issue.
+
+StackExchange [discussion](https://sharepoint.stackexchange.com/questions/264609/does-the-microsoft-graph-support-driveitem-change-notifications-for-sharepoint-o)
+about change notifications with Sharepoint
+
+The best case solution would be having the change notifications with Microsofts IP Addresses whitelistet,
+and a low frequency cron job, that checks if the change notification service missed some changes.  
+So in that case the developer/administraotr of the application gets notified, that the change notifications are not working anymore.
 
 ### Guidelines
 
