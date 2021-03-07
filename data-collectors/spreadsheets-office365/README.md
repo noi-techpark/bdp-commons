@@ -3,13 +3,11 @@
 A data collector to synchronize an Office 365 Worksheet hosted on a Microsoft Sharepoint site, with a Big Data Platform
 using Keycloak.
 
-For Authentication with Microsoft's Services msal4j with certificates is used. All other requests are made using the
-REST API.
+For Authentication with Microsoft's Services msal4j with certificates is used.  
+All further actions are handled by the Sharepoint REST API.
 
-For Authentication with the ODH, [Keycloak](https://www.keycloak.org/) is used.
-
-A cron job checks if changes were made (comparing last change date) in the worksheet and downloads the new version in
-case changes where made. Then the data in the sheet gets converted and mapped to StationDtos and then send to the ODH.
+For Authentication with the [OpenDataHub](https://opendatahub.bz.it/) , [Keycloak](https://www.keycloak.org/) is used.
+Note: With some changes, any Big Data Platform can be used.
 
 ## Table of contents
 
@@ -17,23 +15,22 @@ case changes where made. Then the data in the sheet gets converted and mapped to
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Source code](#source-code)
-    - [Set Up](#set-up)
-        - [Microsoft Account](#microsoft-account)
-        - [Excel Spreadsheet](#excel-spreadsheet)
-        - [Azure Active Directory](#azure-active-directory)
-        - [O-Auth with ODH](#o-auth-with-odh)
-        - [ODH configuration](#odh-configuration)
-    - [Execute without Docker](#execute-without-docker)
-    - [Execute with Docker](#execute-with-docker)
+  - [Prerequisites](#prerequisites)
+  - [Source code](#source-code)
+  - [Set Up](#set-up)
+    - [Create a Microsoft Sharepoint site](#create-a-microsoft-sharepoint-site)
+    - [Create the Excel spreadsheet](#create-the-excel-spreadsheet)
+    - [Azure Active Directory](#azure-active-directory)
+  - [Execute without Docker](#execute-without-docker)
+  - [Execute with Docker](#execute-with-docker)
 - [Additional information](#additional-information)
-    - [Possible optimizations](#possible-optimizations)
-    - [Guidelines](#guidelines)
-    - [Support](#support)
-    - [Contributing](#contributing)
-    - [Documentation](#documentation)
-    - [License](#license)
+  - [Possible optimizations](#possible-optimizations)
+    - [Microsoft change notifications to replace cron scheduler](#microsoft-change-notifications-to-replace-cron-scheduler)
+  - [Guidelines](#guidelines)
+  - [Support](#support)
+  - [Contributing](#contributing)
+  - [Documentation](#documentation)
+  - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -74,17 +71,28 @@ cd bdp-commons/data-collectors/spreadsheets-office365
 
 #### Create a Microsoft Sharepoint site
 
-TBD
+Create a Sharepoint site collection with a Shared Document library.  
+In the most cases you need to contact the Microsoft Administrator of your organization.  
+Your created site then has a full URL. For example `https://your-organization.sharepoint.com/sites/your-site-id`
 
-#### Create Excel spreadsheet 
+So you can fill the environment variables file:
+```
+SHAREPOINT_HOST=your-organization.sharepoint.com
+SHAREPOINT_SITE_ID=your-site-id
+```
 
-Create a Excel spreadsheet in Sharepoint "Shared Documents" folder.  
+#### Create the Excel spreadsheet 
+
+Create a Excel spreadsheet in the previous step created Sharepoint sites "Shared Documents" folder.  
 The spreadsheet can also be inside a folder of the "Shared Documents" folder.
 
 Note down the full path starting from the  "Shared Documents" folder.  
-So you can put it later in environment variables files.
+For example if you have the path `Shared Documents/Example/Example.xlsx` you put only `Example/Example.xlsx`  
+into environment variables file.
 
-For example if you have the path `Shared Documents/Example/Example.xlsx` you put only `Example/Example.xlsx` into environment variables file.
+```
+SHAREPOINT_PATH_TO_DOC=Example/Example.xlsx
+```
 
 #### Azure Active Directory
 
@@ -123,22 +131,20 @@ A new Application needs to be created in Azure Active Directories:
    Certificates section, **upload the certificate (cert.crt file) you created.**
 
 6. Take note of Client ID, Tenant ID you can find in Overview in Active Directory and put it into **
-   application.properties**
-   or **.env** if using Docker. Put also the path to the generated certificate and key and add your Microsoft account
+   application.properties** or **.env** if using Docker. Put also the path to the generated certificate and key and add your Microsoft account
    E-Mail you used to *create the Spreadsheet*. Note: You can put the certificates in /resources/auth but also wherever
    you want, just use an **absolute path** in configuration files.
     ```
     TENANT_ID=YOUR_TENANT_ID
-    
     CLIENT_ID=YOUR_CLIENT_ID
-    #pkcs8_key 
+    #put pkcs8_key here 
     KEY_PATH=YOUR_KEY_ABSOLUTE_PATH
-    #cert.crt 
+    #put cert.crt here
     CERT_PATH=YOUR_CERT_ABSOLUTE_PATH
     ```
-7. Config cron to change Scheduler timing in **application.properties** or **.env** if using Docker. as you desire. When
+7. Config the cron annotation to change the Scheduler timing environment variables as you desire. When
    executed, the sheet gets fetched, compared and written to BDP.
-    ```dtd
+    ```
     CRON=0 6-20 * * 1-5
     ```
 
@@ -212,7 +218,7 @@ The cron job is used at the moment, because its simpler and more secure:
 See [here](https://docs.microsoft.com/en-us/graph/webhooks) for the official statement about the security issue.
 
 StackExchange [discussion](https://sharepoint.stackexchange.com/questions/264609/does-the-microsoft-graph-support-driveitem-change-notifications-for-sharepoint-o)
-about change notifications with Sharepoint
+about change notifications with Sharepoint.
 
 The best case solution would be having the change notifications with Microsofts IP Addresses whitelistet,
 and a low frequency cron job, that checks if the change notification service missed some changes.  
@@ -224,7 +230,7 @@ Find [here](https://opendatahub.readthedocs.io/en/latest/guidelines.html) guidel
 
 ### Support
 
-For support, please contact [info@opendatahub.bz.it](mailto:info@opendatahub.bz.it).
+For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
 
 ### Contributing
 
@@ -232,7 +238,7 @@ If you'd like to contribute, please follow the following instructions:
 
 - Fork the repository.
 
-- Checkout a topic branch from the `development` branch.
+- Checkout a topic branch from th e `development` branch.
 
 - Make sure the tests are passing.
 
