@@ -1,17 +1,13 @@
 # Office 365 Spreadsheets DataCollector
 
-A data collector to automatically fetch data from an Office 365 Worksheet and write the data to a database.
+A data collector to synchronize an Office 365 Worksheet hosted on a Microsoft Sharepoint site, with a Big Data Platform
+using Keycloak.
 
-This application was written to be used with the [OpenDataHub](https://opendatahub.bz.it/) of NOI-Tech Park, but you can
-change the code and make it work with every database system you want. Just change the mapping and writing of the
-extracted data from the worksheet to your database.
+For Authentication with Microsoft's Services msal4j with certificates is used.  
+All further actions are handled by the Sharepoint REST API.
 
-For Authentication with the Graph API msal4j is used. All other requests are made using the REST API.
-
-For Authentication with the ODH, [Keycloak](https://www.keycloak.org/) is used.
-
-A cron job checks if changes were made (comparing last change date) in the worksheet and downloads the new version in
-case changes where made. Then the data in the sheet gets converted and mapped to StationDtos and then send to the ODH.
+For Authentication with the [OpenDataHub](https://opendatahub.bz.it/) , [Keycloak](https://www.keycloak.org/) is used.  
+Note: Any Big Data Platform can be used.
 
 ## Table of contents
 
@@ -19,23 +15,22 @@ case changes where made. Then the data in the sheet gets converted and mapped to
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Source code](#source-code)
-    - [Set Up](#set-up)
-        - [Microsoft Account](#microsoft-account)
-        - [Excel Spreadsheet](#excel-spreadsheet)
-        - [Azure Active Directory](#azure-active-directory)
-        - [O-Auth with ODH](#o-auth-with-odh)
-        - [ODH configuration](#odh-configuration)
-    - [Execute without Docker](#execute-without-docker)
-    - [Execute with Docker](#execute-with-docker)
+  - [Prerequisites](#prerequisites)
+  - [Source code](#source-code)
+  - [Set Up](#set-up)
+    - [Create a Microsoft Sharepoint site](#create-a-microsoft-sharepoint-site)
+    - [Create the Excel spreadsheet](#create-the-excel-spreadsheet)
+    - [Azure Active Directory](#azure-active-directory)
+  - [Execute without Docker](#execute-without-docker)
+  - [Execute with Docker](#execute-with-docker)
 - [Additional information](#additional-information)
-    - [Possible optimizations](#possible-optimizations)
-    - [Guidelines](#guidelines)
-    - [Support](#support)
-    - [Contributing](#contributing)
-    - [Documentation](#documentation)
-    - [License](#license)
+  - [Possible optimizations](#possible-optimizations)
+    - [Microsoft change notifications to replace cron scheduler](#microsoft-change-notifications-to-replace-cron-scheduler)
+  - [Guidelines](#guidelines)
+  - [Support](#support)
+  - [Contributing](#contributing)
+  - [Documentation](#documentation)
+  - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -50,8 +45,8 @@ To build the project, the following prerequisites must be met:
 
 - Java JDK 1.8 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
 - [Maven](https://maven.apache.org/) 3.x
-- Microsoft Business Account
-- Office 365 Worksheet in OneDrive
+- Microsoft Sharepoint site
+- Excel Document hosted on the Sharepoint site (in the Shared Documents Folder)
 
 If you want to run the application using [Docker](https://www.docker.com/), the environment is already set up with all
 dependencies for you. You only have to install [Docker](https://www.docker.com/)
@@ -74,41 +69,57 @@ cd bdp-commons/data-collectors/spreadsheets-office365
 
 ### Set Up
 
-#### Microsoft Account
+#### Without Docker
+Copy the file `src/main/resources/application.properties` to `src/main/resources/application-local.properties`.  
+This file will be your environment variables file.  
+Note: The environment variables in application.properties are in lower case, but in further set up instructions  
+They are UPPER case. *Just leave them lower case*
 
-You need a microsoft account to make this app works, so if you don't have one please create one.
+#### With Docker
+Copy the file `.env.example` to `.env`.  
+This file will be your environment variables file.
 
-#### Excel Spreadsheet
+#### Create a Microsoft Sharepoint site
 
-Create an Office 365 spreadsheet in your OneDrive folder and take note of name. The put the values in **.env**
+Create a Sharepoint site collection with a Shared Document library.  
+In the most cases you need to contact the Microsoft Administrator of your organization.  
+Your created site then has a full URL. For example `https://your-organization.sharepoint.com/sites/your-site-id`
+
+Now you can fill the environment variables file:
+```
+SHAREPOINT_HOST=your-organization.sharepoint.com
+SHAREPOINT_SITE_ID=your-site-id
+```
+
+#### Create the Excel spreadsheet 
+
+Create a Excel spreadsheet in the previous step created Sharepoint sites "Shared Documents" folder.  
+The spreadsheet can also be inside a folder of the "Shared Documents" folder.
+
+Write into environment variables file the full path starting from the  "Shared Documents" folder.
+For example if you have the path `Shared Documents/Example/Example.xlsx` you put only `Example/Example.xlsx`  
+into environment variables file:
 
 ```
-SHEET_NAME=YourSpreadsheetName.xlsx
+SHAREPOINT_PATH_TO_DOC=Example/Example.xlsx
 ```
-
-NOTE: If you leave SINGLE_SHEET_NAMES empty, all sheets get printed to console
 
 #### Azure Active Directory
-
-Attention: The Microsoft Java Auth API might change with time. If you have problems with the following guide please go
-to the official [example repo](https://github.com/microsoftgraph/msgraph-sdk-java-auth) and see if changes where made.
-Please consider updating also the guide here or contact the current developer of this application, to update the guides.
 
 A new Application needs to be created in Azure Active Directories:
 
 1. Open [Azure Admin Center](https://aad.portal.azure.com/) and Select Azure Active Directory on the left Sidebar
 2. Then select App Registrations under Manager
 3. Select New registration:
-    - Set Name as you like
-    - Set Supported account types to Accounts in any organizational directory and personal Microsoft accounts.
+    - Set Name as you likes
+    - Set Supported account types to Account in any organizational directory and personal Microsoft accounts.
     - Under Redirect URI, change the dropdown to Public client/native (mobile & desktop), and set the value to
       ```https://login.microsoftonline.com/common/oauth2/nativeclient```
 
 4. Set permissions in API permissions by clicking the "+" button, selecting Graph API and then in Application
    Permissions check the following Permissions
     ```
-    Users.Read.All
-    Files.Read.All
+    Sites.Read.All
     ```
 5. Create a certificate to be able to call the Graph API Generate the private key in PEM format and create a PKCS8
    version
@@ -127,32 +138,42 @@ A new Application needs to be created in Azure Active Directories:
     openssl x509 -req -days 365 -in cert.csr -signkey private_key.pem -out cert.crt
    ``` 
    Finally, go back to the Azure portalIn the Application menu blade, click on the **Certificates & secrets**, in the
-   Certificates section, **upload the certificate you created.**
+   Certificates section, **upload the certificate (cert.crt file) you created.**
 
-6. Take note of Client ID, Tenant ID you can find in Overview in Active Directory and put it into **application.properties** 
-   or **.env** if using Docker.
-   Put also the path to the generated certificate and key and add your Microsoft account E-Mail you used to *create the Spreadsheet*.
-   Note: You can put the certificates in /resources/auth but also wherever you want, just use an **absolute path** in configuration files.
+6. Take note of ClientID, TenantID you find in Overview in Active Directory and put it into environment variables file.  
+   Put also the path to the generated certificate and public key there. 
+   Note: You can put the certificates in /resources/auth but also wherever you want,  
+   just use an **absolute path** in environment variables files.
     ```
-    TENANT_ID=YOUR_TENANT_ID
-    #pkcs8_key
-    CLIENT_ID=YOUR_CLIENT_ID
-    #cert.crt
-    KEY_PATH=YOUR_KEY_ABSOLUTE_PATH
-    CERT_PATH=YOUR_CERT_ABSOLUTE_PATH
-    EMAIL=YOUR_MICOROSFT_EMAIL
+    TENANT_ID=your_tenant_id
+    CLIENT_ID=your_tenant_id
+    #put pkcs8_key public key here 
+    KEY_PATH=auth/pkcs8_key
+    #put cert.crt certiticate here
+    CERT_PATH=auth/cert.crt
     ```
-7. Config cron to change Scheduler timing in **application.properties** or **.env** if using Docker. as you desire. When
-   executed, the sheet gets fetched, compared and written to BDP.
-    ```dtd
+7. Config the cron annotation to change the Scheduler as you desire.  
+   When executed, the last edit timestamp gets compared and if the workbook changed, the workbook gets fetched  
+   and synced with the BDP.
+   
+    ```
     CRON=0 6-20 * * 1-5
     ```
 
-### Execute without Docker
+#### Keycloak
 
-Copy the file `src/main/resources/application.properties` to `src/main/resources/application-local.properties` and
-adjust the variables that get their values from environment variables. You can take a look at the `.env.example` for
-some help.
+For authentication with the Big data Platform, Keycloak O-Auth is used. 
+Fill the environment variables file with your Keycloak configuration.
+```
+OAUTH_AUTH_URI=https://your-auth-uri.com/your-auth-uri
+OAUTH_TOKEN_URI=https://your-token-uri.com/your-token-uri
+OAUTH_BASE_URI=https://your-base-uri.com/your-base-uri
+OAUTH_CLIENT_ID=your-client-id
+OAUTH_CLIENT_NAME=your-auth-name
+OAUTH_CLIENT_SECRET=your-client-secret
+```
+
+### Execute without Docker
 
 Build the project:
 
@@ -182,9 +203,7 @@ mvn clean test
 
 ### Execute with Docker
 
-Copy the file `.env.example` to `.env` and adjust the configuration parameters.
-
-Then you can start the application using the following command:
+You can start the application using the following command:
 
 ```bash
 docker-compose up
@@ -202,16 +221,27 @@ docker-compose run --rm app mvn clean test
 
 ### Possible optimizations
 
+#### Microsoft change notifications to replace cron scheduler
 The Microsoft graphs offers a [change notification system](https://docs.microsoft.com/en-us/graph/webhooks) to trigger
-an application over webhooks that changes where made. In this application a cron job is used to make this done, but it
-could be replaced by Microsoft's change notifications.
+an application over webhooks, when changes (for example on a document) where made.
 
-We preferred the cron job for now, because its simpler and more secure:
+In this application a cron job scheduler is used to see if changes where made on the Excel Document,
+but it could be replaced by Microsoft's change notifications.  
+The cron job is used at the moment, because its simpler and more secure:
 
 - Microsoft's Webhooks don't have any Authentication. So anybody knowing the link could trigger the Webhooks with a
   simple cURL.
 - Webhooks could be secured by Firewall and IP-blocking, but Microsoft IPs change periodically without notice, so it
   would break the application, without noticing it.
+
+See [here](https://docs.microsoft.com/en-us/graph/webhooks) for the official statement about the security issue.
+
+StackExchange [discussion](https://sharepoint.stackexchange.com/questions/264609/does-the-microsoft-graph-support-driveitem-change-notifications-for-sharepoint-o)
+about change notifications with Sharepoint.
+
+The best case solution would be having the change notifications with Microsofts IP Addresses whitelistet,
+and a low frequency cron job, that checks if the change notification service missed some changes.  
+So in that case the developer/administraotr of the application gets notified, that the change notifications are not working anymore.
 
 ### Guidelines
 
@@ -219,7 +249,7 @@ Find [here](https://opendatahub.readthedocs.io/en/latest/guidelines.html) guidel
 
 ### Support
 
-For support, please contact [info@opendatahub.bz.it](mailto:info@opendatahub.bz.it).
+For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
 
 ### Contributing
 
@@ -227,7 +257,7 @@ If you'd like to contribute, please follow the following instructions:
 
 - Fork the repository.
 
-- Checkout a topic branch from the `development` branch.
+- Checkout a topic branch from th e `development` branch.
 
 - Make sure the tests are passing.
 
