@@ -1,14 +1,14 @@
-package it.bz.odh.spreadsheets.services.graphapi;
+package it.bz.odh.spreadsheets.utils.microsoft;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
+import it.bz.odh.spreadsheets.services.microsoft.AuthTokenGenerator;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
@@ -23,17 +23,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Class to make the Graph requests to get the Download link of the Office 365 Workbook saved on Sharepoint
+ * Util to fetch a Excel Workbook from a Sharepoint Sites Shared Documents Folder.
+ * It can also check the last time modified meta data, to see if changes where made since the last fetching.
+ * <p>
+ * The generated workbook is a Workbook from org.apache.poi poi-ooxml library.
  */
-@Service
-public class GraphApiHandler {
-
-    private static final Logger logger = LoggerFactory.getLogger(GraphApiHandler.class);
-
-    private static ObjectMapper mapper = new ObjectMapper();
+@Component
+public class WorkbookUtil {
 
     @Autowired
-    private GraphApiAuthenticator graphApiAuthenticator;
+    private AuthTokenGenerator authTokenGenerator;
 
     @Value("${sharepoint.host}")
     private String sharePointHost;
@@ -44,52 +43,58 @@ public class GraphApiHandler {
     @Value("${sharepoint.path-to-doc}")
     private String pathToDoc;
 
-    // to be able to only write values, if sheet changed after last writing
+    // to save lastChangeDate last fetch
     private Date lastChangeDate;
 
     private URL timeLastModified;
-    private URL downloadSpreadsheet;
+    private URL downloadWorkbook;
+
+    private static final Logger logger = LoggerFactory.getLogger(WorkbookUtil.class);
+
+    // https://stackoverflow.com/questions/48594916/convert-2018-02-02t065457-744z-string-to-date-in-android
+    SimpleDateFormat microsoftDateConverter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     @PostConstruct
     private void postConstruct() throws MalformedURLException, URISyntaxException {
 
-        downloadSpreadsheet = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/$value");
+        downloadWorkbook = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/$value");
         timeLastModified = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/TimeLastModified/$value");
 
-        //Check that both URLs are valid
-        downloadSpreadsheet.toURI(); // does the extra checking required for validation of URI
+        //Test that both URLs are valid
+        downloadWorkbook.toURI(); // does the extra checking required for validation of URI
         timeLastModified.toURI(); // does the extra checking required for validation of URI
 
     }
 
     /**
-     * Checks if changes where made in the Spreadsheet
+     * Checks for changes in the Workbook
+     * and returns it, if changes where made
+     * since the last time checked.
      *
-     * @return null if no changes where made, else it returns a XSSFWorkbook
+     *
+     * @return the Workbook if changes where made, else null
      */
-    public Workbook checkSpreadsheet() throws Exception {
+    public Workbook checkWorkbook() throws Exception {
 
-        String token = graphApiAuthenticator.getToken();
+        String token = authTokenGenerator.getToken();
 
-        String timeLastModifiedString = getTimeLastModified(token);
-
-        final Date timeLastModified = convertMicrosoftDateToJavaDate(timeLastModifiedString);
+        final Date timeLastModified = getTimeLastModified(token);
 
         if (lastChangeDate == null || lastChangeDate.before(timeLastModified)) {
-            // extract download link link from JSON
+
             lastChangeDate = timeLastModified;
-            logger.info("Downloading sheet...");
-            Workbook spreadsheet = getSpreadsheet(token);
-            logger.info("Downloading sheet done");
-            return spreadsheet;
+
+            return getWorkbook(token);
         }
+
         return null;
     }
 
 
-    private Workbook getSpreadsheet(String token) throws IOException {
+    private Workbook getWorkbook(String token) throws IOException {
+        logger.info("Fetching workbook...");
 
-        HttpURLConnection conn = (HttpURLConnection) downloadSpreadsheet.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) downloadWorkbook.openConnection();
 
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Authorization", "Bearer " + token);
@@ -97,15 +102,19 @@ public class GraphApiHandler {
         int httpResponseCode = conn.getResponseCode();
         if (httpResponseCode == HTTPResponse.SC_OK) {
             Workbook workbook = WorkbookFactory.create(conn.getInputStream());
+            logger.info("Fetching workbook done");
             return workbook;
         } else {
-            // TODO log that downloading failed
-            return null;
+            String errorMessage = String.format("Fetching workbook failed. Connection returned HTTP code: %s with message: %s",
+                    httpResponseCode, conn.getResponseMessage());
+            logger.error(errorMessage);
+            throw new IOException(errorMessage);
         }
     }
 
 
-    private String getTimeLastModified(String token) throws IOException {
+    private Date getTimeLastModified(String token) throws IOException, ParseException {
+        logger.info("Getting TimeLastModified...");
 
         HttpURLConnection conn = (HttpURLConnection) timeLastModified.openConnection();
 
@@ -127,19 +136,17 @@ public class GraphApiHandler {
                     response.append(inputLine);
                 }
             }
-            return response.toString();
+            String dateTime = response.toString();
+            logger.info("Getting TimeLastModified done: " + dateTime);
+            return microsoftDateConverter.parse(dateTime);
         } else {
-            return String.format("Connection returned HTTP code: %s with message: %s",
+            String errorMessage = String.format("Get TimeLastModified failed. Connection returned HTTP code: %s with message: %s",
                     httpResponseCode, conn.getResponseMessage());
+            logger.error(errorMessage);
+            throw new IOException(errorMessage);
         }
     }
 
-    private Date convertMicrosoftDateToJavaDate(String date) throws ParseException {
-        // Java's Instant could be used, but for now date is preferred for here https://stackoverflow.com/questions/48594916/convert-2018-02-02t065457-744z-string-to-date-in-android
-        date = date.substring(0, date.length() - 1).replace("T", " ");
-        Date javaDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
-        return javaDate;
-    }
 
 
 }

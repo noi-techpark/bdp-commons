@@ -3,7 +3,7 @@ package it.bz.odh.spreadsheets.services;
 import it.bz.idm.bdp.dto.*;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
-import it.bz.odh.spreadsheets.services.graphapi.GraphApiHandler;
+import it.bz.odh.spreadsheets.utils.microsoft.WorkbookUtil;
 import it.bz.odh.spreadsheets.utils.DataMappingUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,13 +15,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import javax.annotation.PostConstruct;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+// The scheduler could theoretically be replaced by Microsoft Graphs Change Notifications
+// So you don't need to poll last date changed with a cron job, but get notified, when changes are made
+//
+// Change notifications docs:
+// https://docs.microsoft.com/en-us/graph/api/resources/webhooks?view=graph-rest-1.0
+//
+// StackExchange discussion about change notifications with Sharepoint
+// https://sharepoint.stackexchange.com/questions/264609/does-the-microsoft-graph-support-driveitem-change-notifications-for-sharepoint-o
+
 
 @Service
 public class SyncScheduler {
@@ -37,7 +47,7 @@ public class SyncScheduler {
     private ODHClient odhClient;
 
     @Autowired
-    private GraphApiHandler graphApiHandler;
+    private WorkbookUtil workbookUtil;
 
     @Autowired
     private DataMappingUtil mappingUtil;
@@ -51,7 +61,7 @@ public class SyncScheduler {
     @Scheduled(cron = "${cron}")
     public void checkSharepoint() throws Exception {
         logger.info("Cron job manual sync started");
-        Workbook sheet = graphApiHandler.checkSpreadsheet();
+        Workbook sheet = workbookUtil.checkWorkbook();
 
         if (sheet != null) {
             logger.info("Syncing data with BDP");
