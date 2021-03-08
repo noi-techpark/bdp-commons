@@ -6,8 +6,8 @@ using Keycloak.
 For Authentication with Microsoft's Services msal4j with certificates is used.  
 All further actions are handled by the Sharepoint REST API.
 
-For Authentication with the [OpenDataHub](https://opendatahub.bz.it/) , [Keycloak](https://www.keycloak.org/) is used.
-Note: With some changes, any Big Data Platform can be used.
+For Authentication with the [OpenDataHub](https://opendatahub.bz.it/) , [Keycloak](https://www.keycloak.org/) is used.  
+Note: Any Big Data Platform can be used.
 
 ## Table of contents
 
@@ -69,13 +69,23 @@ cd bdp-commons/data-collectors/spreadsheets-office365
 
 ### Set Up
 
+#### Without Docker
+Copy the file `src/main/resources/application.properties` to `src/main/resources/application-local.properties`.  
+This file will be your environment variables file.  
+Note: The environment variables in application.properties are in lower case, but in further set up instructions  
+They are UPPER case. *Just leave them lower case*
+
+#### With Docker
+Copy the file `.env.example` to `.env`.  
+This file will be your environment variables file.
+
 #### Create a Microsoft Sharepoint site
 
 Create a Sharepoint site collection with a Shared Document library.  
 In the most cases you need to contact the Microsoft Administrator of your organization.  
 Your created site then has a full URL. For example `https://your-organization.sharepoint.com/sites/your-site-id`
 
-So you can fill the environment variables file:
+Now you can fill the environment variables file:
 ```
 SHAREPOINT_HOST=your-organization.sharepoint.com
 SHAREPOINT_SITE_ID=your-site-id
@@ -86,9 +96,9 @@ SHAREPOINT_SITE_ID=your-site-id
 Create a Excel spreadsheet in the previous step created Sharepoint sites "Shared Documents" folder.  
 The spreadsheet can also be inside a folder of the "Shared Documents" folder.
 
-Note down the full path starting from the  "Shared Documents" folder.  
+Write into environment variables file the full path starting from the  "Shared Documents" folder.
 For example if you have the path `Shared Documents/Example/Example.xlsx` you put only `Example/Example.xlsx`  
-into environment variables file.
+into environment variables file:
 
 ```
 SHAREPOINT_PATH_TO_DOC=Example/Example.xlsx
@@ -102,7 +112,7 @@ A new Application needs to be created in Azure Active Directories:
 2. Then select App Registrations under Manager
 3. Select New registration:
     - Set Name as you likes
-    - Set Supported account types to Accounts in any organizational directory and personal Microsoft accounts.
+    - Set Supported account types to Account in any organizational directory and personal Microsoft accounts.
     - Under Redirect URI, change the dropdown to Public client/native (mobile & desktop), and set the value to
       ```https://login.microsoftonline.com/common/oauth2/nativeclient```
 
@@ -130,29 +140,40 @@ A new Application needs to be created in Azure Active Directories:
    Finally, go back to the Azure portalIn the Application menu blade, click on the **Certificates & secrets**, in the
    Certificates section, **upload the certificate (cert.crt file) you created.**
 
-6. Take note of Client ID, Tenant ID you can find in Overview in Active Directory and put it into **
-   application.properties** or **.env** if using Docker. Put also the path to the generated certificate and key and add your Microsoft account
-   E-Mail you used to *create the Spreadsheet*. Note: You can put the certificates in /resources/auth but also wherever
-   you want, just use an **absolute path** in configuration files.
+6. Take note of ClientID, TenantID you find in Overview in Active Directory and put it into environment variables file.  
+   Put also the path to the generated certificate and public key there. 
+   Note: You can put the certificates in /resources/auth but also wherever you want,  
+   just use an **absolute path** in environment variables files.
     ```
-    TENANT_ID=YOUR_TENANT_ID
-    CLIENT_ID=YOUR_CLIENT_ID
-    #put pkcs8_key here 
-    KEY_PATH=YOUR_KEY_ABSOLUTE_PATH
-    #put cert.crt here
-    CERT_PATH=YOUR_CERT_ABSOLUTE_PATH
+    TENANT_ID=your_tenant_id
+    CLIENT_ID=your_tenant_id
+    #put pkcs8_key public key here 
+    KEY_PATH=auth/pkcs8_key
+    #put cert.crt certiticate here
+    CERT_PATH=auth/cert.crt
     ```
-7. Config the cron annotation to change the Scheduler timing environment variables as you desire. When
-   executed, the sheet gets fetched, compared and written to BDP.
+7. Config the cron annotation to change the Scheduler as you desire.  
+   When executed, the last edit timestamp gets compared and if the workbook changed, the workbook gets fetched  
+   and synced with the BDP.
+   
     ```
     CRON=0 6-20 * * 1-5
     ```
 
-### Execute without Docker
+#### Keycloak
 
-Copy the file `src/main/resources/application.properties` to `src/main/resources/application-local.properties` and
-adjust the variables that get their values from environment variables. You can take a look at the `.env.example` for
-some help.
+For authentication with the Big data Platform, Keycloak O-Auth is used. 
+Fill the environment variables file with your Keycloak configuration.
+```
+OAUTH_AUTH_URI=https://your-auth-uri.com/your-auth-uri
+OAUTH_TOKEN_URI=https://your-token-uri.com/your-token-uri
+OAUTH_BASE_URI=https://your-base-uri.com/your-base-uri
+OAUTH_CLIENT_ID=your-client-id
+OAUTH_CLIENT_NAME=your-auth-name
+OAUTH_CLIENT_SECRET=your-client-secret
+```
+
+### Execute without Docker
 
 Build the project:
 
@@ -182,9 +203,7 @@ mvn clean test
 
 ### Execute with Docker
 
-Copy the file `.env.example` to `.env` and adjust the configuration parameters.
-
-Then you can start the application using the following command:
+You can start the application using the following command:
 
 ```bash
 docker-compose up
