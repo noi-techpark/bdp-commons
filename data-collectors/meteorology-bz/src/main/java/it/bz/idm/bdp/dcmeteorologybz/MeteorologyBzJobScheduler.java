@@ -102,7 +102,8 @@ public class MeteorologyBzJobScheduler {
                     retriever.fetchDataByStation(meteoBzDto);
 
                     DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(meteoBzDto);
-                    if (stationRec != null){
+                    stationRec.clean();
+                    if (stationRec != null && !stationRec.getBranch().isEmpty()){
                         pusher.pushData(stationRec);
                     }
                 }
