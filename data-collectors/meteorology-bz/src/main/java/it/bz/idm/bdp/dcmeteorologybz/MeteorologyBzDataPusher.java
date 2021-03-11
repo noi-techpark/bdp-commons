@@ -121,7 +121,11 @@ public class MeteorologyBzDataPusher extends NonBlockingJSONPusher {
                         SimpleRecordDto record = new SimpleRecordDto();
                         record.setValue(value);
                         record.setTimestamp(timestamp);
-                        record.setPeriod("precipitation".equals(typeName) ? 300 : period);
+                        if ("precipitation".equals(typeName))
+                            period = 300;
+                        else if ("hydrometric-level".equals(typeName))
+                            period = 3600;
+                        record.setPeriod(period);
 
                         //Check if we already treated this type (branch), if not found create the map and the list of records
                         DataMapDto<RecordDtoImpl> recordsByType = recordsByStation.getBranch().get(typeName);
