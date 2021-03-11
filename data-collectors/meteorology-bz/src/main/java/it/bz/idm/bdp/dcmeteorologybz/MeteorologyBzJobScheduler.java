@@ -115,8 +115,8 @@ public class MeteorologyBzJobScheduler {
 
                 //Push all measurements in a single call
                 DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(data);
-
-                if (stationRec != null){
+                stationRec.clean();
+                if (stationRec != null && !stationRec.getBranch().isEmpty()){
                     pusher.pushData(stationRec);
                 }
 
