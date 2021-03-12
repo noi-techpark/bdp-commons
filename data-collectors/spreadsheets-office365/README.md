@@ -181,12 +181,6 @@ Build the project:
 mvn -Dspring.profiles.active=local clean install
 ```
 
-Run external dependencies, such as the database:
-
-```
-docker-compose -f docker-compose.dependencies.yml up --detach
-```
-
 Run the project:
 
 ```bash
