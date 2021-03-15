@@ -1,6 +1,7 @@
 package it.bz.odh.spreadsheets.services.microsoft;
 
 
+import com.google.common.io.ByteStreams;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -52,10 +54,10 @@ public class AuthTokenGenerator {
     private String host;
 
     @Value("${auth.keyPath}")
-    private String keyPath;
+    private Resource key;
 
     @Value("${auth.certPath}")
-    private String certPath;
+    private Resource cert;
 
     private String authority = "https://login.microsoftonline.com/%s/oauth2/token";
 
@@ -75,12 +77,6 @@ public class AuthTokenGenerator {
 
         if (clientId == null || clientId.length() == 0)
             throw new InvalidConfigurationPropertyValueException("clientId", clientId, "clientId must be set in .env file and can't be empty");
-
-        if (keyPath == null || keyPath.length() == 0)
-            throw new InvalidConfigurationPropertyValueException("keyPath", keyPath, "keyPath must be set in .env file and can't be empty");
-
-        if (certPath == null || certPath.length() == 0)
-            throw new InvalidConfigurationPropertyValueException("certPath", certPath, "certPath must be set in .env file and can't be empty");
 
         scope = " https://" + host + "/.default";
 
@@ -134,10 +130,10 @@ public class AuthTokenGenerator {
 
 
     private IAuthenticationResult getAccessTokenByClientCredentialGrant() throws Exception {
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Files.readAllBytes(Paths.get(keyPath)));
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(ByteStreams.toByteArray(key.getInputStream()));
         PrivateKey key = KeyFactory.getInstance("RSA").generatePrivate(spec);
 
-        InputStream certStream = new ByteArrayInputStream(Files.readAllBytes(Paths.get(certPath)));
+        InputStream certStream = new ByteArrayInputStream(ByteStreams.toByteArray(cert.getInputStream()));
         X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(certStream);
 
         ConfidentialClientApplication app = ConfidentialClientApplication.builder(

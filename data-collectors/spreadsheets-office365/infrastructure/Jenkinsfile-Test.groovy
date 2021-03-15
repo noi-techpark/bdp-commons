@@ -34,8 +34,8 @@ pipeline {
                     echo 'SHAREPOINT_PATH_TO_DOC=General/NOI-Techpark-MapsBackend.xlsx' >> .env
                     echo 'TENANT_ID=${APP_TENANT_ID}' >>.env
                     echo 'CLIENT_ID=${APP_CLIENT_ID}' >> .env
-                    echo 'KEY_PATH=${APP_KEY_PATH}' >> .env
-                    echo 'CERT_PATH=${APP_CRT_PATH}' >> .env
+                    echo 'KEY_PATH=classpath:${APP_KEY_PATH}' >> .env
+                    echo 'CERT_PATH=classpath:${APP_CRT_PATH}' >> .env
 
                     echo 'authorizationUri=https://auth.opendatahub.testingmachine.eu/auth' >> .env
                     echo 'tokenUri=https://auth.opendatahub.testingmachine.eu/auth/realms/noi/protocol/openid-connect/token' >> .env 
