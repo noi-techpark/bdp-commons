@@ -13,8 +13,8 @@ WORKDIR /code
 COPY src /code/src
 COPY pom.xml /code/pom.xml
 
-# Run
-FROM build as run
-CMD [ "mvn", "spring-boot:run" ]
+RUN mvn clean package spring-boot:repackage
+
+CMD [ "java", "-jar", "target/ROOT.jar" ]
 
 
