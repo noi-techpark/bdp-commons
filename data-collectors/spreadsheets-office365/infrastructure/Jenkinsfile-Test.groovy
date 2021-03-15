@@ -32,6 +32,7 @@ pipeline {
                     echo 'SHAREPOINT_HOST=noibz.sharepoint.com' >> .env
                     echo 'SHAREPOINT_SITE_ID=UNITshrdTech-TransferDigital' >> .env
                     echo 'SHAREPOINT_PATH_TO_DOC=General/NOI-Techpark-MapsBackend.xlsx' >> .env
+                    echo 'CRON=0 * * * * *'>> .env
                     echo 'TENANT_ID=${APP_TENANT_ID}' >>.env
                     echo 'CLIENT_ID=${APP_CLIENT_ID}' >> .env
                     echo 'KEY_PATH=classpath:${APP_KEY_PATH}' >> .env
