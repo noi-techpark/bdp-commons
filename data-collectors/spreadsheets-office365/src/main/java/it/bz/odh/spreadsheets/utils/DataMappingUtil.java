@@ -123,12 +123,10 @@ public class DataMappingUtil {
         Map<String, Short> mapping = new HashMap<>();
         short count = 0;
         for (Object header : list) {
-        	if (header != null) {
-        		if (!header.toString().trim().isEmpty())
-        			mapping.put(header.toString().toLowerCase(), count);
-        		count++;
-        	}
-            if (header != null && !header.toString().isEmpty()) {
+            if (header != null) {
+                if (!header.toString().trim().isEmpty())
+                    mapping.put(header.toString().toLowerCase(), count);
+                count++;
             }
         }
         return mapping;
@@ -256,7 +254,7 @@ public class DataMappingUtil {
     }
 
     private Object jsonTypeGuessing(String text) {
-    	if (NumberUtils.isParsable(text))
+        if (NumberUtils.isParsable(text))
         try {
             return numberFormatter.parse(text);
         } catch (ParseException e) {

@@ -1,27 +1,33 @@
 package it.bz.odh.spreadsheets.services;
 
-import it.bz.idm.bdp.dto.*;
-import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
-import it.bz.odh.spreadsheets.dto.MappingResult;
-import it.bz.odh.spreadsheets.utils.microsoft.WorkbookUtil;
-import it.bz.odh.spreadsheets.utils.DataMappingUtil;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationList;
+import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
+import it.bz.odh.spreadsheets.dto.MappingResult;
+import it.bz.odh.spreadsheets.utils.DataMappingUtil;
+import it.bz.odh.spreadsheets.utils.microsoft.WorkbookUtil;
 
 // The scheduler could theoretically be replaced by Microsoft Graphs Change Notifications
 // So you don't need to poll last date changed with a cron job, but get notified, when changes are made
@@ -36,7 +42,7 @@ import java.util.stream.Collectors;
 @Service
 public class SyncScheduler {
 
-    private static final Logger logger = LoggerFactory.getLogger(SyncScheduler.class);
+    private static final Logger logger = LogManager.getLogger(SyncScheduler.class);
 
     private Function<DataTypeWrapperDto, DataTypeDto> mapper = (dto) -> {
         return dto.getType();
@@ -95,11 +101,12 @@ public class SyncScheduler {
             Iterator<Row> rowIterator = sheet.rowIterator();
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                Iterator<Cell> cellIterator = row.cellIterator();
+                row.getLastCellNum();
                 List<Object> rowList = new ArrayList<>();
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-                    rowList.add(cell.toString());
+
+                for (int i = 0; i<row.getLastCellNum(); i++) {
+                    Cell c = row.getCell(i, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                    rowList.add(c.toString());
                 }
                 values.add(rowList);
             }
