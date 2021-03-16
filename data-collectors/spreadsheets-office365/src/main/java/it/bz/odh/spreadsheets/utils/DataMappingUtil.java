@@ -123,9 +123,12 @@ public class DataMappingUtil {
         Map<String, Short> mapping = new HashMap<>();
         short count = 0;
         for (Object header : list) {
+        	if (header != null) {
+        		if (!header.toString().trim().isEmpty())
+        			mapping.put(header.toString().toLowerCase(), count);
+        		count++;
+        	}
             if (header != null && !header.toString().isEmpty()) {
-                mapping.put(header.toString().toLowerCase(), count);
-                count++;
             }
         }
         return mapping;
