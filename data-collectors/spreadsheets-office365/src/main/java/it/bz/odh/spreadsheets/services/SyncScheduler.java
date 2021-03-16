@@ -81,9 +81,11 @@ public class SyncScheduler {
         // fetch sheet
         //read from disk
         // iterate over values and
+        logger.info("Start data syncronization");
         Iterator<Sheet> sheetIterator = workbook.sheetIterator();
         StationList dtos = new StationList();
         List<DataTypeWrapperDto> types = new ArrayList<DataTypeWrapperDto>();
+        logger.debug("Start reading spreadsheet");
         int index = 0;
         while (sheetIterator.hasNext()) {
             Sheet sheet = sheetIterator.next();
@@ -102,9 +104,7 @@ public class SyncScheduler {
                 values.add(rowList);
             }
 
-
             try {
-
                 if (values.isEmpty() || values.get(0) == null)
                     throw new IllegalStateException("Spreadsheet " + sheet.getSheetName() + " has no header row. Needs to start on top left.");
                 MappingResult result = mappingUtil.mapSheet(values, sheet.getSheetName(), index); // TODO ask what id should be put here
@@ -119,18 +119,28 @@ public class SyncScheduler {
                 continue;
             }
         }
-        if (!dtos.isEmpty())
+        if (!dtos.isEmpty()) {
+            logger.debug("Syncronize stations if some where fetched and successfully parsed");
             odhClient.syncStations(dtos);
+            logger.debug("Syncronize stations completed");
+        }
         if (!types.isEmpty()) {
+            logger.debug("Syncronize data types/type-metadata if some where fetched and successfully parsed");
             List<DataTypeDto> dTypes = types.stream().map(mapper).collect(Collectors.toList());
             odhClient.syncDataTypes(dTypes);
+            logger.debug("Syncronize datatypes completed");
         }
-        DataMapDto<? extends RecordDtoImpl> dto = new DataMapDto<RecordDtoImpl>();
-        for (DataTypeWrapperDto typeDto : types) {
-            SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(), typeDto.getSheetName(), 0);
-            dto.addRecord(dtos.get(0).getId(), typeDto.getType().getName(), simpleRecordDto);
+        if (!dtos.isEmpty() && !types.isEmpty()){
+            DataMapDto<? extends RecordDtoImpl> dto = new DataMapDto<RecordDtoImpl>();
+            logger.debug("Connect datatypes with stations through record");
+            for (DataTypeWrapperDto typeDto : types) {
+                SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(), typeDto.getSheetName(), 0);
+                logger.trace("Connect"+dtos.get(0).getId()+"with"+typeDto.getType().getName());
+                dto.addRecord(dtos.get(0).getId(), typeDto.getType().getName(), simpleRecordDto);
+            }
+            odhClient.pushData(dto);
         }
-        odhClient.pushData(dto);
+        logger.info("Data syncronization completed");
     }
 
 }

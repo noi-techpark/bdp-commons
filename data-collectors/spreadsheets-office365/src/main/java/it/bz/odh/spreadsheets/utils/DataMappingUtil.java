@@ -1,27 +1,35 @@
 package it.bz.odh.spreadsheets.utils;
 
-import it.bz.idm.bdp.dto.DataTypeDto;
-import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.StationList;
-import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
-import it.bz.odh.spreadsheets.dto.MappingResult;
-import it.bz.odh.spreadsheets.services.ODHClient;
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.*;
+import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
+import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
+import it.bz.odh.spreadsheets.dto.MappingResult;
 
 @Component
 public class DataMappingUtil {
 
-    public Set<String> excludeFromMetaData = new HashSet<>();
+    private Logger logger = LogManager.getLogger(DataMappingUtil.class);
 
     @Value("${headers.addressId}")
     private String addressId;
@@ -29,10 +37,10 @@ public class DataMappingUtil {
     @Value("${headers.nameId}")
     private String nameId;
 
-    @Value("${headers.longitudeId}")
+    @Value("${headers.longitudeId:#{null}}")
     private String longitudeId;
 
-    @Value("${headers.latitudeId}")
+    @Value("${headers.latitudeId:#{null}}")
     private String latitudeId;
 
     @Value("${spreadsheetId}")
@@ -44,10 +52,10 @@ public class DataMappingUtil {
     @Value("${composite.unique.key}")
     private String[] uniqueIdFields;
 
+    @Value("${stationtype}")
+    private String stationtype;
 
-    @Lazy
-    @Autowired
-    private ODHClient odhClient;
+    public Set<String> excludeFromMetaData = new HashSet<>();
 
     @Lazy
     @Autowired
@@ -64,16 +72,22 @@ public class DataMappingUtil {
     public void initMetadata() throws IOException {
         excludeFromMetaData.add(longitudeId);
         excludeFromMetaData.add(latitudeId);
+        excludeFromMetaData.add(metadataId);
     }
 
     public MappingResult mapSheet(List<List<Object>> values, String sheetName, int sheetId) {
         MappingResult result = new MappingResult();
         Map<String, Short> headerMapping = listToMap(values.get(0));
+
         if (isValidStationSheet(headerMapping)) {
+            logger.debug("Start mapping stations of sheet " + sheetName);
             StationList mappedStations = mapStations(values, headerMapping, sheetName);
+            logger.debug("Finished mapping of sheet " + sheetName);
             result.setStationDtos(mappedStations);
         } else if (isValidDataTypeSheet(headerMapping)) {
+            logger.debug("Start mapping datatypes of sheet " + sheetName);
             DataTypeDto type = mapDataType(values,sheetId, headerMapping);
+            logger.debug("Finish mapping datatypes of sheet " + sheetName);
             DataTypeWrapperDto w = new DataTypeWrapperDto(type, sheetName);
             result.setDataType(w);
         }
@@ -89,14 +103,14 @@ public class DataMappingUtil {
         for (List<Object> row : values) {
             if (!row.isEmpty()) {
                 String key = row.get(metaDataPosition) != null ? row.get(metaDataPosition).toString() : null;
-                row.remove(metaDataPosition.shortValue());
+                //row.remove(metaDataPosition.shortValue());
                 Map<String, Object> metaDataMap = buildMetaDataMap(headerMapping, row);
                 langUtil.mergeTranslations(metaDataMap, headerMapping);
-                odhClient.normalizeMetaData(metaDataMap);
+                normalizeMetaData(metaDataMap);
                 dto.getMetaData().put(key, metaDataMap);
             }
         }
-        odhClient.normalizeMetaData(dto.getMetaData());
+        normalizeMetaData(dto.getMetaData());
         return dto;
     }
 
@@ -124,8 +138,6 @@ public class DataMappingUtil {
         return headerMapping.containsKey(metadataId);
     }
 
-    ;
-
     /**
      * @param spreadSheetValues   values to map to a {@link StationDto}
      * @param headerMapping
@@ -133,7 +145,6 @@ public class DataMappingUtil {
      */
     public StationList mapStations(List<List<Object>> spreadSheetValues, Map<String, Short> headerMapping, String sheetName) {
         StationList dtos = new StationList();
-        Set<Integer> missingPositions = new HashSet<>();
         int i = 0;
         for (final List<Object> row : spreadSheetValues) {
             if (i > 0) {
@@ -148,7 +159,6 @@ public class DataMappingUtil {
                     try {
                         locationLookupUtil.guessPositionByAddress(dto);
                     } catch (final IllegalStateException ex) {
-                        missingPositions.add(i);
                         i++;
                         continue;
                     }
@@ -157,7 +167,7 @@ public class DataMappingUtil {
                 langUtil.mergeTranslations(dto.getMetaData(), headerMapping);
                 if (dto.getName() == null || dto.getName().isEmpty())
                     dto.setName(dto.getId());
-                Map<String, Object> normalizedMetaData = odhClient.normalizeMetaData(dto.getMetaData());
+                Map<String, Object> normalizedMetaData = normalizeMetaData(dto.getMetaData());
                 normalizedMetaData.put("sheetName", sheetName);
                 dto.getMetaData().clear();
                 dto.setMetaData(normalizedMetaData);
@@ -165,8 +175,6 @@ public class DataMappingUtil {
             }
             i++;
         }
-
-        //TODO print missing positions to info logger
         return dtos;
     }
 
@@ -177,7 +185,7 @@ public class DataMappingUtil {
      */
     public StationDto mapStation(Map<String, Short> headerMapping, List<Object> row) {
         StationDto dto = new StationDto();
-        Short nameIndex = headerMapping.get(nameId);
+        Short nameIndex = headerMapping.get(nameId.toLowerCase());
         Short longIndex = headerMapping.get(longitudeId);
         Short latIndex = headerMapping.get(latitudeId);
         Integer rowSize = row.size();
@@ -201,7 +209,7 @@ public class DataMappingUtil {
         Map<String, Object> metaData = buildMetaDataMap(headerMapping, row);
         dto.setMetaData(metaData);
         dto.setOrigin(origin);
-        dto.setStationType(odhClient.getIntegreenTypology());
+        dto.setStationType(stationtype);
         dto.setId(generateUniqueId(dto));
         return dto;
     }
@@ -254,5 +262,21 @@ public class DataMappingUtil {
             return "true".equals(text);
 
         return text;
+    }
+    private String normalizeKey(String keyValue) {
+        String accentFreeString = StringUtils.stripAccents(keyValue).replaceAll(" ", "_");
+        String asciiString = accentFreeString.replaceAll("[^\\x00-\\x7F]", "");
+        String validVar = asciiString.replaceAll("[^\\w0-9]", "");
+        return validVar;
+    }
+
+
+    public Map<String, Object> normalizeMetaData(Map<String, Object> metaData) {
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        for (Map.Entry<String,Object> entry:metaData.entrySet()) {
+            String normalizedKey = normalizeKey(entry.getKey());
+            resultMap.put(normalizedKey, entry.getValue());
+        }
+        return resultMap;
     }
 }
