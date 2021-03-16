@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -252,6 +253,7 @@ public class DataMappingUtil {
     }
 
     private Object jsonTypeGuessing(String text) {
+    	if (NumberUtils.isParsable(text))
         try {
             return numberFormatter.parse(text);
         } catch (ParseException e) {
@@ -263,13 +265,13 @@ public class DataMappingUtil {
 
         return text;
     }
+    
     private String normalizeKey(String keyValue) {
         String accentFreeString = StringUtils.stripAccents(keyValue).replaceAll(" ", "_");
         String asciiString = accentFreeString.replaceAll("[^\\x00-\\x7F]", "");
         String validVar = asciiString.replaceAll("[^\\w0-9]", "");
         return validVar;
     }
-
 
     public Map<String, Object> normalizeMetaData(Map<String, Object> metaData) {
         Map<String,Object> resultMap = new HashMap<String, Object>();
