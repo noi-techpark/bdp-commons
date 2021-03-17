@@ -15,7 +15,9 @@ public class AugeMqttClient {
     public static MqttClient build(AugeMqttConfiguration mqttConfiguration) throws MqttException {
         MqttClient client = buildMqttClient(mqttConfiguration);
         LOG.debug("connect...:");
-        client.connect(buildConnOpts(mqttConfiguration));
+        MqttConnectOptions genericConnOpts = buildConnOpts(mqttConfiguration);
+        genericConnOpts.setConnectionTimeout(5000);
+		client.connect(genericConnOpts);
         return client;
     }
 
@@ -23,7 +25,8 @@ public class AugeMqttClient {
         MqttClient client = buildMqttClient(mqttConfiguration);
         client.setCallback(callback);
         LOG.debug("connect...:");
-        client.connect(buildConnOpts(mqttConfiguration));
+        MqttConnectOptions genericConnOpts = buildConnOpts(mqttConfiguration);
+        client.connect(genericConnOpts);
         return client;
     }
 
@@ -45,7 +48,6 @@ public class AugeMqttClient {
         connOpts.setCleanSession(false);
         connOpts.setPassword(userPass.toCharArray());
         connOpts.setUserName(userName);
-        connOpts.setAutomaticReconnect(true);
         return connOpts;
     }
 }
