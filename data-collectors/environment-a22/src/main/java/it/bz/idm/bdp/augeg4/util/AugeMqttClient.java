@@ -17,6 +17,7 @@ public class AugeMqttClient {
         LOG.debug("connect...:");
         MqttConnectOptions genericConnOpts = buildConnOpts(mqttConfiguration);
         genericConnOpts.setConnectionTimeout(5000);
+        genericConnOpts.setMaxInflight(6000);
 		client.connect(genericConnOpts);
         return client;
     }
