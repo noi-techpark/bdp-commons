@@ -45,8 +45,6 @@ public class AugeMqttClient {
         connOpts.setCleanSession(false);
         connOpts.setPassword(userPass.toCharArray());
         connOpts.setUserName(userName);
-        int msTimeout = 5 * 1000;
-        connOpts.setConnectionTimeout(msTimeout);
         connOpts.setAutomaticReconnect(true);
         return connOpts;
     }
