@@ -27,6 +27,7 @@ public class AugeMqttClient {
         client.setCallback(callback);
         LOG.debug("connect...:");
         MqttConnectOptions genericConnOpts = buildConnOpts(mqttConfiguration);
+        genericConnOpts.setAutomaticReconnect(true);
         client.connect(genericConnOpts);
         return client;
     }
