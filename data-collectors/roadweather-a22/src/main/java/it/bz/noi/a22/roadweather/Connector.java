@@ -40,6 +40,7 @@ public class Connector {
 
     private static final String user_agent = "NOI/A22RoadWeatherConnector";
     private static final int WS_CONN_TIMEOUT_MSEC = 30000;
+    private static final int WS_READ_TIMEOUT_MSEC = 1800000;
 
     private String token = null;
     private String url = null;
@@ -65,6 +66,7 @@ public class Connector {
         conn.setRequestProperty("User-Agent", user_agent);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
+        conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
         conn.setDoOutput(true);
         OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
         os.write(auth_json + "\n");
@@ -125,6 +127,7 @@ public class Connector {
         conn.setRequestProperty("User-Agent", user_agent);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
+        conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
         conn.setDoOutput(true);
         OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
         os.write("\n");
@@ -184,6 +187,7 @@ public class Connector {
         conn.setRequestProperty("User-Agent", user_agent);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
+        conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
         conn.setDoOutput(true);
         OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
         os.write("{\"sessionId\":\"" + token + "\"}\n");
@@ -269,6 +273,7 @@ public class Connector {
         conn.setRequestProperty("User-Agent", user_agent);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
+        conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
         conn.setDoOutput(true);
         OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
         os.write("{\"request\":{\"sessionId\":\"" + token + "\",\"idcabina\":" + id + ",\"fromData\":\"/Date(" + frTS + ")/\",\"toData\":\"/Date(" + toTS + ")/\"}}\n");
