@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        dockerfile {
+            filename 'data-collectors/environment-a22/infrastructure/docker/Dockerfile'
+        }
+    }
 
     environment {
         PROJECT = "environment-a22"
@@ -42,6 +46,7 @@ pipeline {
                     echo 'MQTT_PASSWORD=${A22_MQTT_PASSWORD}' >> .env
                     echo 'MQTT_PORT=${A22_MQTT_PORT}' >> .env
                     echo 'MQTT_URI=${A22_MQTT_URI}' >> .env
+                """
             }
         }
         stage('Test & Build') {
@@ -57,6 +62,7 @@ pipeline {
         stage('Archive') {
             steps {
                 sh 'cp ${PROJECT_FOLDER}/target/${ARTIFACT_NAME}.war ${ARTIFACT_NAME}.war'
+                sh 'cp ${PROJECT_FOLDER}/.env ./'
                 sh 'zip ${ARTIFACT_NAME}.zip .env ${ARTIFACT_NAME}.war'
                 archiveArtifacts artifacts: "${ARTIFACT_NAME}.zip", onlyIfSuccessful: true
             }
