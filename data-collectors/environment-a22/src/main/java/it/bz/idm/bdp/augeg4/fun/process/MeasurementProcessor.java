@@ -38,10 +38,15 @@ public class MeasurementProcessor {
 
 
     public Optional<ProcessedMeasurement> process(AugeG4RawData rawData, RawMeasurement rawMeasurement) {
-        if (!isToProcess(rawData, rawMeasurement)) {
-            return processMeasurementNotToProcess(rawMeasurement);
+        try {
+            if (!isToProcess(rawData, rawMeasurement)) {
+                return processMeasurementNotToProcess(rawMeasurement);
+            }
+            return processMeasurementToProcess(rawData, rawMeasurement);
+        }catch(ArithmeticException ex) {
+            ex.printStackTrace();
+            return Optional.empty();
         }
-        return processMeasurementToProcess(rawData, rawMeasurement);
     }
 
     private boolean isToProcess(AugeG4RawData rawData, RawMeasurement rawMeasurement) {
