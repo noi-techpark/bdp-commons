@@ -135,7 +135,7 @@ public class MainA22Roadweather{
                                                     recordDtoHashMap,
                                                     idCabina,
                                                     new SimpleRecordDto(Long.parseLong(weatherdata.get("data")) * 1000,
-															datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".mapping." + weatherdata.get(cname)),
+                                                            datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".mapping." + weatherdata.get(cname)),
                                                             1));
                                         }
                                     }
@@ -144,8 +144,10 @@ public class MainA22Roadweather{
                         }
 
                         recordDtoHashMap.forEach((s, recordDtos) -> {
-                            log.debug("pushing all " + s + " data: " + weatherdata_list.size());
-                            pusher.pushData(recordDtos);
+                            if (!weatherdata_list.isEmpty()) {
+                                log.debug("pushing all " + s + " data: " + weatherdata_list.size());
+                                pusher.pushData(recordDtos);
+                            }
                         });
 
                         lastTimeStamp += scanWindowSeconds;
@@ -192,7 +194,7 @@ public class MainA22Roadweather{
     }
 
     private void setupDataType() {
-		List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
+        List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
         getDatatypeKeys().forEach(cname -> {
 
             dataTypeDtoList.add(
