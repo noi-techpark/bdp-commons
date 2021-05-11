@@ -203,7 +203,7 @@ public class MeteorologyBzDataPusher extends NonBlockingJSONPusher {
         Integer period = converter.getPeriod();
         String stationCode = station.getId();
         String typeName = dataType.getName();
-        Object dateOfLastRecord = super.getDateOfLastRecord(stationCode, typeName, null);
+        Object dateOfLastRecord = super.getDateOfLastRecord(stationCode, typeName, period);
         if ( dateOfLastRecord instanceof Date ) {
             lastSavedRecord = (Date) dateOfLastRecord;
         }
