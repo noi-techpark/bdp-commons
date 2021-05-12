@@ -49,7 +49,7 @@ public class HistoryRetriever {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		String startDate = environment.getProperty("history.startDate");
 		LocalDateTime manualDate = LocalDate.parse(startDate, format).atStartOfDay();
-		if (manualDate.isAfter(newestDateMidnight))
+		if (newestDateMidnight == null || manualDate.isAfter(newestDateMidnight))
 			newestDateMidnight = manualDate;
 		try {
 			XMLGregorianCalendar from = null, to = null;
@@ -96,7 +96,7 @@ public class HistoryRetriever {
 			logger.debug("Querry took" + (new Date().getTime() - hui.getTime()));
 		}
 		Collections.sort(dateList);
-		return dateList.get(dateList.size() - 1);
+		return dateList.isEmpty() ? null : dateList.get(dateList.size() - 1);
 	}
 
 }
