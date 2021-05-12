@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s1="http://tempuri.org/XMLResponeWebService.xsd" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import namespace="http://tempuri.org/XMLResponeWebService.xsd" />
+      <s:element name="get_list_station_ID">
+        <s:complexType />
+      </s:element>
+      <s:element name="get_list_station_IDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="get_list_station_IDResult" type="tns:ArrayOfInt" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="get_metadata_station">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_metadata_stationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_metadata_stationResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_dataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_dataResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_historical">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="stationId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="utcTimeFrom" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="utcTimeTo" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_historicalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:get_data_historicalResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/XMLResponeWebService.xsd">
+      <s:element name="get_metadata_stationResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="StationId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Citta" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Longit" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="Latit" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="Telefono" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Notes" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Sensori" type="s1:ArrayOfXmlImAnagraficaImpiantoSensore" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfXmlImAnagraficaImpiantoSensore">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Sensore">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="1" maxOccurs="1" name="SensorId" type="s:int" />
+                <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+                <s:element minOccurs="0" maxOccurs="1" name="Descrizione" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="get_dataResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="StationId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="unbounded" name="XmlRwData">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="Ts" type="s:dateTime" />
+                  <s:element minOccurs="1" maxOccurs="1" name="SensorId" type="s:int" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Totale" type="s:int" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_data_historicalResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="StationId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="unbounded" name="XmlRwData">
+              <s:complexType>
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="Ts" type="s:dateTime" />
+                  <s:element minOccurs="1" maxOccurs="1" name="SensorId" type="s:int" />
+                  <s:element minOccurs="1" maxOccurs="1" name="Totale" type="s:int" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="get_list_station_IDSoapIn">
+    <wsdl:part name="parameters" element="tns:get_list_station_ID" />
+  </wsdl:message>
+  <wsdl:message name="get_list_station_IDSoapOut">
+    <wsdl:part name="parameters" element="tns:get_list_station_IDResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_metadata_stationSoapIn">
+    <wsdl:part name="parameters" element="tns:get_metadata_station" />
+  </wsdl:message>
+  <wsdl:message name="get_metadata_stationSoapOut">
+    <wsdl:part name="parameters" element="tns:get_metadata_stationResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_dataSoapIn">
+    <wsdl:part name="parameters" element="tns:get_data" />
+  </wsdl:message>
+  <wsdl:message name="get_dataSoapOut">
+    <wsdl:part name="parameters" element="tns:get_dataResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_data_historicalSoapIn">
+    <wsdl:part name="parameters" element="tns:get_data_historical" />
+  </wsdl:message>
+  <wsdl:message name="get_data_historicalSoapOut">
+    <wsdl:part name="parameters" element="tns:get_data_historicalResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WebServiceSoap">
+    <wsdl:operation name="get_list_station_ID">
+      <wsdl:input message="tns:get_list_station_IDSoapIn" />
+      <wsdl:output message="tns:get_list_station_IDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_metadata_station">
+      <wsdl:input message="tns:get_metadata_stationSoapIn" />
+      <wsdl:output message="tns:get_metadata_stationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_data">
+      <wsdl:input message="tns:get_dataSoapIn" />
+      <wsdl:output message="tns:get_dataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_data_historical">
+      <wsdl:input message="tns:get_data_historicalSoapIn" />
+      <wsdl:output message="tns:get_data_historicalSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WebServiceSoap" type="tns:WebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="get_list_station_ID">
+      <soap:operation soapAction="http://tempuri.org/get_list_station_ID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_metadata_station">
+      <soap:operation soapAction="http://tempuri.org/get_metadata_station" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data">
+      <soap:operation soapAction="http://tempuri.org/get_data" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data_historical">
+      <soap:operation soapAction="http://tempuri.org/get_data_historical" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WebServiceSoap12" type="tns:WebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="get_list_station_ID">
+      <soap12:operation soapAction="http://tempuri.org/get_list_station_ID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_metadata_station">
+      <soap12:operation soapAction="http://tempuri.org/get_metadata_station" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data">
+      <soap12:operation soapAction="http://tempuri.org/get_data" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_data_historical">
+      <soap12:operation soapAction="http://tempuri.org/get_data_historical" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WebService">
+    <wsdl:port name="WebServiceSoap" binding="tns:WebServiceSoap">
+      <soap:address location="http://localhost:55252/BiciCountDispatcherWs.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WebServiceSoap12" binding="tns:WebServiceSoap12">
+      <soap12:address location="http://localhost:55252/BiciCountDispatcherWs.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
