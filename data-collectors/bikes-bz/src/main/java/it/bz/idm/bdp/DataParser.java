@@ -119,7 +119,7 @@ public class DataParser {
 					long timestamp = calendar.getTime().getTime();
 					SimpleRecordDto dto = new SimpleRecordDto();
 					dto.setTimestamp(timestamp);
-					dto.setPeriod(1);
+					dto.setPeriod(3600);
 					dto.setValue(rawdata.getTotale());
 					String stationDefinition = buildStationId(stationIdAsString, Integer.toString(rawdata.getSensorId()));
 					DataMapDto<RecordDtoImpl> stationMap = retrieveOrCreateStationLevel(map, stationDefinition);
