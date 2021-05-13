@@ -50,7 +50,7 @@ public class DataParser {
 			for (Sensore sensor : metaData.getSensori().getSensore()) {
 			StationDto stationDto = new StationDto();
 			stationDto.setId(buildStationId(Integer.toString(num), Integer.toString(sensor.getSensorId())));
-			stationDto.setName(metaData.getNome() + sensor.getDescrizione());
+			stationDto.setName(metaData.getNome() +" - " + sensor.getDescrizione());
 			stationDto.setLatitude(metaData.getLatit());
 			stationDto.setLongitude(metaData.getLongit());
 			stationDto.setOrigin(DATA_ORIGIN);

@@ -83,7 +83,7 @@ public class RetrieverIT extends AbstractJUnit4SpringContextTests{
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date startingDate;
 		try {
-			startingDate = format.parse("10/11/2017");
+			startingDate = format.parse("01/01/2019");
 			XMLGregorianCalendar from = null, to = null;
 			GregorianCalendar cal = new GregorianCalendar();
 			Duration duration = DatatypeFactory.newInstance().newDuration(1000 * 60 * 60 * 3);
