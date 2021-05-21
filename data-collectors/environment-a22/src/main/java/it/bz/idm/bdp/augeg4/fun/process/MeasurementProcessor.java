@@ -67,12 +67,17 @@ public class MeasurementProcessor {
     }
 
     private Optional<ProcessedMeasurement> processMeasurementToProcess(AugeG4RawData rawData, RawMeasurement rawMeasurement) {
-        Optional<Double> processedValue = applyFunction(rawData, rawMeasurement);
-        return processedValue.map(value -> new ProcessedMeasurement(
-                rawMeasurement.getId(),
-                rawMeasurement.getValue(),
-                value
-        ));
+        try {
+            Optional<Double> processedValue = applyFunction(rawData, rawMeasurement);
+            return processedValue.map(value -> new ProcessedMeasurement(
+                    rawMeasurement.getId(),
+                    rawMeasurement.getValue(),
+                    value
+            ));
+        }catch(Exception e) {
+            LOG.debug("Processing exception thrown for sensor " + rawData.getControlUnitId()+" and type "+rawMeasurement.getId());
+            throw e;
+        }
     }
 
     private Optional<Double> applyFunction(AugeG4RawData rawData, RawMeasurement rawMeasurement) {
