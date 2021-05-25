@@ -249,7 +249,6 @@ public class MeteorologyBzDataConverter {
                 period = 300;
             else if ("hydrometric-level".equals(dataTypeName))
                 period = 3600;
-            record.setPeriod(period);
 			dataTypeDto.setPeriod(period);
 
             //Store also measurement in corresponding Station
