@@ -95,16 +95,21 @@ public class MeteorologyBzJobScheduler {
 
                 //Send measurements separately for each station
                 for (int i=0 ; i<size ; i++) {
-                    MeteorologyBzDto meteoBzDto = data.get(i);
-                    String stationId = meteoBzDto.getStation()!=null ? meteoBzDto.getStation().getId() : null;
-                    LOG.info("fetchData, "+i+" of "+size+": stationId="+stationId);
+                    try {
+                        MeteorologyBzDto meteoBzDto = data.get(i);
+                        String stationId = meteoBzDto.getStation()!=null ? meteoBzDto.getStation().getId() : null;
+                        LOG.info("fetchData, "+i+" of "+size+": stationId="+stationId);
 
-                    retriever.fetchDataByStation(meteoBzDto);
+                        retriever.fetchDataByStation(meteoBzDto);
 
-                    DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(meteoBzDto);
-                    stationRec.clean();
-                    if (stationRec != null && !stationRec.getBranch().isEmpty()){
-                        pusher.pushData(stationRec);
+                        DataMapDto<RecordDtoImpl> stationRec = pusher.mapSingleStationData2Bdp(meteoBzDto);
+                        stationRec.clean();
+                        if (stationRec != null && !stationRec.getBranch().isEmpty()){
+                            pusher.pushData(stationRec);
+                        }
+                    }catch(Exception ex) {
+                        ex.printStackTrace();
+                        continue;
                     }
                 }
 
