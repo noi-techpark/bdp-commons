@@ -244,7 +244,13 @@ public class MeteorologyBzDataConverter {
             dataTypeDto.setName(dataTypeName);
             dataTypeDto.setUnit(sensorObj.getUNIT());
             dataTypeDto.setDescription(sensorObj.getDESCI());
-            dataTypeDto.setPeriod(getPeriod());
+            Integer period = getPeriod();
+            if ("precipitation".equals(dataTypeName))
+                period = 300;
+            else if ("hydrometric-level".equals(dataTypeName))
+                period = 3600;
+            record.setPeriod(period);
+			dataTypeDto.setPeriod(period);
 
             //Store also measurement in corresponding Station
             if ( stationMap != null ) {
