@@ -548,7 +548,7 @@ public class MeteorologyBzDataRetriever {
                 }
                 strDateFrom = strMinDateFrom;
                 try {
-                    lastSavedRecord = pusher.getLastSavedRecordForStationAndDataType(stationDto, dataTypeDto);
+                    lastSavedRecord = pusher.getLastSavedRecordForStationAndDataType(stationDto, dataTypeDto, null);
                 } catch (Exception ex) {
                     LOG.warn("ERROR in getLastSavedRecordForStationAndDataType(stationId="+stationId+", dataType="+dataTypeDto+"): " + ex.getMessage());
                     LOG.warn("USING DEFAULT VALUE: " + strDateFrom);

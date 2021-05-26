@@ -42,7 +42,7 @@ public class MeteorologyBzDataPusher extends NonBlockingJSONPusher {
         LOG.debug("END.constructor.");
     }
 
-	@PostConstruct
+    @PostConstruct
     private void initMeteo() {
         LOG.debug("START.init.");
 //        //Ensure the JSON converter is used instead of the XML converter (otherwise we get an HTTP 415 error)
@@ -106,6 +106,9 @@ public class MeteorologyBzDataPusher extends NonBlockingJSONPusher {
             for (String dataTypeName : dataTypeNames) {
 
                 List<TimeSerieDto> measurements = measurementsByType.get(dataTypeName);
+                Integer guessedPeriod = DCUtils.calcPeriodUsingFirstTwoElements(measurements);
+                if (guessedPeriod != null)
+                    period = guessedPeriod;
                 DataTypeDto dataType = dataTypeMap.get(dataTypeName);
 
                 for (TimeSerieDto measurementDto : measurements) {
@@ -121,10 +124,6 @@ public class MeteorologyBzDataPusher extends NonBlockingJSONPusher {
                         SimpleRecordDto record = new SimpleRecordDto();
                         record.setValue(value);
                         record.setTimestamp(timestamp);
-                        if ("precipitation".equals(typeName))
-                            period = 300;
-                        else if ("hydrometric-level".equals(typeName))
-                            period = 3600;
                         record.setPeriod(period);
 
                         //Check if we already treated this type (branch), if not found create the map and the list of records
@@ -193,20 +192,15 @@ public class MeteorologyBzDataPusher extends NonBlockingJSONPusher {
         return stations;
     }
 
-    public Date getLastSavedRecordForStationAndDataType(StationDto station, DataTypeDto dataType) {
+    public Date getLastSavedRecordForStationAndDataType(StationDto station, DataTypeDto dataType,Integer period) {
         LOG.debug("START.getLastSavedRecordForStation");
         if (station==null || dataType==null) {
             return null;
         }
 
         Date lastSavedRecord = null;
-        Integer period = converter.getPeriod();
         String stationCode = station.getId();
         String typeName = dataType.getName();
-        if ("precipitation".equals(typeName))
-            period = 300;
-        else if ("hydrometric-level".equals(typeName))
-            period = 3600;
         Object dateOfLastRecord = super.getDateOfLastRecord(stationCode, typeName, period);
         if ( dateOfLastRecord instanceof Date ) {
             lastSavedRecord = (Date) dateOfLastRecord;
@@ -229,8 +223,8 @@ public class MeteorologyBzDataPusher extends NonBlockingJSONPusher {
         return str2 + " ---> " + str1;
     }
 
-	@Override
-	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,env.getProperty("provenance_name"), env.getProperty("provenance_version"),  env.getProperty("app.origin"));
-	}
+    @Override
+    public ProvenanceDto defineProvenance() {
+        return new ProvenanceDto(null,env.getProperty("provenance_name"), env.getProperty("provenance_version"),  env.getProperty("app.origin"));
+    }
 }

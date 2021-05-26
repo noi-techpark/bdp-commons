@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +14,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import it.bz.idm.bdp.dcmeteorologybz.dto.TimeSerieDto;
 
 public class DCUtils {
 
@@ -458,5 +461,17 @@ public class DCUtils {
         }
         return d;
     }
+
+	public static Integer calcPeriodUsingFirstTwoElements(List<TimeSerieDto> measurements) {
+		if (measurements.size() >= 2) {
+			Date date1 = convertStringTimezoneToDate(measurements.get(0).getDATE());
+			Date date2 = convertStringTimezoneToDate(measurements.get(1).getDATE());
+			if (date1 != null && date2 != null) {
+				Long period = (date2.getTime() - date1.getTime()) / 1000;
+				return period.intValue();
+			}
+		}
+		return null;
+	}
 
 }
