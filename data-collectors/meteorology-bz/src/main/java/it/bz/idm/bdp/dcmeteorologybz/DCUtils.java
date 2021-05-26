@@ -468,7 +468,7 @@ public class DCUtils {
 			Date date2 = convertStringTimezoneToDate(measurements.get(1).getDATE());
 			if (date1 != null && date2 != null) {
 				Long period = (date2.getTime() - date1.getTime()) / 1000;
-				return period.intValue();
+				return Math.abs(period.intValue());
 			}
 		}
 		return null;
