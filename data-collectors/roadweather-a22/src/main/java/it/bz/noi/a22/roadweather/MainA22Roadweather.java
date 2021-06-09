@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -142,18 +143,20 @@ public class MainA22Roadweather{
                                 });
                             });
                         }
-
-                        recordDtoHashMap.forEach((s, recordDtos) -> {
-                            if (!weatherdata_list.isEmpty()) {
-                                log.debug("pushing all " + s + " data: " + weatherdata_list.size());
-                                pusher.pushData(recordDtos);
+                        for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry: recordDtoHashMap.entrySet()) {
+                            try {
+                                if (!weatherdata_list.isEmpty()) {
+                                    log.debug("pushing all " + entry.getKey() + " data: " + weatherdata_list.size());
+                                    pusher.pushData(entry.getValue());
+                                }
+                            }catch(Exception ex) {
+                                ex.printStackTrace();
+                                continue;
                             }
-                        });
-
+                        }
                         lastTimeStamp += scanWindowSeconds;
                     } while (lastTimeStamp < System.currentTimeMillis() / 1000);
                 }
-
             } catch (Exception e) {
                 log.error("step 3 failed, continuing anyway to read de-auth...", e);
             }
