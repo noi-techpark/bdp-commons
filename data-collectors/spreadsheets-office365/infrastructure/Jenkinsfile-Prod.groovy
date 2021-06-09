@@ -7,7 +7,7 @@ pipeline {
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
         ARTIFACT_NAME = "dc-${PROJECT}"
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/dc-spreadsheets-office365-noiplaces'
-        DOCKER_TAG = "test-$BUILD_NUMBER"
+        DOCKER_TAG = "prod-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret-prod')
         APP_KEY = credentials('office-365-pkcs8-key')
         APP_KEY_PATH= 'auth/pkcs8_key'
@@ -50,7 +50,7 @@ pipeline {
                     echo -n 'provenance_name=' >> .env 
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
-                    echo 'BASE_URI=https://share.opendatahub.bz.it/json' >> .env
+                    echo 'BASE_URI=https://mobility.share.opendatahub.bz.it/json' >> .env
                 """
                 sh "cat ${APP_CRT} > ${PROJECT_FOLDER}/src/main/resources/${APP_CRT_PATH}"
                 sh "cat ${APP_KEY} > ${PROJECT_FOLDER}/src/main/resources/${APP_KEY_PATH}"
