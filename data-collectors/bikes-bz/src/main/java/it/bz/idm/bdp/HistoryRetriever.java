@@ -65,7 +65,7 @@ public class HistoryRetriever {
 				DataMapDto<RecordDtoImpl> dataMapDto = parser.retrieveHistoricData(from, to);
 				logger.debug("3rd party took" + (new Date().getTime() - now) / 1000 + " s");
 				bdpClient.pushData(dataMapDto);
-				logger.debug("Dataata sent");
+				logger.debug("Data sent");
 				newestDateMidnight = LocalDateTime
 						.ofInstant(Instant.ofEpochMilli(to.toGregorianCalendar().getTimeInMillis()), ZoneOffset.UTC);
 			}
