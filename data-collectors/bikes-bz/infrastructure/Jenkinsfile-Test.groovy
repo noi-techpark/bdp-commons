@@ -9,6 +9,9 @@ pipeline {
         DOCKER_TAG = "test-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
         DATA_ENDPOINT = credentials('bikes-bz-endpoint')
+        CRON_STATION_SYNC="0 2 6 * * *"
+        CRON_TYPE_SYNC="0 0 0 * * 0"
+        CRON_HISTORY_SYNC="0 3 6 * * *"
     }
 
     stages {
@@ -35,6 +38,9 @@ pipeline {
                     echo '' >> .env
                     echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
                     echo 'endpoint_defaultUri=${DATA_ENDPOINT}' >> .env
+                    echo 'CRON_STATION_SYNC=${CRON_STATION_SYNC}' >> .env
+                    echo 'CRON_TYPE_SYNC=${CRON_TYPE_SYNC}' >> .env
+                    echo 'CRON_HISTORY_SYNC=${CRON_HISTORY_SYNC}' >> .env
                 """
             }
         }
