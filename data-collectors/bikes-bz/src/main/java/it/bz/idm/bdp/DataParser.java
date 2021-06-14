@@ -127,6 +127,7 @@ public class DataParser {
 					list.add(dto);
 				}
 			} catch (IllegalStateException ie) {
+				ie.printStackTrace();
 				continue;
 			} catch (Exception ex) {
 				ex.printStackTrace();
