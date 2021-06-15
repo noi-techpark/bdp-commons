@@ -150,6 +150,7 @@ public class MainA22Roadweather{
                                     pusher.pushData(entry.getValue());
                                 }
                             }catch(Exception ex) {
+                                log.error("Failed to push data to opendatahub. Station " +entry.getKey() +"failed. "+ex.getMessage());
                                 ex.printStackTrace();
                                 continue;
                             }
