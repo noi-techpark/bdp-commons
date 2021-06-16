@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        SERVER_PORT="1006"
+        SERVER_PORT="1020"
         PROJECT = "spreadsheets-google"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         LOG_FOLDER = "/var/log/opendatahub/data-collectors"
