@@ -37,7 +37,7 @@ pipeline {
                     echo 'spreadsheet_range=A1:Z' >> .env
                     echo 'spreadsheet_notificationUrl=https://spreadsheets.testingmachine.eu/umadumm/trigger' >> .env
                     echo 'stationtype=CarpoolingHub' >> .env
-                    echo 'composite_unique_key=de:name' >> .env
+                    echo 'composite_unique_key=id' >> .env
                     echo 'origin=ummadum' >> .env
                     echo -n 'provenance_version=' >> .env
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' pom.xml >> .env
