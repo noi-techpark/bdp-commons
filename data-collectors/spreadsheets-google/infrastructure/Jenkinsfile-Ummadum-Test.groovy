@@ -39,6 +39,7 @@ pipeline {
                     echo 'stationtype=CarpoolingHub' >> .env
                     echo 'composite_unique_key=id' >> .env
                     echo 'origin=ummadum' >> .env
+                    echo 'scope=openid' >> .env
                     echo -n 'provenance_version=' >> .env
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' pom.xml >> .env
                     echo '' >> .env

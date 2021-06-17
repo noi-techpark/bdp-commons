@@ -13,7 +13,7 @@ public class LocationLookupUtil {
     
     private LocationLookup lookUpUtil = new NominatimLocationLookupUtil();
     
-    @Value("${headers_addressId}")
+    @Value("${headers_addressId:#{null}}")
     private String addressId;    
     /**
      * Uses nominatim to guess the coordinates by a address
