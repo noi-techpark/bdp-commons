@@ -35,7 +35,7 @@ pipeline {
                     echo '' >> .env
                     echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
                 """
-                sh 'cat "${A22_CONNECTOR}" > ${PROJECT_FOLDER}/src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties'
+                sh 'cat "${A22_CONNECTOR}" > ${PROJECT_FOLDER}/src/main/resources/it/bz/noi/a22/parking/a22connector.properties'
             }
         }
         stage('Test & Build') {
