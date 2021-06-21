@@ -29,7 +29,8 @@ import it.bz.idm.bdp.dto.StationList;
 @Component
 public class MainA22Parking {
 
-    private static final String FREE_TYPE = "free";
+    private static final String IDENTIFIER_NAMESPACE = "parking-a22";
+	private static final String FREE_TYPE = "free";
     private static final String OCCUPIED_TYPE = "occupied";
     private static final String STATE_TYPE = "state";
 
@@ -77,7 +78,7 @@ public class MainA22Parking {
                 ArrayList<A22CarParkInfo> parks = A22Service.getInfo();
                 LOG.debug("got info about " + parks.size() + " car parks");
                 for (A22CarParkInfo parkInfo : parks) {
-                    StationDto stationDto = new StationDto(parkInfo.getId().toString(),
+                    StationDto stationDto = new StationDto(IDENTIFIER_NAMESPACE +":"+ parkInfo.getId().toString(),
                             parkInfo.getDescrizione(),
                             parkInfo.getLatitudine(),
                             parkInfo.getLongitudine());
@@ -90,7 +91,7 @@ public class MainA22Parking {
                     stationDto.getMetaData().put(STATION_METADATA_METRO, parkInfo.getMetro());
                     stationDto.getMetaData().put(STATION_METADATA_AUTOSTRADA, parkInfo.getAutostrada());
 
-                    stationDtoMap.put(parkInfo.getId().toString(), stationDto);
+                    stationDtoMap.put(IDENTIFIER_NAMESPACE +":"+ parkInfo.getId().toString(), stationDto);
                 }
             } catch (Exception e) {
                 LOG.error("step 2 failed, continuing anyway to read de-auth...", e);
@@ -108,7 +109,7 @@ public class MainA22Parking {
                 ArrayList<A22CarParkCapacity> caps = A22Service.getCapacity();
                 LOG.debug("got capacity for " + caps.size() + " parks");
                 for (A22CarParkCapacity parkCapacity : caps) {
-                    String stationId = parkCapacity.getId().toString();
+                    String stationId = IDENTIFIER_NAMESPACE +":"+ parkCapacity.getId().toString();
                     Long free = parkCapacity.getPosti_liberi();
                     Long capacita = parkCapacity.getCapienza();
                     Long occupaid = capacita != null && free != null ? capacita - free : null;
