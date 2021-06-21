@@ -8,7 +8,7 @@ pipeline {
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/dc-parking-a22'
         DOCKER_TAG = "test-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
-        A22_CONNECTOR = credentials('a22connector_credentialsbn3')
+        A22_CONNECTOR = credentials('a22connector_credentialsbn4')
     }
 
     stages {
