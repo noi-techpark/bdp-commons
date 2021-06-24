@@ -39,7 +39,7 @@ public class DataMappingUtil {
     @Autowired
     private GoogleSpreadSheetDataFetcher googleClient;
 
-    @Value("${headers_addressId}")
+    @Value("${headers_addressId:#{null}}")
     private String addressId;
     
     @Value("${headers_nameId}")
