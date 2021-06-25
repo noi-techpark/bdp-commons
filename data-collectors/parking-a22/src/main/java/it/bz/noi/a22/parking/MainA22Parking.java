@@ -31,10 +31,10 @@ public class MainA22Parking {
 
     private static final String FREE_TYPE = "free";
     private static final String OCCUPIED_TYPE = "occupied";
+    private static final String STATE_TYPE = "state";
 
     private static final String STATION_METADATA_IDDIREZIONE = "iddirezione";
     private static final String STATION_METADATA_CAPACITA = "capacità";
-    private static final String STATION_METADATA_STATO = "stato";
     private static final String STATION_METADATA_METRO = "metro";
     private static final String STATION_METADATA_AUTOSTRADA = "autostrada";
 
@@ -42,14 +42,14 @@ public class MainA22Parking {
 
     private final A22Properties a22ParkingProperties;
     private final A22Properties datatypesProperties;
-    private final A22Properties metadataMappingProperties;
+    private final A22Properties valuesMappingProperties;
     @Autowired
     private A22ParkingJSONPusher pusher;
 
     public MainA22Parking() {
         this.a22ParkingProperties = new A22Properties("a22parking.properties");
         this.datatypesProperties = new A22Properties("a22parkingdatatypes.properties");
-        this.metadataMappingProperties = new A22Properties("a22parkingmetadatamapping.properties");
+        this.valuesMappingProperties = new A22Properties("a22parkingvaluesmapping.properties");
     }
 
     public void execute() {
@@ -84,8 +84,8 @@ public class MainA22Parking {
                     stationDto.setOrigin(a22ParkingProperties.getProperty("origin"));
                     stationDto.setStationType(a22ParkingProperties.getProperty("stationtype"));
                     String idDirezione =
-                            metadataMappingProperties.getProperty("a22parking.metadata." + STATION_METADATA_IDDIREZIONE + "." + parkInfo.getIddirezione(),
-                                    metadataMappingProperties.getProperty("a22parking.metadata." + STATION_METADATA_IDDIREZIONE + ".*"));
+                            valuesMappingProperties.getProperty("a22parking.metadata." + STATION_METADATA_IDDIREZIONE + "." + parkInfo.getIddirezione(),
+                                    valuesMappingProperties.getProperty("a22parking.metadata." + STATION_METADATA_IDDIREZIONE + ".*"));
                     stationDto.getMetaData().put(STATION_METADATA_IDDIREZIONE, idDirezione);
                     stationDto.getMetaData().put(STATION_METADATA_METRO, parkInfo.getMetro());
                     stationDto.getMetaData().put(STATION_METADATA_AUTOSTRADA, parkInfo.getAutostrada());
@@ -120,14 +120,13 @@ public class MainA22Parking {
                             new SimpleRecordDto(timestamp, free, period));
                     dataMap.addRecord(stationId, OCCUPIED_TYPE,
                             new SimpleRecordDto(timestamp, occupaid, period));
-
-                    String statoDescription = null;
-                    if(stato != null)
-                        statoDescription =
-                                metadataMappingProperties.getProperty("a22parking.metadata." + STATION_METADATA_STATO + "." + stato);
+                    if (stato != null)
+                        dataMap.addRecord(stationId, STATE_TYPE,
+                                new SimpleRecordDto(timestamp,
+                                        valuesMappingProperties.getProperty("a22parking.datatype." + STATE_TYPE + "." + stato),
+                                        period));
 
                     stationDto.getMetaData().put(STATION_METADATA_CAPACITA, capacita);
-                    stationDto.getMetaData().put(STATION_METADATA_STATO, statoDescription);
                 }
                 StationList stationList = new StationList(stationDtoMap.values());
                 pusher.syncStations(stationList);
@@ -165,7 +164,7 @@ public class MainA22Parking {
 
     private void setupDataType() {
         List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
-        String[] dataTypes = new String[]{FREE_TYPE, OCCUPIED_TYPE};
+        String[] dataTypes = new String[]{FREE_TYPE, OCCUPIED_TYPE, STATE_TYPE};
         for (String dataType : dataTypes) {
             dataTypeDtoList.add(
                     new DataTypeDto(dataType,
