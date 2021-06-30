@@ -43,7 +43,6 @@ public class DataPusherMapper implements DataPusherMapperFace {
         measurementsByStation.getProcessedMeasurementsToHub()
                 .forEach(measurement -> {
                     mapRawMeasurement(measurementsByStation, stationMap, measurement);
-                    mapProcessedMeasurement(measurementsByStation, stationMap, measurement);
                 });
     }
 
