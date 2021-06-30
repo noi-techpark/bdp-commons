@@ -9,10 +9,10 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>5.2.13.RELEASE</spring.version>
-		<spring.integration.version>5.3.6.RELEASE</spring.integration.version>
+		<spring.version>5.2.15.RELEASE</spring.version>
+		<spring.integration.version>5.3.8.RELEASE</spring.integration.version>
 		<paho.mqttclient.version>1.2.5</paho.mqttclient.version>
-		<jackson.version>2.11.4</jackson.version>
+		<jackson.version>2.12.3</jackson.version>
 	</properties>
 
 	<repositories>
@@ -34,17 +34,17 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>5.1.2</version>
+			<version>5.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.13.3</version>
+			<version>2.14.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.13.3</version>
+			<version>2.14.1</version>
 		</dependency>
 		<!-- JSON databind -->
 		<dependency>
