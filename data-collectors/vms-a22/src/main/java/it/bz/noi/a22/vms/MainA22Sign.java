@@ -50,8 +50,7 @@ public class MainA22Sign
 			log.info("Start A22SignMain");
 
 
-			long delaySeconds = 3600; // 2019-06-21 d@vide.bz: a22 data realtime delay
-			long nowSeconds = System.currentTimeMillis() / 1000 - delaySeconds;
+			long nowSeconds = System.currentTimeMillis() / 1000;
 
 			Connector a22Service = setupA22ServiceConnector();
 

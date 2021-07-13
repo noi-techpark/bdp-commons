@@ -285,6 +285,7 @@ public class Connector {
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
         conn.setDoOutput(true);
         OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
+        log.debug("Request: {\"request\":{\"sessionId\":<token>,\"idpmv\":" + id + ",\"fromData\":\"/Date(" + frTS + ")/\",\"toData\":\"/Date(" + toTS + ")/\"}}\n");
         os.write("{\"request\":{\"sessionId\":\"" + token + "\",\"idpmv\":" + id + ",\"fromData\":\"/Date(" + frTS + ")/\",\"toData\":\"/Date(" + toTS + ")/\"}}\n");
         os.flush();
         int status = conn.getResponseCode();
@@ -312,6 +313,7 @@ public class Connector {
         // parse response 
         try {
             JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
+            log.debug("Response:"+response_json.toJSONString());
             JSONArray event_list = (JSONArray) response_json.get("Infoutenza_GetEsposizioneResult");
             int i;
             for (i = 0; i < event_list.size(); i++) {
