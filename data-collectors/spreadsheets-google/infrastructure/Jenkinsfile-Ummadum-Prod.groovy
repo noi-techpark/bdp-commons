@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        SERVER_PORT="1020"
+        SERVER_PORT="1030"
         PROJECT = "spreadsheets-google"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
