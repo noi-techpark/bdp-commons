@@ -11,6 +11,7 @@ pipeline {
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/spreadsheets-google-noiplaces'
         DOCKER_TAG = "prod-$BUILD_NUMBER"
         VENDOR = "umadummCarpooling"
+        DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret-prod')
     }
 
     stages {
