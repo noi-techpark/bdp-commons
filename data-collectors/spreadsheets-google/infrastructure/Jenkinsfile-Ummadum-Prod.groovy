@@ -8,7 +8,6 @@ pipeline {
         ARTIFACT_NAME = "dc-${PROJECT}"
         GOOGLE_SECRET=credentials('spreadsheets.client_secret.json')
         GOOGLE_CREDENTIALS=credentials('google-spreadsheet-api-credentials')
-        KEYCLOAK_CONFIG=credentials('prod-authserver-datacollector-client-config')
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/spreadsheets-google-noiplaces'
         DOCKER_TAG = "prod-$BUILD_NUMBER"
         VENDOR = "umadummCarpooling"
@@ -24,7 +23,6 @@ pipeline {
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
                     echo 'LOG_LEVEL=INFO' >> .env
-                    echo 'LOG_FOLDER=data-collectors/${PROJECT}' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
                     echo 'VENDOR=${VENDOR}' >> .env
                     echo 'spreadsheetId=1K49hBRbloKMtwxqBPHMf8yVFsu1xjFtUfk4CVtZhTMI' >> .env
@@ -38,17 +36,20 @@ pipeline {
                     echo 'stationtype=CarpoolingHub' >> .env
                     echo 'composite_unique_key=id' >> .env
                     echo 'origin=ummadum' >> .env
-                    echo 'scope=openid' >> .env
                     echo -n 'provenance_version=' >> .env
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' pom.xml >> .env
                     echo '' >> .env
                     echo -n 'provenance_name=' >> .env 
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
-                    echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
+                    echo 'authorizationUri=https://auth.opendatahub.bz.it/auth' >> .env
+                    echo 'tokenUri=https://auth.opendatahub.bz.it/auth/realms/noi/protocol/openid-connect/token' >> .env 
+                    echo 'clientId=odh-mobility-datacollector' >> .env
+                    echo 'clientName=odh-mobility-datacollector' >> .env
+                    echo 'clientSecret=${DATACOLLECTORS_CLIENT_SECRET}' >> .env
+                    echo 'scope=openid' >> .env
+                    echo 'BASE_URI=https://mobility.share.opendatahub.bz.it/json' >> .env
                 """
-                sh "cat ${KEYCLOAK_CONFIG} >> ${PROJECT_FOLDER}/.env"
-                
                 sh "cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json"
                 sh """cat "${GOOGLE_CREDENTIALS}" > "${PROJECT_FOLDER}"/src/main/resources/META-INF/credentials/StoredCredential"""
             }
