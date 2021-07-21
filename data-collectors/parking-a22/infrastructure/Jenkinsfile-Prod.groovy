@@ -19,7 +19,7 @@ pipeline {
                     echo 'COMPOSE_PROJECT_NAME=${PROJECT}' > .env
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
-                    echo 'LOG_LEVEL=debug' >> .env
+                    echo 'LOG_LEVEL=info' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
                     echo 'authorizationUri=https://auth.opendatahub.bz.it/auth' >> .env
                     echo 'tokenUri=https://auth.opendatahub.bz.it/auth/realms/noi/protocol/openid-connect/token' >> .env 
