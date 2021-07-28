@@ -47,10 +47,6 @@ public class MainA22Roadweather{
             log.info("Start MainA22Roadweather");
 
 
-            long delaySeconds = 3600; // 2019-06-21 d@vide.bz: a22 data realtime delay
-            long nowSeconds = System.currentTimeMillis() / 1000 - delaySeconds;
-
-
             setupDataType();
 
             // step 1
@@ -106,9 +102,9 @@ public class MainA22Roadweather{
             // step 3
             // get the list of weather data records
             try {
-                HashMap<String, DataMapDto<RecordDtoImpl>> recordDtoHashMap = new HashMap<>();
                 long scanWindowSeconds = Long.parseLong(a22RoadweatherProperties.getProperty("scanWindowSeconds"));
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                DataMapDto<RecordDtoImpl> stationMap = new DataMapDto<>();
 
                 for (int i = 0; i < stationList.size(); i++) {
                     String idCabina = stationList.get(i).getId();
@@ -125,36 +121,19 @@ public class MainA22Roadweather{
                             weatherdata_list.forEach(weatherdata -> {
                                 datatypeKeys.forEach(cname -> {
                                     if (!weatherdata.get(cname).equals("null")) {
-                                        addRecordDtoToMap(cname,
-                                                recordDtoHashMap,
-                                                idCabina,
-                                                new SimpleRecordDto(Long.parseLong(weatherdata.get("data")) * 1000,
-                                                        Double.parseDouble(weatherdata.get(cname)),
-                                                        1));
+                                    	stationMap.addRecord(idCabina, cname, 
+                                    	new SimpleRecordDto(Long.parseLong(weatherdata.get("data")) * 1000, Double.parseDouble(weatherdata.get(cname)),1));
                                         if (datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".mapping").equals("true")) {
-                                            addRecordDtoToMap(cname + "_desc",
-                                                    recordDtoHashMap,
-                                                    idCabina,
-                                                    new SimpleRecordDto(Long.parseLong(weatherdata.get("data")) * 1000,
-                                                            datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".mapping." + weatherdata.get(cname)),
-                                                            1));
+                                        	stationMap.addRecord(idCabina, cname + "_desc", new SimpleRecordDto(Long.parseLong(weatherdata.get("data")) * 1000,
+                                            datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".mapping." + weatherdata.get(cname)),1));
                                         }
                                     }
                                 });
                             });
                         }
-                        for (Map.Entry<String, DataMapDto<RecordDtoImpl>> entry: recordDtoHashMap.entrySet()) {
-                            try {
-                                if (!weatherdata_list.isEmpty()) {
-                                    log.debug("pushing all " + entry.getKey() + " data: " + weatherdata_list.size());
-                                    pusher.pushData(entry.getValue());
-                                }
-                            }catch(Exception ex) {
-                                log.error("Failed to push data to opendatahub. Station " +entry.getKey() +"failed. "+ex.getMessage());
-                                ex.printStackTrace();
-                                continue;
-                            }
-                        }
+                        stationMap.clean();
+                        if (!stationMap.getBranch().isEmpty())
+                        	pusher.pushData(stationMap);
                         lastTimeStamp += scanWindowSeconds;
                     } while (lastTimeStamp < System.currentTimeMillis() / 1000);
                 }
@@ -172,13 +151,6 @@ public class MainA22Roadweather{
             long stopTime = System.currentTimeMillis();
             log.debug("elaboration time (millis): " + (stopTime - startTime));
         }
-    }
-
-    private void addRecordDtoToMap(String cname, HashMap<String, DataMapDto<RecordDtoImpl>> recordDtoHashMap, String idCabina, SimpleRecordDto recordDto) {
-        recordDtoHashMap.putIfAbsent(cname, new DataMapDto<>());
-        recordDtoHashMap.get(cname).addRecord(idCabina,
-                cname,
-                recordDto);
     }
 
     private Connector setupA22ServiceConnector() throws IOException {
