@@ -104,14 +104,13 @@ public class MainA22Roadweather{
             try {
                 long scanWindowSeconds = Long.parseLong(a22RoadweatherProperties.getProperty("scanWindowSeconds"));
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                DataMapDto<RecordDtoImpl> stationMap = new DataMapDto<>();
-
                 for (int i = 0; i < stationList.size(); i++) {
                     String idCabina = stationList.get(i).getId();
 
                     long lastTimeStamp = getLastTimestampOfStationInSeconds(idCabina);
 
                     do {
+                        DataMapDto<RecordDtoImpl> stationMap = new DataMapDto<>();
                         ArrayList<HashMap<String, String>> weatherdata_list = a22Service.getWeatherData(lastTimeStamp, lastTimeStamp + scanWindowSeconds, Long.valueOf(stationList.get(i).getId()));
 
                         log.debug("got " + weatherdata_list.size() + " weather data records for " + simpleDateFormat.format(new Date(lastTimeStamp * 1000)) + ", " + simpleDateFormat.format(new Date((lastTimeStamp + scanWindowSeconds) * 1000)) + ", " + idCabina + ":");
