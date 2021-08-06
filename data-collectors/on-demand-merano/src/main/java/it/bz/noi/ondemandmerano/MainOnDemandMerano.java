@@ -75,6 +75,7 @@ public class MainOnDemandMerano {
                     onDemandMeranoConfiguration.getOrigin());
             StationList stopsStationList = new StationList();
             DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
+            int positionMeasurementCount = 0;
             for(OnDemandMeranoVehicle vehicle: vehicles) {
                 StationDto stationDto = new StationDto(vehicle.getLicensePlateNumber(),
                         vehicle.getLicensePlateNumber(),
@@ -107,10 +108,11 @@ public class MainOnDemandMerano {
 
                     dataMap.addRecord(vehicle.getLicensePlateNumber(), datatypesConfiguration.getPosition().getKey(),
                             new SimpleRecordDto(recordTimeLong, new Gson().toJson(vehicle.getPosition()), onDemandMeranoConfiguration.getVehiclesPeriod()));
+                    positionMeasurementCount++;
                 }
             }
             vehicleJSONPusher.syncStations(stopsStationList);
-            if(dataMap.getData().size() > 0) {
+            if(positionMeasurementCount > 0) {
                 vehicleJSONPusher.pushData(dataMap);
             }
         } catch (Exception e) {
