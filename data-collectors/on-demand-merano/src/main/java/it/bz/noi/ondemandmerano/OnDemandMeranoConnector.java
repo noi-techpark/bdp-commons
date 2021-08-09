@@ -6,9 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.bz.noi.ondemandmerano.configuration.ConnectorConfiguration;
-import it.bz.noi.ondemandmerano.model.OnDemandMeranoStop;
-import it.bz.noi.ondemandmerano.model.OnDemandMeranoVehicle;
-import it.bz.noi.ondemandmerano.model.OnDemandServicePositionPoint;
+import it.bz.noi.ondemandmerano.model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,10 +99,10 @@ public class OnDemandMeranoConnector {
                 JsonObject region = extractJsonObject(jsonRecord, "region");
 
                 record.setPosition(new Gson().fromJson(position, OnDemandServicePositionPoint.class));
-                record.setAddress(new Gson().fromJson(streetAddress, HashMap.class));
-                record.setGroups(new Gson().fromJson(groups, new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                record.setAddress(new Gson().fromJson(streetAddress, OnDemandMeranoStopAddress.class));
+                record.setGroups(new Gson().fromJson(groups, new TypeToken<ArrayList<OnDemandMeranoGroup>>() {
                 }.getType()));
-                record.setRegion(new Gson().fromJson(region, HashMap.class));
+                record.setRegion(new Gson().fromJson(region, OnDemandMeranoRegion.class));
 
                 output.add(record);
 

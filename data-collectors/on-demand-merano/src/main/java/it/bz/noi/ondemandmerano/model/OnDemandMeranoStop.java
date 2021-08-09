@@ -1,7 +1,6 @@
 package it.bz.noi.ondemandmerano.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class OnDemandMeranoStop {
 
@@ -10,9 +9,9 @@ public class OnDemandMeranoStop {
     private String reference;
     private String type;
     private OnDemandServicePositionPoint position;
-    private HashMap<String, Object> address;
-    private ArrayList<HashMap<String, Object>> groups;
-    private HashMap<String, Object> region;
+    private OnDemandMeranoStopAddress address;
+    private ArrayList<OnDemandMeranoGroup> groups;
+    private OnDemandMeranoRegion region;
 
     public Long getId() {
         return id;
@@ -54,27 +53,27 @@ public class OnDemandMeranoStop {
         this.position = position;
     }
 
-    public HashMap<String, Object> getAddress() {
+    public OnDemandMeranoStopAddress getAddress() {
         return address;
     }
 
-    public void setAddress(HashMap<String, Object> address) {
+    public void setAddress(OnDemandMeranoStopAddress address) {
         this.address = address;
     }
 
-    public ArrayList<HashMap<String, Object>> getGroups() {
+    public ArrayList<OnDemandMeranoGroup> getGroups() {
         return groups;
     }
 
-    public void setGroups(ArrayList<HashMap<String, Object>> groups) {
+    public void setGroups(ArrayList<OnDemandMeranoGroup> groups) {
         this.groups = groups;
     }
 
-    public HashMap<String, Object> getRegion() {
+    public OnDemandMeranoRegion getRegion() {
         return region;
     }
 
-    public void setRegion(HashMap<String, Object> region) {
+    public void setRegion(OnDemandMeranoRegion region) {
         this.region = region;
     }
 

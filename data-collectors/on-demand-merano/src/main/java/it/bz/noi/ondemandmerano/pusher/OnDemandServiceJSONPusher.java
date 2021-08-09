@@ -12,32 +12,31 @@ import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
 
-public abstract class OnDemandServiceJSONPusher extends NonBlockingJSONPusher{
+public abstract class OnDemandServiceJSONPusher extends NonBlockingJSONPusher {
 
-	private static final Logger LOG = LogManager.getLogger(OnDemandServiceJSONPusher.class);
+    private static final Logger LOG = LogManager.getLogger(OnDemandServiceJSONPusher.class);
 
-	protected String origin;
+    protected String origin;
 
-	@Autowired
-	protected Environment env;
-	@Autowired
-	protected OnDemandMeranoConfiguration onDemandMeranoConfiguration;
+    @Autowired
+    protected Environment env;
+    @Autowired
+    protected OnDemandMeranoConfiguration onDemandMeranoConfiguration;
 
-	public <T> DataMapDto<RecordDtoImpl> mapData(T arg0)
-	{
-		throw new IllegalStateException("it is used by who?");
-	}
+    public <T> DataMapDto<RecordDtoImpl> mapData(T arg0) {
+        throw new IllegalStateException("it is used by who?");
+    }
 
-	@PostConstruct
-	public void init() {
-		LOG.info("start init");
-		origin = onDemandMeranoConfiguration.getOrigin();
-		super.init();
-		LOG.info("end init");
-	}
+    @PostConstruct
+    public void init() {
+        LOG.info("start init");
+        origin = onDemandMeranoConfiguration.getOrigin();
+        super.init();
+        LOG.info("end init");
+    }
 
-	@Override
-	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"),  origin);
-	}
+    @Override
+    public ProvenanceDto defineProvenance() {
+        return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"), origin);
+    }
 }
