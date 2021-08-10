@@ -2,7 +2,6 @@ pipeline {
     agent any
     
     environment {
-        SERVER_PORT="1015"
         PROJECT = "appatn_tenminutes"
         PROJECT_FOLDER = "data-collectors/environment-appa/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
@@ -19,7 +18,6 @@ pipeline {
                 sh """
                     cd ${PROJECT_FOLDER}
                     echo 'COMPOSE_PROJECT_NAME=${PROJECT}' > .env
-                    echo 'SERVER_PORT=${SERVER_PORT}' >> .env
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
                     echo 'LOG_LEVEL=debug' >> .env
