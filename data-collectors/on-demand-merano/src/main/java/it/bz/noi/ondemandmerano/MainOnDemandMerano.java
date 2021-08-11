@@ -1,6 +1,7 @@
 package it.bz.noi.ondemandmerano;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
@@ -22,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -172,8 +170,11 @@ public class MainOnDemandMerano {
                 ZonedDateTime recordTimeZonedDateTime = ZonedDateTime.parse(recordTime);
                 long recordTimeLong = recordTimeZonedDateTime.toInstant().toEpochMilli();
 
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String, Object> positionMap = mapper.convertValue(vehicle.getPosition(), new TypeReference<Map<String, Object>>() {});
+
                 dataMap.addRecord(vehicle.getLicensePlateNumber(), datatypesConfiguration.getPosition().getKey(),
-                        new SimpleRecordDto(recordTimeLong, new Gson().toJson(vehicle.getPosition()), onDemandMeranoConfiguration.getVehiclesPeriod()));
+                        new SimpleRecordDto(recordTimeLong, positionMap, onDemandMeranoConfiguration.getVehiclesPeriod()));
                 positionMeasurementCount++;
             }
         }
@@ -201,7 +202,7 @@ public class MainOnDemandMerano {
             long recordTimeLong = activity.getUpdatedAt().toInstant().toEpochMilli();
 
             dataMap.addRecord(stationDto.getId(), datatypesConfiguration.getItineraryDetails().getKey(),
-                    new SimpleRecordDto(recordTimeLong, new Gson().toJson(activity.toJson()), onDemandMeranoConfiguration.getItineraryPeriod()));
+                    new SimpleRecordDto(recordTimeLong, activity.toJson(), onDemandMeranoConfiguration.getItineraryPeriod()));
         }
         itineraryJSONPusher.syncStations(itineraryStationList);
         itineraryJSONPusher.pushData(dataMap);
