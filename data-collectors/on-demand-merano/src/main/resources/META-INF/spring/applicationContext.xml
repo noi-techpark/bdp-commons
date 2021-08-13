@@ -12,6 +12,6 @@
     <task:scheduled-tasks scheduler="Scheduler">
         <task:scheduled ref="jobScheduler" method="executeStops"  cron="0 0 * * * ?" />
         <task:scheduled ref="jobScheduler" method="executeActivities"  cron="*/10 * * * * ?" />
-        <task:scheduled ref="jobScheduler" method="executePolygons"  cron="0 0 * * * ?" />
+<!--        <task:scheduled ref="jobScheduler" method="executePolygons"  cron="0 0 * * * ?" />-->
     </task:scheduled-tasks>
 </beans>
