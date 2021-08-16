@@ -36,8 +36,8 @@ pipeline {
                     echo '' >> .env
                     echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
                 """
-                sh '''sed -i -e 's/\\(connector.username=\\).*\\$/\\1"${USERNAME}"/' ${PROJECT_FOLDER}/src/main/resources/connector.properties'''
-                sh '''sed -i -e 's/\\(connector.password=\\).*\\$/\\1"${SECRET}"/' ${PROJECT_FOLDER}/src/main/resources/connector.properties'''
+                sh '''sed -i -e "s/\\(connector.username=\\).*\\?/\\1${USERNAME}/" ${PROJECT_FOLDER}/src/main/resources/connector.properties'''
+                sh '''sed -i -e "s/\\(connector.password=\\).*\\?/\\1${SECRET}/" ${PROJECT_FOLDER}/src/main/resources/connector.properties'''
             }
         }
         stage('Test & Build') {
