@@ -72,9 +72,13 @@ password=
 
 ```
 origin=ON_DEMAND_MERANO
-stops.stationtype=ON_DEMAND_STOP
-vehicles.stationtype=ON_DEMAND_VEHICLE
-vehicles.period=1
+stop.stationtype=ON_DEMAND_STOP
+vehicle.stationtype=ON_DEMAND_VEHICLE
+vehicle.period=1
+itinerary.stationtype=ON_DEMAND_ITINERARY
+itinerary.period=1
+polygon.category=ON_DEMAND_MERANO
+polygon.uuid-prefix=9b519da7-ece1-4477-ac2c
 ```
 
 * optionally change the data types in the file src/main/resources/datatypes.properties.
@@ -82,6 +86,7 @@ vehicles.period=1
 
 ```
 position={key: 'position', unit: 'Point', description: 'position', rtype: 'Instantaneous'}
+itinerary_details={key: 'itinerary_details', unit: 'json', description: 'itinerary_details', rtype: 'Instantaneous'}
 ...
 ```
 

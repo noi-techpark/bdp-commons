@@ -1,5 +1,7 @@
 package it.bz.noi.ondemandmerano.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 public class OnDemandServicePositionPoint {
@@ -23,12 +25,14 @@ public class OnDemandServicePositionPoint {
         this.coordinates = coordinates;
     }
 
+    @JsonIgnore
     public Double getLongitude() {
         if(coordinates != null && coordinates.size() == 2)
             return coordinates.get(0);
         return null;
     }
 
+    @JsonIgnore
     public Double getLatitude() {
         if(coordinates != null && coordinates.size() == 2)
             return coordinates.get(1);
