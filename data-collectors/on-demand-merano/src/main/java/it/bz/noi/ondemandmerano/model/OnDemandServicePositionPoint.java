@@ -27,14 +27,14 @@ public class OnDemandServicePositionPoint {
 
     @JsonIgnore
     public Double getLongitude() {
-        if(coordinates != null && coordinates.size() == 2)
+        if(coordinates != null && coordinates.size() >= 2)
             return coordinates.get(0);
         return null;
     }
 
     @JsonIgnore
     public Double getLatitude() {
-        if(coordinates != null && coordinates.size() == 2)
+        if(coordinates != null && coordinates.size() >= 2)
             return coordinates.get(1);
         return null;
     }

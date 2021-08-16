@@ -155,7 +155,11 @@ public class MainOnDemandMerano {
 
             StationDto preStation = preStations.stream().filter(s -> s.getId().equals(stationDto.getId())).findFirst().orElseGet(() -> null);
             boolean updatePosition = true;
-            if (preStation != null) {
+            if (preStation != null
+                    && preStation.getLatitude() != null
+                    && preStation.getLongitude() != null
+                    && stationDto.getLatitude() != null
+                    && stationDto.getLongitude() != null) {
                 double distance = calcDistanceBetweenStations(stationDto, preStation);
                 if (distance < 10) {
                     updatePosition = false;
