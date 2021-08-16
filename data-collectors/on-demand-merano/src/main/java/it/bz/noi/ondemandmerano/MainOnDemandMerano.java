@@ -2,6 +2,7 @@ package it.bz.noi.ondemandmerano;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.GsonBuilder;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
@@ -205,6 +206,8 @@ public class MainOnDemandMerano {
 
             long recordTimeLong = activity.getUpdatedAt().toInstant().toEpochMilli();
 
+            LOG.debug("dataMap.addRecord ({}, {}): {}", stationDto.getId(), datatypesConfiguration.getItineraryDetails().getKey(),
+                    new GsonBuilder().create().toJson(activity.toJson()));
             dataMap.addRecord(stationDto.getId(), datatypesConfiguration.getItineraryDetails().getKey(),
                     new SimpleRecordDto(recordTimeLong, activity.toJson(), onDemandMeranoConfiguration.getItineraryPeriod()));
         }
@@ -243,15 +246,6 @@ public class MainOnDemandMerano {
         double r = 6.371 * Math.pow(10, 6);
 
         return (c * r);
-    }
-
-
-    public static void main(String[] args) {
-        System.out.println("9b519da7-ece1-4477-ac2c");
-        String uuidNode = Integer.toHexString(1);
-        String uuid = "9b519da7-ece1-4477-ac2c" + "-" + String.join("", Collections.nCopies(12 - uuidNode.length(), "0")) + uuidNode;
-        System.out.println(UUID.fromString(uuid).variant());
-        System.out.println(UUID.fromString(uuid).version());
     }
 
 }
