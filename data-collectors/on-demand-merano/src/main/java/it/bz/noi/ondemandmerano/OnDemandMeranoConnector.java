@@ -343,13 +343,14 @@ public class OnDemandMeranoConnector {
 
         OnDemandMeranoVehicle vehicle = new OnDemandMeranoVehicle();
         vehicle.setLicensePlateNumber(extractString(vehicleRecord, "licensePlateNumber"));
-        vehicle.setType(extractString(vehicleRecord, "type"));
 
+        JsonObject type = extractJsonObject(vehicleRecord, "type");
         JsonObject operator = extractJsonObject(vehicleRecord, "operator");
         JsonObject capacityMax = extractJsonObject(vehicleRecord, "capacityMax");
         JsonObject capacityUsed = extractJsonObject(vehicleRecord, "capacityUsed");
 
-        vehicle.setOperator(new Gson().fromJson(operator, HashMap.class));
+        vehicle.setType(new Gson().fromJson(type, HashMap.class));
+        vehicle.setOperator(new Gson().fromJson(operator, OnDemandMeranoOperator.class));
         vehicle.setCapacityMax(new Gson().fromJson(capacityMax,
                 new TypeToken<HashMap<String, Integer>>() {
                 }.getType())
