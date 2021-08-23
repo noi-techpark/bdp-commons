@@ -9,8 +9,11 @@
 
 package it.bz.noi.a22.events;
 
-import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.StationList;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.uuid.Generators;
+import com.vividsolutions.jts.geom.*;
+import it.bz.idm.bdp.dto.EventDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +21,22 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 @Component
 public class MainA22Events {
 
-    private static final String STATION_METADATA_AUTOSTRADA = "autostrada";
-    private static final String STATION_METADATA_DATA_INIZIO = "data_inizio";
-    private static final String STATION_METADATA_DATA_FINE = "data_fine";
+    private static final String STATION_METADATA_ID = "id";
     private static final String STATION_METADATA_FASCIA_ORARIA = "fascia_oraria";
     private static final String STATION_METADATA_IDCORSIA = "idcorsia";
     private static final String STATION_METADATA_IDDIREZIONE = "iddirezione";
-    private static final String STATION_METADATA_IDSOTTOTIPOEVENTO = "idsottotipoevento";
     private static final String STATION_METADATA_IDTIPOEVENTO = "idtipoevento";
-    private static final String STATION_METADATA_LAT_INIZIO = "lat_inizio";
-    private static final String STATION_METADATA_LAT_FINE = "lat_fine";
-    private static final String STATION_METADATA_LON_INIZIO = "lon_inizio";
-    private static final String STATION_METADATA_LON_FINE = "lon_fine";
+    private static final String STATION_METADATA_IDSOTTOTIPOEVENTO = "idsottotipoevento";
     private static final String STATION_METADATA_METRO_INIZIO = "metro_fine";
     private static final String STATION_METADATA_METRO_FINE = "metro_inizio";
 
@@ -46,21 +46,20 @@ public class MainA22Events {
     private final A22Properties a22EventsProperties;
     @Autowired
     private A22EventEventsJSONPusher pusher;
-    private String stationCodePrefix;
+    private String categoryPrefix;
+    private UUID uuidNamescpace;
 
     public MainA22Events() {
         this.metadataMappingProperties = new A22Properties("a22eventsmetadatamapping.properties");
         this.a22EventsProperties = new A22Properties("a22events.properties");
-        this.stationCodePrefix = a22EventsProperties.getProperty("stationcode-prefix");
+        this.categoryPrefix = a22EventsProperties.getProperty("categoryPrefix");
+        this.uuidNamescpace = UUID.fromString(a22EventsProperties.getProperty("uuidNamescpace"));
     }
 
     public void execute() {
         long startTime = System.currentTimeMillis();
         try {
             LOG.info("Start MainA22Events");
-
-
-            long delaySeconds = 3600; // 2019-06-21 d@vide.bz: a22 data realtime delay
 
             // step 1
             // create a Connector instance: this will perform authentication and store the session
@@ -73,26 +72,26 @@ public class MainA22Events {
             // step 2
             // fetch and print all events ("eventi/lista/storici") in a certain time range
             LOG.info("step 2: fetch and print all events (\"eventi/lista/storici\")");
-            HashMap<String, StationDto> inactiveStations = new HashMap<>();
+            HashMap<String, EventDto> inactiveStations = new HashMap<>();
             try {
                 long scanWindowSeconds = Long.parseLong(a22EventsProperties.getProperty("scanWindowSeconds"));
                 long lastTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22EventsProperties.getProperty("lastTimestamp")).getTime() / 1000;
 
                 do {
-                    HashMap<String, StationDto> stationDtoMap = new HashMap<>();
                     LOG.debug("Get all events between {} and {}",
-                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(lastTimeStamp * 1000)),
-                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date((lastTimeStamp + scanWindowSeconds) * 1000)));
+                            Instant.ofEpochSecond(lastTimeStamp).atZone(ZoneId.systemDefault()).toLocalDate(),
+                            Instant.ofEpochSecond(lastTimeStamp + scanWindowSeconds).atZone(ZoneId.systemDefault()).toLocalDate());
                     ArrayList<A22Event> events = A22Service.getEvents(lastTimeStamp, lastTimeStamp + scanWindowSeconds);
                     LOG.debug("got " + events.size() + " events");
+                    List<EventDto> eventDtoList = new ArrayList<>();
                     for (A22Event event : events) {
-                        if(!inactiveStations.containsKey(event.getId().toString())) {
-                            StationDto stationDto = getStationDtoFromA22Event(event);
-                            inactiveStations.put(stationDto.getId(), stationDto);
-                            stationDtoMap.put(stationDto.getId(), stationDto);
+                        EventDto eventDto = getEventDtoFromA22Event(event);
+                        if (!inactiveStations.containsKey(eventDto.getId())) {
+                            inactiveStations.put(eventDto.getId(), eventDto);
+                            eventDtoList.add(eventDto);
                         }
                     }
-                    pusher.syncStations(new StationList(stationDtoMap.values()));
+                    pusher.addEvents(eventDtoList);
                     lastTimeStamp += scanWindowSeconds;
                 } while (lastTimeStamp < System.currentTimeMillis() / 1000);
             } catch (Exception e) {
@@ -103,14 +102,14 @@ public class MainA22Events {
             // fetch and print all current events ("eventi/lista/attivi")
             LOG.info("step 3: fetch and print all current events (\"eventi/lista/attivi\")");
             try {
-                StationList stationList = new StationList();
                 ArrayList<A22Event> events = A22Service.getEvents(null, null);
                 LOG.debug("got " + events.size() + " events");
+                List<EventDto> eventDtoList = new ArrayList<>();
                 for (A22Event event : events) {
-                    StationDto stationDto = getStationDtoFromA22Event(event);
-                    stationList.add(stationDto);
+                    EventDto eventDto = getEventDtoFromA22Event(event);
+                    eventDtoList.add(eventDto);
                 }
-                pusher.syncStations(stationList);
+                pusher.addEvents(eventDtoList);
             } catch (Exception e) {
                 LOG.error("step 3 failed, continuing anyway to read de-auth...", e);
             }
@@ -126,56 +125,72 @@ public class MainA22Events {
         }
     }
 
-    private  A22EventConnector setupA22ServiceConnector() throws IOException {
-        String url;
-        String user;
-        String password;
-
+    private A22EventConnector setupA22ServiceConnector() throws IOException {
         // read connector auth informations
         A22Properties prop = new A22Properties("a22connector.properties");
-        url = prop.getProperty("url");
-        user = prop.getProperty("user");
-        password = prop.getProperty("password");
+        String url = prop.getProperty("url");
+        String user = prop.getProperty("user");
+        String password = prop.getProperty("password");
 
         A22EventConnector a22ParkingConnector = new A22EventConnector(url, user, password);
 
         return a22ParkingConnector;
     }
 
-    public StationDto getStationDtoFromA22Event(A22Event event) {
-        StationDto stationDto = new StationDto(this.stationCodePrefix + event.getId().toString(),
-                event.getId().toString(), // TODO not optional
-                event.getLat_inizio(),
-                event.getLon_inizio());
-        stationDto.setOrigin(a22EventsProperties.getProperty("origin"));
-        stationDto.setStationType(a22EventsProperties.getProperty("stationtype"));
+    public EventDto getEventDtoFromA22Event(A22Event event) throws JsonProcessingException {
+        EventDto eventDto = new EventDto();
 
-        stationDto.getMetaData().put(STATION_METADATA_AUTOSTRADA, event.getAutostrada());
-        stationDto.getMetaData().put(STATION_METADATA_DATA_INIZIO, event.getData_inizio());
-        stationDto.getMetaData().put(STATION_METADATA_DATA_FINE, event.getData_fine());
-        stationDto.getMetaData().put(STATION_METADATA_LAT_INIZIO, event.getLat_inizio());
-        stationDto.getMetaData().put(STATION_METADATA_LAT_FINE, event.getLat_fine());
-        stationDto.getMetaData().put(STATION_METADATA_LON_INIZIO, event.getLon_inizio());
-        stationDto.getMetaData().put(STATION_METADATA_LON_FINE, event.getLon_fine());
-        stationDto.getMetaData().put(STATION_METADATA_METRO_INIZIO, event.getMetro_inizio());
-        stationDto.getMetaData().put(STATION_METADATA_METRO_FINE, event.getMetro_fine());
-        stationDto.getMetaData().put(STATION_METADATA_FASCIA_ORARIA, event.getFascia_oraria());
-        stationDto.getMetaData().put(STATION_METADATA_IDCORSIA,
+        eventDto.setId(generateUuid(event));
+        eventDto.setCategory(categoryPrefix + ":" + getMappingStringByPropertyId(STATION_METADATA_IDTIPOEVENTO, event.getIdtipoevento()) + "_" + getMappingStringByPropertyId(STATION_METADATA_IDSOTTOTIPOEVENTO, event.getIdsottotipoevento()));
+        eventDto.setOrigin(a22EventsProperties.getProperty("origin"));
+
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+        Coordinate coordinateInizio = new Coordinate(event.getLat_inizio(), event.getLon_inizio());
+        Coordinate coordinateFine = new Coordinate(event.getLat_fine(), event.getLon_fine());
+        Point[] points = new Point[]{geometryFactory.createPoint(coordinateInizio), geometryFactory.createPoint(coordinateFine)};
+        MultiPoint multiPoint = new MultiPoint(points, geometryFactory);
+        eventDto.setWktGeometry(multiPoint.toText());
+
+        eventDto.setEventStart(event.getData_inizio());
+        eventDto.setEventEnd(event.getData_fine());
+
+        eventDto.getMetaData().put(STATION_METADATA_ID, event.getId());
+        eventDto.getMetaData().put(STATION_METADATA_FASCIA_ORARIA, event.getFascia_oraria());
+        eventDto.getMetaData().put(STATION_METADATA_IDCORSIA,
                 getMappingStringByPropertyId(STATION_METADATA_IDCORSIA, event.getIdcorsia()));
-        stationDto.getMetaData().put(STATION_METADATA_IDDIREZIONE,
+        eventDto.getMetaData().put(STATION_METADATA_IDDIREZIONE,
                 getMappingStringByPropertyId(STATION_METADATA_IDDIREZIONE, event.getIddirezione()));
-        stationDto.getMetaData().put(STATION_METADATA_IDTIPOEVENTO,
-                getMappingStringByPropertyId(STATION_METADATA_IDTIPOEVENTO, event.getIdtipoevento()));
-        stationDto.getMetaData().put(STATION_METADATA_IDSOTTOTIPOEVENTO, event.getIdsottotipoevento());
-        return stationDto;
+        eventDto.getMetaData().put(STATION_METADATA_METRO_INIZIO, event.getMetro_inizio());
+        eventDto.getMetaData().put(STATION_METADATA_METRO_FINE, event.getMetro_fine());
+        eventDto.getMetaData().put(STATION_METADATA_IDTIPOEVENTO, event.getIdtipoevento());
+        eventDto.getMetaData().put(STATION_METADATA_IDSOTTOTIPOEVENTO, event.getIdsottotipoevento());
+
+        return eventDto;
+    }
+
+    private String generateUuid(A22Event event) throws JsonProcessingException {
+        HashMap<String, Object> uuidMap = new HashMap<>();
+        uuidMap.put("id", event.getId());
+        uuidMap.put("data_inizio", event.getData_inizio());
+        uuidMap.put("idtipoevento", event.getIdtipoevento());
+        uuidMap.put("idsottotipoevento", event.getIdsottotipoevento());
+        uuidMap.put("lat_inizio", event.getLat_inizio());
+        uuidMap.put("lon_inizio", event.getLon_inizio());
+        uuidMap.put("lat_fine", event.getLat_fine());
+        uuidMap.put("lon_fine", event.getLon_fine());
+
+        ObjectMapper mapper = new ObjectMapper();
+        String uuidNameJson = mapper.writer().writeValueAsString(uuidMap);
+
+        return Generators.nameBasedGenerator(uuidNamescpace).generate(uuidNameJson).toString();
     }
 
     public String getMappingStringByPropertyId(String idProperty, Long id) {
         String defaultValue = metadataMappingProperties.getProperty("a22_events.metadata." + idProperty + ".*");
         String ret = metadataMappingProperties.getProperty("a22_events.metadata." + idProperty + "." + id, defaultValue);
-        if(ret == null) {
+        if (ret == null) {
             LOG.warn("Unable to find the following '{}' string: {}", idProperty, id.toString());
-            ret = id.toString();
+            ret = idProperty + ":" + id;
         }
         return ret;
     }
