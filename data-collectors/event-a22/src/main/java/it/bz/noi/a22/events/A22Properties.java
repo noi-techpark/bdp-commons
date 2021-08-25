@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URL;
 import java.util.Properties;
 
 public class A22Properties extends Properties {
@@ -23,7 +22,6 @@ public class A22Properties extends Properties {
 
     public A22Properties(String propertiesFile) {
         try {
-            URL url = getClass().getResource(propertiesFile);
             try (Reader in = new InputStreamReader(getClass().getResourceAsStream(propertiesFile)))
             {
                 this.load(in);

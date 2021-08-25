@@ -14,12 +14,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.uuid.Generators;
 import com.vividsolutions.jts.geom.*;
 import it.bz.idm.bdp.dto.EventDto;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -30,6 +36,8 @@ import java.util.UUID;
 
 @Component
 public class MainA22Events {
+
+    private static final String METADTA_PREFIX = "a22_events.metadata.";
 
     private static final String STATION_METADATA_ID = "id";
     private static final String STATION_METADATA_FASCIA_ORARIA = "fascia_oraria";
@@ -46,14 +54,33 @@ public class MainA22Events {
     private final A22Properties a22EventsProperties;
     @Autowired
     private A22EventEventsJSONPusher pusher;
-    private String categoryPrefix;
-    private UUID uuidNamescpace;
+    private final String categoryPrefix;
+    private final UUID uuidNamescpace;
 
     public MainA22Events() {
         this.metadataMappingProperties = new A22Properties("a22eventsmetadatamapping.properties");
         this.a22EventsProperties = new A22Properties("a22events.properties");
         this.categoryPrefix = a22EventsProperties.getProperty("categoryPrefix");
         this.uuidNamescpace = UUID.fromString(a22EventsProperties.getProperty("uuidNamescpace"));
+    }
+
+
+    @PostConstruct
+    public void init() {
+        try (Reader reader = new InputStreamReader(getClass().getResourceAsStream("SottotipiEventi.csv"));
+//             CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.with)
+             ) {
+            CSVParser parser = CSVFormat.Builder.create(CSVFormat.EXCEL).setHeader().build().parse(reader);
+            parser.getHeaderNames();
+            for (CSVRecord record : parser) {
+                String idSottotipo = record.get("IdSottotipo");
+                String descrizione = record.get("Descrizione");
+                this.metadataMappingProperties.setProperty(METADTA_PREFIX + STATION_METADATA_IDSOTTOTIPOEVENTO + "." + idSottotipo, descrizione);
+            }
+        } catch (Exception e) {
+            LOG.error("Unable to parse sottotipi evneti csv file");
+            throw new RuntimeException(e);
+        }
     }
 
     public void execute() {
@@ -186,8 +213,8 @@ public class MainA22Events {
     }
 
     public String getMappingStringByPropertyId(String idProperty, Long id) {
-        String defaultValue = metadataMappingProperties.getProperty("a22_events.metadata." + idProperty + ".*");
-        String ret = metadataMappingProperties.getProperty("a22_events.metadata." + idProperty + "." + id, defaultValue);
+        String defaultValue = metadataMappingProperties.getProperty(METADTA_PREFIX + idProperty + ".*");
+        String ret = metadataMappingProperties.getProperty(METADTA_PREFIX + idProperty + "." + id, defaultValue);
         if (ret == null) {
             LOG.warn("Unable to find the following '{}' string: {}", idProperty, id.toString());
             ret = idProperty + ":" + id;
