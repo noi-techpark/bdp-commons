@@ -68,10 +68,7 @@ public class MainA22Events {
     @PostConstruct
     public void init() {
         try (Reader reader = new InputStreamReader(getClass().getResourceAsStream("SottotipiEventi.csv"));
-//             CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.with)
-             ) {
-            CSVParser parser = CSVFormat.Builder.create(CSVFormat.EXCEL).setHeader().build().parse(reader);
-            parser.getHeaderNames();
+             CSVParser parser = CSVFormat.Builder.create(CSVFormat.EXCEL).setHeader().build().parse(reader) ) {
             for (CSVRecord record : parser) {
                 String idSottotipo = record.get("IdSottotipo");
                 String descrizione = record.get("Descrizione");

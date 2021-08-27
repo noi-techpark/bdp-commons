@@ -101,6 +101,20 @@ mvn clean package
 
 * deploy the war to a j2ee container like tomcat or jetty
 
+## Mapping of Tipi and SottoTipi Event
+
+The mapping of the events Tipi are saved in a properties file witch is located
+in `src/main/resources/it/bz/noi/a22/events/a22eventsmetadatamapping.properties`.
+
+Each property is in the following form:
+```
+a22_events.metadata.idtipoevento.<idtipoevento>=<description>
+```
+
+The mapping of The Events SottoTipi is saved in a csv file witch is located
+in `src/main/resources/it/bz/noi/a22/events/SottotipiEventi.csv`. The file has to contain the headers `IdSottotipo`
+and `Descrizione`.
+
 ## Information
 
 ### Support

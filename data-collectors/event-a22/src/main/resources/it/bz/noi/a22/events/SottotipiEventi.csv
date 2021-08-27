@@ -53,6 +53,7 @@ Cantieri,35,Carreggiata ridotta a due corsie
 ,52,Lavori ai caselli
 ,53,Cantiere mobile
 ,114,Cantiere spartitraffico centrale
+,208,Deviazione carreggiata con 2 corsie per il traffico deviato
 Disservizi,54,AdS Chiusa/e
 ,55,Area di servizio sovraffollata
 ,56,"Area di servizio, erogazione di carburante chiusa"
@@ -149,3 +150,5 @@ Chiusure,34,Allacciamento chiuso
 ,194,Uscita obbligatoria
 ,195,Uscita consigliata mezzi leggeri
 ,196,Uscita obbligatoria mezzi leggeri
+,205,"Chiusura tratto stradale per mezzi > 7,5T"
+,209,Entrata consigliata
