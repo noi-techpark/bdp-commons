@@ -17,19 +17,28 @@ public class DatatypesConfiguration {
     @Value("#{${position}}")
     private Map<String, String> positionMap;
 
+    @Value("#{${itinerary_details}}")
+    private Map<String, String> itineraryDetailsMap;
+
     private DatatypeConfiguration position;
+    private DatatypeConfiguration itineraryDetails;
 
     @PostConstruct
     private void init() {
         ObjectMapper mapper = new ObjectMapper();
         position = mapper.convertValue(positionMap, DatatypeConfiguration.class);
+        itineraryDetails = mapper.convertValue(itineraryDetailsMap, DatatypeConfiguration.class);
     }
 
     public DatatypeConfiguration getPosition() {
         return position;
     }
 
+    public DatatypeConfiguration getItineraryDetails() {
+        return itineraryDetails;
+    }
+
     public List<DatatypeConfiguration> getAllDataTypes() {
-        return Arrays.asList(position);
+        return Arrays.asList(position, itineraryDetails);
     }
 }
