@@ -118,7 +118,9 @@ A new Application needs to be created in Azure Active Directories:
    Permissions check the following Permissions
     ```
     Sites.Read.All
-    ```
+    ```  
+    Make sure Sites.Read.All access is granted by your Azure Admin
+      
 5. Create a certificate to be able to call the Graph API Generate the private key in PEM format and create a PKCS8
    version
 
