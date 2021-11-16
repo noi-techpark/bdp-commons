@@ -6,14 +6,14 @@ pipeline {
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/on-demand-merano'
-        LIMIT = "test"
+        LIMIT = "prod"
         DOCKER_TAG = "$LIMIT-$BUILD_NUMBER"
-        DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
+        DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret-prod')
         USERNAME = credentials('easymobil.username')
         SECRET = credentials('easymobil.password')
-        KEYCLOAK_URL = "https://auth.opendatahub.testingmachine.eu"
-        WRITER_URL = "https://mobility.share.opendatahub.testingmachine.eu"
-        LOG_LEVEL = "debug"
+        KEYCLOAK_URL = "https://auth.opendatahub.bz.it"
+        WRITER_URL = "https://mobility.share.opendatahub.bz.it"
+        LOG_LEVEL = "info"
     }
 
     stages {
