@@ -9,30 +9,28 @@ All further actions are handled by the Sharepoint REST API.
 For Authentication with the [OpenDataHub](https://opendatahub.bz.it/) , [Keycloak](https://www.keycloak.org/) is used.  
 Note: Any Big Data Platform can be used.
 
-## Table of contents
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [Getting started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Source code](#source-code)
-  - [Set Up](#set-up)
-    - [Create a Microsoft Sharepoint site](#create-a-microsoft-sharepoint-site)
-    - [Create the Excel spreadsheet](#create-the-excel-spreadsheet)
-    - [Azure Active Directory](#azure-active-directory)
-  - [Execute without Docker](#execute-without-docker)
-  - [Execute with Docker](#execute-with-docker)
-- [Additional information](#additional-information)
-  - [Possible optimizations](#possible-optimizations)
-    - [Microsoft change notifications to replace cron scheduler](#microsoft-change-notifications-to-replace-cron-scheduler)
-  - [Guidelines](#guidelines)
-  - [Support](#support)
-  - [Contributing](#contributing)
-  - [Documentation](#documentation)
-  - [License](#license)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+**Table of contents**
+- [Office 365 Spreadsheets DataCollector](#office-365-spreadsheets-datacollector)
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Source code](#source-code)
+    - [Set Up](#set-up)
+      - [Without Docker](#without-docker)
+      - [With Docker](#with-docker)
+      - [Create a Microsoft Sharepoint site](#create-a-microsoft-sharepoint-site)
+      - [Create the Excel spreadsheet](#create-the-excel-spreadsheet)
+      - [Azure Active Directory](#azure-active-directory)
+      - [Keycloak](#keycloak)
+    - [Execute without Docker](#execute-without-docker)
+    - [Execute with Docker](#execute-with-docker)
+  - [Additional information](#additional-information)
+    - [Possible optimizations](#possible-optimizations)
+      - [Microsoft change notifications to replace cron scheduler](#microsoft-change-notifications-to-replace-cron-scheduler)
+    - [Guidelines](#guidelines)
+    - [Support](#support)
+    - [Contributing](#contributing)
+    - [Documentation](#documentation)
+    - [License](#license)
 
 ## Getting started
 
@@ -120,7 +118,9 @@ A new Application needs to be created in Azure Active Directories:
    Permissions check the following Permissions
     ```
     Sites.Read.All
-    ```
+    ```  
+    Make sure Sites.Read.All access is granted by your Azure Admin
+      
 5. Create a certificate to be able to call the Graph API Generate the private key in PEM format and create a PKCS8
    version
 

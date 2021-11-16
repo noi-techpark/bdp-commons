@@ -12,7 +12,7 @@ WORKDIR /code
 
 COPY src /code/src
 COPY pom.xml /code/pom.xml
-RUN mvn package -DfinalName=ROOT
+RUN mvn -B package -DfinalName=ROOT
 
 # Archive
 FROM tomcat:8.5-jdk8-openjdk-slim-buster as archive

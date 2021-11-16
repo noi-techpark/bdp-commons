@@ -2,13 +2,18 @@ pipeline {
     agent any
     
     environment {
-        PROJECT = "environment-a22"
+        PROJECT = "on-demand-merano"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
-        DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/dc-environment-a22'
-        DOCKER_TAG = "test-$BUILD_NUMBER"
-        DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
-        A22_CONNECTOR = credentials('a22connector_credentialsbn3')
+        DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/on-demand-merano'
+        LIMIT = "prod"
+        DOCKER_TAG = "$LIMIT-$BUILD_NUMBER"
+        DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret-prod')
+        USERNAME = credentials('easymobil.username')
+        SECRET = credentials('easymobil.password')
+        KEYCLOAK_URL = "https://auth.opendatahub.bz.it"
+        WRITER_URL = "https://mobility.share.opendatahub.bz.it"
+        LOG_LEVEL = "info"
     }
 
     stages {
@@ -19,10 +24,10 @@ pipeline {
                     echo 'COMPOSE_PROJECT_NAME=${PROJECT}' > .env
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
-                    echo 'LOG_LEVEL=debug' >> .env
+                    echo 'LOG_LEVEL=${LOG_LEVEL}' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
-                    echo 'authorizationUri=https://auth.opendatahub.testingmachine.eu/auth' >> .env
-                    echo 'tokenUri=https://auth.opendatahub.testingmachine.eu/auth/realms/noi/protocol/openid-connect/token' >> .env 
+                    echo 'authorizationUri=${KEYCLOAK_URL}/auth' >> .env
+                    echo 'tokenUri=${KEYCLOAK_URL}/auth/realms/noi/protocol/openid-connect/token' >> .env 
                     echo 'clientId=odh-mobility-datacollector' >> .env
                     echo 'clientName=odh-mobility-datacollector' >> .env
                     echo 'clientSecret=${DATACOLLECTORS_CLIENT_SECRET}' >> .env
@@ -33,8 +38,10 @@ pipeline {
                     echo -n 'provenance_name=' >> .env 
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
-                    echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
+                    echo 'BASE_URI=${WRITER_URL}/json' >> .env
                 """
+                sh '''sed -i -e "s/\\(connector.username=\\).*\\?/\\1${USERNAME}/" ${PROJECT_FOLDER}/src/main/resources/connector.properties'''
+                sh '''sed -i -e "s/\\(connector.password=\\).*\\?/\\1${SECRET}/" ${PROJECT_FOLDER}/src/main/resources/connector.properties'''
             }
         }
         stage('Test & Build') {
@@ -52,7 +59,7 @@ pipeline {
                sshagent(['jenkins-ssh-key']) {
                     sh """
                         (cd ${PROJECT_FOLDER}/infrastructure/ansible && ansible-galaxy install -f -r requirements.yml)
-                        (cd ${PROJECT_FOLDER}/infrastructure/ansible && ansible-playbook --limit=test deploy.yml --extra-vars "release_name=${BUILD_NUMBER} project_name=${PROJECT}")
+                        (cd ${PROJECT_FOLDER}/infrastructure/ansible && ansible-playbook --limit=${LIMIT} deploy.yml --extra-vars "release_name=${BUILD_NUMBER} project_name=${PROJECT}")
                     """
                 }
             }

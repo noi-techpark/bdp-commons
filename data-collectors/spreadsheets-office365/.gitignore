@@ -4,3 +4,6 @@
 # exclude auth keys but keep directory
 /src/main/resources/auth/*
 !/src/main/resources/auth/.gitkeep
+
+infrastructure/utils/*
+!infrastructure/utils/*.sh
