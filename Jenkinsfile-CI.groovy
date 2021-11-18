@@ -17,9 +17,12 @@ pipeline {
                 stage('Data Collectors') {
                     steps {
                         sh '''
+                            echo
                             echo "!!! WE TEST ALL DATA COLLECTORS THAT HAVE BEEN CHANGED SINCE LAST COMMIT !!!"
-                            readarray -d / -t GIT_DELTA <<< "$(git diff --name-only HEAD HEAD~2 | grep data-collectors/)"
-                            echo "Change Data Collectors:"
+                            echo
+                            ROOT_COMMIT=$(git cherry development|head -n1|awk '{print $2}')
+                            readarray -d / -t GIT_DELTA <<< "$(git diff --name-only HEAD $ROOT_COMMIT | grep data-collectors/)"
+                            echo "Changed Data Collectors:"
                             for DC_NAME in "${GIT_DELTA[@]}"; do
                                 echo "- $DC_NAME"
                             done
@@ -27,7 +30,9 @@ pipeline {
                             for DC_NAME in "${GIT_DELTA[@]}"; do
                                 (cd "$DC_NAME" && mvn -B -U clean compile test)
                             done
-                            echo "!!! Ready."
+                            echo
+                            echo "!!! Ready !!!"
+                            echo
                         '''
 
                     }
