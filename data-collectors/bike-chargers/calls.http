@@ -1,3 +1,15 @@
+
+### Testing EcoSpazio's API
 GET https://maas.ecospazio.it/api/v1/stations
 Accept: application/json
-Token: {{$dotenv CONNECTOR_APIKEY_VALUE}}
+Token: {{$dotenv CONNECTOR_API_KEY}}
+
+
+### Checking staging ODH mobility with Ninja
+@ninja=https://mobility.api.opendatahub.testingmachine.eu/v2
+
+###
+GET {{ninja}}/flat/BIKE_CHARGER
+
+###
+GET {{ninja}}/flat/BIKE_CHARGER_BAY/*
