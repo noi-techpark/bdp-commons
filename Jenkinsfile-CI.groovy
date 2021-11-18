@@ -22,7 +22,7 @@ pipeline {
                             echo
                             DELTA_FILES=$(git diff --name-only HEAD "$GIT_PREVIOUS_SUCCESSFUL_COMMIT" | grep data-collectors/ || true)
                             echo "Changed Data Collectors:"
-                            declare -a DC_SET
+                            typeset -a DC_SET
                             for RECORD in ${DELTA_FILES[@]}; do
                                 RECORD=$(echo "$RECORD" | sed -E 's#data-collectors/(.*)/.*$#\1#g')
                                 DC_SET+=("$RECORD")
