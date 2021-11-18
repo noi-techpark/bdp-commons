@@ -2,13 +2,13 @@ pipeline {
     agent any
     
     environment {
+        LIMIT = "test"
         PROJECT = "bike-chargers"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
         DOCKER_IMAGE = "755952719952.dkr.ecr.eu-west-1.amazonaws.com/${PROJECT}"
-        LIMIT = "test"
         DOCKER_TAG = "$LIMIT-$BUILD_NUMBER"
-        DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
+        DATACOLLECTORS_CLIENT_SECRET = credentials("keycloak-datacollectors-secret-${LIMIT}")
         KEYCLOAK_URL = "https://auth.opendatahub.testingmachine.eu"
         WRITER_URL = "https://mobility.share.opendatahub.testingmachine.eu"
         LOG_LEVEL = "debug"
