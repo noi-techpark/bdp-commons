@@ -1,0 +1,3 @@
+GET https://maas.ecospazio.it/api/v1/stations
+Accept: application/json
+Token: {{$dotenv CONNECTOR_APIKEY_VALUE}}
