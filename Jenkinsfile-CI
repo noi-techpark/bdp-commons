@@ -119,6 +119,11 @@ pipeline {
                         sh 'cd data-collectors/traveltimes-a22/ && mvn -B -U clean compile test'
                     }
                 }
+                stage('bike-chargers') {
+                    steps {
+                        sh 'cd data-collectors/bike-chargers/ && mvn -B -U clean compile test'
+                    }
+                }
             }
         }
     }
