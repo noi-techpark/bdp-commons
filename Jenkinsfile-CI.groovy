@@ -7,6 +7,7 @@ pipeline {
     }
 
     stages {
+        // TODO Remove API v1 and nested stages when we deprecate the API
         stage('Test data collectors and web services') {
             stages {
                 stage('API v1') {
