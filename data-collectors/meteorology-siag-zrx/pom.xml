@@ -23,17 +23,6 @@
 			<artifactId>dc-interface</artifactId>
 			<version>3.3.5</version>
 		</dependency>
-		<dependency>
-			<groupId>it.bz.tis.zrx2json</groupId>
-			<artifactId>zrx2json</artifactId>
-			<version>1.0.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.codehaus.jackson</groupId>
-					<artifactId>jackson-mapper-asl</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 		<!-- General dependencies for standard applications -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -104,6 +93,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-digester</groupId>
