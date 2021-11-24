@@ -4,7 +4,7 @@ pipeline {
     environment {
         LIMIT = "prod"
         LOG_LEVEL = "info"
-        PROJECT = "events-a22"
+        PROJECT = "event-a22"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
         DOCKER_IMAGE = "755952719952.dkr.ecr.eu-west-1.amazonaws.com/${PROJECT}"
