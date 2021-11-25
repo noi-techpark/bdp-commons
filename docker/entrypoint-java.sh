@@ -10,4 +10,4 @@ EOF
 
 export MAVEN_CONFIG="$HOME"
 
-/bin/bash -c "/usr/local/bin/mvn-entrypoint.sh $@"
+/bin/bash -c "/usr/local/bin/mvn-entrypoint.sh $*"

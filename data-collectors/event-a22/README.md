@@ -5,19 +5,19 @@ to the [Open Data Hub](https://opendatahub.bz.it).
 
 **Table of contents**
 - [A22 Events](#a22-events)
-  - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Source code](#source-code)
-    - [Build](#build)
-  - [Running tests](#running-tests)
-  - [Local execution with an Embedded Tomcat](#local-execution-with-an-embedded-tomcat)
-  - [Deployment](#deployment)
-  - [Mapping of Tipi and SottoTipi Event](#mapping-of-tipi-and-sottotipi-event)
-  - [Information](#information)
-    - [Support](#support)
-    - [Contributing](#contributing)
-    - [Documentation](#documentation)
-    - [License](#license)
+	- [Getting started](#getting-started)
+		- [Prerequisites](#prerequisites)
+		- [Source code](#source-code)
+		- [Build](#build)
+	- [Running tests](#running-tests)
+	- [Local execution with an Embedded Tomcat](#local-execution-with-an-embedded-tomcat)
+	- [Deployment](#deployment)
+	- [Mapping of Tipi and SottoTipi Event](#mapping-of-tipi-and-sottotipi-event)
+	- [Information](#information)
+		- [Support](#support)
+		- [Contributing](#contributing)
+		- [Documentation](#documentation)
+		- [License](#license)
 
 ## Getting started
 

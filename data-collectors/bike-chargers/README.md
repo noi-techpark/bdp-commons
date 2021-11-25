@@ -108,15 +108,9 @@ For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.
 
 ### Contributing
 
-If you'd like to contribute, please follow the following instructions:
-
-- Fork the repository.
-- Checkout a topic branch from the `development` branch.
-- Make sure the tests are passing.
-- Create a pull request against the `development` branch.
-
-Please also read our [Getting Started
-Guidelines](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Getting-started).
+If you'd like to contribute, please follow our [Getting
+Started](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Getting-started)
+instructions.
 
 ### Documentation
 
@@ -126,4 +120,4 @@ More documentation can be found at
 ### License
 
 The code in this project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE
-Version 3 license. See the [LICENSE.md](LICENSE.md) file for more information.
+Version 3 license. See the [LICENSE](../../LICENSE) file for more information.
