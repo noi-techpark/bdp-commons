@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         LIMIT = "test"
-        LOG_LEVEL = "debug"
+        LOG_LEVEL = "info"
         PROJECT = "event-a22"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
@@ -28,15 +28,15 @@ pipeline {
                     echo 'LOG_LEVEL=${LOG_LEVEL}' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
                     echo 'authorizationUri=${KEYCLOAK_URL}/auth' >> .env
-                    echo 'tokenUri=${KEYCLOAK_URL}/auth/realms/noi/protocol/openid-connect/token' >> .env 
+                    echo 'tokenUri=${KEYCLOAK_URL}/auth/realms/noi/protocol/openid-connect/token' >> .env
                     echo 'clientId=odh-mobility-datacollector' >> .env
                     echo 'clientName=odh-mobility-datacollector' >> .env
                     echo 'clientSecret=${DATACOLLECTORS_CLIENT_SECRET}' >> .env
-                    echo 'scope=openid' >> .env 
+                    echo 'scope=openid' >> .env
                     echo -n 'provenance_version=' >> .env
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:version' pom.xml >> .env
                     echo '' >> .env
-                    echo -n 'provenance_name=' >> .env 
+                    echo -n 'provenance_name=' >> .env
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
                     echo 'BASE_URI=${WRITER_URL}/json' >> .env
