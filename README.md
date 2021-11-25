@@ -86,10 +86,12 @@ mvn clean test
 
 ### Test the code with Docker
 
+- Inside the corresponding data collector folder, copy `.env.example` to `.env`
+  and configure it
+- Change to the root of this repository
 - Copy `.env.example` to `.env` and configure it
-- Do the same inside the corresponding data collector folder
-- Run `docker-compose up -d` from the root of this repository
-- You can check the output with `docker-compose logs -f`
+- Run `docker-compose up -d`
+- You can follow the output with `docker-compose logs -f`
 
 Please note, if that command does not work it might be that the data collector
 was not configured to allow `mvn tomcat:run`. Please, refer to the `README.md`
