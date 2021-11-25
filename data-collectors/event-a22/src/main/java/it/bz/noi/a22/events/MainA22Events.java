@@ -20,7 +20,10 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -35,7 +38,19 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
+@Configuration
+@PropertySource("classpath:it/bz/noi/a22/events/a22connector.properties")
+@PropertySource("classpath:it/bz/noi/a22/events/odh-writer.properties")
 public class MainA22Events {
+
+    @Value("${a22url}")
+    private String a22ConnectorURL;
+
+    @Value("${a22user}")
+    private String a22ConnectorUsr;
+
+    @Value("${a22password}")
+    private String a22ConnectorPwd;
 
     private static final String METADTA_PREFIX = "a22_events.metadata.";
 
@@ -150,15 +165,7 @@ public class MainA22Events {
     }
 
     private A22EventConnector setupA22ServiceConnector() throws IOException {
-        // read connector auth informations
-        A22Properties prop = new A22Properties("a22connector.properties");
-        String url = prop.getProperty("url");
-        String user = prop.getProperty("user");
-        String password = prop.getProperty("password");
-
-        A22EventConnector a22ParkingConnector = new A22EventConnector(url, user, password);
-
-        return a22ParkingConnector;
+        return new A22EventConnector(a22ConnectorURL, a22ConnectorUsr, a22ConnectorPwd);
     }
 
     public EventDto getEventDtoFromA22Event(A22Event event) throws JsonProcessingException {
