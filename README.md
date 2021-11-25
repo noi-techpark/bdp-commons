@@ -20,6 +20,7 @@ Postgres DB.
 		- [Running tests](#running-tests)
 		- [Test the code with Docker](#test-the-code-with-docker)
 		- [Execute without Docker](#execute-without-docker)
+	- [Write a new data collector](#write-a-new-data-collector)
 	- [Deploy a new data collector](#deploy-a-new-data-collector)
 	- [Information](#information)
 		- [Support](#support)
@@ -122,6 +123,19 @@ mvn tomcat:run
 Credentials needed? See
 [here](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Credentials).
 
+## Write a new data collector
+
+If you want to write a new Data Collector, mimic the code present in this
+repository and follow our [Contributing](#contributing) guidelines.
+
+One detail, which is also present in the guidelines, but very important, make
+sure your data collector can be configured with environmental variables. That
+is, `.properties` files must allow injection of ENV VARS as follows:
+
+```ini
+MY_PARAM_1=${ENV_VAR_FOR_MY_PARAM_1}
+MY_PARAM_2=${ENV_VAR_FOR_MY_PARAM_2:or-this-default-if-missing}
+```
 
 ## Deploy a new data collector
 
