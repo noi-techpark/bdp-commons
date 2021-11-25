@@ -33,6 +33,7 @@ public class A22EventEventsJSONPusher extends NonBlockingJSONPusher {
     }
 
     @PostConstruct
+    @Override
     public void init() {
         A22Properties prop = new A22Properties("a22events.properties");
 

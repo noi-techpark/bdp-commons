@@ -84,9 +84,9 @@ public class MainA22Events {
     public void init() {
         try (Reader reader = new InputStreamReader(getClass().getResourceAsStream("SottotipiEventi.csv"));
              CSVParser parser = CSVFormat.Builder.create(CSVFormat.EXCEL).setHeader().build().parse(reader) ) {
-            for (CSVRecord record : parser) {
-                String idSottotipo = record.get("IdSottotipo");
-                String descrizione = record.get("Descrizione");
+            for (CSVRecord rec : parser) {
+                String idSottotipo = rec.get("IdSottotipo");
+                String descrizione = rec.get("Descrizione");
                 this.metadataMappingProperties.setProperty(METADTA_PREFIX + STATION_METADATA_IDSOTTOTIPOEVENTO + "." + idSottotipo, descrizione);
             }
         } catch (Exception e) {
