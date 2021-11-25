@@ -10,6 +10,7 @@ to the [Open Data Hub](https://opendatahub.bz.it).
     - [Source code](#source-code)
     - [Build](#build)
   - [Running tests](#running-tests)
+  - [Local execution with an Embedded Tomcat](#local-execution-with-an-embedded-tomcat)
   - [Deployment](#deployment)
   - [Mapping of Tipi and SottoTipi Event](#mapping-of-tipi-and-sottotipi-event)
   - [Information](#information)
@@ -62,6 +63,24 @@ The unit tests can be executed with the following command:
 mvn clean test
 ```
 
+## Local execution with an Embedded Tomcat
+
+You can set the parameters directly as environmental variables, as follows:
+```bash
+mvn tomcat:run \
+  -DA22_CONNECTOR_USR=... \
+  -DA22_CONNECTOR_PWD=... \
+  -DODH_WRITER_SECRET=...
+```
+
+...or, set them inside the relevant `.properties` files directly (see [Deployment](#deployment)), and run:
+```bash
+mvn tomcat:run
+```
+
+Credentials needed? See
+[here](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Credentials).
+
 ## Deployment
 
 This is a maven project and will produce a war that can be deployed in any j2ee
@@ -70,20 +89,20 @@ container like tomcat or jetty.
 Steps:
 
 * change the file
-  `src/main/resources/it/bz/noi/a22/events/a22connector.properties`. set the url,
-  the username and the password to connect to the A22 API (or configure it
-  within a CI tool)
+  `src/main/resources/it/bz/noi/a22/events/a22connector.properties`. Set the
+  URL, username and password to connect to the A22 API.
 
-```
-url=
-user=
-password=
+```ini
+a22url=
+a22user=
+a22password=
 ```
 
-* optionally change the origin, the provenance, the station type, the last timestamp and the scan window (in seconds) in
-  the file `src/main/resources/it/bz/noi/a22/events/a22events.properties`. (or configure it within a CI tool)
+* optionally change the origin, the provenance, the station type, the last
+  timestamp and the scan window (in seconds) in the file
+  `src/main/resources/it/bz/noi/a22/events/a22events.properties`.
 
-```
+```ini
 origin=A22
 integreenTypology=Events
 categoryPrefix=A22
@@ -93,10 +112,9 @@ scanWindowSeconds=2592000
 ```
 
 * optionally change the metadata values mapping in the file
-  src/main/resources/it/bz/noi/a22/events/a22eventsmetadatamapping.properties.
-  (or configure it within a CI tool)
+  `src/main/resources/it/bz/noi/a22/events/a22eventsmetadatamapping.properties`
 
-```
+```ini
 a22_events.metadata.iddirezione.1=Sud
 a22_events.metadata.iddirezione.2=Nord
 a22_events.metadata.iddirezione.3=Entrambe
@@ -104,11 +122,11 @@ a22_events.metadata.iddirezione.*=Non definito
 ...
 ```
 
-* configure the log4j.properties file as desidered
+* configure the `log4j.properties` file as desidered
 
 * create the war executing the following command
 
-```
+```bash
 mvn clean package
 ```
 
