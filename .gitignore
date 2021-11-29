@@ -46,3 +46,4 @@ secrets.yml
 .env
 .vscode
 .apt_generated
+.m2

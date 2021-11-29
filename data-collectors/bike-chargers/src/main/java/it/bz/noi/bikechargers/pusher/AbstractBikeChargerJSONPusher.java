@@ -1,50 +1,38 @@
-/*
- *  A22 Parking Json Pusher
- *
- *  (C) 2021 NOI Techpark Südtirol / Alto Adige
- *
- *  changelog:
- *  2021-06-04  1.0 - thomas.nocker@catch-solve.tech
- */
-
-package it.bz.noi.a22.events;
+package it.bz.noi.bikechargers.pusher;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.json.NonBlockingJSONPusher;
+import it.bz.noi.bikechargers.configuration.BikeChargerConfiguration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
-@Service
-public class A22EventEventsJSONPusher extends NonBlockingJSONPusher {
+public abstract class AbstractBikeChargerJSONPusher extends NonBlockingJSONPusher {
 
-    private String integreenTypology;
-    private String origin;
+    private static final Logger LOG = LogManager.getLogger(AbstractBikeChargerJSONPusher.class);
+
+    protected String origin;
 
     @Autowired
-    private Environment env;
+    protected Environment env;
+    @Autowired
+    protected BikeChargerConfiguration bikeChargerConfiguration;
 
     public <T> DataMapDto<RecordDtoImpl> mapData(T arg0) {
         throw new IllegalStateException("it is used by who?");
     }
 
     @PostConstruct
-    @Override
     public void init() {
-        A22Properties prop = new A22Properties("a22events.properties");
-
-        integreenTypology = prop.getProperty("integreenTypology");
-        origin = prop.getProperty("origin");
+        LOG.info("start init");
+        origin = bikeChargerConfiguration.getOrigin();
         super.init();
-    }
-
-    @Override
-    public String initIntegreenTypology() {
-        return integreenTypology;
+        LOG.info("end init");
     }
 
     @Override
