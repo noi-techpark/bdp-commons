@@ -11,7 +11,7 @@ pipeline {
         DATACOLLECTORS_CLIENT_SECRET = credentials("keycloak-datacollectors-secret-${LIMIT}")
         KEYCLOAK_URL = "https://auth.opendatahub.testingmachine.eu"
         WRITER_URL = "https://mobility.share.opendatahub.testingmachine.eu"
-        LOG_LEVEL = "debug"
+        LOG_LEVEL = "info"
         CONNECTOR_URL = "https://maas.ecospazio.it/api"
         CONNECTOR_API_KEY = credentials('dc-bike-chargers-api-key')
     }
