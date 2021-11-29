@@ -12,4 +12,4 @@ services:
       - ./data-collectors/$COLLECTOR/:/code
       - ~/.m2/:/var/maven/.m2
     working_dir: /code
-    command: mvn -Duser.home=/var/maven tomcat:run
+    command: mvn -Duser.home=/var/maven -U clean tomcat:run
