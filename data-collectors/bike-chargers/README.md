@@ -5,17 +5,17 @@ Application which takes data of the MENTOR project from the API provided by "eco
 **Table of contents**
 
 - [E-bike / E-car chargers Ecospazio Data Collector](#e-bike--e-car-chargers-ecospazio-data-collector)
-  - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Source code](#source-code)
-    - [Build](#build)
-  - [Running tests](#running-tests)
-  - [Deployment](#deployment)
-  - [Information](#information)
-    - [Support](#support)
-    - [Contributing](#contributing)
-    - [Documentation](#documentation)
-    - [License](#license)
+	- [Getting started](#getting-started)
+		- [Prerequisites](#prerequisites)
+		- [Source code](#source-code)
+		- [Build](#build)
+	- [Running tests](#running-tests)
+	- [Deployment](#deployment)
+	- [Information](#information)
+		- [Support](#support)
+		- [Contributing](#contributing)
+		- [Documentation](#documentation)
+		- [License](#license)
 
 ## Getting started
 
