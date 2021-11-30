@@ -176,14 +176,14 @@ public class MainA22Events {
         eventDto.setOrigin(a22EventsProperties.getProperty("origin"));
 
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
-        Coordinate coordinateInizio = new Coordinate(event.getLat_inizio(), event.getLon_inizio());
-        Coordinate coordinateFine = new Coordinate(event.getLat_fine(), event.getLon_fine());
+        Coordinate coordinateInizio = new Coordinate(event.getLon_inizio(), event.getLat_inizio());
+        Coordinate coordinateFine = new Coordinate(event.getLon_fine(), event.getLat_fine());
         Point[] points = new Point[]{geometryFactory.createPoint(coordinateInizio), geometryFactory.createPoint(coordinateFine)};
         MultiPoint multiPoint = new MultiPoint(points, geometryFactory);
         eventDto.setWktGeometry(multiPoint.toText());
 
-        eventDto.setEventStart(event.getData_inizio());
-        eventDto.setEventEnd(event.getData_fine());
+        eventDto.setEventStart(event.getData_inizio() * 1000);
+        eventDto.setEventEnd(event.getData_fine() * 1000);
 
         eventDto.getMetaData().put(STATION_METADATA_ID, event.getId());
         eventDto.getMetaData().put(STATION_METADATA_FASCIA_ORARIA, event.getFascia_oraria());
