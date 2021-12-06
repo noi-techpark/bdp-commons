@@ -1,4 +1,4 @@
-package it.bz.odh.spreadsheets.utils.microsoft;
+package it.bz.odh.spreadsheets.utils;
 
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import it.bz.odh.spreadsheets.services.microsoft.AuthTokenGenerator;
@@ -44,7 +44,7 @@ public class WorkbookUtil {
     private String pathToDoc;
 
 
-    // to save lastChangeDate last fetch
+    // to save lastChangeDate of last fetch
     private Date lastChangeDate;
 
     private URL timeLastModified;

@@ -15,6 +15,7 @@ import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,9 @@ import it.bz.idm.bdp.dto.StationList;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
 import it.bz.odh.spreadsheets.utils.DataMappingUtil;
-import it.bz.odh.spreadsheets.utils.microsoft.WorkbookUtil;
+import it.bz.odh.spreadsheets.utils.FileUtil;
+import it.bz.odh.spreadsheets.utils.ImageUtil;
+import it.bz.odh.spreadsheets.utils.WorkbookUtil;
 
 // The scheduler could theoretically be replaced by Microsoft Graphs Change Notifications
 // So you don't need to poll last date changed with a cron job, but get notified, when changes are made
@@ -58,6 +61,10 @@ public class SyncScheduler {
     @Autowired
     private DataMappingUtil mappingUtil;
 
+    @Autowired
+    private FileUtil fileUtil;
+
+
     /**
      * Cron job to check changes of the Spreadsheet in Sharepoint
      * If changes where made, data gets uploaded to the BDP
@@ -68,8 +75,9 @@ public class SyncScheduler {
     public void checkSharepoint() throws Exception {
         logger.info("Cron job manual sync started");
         Workbook sheet = workbookUtil.checkWorkbook();
-
         if (sheet != null) {
+            // fileUtil.
+
             logger.info("Syncing data with BDP");
             syncDataWithBdp(sheet);
             logger.info("Done: Syncing data with BDP");
