@@ -157,7 +157,7 @@ A new Application needs to be created in Azure Active Directories:
    and synced with the BDP.
    
     ```
-    CRON=0 6-20 * * 1-5
+    CRON=0 0 6-20 * * 1-5
     ```
 
 #### Keycloak
@@ -178,13 +178,13 @@ OAUTH_CLIENT_SECRET=your-client-secret
 Build the project:
 
 ```bash
-mvn -Dspring.profiles.active=local clean install
+mvn -D spring.profiles.active=local clean install
 ```
 
 Run the project:
 
 ```bash
-mvn -Dspring.profiles.active=local spring-boot:run
+mvn -D spring.profiles.active=local spring-boot:run
 ```
 
 The service will be available at localhost and your specified server port.
@@ -233,9 +233,9 @@ See [here](https://docs.microsoft.com/en-us/graph/webhooks) for the official sta
 StackExchange [discussion](https://sharepoint.stackexchange.com/questions/264609/does-the-microsoft-graph-support-driveitem-change-notifications-for-sharepoint-o)
 about change notifications with Sharepoint.
 
-The best case solution would be having the change notifications with Microsofts IP Addresses whitelistet,
+The best case solution would be having the change notifications with Microsoft's IP Addresses whitelisted,
 and a low frequency cron job, that checks if the change notification service missed some changes.  
-So in that case the developer/administraotr of the application gets notified, that the change notifications are not working anymore.
+So in that case the developer/administrator of the application gets notified, that the change notifications are not working anymore.
 
 ### Guidelines
 

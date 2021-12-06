@@ -43,6 +43,7 @@ public class WorkbookUtil {
     @Value("${sharepoint.path-to-doc}")
     private String pathToDoc;
 
+
     // to save lastChangeDate last fetch
     private Date lastChangeDate;
 
@@ -63,7 +64,6 @@ public class WorkbookUtil {
         //Test that both URLs are valid
         downloadWorkbook.toURI(); // does the extra checking required for validation of URI
         timeLastModified.toURI(); // does the extra checking required for validation of URI
-
     }
 
     /**

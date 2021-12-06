@@ -217,7 +217,7 @@ public class DataMappingUtil {
     }
 
     private Map<String, Object> buildMetaDataMap(Map<String, Short> headerMapping, List<Object> row) {
-        // map non required fileds to metadata
+        // map non required fields to metadata
         Map<String, Object> metaData = new HashMap<>();
         for (Map.Entry<String, Short> entry : headerMapping.entrySet()) {
             Object value = null;
@@ -244,7 +244,7 @@ public class DataMappingUtil {
         uniqueId.append(dto.getOrigin()).append(":");
         for (String idField : uniqueIdFields) {
             if (dto.getMetaData().get(idField) == null)
-                throw new IllegalStateException("Impossible to create unique identifier since required filed " + idField + " is missing");
+                throw new IllegalStateException("Impossible to create unique identifier since required field " + idField + " is missing");
             String value = dto.getMetaData().get(idField).toString();
             if (value != null && !value.isEmpty()) {
                 uniqueId.append(value);

@@ -87,7 +87,7 @@ public class SyncScheduler {
         // fetch sheet
         //read from disk
         // iterate over values and
-        logger.info("Start data syncronization");
+        logger.info("Start data synchronization");
         Iterator<Sheet> sheetIterator = workbook.sheetIterator();
         StationList dtos = new StationList();
         List<DataTypeWrapperDto> types = new ArrayList<DataTypeWrapperDto>();
@@ -127,15 +127,15 @@ public class SyncScheduler {
             }
         }
         if (!dtos.isEmpty()) {
-            logger.debug("Syncronize stations if some where fetched and successfully parsed");
+            logger.debug("Synchronize stations if some where fetched and successfully parsed");
             odhClient.syncStations(dtos);
-            logger.debug("Syncronize stations completed");
+            logger.debug("Synchronize stations completed");
         }
         if (!types.isEmpty()) {
-            logger.debug("Syncronize data types/type-metadata if some where fetched and successfully parsed");
+            logger.debug("Synchronize data types/type-metadata if some where fetched and successfully parsed");
             List<DataTypeDto> dTypes = types.stream().map(mapper).collect(Collectors.toList());
             odhClient.syncDataTypes(dTypes);
-            logger.debug("Syncronize datatypes completed");
+            logger.debug("Synchronize datatypes completed");
         }
         if (!dtos.isEmpty() && !types.isEmpty()){
             DataMapDto<? extends RecordDtoImpl> dto = new DataMapDto<RecordDtoImpl>();
@@ -147,7 +147,7 @@ public class SyncScheduler {
             }
             odhClient.pushData(dto);
         }
-        logger.info("Data syncronization completed");
+        logger.info("Data synchronization completed");
     }
 
 }
