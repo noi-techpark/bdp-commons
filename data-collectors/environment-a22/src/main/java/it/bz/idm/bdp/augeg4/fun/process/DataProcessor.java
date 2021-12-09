@@ -3,7 +3,6 @@ package it.bz.idm.bdp.augeg4.fun.process;
 import it.bz.idm.bdp.augeg4.dto.AugeG4ProcessedData;
 import it.bz.idm.bdp.augeg4.dto.AugeG4RawData;
 import it.bz.idm.bdp.augeg4.dto.ProcessedMeasurement;
-import it.bz.idm.bdp.augeg4.dto.RawMeasurement;
 import it.bz.idm.bdp.augeg4.face.DataProcessorFace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

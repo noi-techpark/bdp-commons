@@ -4,12 +4,8 @@ import it.bz.idm.bdp.augeg4.face.DataPusherAugeFace;
 import it.bz.idm.bdp.augeg4.face.DataPusherHubFace;
 import it.bz.idm.bdp.augeg4.face.DataRetrieverFace;
 import it.bz.idm.bdp.augeg4.face.DataServiceFace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class DataService implements DataServiceFace {
-
-    private static final Logger LOG = LogManager.getLogger(DataService.class.getName());
 
     private final DataRetrieverFace dataRetriever;
     private final DataPusherHubFace dataPusherHub;
