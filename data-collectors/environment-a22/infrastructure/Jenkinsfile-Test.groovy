@@ -12,10 +12,10 @@ pipeline {
         KEYCLOAK_URL = "https://auth.opendatahub.testingmachine.eu"
         WRITER_URL = "https://mobility.share.opendatahub.testingmachine.eu"
         LOG_LEVEL = "info"
-        A22_MQTT_USERNAME = credentials('a22-mqtt-username')
-        A22_MQTT_PASSWORD = credentials('a22-mqtt-password')
-        A22_MQTT_URI = credentials('a22-mqtt-uri')
-        A22_MQTT_PORT = credentials('a22-mqtt-port')
+        MQTT_USERNAME = credentials('a22-mqtt-username')
+        MQTT_PASSWORD = credentials('a22-mqtt-password')
+        MQTT_URI = credentials('a22-mqtt-uri')
+        MQTT_PORT = credentials('a22-mqtt-port')
     }
 
     stages {
@@ -41,10 +41,10 @@ pipeline {
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
                     echo 'BASE_URI=${WRITER_URL}/json' >> .env
-                    echo 'A22_MQTT_USERNAME=${A22_MQTT_USERNAME}' >> .env
-                    echo 'A22_MQTT_PASSWORD=${A22_MQTT_PASSWORD}' >> .env
-                    echo 'A22_MQTT_URI=${A22_MQTT_URI}' >> .env
-                    echo 'A22_MQTT_PORT=${A22_MQTT_PORT}' >> .env
+                    echo 'MQTT_USERNAME=${MQTT_USERNAME}' >> .env
+                    echo 'MQTT_PASSWORD=${MQTT_PASSWORD}' >> .env
+                    echo 'MQTT_URI=${MQTT_URI}' >> .env
+                    echo 'MQTT_PORT=${MQTT_PORT}' >> .env
                 """
             }
         }
