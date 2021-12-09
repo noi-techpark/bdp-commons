@@ -9,7 +9,10 @@ All further actions are handled by the Sharepoint REST API.
 For Authentication with the [OpenDataHub](https://opendatahub.bz.it/) , [Keycloak](https://www.keycloak.org/) is used.  
 Note: Any Big Data Platform can be used.
 
-**Table of contents**
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
 - [Office 365 Spreadsheets DataCollector](#office-365-spreadsheets-datacollector)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
@@ -19,8 +22,11 @@ Note: Any Big Data Platform can be used.
       - [With Docker](#with-docker)
       - [Create a Microsoft Sharepoint site](#create-a-microsoft-sharepoint-site)
       - [Create the Excel spreadsheet](#create-the-excel-spreadsheet)
+      - [Fetch files from Sharepoint](#fetch-files-from-sharepoint)
+      - [Upload files to AWS S3 bucket](#upload-files-to-aws-s3-bucket)
       - [Azure Active Directory](#azure-active-directory)
       - [Keycloak](#keycloak)
+      - [OpenDataHub configuration](#opendatahub-configuration)
     - [Execute without Docker](#execute-without-docker)
     - [Execute with Docker](#execute-with-docker)
   - [Additional information](#additional-information)
@@ -31,6 +37,8 @@ Note: Any Big Data Platform can be used.
     - [Contributing](#contributing)
     - [Documentation](#documentation)
     - [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Getting started
 
@@ -102,6 +110,23 @@ into environment variables file:
 SHAREPOINT_PATH_TO_DOC=Example/Example.xlsx
 ```
 
+#### Fetch files from Sharepoint
+If you also need to fetch files like images from Sharepoint, please set the following environment variables.
+```
+SHAREPOINT_FETCH_FILES=true
+SHAREPOINT_PATH_TO_FILES=Images_Directory/
+```
+
+#### Upload files to AWS S3 bucket
+To upload the files to an S3 bucket set the following environment variables.
+```
+AWS_BUCKET_NAME=YOUR_BUCKET_NAME
+AWS_ACCESS_KEY=YOUR_ACCESS_KEY
+AWS_ACCESS_SECRET_KEY=YOUR_ACCESS_SECRET
+```
+Note: To get an access key and secret you must create a Access Point in your S3 bucket configuration in the AWS console.
+
+
 #### Azure Active Directory
 
 A new Application needs to be created in Azure Active Directories:
@@ -172,6 +197,24 @@ OAUTH_CLIENT_ID=your-client-id
 OAUTH_CLIENT_NAME=your-auth-name
 OAUTH_CLIENT_SECRET=your-client-secret
 ```
+
+#### OpenDataHub configuration
+
+To be able to push the generated data to the OpenDataHub, you need to set the following environment variables.
+ ```
+spreadsheetId=office365
+suportedLanguages=en,de,it,lad
+headers.nameId=name
+headers.addressId=address
+headers.longitudeId=longitude
+headers.latitudeId=latitude
+headers.metaDataId=metadata-id
+stationtype=NOI-Place
+spreadsheet.sheets.metadataId=metadata-id
+composite.unique.key=organization - short name: de
+provenance.name=dc-office365
+provenance.version=1.0.0-SNAPSHOT
+ ```
 
 ### Execute without Docker
 

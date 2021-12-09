@@ -1,12 +1,16 @@
 package it.bz.odh.spreadsheets.services;
 
+import java.net.HttpURLConnection;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.apache.http.HttpConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -24,12 +28,13 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
 import it.bz.odh.spreadsheets.utils.DataMappingUtil;
-import it.bz.odh.spreadsheets.utils.FileUtil;
-import it.bz.odh.spreadsheets.utils.ImageUtil;
+import it.bz.odh.spreadsheets.utils.S3FileUploadUtil;
+import it.bz.odh.spreadsheets.utils.SharepointFileDownloadUtil;
 import it.bz.odh.spreadsheets.utils.WorkbookUtil;
 
 // The scheduler could theoretically be replaced by Microsoft Graphs Change Notifications
@@ -40,7 +45,6 @@ import it.bz.odh.spreadsheets.utils.WorkbookUtil;
 //
 // StackExchange discussion about change notifications with Sharepoint
 // https://sharepoint.stackexchange.com/questions/264609/does-the-microsoft-graph-support-driveitem-change-notifications-for-sharepoint-o
-
 
 @Service
 public class SyncScheduler {
@@ -62,8 +66,13 @@ public class SyncScheduler {
     private DataMappingUtil mappingUtil;
 
     @Autowired
-    private FileUtil fileUtil;
+    private SharepointFileDownloadUtil fileDownloader;
 
+    @Autowired
+    private S3FileUploadUtil fileUploader;
+
+    @Value("${sharepoint.fetch-files}")
+    private boolean fetchFiles;
 
     /**
      * Cron job to check changes of the Spreadsheet in Sharepoint
@@ -76,7 +85,6 @@ public class SyncScheduler {
         logger.info("Cron job manual sync started");
         Workbook sheet = workbookUtil.checkWorkbook();
         if (sheet != null) {
-            // fileUtil.
 
             logger.info("Syncing data with BDP");
             syncDataWithBdp(sheet);
@@ -87,24 +95,26 @@ public class SyncScheduler {
         logger.info("Cron job manual sync end");
     }
 
-
     /**
      * Converts a XSSFWorkbook to BDP Stations
+     * 
+     * @throws Exception
      */
     private void syncDataWithBdp(Workbook workbook) {
-        // fetch sheet
-        //read from disk
-        // iterate over values and
         logger.info("Start data synchronization");
+
         Iterator<Sheet> sheetIterator = workbook.sheetIterator();
         StationList dtos = new StationList();
         List<DataTypeWrapperDto> types = new ArrayList<DataTypeWrapperDto>();
+
         logger.debug("Start reading spreadsheet");
+
         int index = 0;
         while (sheetIterator.hasNext()) {
             Sheet sheet = sheetIterator.next();
 
-            //convert values of sheet to List<List<Object>> to be able to map data with data-mapping of dc-googlespreadsheets
+            // convert values of sheet to List<List<Object>> to be able to map data with
+            // data-mapping of dc-googlespreadsheets
             List<List<Object>> values = new ArrayList<>();
             Iterator<Row> rowIterator = sheet.rowIterator();
             while (rowIterator.hasNext()) {
@@ -112,7 +122,7 @@ public class SyncScheduler {
                 row.getLastCellNum();
                 List<Object> rowList = new ArrayList<>();
 
-                for (int i = 0; i<row.getLastCellNum(); i++) {
+                for (int i = 0; i < row.getLastCellNum(); i++) {
                     Cell c = row.getCell(i, MissingCellPolicy.CREATE_NULL_AS_BLANK);
                     rowList.add(c.toString());
                 }
@@ -121,8 +131,10 @@ public class SyncScheduler {
 
             try {
                 if (values.isEmpty() || values.get(0) == null)
-                    throw new IllegalStateException("Spreadsheet " + sheet.getSheetName() + " has no header row. Needs to start on top left.");
-                MappingResult result = mappingUtil.mapSheet(values, sheet.getSheetName(), index); // TODO ask what id should be put here
+                    throw new IllegalStateException(
+                            "Spreadsheet " + sheet.getSheetName() + " has no header row. Needs to start on top left.");
+                MappingResult result = mappingUtil.mapSheet(values, sheet.getSheetName(), index); // TODO ask what id
+                                                                                                  // should be put here
                 index++;
                 if (!result.getStationDtos().isEmpty())
                     dtos.addAll(result.getStationDtos());
@@ -134,6 +146,8 @@ public class SyncScheduler {
                 continue;
             }
         }
+
+        // sync with ODH
         if (!dtos.isEmpty()) {
             logger.debug("Synchronize stations if some where fetched and successfully parsed");
             odhClient.syncStations(dtos);
@@ -145,18 +159,50 @@ public class SyncScheduler {
             odhClient.syncDataTypes(dTypes);
             logger.debug("Synchronize datatypes completed");
         }
-        if (!dtos.isEmpty() && !types.isEmpty()){
+        if (!dtos.isEmpty() && !types.isEmpty()) {
             DataMapDto<? extends RecordDtoImpl> dto = new DataMapDto<RecordDtoImpl>();
             logger.debug("Connect datatypes with stations through record");
             for (DataTypeWrapperDto typeDto : types) {
-                SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(), typeDto.getSheetName(), 0);
-                logger.trace("Connect"+dtos.get(0).getId()+"with"+typeDto.getType().getName());
-                dto.addRecord(dtos.get(0).getId(), typeDto.getType().getName(), simpleRecordDto);
+                SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(),
+                        typeDto.getSheetName(), 0);
+                logger.trace("Connect" + dtos.get(0).getId() + "with" + typeDto.getType().getName());
+                dto.addRecord(dtos.get(0).getId(), typeDto.getType().getName(),
+                        simpleRecordDto);
             }
             odhClient.pushData(dto);
         }
+
+        // QUICK HACK to fetch images from sharepoint and upload them to an S3 bucket
+        if (fetchFiles) {
+            logger.info("Fetch images from Sharepoint and upload to S3");
+            for (StationDto dto : dtos) {
+                Map<String, Object> metaData = dto.getMetaData();
+
+                for (String key : metaData.keySet()) {
+                    if (key.contains("image")) {
+                        String imageName = (String) metaData.get(key);
+
+                        logger.debug("Fetching image " + imageName + " from Sharepoint");
+                        HttpURLConnection conn;
+                        try {
+                            conn = fileDownloader.fetchFile(imageName);
+                            logger.debug("Fetching image " + imageName + " from Sharepoint done");
+
+                            logger.debug("Upload image " + imageName + " to S3");
+                            fileUploader.uploadFile(conn.getInputStream(), imageName, conn.getContentLength());
+                            logger.debug("Upload image " + imageName + " to S3 done");
+                        } catch (Exception e) {
+                            logger.debug("Fetching image " + imageName + " from Sharepoint FAILED");
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+            logger.info("Fetch images from Sharepoint and upload to S3 done");
+        }
+
         logger.info("Data synchronization completed");
     }
 
 }
-

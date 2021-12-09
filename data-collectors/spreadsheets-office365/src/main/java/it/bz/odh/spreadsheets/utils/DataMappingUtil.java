@@ -68,7 +68,6 @@ public class DataMappingUtil {
 
     private NumberFormat numberFormatter = NumberFormat.getInstance(Locale.US);
 
-
     @PostConstruct
     public void initMetadata() throws IOException {
         excludeFromMetaData.add(longitudeId);
@@ -87,7 +86,7 @@ public class DataMappingUtil {
             result.setStationDtos(mappedStations);
         } else if (isValidDataTypeSheet(headerMapping)) {
             logger.debug("Start mapping datatypes of sheet " + sheetName);
-            DataTypeDto type = mapDataType(values,sheetId, headerMapping);
+            DataTypeDto type = mapDataType(values, sheetId, headerMapping);
             logger.debug("Finish mapping datatypes of sheet " + sheetName);
             DataTypeWrapperDto w = new DataTypeWrapperDto(type, sheetName);
             result.setDataType(w);
@@ -98,13 +97,13 @@ public class DataMappingUtil {
     private DataTypeDto mapDataType(List<List<Object>> values, Integer sheetId, Map<String, Short> headerMapping) {
         DataTypeDto dto = new DataTypeDto();
         Short metaDataPosition = headerMapping.get(metadataId);
-        //remove header row
+        // remove header row
         values.remove(0);
         dto.setName(origin + ":" + sheetId);
         for (List<Object> row : values) {
             if (!row.isEmpty()) {
                 String key = row.get(metaDataPosition) != null ? row.get(metaDataPosition).toString() : null;
-                //row.remove(metaDataPosition.shortValue());
+                // row.remove(metaDataPosition.shortValue());
                 Map<String, Object> metaDataMap = buildMetaDataMap(headerMapping, row);
                 langUtil.mergeTranslations(metaDataMap, headerMapping);
                 normalizeMetaData(metaDataMap);
@@ -133,7 +132,8 @@ public class DataMappingUtil {
     }
 
     protected boolean isValidStationSheet(Map<String, Short> headerMapping) {
-        return (headerMapping.containsKey(addressId) || (headerMapping.containsKey(longitudeId) && headerMapping.containsKey(latitudeId)));
+        return (headerMapping.containsKey(addressId)
+                || (headerMapping.containsKey(longitudeId) && headerMapping.containsKey(latitudeId)));
     }
 
     public boolean isValidDataTypeSheet(Map<String, Short> headerMapping) {
@@ -141,41 +141,38 @@ public class DataMappingUtil {
     }
 
     /**
-     * @param spreadSheetValues   values to map to a {@link StationDto}
+     * @param spreadSheetValues values to map to a {@link StationDto}
      * @param headerMapping
      * @return list of all valid rows in form of {@link StationDto}
      */
-    public StationList mapStations(List<List<Object>> spreadSheetValues, Map<String, Short> headerMapping, String sheetName) {
+    public StationList mapStations(List<List<Object>> spreadSheetValues, Map<String, Short> headerMapping,
+            String sheetName) {
         StationList dtos = new StationList();
-        int i = 0;
+        spreadSheetValues.remove(0); // remove header row
+        
         for (final List<Object> row : spreadSheetValues) {
-            if (i > 0) {
-                StationDto dto = null;
+            StationDto dto = null;
+            try {
+                dto = mapStation(headerMapping, row);
+            } catch (Exception ex) {
+                continue;
+            }
+            if (dto.getLongitude() == null) {
                 try {
-                    dto = mapStation(headerMapping, row);
-                } catch (Exception ex) {
-                    i++;
+                    locationLookupUtil.guessPositionByAddress(dto);
+                } catch (final IllegalStateException ex) {
                     continue;
                 }
-                if (dto.getLongitude() == null) {
-                    try {
-                        locationLookupUtil.guessPositionByAddress(dto);
-                    } catch (final IllegalStateException ex) {
-                        i++;
-                        continue;
-                    }
-                }
-                langUtil.guessLanguages(dto.getMetaData());
-                langUtil.mergeTranslations(dto.getMetaData(), headerMapping);
-                if (dto.getName() == null || dto.getName().isEmpty())
-                    dto.setName(dto.getId());
-                Map<String, Object> normalizedMetaData = normalizeMetaData(dto.getMetaData());
-                normalizedMetaData.put("sheetName", sheetName);
-                dto.getMetaData().clear();
-                dto.setMetaData(normalizedMetaData);
-                dtos.add(dto);
             }
-            i++;
+            langUtil.guessLanguages(dto.getMetaData());
+            langUtil.mergeTranslations(dto.getMetaData(), headerMapping);
+            if (dto.getName() == null || dto.getName().isEmpty())
+                dto.setName(dto.getId());
+            Map<String, Object> normalizedMetaData = normalizeMetaData(dto.getMetaData());
+            normalizedMetaData.put("sheetName", sheetName);
+            dto.getMetaData().clear();
+            dto.setMetaData(normalizedMetaData);
+            dtos.add(dto);
         }
         return dtos;
     }
@@ -244,7 +241,8 @@ public class DataMappingUtil {
         uniqueId.append(dto.getOrigin()).append(":");
         for (String idField : uniqueIdFields) {
             if (dto.getMetaData().get(idField) == null)
-                throw new IllegalStateException("Impossible to create unique identifier since required field " + idField + " is missing");
+                throw new IllegalStateException(
+                        "Impossible to create unique identifier since required field " + idField + " is missing");
             String value = dto.getMetaData().get(idField).toString();
             if (value != null && !value.isEmpty()) {
                 uniqueId.append(value);
@@ -255,18 +253,18 @@ public class DataMappingUtil {
 
     private Object jsonTypeGuessing(String text) {
         if (NumberUtils.isParsable(text))
-        try {
-            return numberFormatter.parse(text);
-        } catch (ParseException e) {
-            // Do not do anything since we just want to check if string is parsable to a
-            // number
-        }
+            try {
+                return numberFormatter.parse(text);
+            } catch (ParseException e) {
+                // Do not do anything since we just want to check if string is parsable to a
+                // number
+            }
         if ("true".equals(text) || "false".equals(text))
             return "true".equals(text);
 
         return text;
     }
-    
+
     private String normalizeKey(String keyValue) {
         String accentFreeString = StringUtils.stripAccents(keyValue).replaceAll(" ", "_");
         String asciiString = accentFreeString.replaceAll("[^\\x00-\\x7F]", "");
@@ -275,8 +273,8 @@ public class DataMappingUtil {
     }
 
     public Map<String, Object> normalizeMetaData(Map<String, Object> metaData) {
-        Map<String,Object> resultMap = new HashMap<String, Object>();
-        for (Map.Entry<String,Object> entry:metaData.entrySet()) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        for (Map.Entry<String, Object> entry : metaData.entrySet()) {
             String normalizedKey = normalizeKey(entry.getKey());
             resultMap.put(normalizedKey, entry.getValue());
         }
