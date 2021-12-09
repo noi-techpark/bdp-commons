@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     environment {
-		LIMIT = "test"
-        ARTIFACT_NAME = "dc-environment-a22"
-        PROJECT_FOLDER = "data-collectors/${ARTIFACT_NAME}"
+        LIMIT = "test"
+        PROJECT = "environment-a22"
+        PROJECT_FOLDER = "data-collectors/${PROJECT}"
+        ARTIFACT_NAME = "dc-${PROJECT}"
         DOCKER_IMAGE = "755952719952.dkr.ecr.eu-west-1.amazonaws.com/${ARTIFACT_NAME}"
         DOCKER_TAG = "$LIMIT-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials("keycloak-datacollectors-secret-${LIMIT}")
