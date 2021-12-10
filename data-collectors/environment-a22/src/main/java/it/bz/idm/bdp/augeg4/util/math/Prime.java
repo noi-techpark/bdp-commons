@@ -1,6 +1,5 @@
 package it.bz.idm.bdp.augeg4.util.math;
 
-import java.lang.* ;
 import java.util.* ;
 import java.math.* ;
 
@@ -19,11 +18,11 @@ public class Prime
 {
         /** The list of all numbers as a vector.
         */
-        static Vector<BigInteger> a = new Vector<BigInteger>();
+        static Vector<BigInteger> a = new Vector<>();
 
         /** The maximum integer covered by the high end of the list.
         */
-        static protected BigInteger nMax = new BigInteger("-1");
+        protected static BigInteger nMax = new BigInteger("-1");
 
         /** Default constructor initializing a list of primes up to 17.
         * 17 is enough to call the Miller-Rabin tests on the first 7 primes without further
@@ -32,7 +31,7 @@ public class Prime
         */
         public Prime()
         {
-                if ( a.size() == 0 )
+                if ( a.isEmpty() )
                 {
                         a.add(new BigInteger(""+2)) ;
                         a.add(new BigInteger(""+3)) ;
@@ -79,17 +78,17 @@ public class Prime
                 final BigInteger two = new BigInteger(""+2) ;
 
 
-                /* numbers less than 2 are not prime 
+                /* numbers less than 2 are not prime
                 */
                 if ( n.compareTo(two) == -1 )
                         return false ;
-                /* 2 is prime 
+                /* 2 is prime
                 */
                 else if ( n.compareTo(two) == 0 )
                         return true ;
                 /* even numbers >2 are not prime
                 */
-                else if ( n.remainder(two).compareTo(BigInteger.ZERO) == 0 ) 
+                else if ( n.remainder(two).compareTo(BigInteger.ZERO) == 0 )
                         return false ;
                 else
                 {
@@ -104,7 +103,7 @@ public class Prime
                         if ( a.modPow(d,n).compareTo(BigInteger.ONE) == 0 )
                                 return true ;
 
-                        /* test whether a^(d*2^r) = -1 (mod n), 0<=r<s 
+                        /* test whether a^(d*2^r) = -1 (mod n), 0<=r<s
                         */
                         for(int r=0; r < s ; r++)
                         {
