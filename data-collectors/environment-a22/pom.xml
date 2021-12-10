@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>dc-environment-a22</artifactId>
-	<version>0.2.0</version>
+	<version>0.3.0</version>
 	<packaging>war</packaging>
 	<name>AugeG4 Data Collector</name>
 	<properties>
@@ -17,10 +17,6 @@
 	</properties>
 
 	<repositories>
-		<repository>
-			<id>spring-repo</id>
-			<url>http://repo.springsource.org/libs-milestone/</url>
-		</repository>
 		<repository>
 			<id>Eclipse Paho Repo</id>
 			<url>https://repo.eclipse.org/content/repositories/paho-releases/</url>
