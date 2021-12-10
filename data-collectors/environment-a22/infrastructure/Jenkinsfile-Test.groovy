@@ -64,7 +64,7 @@ pipeline {
                     sh """
                         cd ${PROJECT_FOLDER}/infrastructure/ansible
                         ansible-galaxy install -f -r requirements.yml
-                        ansible-playbook --limit=test deploy.yml --extra-vars "release_name=${BUILD_NUMBER} project_name=${ARTIFACT_NAME}"
+                        ansible-playbook --limit=${LIMIT} deploy.yml --extra-vars "release_name=${BUILD_NUMBER} project_name=${ARTIFACT_NAME}"
                     """
                 }
             }
