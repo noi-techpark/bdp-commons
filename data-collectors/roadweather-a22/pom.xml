@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>5.2.0</version>
+			<version>5.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -45,7 +45,7 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.13.3</version>
+			<version>2.16.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -53,7 +53,7 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!-- embedded tomcat for development, provided: not included in the final 
+		<!-- embedded tomcat for development, provided: not included in the final
 			jar/war -->
 		<dependency>
 			<groupId>com.github.jsimone</groupId>

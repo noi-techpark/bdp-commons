@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>5.1.2</version>
+			<version>5.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -47,7 +47,7 @@
 			<artifactId>spring-aspects</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<!-- embedded tomcat for development, provided: not included in the final 
+		<!-- embedded tomcat for development, provided: not included in the final
 			jar/war -->
 		<dependency>
 			<groupId>com.github.jsimone</groupId>
