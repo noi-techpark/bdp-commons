@@ -152,8 +152,10 @@ public class SyncScheduler {
         }
 
         // sync files from sharepoint with S3 bucket
-        if (fetchFiles)
+        if (fetchFiles) {
             syncSharepointFilesWithS3(dtos);
+            createFileMetadata(dtos);
+        }
 
         // sync with ODH
         if (!dtos.isEmpty()) {
@@ -227,19 +229,32 @@ public class SyncScheduler {
                             logger.debug("Fetching image " + imageName + " from Sharepoint FAILED");
                             e.printStackTrace();
                         }
-
-                        // add S3 bucket URL to image metadata
-                        Map<String, String> imageMetadata = new HashMap<String, String>();
-                        imageMetadata.put("link", bucketUrl + imageName);
-                        imageMetadata.put("license", "none");
-                        imageMetadata.put("name", imageName);
-
-                        metaData.replace(key, imageMetadata);
                     }
                 }
             }
         }
         logger.info("Fetch images from Sharepoint and upload to S3 done");
+    }
+
+    private void createFileMetadata(StationList dtos) {
+        for (StationDto dto : dtos) {
+            Map<String, Object> metaData = dto.getMetaData();
+
+            for (String key : metaData.keySet()) {
+                if (key.contains("file")) {
+                    String imageName = metaData.get(key).toString();
+
+                    // add S3 bucket URL to image metadata
+                    Map<String, String> imageMetadata = new HashMap<>();
+                    imageMetadata.put("link", bucketUrl + imageName);
+                    imageMetadata.put("license", "");
+                    imageMetadata.put("name", imageName);
+
+                    metaData.replace(key, imageMetadata);
+
+                }
+            }
+        }
     }
 
 }
