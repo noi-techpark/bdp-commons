@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static it.bz.idm.bdp.augeg4.mock.DataConverterHubMock.MOCKED_VALUE_PROCESSED;
 import static it.bz.idm.bdp.augeg4.mock.DataConverterHubMock.MOCKED_VALUE_RAW;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
@@ -45,7 +44,7 @@ public class DataPusherMappingTest {
         assertNotNull(parametersMap);
 
         List<RecordDtoImpl> values = parametersMap.getData();
-        assertEquals(values.size(), 1);
+        assertEquals(1, values.size());
 
         SimpleRecordDto record = (SimpleRecordDto) values.get(0);
         assertEquals(record.getPeriod(), Integer.valueOf(MOCKED_PERIOD));

@@ -23,7 +23,7 @@ public interface DataPusherMapperFace {
      *              |-- Values: { (time, 23), (time, ...) }
      *            |-- Parameter: "pressure"
      *              |-- Values: { (time, 1.2), (time, ...) }
-     *			|-- Station: "B"
+     *          |-- Station: "B"
      *            |-- Parameter: "temperature"
      *              |-- Values: { (time, 21), (time, ...) }
      *            |-- Parameter: "pressure"

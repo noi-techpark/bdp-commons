@@ -48,7 +48,7 @@ public class AugeCallback implements MqttCallback {
     }
 
     public List<AugeG4ElaboratedDataDto> fetchData() {
-        List fetchedAugeG4FromAlgorabDataDto = new ArrayList();
+        List<AugeG4ElaboratedDataDto> fetchedAugeG4FromAlgorabDataDto = new ArrayList<>();
         buffer.drainTo(fetchedAugeG4FromAlgorabDataDto);
         return fetchedAugeG4FromAlgorabDataDto;
     }

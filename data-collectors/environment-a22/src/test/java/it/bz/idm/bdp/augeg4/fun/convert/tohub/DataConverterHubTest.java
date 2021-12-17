@@ -4,7 +4,6 @@ import it.bz.idm.bdp.augeg4.dto.AugeG4ProcessedData;
 import it.bz.idm.bdp.augeg4.dto.MeasurementId;
 import it.bz.idm.bdp.augeg4.dto.ProcessedMeasurement;
 import it.bz.idm.bdp.augeg4.dto.tohub.AugeG4ProcessedDataToHubDto;
-import it.bz.idm.bdp.augeg4.dto.tohub.ProcessedMeasurementToHub;
 import org.junit.Test;
 
 import java.util.Collections;

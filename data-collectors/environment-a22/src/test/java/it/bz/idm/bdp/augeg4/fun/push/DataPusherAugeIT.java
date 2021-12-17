@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class DataPusherAugeTest {
+public class DataPusherAugeIT {
 
 
     class DataPusherAugeStub extends DataPusherAuge {
@@ -29,7 +29,7 @@ public class DataPusherAugeTest {
     }
 
     @Test
-    public void test_pushing_output_string() {
+    public void testPushingOutputString() {
         DataPusherAugeStub stub = new DataPusherAugeStub(AugeMqttConfiguration.buildMqttPublisherConfiguration(new ConnectorConfig()));
         stub.pushData(mockedDataToSend());
     }

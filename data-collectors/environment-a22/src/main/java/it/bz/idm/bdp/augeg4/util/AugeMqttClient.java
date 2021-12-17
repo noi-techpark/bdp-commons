@@ -11,7 +11,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class AugeMqttClient {
 
     private static final Logger LOG = LogManager.getLogger(AugeMqttClient.class.getName());
-    
+
     public static MqttClient build(AugeMqttConfiguration mqttConfiguration) throws MqttException {
         MqttClient client = buildMqttClient(mqttConfiguration);
         LOG.debug("connect...:");
@@ -45,7 +45,7 @@ public class AugeMqttClient {
     private static MqttConnectOptions buildConnOpts(AugeMqttConfiguration mqttConfiguration) {
         String userName = mqttConfiguration.getUserName();
         String userPass = mqttConfiguration.getUserPass();
-        LOG.debug("Connection with:" + userName + " " + userPass);
+        LOG.debug("Connection with:" + userName + " (password omitted)");
         MqttConnectOptions connOpts = new MqttConnectOptions();
         connOpts.setCleanSession(false);
         connOpts.setPassword(userPass.toCharArray());

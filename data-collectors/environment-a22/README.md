@@ -5,14 +5,17 @@
 
   - See `src/main/resources/META-INF/spring/application.properties`
   - See `src/main/resources/META-INF/spring/applicationContext.xml`
-  - Logsystem: `src/main/resources/log4j2.properties` (Make sure the log-files are writable)
-  - Staging and production parameters are read by ConnectorConfig using spring config,
-  to override test config parameters they have to be set in operating system environment variables.
+  - Logsystem: `src/main/resources/log4j2.properties` (Make sure the log-files
+    are writable)
+  - Staging and production parameters are read by ConnectorConfig using spring
+    config, to override test config parameters they have to be set in operating
+    system environment variables.
 
 ## Important
 
   - Credentials should never be pushed to a public repository
-  - Make sure you don't put sensitive data inside your code. Create placeholders for that, and insert them through build-scripts later on.
+  - Make sure you don't put sensitive data inside your code. Create placeholders
+    for that, and insert them through build-scripts later on.
 
 ## To Do
 
@@ -36,9 +39,10 @@ This will run only slow integration test suitable for integration env.
 
 ## Run manual test
 
-Inside integration test folder there are IMT tests, that have to be launched manually if/when needed.
-Those tests are slow, have a required environment context and usually they change the context,
-e.g. consuming mqtt messages or  writing on webservices.
+Inside integration test folder there are IMT tests, that have to be launched
+manually if/when needed. Those tests are slow, have a required environment
+context and usually they change the context, e.g. consuming mqtt messages or
+writing on webservices.
 
 ## Run locally on port 9999
 
@@ -46,18 +50,7 @@ e.g. consuming mqtt messages or  writing on webservices.
 
 Run with a different port:
 
-        mvn jetty:run -Djetty.port=7000 
-
-
-
-## Hub Documentation
-
-[Open Data Hub - Site](https://opendatahub.bz.it/)
-
-[Open Data Hub - ReadTheDocs](https://opendatahub.readthedocs.io/en/latest/intro.html)
-
-[Open Data Hub - Source](https://github.com/idm-suedtirol)
-
+       mvn jetty:run -Djetty.port=7000
 
 
 ## Data Collector Documentation
@@ -116,3 +109,28 @@ PROCESSED (stato dei dati corretti)
 4. push data
     sends via webserveces processed and raw data to Hub
     sends via mqtt processed data to Auge
+
+
+## Information
+[Open Data Hub - Site](https://opendatahub.bz.it/)
+
+### Support
+
+For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
+
+### Contributing
+
+If you'd like to contribute, please follow our [Getting
+Started](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Getting-started)
+instructions.
+
+### Documentation
+
+More documentation can be found at
+[https://docs.opendatahub.bz.it](https://docs.opendatahub.bz.it).
+
+
+### License
+
+The code in this project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3 license. See the [LICENSE](../../LICENSE) file for more information.
