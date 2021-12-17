@@ -1,5 +1,9 @@
 # Office 365 Spreadsheets DataCollector
 
+# ATTENTION: Sharepoint/AWS S3 bucket synchronization is not working correct
+Timezone error, lasTimeModified dates of S3 and Sharepoint have different timezones, so the sync doesn't work correctly at the moment
+
+
 A data collector to synchronize an Office 365 Worksheet hosted on a Microsoft Sharepoint site, with a Big Data Platform
 using Keycloak.
 
@@ -14,6 +18,7 @@ Note: Any Big Data Platform can be used.
 **Table of Contents**
 
 - [Office 365 Spreadsheets DataCollector](#office-365-spreadsheets-datacollector)
+- [ATTENTION: Sharepoint/AWS S3 bucket synchronization is not working correct](#attention-sharepointaws-s3-bucket-synchronization-is-not-working-correct)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Source code](#source-code)
@@ -111,7 +116,11 @@ SHAREPOINT_PATH_TO_DOC=Example/Example.xlsx
 ```
 
 #### Fetch files from Sharepoint
-If you also need to fetch files like images from Sharepoint, please set the following environment variables.
+If you also need to fetch files like images from Sharepoint, please set the following environment variables.  
+The header in the spreadsheet for the column with the filenames needs to have `file` in it.  
+`ex. file logo`  
+Note: The syncing of the files from Sharepoint with S3 gets only triggered, if the spreadsheet had changes too.  
+So only changing files in Sharepoint folder doesn't upload them to S3.  
 ```
 SHAREPOINT_FETCH_FILES=true
 SHAREPOINT_PATH_TO_FILES=Images_Directory/
@@ -121,6 +130,7 @@ SHAREPOINT_PATH_TO_FILES=Images_Directory/
 To upload the files to an S3 bucket set the following environment variables.
 ```
 AWS_BUCKET_NAME=YOUR_BUCKET_NAME
+AWS_BUCKET_URL=YOUR_BUCKET_URL
 AWS_ACCESS_KEY=YOUR_ACCESS_KEY
 AWS_ACCESS_SECRET_KEY=YOUR_ACCESS_SECRET
 ```

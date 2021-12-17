@@ -19,7 +19,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -52,8 +51,8 @@ public class WorkbookUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(WorkbookUtil.class);
 
-    // https://stackoverflow.com/questions/48594916/convert-2018-02-02t065457-744z-string-to-date-in-android
-    SimpleDateFormat microsoftDateConverter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    @Autowired
+    private SharepointDateUtil dateUtil;
 
     @PostConstruct
     private void postConstruct() throws MalformedURLException, URISyntaxException {
@@ -138,7 +137,7 @@ public class WorkbookUtil {
             }
             String dateTime = response.toString();
             logger.info("Getting TimeLastModified done: " + dateTime);
-            return microsoftDateConverter.parse(dateTime);
+            return dateUtil.parseDate(dateTime);
         } else {
             String errorMessage = String.format("Get TimeLastModified failed. Connection returned HTTP code: %s with message: %s",
                     httpResponseCode, conn.getResponseMessage());

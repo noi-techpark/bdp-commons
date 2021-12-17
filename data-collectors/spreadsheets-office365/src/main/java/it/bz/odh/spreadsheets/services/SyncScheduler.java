@@ -1,16 +1,17 @@
 package it.bz.odh.spreadsheets.services;
 
 import java.net.HttpURLConnection;
-import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.apache.http.HttpConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -33,8 +34,8 @@ import it.bz.idm.bdp.dto.StationList;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
 import it.bz.odh.spreadsheets.utils.DataMappingUtil;
-import it.bz.odh.spreadsheets.utils.S3FileUploadUtil;
-import it.bz.odh.spreadsheets.utils.SharepointFileDownloadUtil;
+import it.bz.odh.spreadsheets.utils.S3FileUtil;
+import it.bz.odh.spreadsheets.utils.SharepointFileUtil;
 import it.bz.odh.spreadsheets.utils.WorkbookUtil;
 
 // The scheduler could theoretically be replaced by Microsoft Graphs Change Notifications
@@ -66,13 +67,16 @@ public class SyncScheduler {
     private DataMappingUtil mappingUtil;
 
     @Autowired
-    private SharepointFileDownloadUtil fileDownloader;
+    private SharepointFileUtil sharepointFileUtil;
 
     @Autowired
-    private S3FileUploadUtil fileUploader;
+    private S3FileUtil s3FileUtil;
 
     @Value("${sharepoint.fetch-files}")
     private boolean fetchFiles;
+
+    @Value("${aws.bucket-url}")
+    private String bucketUrl;
 
     /**
      * Cron job to check changes of the Spreadsheet in Sharepoint
@@ -100,7 +104,7 @@ public class SyncScheduler {
      * 
      * @throws Exception
      */
-    private void syncDataWithBdp(Workbook workbook) {
+    private void syncDataWithBdp(Workbook workbook) throws Exception {
         logger.info("Start data synchronization");
 
         Iterator<Sheet> sheetIterator = workbook.sheetIterator();
@@ -147,6 +151,10 @@ public class SyncScheduler {
             }
         }
 
+        // sync files from sharepoint with S3 bucket
+        if (fetchFiles)
+            syncSharepointFilesWithS3(dtos);
+
         // sync with ODH
         if (!dtos.isEmpty()) {
             logger.debug("Synchronize stations if some where fetched and successfully parsed");
@@ -172,37 +180,66 @@ public class SyncScheduler {
             odhClient.pushData(dto);
         }
 
-        // QUICK HACK to fetch images from sharepoint and upload them to an S3 bucket
-        if (fetchFiles) {
-            logger.info("Fetch images from Sharepoint and upload to S3");
-            for (StationDto dto : dtos) {
-                Map<String, Object> metaData = dto.getMetaData();
+        logger.info("Data synchronization completed");
+    }
 
-                for (String key : metaData.keySet()) {
-                    if (key.contains("image")) {
-                        String imageName = (String) metaData.get(key);
+    /**
+     * Synchronizes the files from a sharepoint folder with an S3 bucket
+     * First the object listing from S3 gets fetched and then only files that are
+     * new or have a more recent lastModifiedDate get uploaded
+     * 
+     * @param dtos
+     * @throws Exception
+     */
+    private void syncSharepointFilesWithS3(StationList dtos) {
+        logger.info("Fetch images from Sharepoint and upload to S3");
+
+        Map<String, Date> objectListing = s3FileUtil.getObjectListing();
+
+        for (StationDto dto : dtos) {
+            Map<String, Object> metaData = dto.getMetaData();
+
+            for (String key : metaData.keySet()) {
+                if (key.contains("file")) {
+                    String imageName = metaData.get(key).toString();
+
+                    Date lastModifiedOnSharepoint = null;
+                    try {
+                        lastModifiedOnSharepoint = sharepointFileUtil.getLastTimeModified(imageName);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+
+                    if (!objectListing.containsKey(imageName)
+                            || lastModifiedOnSharepoint == null
+                            || objectListing.get(imageName).before(lastModifiedOnSharepoint)) {
 
                         logger.debug("Fetching image " + imageName + " from Sharepoint");
                         HttpURLConnection conn;
                         try {
-                            conn = fileDownloader.fetchFile(imageName);
+                            conn = sharepointFileUtil.fetchFile(imageName);
                             logger.debug("Fetching image " + imageName + " from Sharepoint done");
 
                             logger.debug("Upload image " + imageName + " to S3");
-                            fileUploader.uploadFile(conn.getInputStream(), imageName, conn.getContentLength());
+                            s3FileUtil.uploadFile(conn.getInputStream(), imageName, conn.getContentLength());
                             logger.debug("Upload image " + imageName + " to S3 done");
                         } catch (Exception e) {
                             logger.debug("Fetching image " + imageName + " from Sharepoint FAILED");
                             e.printStackTrace();
                         }
 
+                        // add S3 bucket URL to image metadata
+                        Map<String, String> imageMetadata = new HashMap<String, String>();
+                        imageMetadata.put("link", bucketUrl + imageName);
+                        imageMetadata.put("license", "none");
+                        imageMetadata.put("name", imageName);
+
+                        metaData.replace(key, imageMetadata);
                     }
                 }
             }
-            logger.info("Fetch images from Sharepoint and upload to S3 done");
         }
-
-        logger.info("Data synchronization completed");
+        logger.info("Fetch images from Sharepoint and upload to S3 done");
     }
 
 }
