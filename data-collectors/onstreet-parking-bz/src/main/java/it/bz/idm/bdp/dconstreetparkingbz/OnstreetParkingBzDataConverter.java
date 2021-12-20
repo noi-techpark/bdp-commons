@@ -297,7 +297,7 @@ public class OnstreetParkingBzDataConverter {
         return retval;
     }
 
-    public StationList getStation(String id, String name, Double latitude, Double longitude) {
+    public StationList getStation(String id, String name, Double latitude, Double longitude) throws NominatimException {
 
         ValueRange valueRange = new ValueRange();
         List<List<Object>> values = new ArrayList<>();
