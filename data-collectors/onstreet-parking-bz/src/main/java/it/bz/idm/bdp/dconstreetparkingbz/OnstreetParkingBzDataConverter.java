@@ -21,6 +21,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 import it.bz.idm.bdp.dconstreetparkingbz.dto.OnstreetParkingBzSensorDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
+import it.bz.idm.bdp.util.NominatimException;
 import it.bz.idm.bdp.util.NominatimLocationLookupUtil;
 
 @Service
@@ -216,7 +217,7 @@ public class OnstreetParkingBzDataConverter {
         }
         return dto;
     }
-    public StationList convertSheetValueRangeToStationList(ValueRange valueRange) {
+    public StationList convertSheetValueRangeToStationList(ValueRange valueRange) throws NominatimException {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("valueRange='"+valueRange+"'");
         }
