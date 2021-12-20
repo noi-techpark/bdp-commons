@@ -9,8 +9,8 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>5.2.11.RELEASE</spring.version>
-		<log4j.version>2.13.3</log4j.version>
+		<spring.version>5.3.13</spring.version>
+		<log4j.version>2.16.0</log4j.version>
         <finalName>ROOT</finalName>
 	</properties>
 	<repositories>
@@ -119,7 +119,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>5.1.2</version>
+			<version>5.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.api-client</groupId>

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>dc-airquality-appabz</artifactId>
@@ -9,15 +10,15 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>5.2.11.RELEASE</spring.version>
+		<spring.version>5.3.13</spring.version>
 		<finalName>ROOT</finalName>
 	</properties>
 	<repositories>
-                <repository>
-                        <id>maven-repo.opendatahub.bz.it</id>
-                        <url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
-                </repository>
-        </repositories>
+		<repository>
+			<id>maven-repo.opendatahub.bz.it</id>
+			<url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.antlr/antlr4: Parser generator-->
 		<dependency>
@@ -52,7 +53,11 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
+<<<<<<< HEAD
 			<version>2.17.0</version>
+=======
+			<version>2.16.0</version>
+>>>>>>> f00dcc50a1dad5344d2b07b0a662ddf1d428ddce
 		</dependency>
 		<!-- Testing libraries -->
 		<dependency>
@@ -79,9 +84,9 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-web</artifactId>
-		    <version>${spring.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -109,8 +114,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.21.0</version>
 				<configuration>
-                    <useSystemClassLoader>false</useSystemClassLoader>
-                </configuration>
+					<useSystemClassLoader>false</useSystemClassLoader>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
