@@ -12,6 +12,7 @@ import it.bz.idm.bdp.dcparkingtn.dto.ParkingTnDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationList;
+import it.bz.idm.bdp.util.NominatimException;
 import it.bz.idm.bdp.util.NominatimLocationLookupUtil;
 
 /**
@@ -48,7 +49,7 @@ public class ParkingTnJobScheduler {
         LOG.debug("END.pushStations");
     }
 
-    private void patchMunicipality(List<ParkingTnDto> data) {
+    private void patchMunicipality(List<ParkingTnDto> data) throws NominatimException {
 		for (ParkingTnDto dto : data) {
 			if (dto.getParkingArea() != null && dto.getParkingArea().getPosition() != null && dto.getParkingArea().getPosition().size() == 2) {
 				String lookupLocation = lookupUtil.lookupLocation(dto.getParkingArea().getPosition().get(1),dto.getParkingArea().getPosition().get(0));
