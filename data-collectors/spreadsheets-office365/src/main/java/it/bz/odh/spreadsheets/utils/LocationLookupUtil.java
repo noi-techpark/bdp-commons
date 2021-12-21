@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.util.LocationLookup;
+import it.bz.idm.bdp.util.NominatimException;
 import it.bz.idm.bdp.util.NominatimLocationLookupUtil;
 
 @Component
@@ -17,8 +18,9 @@ public class LocationLookupUtil {
     /**
      * Uses nominatim to guess the coordinates by a address
      * @param dto to guess the position off
+     * @throws NominatimException
      */
-    public void guessPositionByAddress(StationDto dto) {
+    public void guessPositionByAddress(StationDto dto) throws NominatimException {
         Object addressObject = dto.getMetaData().get(addressId);
         if (addressObject != null && !addressObject.toString().isEmpty()) {
             Double[] coordinates = lookUpUtil.lookupCoordinates(addressObject.toString());

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
+import it.bz.idm.bdp.util.NominatimException;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
 
@@ -75,7 +76,7 @@ public class DataMappingUtil {
         excludeFromMetaData.add(metadataId);
     }
 
-    public MappingResult mapSheet(List<List<Object>> values, String sheetName, int sheetId) {
+    public MappingResult mapSheet(List<List<Object>> values, String sheetName, int sheetId) throws NominatimException {
         MappingResult result = new MappingResult();
         Map<String, Short> headerMapping = listToMap(values.get(0));
 
@@ -144,9 +145,10 @@ public class DataMappingUtil {
      * @param spreadSheetValues values to map to a {@link StationDto}
      * @param headerMapping
      * @return list of all valid rows in form of {@link StationDto}
+     * @throws NominatimException
      */
     public StationList mapStations(List<List<Object>> spreadSheetValues, Map<String, Short> headerMapping,
-            String sheetName) {
+            String sheetName) throws NominatimException {
         StationList dtos = new StationList();
         spreadSheetValues.remove(0); // remove header row
         
