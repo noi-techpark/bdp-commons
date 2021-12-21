@@ -34,19 +34,22 @@ public class ParkingTnJobScheduler {
 
     /** JOB 1 */
     public void pushStations() throws Exception {
-        LOG.debug("START.pushStations");
-
+        LOG.info("START.pushStations");
+        
+        // to log how many stations have been pushed
+        int stationCounter = -1;
         try {
             List<ParkingTnDto> data = retrieval.fetchData();
             patchMunicipality(data);
             StationList stations = pusher.mapStations2Bdp(data);
             if (stations != null) {
+                stationCounter = stations.size();
                 pusher.syncStations(stations);
             }
         } catch (HttpClientErrorException e) {
             LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
         }
-        LOG.debug("END.pushStations");
+        LOG.info("END.pushStations amount: " + stationCounter);
     }
 
     private void patchMunicipality(List<ParkingTnDto> data) throws NominatimException {
@@ -61,10 +64,14 @@ public class ParkingTnJobScheduler {
 
 	/** JOB 2 */
     public void pushData() throws Exception {
-        LOG.debug("START.pushData");
-
+        LOG.info("START.pushData");
+        
+        // to log how many data records have been pushed
+        int dataCounter = -1;
         try {
             List<ParkingTnDto> data = retrieval.fetchData();
+
+            dataCounter = data.size();
 
             DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(data);
 
@@ -76,6 +83,6 @@ public class ParkingTnJobScheduler {
             LOG.error(pusher + " - " + e, e);
             throw e;
         }
-        LOG.debug("END.pushData");
+        LOG.info("END.pushData amount: " + dataCounter);
     }
 }
