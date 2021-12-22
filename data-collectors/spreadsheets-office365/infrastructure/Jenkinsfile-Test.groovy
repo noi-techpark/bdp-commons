@@ -30,10 +30,15 @@ pipeline {
                     echo 'LOG_LEVEL=DEBUG' >> .env
                     echo 'ARTIFACT_NAME=${ARTIFACT_NAME}' >> .env
                     echo 'origin=NOI Techpark' >> .env
-                    echo 'SHEET_NAME=NOIbuildings.xlsx' >> .env
                     echo 'SHAREPOINT_HOST=noibz.sharepoint.com' >> .env
                     echo 'SHAREPOINT_SITE_ID=UNITshrdTech-TransferDigital' >> .env
                     echo 'SHAREPOINT_PATH_TO_DOC=General/NOI-Techpark-MapsBackend.xlsx' >> .env
+                    echo 'SHAREPOINT_FETCH_FILES=false' >> .env
+                    echo 'SHAREPOINT_PATH_TO_FILES=YOUR_PATH_TO_FILES' >> .env
+                    echo 'AWS_BUCKET_NAME=YOUR_AWS_BUCKET_NAME' >> .env
+                    echo 'AWS_BUCKET_URL=YOUR_AWS_BUCKET_URL' >> .env
+                    echo 'AWS_ACCESS_KEY=YOUR_AWS_ACCESS_KEY' >> .env
+                    echo 'AWS_ACCESS_SECRET_KEY=YOUR_AWS_ACCESS_SECRET_KEY' >> .env
                     echo 'CRON=0 * * * * *'>> .env
                     echo 'TENANT_ID=${APP_TENANT_ID}' >>.env
                     echo 'CLIENT_ID=${APP_CLIENT_ID}' >> .env
