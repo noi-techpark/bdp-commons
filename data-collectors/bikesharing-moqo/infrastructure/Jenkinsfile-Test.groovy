@@ -10,6 +10,7 @@ pipeline {
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
         AUTH_TOKEN = credentials('bikesharing-moqo-authtoken')
         SELECTED_TEAM = credentials('bikesharing-moqo-selected-team')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -36,7 +37,8 @@ pipeline {
                     echo '' >> .env
                     echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
                     echo 'app_auth_token=${AUTH_TOKEN}' >> .env
-                    echo 'app_auth_selectedTeam=${SELECTED_TEAM}' >> .env 
+                    echo 'app_auth_selectedTeam=${SELECTED_TEAM}' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
             }
         }
