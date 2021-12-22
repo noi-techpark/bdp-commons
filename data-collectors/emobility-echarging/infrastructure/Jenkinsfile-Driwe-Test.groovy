@@ -9,6 +9,7 @@ pipeline {
         DOCKER_TAG = "test-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
         AUTH_TOKEN = credentials('driwe_auth_token')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -39,6 +40,7 @@ pipeline {
                     echo 'app_callerId=NOI-Techpark' >> .env
                     echo 'app_dataOrigin=DRIWE' >> .env
                     echo 'app_period=600' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
             }
         }

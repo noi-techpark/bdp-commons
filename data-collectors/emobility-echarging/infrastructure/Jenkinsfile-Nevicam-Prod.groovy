@@ -9,6 +9,7 @@ pipeline {
         DOCKER_TAG = "prod-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret-prod')
         API_KEY=credentials('nevicam-api-key')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -40,6 +41,7 @@ pipeline {
                     echo 'app_apikey=${API_KEY}' >> .env
                     echo 'app_dataOrigin=Nevicam' >> .env
                     echo 'app_period=600' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
             }
         }

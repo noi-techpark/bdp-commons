@@ -8,6 +8,7 @@ pipeline {
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/dc-emobility-echarging'
         DOCKER_TAG = "prod-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret-prod')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -38,6 +39,7 @@ pipeline {
                     echo 'app_callerId=NOI-Techpark' >> .env
                     echo 'app_dataOrigin=route220' >> .env
                     echo 'app_period=600' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
             }
         }
