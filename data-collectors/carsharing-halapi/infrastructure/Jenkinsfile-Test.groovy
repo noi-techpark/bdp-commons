@@ -9,6 +9,7 @@ pipeline {
         DOCKER_TAG = "test-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
         CARSHARING_PROPS = credentials('dc-carsharing.properties')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
