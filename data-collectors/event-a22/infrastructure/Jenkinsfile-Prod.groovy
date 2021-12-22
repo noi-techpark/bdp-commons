@@ -15,6 +15,7 @@ pipeline {
         A22_CONNECTOR_URL = "http://webservices.cau-a22.org:8080/A22Data"
         A22_CONNECTOR_USR = "BN5"
         A22_CONNECTOR_PWD = credentials('a22connector_password_bn5')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -43,6 +44,7 @@ pipeline {
                     echo 'A22_CONNECTOR_URL=${A22_CONNECTOR_URL}' >> .env
                     echo 'A22_CONNECTOR_USR=${A22_CONNECTOR_USR}' >> .env
                     echo 'A22_CONNECTOR_PWD=${A22_CONNECTOR_PWD}' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
             }
         }
