@@ -15,6 +15,8 @@ pipeline {
         APP_CRT_PATH = 'auth/cert.crt'
         APP_TENANT_ID = credentials('office365-tenant-id')
         APP_CLIENT_ID = credentials('office365-client-id')
+
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -51,6 +53,7 @@ pipeline {
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
                     echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
                 sh "cat ${APP_CRT} > ${PROJECT_FOLDER}/src/main/resources/${APP_CRT_PATH}"
                 sh "cat ${APP_KEY} > ${PROJECT_FOLDER}/src/main/resources/${APP_KEY_PATH}"
