@@ -12,6 +12,7 @@ pipeline {
         CRON_STATION_SYNC="0 2 6 * * *"
         CRON_TYPE_SYNC="0 0 0 * * 0"
         CRON_HISTORY_SYNC="0 3 6 * * *"
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -41,6 +42,7 @@ pipeline {
                     echo 'CRON_STATION_SYNC=${CRON_STATION_SYNC}' >> .env
                     echo 'CRON_TYPE_SYNC=${CRON_TYPE_SYNC}' >> .env
                     echo 'CRON_HISTORY_SYNC=${CRON_HISTORY_SYNC}' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
             }
         }
