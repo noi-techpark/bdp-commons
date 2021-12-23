@@ -9,6 +9,7 @@ pipeline {
         DOCKER_TAG = "test-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
         AUTH_TOKEN = credentials('bikesharing-ecospazio')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -36,6 +37,7 @@ pipeline {
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
                     echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
             }
         }
