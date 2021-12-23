@@ -32,7 +32,7 @@ import it.bz.idm.bdp.dto.StationDto;
 @PropertySource("classpath:/META-INF/spring/application.properties")
 public class HistoryRetriever {
 
-	private static final int TIME_INTERVAL = 1000*60*60*24;
+	private static final int TIME_INTERVAL = 1000*60*60*6;
 
 	@Autowired
 	public DataParser parser;
