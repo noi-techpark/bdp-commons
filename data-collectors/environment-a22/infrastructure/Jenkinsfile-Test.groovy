@@ -16,6 +16,7 @@ pipeline {
         MQTT_PASSWORD = credentials('a22-mqtt-password')
         MQTT_URI = credentials('a22-mqtt-uri')
         MQTT_PORT = credentials('a22-mqtt-port')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -45,6 +46,7 @@ pipeline {
                     echo 'MQTT_PASSWORD=${MQTT_PASSWORD}' >> .env
                     echo 'MQTT_URI=${MQTT_URI}' >> .env
                     echo 'MQTT_PORT=${MQTT_PORT}' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
             }
         }
