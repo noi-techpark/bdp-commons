@@ -12,6 +12,7 @@ pipeline {
         FTP_KNOWN_HOSTS = credentials('bdp-airquality-datacollector-appabz-sftp-knownhosts')
         FTP_PASS = credentials('bdp-airquality-datacollector-appabz-sftp-passphrase-testserver')
         SSH_FOLDER = "${PROJECT_FOLDER}/src/main/resources/META-INF/.ssh"
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -39,6 +40,7 @@ pipeline {
                     echo 'BASE_URI=https://mobility.share.opendatahub.bz.it/json' >> .env
                     echo 'ftp_pass=${FTP_PASS}' >> .env
                     echo 'ftp_folder_remote=uploads' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
                 /*
                  * Check if the ssh folder exists, create one if not and put needed files with correct permissions
