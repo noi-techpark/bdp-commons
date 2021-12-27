@@ -2,8 +2,8 @@ pipeline {
     agent any
     
     environment {
-        PROJECT = "appabz_opendata"
-        PROJECT_FOLDER = "data-collectors/environment-appa/${PROJECT}"
+        PROJECT = "environment-appa-bz-opendata"
+        PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/dc-appabz_opendata'
         DOCKER_TAG = "test-$BUILD_NUMBER"
