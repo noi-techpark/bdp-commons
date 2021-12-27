@@ -9,6 +9,7 @@ pipeline {
         DOCKER_TAG = "prod-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret-prod')
         DATA_ENDPOINT = credentials('traffic-bz-endpoint')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -35,6 +36,7 @@ pipeline {
                     echo '' >> .env
                     echo 'BASE_URI=https://mobility.share.opendatahub.bz.it/json' >> .env
                     echo 'endpoint_defaultUri=${DATA_ENDPOINT}' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
             }
         }
