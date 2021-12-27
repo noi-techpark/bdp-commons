@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         PROJECT = "environment-appa-tn-opendata"
-        PROJECT_FOLDER = "data-collectors/environment-appa-tn-opendata/${PROJECT}"
+        PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/dc-appatn_opendata'
         DOCKER_TAG = "test-$BUILD_NUMBER"
