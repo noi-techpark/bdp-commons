@@ -2,14 +2,15 @@ pipeline {
     agent any
     
     environment {
-        PROJECT = "appatn_tenminutes"
-        PROJECT_FOLDER = "data-collectors/environment-appa/${PROJECT}"
+        PROJECT = "environment-appa-tn-tenminutes"
+        PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/dc-appatn_tenminutes'
         DOCKER_TAG = "test-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
         DATA_ENDPOINT = credentials('environment-appa-endpoint')
         AUTH_TOKEN = credentials('environment-appa-authtoken')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -37,6 +38,7 @@ pipeline {
                     echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
                     echo 'odp_url_stations_tenminutes=${DATA_ENDPOINT}' >> .env
                     echo 'odp_url_stations_tenminutes_key=${AUTH_TOKEN}' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
             }
         }
