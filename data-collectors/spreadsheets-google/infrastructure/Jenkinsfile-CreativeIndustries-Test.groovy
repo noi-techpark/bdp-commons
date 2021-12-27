@@ -13,6 +13,7 @@ pipeline {
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/spreadsheets-google-noiplaces'
         DOCKER_TAG = "test-$BUILD_NUMBER"
         VENDOR = "creativeIndustries"
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -46,6 +47,7 @@ pipeline {
                     echo '' >> .env
                     echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
                     echo 'scope=openid' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
                 sh "cat ${KEYCLOAK_CONFIG} >> ${PROJECT_FOLDER}/.env"
                 

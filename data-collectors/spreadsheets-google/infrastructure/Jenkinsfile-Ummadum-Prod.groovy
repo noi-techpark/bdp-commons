@@ -12,6 +12,7 @@ pipeline {
         DOCKER_TAG = "prod-$BUILD_NUMBER"
         VENDOR = "umadummCarpooling"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret-prod')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -50,6 +51,7 @@ pipeline {
                     echo 'clientSecret=${DATACOLLECTORS_CLIENT_SECRET}' >> .env
                     echo 'scope=openid' >> .env
                     echo 'BASE_URI=https://mobility.share.opendatahub.bz.it/json' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
                 sh "cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json"
                 sh """cat "${GOOGLE_CREDENTIALS}" > "${PROJECT_FOLDER}"/src/main/resources/META-INF/credentials/StoredCredential"""
