@@ -9,6 +9,7 @@ pipeline {
         DOCKER_TAG = "test-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials('keycloak-datacollectors-secret')
         A22_CONNECTOR = credentials('a22connector_credentialsbn1')
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -34,6 +35,7 @@ pipeline {
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
                     echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
                 sh 'cat "${A22_CONNECTOR}" > ${PROJECT_FOLDER}/src/main/resources/it/bz/noi/a22/traveltimes/a22connector.properties'
             }
