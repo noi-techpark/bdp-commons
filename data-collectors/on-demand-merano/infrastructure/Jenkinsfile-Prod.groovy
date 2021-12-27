@@ -14,6 +14,7 @@ pipeline {
         KEYCLOAK_URL = "https://auth.opendatahub.bz.it"
         WRITER_URL = "https://mobility.share.opendatahub.bz.it"
         LOG_LEVEL = "info"
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -39,6 +40,7 @@ pipeline {
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
                     echo 'BASE_URI=${WRITER_URL}/json' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
                 sh '''sed -i -e "s/\\(connector.username=\\).*\\?/\\1${USERNAME}/" ${PROJECT_FOLDER}/src/main/resources/connector.properties'''
                 sh '''sed -i -e "s/\\(connector.password=\\).*\\?/\\1${SECRET}/" ${PROJECT_FOLDER}/src/main/resources/connector.properties'''
