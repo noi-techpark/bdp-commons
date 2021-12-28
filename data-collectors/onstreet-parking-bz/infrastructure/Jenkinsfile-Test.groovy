@@ -11,6 +11,7 @@ pipeline {
         GOOGLE_SECRET=credentials('spreadsheets.client_secret.json')
         GOOGLE_CREDENTIALS=credentials('google-spreadsheet-api-credentials')
         SERVER_PORT="1001"
+        JAVA_OPTIONS = "-Xms128m -Xmx512m"
     }
 
     stages {
@@ -37,6 +38,7 @@ pipeline {
                     xmlstarlet sel -N pom=http://maven.apache.org/POM/4.0.0 -t -v '/pom:project/pom:artifactId' pom.xml >> .env
                     echo '' >> .env
                     echo 'BASE_URI=https://share.opendatahub.testingmachine.eu/json' >> .env
+                    echo 'JAVA_OPTIONS=${JAVA_OPTIONS}' >> .env
                 """
                 sh 'cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/main/resources/META-INF/spring/client_secret.json'
                 sh 'cat ${GOOGLE_SECRET} > ${PROJECT_FOLDER}/src/test/resources/META-INF/spring/client_secret.json'
