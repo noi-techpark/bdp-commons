@@ -41,15 +41,18 @@ public class TriggerController {
 	 *             https://developers.google.com/drive/api/v3/push
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto,@RequestHeader("x-goog-changed") String googleState){
+	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto,
+			@RequestHeader(value = "x-goog-changed", required = false) String googleState) {
 		logger.debug("Trigger spreadsheet synchronization at " + lastRequest);
-		List<String> changeDetails = Arrays.asList(googleState.split(","));
-		if (changeDetails != null && changeDetails.contains(GOOGLE_CONTENT_ID)){
-			Long now = new Date().getTime();
-			if (lastRequest == null || lastRequest < now - (MINIMAL_SYNC_PAUSE_SECONDS *1000)) {
-				lastRequest = now;
-				main.syncData();
-				logger.info("Synching executed at:"+lastRequest);
+		if (googleState != null) {
+			List<String> changeDetails = Arrays.asList(googleState.split(","));
+			if (changeDetails != null && changeDetails.contains(GOOGLE_CONTENT_ID)) {
+				Long now = new Date().getTime();
+				if (lastRequest == null || lastRequest < now - (MINIMAL_SYNC_PAUSE_SECONDS * 1000)) {
+					lastRequest = now;
+					main.syncData();
+					logger.info("Synching executed at:" + lastRequest);
+				}
 			}
 		}
 	}
