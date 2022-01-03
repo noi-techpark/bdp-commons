@@ -1,6 +1,11 @@
 #!/bin/bash
 #
-# Will update all pom.xml dependencies of this folder, means upgrade the given dependency for all data-collectors
+# Will upgrade the given dependency for all data-collectors
+#
+# 3 arguments needed: groupId artifactId version"
+# example to update log4j-core to 2.17.1"
+#
+# ./quickversionbump-generic.sh org.apache.logging.log4j log4j-core 2.17.1"
 #
 
 if [ ! $# -eq 3 ]
