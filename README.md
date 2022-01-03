@@ -13,20 +13,21 @@ Postgres DB.
 
 **Table of contents**
 - [Open Data Hub Mobility - Data Collectors](#open-data-hub-mobility---data-collectors)
-	- [Getting started](#getting-started)
-		- [Prerequisites](#prerequisites)
-		- [Source code](#source-code)
-		- [Build](#build)
-		- [Running tests](#running-tests)
-		- [Test the code with Docker](#test-the-code-with-docker)
-		- [Execute without Docker](#execute-without-docker)
-	- [Write a new data collector](#write-a-new-data-collector)
-	- [Deploy a new data collector](#deploy-a-new-data-collector)
-	- [Information](#information)
-		- [Support](#support)
-		- [Contributing](#contributing)
-		- [Documentation](#documentation)
-		- [License](#license)
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Source code](#source-code)
+    - [Build](#build)
+    - [Running tests](#running-tests)
+    - [Test the code with Docker](#test-the-code-with-docker)
+    - [Execute without Docker](#execute-without-docker)
+  - [Write a new data collector](#write-a-new-data-collector)
+  - [Deploy a new data collector](#deploy-a-new-data-collector)
+  - [Update pom dependencies](#update-pom-dependencies)
+  - [Information](#information)
+    - [Support](#support)
+    - [Contributing](#contributing)
+    - [Documentation](#documentation)
+    - [License](#license)
 
 
 ## Getting started
@@ -166,6 +167,17 @@ MY_PARAM_2=${ENV_VAR_FOR_MY_PARAM_2:or-this-default-if-missing}
 - Create new Credentials under "Credentials>Folder>Global credentials". You can
   inject them in your Jenkinsfiles with `credentials('your-credential-id')`.
   Please try to always use secret texts, not files or there like (if possible).
+
+
+## Update pom dependencies
+
+To update a dependency in all data-collectors the quickversionbump scripts can be used.  
+- quickversionbump.sh: update dc-interface
+- quickversionbump-generic.sh: update any dependency
+- quickversionbump-min.sh: update min version in properties, if dependency is not used but a 
+  minimal version is mandatory  
+  
+Note: Read the comments in every script for further instructions
 
 
 ## Information
