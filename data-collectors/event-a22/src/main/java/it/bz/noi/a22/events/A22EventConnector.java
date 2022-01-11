@@ -22,6 +22,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  encapsulates the communication with the A22 web service
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 public class A22EventConnector {
 
 
-    private static final String user_agent = "NOI/A22EventConnector";
+    private static final String USER_AGENT = "NOI/A22EventConnector";
     private static final int WS_CONN_TIMEOUT_MSEC = 30000;
     private static final int WS_READ_TIMEOUT_MSEC = 1800000;
 
@@ -68,7 +69,7 @@ public class A22EventConnector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/token")).openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -132,7 +133,7 @@ public class A22EventConnector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/token/" + token)).openConnection();
         conn.setRequestMethod("DELETE");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -202,11 +203,11 @@ public class A22EventConnector {
      * @param to search events up to *and* *including* this timestamp (Unix epoch in UTC),
      *           set to null to get current events
      *
-     * @return an ArrayList of A22Event objects
+     * @return a List of A22Event objects
      *
      * @throws IOException in case of communication failure
      */
-    public ArrayList<A22Event> getEvents(Long fr, Long to) throws IOException {
+    public List<A22Event> getEvents(Long fr, Long to) throws IOException {
 
         if (url == null || token == null) {
             throw new RuntimeException("not authenticated");
@@ -233,7 +234,7 @@ public class A22EventConnector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + a22path)).openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -285,25 +286,25 @@ public class A22EventConnector {
             try {
 
                 JSONObject json_record = (JSONObject) json_array.get(i);
-                A22Event record = new A22Event();
+                A22Event event = new A22Event();
 
-                record.setId(extractLong(json_record, "id"));
-                record.setIdtipoevento(extractLong(json_record, "idtipoevento"));
-                record.setIdsottotipoevento(extractLong(json_record, "idsottotipoevento"));
-                record.setAutostrada(extractString(json_record, "autostrada"));
-                record.setIddirezione(extractLong(json_record, "iddirezione"));
-                record.setIdcorsia(extractLong(json_record, "idcorsia"));
-                record.setData_inizio(extractEpoch(json_record, "data_inizio"));
-                record.setData_fine(extractEpoch(json_record, "data_fine"));
-                record.setFascia_oraria(extractBoolean(json_record, "fascia_oraria"));
-                record.setMetro_inizio(extractLong(json_record, "metro_inizio"));
-                record.setMetro_fine(extractLong(json_record, "metro_fine"));
-                record.setLat_inizio(extractDouble(json_record, "lat_inizio"));
-                record.setLon_inizio(extractDouble(json_record, "lon_inizio"));
-                record.setLat_fine(extractDouble(json_record, "lat_fine"));
-                record.setLon_fine(extractDouble(json_record, "lon_fine"));
+                event.setId(extractLong(json_record, "id"));
+                event.setIdtipoevento(extractLong(json_record, "idtipoevento"));
+                event.setIdsottotipoevento(extractLong(json_record, "idsottotipoevento"));
+                event.setAutostrada(extractString(json_record, "autostrada"));
+                event.setIddirezione(extractLong(json_record, "iddirezione"));
+                event.setIdcorsia(extractLong(json_record, "idcorsia"));
+                event.setData_inizio(extractEpoch(json_record, "data_inizio"));
+                event.setData_fine(extractEpoch(json_record, "data_fine"));
+                event.setFascia_oraria(extractBoolean(json_record, "fascia_oraria"));
+                event.setMetro_inizio(extractLong(json_record, "metro_inizio"));
+                event.setMetro_fine(extractLong(json_record, "metro_fine"));
+                event.setLat_inizio(extractDouble(json_record, "lat_inizio"));
+                event.setLon_inizio(extractDouble(json_record, "lon_inizio"));
+                event.setLat_fine(extractDouble(json_record, "lat_fine"));
+                event.setLon_fine(extractDouble(json_record, "lon_fine"));
 
-                output.add(record);
+                output.add(event);
 
             } catch (Exception e) {
 
@@ -320,9 +321,7 @@ public class A22EventConnector {
                     LOG.warn("---");
                 }
                 skipped++;
-                continue;
             }
-
         }
 
         if (DEBUG) {
@@ -336,11 +335,11 @@ public class A22EventConnector {
     /**
      * fetch BrennerLEC Events ("eventi/brennerlec/limititratte")
      *
-     * @return an ArrayList of A22BrennerLECEvent objects
+     * @return a List of A22BrennerLECEvent objects
      *
      * @throws IOException in case of communication failure
      */
-    public ArrayList<A22BrennerLECEvent> getBrennerLECEvents() throws IOException {
+    public List<A22BrennerLECEvent> getBrennerLECEvents() throws IOException {
 
         if (url == null || token == null) {
             throw new RuntimeException("not authenticated");
@@ -353,7 +352,7 @@ public class A22EventConnector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + a22path)).openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -405,12 +404,12 @@ public class A22EventConnector {
             try {
 
                 JSONObject json_record = (JSONObject) json_array.get(i);
-                A22BrennerLECEvent record = new A22BrennerLECEvent();
-                record.setIdtratta(extractString(json_record, "idtratta"));
-                record.setLimite(extractLong(json_record, "limite"));
-                record.setDataattuazione(extractEpoch(json_record, "dataattuazione"));
+                A22BrennerLECEvent event = new A22BrennerLECEvent();
+                event.setIdtratta(extractString(json_record, "idtratta"));
+                event.setLimite(extractLong(json_record, "limite"));
+                event.setDataattuazione(extractEpoch(json_record, "dataattuazione"));
 
-                output.add(record);
+                output.add(event);
 
             } catch (Exception e) {
 
@@ -427,7 +426,6 @@ public class A22EventConnector {
                     LOG.warn("---");
                 }
                 skipped++;
-                continue;
             }
 
         }
@@ -441,7 +439,7 @@ public class A22EventConnector {
     }
 
 
-    private Boolean selfTestExtractors() {
+    private boolean selfTestExtractors() {
         return      "str".equals(this.extractString((JSONObject)JSONValue.parse("{\"data\":\"str\"}"), "data"))
                 && "true".equals(this.extractString((JSONObject)JSONValue.parse("{\"data\":true}"),    "data"))
                 &&    "3".equals(this.extractString((JSONObject)JSONValue.parse("{\"data\":3}"),       "data"))
@@ -467,17 +465,11 @@ public class A22EventConnector {
         if (test == null) {
             return null;
         }
-        if ("String".equals(test.getClass().getSimpleName())) {
+        if (test instanceof String) {
             return (String)(test);
         }
-        if ("Boolean".equals(test.getClass().getSimpleName())) {
-            return String.valueOf((Boolean)(test));
-        }
-        if ("Long".equals(test.getClass().getSimpleName())) {
-            return String.valueOf((Long)(test));
-        }
-        if ("Double".equals(test.getClass().getSimpleName())) {
-            return String.valueOf((Double)(test));
+        if (test instanceof Boolean || test instanceof Long || test instanceof Double) {
+            return String.valueOf(test);
         }
         throw new NumberFormatException("value cannot be interpreted as String");
     }
@@ -489,7 +481,7 @@ public class A22EventConnector {
         if (test == null) {
             return null;
         }
-        if ("Boolean".equals(test.getClass().getSimpleName())) {
+        if (test instanceof Boolean) {
             return (Boolean)test;
         }
         throw new NumberFormatException("value cannot be interpreted as Boolean");
@@ -502,10 +494,10 @@ public class A22EventConnector {
         if (test == null) {
             return null;
         }
-        if ("Long".equals(test.getClass().getSimpleName())) {
+        if (test instanceof Long) {
             return (Long)test;
         }
-        if ("String".equals(test.getClass().getSimpleName())) {
+        if (test instanceof String) {
             return Long.valueOf((String)test); // might throw java.lang.NumberFormatException
         }
         throw new NumberFormatException("value cannot be interpreted as Long");
@@ -540,13 +532,13 @@ public class A22EventConnector {
         if (test == null) {
             return null;
         }
-        if ("Long".equals(test.getClass().getSimpleName())) {
+        if (test instanceof Long) {
             return Double.valueOf((Long)test);
         }
-        if ("Double".equals(test.getClass().getSimpleName())) {
+        if (test instanceof Double) {
             return (Double)test;
         }
-        if ("String".equals(test.getClass().getSimpleName())) {
+        if (test instanceof String) {
             return Double.valueOf((String)test); // might throw java.lang.NumberFormatException
         }
         throw new NumberFormatException("value cannot be interpreted as Double");
