@@ -8,5 +8,3 @@ services:
       _JAVA_OPTIONS: ${JAVA_OPTIONS}
     env_file:
       - .env
-    ports:
-      - ${SERVER_PORT}:8080
