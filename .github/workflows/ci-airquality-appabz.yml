@@ -3,14 +3,21 @@ name: CI data collector
 on:
   push:
     branches: [ development, master ]
+    paths:
+      - "data-collectors/airquality-appabz"
+    # prevent building on documentation changes
+    paths-ignore:
+      - "!README.md"
+      - "!data-collectors/airquality-appabz/README.md"
+
   pull_request:
     branches: [ development, master ]
-  
-  paths:
-    - "data-collectors/airquality-appabz"
+    paths:
+      - "data-collectors/airquality-appabz"
     # prevent building on documentation changes
-    - "!README.md"
-    - "!data-collectors/airquality-appabz/README.md"
+    paths-ignore:
+      - "!README.md"
+      - "!data-collectors/airquality-appabz/README.md"
 
 
   # Allows you to run this workflow manually from the Actions tab
@@ -32,3 +39,5 @@ jobs:
       - name: Test with Maven
         run: cd data-collectors/airquality-appabz
         run: mvn -B -U clean compile test
+
+  
