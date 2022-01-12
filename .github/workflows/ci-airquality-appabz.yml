@@ -6,7 +6,6 @@ on:
     paths:
       - "data-collectors/airquality-appabz"
     # prevent building on documentation changes
-    paths-ignore:
       - "!README.md"
       - "!data-collectors/airquality-appabz/README.md"
 
@@ -15,7 +14,6 @@ on:
     paths:
       - "data-collectors/airquality-appabz"
     # prevent building on documentation changes
-    paths-ignore:
       - "!README.md"
       - "!data-collectors/airquality-appabz/README.md"
 
