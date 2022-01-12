@@ -1,11 +1,10 @@
-name: CI data collector
+name: CI airquality appabz data collector
 
 on:
   push:
     branches: [ development, master ]
     paths:
       - "data-collectors/airquality-appabz"
-    # prevent building on documentation changes
       - "!README.md"
       - "!data-collectors/airquality-appabz/README.md"
 
@@ -13,13 +12,12 @@ on:
     branches: [ development, master ]
     paths:
       - "data-collectors/airquality-appabz"
-    # prevent building on documentation changes
       - "!README.md"
       - "!data-collectors/airquality-appabz/README.md"
 
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  workflow_dispatch
 
 jobs:
   build:
