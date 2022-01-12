@@ -33,6 +33,6 @@ jobs:
           cache: maven
 
       - name: Test with Maven
-        run: cd data-collectors/airquality-appabz && mvn -B -U clean compile test
+        run: cd data-collectors/airquality-appabz && mvn -e -X -B -U clean compile test
 
   
