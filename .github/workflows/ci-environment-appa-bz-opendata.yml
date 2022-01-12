@@ -1,0 +1,38 @@
+name: CI environment-appa-bz-opendata
+
+on:
+  push:
+    branches: [development, master]
+    paths:
+      - "data-collectors/environment-appa-bz-opendata/**"
+      - "!README.md"
+      - "!data-collectors/environment-appa-bz-opendata/README.md"
+
+  pull_request:
+    branches: [development, master]
+    paths:
+      - "data-collectors/environment-appa-bz-opendata/**"
+      - "!README.md"
+      - "!data-collectors/environment-appa-bz-opendata/README.md"
+
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Test with Maven
+        run: cd data-collectors/environment-appa-bz-opendata && mvn -B -U clean compile test
+
+  
