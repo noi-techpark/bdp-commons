@@ -10,14 +10,14 @@
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>5.2.12.RELEASE</spring.version>
-        <finalName>ROOT</finalName>
+		<finalName>ROOT</finalName>
 	</properties>
 	<repositories>
-                <repository>
-                        <id>maven-repo.opendatahub.bz.it</id>
-                        <url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
-                </repository>
-        </repositories>
+		<repository>
+			<id>maven-repo.opendatahub.bz.it</id>
+			<url>https://maven-repo.opendatahub.bz.it/release</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<!-- JSON Handling -->
 		<dependency>
