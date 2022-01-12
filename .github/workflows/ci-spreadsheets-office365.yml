@@ -1,19 +1,19 @@
-name: CI airquality appabz
+name: CI spreadsheets-office365
 
 on:
   push:
     branches: [development, master]
     paths:
-      - "data-collectors/airquality-appabz/**"
+      - "data-collectors/spreadsheets-office365/**"
       - "!README.md"
-      - "!data-collectors/airquality-appabz/README.md"
+      - "!data-collectors/spreadsheets-office365/README.md"
 
   pull_request:
     branches: [development, master]
     paths:
-      - "data-collectors/airquality-appabz/**"
+      - "data-collectors/spreadsheets-office365/**"
       - "!README.md"
-      - "!data-collectors/airquality-appabz/README.md"
+      - "!data-collectors/spreadsheets-office365/README.md"
 
 
   # Allows you to run this workflow manually from the Actions tab
@@ -33,6 +33,6 @@ jobs:
           cache: maven
 
       - name: Test with Maven
-        run: cd data-collectors/airquality-appabz && mvn -B -U clean compile test
+        run: cd data-collectors/spreadsheets-office365 && mvn -B -U clean compile test
 
   
