@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        PROJECT = "airquality-appabz"
+        PROJECT = "environment-appa-bz-tenminutes"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/dc-airquality-appabz'
