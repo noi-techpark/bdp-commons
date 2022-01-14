@@ -10,7 +10,7 @@
 package it.bz.noi.a22.events;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * command line application to demo the usage of the A22EventConnector class
@@ -46,7 +46,7 @@ public class Main {
             $ date  -d  "Jan 31 00:00:00 UTC 2018" +%s
             1517356800
              */
-            ArrayList<A22Event> events = A22Service.getEvents(1622789265L, 1622813245L);
+            List<A22Event> events = A22Service.getEvents(1622789265L, 1622813245L);
             System.out.println("got " + events.size() + " events");
             for (A22Event e : events) {
                 System.out.println(e);
@@ -60,7 +60,7 @@ public class Main {
         // fetch and print all current events ("eventi/lista/attivi")
 
         try {
-            ArrayList<A22Event> events = A22Service.getEvents(null, null);
+            List<A22Event> events = A22Service.getEvents(null, null);
             System.out.println("got " + events.size() + " events");
             for (A22Event e : events) {
                 System.out.println(e);
@@ -73,7 +73,7 @@ public class Main {
         // fetch and print all BrennerLEC events ("eventi/brennerlec/limititratte")
 
         try {
-            ArrayList<A22BrennerLECEvent> events = A22Service.getBrennerLECEvents();
+            List<A22BrennerLECEvent> events = A22Service.getBrennerLECEvents();
             System.out.println("got " + events.size() + " events");
             for (A22BrennerLECEvent e : events) {
                 System.out.println(e);
@@ -91,7 +91,7 @@ public class Main {
 
     }
 
-    private static Boolean isEmpty(String a) {
+    private static boolean isEmpty(String a) {
         return (a == null || a.trim().equals(""));
     }
 
