@@ -1,19 +1,19 @@
-name: CI bikesharing-algorab
+name: CI environment-appa-bz-tenminutes
 
 on:
   push:
     branches: [development, master]
     paths:
-      - "data-collectors/bikesharing-algorab/**"
+      - "data-collectors/airquality-appabz/**"
       - "!README.md"
-      - "!data-collectors/bikesharing-algorab/README.md"
+      - "!data-collectors/airquality-appabz/README.md"
 
   pull_request:
     branches: [development, master]
     paths:
-      - "data-collectors/bikesharing-algorab/**"
+      - "data-collectors/airquality-appabz/**"
       - "!README.md"
-      - "!data-collectors/bikesharing-algorab/README.md"
+      - "!data-collectors/airquality-appabz/README.md"
 
 
   # Allows you to run this workflow manually from the Actions tab
@@ -33,6 +33,6 @@ jobs:
           cache: maven
 
       - name: Test with Maven
-        run: cd data-collectors/bikesharing-algorab && mvn -B -U clean compile test
+        run: cd data-collectors/environment-appa-bz-tenminutes && mvn -B -U clean compile test
 
   
