@@ -1,4 +1,4 @@
-Meteo TN datacollector
+Meteorology TN datacollector
 =========================
 
 Datacollector which takes data regarding meteorology in the Province of Trento, parses it and sends it to the opendatahub.

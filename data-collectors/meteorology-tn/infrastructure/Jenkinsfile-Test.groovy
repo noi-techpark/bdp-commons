@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        PROJECT = "meteo-tn"
+        PROJECT = "meteorology-tn"
         PROJECT_FOLDER = "data-collectors/${PROJECT}"
         ARTIFACT_NAME = "dc-${PROJECT}"
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/dc-meteo-tn'
@@ -53,7 +53,7 @@ pipeline {
                sshagent(['jenkins-ssh-key']) {
                     sh """
                         (cd ${PROJECT_FOLDER}/infrastructure/ansible && ansible-galaxy install -f -r requirements.yml)
-                        (cd ${PROJECT_FOLDER}/infrastructure/ansible && ansible-playbook --limit=test deploy.yml --extra-vars "release_name=${BUILD_NUMBER} project_name=${PROJECT}")
+                        (cd ${PROJECT_FOLDER}/infrastructure/ansible && ansible-playbook --limit=test deploy.yml --extra-vars "release_name=${BUILD_NUMBER} project_name=${ARTIFACT_NAME}")
                     """
                 }
             }
