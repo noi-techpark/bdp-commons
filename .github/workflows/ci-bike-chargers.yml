@@ -2,22 +2,8 @@ name: CI bike-chargers
 
 on:
   push:
-    branches: [development, master]
     paths:
       - "data-collectors/bike-chargers/**"
-      - "!README.md"
-      - "!data-collectors/bike-chargers/README.md"
-
-  pull_request:
-    branches: [development, master]
-    paths:
-      - "data-collectors/bike-chargers/**"
-      - "!README.md"
-      - "!data-collectors/bike-chargers/README.md"
-
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 jobs:
   build:
@@ -25,11 +11,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 11
+      - name: Set up JDK 8
         uses: actions/setup-java@v2
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          java-version: '8'
+          distribution: 'temurin'
           cache: maven
 
       - name: Test with Maven
