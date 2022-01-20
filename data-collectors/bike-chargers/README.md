@@ -2,6 +2,8 @@
 
 Application which takes data of the MENTOR project from the API provided by "ecospazio", parses it and sends it to the opendatahub.
 
+[![CI bike-chargers](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bike-chargers.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bike-chargers.yml)
+
 **Table of contents**
 
 - [E-bike / E-car chargers Ecospazio Data Collector](#e-bike--e-car-chargers-ecospazio-data-collector)
