@@ -1,5 +1,7 @@
 # Car sharing data source
 
+[![CI carsharing-halapi](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-carsharing-halapi.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-carsharing-halapi.yml)
+
 Table of content
 
 *   1\. Introduction

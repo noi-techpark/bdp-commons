@@ -1,6 +1,8 @@
 Spreadsheets DataCollector
 ======================
 
+[![CI spreadsheets-google](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-spreadsheets-google.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-spreadsheets-google.yml)
+
 ## User Guide
 ### Prerequisits
 

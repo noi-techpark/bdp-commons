@@ -1,9 +1,9 @@
 # A22 Traffic elaborations
 
-Web application that ...
-
 Application which takes vehicular traffic data from the big data platform, collected by bluetoothboxes around the city of Bolzano, 
 and makes different elaborations and saving them back to the bdp again.
+
+[![CI traffic-a22-elaborations](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traffic-a22-elaborations.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traffic-a22-elaborations.yml)
 
 ## Table of contents
 

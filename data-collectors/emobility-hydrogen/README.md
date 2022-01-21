@@ -3,6 +3,8 @@ Hydrogen datacollector
 
 Datacollector which takes data from IIT, parses it and sends it to the opendatahub.
 
+[![CI emobility-hydrogen](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-emobility-hydrogen.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-emobility-hydrogen.yml)
+
 ## Analysis:
 
 For details regarding mapping from data provided by the service and the data used by the opendatahub, please see this analysis document:

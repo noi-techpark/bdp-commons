@@ -3,6 +3,8 @@ Vehicletraffic-Bluetooth
 
 This datacollector is meant to be the endpoint for all bluetooth-boxes spread through the city and along the "strada statale" in proximity of the A22 highway. It removes invalid records anonymizes the collected MAC-addresses, adds missing metadata information and forwards it to the writer module of bdp-core.
 
+[![CI vehicletraffic-bluetooth](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-vehicletraffic-bluetooth.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-vehicletraffic-bluetooth.yml)
+
 ## Prerequisists
 - maven
 - JDK 8

@@ -5,6 +5,7 @@ Datacollector providing bikesharing realtimedata to opendatahub.
 
 Data is provided by Bike Sharing Merano trough the MOQO Platform (https://portal.moqo.de).
 
+[![CI bikesharing-moqo](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bikesharing-moqo.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bikesharing-moqo.yml)
 
 ## Analysis:
 

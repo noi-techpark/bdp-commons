@@ -2,6 +2,8 @@
 
 Application which takes data of the MENTOR project from the platform cube4t8, parses it and sends it to the opendatahub.
 
+[![CI on-demand-merano](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-on-demand-merano.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-on-demand-merano.yml)
+
 ## Table of contents
 
 - [Gettings started](#getting-started)

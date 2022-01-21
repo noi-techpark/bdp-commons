@@ -5,6 +5,7 @@ Datacollector providing bikesharing realtimedata to opendatahub.
 
 Data is provided by Papin Sport.
 
+[![CI bikesharing-papin](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bikesharing-papin.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bikesharing-papin.yml)
 
 ## Configuration:
   - See `src/main/resources/META-INF/spring/applicationContext.xml`

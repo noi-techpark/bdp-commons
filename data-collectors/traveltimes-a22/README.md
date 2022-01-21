@@ -1,7 +1,8 @@
 # A22 Travel times
 
-
 Application which takes A22 travel time data from a web service parses it and sends it to the opendatahub.
+
+[![CI traveltimes-a22](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traveltimes-a22.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traveltimes-a22.yml)
 
 ## Table of contents
 

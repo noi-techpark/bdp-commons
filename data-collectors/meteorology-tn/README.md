@@ -4,6 +4,7 @@ Meteorology TN datacollector
 Datacollector which takes data regarding meteorology in the Province of Trento, parses it and sends it to the opendatahub.
 Data are provided by Meteotrentino (http://dati.meteotrentino.it/service.asmx).
 
+[![CI meteorology-tn](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-meteorology-tn.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-meteorology-tn.yml)
 
 ## Analysis:
 

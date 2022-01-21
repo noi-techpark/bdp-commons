@@ -4,6 +4,7 @@ Parking TN datacollector
 Datacollector which takes data regarding parking areas in the Province of Trento, parses it and sends it to the opendatahub.
 Data are provided by FBK (tn.smartcommunitylab.it).
 
+[![CI parking-tn](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-tn.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-tn.yml)
 
 ## Analysis:
 

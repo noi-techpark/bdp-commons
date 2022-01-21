@@ -4,6 +4,7 @@ Meteorology BZ datacollector
 Datacollector which takes data regarding meteorology in the Province of Bolzano, parses it and sends it to the opendatahub.
 Data are provided by Open Data Alto Adige / Suedtirol (in italian language: "http://dati.retecivica.bz.it/it/dataset/misure-meteo-e-idrografiche", in german language: "http://dati.retecivica.bz.it/de/dataset/misure-meteo-e-idrografiche").
 
+[![CI meteorology-bz](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-meteorology-bz.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-meteorology-bz.yml)
 
 ## Analysis:
 

@@ -2,6 +2,8 @@
 
 Application which takes A22 parking data from a web service parses it and sends it to the opendatahub.
 
+[![CI parking-a22](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-a22.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-a22.yml)
+
 ## Table of contents
 
 - [Gettings started](#getting-started)

@@ -6,6 +6,7 @@ The parking device is installed on the bike. This device permit locking and unlo
 
 Data is provided by the Comune di Bolzano trough the platform Axians.
 
+[![CI onstreet-parking-bz](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-onstreet-parking-bz.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-onstreet-parking-bz.yml)
 
 ## Analysis:
 

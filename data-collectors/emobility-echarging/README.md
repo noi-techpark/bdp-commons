@@ -2,6 +2,8 @@ eCharging DataCollector
 ======================
 This data collector takes data from different companies which comply to the same standard, created in the workgroup
 
+[![CI emobility-echarging](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-emobility-echarging.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-emobility-echarging.yml)
+
 ## Prerequisits
 
 - maven for dependency management

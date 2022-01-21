@@ -3,6 +3,8 @@
 
 Application which takes A22 road weather data from a web service parses it and sends it to the opendatahub.
 
+[![CI roadweather-a22](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-roadweather-a22.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-roadweather-a22.yml)
+
 ## Table of contents
 
 - [Gettings started](#getting-started)

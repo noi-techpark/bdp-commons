@@ -8,6 +8,7 @@ It harvests the following data:
 2) Parking slot data from FAMAS
 3) Parking forecast data
 
+[![CI parking-MeBo](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-MeBo.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-MeBo.yml)
 
 ## Setup
 

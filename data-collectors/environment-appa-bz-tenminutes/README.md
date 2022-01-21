@@ -1,5 +1,7 @@
 # Open Data Hub - Data collector for Air Quality Data
 
+[![CI environment-appa-bz-tenminutes](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-bz-tenminutes.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-bz-tenminutes.yml)
+
 This is a **data collector for air-quality** information near South Tyrolean
 streets taken from a SFTP server and provided by APPABZ. We download the
 station details from the [Open Data Portal](http://dati.retecivica.bz.it).

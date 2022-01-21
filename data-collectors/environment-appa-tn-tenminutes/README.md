@@ -1,5 +1,7 @@
 # APPATN ten minutes Data Collector
 
+[![CI environment-appa-tn-tenminutes](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-tn-tenminutes.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-tn-tenminutes.yml)
+
 ## Table of contents
 
 1. [Project overview](#Project-overview)

@@ -1,5 +1,7 @@
 # APPATN Opendata Data Collector
 
+[![CI environment-appa-tn-opendata](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-tn-opendata.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-tn-opendata.yml)
+
 ## Table of contents
 
 1. [Project overview](#Project-overview)

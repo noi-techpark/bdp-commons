@@ -1,11 +1,9 @@
 # Office 365 Spreadsheets DataCollector
 
-# ATTENTION: Sharepoint/AWS S3 bucket synchronization is not working correct
-Timezone error, lasTimeModified dates of S3 and Sharepoint have different timezones, so the sync doesn't work correctly at the moment
-
-
 A data collector to synchronize an Office 365 Worksheet hosted on a Microsoft Sharepoint site, with a Big Data Platform
 using Keycloak.
+
+[![CI spreadsheets-office365](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-spreadsheets-office365.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-spreadsheets-office365.yml)
 
 For Authentication with Microsoft's Services msal4j with certificates is used.  
 All further actions are handled by the Sharepoint REST API.

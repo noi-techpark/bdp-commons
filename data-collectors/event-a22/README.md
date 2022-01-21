@@ -1,5 +1,7 @@
 # A22 Events
 
+[![CI event-a22](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-event-a22.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-event-a22.yml)
+
 Application which takes A22 event data from a web service parses it and sends it
 to the [Open Data Hub](https://opendatahub.bz.it).
 
