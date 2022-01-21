@@ -2,22 +2,8 @@ name: CI meteorology-tn
 
 on:
   push:
-    branches: [development, master]
     paths:
       - "data-collectors/meteorology-tn/**"
-      - "!README.md"
-      - "!data-collectors/meteorology-tn/README.md"
-
-  pull_request:
-    branches: [development, master]
-    paths:
-      - "data-collectors/meteorology-tn/**"
-      - "!README.md"
-      - "!data-collectors/meteorology-tn/README.md"
-
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 jobs:
   build:
@@ -29,7 +15,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '8'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: maven
 
       - name: Test with Maven

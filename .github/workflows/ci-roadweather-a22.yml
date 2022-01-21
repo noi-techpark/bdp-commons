@@ -2,22 +2,8 @@ name: CI roadweather-a22
 
 on:
   push:
-    branches: [development, master]
     paths:
       - "data-collectors/roadweather-a22/**"
-      - "!README.md"
-      - "!data-collectors/roadweather-a22/README.md"
-
-  pull_request:
-    branches: [development, master]
-    paths:
-      - "data-collectors/roadweather-a22/**"
-      - "!README.md"
-      - "!data-collectors/roadweather-a22/README.md"
-
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 jobs:
   build:
@@ -29,7 +15,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '8'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: maven
 
       - name: Test with Maven
