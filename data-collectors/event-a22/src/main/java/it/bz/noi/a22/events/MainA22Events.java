@@ -35,6 +35,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -70,13 +71,13 @@ public class MainA22Events {
     @Autowired
     private A22EventEventsJSONPusher pusher;
     private final String categoryPrefix;
-    private final UUID uuidNamescpace;
+    private final UUID uuidNamespace;
 
     public MainA22Events() {
         this.metadataMappingProperties = new A22Properties("a22eventsmetadatamapping.properties");
         this.a22EventsProperties = new A22Properties("a22events.properties");
         this.categoryPrefix = a22EventsProperties.getProperty("categoryPrefix");
-        this.uuidNamescpace = UUID.fromString(a22EventsProperties.getProperty("uuidNamescpace"));
+        this.uuidNamespace = UUID.fromString(a22EventsProperties.getProperty("uuidNamescpace"));
     }
 
 
@@ -125,8 +126,8 @@ public class MainA22Events {
                     List<EventDto> eventDtoList = new ArrayList<>();
                     for (A22Event event : events) {
                         EventDto eventDto = getEventDtoFromA22Event(event);
-                        if (!inactiveStations.containsKey(eventDto.getId())) {
-                            inactiveStations.put(eventDto.getId(), eventDto);
+                        if (!inactiveStations.containsKey(eventDto.getUuid())) {
+                            inactiveStations.put(eventDto.getUuid(), eventDto);
                             eventDtoList.add(eventDto);
                         }
                     }
@@ -171,9 +172,15 @@ public class MainA22Events {
     public EventDto getEventDtoFromA22Event(A22Event event) throws JsonProcessingException {
         EventDto eventDto = new EventDto();
 
-        eventDto.setId(generateUuid(event));
-        eventDto.setCategory(categoryPrefix + ":" + getMappingStringByPropertyId(STATION_METADATA_IDTIPOEVENTO, event.getIdtipoevento()) + "_" + getMappingStringByPropertyId(STATION_METADATA_IDSOTTOTIPOEVENTO, event.getIdsottotipoevento()));
+        eventDto.setUuidByMap(generateUuidMap(event), uuidNamespace);
         eventDto.setOrigin(a22EventsProperties.getProperty("origin"));
+        eventDto.setCategory(String.format("%s:%s_%s",
+			categoryPrefix,
+			getMappingStringByPropertyId(STATION_METADATA_IDTIPOEVENTO, event.getIdtipoevento()),
+			getMappingStringByPropertyId(STATION_METADATA_IDSOTTOTIPOEVENTO, event.getIdsottotipoevento()
+		)));
+		eventDto.setEventSeriesId(Long.toString(event.getId()));
+		eventDto.setName(Long.toString(event.getId()));
 
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
         Coordinate coordinateInizio = new Coordinate(event.getLon_inizio(), event.getLat_inizio());
@@ -183,14 +190,12 @@ public class MainA22Events {
         eventDto.setWktGeometry(multiPoint.toText());
 
         eventDto.setEventStart(event.getData_inizio() * 1000);
-        eventDto.setEventEnd(event.getData_fine() * 1000);
+        eventDto.setEventEnd(event.getData_fine() == null ? null : event.getData_fine() * 1000);
 
         eventDto.getMetaData().put(STATION_METADATA_ID, event.getId());
         eventDto.getMetaData().put(STATION_METADATA_FASCIA_ORARIA, event.getFascia_oraria());
-        eventDto.getMetaData().put(STATION_METADATA_IDCORSIA,
-                getMappingStringByPropertyId(STATION_METADATA_IDCORSIA, event.getIdcorsia()));
-        eventDto.getMetaData().put(STATION_METADATA_IDDIREZIONE,
-                getMappingStringByPropertyId(STATION_METADATA_IDDIREZIONE, event.getIddirezione()));
+        eventDto.getMetaData().put(STATION_METADATA_IDCORSIA, getMappingStringByPropertyId(STATION_METADATA_IDCORSIA, event.getIdcorsia()));
+        eventDto.getMetaData().put(STATION_METADATA_IDDIREZIONE, getMappingStringByPropertyId(STATION_METADATA_IDDIREZIONE, event.getIddirezione()));
         eventDto.getMetaData().put(STATION_METADATA_METRO_INIZIO, event.getMetro_inizio());
         eventDto.getMetaData().put(STATION_METADATA_METRO_FINE, event.getMetro_fine());
         eventDto.getMetaData().put(STATION_METADATA_IDTIPOEVENTO, event.getIdtipoevento());
@@ -199,8 +204,8 @@ public class MainA22Events {
         return eventDto;
     }
 
-    private String generateUuid(A22Event event) throws JsonProcessingException {
-        HashMap<String, Object> uuidMap = new HashMap<>();
+    private Map<String, Object> generateUuidMap(A22Event event) {
+        Map<String, Object> uuidMap = new HashMap<>();
         uuidMap.put("id", event.getId());
         uuidMap.put("data_inizio", event.getData_inizio());
         uuidMap.put("idtipoevento", event.getIdtipoevento());
@@ -209,11 +214,7 @@ public class MainA22Events {
         uuidMap.put("lon_inizio", event.getLon_inizio());
         uuidMap.put("lat_fine", event.getLat_fine());
         uuidMap.put("lon_fine", event.getLon_fine());
-
-        ObjectMapper mapper = new ObjectMapper();
-        String uuidNameJson = mapper.writer().writeValueAsString(uuidMap);
-
-        return Generators.nameBasedGenerator(uuidNamescpace).generate(uuidNameJson).toString();
+        return uuidMap;
     }
 
     public String getMappingStringByPropertyId(String idProperty, Long id) {
