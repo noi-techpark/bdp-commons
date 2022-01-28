@@ -124,10 +124,14 @@ public class MainA22Events {
                     List<EventDto> eventDtoList = new ArrayList<>();
                     for (A22Event event : events) {
                         EventDto eventDto = getEventDtoFromA22Event(event);
-                        if (!inactiveStations.containsKey(eventDto.getUuid())) {
-                            inactiveStations.put(eventDto.getUuid(), eventDto);
-                            eventDtoList.add(eventDto);
-                        }
+						if (EventDto.isValid(eventDto, false)) {
+							if (!inactiveStations.containsKey(eventDto.getUuid())) {
+								inactiveStations.put(eventDto.getUuid(), eventDto);
+								eventDtoList.add(eventDto);
+							}
+						} else {
+							LOG.warn("The generated eventDto has missing required fields.");
+						}
                     }
                     pusher.addEvents(eventDtoList);
                     lastTimeStamp += scanWindowSeconds;
@@ -145,7 +149,10 @@ public class MainA22Events {
                 List<EventDto> eventDtoList = new ArrayList<>();
                 for (A22Event event : events) {
                     EventDto eventDto = getEventDtoFromA22Event(event);
-                    eventDtoList.add(eventDto);
+					if (EventDto.isValid(eventDto, false))
+						eventDtoList.add(eventDto);
+					else
+						LOG.warn("The generated eventDto has missing required fields.");
                 }
                 pusher.addEvents(eventDtoList);
             } catch (Exception e) {
@@ -199,7 +206,7 @@ public class MainA22Events {
         eventDto.getMetaData().put(STATION_METADATA_IDTIPOEVENTO, event.getIdtipoevento());
         eventDto.getMetaData().put(STATION_METADATA_IDSOTTOTIPOEVENTO, event.getIdsottotipoevento());
 
-        return eventDto;
+		return eventDto;
     }
 
     private Map<String, Object> generateUuidMap(A22Event event) {
