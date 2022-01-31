@@ -177,14 +177,14 @@ public class MainA22Events {
     public EventDto getEventDtoFromA22Event(A22Event event) throws JsonProcessingException {
         EventDto eventDto = new EventDto();
 
-        eventDto.setUuidByMap(generateUuidMap(event), uuidNamespace);
+        eventDto.setUuid(generateEventUuid(event), uuidNamespace);
         eventDto.setOrigin(a22EventsProperties.getProperty("origin"));
         eventDto.setCategory(String.format("%s:%s_%s",
 			categoryPrefix,
 			getMappingStringByPropertyId(STATION_METADATA_IDTIPOEVENTO, event.getIdtipoevento()),
 			getMappingStringByPropertyId(STATION_METADATA_IDSOTTOTIPOEVENTO, event.getIdsottotipoevento()
 		)));
-		eventDto.setEventSeriesId(Long.toString(event.getId()));
+		eventDto.setEventSeriesUuid(generateEventSeriesUuid(event), uuidNamespace);
 		eventDto.setName(Long.toString(event.getId()));
 
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
@@ -209,7 +209,7 @@ public class MainA22Events {
 		return eventDto;
     }
 
-    private Map<String, Object> generateUuidMap(A22Event event) {
+    private Map<String, Object> generateEventUuid(A22Event event) {
         Map<String, Object> uuidMap = new HashMap<>();
         uuidMap.put("id", event.getId());
         uuidMap.put("data_inizio", event.getData_inizio());
@@ -219,6 +219,12 @@ public class MainA22Events {
         uuidMap.put("lon_inizio", event.getLon_inizio());
         uuidMap.put("lat_fine", event.getLat_fine());
         uuidMap.put("lon_fine", event.getLon_fine());
+        return uuidMap;
+    }
+
+    private Map<String, Object> generateEventSeriesUuid(A22Event event) {
+        Map<String, Object> uuidMap = new HashMap<>();
+        uuidMap.put("id", event.getId());
         return uuidMap;
     }
 
