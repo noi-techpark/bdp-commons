@@ -16,7 +16,7 @@
 	<repositories>
 		<repository>
 			<id>maven-repo.opendatahub.bz.it</id>
-			<url>https://maven-repo.opendatahub.bz.it/snapshot</url>
+			<url>https://maven-repo.opendatahub.bz.it/release</url>
 		</repository>
 	</repositories>
 	<dependencies>
