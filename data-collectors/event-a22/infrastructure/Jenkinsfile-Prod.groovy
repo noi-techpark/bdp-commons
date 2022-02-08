@@ -10,8 +10,8 @@ pipeline {
         DOCKER_IMAGE = "755952719952.dkr.ecr.eu-west-1.amazonaws.com/${ARTIFACT_NAME}"
         DOCKER_TAG = "$LIMIT-$BUILD_NUMBER"
         DATACOLLECTORS_CLIENT_SECRET = credentials("keycloak-datacollectors-secret-$LIMIT")
-        KEYCLOAK_URL = "https://auth.opendatahub.testingmachine.eu"
-        WRITER_URL = "https://mobility.share.opendatahub.testingmachine.eu"
+        KEYCLOAK_URL = "https://auth.opendatahub.bz.it"
+        WRITER_URL = "https://mobility.share.opendatahub.bz.it"
         A22_CONNECTOR_URL = "http://webservices.cau-a22.org:8080/A22Data"
         A22_CONNECTOR_USR = "BN5"
         A22_CONNECTOR_PWD = credentials('a22connector_password_bn5')
