@@ -30,9 +30,6 @@ public class MeteoTnDataPusher extends NonBlockingJSONPusher {
 
     private static final Logger LOG = LogManager.getLogger(MeteoTnDataPusher.class.getName());
 
-//    @Autowired
-//    private Environment env;
-
     @Autowired
     private MeteoTnDataConverter converter;
 
@@ -46,8 +43,7 @@ public class MeteoTnDataPusher extends NonBlockingJSONPusher {
 
     @Override
     public String initIntegreenTypology() {
-        String stationType = "MeteoStation";
-        return stationType;
+        return "MeteoStation";
     }
 
     @Override
@@ -84,9 +80,9 @@ public class MeteoTnDataPusher extends NonBlockingJSONPusher {
                 //Check if we already treated this station (branch), if not found create the map and the list of records
                 DataMapDto<RecordDtoImpl> recordsByStation = map.getBranch().get(stationId);
                 if ( recordsByStation == null ) {
-                    recordsByStation = new DataMapDto<RecordDtoImpl>();
+                    recordsByStation = new DataMapDto<>();
                     map.getBranch().put(stationId, recordsByStation);
-                    List<RecordDtoImpl> dataList = new ArrayList<RecordDtoImpl>();
+                    List<RecordDtoImpl> dataList = new ArrayList<>();
                     recordsByStation.setData(dataList);
                     countStations++;
                 }
@@ -103,24 +99,24 @@ public class MeteoTnDataPusher extends NonBlockingJSONPusher {
                         long timestamp = measurementDto.getDate()!=null ? measurementDto.getDate().getTime() : nowTimestamp;
                         Object value = measurementDto.getValue();
 
-                        SimpleRecordDto record = new SimpleRecordDto();
-                        record.setValue(value);
-                        record.setTimestamp(timestamp);
-                        record.setPeriod(period);
+                        SimpleRecordDto rec = new SimpleRecordDto();
+                        rec.setValue(value);
+                        rec.setTimestamp(timestamp);
+                        rec.setPeriod(period);
 
                         //Check if we already treated this type (branch), if not found create the map and the list of records
                         DataMapDto<RecordDtoImpl> recordsByType = recordsByStation.getBranch().get(typeName);
                         if ( recordsByType == null ) {
-                            recordsByType = new DataMapDto<RecordDtoImpl>();
+                            recordsByType = new DataMapDto<>();
                             recordsByStation.getBranch().put(typeName, recordsByType);
-                            List<RecordDtoImpl> dataList = new ArrayList<RecordDtoImpl>();
+                            List<RecordDtoImpl> dataList = new ArrayList<>();
                             recordsByType.setData(dataList);
                             countBranches++;
                         }
 
                         //Add the measure in the list
                         List<RecordDtoImpl> records = recordsByType.getData();
-                        records.add(record);
+                        records.add(rec);
                         countMeasures++;
                         LOG.debug("ADD  MEASURE:  id="+stationDto.getId()+", typeName="+typeName+"  value="+value);
                     }
@@ -144,7 +140,7 @@ public class MeteoTnDataPusher extends NonBlockingJSONPusher {
             return null;
         }
 
-        List<MeteoTnDto> list = new ArrayList<MeteoTnDto>();
+        List<MeteoTnDto> list = new ArrayList<>();
         list.add(data);
         DataMapDto<RecordDtoImpl> map = mapData(list);
 
@@ -185,13 +181,13 @@ public class MeteoTnDataPusher extends NonBlockingJSONPusher {
             return null;
         }
 
-        List<DataTypeDto> dataTypeList = new ArrayList<DataTypeDto>();
-        Set<String> dataTypeNames = new HashSet<String>();
+        List<DataTypeDto> dataTypeList = new ArrayList<>();
+        Set<String> dataTypeNames = new HashSet<>();
         for (MeteoTnDto dto : data) {
             Map<String, DataTypeDto> dataTypes = dto.getDataTypes();
             Set<String> keySet = dataTypes!=null ? dataTypes.keySet() : null;
 
-            if ( keySet!=null && keySet.size()>0 ) {
+            if ( keySet!=null && !keySet.isEmpty() ) {
                 for (String key : keySet) {
                     if ( !dataTypeNames.contains(key) ) {
                         DataTypeDto type = dataTypes.get(key);
@@ -255,7 +251,7 @@ public class MeteoTnDataPusher extends NonBlockingJSONPusher {
             for ( int i=0 ; measurementsByType!=null && i<measurementsByType.size() ; i++ ) {
                 MeteoTnMeasurementListDto measurementListDto = measurementsByType.get(i);
                 List<MeteoTnMeasurementDto> measurements = measurementListDto.getMeasurements();
-                List<MeteoTnMeasurementDto> filteredList = new ArrayList<MeteoTnMeasurementDto>();
+                List<MeteoTnMeasurementDto> filteredList = new ArrayList<>();
                 MeteoTnMeasurementDto lastMeasurementDto = null;
                 for ( int j=0 ; measurements!=null && j<measurements.size() ; j++ ) {
                     MeteoTnMeasurementDto measurementDto = measurements.get(j);

@@ -27,15 +27,15 @@ public class MeteoTnDto implements Serializable {
     }
 
     public MeteoTnDto(StationDto station) {
-        this(station, new HashMap<String, String>());
+        this(station, new HashMap<>());
     }
 
     public MeteoTnDto(StationDto station, Map<String, String> stationAttributes) {
         this.checkLastSavedRecord = true;
         this.station = station;
         this.stationAttributes = stationAttributes;
-        this.dataTypes = new HashMap<String, DataTypeDto>();
-        this.measurementsByType = new ArrayList<MeteoTnMeasurementListDto>();
+        this.dataTypes = new HashMap<>();
+        this.measurementsByType = new ArrayList<>();
     }
 
     public boolean isValid() {

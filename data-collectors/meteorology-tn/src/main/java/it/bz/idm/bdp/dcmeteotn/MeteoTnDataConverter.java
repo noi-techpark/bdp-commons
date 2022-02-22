@@ -80,7 +80,7 @@ public class MeteoTnDataConverter {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("list: "+list);
         }
-        List<MeteoTnDto> extDtoList = new ArrayList<MeteoTnDto>();
+        List<MeteoTnDto> extDtoList = new ArrayList<>();
         if ( list == null ) {
             return extDtoList;
         }
