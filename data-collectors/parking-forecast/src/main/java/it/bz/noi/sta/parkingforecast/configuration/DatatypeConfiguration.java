@@ -10,7 +10,9 @@ public class DatatypeConfiguration {
 
     private String rtype;
 
-	private int period;
+	private Integer period;
+
+	private String property;
 
     public String getKey() {
         return key;
@@ -28,7 +30,11 @@ public class DatatypeConfiguration {
         return rtype;
     }
 
-	public int getPeriod() {
+	public Integer getPeriod() {
 		return period;
+	}
+
+	public String getProperty() {
+		return property;
 	}
 }

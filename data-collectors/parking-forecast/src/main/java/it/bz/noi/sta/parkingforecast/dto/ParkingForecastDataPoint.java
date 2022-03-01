@@ -9,6 +9,7 @@
 
 package it.bz.noi.sta.parkingforecast.dto;
 
+import java.lang.reflect.Field;
 import java.time.ZonedDateTime;
 
 public class ParkingForecastDataPoint {
@@ -17,6 +18,7 @@ public class ParkingForecastDataPoint {
 	private Double lo;
 	private Double mean;
 	private Double hi;
+	private Double rmse;
 
 	public ZonedDateTime getTs() {
 		return ts;
@@ -48,5 +50,22 @@ public class ParkingForecastDataPoint {
 
 	public void setHi(Double hi) {
 		this.hi = hi;
+	}
+
+	public Double getRmse() {
+		return rmse;
+	}
+
+	public void setRmse(Double rmse) {
+		this.rmse = rmse;
+	}
+
+	public Object getProperty(String property) {
+		try {
+			Field field = ParkingForecastDataPoint.class.getDeclaredField(property);
+			return field.get(this);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

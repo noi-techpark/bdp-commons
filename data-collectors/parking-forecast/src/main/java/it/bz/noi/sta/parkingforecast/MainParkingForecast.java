@@ -13,6 +13,7 @@ import it.bz.idm.bdp.dto.*;
 import it.bz.noi.sta.parkingforecast.configuration.DatatypeConfiguration;
 import it.bz.noi.sta.parkingforecast.configuration.DatatypesConfiguration;
 import it.bz.noi.sta.parkingforecast.dto.ParkingForecastDataPoint;
+import it.bz.noi.sta.parkingforecast.dto.ParkingForecastResult;
 import it.bz.noi.sta.parkingforecast.pusher.AbstractParkingForecastJSONPusher;
 import it.bz.noi.sta.parkingforecast.pusher.ParkingSensorJSONPusher;
 import it.bz.noi.sta.parkingforecast.pusher.ParkingStationJSONPusher;
@@ -42,21 +43,24 @@ public class MainParkingForecast {
 	public void execute() {
 		LOG.info("MainParkingForecast execute");
 		try {
-			Map<String, List<ParkingForecastDataPoint>> forecastDataMap = staParkingForecastConnector.getParkingStationTimeseries();
-			LOG.debug("got timeseries about {} stations", forecastDataMap.size());
-
-			ZonedDateTime now = ZonedDateTime.now();
+			ParkingForecastResult parkingForecastResult = staParkingForecastConnector.getParkingForecastResult();
+			LOG.debug("got timeseries about {} stations with publish_timestamp {}, forecast_start_timestamp {}, forecast_period_seconds {}, forecast_duration_hours {}",
+				parkingForecastResult.getStationTimeseriesMap().size(),
+				parkingForecastResult.getPublishTimestamp(),
+				parkingForecastResult.getForecastStartTimestamp(),
+				parkingForecastResult.getForecastPeriodSeconds(),
+				parkingForecastResult.getForecastDurationHours());
 
 			for (AbstractParkingForecastJSONPusher jsonPusher : getAllJsonPusher()) {
 				setupDataType(jsonPusher);
-				exportData(jsonPusher, forecastDataMap, now);
+				exportData(jsonPusher, parkingForecastResult);
 			}
 		} catch (Exception e) {
 			LOG.error("reading parking station timeseries failed ", e);
 		}
 	}
 
-	private void exportData(AbstractParkingForecastJSONPusher jsonPusher, Map<String, List<ParkingForecastDataPoint>> forecastDataMap, ZonedDateTime now) {
+	private void exportData(AbstractParkingForecastJSONPusher jsonPusher, ParkingForecastResult parkingForecastResult) {
 		List<StationDto> stationList = jsonPusher.fetchStations(jsonPusher.initIntegreenTypology(), null);
 		LOG.debug("got {} station with the type of {}", stationList.size(), jsonPusher.initIntegreenTypology());
 
@@ -64,30 +68,39 @@ public class MainParkingForecast {
 
 		int pushDataCount = 0;
 		int skipDataCount = 0;
-		int noDataCount = 0;
+		int stationNoUpdateCount = 0;
+		int stationNoDataCount = 0;
 
 		for (StationDto stationDto : stationList) {
 			String stationCode = stationDto.getId();
-			List<ParkingForecastDataPoint> forecastTimeseries = forecastDataMap.get(stationCode);
+			List<ParkingForecastDataPoint> forecastTimeseries = parkingForecastResult.getStationTimeseriesMap().get(stationCode);
 			if (forecastTimeseries != null) {
-				for (DatatypeConfiguration datatypeConfiguration : datatypesConfiguration.getAllDataTypes()) {
-					ZonedDateTime forecastTstamp = now.plusSeconds(datatypeConfiguration.getPeriod());
-					Optional<ParkingForecastDataPoint> forecastDataPoint = forecastTimeseries.stream().filter(f -> f.getTs().isAfter(forecastTstamp)).sorted((o1, o2) -> o1.getTs().compareTo(o2.getTs())).findFirst();
-					if (forecastDataPoint.isPresent()) {
-						dataMap.addRecord(stationCode, datatypeConfiguration.getKey(),
-							new SimpleRecordDto(now.toEpochSecond() * 1000, forecastDataPoint.get().getMean(), datatypeConfiguration.getPeriod()));
-						pushDataCount++;
-					} else
-						skipDataCount++;
-				}
+				long timestampMillis = parkingForecastResult.getPublishTimestamp().toEpochSecond() * 1000;
+				Date dateOfLastRecord = getDateOfLastRecord(jsonPusher,
+					stationCode,
+					datatypesConfiguration.getAllDataTypes().stream().filter(datatypeConfiguration -> datatypeConfiguration.getProperty().equals("mean")).sorted((o1, o2) -> o1.getPeriod().compareTo(o2.getPeriod())).findFirst().get());
+				if (dateOfLastRecord == null || timestampMillis != dateOfLastRecord.getTime()) {
+					for (DatatypeConfiguration datatypeConfiguration : datatypesConfiguration.getAllDataTypes()) {
+						ZonedDateTime forecastDatatypeTimestamp = parkingForecastResult.getForecastStartTimestamp().plusSeconds(datatypeConfiguration.getPeriod());
+						Optional<ParkingForecastDataPoint> forecastDataPoint = forecastTimeseries.stream().filter(f -> f.getTs().equals(forecastDatatypeTimestamp)).findFirst();
+						Object propertyValue = forecastDataPoint.isPresent()? forecastDataPoint.get().getProperty(datatypeConfiguration.getProperty()): null;
+						if (propertyValue != null) {
+							dataMap.addRecord(stationCode, datatypeConfiguration.getKey(),
+								new SimpleRecordDto(timestampMillis, propertyValue, datatypeConfiguration.getPeriod()));
+							pushDataCount++;
+						} else
+							skipDataCount++;
+					}
+				} else
+					stationNoUpdateCount++;
 			} else
-				noDataCount++;
+				stationNoDataCount++;
 		}
 
 		if (pushDataCount > 0)
 			jsonPusher.pushData(dataMap);
 
-		LOG.debug("{} forecast records pushed, {}  records skipped, {} stations with no forecast data", pushDataCount, skipDataCount, noDataCount);
+		LOG.debug("{} forecast records pushed, {} records skipped, {} stations with no update, {} stations with no forecast data", pushDataCount, skipDataCount, stationNoUpdateCount, stationNoDataCount);
 	}
 
 	private void setupDataType(AbstractParkingForecastJSONPusher jsonPusher) {
@@ -103,7 +116,14 @@ public class MainParkingForecast {
 		jsonPusher.syncDataTypes(dataTypeDtoList);
 	}
 
-	public List<AbstractParkingForecastJSONPusher> getAllJsonPusher() {
+	private List<AbstractParkingForecastJSONPusher> getAllJsonPusher() {
 		return Arrays.asList(parkingSensorJSONPusher, parkingStationJSONPusher);
+	}
+
+	private Date getDateOfLastRecord(AbstractParkingForecastJSONPusher jsonPusher, String stationCode, DatatypeConfiguration datatypeConfiguration) {
+		Object dateOfLastRecord = jsonPusher.getDateOfLastRecord(stationCode, datatypeConfiguration.getKey(), datatypeConfiguration.getPeriod());
+		if (dateOfLastRecord == null)
+			return null;
+		return (Date) dateOfLastRecord;
 	}
 }
