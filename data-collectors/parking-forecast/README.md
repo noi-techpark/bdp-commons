@@ -102,18 +102,36 @@ stationtype.parkingStation=ParkingStation
 stationtype.parkingSensor=ParkingSensor
 ```
 
-* optionally change the data types in the file `src/main/resources/datatypes.properties`.
+* optionally change the data types in the file `src/main/resources/datatypes.json`.
 
-```ini
-parkingForecast30={key: 'PARKING-FORECAST-30', unit: '', description: '30 minutes forecast', rtype: 'Forecast', period: 1800}
-parkingForecast60={key: 'PARKING-FORECAST-60', unit: '', description: '60 minutes forecast', rtype: 'Forecast', period: 3600}
-parkingForecast90={key: 'PARKING-FORECAST-90', unit: '', description: '90 minutes forecast', rtype: 'Forecast', period: 5400}
-parkingForecast120={key: 'PARKING-FORECAST-120', unit: '', description: '120 minutes forecast', rtype: 'Forecast', period: 7200}
-parkingForecast150={key: 'PARKING-FORECAST-150', unit: '', description: '150 minutes forecast', rtype: 'Forecast', period: 9000}
-parkingForecast180={key: 'PARKING-FORECAST-180', unit: '', description: '180 minutes forecast', rtype: 'Forecast', period: 10800}
-parkingForecast210={key: 'PARKING-FORECAST-210', unit: '', description: '210 minutes forecast', rtype: 'Forecast', period: 12600}
-parkingForecast240={key: 'PARKING-FORECAST-240', unit: '', description: '240 minutes forecast', rtype: 'Forecast', period: 14400}
-...
+```json
+[
+	{
+		"key": "PARKING-FORECAST-30",
+		"unit": "",
+		"description": "30 minutes forecast",
+		"rtype": "Forecast",
+		"period": 1800,
+		"property": "mean"
+	},
+	{
+		"key": "PARKING-FORECAST-60",
+		"unit": "",
+		"description": "60 minutes forecast",
+		"rtype": "Forecast",
+		"period": 3600,
+		"property": "mean"
+	},
+	{
+		"key": "PARKING-FORECAST-90",
+		"unit": "",
+		"description": "90 minutes forecast",
+		"rtype": "Forecast",
+		"period": 5400,
+		"property": "mean"
+	},
+	...
+]
 ```
 
 * configure the `log4j.properties` file as desidered

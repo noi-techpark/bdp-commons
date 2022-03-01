@@ -16,6 +16,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.bz.noi.sta.parkingforecast.configuration.ParkingForecstConfiguration;
 import it.bz.noi.sta.parkingforecast.dto.ParkingForecastDataPoint;
+import it.bz.noi.sta.parkingforecast.dto.ParkingForecastResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ParkingForecastConnector {
@@ -41,7 +42,7 @@ public class ParkingForecastConnector {
 	@Autowired
 	private ParkingForecstConfiguration connectorConfiguration;
 
-	public Map<String, List<ParkingForecastDataPoint>> getParkingStationTimeseries() throws IOException {
+	public ParkingForecastResult getParkingForecastResult() throws IOException {
 		HttpURLConnection conn = (HttpURLConnection) (new URL(connectorConfiguration.getEndpoint())).openConnection();
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Accept", "application/json");
@@ -60,17 +61,21 @@ public class ParkingForecastConnector {
 		conn.disconnect();
 
 		// parse response
-
-		Map<String, List<ParkingForecastDataPoint>> output = new HashMap<>();
+		ParkingForecastResult output = new ParkingForecastResult();
 
 		JsonObject timeseries;
 		try {
 			JsonObject jsonObject = new Gson().fromJson(response.toString(), JsonObject.class);
 			timeseries = jsonObject.getAsJsonObject("timeseries");
+
+			output.setPublishTimestamp(extractDate(jsonObject, "publish_timestamp"));
+			output.setForecastStartTimestamp(extractDate(jsonObject, "forecast_start_timestamp"));
+			output.setForecastPeriodSeconds(extractInteger(jsonObject, "forecast_period_seconds"));
+			output.setForecastDurationHours(extractInteger(jsonObject, "forecast_duration_hours"));
 		} catch (Exception e) {
 			// throw an error in case not even the top level element cannot be extracted as expected
 			LOG.warn("---");
-			LOG.warn("getParkingStationTimeseries() ERROR: unparsable response:");
+			LOG.warn("getParkingForecastResult() ERROR: unparsable response:");
 			LOG.warn("vvv");
 			LOG.warn(response.toString());
 			LOG.warn("^^^");
@@ -91,16 +96,17 @@ public class ParkingForecastConnector {
 					forecastDataPoint.setLo(extractDouble(forecastDataPointJson, "lo"));
 					forecastDataPoint.setMean(extractDouble(forecastDataPointJson, "mean"));
 					forecastDataPoint.setHi(extractDouble(forecastDataPointJson, "hi"));
+					forecastDataPoint.setRmse(extractDouble(forecastDataPointJson, "rmse"));
 					forecastDataList.add(forecastDataPoint);
 				}
-				output.put(scode, forecastDataList);
+				output.addStationTimeseries(scode, forecastDataList);
 
 			} catch (Exception e) {
 
 				// null pointer, cast or number format exception in case the json hasn't the expected form
 				// or has incompatible data types: log and skip the record
 				LOG.warn("---");
-				LOG.warn("getParkingStationTimeseries() ERROR: skipping unparsable record:");
+				LOG.warn("getParkingForecastResult() ERROR: skipping unparsable record:");
 				LOG.warn("vvv");
 				LOG.warn(timeseries.get(scode).toString());
 				LOG.warn("^^^");
@@ -111,7 +117,7 @@ public class ParkingForecastConnector {
 			}
 		}
 
-		LOG.debug("getParkingStationTimeseries() OK: got data about " + output.size() + " stations, " + skipped + " skipped");
+		LOG.debug("getParkingForecastResult() OK: got data about " + output.getStationTimeseriesMap().size() + " stations, " + skipped + " skipped");
 
 		return output;
 
@@ -124,10 +130,22 @@ public class ParkingForecastConnector {
 		return ret.getAsDouble();
 	}
 
+	public static Integer extractInteger(JsonObject jsonObject, String prop) {
+		JsonElement ret = jsonObject.get(prop);
+		if (ret == null || ret.isJsonNull())
+			return null;
+		return ret.getAsInt();
+	}
+
 	public static ZonedDateTime extractDate(JsonObject jsonObject, String prop) {
 		JsonElement ret = jsonObject.get(prop);
 		if (ret == null || ret.isJsonNull())
 			return null;
-		return ZonedDateTime.parse(ret.getAsString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssVV"));
+		DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+			.appendPattern("yyyy-MM-dd HH:mm:ss")
+			.appendFraction(ChronoField.MICRO_OF_SECOND, 0, 9, true)
+			.appendZoneOrOffsetId()
+			.toFormatter();
+		return ZonedDateTime.parse(ret.getAsString(), formatter);
 	}
 }
