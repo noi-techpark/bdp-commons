@@ -34,6 +34,14 @@ To build the project, the following prerequisites must be met:
 - [Maven](https://maven.apache.org/) 3.x
 - The [Open Data Hub Mobility Writer](https://github.com/noi-techpark/bdp-core)
   (aka Big Data Platform Core) installed
+- [Credentials](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Credentials)
+  - to get the ODH writer token
+  - to connect to the A22 endpoint
+
+**Important note about A22 logins**: The session will last 24 hours unless
+de-authenticated before - however, if a user deauthenticates one session, all
+sessions of the same user will be de-authenticated; this means each running
+application neeeds their own username
 
 ### Source code
 
@@ -79,9 +87,6 @@ mvn tomcat:run \
 ```bash
 mvn tomcat:run
 ```
-
-Credentials needed? See
-[here](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Credentials).
 
 ## Deployment
 
