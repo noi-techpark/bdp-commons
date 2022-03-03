@@ -42,7 +42,7 @@ public class A22TrafficJSONPusher extends NonBlockingJSONPusher{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"),  origin);
+		return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"),  origin);
 	}
 
 }
