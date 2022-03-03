@@ -3,6 +3,7 @@ package it.bz.noi.a22elaborations;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,16 +13,16 @@ import org.apache.commons.io.IOUtils;
 
 public class Utility
 {
+	private Utility() {}
 
-	static String readResourceText(Class relativeTo, String name) throws IOException
+	static String readResourceText(Class<?> relativeTo, String name) throws IOException
 	{
-		InputStream in = (InputStream) relativeTo.getResourceAsStream(name);
+		InputStream in = relativeTo.getResourceAsStream(name);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		IOUtils.copy(in, out);
 		in.close();
 		out.close();
-		String result = new String(out.toByteArray(), "utf-8");
-		return result;
+		return new String(out.toByteArray(), StandardCharsets.UTF_8);
 	}
 
 	public static Connection createConnection() throws IOException, SQLException

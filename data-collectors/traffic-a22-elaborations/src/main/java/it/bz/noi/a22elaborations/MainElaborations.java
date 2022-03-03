@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -39,24 +40,19 @@ public class MainElaborations
 	}
 
 	private static Logger log = LogManager.getLogger(MainElaborations.class);
-	
+
 	@Autowired
 	private A22TrafficJSONPusher pusher;
-	
+
 	@Autowired
 	private SyncStation syncStation;
-	
+
 	@Autowired
 	private SyncDatatype syncDataType;
 
 	@PostConstruct
-	private void init() {
-		try {
-			Class.forName("org.postgresql.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+	private void init() {}
+
 	public void execute()
 	{
 		try
@@ -107,7 +103,7 @@ public class MainElaborations
 				{
 					log.debug("elaborating station: " + station.getName() + " window from: " + new java.sql.Timestamp(lastTimestamp).toString()
 					+ " to: " + new java.sql.Timestamp(lastTimestamp + winStepLength.length).toString());
-					ArrayList<Vehicle> vehicles = readWindow(lastTimestamp, lastTimestamp + winStepLength.length,
+					List<Vehicle> vehicles = readWindow(lastTimestamp, lastTimestamp + winStepLength.length,
 							stationcode, connection);
 
 					log.debug("Vehicles in window " + vehicles.size());
@@ -147,7 +143,7 @@ public class MainElaborations
 	 * saves all calculations in bdp-core
 	 *
 	 */
-	private void saveMeasurementAndCalculation(StationDto station, ArrayList<Vehicle> vehicles, long lastTimestamp, long windowLength)
+	private void saveMeasurementAndCalculation(StationDto station, List<Vehicle> vehicles, long lastTimestamp, long windowLength)
 	{
 		DataMapDto<RecordDtoImpl> dataMapDto = new DataMapDto<>();
 
@@ -174,20 +170,20 @@ public class MainElaborations
 			}
 
 			Timestamp timestamp = new Timestamp(lastTimestamp /* + windowLength / 2 */);
-			SimpleRecordDto record = new SimpleRecordDto(timestamp.getTime(), classCount.getValue(),
+			SimpleRecordDto rec = new SimpleRecordDto(timestamp.getTime(), classCount.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
 
 			log.debug("Save "+classCount.getKey()+" vehicles: " + classCount.getValue());
-			dataMapDto.addRecord(station.getId(), classCount.getKey(), record);
+			dataMapDto.addRecord(station.getId(), classCount.getKey(), rec);
 
 		}
 
 		equivalentVehicles = nrLightVehicles + 2.5 * (nrHeavyVehicles + nrBuses);
 		Timestamp timestamp = new Timestamp(lastTimestamp /* + windowLength / 2 */);
-		SimpleRecordDto record = new SimpleRecordDto(timestamp.getTime(), equivalentVehicles,
+		SimpleRecordDto rec = new SimpleRecordDto(timestamp.getTime(), equivalentVehicles,
 				(int) (windowLength / 1000), System.currentTimeMillis());
 		log.debug("Save "+SyncDatatype.NR_EQUIVALENT_VEHICLES+" vehicles: " + equivalentVehicles);
-		dataMapDto.addRecord(station.getId(), SyncDatatype.NR_EQUIVALENT_VEHICLES, record);
+		dataMapDto.addRecord(station.getId(), SyncDatatype.NR_EQUIVALENT_VEHICLES, rec);
 
 		Map<String, Double> classAvgSpeeds = createClassAvgSpeeds(vehicles);
 
@@ -229,15 +225,15 @@ public class MainElaborations
 
 	/**
 	 * create averages for different vehicle classes
-	 * 
+	 *
 	 * @param vehicles
 	 * @param equivalentVehicles
 	 * @return map of average for each vehicle class
 	 */
-	private Map<String, Double> createClassAvgs(ArrayList<Vehicle> vehicles, double equivalentVehicles,
+	private Map<String, Double> createClassAvgs(List<Vehicle> vehicles, double equivalentVehicles,
 			long windowLength)
 	{
-		Map<String, Double> classCounts = new HashMap<String, Double>();
+		Map<String, Double> classCounts = new HashMap<>();
 
 		double gapSum = 0;
 		double headwaySum = 0;
@@ -260,7 +256,7 @@ public class MainElaborations
 		double averageFlow = equivalentVehicles * 3600 * 1000 / windowLength;
 		double averageGap = NULL_VALUE;
 
-		if (vehicles.size() > 0)
+		if (! vehicles.isEmpty())
 		{
 			avgHeadway = headwaySum / vehicles.size();
 			// meanSpacing = meanSpacing / vehicles.size();
@@ -268,7 +264,7 @@ public class MainElaborations
 			// averageFlow = (1/avgHeadway)*3600;
 
 			double averageSpeed = speedSum / vehicles.size();
-			averageDensity = averageFlow / averageSpeed;
+			averageDensity = averageSpeed == 0 ? 0 : (averageFlow / averageSpeed);
 			averageGap = gapSum / vehicles.size();
 		}
 
@@ -281,15 +277,15 @@ public class MainElaborations
 
 	/**
 	 * creates speed variance of each vehicle class
-	 * 
+	 *
 	 * @param vehicles
 	 * @param classAvgSpeeds
 	 * @return map of each vehicles class with the speed variance
 	 */
-	private static Map<String, Double> createClassVarSpeeds(ArrayList<Vehicle> vehicles,
+	private static Map<String, Double> createClassVarSpeeds(List<Vehicle> vehicles,
 			Map<String, Double> classAvgSpeeds)
 	{
-		Map<String, Double> classCounts = new HashMap<String, Double>();
+		Map<String, Double> classCounts = new HashMap<>();
 
 		double speedSumLight = 0.0;
 		double speedSumHeavy = 0.0;
@@ -347,13 +343,13 @@ public class MainElaborations
 
 	/**
 	 * create for every vehicle class average speed
-	 * 
+	 *
 	 * @param vehicles
 	 * @return map of vehicle class with average speed
 	 */
-	private static Map<String, Double> createClassAvgSpeeds(ArrayList<Vehicle> vehicles)
+	private static Map<String, Double> createClassAvgSpeeds(List<Vehicle> vehicles)
 	{
-		Map<String, Double> classCounts = new HashMap<String, Double>();
+		Map<String, Double> classCounts = new HashMap<>();
 
 		double speedSumLight = 0.0;
 		double speedSumHeavy = 0.0;
@@ -409,14 +405,14 @@ public class MainElaborations
 
 	/**
 	 * read all vehicles in interval
-	 * 
+	 *
 	 * @param from_ts
 	 * @param to_ts
 	 * @return list of vehicle objects
-	 * @throws SQLException 
-	 * @throws IOException 
+	 * @throws SQLException
+	 * @throws IOException
 	 */
-	public ArrayList<Vehicle> readWindow(long from_ts, long to_ts, String stationcode, Connection connection)
+	public List<Vehicle> readWindow(long from_ts, long to_ts, String stationcode, Connection connection)
 			throws SQLException, IOException
 	{
 		ArrayList<Vehicle> vehicles = new ArrayList<>();
@@ -482,13 +478,13 @@ public class MainElaborations
 
 	/**
 	 * create vehicle counts for every vehicle class
-	 * 
+	 *
 	 * @param vehicles
 	 * @return map of vehicles classes and count
 	 */
-	public static Map<String, Integer> createVehicleCounts(ArrayList<Vehicle> vehicles)
+	public static Map<String, Integer> createVehicleCounts(List<Vehicle> vehicles)
 	{
-		Map<String, Integer> classCounts = new HashMap<String, Integer>();
+		Map<String, Integer> classCounts = new HashMap<>();
 		classCounts.put(SyncDatatype.NR_LIGHT_VEHICLES, 0);
 		classCounts.put(SyncDatatype.NR_HEAVY_VEHICLES, 0);
 		classCounts.put(SyncDatatype.NR_BUSES, 0);
