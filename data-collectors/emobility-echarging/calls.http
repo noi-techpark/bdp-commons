@@ -1,0 +1,7 @@
+### ALPERIA
+# Not https (just port 80)
+@hostalperia=http://api.alperia-emobility.eu
+
+###
+GET {{hostalperia}}/e-mobility/api/v3/chargingunits?includePartners=false
+X-Caller-ID: NOI-Techpark
