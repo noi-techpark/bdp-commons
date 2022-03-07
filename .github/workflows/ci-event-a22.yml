@@ -77,8 +77,7 @@ jobs:
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2
         with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
-          docker-compose-file: infrastructure/docker-compose.build.yml
+          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
           docker-username: ${{ github.actor }}
           docker-password: ${{ secrets.GITHUB_TOKEN }}
 
