@@ -85,7 +85,7 @@ jobs:
       - name: Deploy application
         uses: noi-techpark/github-actions/docker-deploy@v2
         with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
+          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
           hosts: 'test'
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           docker-username: 'noi-techpark-bot'
