@@ -8,7 +8,7 @@ on:
 env:
   WORKING_DIRECTORY: data-collectors/event-a22
   PROJECT_NAME: odh-mobility-dc-event-a22
-  DOCKER_IMAGE: docker.pkg.github.com/${{ github.repository }}/${{ github.event.repository.name }}-event-a22
+  DOCKER_IMAGE: docker.pkg.github.com/${{ github.repository }}/odh-mobility-dc-event-a22
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
 
