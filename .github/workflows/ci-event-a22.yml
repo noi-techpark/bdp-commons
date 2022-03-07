@@ -2,8 +2,8 @@ name: CI event-a22
 
 on:
   push:
-    paths:
-      - "data-collectors/event-a22/**"
+    #paths:
+    #  - "data-collectors/event-a22/**"
 
 env:
   WORKING_DIRECTORY: data-collectors/event-a22
