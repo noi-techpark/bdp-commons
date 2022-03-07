@@ -5,20 +5,85 @@ on:
     paths:
       - "data-collectors/event-a22/**"
 
+env:
+  WORKING_DIRECTORY: data-collectors/event-a22
+  PROJECT_NAME: odh-mobility-dc-event-a22
+  DOCKER_IMAGE: docker.pkg.github.com/${{ github.repository }}/${{ github.event.repository.name }}-${{ env.PROJECT_NAME }}
+  DOCKER_TAG: ${{ github.sha }}
+  JAVA_VERSION: '8'
+
 jobs:
-  build:
+
+  # Test
+  test:
     runs-on: ubuntu-20.04
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 8
-        uses: actions/setup-java@v2
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      - name: Test code
+        uses: noi-techpark/github-actions/maven-test@v2
         with:
-          java-version: '8'
-          distribution: 'temurin'
-          cache: maven
+          java-version: ${{ env.JAVA_VERSION }}
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+          test-command: 'mvn -B -U clean test'
 
-      - name: Test with Maven
-        run: cd data-collectors/event-a22 && mvn -B -U clean compile test
+  # Deploy Test
+  deploy-test:
+    runs-on: ubuntu-20.04
+    if: github.ref == 'refs/heads/cdtest'
+    needs: test
+    concurrency: deploy-test
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      - name: Create .env file
+        uses: noi-techpark/github-actions/env-file@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+        env:
+          # General deployment options
+          X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
+          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
+          X_JAVA_OPTIONS: -Xms128m -Xmx512m
 
-  
+          # Open Data Hub Writer Connectivity
+          X_KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
+          X_authorizationUri: ${{ env.X_KEYCLOAK_URL}}/auth
+          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+          X_clientId: odh-mobility-datacollector
+          X_clientName: odh-mobility-datacollector
+          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET }}
+          X_scope: openid
+          X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
+
+          # Logging
+          X_LOG_LEVEL: "info"
+          X_provenance_name: ${{ env.PROJECT_NAME }}
+          X_provenance_version: ${{ github.sha }}
+
+          # Data Origin Configuration
+          A22_CONNECTOR_URL: http://webservices.cau-a22.org:8080/A22Data
+          A22_CONNECTOR_USR: BN5
+          A22_CONNECTOR_PWD: ${{ secrets.A22_CONNECTOR_BN5_PASSWORD }}
+
+      - name: Build project
+        uses: noi-techpark/github-actions/maven-build@v2
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          build-command: 'mvn -B clean package -DfinalName=ROOT'
+
+      - name: Build and push images
+        uses: noi-techpark/github-actions/docker-build-and-push@v2
+        with:
+          docker-username: ${{ github.actor }}
+          docker-password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy application
+        uses: noi-techpark/github-actions/docker-deploy@v2
+        with:
+          hosts: 'test'
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          docker-username: 'noi-techpark-bot'
+          docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          project-name: ${{ env.PROJECT_NAME }}
