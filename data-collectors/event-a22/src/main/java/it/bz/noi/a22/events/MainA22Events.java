@@ -15,8 +15,8 @@ import it.bz.idm.bdp.dto.EventDto;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class MainA22Events {
     private static final String STATION_METADATA_METRO_INIZIO = "metro_fine";
     private static final String STATION_METADATA_METRO_FINE = "metro_inizio";
 
-    private static Logger LOG = LogManager.getLogger(MainA22Events.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MainA22Events.class);
 
     private final A22Properties metadataMappingProperties;
     private final A22Properties a22EventsProperties;
@@ -89,7 +90,7 @@ public class MainA22Events {
                 this.metadataMappingProperties.setProperty(METADTA_PREFIX + STATION_METADATA_IDSOTTOTIPOEVENTO + "." + idSottotipo, descrizione);
             }
         } catch (Exception e) {
-            LOG.error("Unable to parse sottotipi evneti csv file");
+            LOG.error("Unable to parse sottotipi eventi csv file");
             throw new RuntimeException(e);
         }
     }
@@ -130,7 +131,8 @@ public class MainA22Events {
 								eventDtoList.add(eventDto);
 							}
 						} else {
-							LOG.warn("The generated eventDto has missing required fields.");
+							LOG.warn("The generated eventDto has missing required fields or an invalid interval range");
+							LOG.warn("EVENTDTO {}", eventDto);
 						}
                     }
                     pusher.addEvents(eventDtoList);
@@ -163,7 +165,7 @@ public class MainA22Events {
             A22Service.close();
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.error(e);
+            LOG.error(Arrays.toString(e.getStackTrace()));
         } finally {
             long stopTime = System.currentTimeMillis();
             LOG.debug("elaboration time (millis): " + (stopTime - startTime));

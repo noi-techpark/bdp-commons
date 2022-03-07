@@ -9,16 +9,16 @@
 
 package it.bz.noi.a22.events;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class A22Properties extends Properties {
 
-    private static Logger log = LogManager.getLogger(A22Properties.class);
+    private static final Logger LOG = LoggerFactory.getLogger(A22Properties.class);
 
     public A22Properties(String propertiesFile) {
         try {
@@ -27,7 +27,7 @@ public class A22Properties extends Properties {
                 this.load(in);
             }
         } catch (Exception e) {
-            log.error(e);
+            LOG.error(e.toString());
         }
     }
 }

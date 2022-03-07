@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder">
+			<fieldNames>
+				<version>[ignore]</version>
+				<logger>[ignore]</logger>
+				<thread>[ignore]</thread>
+			</fieldNames>
+			<customFields>{"application":"${provenance_name:-DCTEST}","application_version":"${provenance_version:-0000}"}</customFields>
+		</encoder>
+	</appender>
+	<root level="${LOG_LEVEL:-INFO}">
+		<appender-ref ref="jsonConsoleAppender"/>
+	</root>
+
+</configuration>
