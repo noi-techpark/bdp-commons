@@ -117,11 +117,11 @@ public class MainA22Events {
                 long lastTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22EventsProperties.getProperty("lastTimestamp")).getTime() / 1000;
 
                 do {
-                    LOG.debug("Get all events between {} and {}",
+                    LOG.info("Get all events between {} and {}",
                             Instant.ofEpochSecond(lastTimeStamp).atZone(ZoneId.systemDefault()).toLocalDate(),
                             Instant.ofEpochSecond(lastTimeStamp + scanWindowSeconds).atZone(ZoneId.systemDefault()).toLocalDate());
                     List<A22Event> events = A22Service.getEvents(lastTimeStamp, lastTimeStamp + scanWindowSeconds);
-                    LOG.debug("got " + events.size() + " events");
+                    LOG.info("got " + events.size() + " events");
                     List<EventDto> eventDtoList = new ArrayList<>();
                     for (A22Event event : events) {
                         EventDto eventDto = getEventDtoFromA22Event(event);
@@ -147,7 +147,7 @@ public class MainA22Events {
             LOG.info("step 3: fetch and print all current events (\"eventi/lista/attivi\")");
             try {
                 List<A22Event> events = A22Service.getEvents(null, null);
-                LOG.debug("got " + events.size() + " events");
+                LOG.info("got " + events.size() + " events");
                 List<EventDto> eventDtoList = new ArrayList<>();
                 for (A22Event event : events) {
                     EventDto eventDto = getEventDtoFromA22Event(event);
@@ -168,7 +168,7 @@ public class MainA22Events {
             LOG.error(Arrays.toString(e.getStackTrace()));
         } finally {
             long stopTime = System.currentTimeMillis();
-            LOG.debug("elaboration time (millis): " + (stopTime - startTime));
+            LOG.info("elaboration time (millis): " + (stopTime - startTime));
         }
     }
 
