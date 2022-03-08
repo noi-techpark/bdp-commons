@@ -49,11 +49,11 @@ jobs:
 
           # Open Data Hub Writer Connectivity
           X_KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
-          X_authorizationUri: ${{ env.X_KEYCLOAK_URL }}/auth
-          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+          X_authorizationUri: ${X_KEYCLOAK_URL}/auth
+          X_tokenUri: $X_KEYCLOAK_URL/auth/realms/noi/protocol/openid-connect/token
           X_clientId: odh-mobility-datacollector
           X_clientName: odh-mobility-datacollector
-          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET }}
+          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
           X_scope: openid
           X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
@@ -91,12 +91,12 @@ jobs:
           docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           project-name: ${{ env.PROJECT_NAME }}
 
-  # Deploy Test
-  deploy-test:
+  # Deploy Production
+  deploy-prod:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/cdtest'
+    if: github.ref == 'refs/heads/prod'
     needs: test
-    concurrency: deploy-test
+    concurrency: deploy-prod
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
@@ -112,14 +112,14 @@ jobs:
           X_JAVA_OPTIONS: -Xms128m -Xmx512m
 
           # Open Data Hub Writer Connectivity
-          X_KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
+          X_KEYCLOAK_URL: https://auth.opendatahub.bz.it
           X_authorizationUri: $X_KEYCLOAK_URL/auth
           X_tokenUri: ${X_KEYCLOAK_URL}/auth/realms/noi/protocol/openid-connect/token
           X_clientId: odh-mobility-datacollector
           X_clientName: odh-mobility-datacollector
-          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET }}
+          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
           X_scope: openid
-          X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
+          X_BASE_URI: https://mobility.share.opendatahub.bz.it/json
 
           # Logging
           X_LOG_LEVEL: "info"
