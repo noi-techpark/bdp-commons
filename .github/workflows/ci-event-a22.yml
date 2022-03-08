@@ -2,8 +2,9 @@ name: CI/CD event-a22
 
 on:
   push:
-    #paths:
-    #  - "data-collectors/event-a22/**"
+    paths:
+      - "data-collectors/event-a22/**"
+      - ".github/workflows/ci-event-a22.yml"
 
 env:
   WORKING_DIRECTORY: data-collectors/event-a22
@@ -30,7 +31,7 @@ jobs:
   # Deploy Test
   deploy-test:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/cdtest'
+    if: github.ref == 'refs/heads/main'
     needs: test
     concurrency: deploy-test
     env:
@@ -98,6 +99,8 @@ jobs:
     if: github.ref == 'refs/heads/prod'
     needs: test
     concurrency: deploy-prod
+    env:
+      KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
@@ -113,9 +116,8 @@ jobs:
           X_JAVA_OPTIONS: -Xms128m -Xmx512m
 
           # Open Data Hub Writer Connectivity
-          X_KEYCLOAK_URL: https://auth.opendatahub.bz.it
-          X_authorizationUri: $X_KEYCLOAK_URL/auth
-          X_tokenUri: ${X_KEYCLOAK_URL}/auth/realms/noi/protocol/openid-connect/token
+          X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
+          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
           X_clientId: odh-mobility-datacollector
           X_clientName: odh-mobility-datacollector
           X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
