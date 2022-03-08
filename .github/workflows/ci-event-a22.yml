@@ -156,3 +156,4 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           docker-username: 'noi-techpark-bot'
           docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          project-name: ${{ env.PROJECT_NAME }}
