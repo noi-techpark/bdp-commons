@@ -1,11 +1,10 @@
 package it.bz.noi.a22elaborations;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,15 +28,15 @@ public class SyncDatatype
 	static final String AVERAGE_DENSITY = "Average Density";
 	static final String AVERAGE_FLOW = "Average Flow";
 
-	private static Logger log = LogManager.getLogger(SyncDatatype.class);
-	
+	private static Logger LOG = LoggerFactory.getLogger(SyncDatatype.class);
+
 	@Autowired
 	private A22TrafficJSONPusher pusher;
 
 	/**
 	 * Saves all data types to the bdp-core
 	 */
-	public void saveDatatypes() throws IOException
+	public void saveDatatypes()
 	{
 
 		List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
@@ -82,9 +81,9 @@ public class SyncDatatype
 	/*
 	 * Method used only for development/debugging
 	 */
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
 	{
-		log.info("Start MainSaveDatatype");
+		LOG.info("Start MainSaveDatatype");
 		//saveDatatypes();
 	}
 

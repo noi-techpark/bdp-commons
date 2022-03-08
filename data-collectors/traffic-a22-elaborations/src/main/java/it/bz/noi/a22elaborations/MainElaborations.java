@@ -16,8 +16,8 @@ import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +39,7 @@ public class MainElaborations
 		int length;
 	}
 
-	private static Logger log = LogManager.getLogger(MainElaborations.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MainElaborations.class);
 
 	@Autowired
 	private A22TrafficJSONPusher pusher;
@@ -50,6 +50,9 @@ public class MainElaborations
 	@Autowired
 	private SyncDatatype syncDataType;
 
+	@Autowired
+	private Utility utility;
+
 	@PostConstruct
 	private void init() {}
 
@@ -57,19 +60,19 @@ public class MainElaborations
 	{
 		try
 		{
-			log.debug("Start MainElaborations");
+			LOG.debug("Start MainElaborations");
 
-			log.debug("Sync datatypes");
+			LOG.debug("Sync datatypes");
 			syncDataType.saveDatatypes();
 
-			log.debug("Create connection");
-			Connection connection = Utility.createConnection();
+			LOG.debug("Create connection");
+			Connection connection = utility.getConnection();
 
-			log.debug("Sync stations");
+			LOG.debug("Sync stations");
 			StationList stations = syncStation.saveStations(connection);
-			log.debug("Length stationList: "  + stations.size());
+			LOG.debug("Length stationList: "  + stations.size());
 
-			log.debug("Read elaboration properties");
+			LOG.debug("Read elaboration properties");
 			WindowStepLength winStepLength = readElaborationProperties();
 
 			long now = System.currentTimeMillis();
@@ -78,12 +81,12 @@ public class MainElaborations
 			{
 
 				String stationcode = station.getId();
-				log.debug("Stationcode: " + stationcode);
+				LOG.debug("Stationcode: " + stationcode);
 				// System.out.println(stationcode);
 				// System.out.println(station.getName());
 
 				long lastTimestamp = ((java.util.Date) pusher.getDateOfLastRecord(stationcode, null, null)).getTime();
-				log.debug("Timestamp of last record: " +  lastTimestamp);
+				LOG.debug("Timestamp of last record: " +  lastTimestamp);
 				if (lastTimestamp <= 0)
 				{
 					Calendar calendar = Calendar.getInstance();
@@ -101,13 +104,13 @@ public class MainElaborations
 				// loop over the windows
 				while (lastTimestamp + winStepLength.length < now) // loop until the window is entirely in the past
 				{
-					log.debug("elaborating station: " + station.getName() + " window from: " + new java.sql.Timestamp(lastTimestamp).toString()
+					LOG.debug("elaborating station: " + station.getName() + " window from: " + new java.sql.Timestamp(lastTimestamp).toString()
 					+ " to: " + new java.sql.Timestamp(lastTimestamp + winStepLength.length).toString());
 					List<Vehicle> vehicles = readWindow(lastTimestamp, lastTimestamp + winStepLength.length,
 							stationcode, connection);
 
-					log.debug("Vehicles in window " + vehicles.size());
-					log.debug("Save measurement and calculations");
+					LOG.debug("Vehicles in window " + vehicles.size());
+					LOG.debug("Save measurement and calculations");
 					saveMeasurementAndCalculation(station, vehicles, lastTimestamp, winStepLength.length);
 
 					lastTimestamp = lastTimestamp + winStepLength.step;
@@ -115,26 +118,25 @@ public class MainElaborations
 			}
 			connection.close();
 		}
-		catch (Exception exxx )
+		catch (Exception exxx)
 		{
-			log.error(exxx);
 			throw new IllegalStateException(exxx);
 		}
-		log.debug("Finish writing.");
+		LOG.debug("Finish writing.");
 	}
 
 	private WindowStepLength readElaborationProperties() throws IOException
 	{
 		try (InputStream in = getClass().getResourceAsStream("elaborations.properties"))
 		{
-			log.debug("Elaboration properties: ");
+			LOG.debug("Elaboration properties: ");
 			Properties prop = new Properties();
 			prop.load(in);
 			WindowStepLength result = new WindowStepLength();
 			result.length = Integer.parseInt(prop.getProperty("windowLength"));
-			log.debug("Window length: " + result.length);
+			LOG.debug("Window length: " + result.length);
 			result.step = Integer.parseInt(prop.getProperty("step"));
-			log.debug("Step: " + result.step);
+			LOG.debug("Step: " + result.step);
 			return result;
 		}
 	}
@@ -147,7 +149,7 @@ public class MainElaborations
 	{
 		DataMapDto<RecordDtoImpl> dataMapDto = new DataMapDto<>();
 
-		log.debug("Create vehicle classes");
+		LOG.debug("Create vehicle classes");
 		Map<String, Integer> classCounts = createVehicleCounts(vehicles);
 
 		double equivalentVehicles;
@@ -173,7 +175,7 @@ public class MainElaborations
 			SimpleRecordDto rec = new SimpleRecordDto(timestamp.getTime(), classCount.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
 
-			log.debug("Save "+classCount.getKey()+" vehicles: " + classCount.getValue());
+			LOG.debug("Save "+classCount.getKey()+" vehicles: " + classCount.getValue());
 			dataMapDto.addRecord(station.getId(), classCount.getKey(), rec);
 
 		}
@@ -182,7 +184,7 @@ public class MainElaborations
 		Timestamp timestamp = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 		SimpleRecordDto rec = new SimpleRecordDto(timestamp.getTime(), equivalentVehicles,
 				(int) (windowLength / 1000), System.currentTimeMillis());
-		log.debug("Save "+SyncDatatype.NR_EQUIVALENT_VEHICLES+" vehicles: " + equivalentVehicles);
+		LOG.debug("Save "+SyncDatatype.NR_EQUIVALENT_VEHICLES+" vehicles: " + equivalentVehicles);
 		dataMapDto.addRecord(station.getId(), SyncDatatype.NR_EQUIVALENT_VEHICLES, rec);
 
 		Map<String, Double> classAvgSpeeds = createClassAvgSpeeds(vehicles);
@@ -192,7 +194,7 @@ public class MainElaborations
 			Timestamp timestampAvgSpeed = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 			SimpleRecordDto recordAvgSpeed = new SimpleRecordDto(timestampAvgSpeed.getTime(), classAvgSpeed.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
-			log.debug("Save avg speed: " + classAvgSpeed.getValue());
+			LOG.debug("Save avg speed: " + classAvgSpeed.getValue());
 			dataMapDto.addRecord(station.getId(), classAvgSpeed.getKey(), recordAvgSpeed);
 		}
 
@@ -203,7 +205,7 @@ public class MainElaborations
 			Timestamp timestampVarSpeed = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 			SimpleRecordDto recordVarSpeed = new SimpleRecordDto(timestampVarSpeed.getTime(), classVarSpeed.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
-			log.debug("Save speed variance "+classVarSpeed.getKey()+": " + classVarSpeed.getValue());
+			LOG.debug("Save speed variance "+classVarSpeed.getKey()+": " + classVarSpeed.getValue());
 			dataMapDto.addRecord(station.getId(), classVarSpeed.getKey(), recordVarSpeed);
 		}
 
@@ -214,7 +216,7 @@ public class MainElaborations
 			Timestamp timestampAvg = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 			SimpleRecordDto recordAvg = new SimpleRecordDto(timestampAvg.getTime(), classAvg.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
-			log.debug("Save "+classAvg.getKey()+": " + classAvg.getValue());
+			LOG.debug("Save "+classAvg.getKey()+": " + classAvg.getValue());
 			dataMapDto.addRecord(station.getId(), classAvg.getKey(), recordAvg);
 
 		}
@@ -421,55 +423,57 @@ public class MainElaborations
 
 		String anomalies = Utility.readResourceText(MainElaborations.class, "save-anomalies.sql");
 
-		PreparedStatement ps_anomalies = connection.prepareStatement(anomalies);
-
-		PreparedStatement ps = connection.prepareStatement(query);
-		ps.setLong(1, from_ts / 1000);
-		ps.setLong(2, to_ts / 1000);
-		ps.setString(3, stationcode);
-		ResultSet resultSet = ps.executeQuery();
-		while (resultSet.next())
-		{
-			Vehicle vehicle = new Vehicle(resultSet.getString("stationCode"), resultSet.getLong("timestamp"),
-					resultSet.getDouble("distance"), resultSet.getDouble("headway"), resultSet.getDouble("length"),
-					resultSet.getInt("axles"), resultSet.getBoolean("against_traffic"), resultSet.getInt("class"),
-					resultSet.getDouble("speed"), resultSet.getInt("direction"), resultSet.getDouble("vmed_50"),
-					resultSet.getBoolean("classe_1_avg"), resultSet.getBoolean("classe_1_count"),
-					resultSet.getBoolean("classe_2_avg"), resultSet.getBoolean("classe_2_count"),
-					resultSet.getBoolean("classe_3_avg"), resultSet.getBoolean("classe_3_count"),
-					resultSet.getBoolean("classe_4_avg"), resultSet.getBoolean("classe_4_count"),
-					resultSet.getBoolean("classe_5_avg"), resultSet.getBoolean("classe_5_count"),
-					resultSet.getBoolean("classe_6_avg"), resultSet.getBoolean("classe_6_count"),
-					resultSet.getBoolean("classe_7_avg"), resultSet.getBoolean("classe_7_count"),
-					resultSet.getBoolean("classe_8_avg"), resultSet.getBoolean("classe_8_count"),
-					resultSet.getBoolean("classe_9_avg"), resultSet.getBoolean("classe_9_count"),
-					resultSet.getInt("nr_classes_count"), resultSet.getInt("nr_classes_avg"));
-
-			if (vehicle.getNr_classes_count() != 1 || vehicle.getNr_classes_avg() != 1)
+		try (
+			PreparedStatement ps_anomalies = connection.prepareStatement(anomalies);
+			PreparedStatement ps = connection.prepareStatement(query);
+		) {
+			ps.setLong(1, from_ts / 1000);
+			ps.setLong(2, to_ts / 1000);
+			ps.setString(3, stationcode);
+			ResultSet resultSet = ps.executeQuery();
+			while (resultSet.next())
 			{
-				// save into anomalies
-				ps_anomalies.setString(1, vehicle.getStationcode());
-				ps_anomalies.setLong(2, vehicle.getTimestamp());
-				ps_anomalies.setDouble(3, vehicle.getDistance());
-				ps_anomalies.setDouble(4, vehicle.getHeadway());
-				ps_anomalies.setDouble(5, vehicle.getLength());
-				ps_anomalies.setInt(6, vehicle.getAxles());
-				ps_anomalies.setBoolean(7, vehicle.isAgainst_traffic());
-				ps_anomalies.setInt(8, vehicle.getClass_nr());
-				ps_anomalies.setDouble(9, vehicle.getSpeed());
-				ps_anomalies.setInt(10, vehicle.getDirection());
+				Vehicle vehicle = new Vehicle(resultSet.getString("stationCode"), resultSet.getLong("timestamp"),
+						resultSet.getDouble("distance"), resultSet.getDouble("headway"), resultSet.getDouble("length"),
+						resultSet.getInt("axles"), resultSet.getBoolean("against_traffic"), resultSet.getInt("class"),
+						resultSet.getDouble("speed"), resultSet.getInt("direction"), resultSet.getDouble("vmed_50"),
+						resultSet.getBoolean("classe_1_avg"), resultSet.getBoolean("classe_1_count"),
+						resultSet.getBoolean("classe_2_avg"), resultSet.getBoolean("classe_2_count"),
+						resultSet.getBoolean("classe_3_avg"), resultSet.getBoolean("classe_3_count"),
+						resultSet.getBoolean("classe_4_avg"), resultSet.getBoolean("classe_4_count"),
+						resultSet.getBoolean("classe_5_avg"), resultSet.getBoolean("classe_5_count"),
+						resultSet.getBoolean("classe_6_avg"), resultSet.getBoolean("classe_6_count"),
+						resultSet.getBoolean("classe_7_avg"), resultSet.getBoolean("classe_7_count"),
+						resultSet.getBoolean("classe_8_avg"), resultSet.getBoolean("classe_8_count"),
+						resultSet.getBoolean("classe_9_avg"), resultSet.getBoolean("classe_9_count"),
+						resultSet.getInt("nr_classes_count"), resultSet.getInt("nr_classes_avg"));
 
-				ps_anomalies.executeUpdate();
-			}
+				if (vehicle.getNr_classes_count() != 1 || vehicle.getNr_classes_avg() != 1)
+				{
+					// save into anomalies
+					ps_anomalies.setString(1, vehicle.getStationcode());
+					ps_anomalies.setLong(2, vehicle.getTimestamp());
+					ps_anomalies.setDouble(3, vehicle.getDistance());
+					ps_anomalies.setDouble(4, vehicle.getHeadway());
+					ps_anomalies.setDouble(5, vehicle.getLength());
+					ps_anomalies.setInt(6, vehicle.getAxles());
+					ps_anomalies.setBoolean(7, vehicle.isAgainst_traffic());
+					ps_anomalies.setInt(8, vehicle.getClass_nr());
+					ps_anomalies.setDouble(9, vehicle.getSpeed());
+					ps_anomalies.setInt(10, vehicle.getDirection());
 
-			// 2019-07-24 d@vide.bz: this case is happen. check the anomalies table to understand why.
-			// if (vehicle.getNr_classes_avg() == 1 && vehicle.getNr_classes_count() != 1)
-			//    throw new IllegalStateException("Illegal condition?");
+					ps_anomalies.executeUpdate();
+				}
 
-			// if this vehicle can at least be used for count then add it for processing!
-			if (vehicle.getNr_classes_count() == 1)
-			{
-				vehicles.add(vehicle);
+				// 2019-07-24 d@vide.bz: this case is happen. check the anomalies table to understand why.
+				// if (vehicle.getNr_classes_avg() == 1 && vehicle.getNr_classes_count() != 1)
+				//    throw new IllegalStateException("Illegal condition?");
+
+				// if this vehicle can at least be used for count then add it for processing!
+				if (vehicle.getNr_classes_count() == 1)
+				{
+					vehicles.add(vehicle);
+				}
 			}
 		}
 
