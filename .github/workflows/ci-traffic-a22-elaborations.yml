@@ -60,7 +60,8 @@ jobs:
           X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
           # Logging
-          X_LOG_LEVEL: "info"
+          X_LOG_LEVEL: info
+          X_LOG_STYLE: json
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
@@ -127,7 +128,8 @@ jobs:
           X_BASE_URI: https://mobility.share.opendatahub.bz.it/json
 
           # Logging
-          X_LOG_LEVEL: "info"
+          X_LOG_LEVEL: info
+          X_LOG_STYLE: json
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
