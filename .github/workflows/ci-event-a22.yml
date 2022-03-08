@@ -49,7 +49,7 @@ jobs:
 
           # Open Data Hub Writer Connectivity
           X_KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
-          X_authorizationUri: ${{ env.X_KEYCLOAK_URL}}/auth
+          X_authorizationUri: ${{ env.X_KEYCLOAK_URL }}/auth
           X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
           X_clientId: odh-mobility-datacollector
           X_clientName: odh-mobility-datacollector
@@ -63,9 +63,9 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Data Origin Configuration
-          A22_CONNECTOR_URL: http://webservices.cau-a22.org:8080/A22Data
-          A22_CONNECTOR_USR: BN5
-          A22_CONNECTOR_PWD: ${{ secrets.A22_CONNECTOR_BN5_PASSWORD }}
+          X_A22_CONNECTOR_URL: http://webservices.cau-a22.org:8080/A22Data
+          X_A22_CONNECTOR_USR: ${{ secrets.EVENT_A22_TEST_CONNECTOR_USR }}
+          X_A22_CONNECTOR_PWD: ${{ secrets.EVENT_A22_TEST_CONNECTOR_PWD }}
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
