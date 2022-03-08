@@ -49,8 +49,8 @@ jobs:
 
           # Open Data Hub Writer Connectivity
           X_KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
-          X_authorizationUri: ${X_KEYCLOAK_URL}/auth
-          X_tokenUri: $X_KEYCLOAK_URL/auth/realms/noi/protocol/openid-connect/token
+          X_authorizationUri: ${{ X_KEYCLOAK_URL }}/auth
+          X_tokenUri: ${{ env.X_KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
           X_clientId: odh-mobility-datacollector
           X_clientName: odh-mobility-datacollector
           X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
@@ -72,7 +72,7 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
           java-version: ${{ env.JAVA_VERSION }}
-          build-command: 'mvn -B clean package -DfinalName=ROOT'
+          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
 
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2
@@ -136,7 +136,7 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
           java-version: ${{ env.JAVA_VERSION }}
-          build-command: 'mvn -B clean package -DfinalName=ROOT'
+          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
 
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2
