@@ -54,7 +54,13 @@ public class MainElaborations
 	private Utility utility;
 
 	@PostConstruct
-	private void init() {}
+	private void init() {
+		try {
+			Class.forName("org.postgresql.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void execute()
 	{
