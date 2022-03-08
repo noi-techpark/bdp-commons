@@ -33,6 +33,8 @@ jobs:
     if: github.ref == 'refs/heads/cdtest'
     needs: test
     concurrency: deploy-test
+    env:
+      KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
@@ -48,9 +50,8 @@ jobs:
           X_JAVA_OPTIONS: -Xms128m -Xmx512m
 
           # Open Data Hub Writer Connectivity
-          X_KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
-          X_authorizationUri: ${{ X_KEYCLOAK_URL }}/auth
-          X_tokenUri: ${{ env.X_KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+          X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
+          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
           X_clientId: odh-mobility-datacollector
           X_clientName: odh-mobility-datacollector
           X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
