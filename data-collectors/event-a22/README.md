@@ -48,7 +48,7 @@ application neeeds their own username
 Get a copy of the repository:
 
 ```bash
-git clone git clone https://github.com/noi-techpark/bdp-commons
+git clone https://github.com/noi-techpark/bdp-commons
 ```
 
 Change directory:
@@ -129,7 +129,7 @@ a22_events.metadata.iddirezione.*=Non definito
 ...
 ```
 
-* configure the `log4j.properties` file as desidered
+* configure the `logback.xml` file as desidered
 
 * create the war executing the following command
 
