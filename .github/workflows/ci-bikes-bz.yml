@@ -58,7 +58,7 @@ jobs:
           X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
           X_scope: openid
           X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
-  
+
           # Logging
           X_LOG_LEVEL: info
           X_LOG_STYLE: json
@@ -66,6 +66,7 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Data Origin Configuration
+          X_endpoint_defaultUri: ${{ secrets.BIKES_BZ_ENDPOINT }}
           X_CRON_STATION_SYNC: "0 2 6 * * *"
           X_CRON_TYPE_SYNC: "0 0 0 * * 0"
           X_CRON_HISTORY_SYNC: "0 3 6 * * *"
@@ -132,6 +133,7 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Data Origin Configuration
+          X_endpoint_defaultUri: ${{ secrets.BIKES_BZ_ENDPOINT }}
           X_CRON_STATION_SYNC: "0 2 6 * * *"
           X_CRON_TYPE_SYNC: "0 0 0 * * 0"
           X_CRON_HISTORY_SYNC: "0 3 6 * * *"
