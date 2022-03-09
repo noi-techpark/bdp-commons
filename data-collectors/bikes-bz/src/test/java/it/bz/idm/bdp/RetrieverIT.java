@@ -16,8 +16,6 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,15 +29,13 @@ import it.bz.idm.bdp.dto.StationList;
 
 @ContextConfiguration(locations = { "/META-INF/spring/applicationContext*.xml" })
 public class RetrieverIT extends AbstractJUnit4SpringContextTests{
-	
-	private Logger logger = LogManager.getLogger(RetrieverIT.class); 
-	
+
 	@Autowired
 	private DataParser parser;
-	
+
 	@Autowired
 	private HistoryRetriever historyRetriever;
-	
+
 	@Test
 	public void testRetrieveStations(){
 		StationList stations = parser.retrieveStations();
@@ -49,7 +45,7 @@ public class RetrieverIT extends AbstractJUnit4SpringContextTests{
 			assertNotNull(station.getId());
 		}
 	}
-	
+
 	@Test
 	public void testRetrieveDataTpyes(){
 		List<DataTypeDto> retrieveDataTypes = parser.retrieveDataTypes();
@@ -77,7 +73,7 @@ public class RetrieverIT extends AbstractJUnit4SpringContextTests{
 			}
 		}
 	}
-	
+
 	@Test
 	public void testHistoryData() {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -111,7 +107,7 @@ public class RetrieverIT extends AbstractJUnit4SpringContextTests{
 		} finally {
 		}
 	}
-	
+
 	@Test
 	public void testFetchNewestExistingDate() {
 		Date fetchNewestExistingDate = historyRetriever.fetchNewestExistingDate();

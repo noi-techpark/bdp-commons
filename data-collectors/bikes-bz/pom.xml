@@ -9,7 +9,7 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>5.2.12.RELEASE</spring.version>
+		<spring.version>5.3.16</spring.version>
 		<cxf.version>3.4.2</cxf.version>
 		<finalName>ROOT</finalName>
 	</properties>
@@ -23,7 +23,12 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>5.4.1</version>
+			<version>7.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.11</version>
 		</dependency>
 		<!-- General dependencies for standard applications -->
 		<dependency>
@@ -32,17 +37,14 @@
 			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.17.1</version>
-		</dependency>
+		<!-- This is to fix a "Cannot be cast to javax.servlet.Filter" severe error -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>net.sf.flexjson</groupId>
 			<artifactId>flexjson</artifactId>
@@ -95,7 +97,7 @@
 		<dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-ws-core</artifactId>
-			<version>3.0.0.RELEASE</version>
+			<version>3.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -118,7 +120,7 @@
 		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
-			<version>2.12.0</version>
+			<version>2.12.2</version>
 		</dependency>
 
 		<dependency>
@@ -129,7 +131,7 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.5</version>
+			<version>1.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -205,7 +207,7 @@
 					<dependency>
 						<groupId>xerces</groupId>
 						<artifactId>xercesImpl</artifactId>
-						<version>2.12.0</version>
+						<version>2.12.2</version>
 					</dependency>
 				</dependencies>
 			</plugin>

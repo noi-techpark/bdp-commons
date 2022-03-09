@@ -34,7 +34,7 @@ public class DataParser {
 
 	@Autowired
 	private SoapClient client;
-	
+
 	@Value("${stationtype:BikeCounter}")
 	private String stationtype;
 
@@ -48,17 +48,17 @@ public class DataParser {
 		for (int num : client.getStationIdentifiers()) {
 			GetMetadataStationResult metaData = client.getStationMetaData(num);
 			for (Sensore sensor : metaData.getSensori().getSensore()) {
-			StationDto stationDto = new StationDto();
-			stationDto.setId(buildStationId(Integer.toString(num), Integer.toString(sensor.getSensorId())));
-			stationDto.setName(metaData.getNome() +" - " + sensor.getDescrizione());
-			stationDto.setLatitude(metaData.getLatit());
-			stationDto.setLongitude(metaData.getLongit());
-			stationDto.setOrigin(DATA_ORIGIN);
-			stationDto.setStationType(stationtype);
-			stationDto.getMetaData().put("city", metaData.getCitta());
-			stationDto.getMetaData().put("phone", metaData.getTelefono());
-			stationDto.getMetaData().put("notes", metaData.getNotes());
-			stations.add(stationDto);
+				StationDto stationDto = new StationDto();
+				stationDto.setId(buildStationId(Integer.toString(num), Integer.toString(sensor.getSensorId())));
+				stationDto.setName(metaData.getNome() +" - " + sensor.getDescrizione());
+				stationDto.setLatitude(metaData.getLatit());
+				stationDto.setLongitude(metaData.getLongit());
+				stationDto.setOrigin(DATA_ORIGIN);
+				stationDto.setStationType(stationtype);
+				stationDto.getMetaData().put("city", metaData.getCitta());
+				stationDto.getMetaData().put("phone", metaData.getTelefono());
+				stationDto.getMetaData().put("notes", metaData.getNotes());
+				stations.add(stationDto);
 			}
 		}
 		return stations;
@@ -68,12 +68,12 @@ public class DataParser {
 	 * @return a list of simple types
 	 */
 	public List<DataTypeDto> retrieveDataTypes() {
-		Set<DataTypeDto> types = new HashSet<DataTypeDto>();
+		Set<DataTypeDto> types = new HashSet<>();
 		types.add(new DataTypeDto(VEHICLE_COUNT_TYPE, null, null, "Count"));
-		return new ArrayList<DataTypeDto>(types);
+		return new ArrayList<>(types);
 	}
 	public DataMapDto<RecordDtoImpl> retrieveLiveData() {
-		DataMapDto<RecordDtoImpl> map = new DataMapDto<RecordDtoImpl>();
+		DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
 		for (int num : client.getStationIdentifiers()) {
 			try {
 				List<XmlRwData> currentData = client.getCurrentData(num);
@@ -82,7 +82,7 @@ public class DataParser {
 				for (XmlRwData rawdata : currentData) {
 					GregorianCalendar calendar = rawdata.getTs().toGregorianCalendar();
 					calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-					Double value = Integer.valueOf(rawdata.getTotale()).doubleValue();
+					Double value = Double.valueOf(rawdata.getTotale());
 					String idAsString = Integer.toString(num);
 					long timestamp = calendar.getTimeInMillis();
 					SimpleRecordDto dto = new SimpleRecordDto();
@@ -95,17 +95,16 @@ public class DataParser {
 					list.add(dto);
 				}
 			} catch (IllegalStateException ie) {
-				continue;
+				/* ignore */
 			} catch (Exception ex) {
 				ex.printStackTrace();
-				continue;
 			}
 		}
 		return map;
 	}
 	public DataMapDto<RecordDtoImpl> retrieveHistoricData(XMLGregorianCalendar from,
 			XMLGregorianCalendar to) {
-		DataMapDto<RecordDtoImpl> map = new DataMapDto<RecordDtoImpl>();
+		DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
 		List<Integer> stationIdentifiers = client.getStationIdentifiers();
 		for (int num : stationIdentifiers) {
 			try {
@@ -128,10 +127,8 @@ public class DataParser {
 				}
 			} catch (IllegalStateException ie) {
 				ie.printStackTrace();
-				continue;
 			} catch (Exception ex) {
 				ex.printStackTrace();
-				continue;
 			}
 		}
 		map.clean();
@@ -148,7 +145,7 @@ public class DataParser {
 		DataMapDto<RecordDtoImpl> currentRecordMapDto = typeLevelMap.getBranch().get(typeDefinition);
 		List<RecordDtoImpl> list = currentRecordMapDto != null ? currentRecordMapDto.getData() : null;
 		if (list == null) {
-			list = new ArrayList<RecordDtoImpl>();
+			list = new ArrayList<>();
 			DataMapDto<RecordDtoImpl> recordMapDto = new DataMapDto<>();
 			recordMapDto.setData(list);
 			typeLevelMap.getBranch().put(typeDefinition, recordMapDto);
@@ -160,7 +157,7 @@ public class DataParser {
 			String stationDefiniton) {
 		DataMapDto<RecordDtoImpl> stationMap = data.getBranch().get(stationDefiniton);
 		if (stationMap == null) {
-			stationMap = new DataMapDto<RecordDtoImpl>();
+			stationMap = new DataMapDto<>();
 			data.getBranch().put(stationDefiniton, stationMap);
 		}
 		return stationMap;
@@ -183,7 +180,7 @@ public class DataParser {
 			buffer.append(":");
 			buffer.append(sensorId);
 		}
-		
+
 		return buffer != null ? buffer.toString() : null;
 	}
 

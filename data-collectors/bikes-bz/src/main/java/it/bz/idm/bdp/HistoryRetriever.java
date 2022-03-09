@@ -17,8 +17,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -42,7 +42,8 @@ public class HistoryRetriever {
 
 	@Autowired
 	public Environment environment;
-	private Logger logger = LogManager.getLogger(HistoryRetriever.class);
+
+	private static final Logger LOG = LoggerFactory.getLogger(HistoryRetriever.class);
 
 	/*retrieve all history data from a given point in time and push it to the bdp */
 	public void getHistory(LocalDateTime newestDateMidnight) {
@@ -52,7 +53,8 @@ public class HistoryRetriever {
 		if (newestDateMidnight == null || manualDate.isAfter(newestDateMidnight))
 			newestDateMidnight = manualDate;
 		try {
-			XMLGregorianCalendar from = null, to = null;
+			XMLGregorianCalendar from = null;
+			XMLGregorianCalendar to = null;
 			GregorianCalendar cal = new GregorianCalendar();
 			Duration duration = DatatypeFactory.newInstance().newDuration(TIME_INTERVAL);
 			while (newestDateMidnight.isBefore(LocalDateTime.now())) {
@@ -60,12 +62,12 @@ public class HistoryRetriever {
 				from = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 				to = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 				to.add(duration);
-				logger.debug("About To request Data");
+				LOG.debug("About To request Data");
 				Long now = new Date().getTime();
 				DataMapDto<RecordDtoImpl> dataMapDto = parser.retrieveHistoricData(from, to);
-				logger.debug("3rd party took" + (new Date().getTime() - now) / 1000 + " s");
+				LOG.debug("3rd party took" + (new Date().getTime() - now) / 1000 + " s");
 				bdpClient.pushData(dataMapDto);
-				logger.debug("Data sent");
+				LOG.debug("Data sent");
 				newestDateMidnight = LocalDateTime
 						.ofInstant(Instant.ofEpochMilli(to.toGregorianCalendar().getTimeInMillis()), ZoneOffset.UTC);
 			}
@@ -83,17 +85,17 @@ public class HistoryRetriever {
 	}
 
 	public Date fetchNewestExistingDate() {
-		logger.debug("Start fetching newest records for all stations");
+		LOG.debug("Start fetching newest records for all stations");
 		List<Date> dateList = new ArrayList<>();
 		List<StationDto> fetchStations = bdpClient.fetchStations(BikeCountPusher.STATIONTYPE_IDENTIFIER,
 				DataParser.DATA_ORIGIN);
-		logger.debug("Number of fetched stations" + fetchStations.size());
+		LOG.debug("Number of fetched stations" + fetchStations.size());
 		for (StationDto dto : fetchStations) {
 			Date hui = new Date();
 			Date dateOfLastRecord = (Date) bdpClient.getDateOfLastRecord(dto.getId(), null, null);
 			if (dateOfLastRecord != null)
 				dateList.add(dateOfLastRecord);
-			logger.debug("Querry took" + (new Date().getTime() - hui.getTime()));
+			LOG.debug("Querry took" + (new Date().getTime() - hui.getTime()));
 		}
 		Collections.sort(dateList);
 		return dateList.isEmpty() ? null : dateList.get(dateList.size() - 1);

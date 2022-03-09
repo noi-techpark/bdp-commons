@@ -14,10 +14,10 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
@@ -30,7 +30,7 @@ import org.tempuri.xmlresponewebservice.GetMetadataStationResult;
 @ContextConfiguration(locations = { "/META-INF/spring/applicationContext*.xml" })
 public class ThirdPartyIT extends AbstractJUnit4SpringContextTests{
 
-	private Logger logger = LogManager.getLogger(ThirdPartyIT.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ThirdPartyIT.class);
 
 	@Autowired
 	private SoapClient soapClient;
@@ -58,7 +58,7 @@ public class ThirdPartyIT extends AbstractJUnit4SpringContextTests{
 			}
 		}
 		if (!failedRequests.isEmpty()){
-			logger.debug("metadata requests failed for station ids:" + Arrays.toString(failedRequests.toArray()));
+			LOG.debug("metadata requests failed for station ids:" + Arrays.toString(failedRequests.toArray()));
 		}
 		assertTrue(failedRequests.isEmpty());
 	}
@@ -79,9 +79,9 @@ public class ThirdPartyIT extends AbstractJUnit4SpringContextTests{
 				continue;
 			}
 		}
-		logger.debug("Total number of records"+size);
+		LOG.debug("Total number of records"+size);
 		if (!failedRequests.isEmpty()){
-			logger.debug("getData requests failed for station ids:" + Arrays.toString(failedRequests.toArray()));
+			LOG.debug("getData requests failed for station ids:" + Arrays.toString(failedRequests.toArray()));
 		}
 		assertTrue(failedRequests.isEmpty());
 	}
@@ -107,10 +107,10 @@ public class ThirdPartyIT extends AbstractJUnit4SpringContextTests{
 				assertNotNull(data);
 				truesize++;
 			}
-			logger.debug("station works: " + station + "and contains " + truesize + "records");
+			LOG.debug("station works: " + station + "and contains " + truesize + "records");
 			}
 			catch(Exception ex){
-				logger.debug("station works not: " + station);
+				LOG.debug("station works not: " + station);
 				continue;
 			}
 		}
