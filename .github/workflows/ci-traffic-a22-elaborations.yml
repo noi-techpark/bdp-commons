@@ -72,6 +72,8 @@ jobs:
           X_A22DB_PORT: 5432
           X_A22DB_DBNAME: a22db
 
+          X_SCHEDULER_CRON: 0 0/10 * * * ?
+
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
         with:
@@ -139,6 +141,8 @@ jobs:
           X_A22DB_HOST: a22db.co90ybcr8iim.eu-west-1.rds.amazonaws.com
           X_A22DB_PORT: 5432
           X_A22DB_DBNAME: a22db
+
+          X_SCHEDULER_CRON: 0 0/10 * * * ?
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
