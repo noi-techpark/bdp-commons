@@ -29,11 +29,11 @@ jobs:
           test-command: 'mvn -B -U clean test'
 
   # Deploy Test
-  deploy-test:
+  deploy-test-vms-a22:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
     needs: test
-    concurrency: deploy-test
+    concurrency: deploy-test-vms-a22
     env:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
@@ -97,11 +97,11 @@ jobs:
           project-name: ${{ env.PROJECT_NAME }}
 
   # Deploy Production
-  deploy-prod:
+  deploy-prod-vms-a22:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/prod'
     needs: test
-    concurrency: deploy-prod
+    concurrency: deploy-prod-vms-a22
     env:
       KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:

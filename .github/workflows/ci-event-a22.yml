@@ -29,11 +29,11 @@ jobs:
           test-command: 'mvn -B -U clean test'
 
   # Deploy Test
-  deploy-test:
+  deploy-test-a22-event:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
     needs: test
-    concurrency: deploy-test
+    concurrency: deploy-test-a22-event
     env:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
@@ -61,13 +61,14 @@ jobs:
 
           # Logging
           X_LOG_LEVEL: "info"
+          X_LOG_STYLE: json
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
           # Data Origin Configuration
           X_A22_CONNECTOR_URL: http://webservices.cau-a22.org:8080/A22Data
-          X_A22_CONNECTOR_USR: ${{ secrets.EVENT_A22_TEST_CONNECTOR_USR }}
-          X_A22_CONNECTOR_PWD: ${{ secrets.EVENT_A22_TEST_CONNECTOR_PWD }}
+          X_A22_CONNECTOR_USR: BT5
+          X_A22_CONNECTOR_PWD: ${{ secrets.A22_BT5_PWD }}
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -94,11 +95,11 @@ jobs:
           project-name: ${{ env.PROJECT_NAME }}
 
   # Deploy Production
-  deploy-prod:
+  deploy-prod-event-a22:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/prod'
     needs: test
-    concurrency: deploy-prod
+    concurrency: deploy-prod-event-a22
     env:
       KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:
@@ -126,13 +127,14 @@ jobs:
 
           # Logging
           X_LOG_LEVEL: "info"
+          X_LOG_STYLE: json
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
           # Data Origin Configuration
           X_A22_CONNECTOR_URL: http://webservices.cau-a22.org:8080/A22Data
-          X_A22_CONNECTOR_USR: ${{ secrets.EVENT_A22_PROD_CONNECTOR_USR }}
-          X_A22_CONNECTOR_PWD: ${{ secrets.EVENT_A22_PROD_CONNECTOR_PWD }}
+          X_A22_CONNECTOR_USR: BN5
+          X_A22_CONNECTOR_PWD: ${{ secrets.A22_BN5_PWD }}
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
