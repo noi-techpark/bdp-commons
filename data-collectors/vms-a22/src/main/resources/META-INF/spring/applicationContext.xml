@@ -10,6 +10,6 @@
     <bean class="it.bz.noi.a22.vms.MainA22Sign" id="jobScheduler"/>
     <task:scheduler id="Scheduler" pool-size="10" />
     <task:scheduled-tasks scheduler="Scheduler">
-        <task:scheduled ref="jobScheduler" method="execute"  cron="0 */5 * * * ?" /> <!-- Every day at 1pm -->
+        <task:scheduled ref="jobScheduler" method="execute"  cron="${SCHEDULER_CRON:*/10 * * * * ?}" /> <!-- Every 10 seconds for development -->
     </task:scheduled-tasks>
 </beans>

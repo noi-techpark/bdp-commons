@@ -13,13 +13,15 @@ import org.junit.Test;
 public class MappingTest {
 
     private StreetSignalsImporter importer = new StreetSignalsImporter();
-    
+
     @Test
     public void testMapStreetCodes() throws IOException {
         List<Object> streetCodes = importer.getStreetCodes();
         assertNotNull(streetCodes);
         assertFalse(streetCodes.size() == 0);
         assertTrue(streetCodes.get(0) instanceof Map<?, ?>);
+
+		@SuppressWarnings("unchecked")
         Map<String,Object> lastEntry = (Map<String, Object>) streetCodes.get(streetCodes.size()-1);
         assertNotNull(lastEntry.get("id"));
     }

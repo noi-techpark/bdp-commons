@@ -13,9 +13,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class StreetSignalsImporter {
-    
+
     public List<Object> getStreetCodes() throws IOException{
-        List<Object> inputList = new ArrayList<Object>();
+        List<Object> inputList = new ArrayList<>();
         InputStream stream = getClass().getResourceAsStream("streetcodes.csv");
         BufferedReader br = null;
         br = new BufferedReader(new InputStreamReader(stream));
@@ -23,8 +23,8 @@ public class StreetSignalsImporter {
         br.close();
         return inputList;
     }
-    private Function<String,Object> mapperFunction = (csvLine) -> {
-        Map<String, Object> codes = new HashMap<String, Object>();
+    private Function<String,Object> mapperFunction = csvLine -> {
+        Map<String, Object> codes = new HashMap<>();
         String [] fields = csvLine.split(";");
         if (fields.length > 0)
             codes.put("id",fields[0]);

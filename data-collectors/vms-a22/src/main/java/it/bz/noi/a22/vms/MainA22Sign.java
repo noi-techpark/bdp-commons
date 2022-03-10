@@ -10,9 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -23,15 +26,25 @@ import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
 @Component
+@Configuration
+@PropertySource("classpath:it/bz/noi/a22/vms/a22connector.properties")
 public class MainA22Sign
 {
-	
-	private static Logger log = LogManager.getLogger(MainA22Sign.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MainA22Sign.class);
+
+    @Value("${a22url}")
+    private String a22ConnectorURL;
+
+    @Value("${a22user}")
+    private String a22ConnectorUsr;
+
+    @Value("${a22password}")
+    private String a22ConnectorPwd;
 
 	private final A22Properties datatypesProperties;
 	private final A22Properties a22stationProperties;
 	private HashMap<String, Long> signIdLastTimestampMap;
-	
+
 	@Autowired
 	private A22SignJSONPusher pusher;
 	private StreetSignalsImporter signalsUtil = new StreetSignalsImporter();
@@ -39,7 +52,6 @@ public class MainA22Sign
 	public MainA22Sign() {
 		this.datatypesProperties = new A22Properties("a22vmsdatatypes.properties");
 		this.a22stationProperties = new A22Properties("a22sign.properties");
-
 	}
 
 	public void execute()
@@ -47,8 +59,7 @@ public class MainA22Sign
 		long startTime = System.currentTimeMillis();
 		try
 		{
-			log.info("Start A22SignMain");
-
+			LOG.info("Start A22SignMain");
 
 			long nowSeconds = System.currentTimeMillis() / 1000;
 
@@ -62,14 +73,14 @@ public class MainA22Sign
 			DataMapDto<RecordDtoImpl> esposizioniDataMapDto = new DataMapDto<>();
 			DataMapDto<RecordDtoImpl> statoDataMapDto = new DataMapDto<>();
 
-			ArrayList<HashMap<String, String>> signs = a22Service.getSigns();
-			log.debug("got " + signs.size() + " signs");
+			List<HashMap<String, String>> signs = a22Service.getSigns();
+			LOG.debug("got " + signs.size() + " signs");
 			for (int i = 0; i < signs.size(); i++)
 			{
 				HashMap<String, String> sign = signs.get(i);
 
 				String sign_id = sign.get("id");
-				log.debug("sign_id: " + sign_id);
+				LOG.debug("sign_id: " + sign_id);
 				String sign_descr = sign.get("descr");
 				String road = sign.get("road");
 				String direction_id = sign.get("direction_id");
@@ -82,23 +93,21 @@ public class MainA22Sign
 
 				long lastTimestampSeconds = getLastTimestampOfSignInSeconds(pusher, road + ":" + sign_id);
 
-				ArrayList<HashMap<String, Object>> events = a22Service.getEvents(lastTimestampSeconds, nowSeconds,
+				List<HashMap<String, Object>> events = a22Service.getEvents(lastTimestampSeconds, nowSeconds,
 						Long.parseLong(sign_id));
-				log.debug("got " + events.size() + " events");
+				LOG.debug("got " + events.size() + " events");
 				for (HashMap<String, Object> event : events)
 				{
-					String event_id = (String) event.get("id");
 					String event_timestamp = (String) event.get("timestamp");
 
 					HashMap<String, SimpleRecordDto> esposizioneByComponentId = new HashMap<>();
 					HashMap<String, SimpleRecordDto> statoByComponentId = new HashMap<>();
 
-					ArrayList<HashMap<String, Object>> components_pages = (ArrayList<HashMap<String, Object>>) event
-							.get("component");
+					@SuppressWarnings("unchecked")
+					List<HashMap<String, Object>> components_pages = (ArrayList<HashMap<String, Object>>) event.get("component");
 					for (HashMap<String, Object> component_page : components_pages)
 					{
 						String component_id = (String) component_page.get("component_id");
-						String page_id = (String) component_page.get("page_id");
 						String data = (String) component_page.get("data");
 						String status = (String) component_page.get("status");
 
@@ -167,25 +176,13 @@ public class MainA22Sign
 		finally
 		{
 			long stopTime = System.currentTimeMillis();
-			log.debug("elaboration time (millis): " + (stopTime - startTime));
+			LOG.debug("elaboration time (millis): " + (stopTime - startTime));
 		}
 	}
 
 	private Connector setupA22ServiceConnector() throws IOException
 	{
-		String url;
-		String user;
-		String password;
-
-		// read connector auth informations
-		A22Properties prop = new A22Properties("a22connector.properties");
-		url = prop.getProperty("url");
-		user = prop.getProperty("user");
-		password = prop.getProperty("password");
-
-		Connector a22Service = new Connector(url, user, password);
-
-		return a22Service;
+		return new Connector(a22ConnectorURL, a22ConnectorUsr, a22ConnectorPwd);
 	}
 
 	private void readLastTimestampsForAllSigns(A22SignJSONPusher pusher)
@@ -196,7 +193,7 @@ public class MainA22Sign
 		for(StationDto stationDto: stations) {
 			String stationCode = stationDto.getId();
 			long lastTimestamp = ((Date) pusher.getDateOfLastRecord(stationCode, null, null)).getTime();
-			log.debug("Station Code: " + stationCode + ", lastTimestamp: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
+			LOG.debug("Station Code: " + stationCode + ", lastTimestamp: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
 			String signId = stationCode.substring(0, stationCode.lastIndexOf(":"));
 			if(signIdLastTimestampMap.getOrDefault(signId, 0L) < lastTimestamp) {
 				signIdLastTimestampMap.put(signId, lastTimestamp);
@@ -223,11 +220,11 @@ public class MainA22Sign
 				ret = System.currentTimeMillis() - scanWindowMilliseconds;
 			}
 
-			log.debug("getLastTimestampOfSignInSeconds(" + roadSignId + "): " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
+			LOG.debug("getLastTimestampOfSignInSeconds(" + roadSignId + "): " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
 
 			return ret / 1000;
 		} catch (ParseException e) {
-			log.error("Invalid lastTimestamp: " + a22stationProperties.getProperty("lastTimestamp"));
+			LOG.error("Invalid lastTimestamp: " + a22stationProperties.getProperty("lastTimestamp"));
 			throw new RuntimeException("Invalid lastTimestamp: " + a22stationProperties.getProperty("lastTimestamp"), e);
 		}
 	}
@@ -240,7 +237,7 @@ public class MainA22Sign
             map = Collections.singletonMap("signal-codes", signalsUtil.getStreetCodes());
         } catch (IOException e) {
             e.printStackTrace();
-            log.warn("Unable to parse additional metadata from csv file");
+            LOG.warn("Unable to parse additional metadata from csv file");
         }
 		DataTypeDto esportazione = new DataTypeDto(datatypesProperties.getProperty("a22vms.datatype.esposizione.key"),
 				datatypesProperties.getProperty("a22vms.datatype.esposizione.unit"),
@@ -259,7 +256,7 @@ public class MainA22Sign
 	/*
 	 * Method used only for development/debugging
 	 */
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
 		new MainA22Sign().execute();
 	}

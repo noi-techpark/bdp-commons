@@ -3,7 +3,7 @@
  *
  *  (C) 2019 NOI Techpark Südtirol / Alto Adige
  *
- *  author: chris@1006.org  
+ *  author: chris@1006.org
  */
 
 package it.bz.noi.a22.vms;
@@ -16,9 +16,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -28,12 +30,12 @@ import org.json.simple.JSONValue;
  */
 public class Connector {
 
-    private static final String user_agent = "NOI/A22SignConnector";
+    private static final String USER_AGENT = "NOI/A22SignConnector";
     private static final int WS_CONN_TIMEOUT_MSEC = 30000;
     private static final int WS_READ_TIMEOUT_MSEC = 1800000;
     private static final boolean DEBUG = false;
 
-    private static Logger log = LogManager.getLogger(Connector.class);
+    private static Logger log = LoggerFactory.getLogger(Connector.class);
 
     private String token = null;
     private String url = null;
@@ -56,7 +58,7 @@ public class Connector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/token")).openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -122,7 +124,7 @@ public class Connector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/token/" + token)).openConnection();
         conn.setRequestMethod("DELETE");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -145,7 +147,7 @@ public class Connector {
         os.close();
         conn.disconnect();
 
-        // parse response 
+        // parse response
         Boolean result = null;
         try {
             JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
@@ -155,7 +157,7 @@ public class Connector {
             e.printStackTrace();
             throw new RuntimeException("de-authentication failure (could not parse response)");
         }
-        if (result == null || result != true) {
+        if (result == null || !result) {
             throw new RuntimeException("de-authentication failure (de-authentication was not confirmed)");
         }
 
@@ -171,12 +173,12 @@ public class Connector {
     /**
      * get info about variable road signs
      *
-     * @return an ArrayList of HashMaps with the info about all variable road
+     * @return an List of HashMaps with the info about all variable road
      * signs
      *
      * @throws IOException
      */
-    public ArrayList<HashMap<String, String>> getSigns() throws IOException {
+    public List<HashMap<String, String>> getSigns() throws IOException {
 
         if (url == null || token == null) {
             throw new RuntimeException("not authenticated");
@@ -185,7 +187,7 @@ public class Connector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/infoutenza/anagrafica")).openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -209,7 +211,7 @@ public class Connector {
         os.close();
         conn.disconnect();
 
-        // parse response 
+        // parse response
         ArrayList<HashMap<String, String>> output = new ArrayList<>();
         try {
             JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
@@ -219,16 +221,16 @@ public class Connector {
                 JSONObject pmv = (JSONObject) pmv_list.get(i);
                 // note we return Strings, but will type check the numbers
                 HashMap<String, String> h = new HashMap<>();
-                h.put("id", String.valueOf((Long) pmv.get("idpmv")));
-                h.put("pmv_type", String.valueOf((Long) pmv.get("tipopmv")));
+                h.put("id", String.valueOf(pmv.get("idpmv")));
+                h.put("pmv_type", String.valueOf(pmv.get("tipopmv")));
                 h.put("road", (String) pmv.get("autostrada"));
                 h.put("descr", (String) pmv.get("descrizione"));
-                h.put("segment_end", String.valueOf((Long) pmv.get("finetratto")));       // appears to always contain "0"
-                h.put("segment_start", String.valueOf((Long) pmv.get("iniziotratto")));   // idem
-                h.put("direction_id", String.valueOf((Long) pmv.get("iddirezione")));
-                h.put("position_m", String.valueOf((Long) pmv.get("metro")));
-                h.put("lat", String.valueOf((Double) pmv.get("latitudine")));
-                h.put("long", String.valueOf((Double) pmv.get("longitudine")));
+                h.put("segment_end", String.valueOf(pmv.get("finetratto")));       // appears to always contain "0"
+                h.put("segment_start", String.valueOf(pmv.get("iniziotratto")));   // idem
+                h.put("direction_id", String.valueOf(pmv.get("iddirezione")));
+                h.put("position_m", String.valueOf(pmv.get("metro")));
+                h.put("lat", String.valueOf(pmv.get("latitudine")));
+                h.put("long", String.valueOf(pmv.get("longitudine")));
                 output.add(h);
             }
         } catch (Exception e) {
@@ -260,7 +262,7 @@ public class Connector {
      *
      * @throws IOException
      */
-    public ArrayList<HashMap<String, Object>> getEvents(long fr, long to, long id) throws IOException {
+    public List<HashMap<String, Object>> getEvents(long fr, long to, long id) throws IOException {
 
         if (url == null || token == null) {
             throw new RuntimeException("not authenticated");
@@ -279,7 +281,7 @@ public class Connector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/infoutenza/esposizioni")).openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -310,7 +312,7 @@ public class Connector {
         os.close();
         conn.disconnect();
 
-        // parse response 
+        // parse response
         try {
             JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
             log.debug("Response:"+response_json.toJSONString());
@@ -319,7 +321,7 @@ public class Connector {
             for (i = 0; i < event_list.size(); i++) {
                 JSONObject event = (JSONObject) event_list.get(i);
                 HashMap<String, Object> h = new HashMap<>();
-                h.put("id", String.valueOf((Long) event.get("idpmv")));
+                h.put("id", String.valueOf(event.get("idpmv")));
                 // convert from format used by A22
                 // (see the comment "Reverse engineering the A22 timestamp format" at the end of the file)
                 h.put("timestamp", String.valueOf(event.get("data")).substring(6, 16));
@@ -330,9 +332,9 @@ public class Connector {
                     JSONObject component = (JSONObject) component_list.get(j);
                     HashMap<String, String> c = new HashMap<>();
                     c.put("data", String.valueOf(component.get("dati")));
-                    c.put("component_id", String.valueOf((Long) component.get("idcomponente")));
-                    c.put("page_id", String.valueOf((Long) component.get("idpagina")));
-                    c.put("status", String.valueOf((Long) component.get("stato")));
+                    c.put("component_id", String.valueOf(component.get("idcomponente")));
+                    c.put("page_id", String.valueOf(component.get("idpagina")));
+                    c.put("status", String.valueOf(component.get("stato")));
                     output_nest.add(c);
                 }
                 h.put("component", output_nest);
@@ -353,7 +355,7 @@ public class Connector {
     }
 
     /*
-    
+
     Reverse engineering the A22 timestamp format
     --------------------------------------------
 
@@ -374,7 +376,7 @@ public class Connector {
     /Date(1540688648000+0100)/
     /Date(1540688656000+0100)/
     [...]
-    
+
     /Date(1540688390000+0200)/
 
         $ date --date='@1540688390'
@@ -390,8 +392,8 @@ public class Connector {
 
         01:02 UTC would be 02:02 CET ~ 02 CET
 
-    That means the first part of this string *is* the correct timestamp 
-    in unix epoch / UTC. 
+    That means the first part of this string *is* the correct timestamp
+    in unix epoch / UTC.
 
      */
 }
