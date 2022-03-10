@@ -74,7 +74,7 @@ public class MainA22Sign
 			DataMapDto<RecordDtoImpl> statoDataMapDto = new DataMapDto<>();
 
 			List<HashMap<String, String>> signs = a22Service.getSigns();
-			LOG.debug("got " + signs.size() + " signs");
+			LOG.info("got " + signs.size() + " signs");
 			for (int i = 0; i < signs.size(); i++)
 			{
 				HashMap<String, String> sign = signs.get(i);
@@ -95,7 +95,7 @@ public class MainA22Sign
 
 				List<HashMap<String, Object>> events = a22Service.getEvents(lastTimestampSeconds, nowSeconds,
 						Long.parseLong(sign_id));
-				LOG.debug("got " + events.size() + " events");
+				LOG.info("got " + events.size() + " events");
 				for (HashMap<String, Object> event : events)
 				{
 					String event_timestamp = (String) event.get("timestamp");
