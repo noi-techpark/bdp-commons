@@ -39,7 +39,7 @@ public class ChargePusher extends NonBlockingJSONPusher {
 	{
 	    add(new DataTypeDto("number-available","","number of available vehicles / charging points","Instantaneous"));
 	    add(new DataTypeDto("echarging-plug-status","","the state can either be 0, which means that the plug is currently not available, or it can be 1 which means it is",""));
-	}};;
+	}};
 
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T rawData) {
@@ -56,15 +56,15 @@ public class ChargePusher extends NonBlockingJSONPusher {
 			if ("REMOVED".equals(dto.getState()))
 				continue;
 
-			DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<RecordDtoImpl>();
+			DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<>();
 			Integer availableStations=0;
 			for (ChargingPointsDtoV2 point:dto.getChargingPoints()){
-				List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
+				List<RecordDtoImpl> records = new ArrayList<>();
 				if (env.getRequiredProperty("plug.status.available").equals(point.getState()))
 					availableStations++;
-				SimpleRecordDto record = new SimpleRecordDto(now.getTime(),availableStations.doubleValue());
-				record.setPeriod(period);
-				records.add(record);
+				SimpleRecordDto rec = new SimpleRecordDto(now.getTime(),availableStations.doubleValue());
+				rec.setPeriod(period);
+				records.add(rec);
 				DataMapDto<RecordDtoImpl> dataSet = new DataMapDto<>(records);
 				recordsByType.getBranch().put(DataTypeDto.NUMBER_AVAILABE, dataSet);
 			}
@@ -112,7 +112,7 @@ public class ChargePusher extends NonBlockingJSONPusher {
 			for(ChargingPointsDtoV2 point:dto.getChargingPoints()){
 				StationDto s = new StationDto();
 				s.setId(dto.getId()+ "-" + point.getOutlets().get(0).getId());
-				s.setLongitude(dto.getLongitude());;
+				s.setLongitude(dto.getLongitude());
 				s.setLatitude(dto.getLatitude());
 				s.setName(dto.getName()+"-"+point.getId());
 				s.setParentStation(dto.getCode());
@@ -135,15 +135,15 @@ public class ChargePusher extends NonBlockingJSONPusher {
 		for(ChargerDtoV2 dto: data ){
 			for (ChargingPointsDtoV2 point:dto.getChargingPoints()){
 				if (point.getState() != null){
-					DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<RecordDtoImpl>();
-					List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
-					SimpleRecordDto record = new SimpleRecordDto();
-					record.setTimestamp(now.getTime());
-					
-					record.setValue(point.getState().equals("AVAILABLE") ? 1. : 0);
-					record.setPeriod(period);
-					records.add(record);
-					recordsByType.getBranch().put("echarging-plug-status", new DataMapDto<RecordDtoImpl>(records));
+					DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<>();
+					List<RecordDtoImpl> records = new ArrayList<>();
+					SimpleRecordDto rec = new SimpleRecordDto();
+					rec.setTimestamp(now.getTime());
+
+					rec.setValue(point.getState().equals("AVAILABLE") ? 1. : 0);
+					rec.setPeriod(period);
+					records.add(rec);
+					recordsByType.getBranch().put("echarging-plug-status", new DataMapDto<>(records));
 					map.getBranch().put(dto.getId()+"-"+point.getOutlets().get(0).getId(), recordsByType);
 				}
 			}

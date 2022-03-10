@@ -13,7 +13,7 @@ import it.bz.idm.bdp.service.dto.ChargerDtoV2;
 
 @Service
 public class PushScheduler{
-	
+
 	@Autowired
 	private DataRetrieverAPIV2 retrieverV2;
 
@@ -39,7 +39,7 @@ public class PushScheduler{
 	}
 	public void syncDataTypes(){
 		List<DataTypeDto> types = pusher.getDataTypes();
-		if (types != null && types != null){
+		if (types != null){
 			pusher.syncDataTypes("EChargingPlug",types);
 		}
 	}
