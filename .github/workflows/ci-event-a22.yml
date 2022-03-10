@@ -70,6 +70,8 @@ jobs:
           X_A22_CONNECTOR_USR: BT5
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BT5_PWD }}
 
+          X_SCHEDULER_CRON: 0 */10 * * * ?
+
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
         with:
@@ -135,6 +137,8 @@ jobs:
           X_A22_CONNECTOR_URL: http://webservices.cau-a22.org:8080/A22Data
           X_A22_CONNECTOR_USR: BN5
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BN5_PWD }}
+
+          X_SCHEDULER_CRON: 0 */10 * * * ?
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
