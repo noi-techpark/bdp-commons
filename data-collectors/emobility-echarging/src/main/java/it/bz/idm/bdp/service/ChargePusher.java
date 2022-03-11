@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -22,8 +24,9 @@ import it.bz.idm.bdp.service.dto.ChargingPointsDtoV2;
 @Service
 public class ChargePusher extends NonBlockingJSONPusher {
 
-	private static final String E_CHARGING_PLUG_TYPOLOGY = "EChargingPlug";
+	private static final Logger LOG = LoggerFactory.getLogger(ChargePusher.class);
 
+	private static final String E_CHARGING_PLUG_TYPOLOGY = "EChargingPlug";
 	private static final String ORIGIN_KEY = "app_dataOrigin";
 
 	@Autowired
@@ -75,6 +78,7 @@ public class ChargePusher extends NonBlockingJSONPusher {
 
 	public StationList map2bdp(List<ChargerDtoV2> fetchedSations) {
 		StationList stations = new StationList();
+		String origin = env.getProperty(ORIGIN_KEY);
 		for (ChargerDtoV2 dto : fetchedSations) {
 
 			if ("REMOVED".equals(dto.getState()))
@@ -97,9 +101,13 @@ public class ChargePusher extends NonBlockingJSONPusher {
 			s.getMetaData().put("reservable",dto.getIsReservable());
 			s.getMetaData().put("accessType",dto.getAccessType());
 			s.getMetaData().put("categories",dto.getCategories());
-			s.setOrigin(env.getProperty(ORIGIN_KEY));
+			s.setOrigin(origin);
 			s.setStationType(this.integreenTypology);
-			stations.add(s);
+			if (s.isValid()) {
+				stations.add(s);
+			} else {
+				LOG.warn("Invalid StationDto (chargers) skipped: {}", s);
+			}
 		}
 		return stations;
 	}
@@ -108,6 +116,7 @@ public class ChargePusher extends NonBlockingJSONPusher {
 		if (fetchedStations == null)
 			return null;
 		StationList stations = new StationList();
+		String origin = env.getProperty(ORIGIN_KEY);
 		for (ChargerDtoV2 dto : fetchedStations){
 			for(ChargingPointsDtoV2 point:dto.getChargingPoints()){
 				StationDto s = new StationDto();
@@ -117,9 +126,13 @@ public class ChargePusher extends NonBlockingJSONPusher {
 				s.setName(dto.getName()+"-"+point.getId());
 				s.setParentStation(dto.getCode());
 				s.getMetaData().put("outlets",point.getOutlets());
-				s.setOrigin(env.getProperty(ORIGIN_KEY));
+				s.setOrigin(origin);
 				s.setStationType(E_CHARGING_PLUG_TYPOLOGY);
-				stations.add(s);
+				if (s.isValid()) {
+					stations.add(s);
+				} else {
+					LOG.warn("Invalid StationDto (plugs) skipped: {}", s);
+				}
 			}
 		}
 		return stations;
