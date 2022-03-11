@@ -18,6 +18,9 @@ public class PushScheduler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(PushScheduler.class);
 
+	private static final int DATA_CHUNK_SIZE = 50;
+	private static final int STATION_CHUNK_SIZE = 25;
+
 	@Autowired
 	private DataRetrieverAPIV2 retrieverV2;
 
@@ -39,31 +42,71 @@ public class PushScheduler {
 	public void syncStationsV2() {
 		LOG.info("Sync Stations and Plugs: Fetching from source and parsing");
 		List<ChargerDtoV2> fetchedSations = retrieverV2.fetchStations();
-		StationList stations = pusher.map2bdp(fetchedSations);
-		StationList plugs = pusher.mapPlugs2Bdp(fetchedSations);
+
+		int chunks = (int) Math.ceil((float) fetchedSations.size() / STATION_CHUNK_SIZE);
 		LOG.info(
-			"Sync Stations and Plugs: {} stations and {} plugs found. Pushing to the writer.",
-			stations == null ? 0 : stations.size(),
-			plugs == null ? 0 : plugs.size()
+			"Sync Charger Data: Found {} chargers. Splitting into {} chunks of max. {} each!",
+			fetchedSations.size(),
+			chunks,
+			STATION_CHUNK_SIZE
 		);
-		if (stations != null && plugs != null) {
-			pusher.syncStations(stations);
-			pusher.syncStations("EChargingPlug", plugs);
+
+		for (int i = 0; i < chunks; i++) {
+			// We have the following interval boundaries for subList: [from, to)
+			int from = STATION_CHUNK_SIZE * i;
+			int to = from + STATION_CHUNK_SIZE;
+			if (to > fetchedSations.size())
+				to = fetchedSations.size();
+			List<ChargerDtoV2> stationChunk = fetchedSations.subList(from, to);
+			StationList stations = pusher.map2bdp(stationChunk);
+			StationList plugs = pusher.mapPlugs2Bdp(stationChunk);
+			LOG.info(
+				"Sync Stations and Plugs: Pushing {} stations and {} plugs to the writer: Chunk {} of {}",
+				stations == null ? 0 : stations.size(),
+				plugs == null ? 0 : plugs.size(),
+				i+1,
+				chunks
+			);
+			if (stations != null && plugs != null) {
+				pusher.syncStations(stations);
+				pusher.syncStations("EChargingPlug", plugs);
+			}
 		}
 		LOG.info("Sync Stations and Plugs: Done");
 	}
+
+
 	public void pushChargerDataV2() {
 		LOG.info("Sync Charger Data: Fetching from source and parsing");
 		List<ChargerDtoV2> stations = retrieverV2.fetchStations();
-		DataMapDto<RecordDtoImpl> map = pusher.mapData(stations);
-		DataMapDto<RecordDtoImpl> plugRec = pusher.mapPlugData2Bdp(stations);
-		LOG.info("Sync Charger Data: Pushing to the writer.");
-		if (map != null && plugRec != null){
-			pusher.pushData(map);
-			pusher.pushData("EChargingPlug",plugRec);
+
+		int chunks = (int) Math.ceil((float) stations.size() / DATA_CHUNK_SIZE);
+		LOG.info(
+			"Sync Charger Data: Found {} stations. Splitting into {} chunks of max. {} each!",
+			stations.size(),
+			chunks,
+			DATA_CHUNK_SIZE
+		);
+
+		for (int i = 0; i < chunks; i++) {
+			// We have the following interval boundaries for subList: [from, to)
+			int from = DATA_CHUNK_SIZE * i;
+			int to = from + DATA_CHUNK_SIZE;
+			if (to > stations.size())
+				to = stations.size();
+			List<ChargerDtoV2> stationChunk = stations.subList(from, to);
+			DataMapDto<RecordDtoImpl> map = pusher.mapData(stationChunk);
+			DataMapDto<RecordDtoImpl> plugRec = pusher.mapPlugData2Bdp(stationChunk);
+			LOG.info("Sync Charger Data: Pushing to the writer: Chunk {} of {}", i+1, chunks);
+			if (map != null && plugRec != null){
+				pusher.pushData(map);
+				pusher.pushData("EChargingPlug", plugRec);
+			}
 		}
 		LOG.info("Sync Charger Data: Fetching from source and parsing: Done");
 	}
+
+
 	public void syncDataTypes() {
 		List<DataTypeDto> types = pusher.getDataTypes();
 		if (types != null){

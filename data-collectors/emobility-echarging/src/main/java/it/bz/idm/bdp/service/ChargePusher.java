@@ -43,15 +43,13 @@ public class ChargePusher extends NonBlockingJSONPusher {
 	    add(new DataTypeDto(
 			"number-available",
 			"",
-			"number of available vehicles / charging points",
-			"Instantaneous"
+			"number of available vehicles / charging points","Instantaneous"
 		));
 	    add(new DataTypeDto(
 			"echarging-plug-status",
 			"",
-			"the state can either be 0, which means that the plug is currently not available, or it can be 1 which means it is",
-			""
-		));
+			"the state can either be 0, which means that the plug is currently not available, or it can be 1 which means it is",""
+			));
 	}};
 
 	@Override
