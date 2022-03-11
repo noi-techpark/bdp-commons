@@ -40,8 +40,18 @@ public class ChargePusher extends NonBlockingJSONPusher {
 		private static final long serialVersionUID = 1L;
 
 	{
-	    add(new DataTypeDto("number-available","","number of available vehicles / charging points","Instantaneous"));
-	    add(new DataTypeDto("echarging-plug-status","","the state can either be 0, which means that the plug is currently not available, or it can be 1 which means it is",""));
+	    add(new DataTypeDto(
+			"number-available",
+			"",
+			"number of available vehicles / charging points",
+			"Instantaneous"
+		));
+	    add(new DataTypeDto(
+			"echarging-plug-status",
+			"",
+			"the state can either be 0, which means that the plug is currently not available, or it can be 1 which means it is",
+			""
+		));
 	}};
 
 	@Override
@@ -54,16 +64,17 @@ public class ChargePusher extends NonBlockingJSONPusher {
 		DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
 		Date now = new Date();
 		Integer period = env.getProperty("app_period", Integer.class);
+		String plugStatusAvailable = env.getRequiredProperty("plug.status.available");
 		for(ChargerDtoV2 dto : data) {
 
 			if ("REMOVED".equals(dto.getState()))
 				continue;
 
 			DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<>();
-			Integer availableStations=0;
-			for (ChargingPointsDtoV2 point:dto.getChargingPoints()){
+			Integer availableStations = 0;
+			for (ChargingPointsDtoV2 point : dto.getChargingPoints()){
 				List<RecordDtoImpl> records = new ArrayList<>();
-				if (env.getRequiredProperty("plug.status.available").equals(point.getState()))
+				if (plugStatusAvailable.equals(point.getState()))
 					availableStations++;
 				SimpleRecordDto rec = new SimpleRecordDto(now.getTime(),availableStations.doubleValue());
 				rec.setPeriod(period);
