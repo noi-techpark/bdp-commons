@@ -24,6 +24,18 @@ public class PushScheduler {
 	@Autowired
 	private ChargePusher pusher;
 
+	/**
+	 * Some of these sync scheduled jobs take longer then their re-scheduling,
+	 * so the former call fails or overwrites data that has been half-synced.
+	 * To avoid this we use a single sync call, and put just a single job per
+	 * scheduler. That is the job will not trigger, if it is still running.
+	 */
+	public void syncAll() {
+		syncDataTypes();
+		syncStationsV2();
+		pushChargerDataV2();
+	}
+
 	public void syncStationsV2() {
 		LOG.info("Sync Stations and Plugs: Fetching from source and parsing");
 		List<ChargerDtoV2> fetchedSations = retrieverV2.fetchStations();
