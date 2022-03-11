@@ -74,8 +74,8 @@ jobs:
           X_app_dataOrigin: ALPERIA
           X_app_period: 600
 
-          X_SCHEDULER_CRON_STATIONS: 0 */5 * * * *
-          X_SCHEDULER_CRON_DATA: 0 */5 * * * *
+          X_SCHEDULER_CRON_STATIONS: 0 */20 * * * *
+          X_SCHEDULER_CRON_DATA: 0 */20 * * * *
           X_SCHEDULER_CRON_TYPES: 0 0 0 * * *
 
       - name: Build project
@@ -148,8 +148,8 @@ jobs:
           X_app_dataOrigin: ALPERIA
           X_app_period: 600
 
-          X_SCHEDULER_CRON_STATIONS: 0 */5 * * * *
-          X_SCHEDULER_CRON_DATA: 0 */5 * * * *
+          X_SCHEDULER_CRON_STATIONS: 0 */20 * * * *
+          X_SCHEDULER_CRON_DATA: 0 */20 * * * *
           X_SCHEDULER_CRON_TYPES: 0 0 0 * * *
 
       - name: Build project
