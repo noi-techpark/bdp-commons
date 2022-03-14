@@ -14,7 +14,7 @@ public class ChildPlugDto extends ChildDto{
 	 *
 	 */
 	private static final long serialVersionUID = -7467402590346607912L;
-	private List<OutletDtoV2> outlets = new ArrayList<OutletDtoV2>();
+	private List<OutletDtoV2> outlets = new ArrayList<>();
 	private boolean available;
 	public List<OutletDtoV2> getOutlets() {
 		return outlets;
