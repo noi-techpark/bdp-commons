@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import it.bz.idm.bdp.DataPusher;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
@@ -95,7 +96,7 @@ public class MainA22Sign
 
 				List<HashMap<String, Object>> events = a22Service.getEvents(lastTimestampSeconds, nowSeconds,
 						Long.parseLong(sign_id));
-				LOG.info("got " + events.size() + " events");
+				LOG.info("Sign {} of {}: Got {} events", i+1, signs.size(), events.size());
 				for (HashMap<String, Object> event : events)
 				{
 					String event_timestamp = (String) event.get("timestamp");
