@@ -24,3 +24,12 @@ apikey: {{$dotenv NEVICAM_API_KEY}}
 GET {{hostroute220}}/api/idm/getAllRoute220Stations
 X-Caller-ID: NOI-Techpark
 Accept: application/json
+
+### DRIWE
+#
+@hostdriwe=https://www.driwe.club
+
+GET {{hostdriwe}}/api/stations/metadata?auth-token={{$dotenv DRIWE_API_KEY}}
+X-Caller-ID: NOI-Techpark
+Accept: application/json
+

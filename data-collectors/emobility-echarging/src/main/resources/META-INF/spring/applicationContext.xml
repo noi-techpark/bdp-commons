@@ -7,7 +7,7 @@
     <context:spring-configured/>
 
 	<bean class="it.bz.idm.bdp.service.PushScheduler" id="jobScheduler" />
-	<task:scheduler id="Scheduler" pool-size="1" />
+	<task:scheduler id="Scheduler" pool-size="${SCHEDULER_POOL_SIZE:1}" />
 	<task:scheduled-tasks scheduler="Scheduler">
 		<!-- every 10 seconds, for development only -->
 		<task:scheduled ref="jobScheduler" method="syncAll" cron="${SCHEDULER_CRON:*/10 * * * * *}" />
