@@ -8,8 +8,8 @@ import it.bz.noi.bikechargers.configuration.ConnectorConfiguration;
 import it.bz.noi.bikechargers.model.BikeChargerBayStation;
 import it.bz.noi.bikechargers.model.BikeChargerStation;
 import it.bz.noi.bikechargers.model.BikeChargerStationDetails;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ import java.util.List;
 @Component
 public class BikeChargerConnector {
 
-    private static final Logger LOG = LogManager.getLogger(BikeChargerConnector.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BikeChargerConnector.class);
 
     private static final String PATH_STATIONS = "/v1/stations";
 

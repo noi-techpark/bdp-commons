@@ -10,8 +10,8 @@ import it.bz.noi.bikechargers.model.BikeChargerStationDetails;
 import it.bz.noi.bikechargers.pusher.AbstractBikeChargerJSONPusher;
 import it.bz.noi.bikechargers.pusher.BikeChargerBayJSONPusher;
 import it.bz.noi.bikechargers.pusher.BikeChargerJSONPusher;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 public class MainBikeCharger {
 
-    private static final Logger LOG = LogManager.getLogger(MainBikeCharger.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MainBikeCharger.class);
 
     @Autowired
     private BikeChargerConnector bikeChargerConnector;
