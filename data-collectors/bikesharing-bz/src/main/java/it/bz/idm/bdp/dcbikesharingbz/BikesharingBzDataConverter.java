@@ -3,8 +3,8 @@ package it.bz.idm.bdp.dcbikesharingbz;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import it.bz.idm.bdp.dto.StationDto;
 @Service
 public class BikesharingBzDataConverter {
 
-    private static final Logger LOG = LogManager.getLogger(BikesharingBzDataConverter.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(BikesharingBzDataConverter.class.getName());
 
     public static final String DATA_TYPE_STATION_AVAILABILITY        = DataTypeDto.AVAILABILITY;
     public static final String DATA_TYPE_STATION_NUMBER_AVAILABE     = DataTypeDto.NUMBER_AVAILABE;
@@ -113,7 +113,7 @@ public class BikesharingBzDataConverter {
 
     /**
      * Converts External DTO (Bay coming from JSON) to a more convenient internal DTO (BayDto).
-     * 
+     *
      * Example of JSON provided by the service
      * {
      *     "label": "Piazza Gries - Grieserplatz:1",
@@ -134,7 +134,7 @@ public class BikesharingBzDataConverter {
      *         }
      *     }
      * }
-     * 
+     *
      * @param bayObject
      * @return
      */
@@ -183,7 +183,7 @@ public class BikesharingBzDataConverter {
 
     /**
      * Converts External DTO (Station coming from JSON) to a more convenient internal DTO (StationDto).
-     * 
+     *
      * Example of JSON provided by the service
      * {
      *     "id": "BAh7CEkiCGdpZAY6BkVUSSIsZ2lkOi8vYmt3L1NoYXJpbmdTdGF0aW9uLzE5OT9leHBpcmVzX2luBjsAVEkiDHB1cnBvc2UGOwBUSSIMZGVmYXVsdAY7AFRJIg9leHBpcmVzX2F0BjsAVDA=--1bd9304bdb17a53ff75a7080179f84c9d2776825",
@@ -203,7 +203,7 @@ public class BikesharingBzDataConverter {
      *         ]
      *     }
      * }
-     * 
+     *
      * @param stationObject
      * @return
      */
@@ -259,7 +259,7 @@ public class BikesharingBzDataConverter {
 
     /**
      * Converts the internal representation of the BikesharingStation in StationDto used by the Open Data Hub.
-     * 
+     *
      * @param bikesharingStationDto
      * @return
      */
@@ -294,7 +294,7 @@ public class BikesharingBzDataConverter {
 
     /**
      * Converts the internal representation of the BikesharingBay in StationDto used by the Open Data Hub (Station at Bay level).
-     * 
+     *
      * @param bikesharingBayDto
      * @return
      */
@@ -333,7 +333,7 @@ public class BikesharingBzDataConverter {
 
     /**
      * Converts the internal representation of the BikesharingBay in StationDto used by the Open Data Hub (Station at Bicycle level).
-     * 
+     *
      * @param bikesharingBayDto
      * @return
      */
@@ -374,7 +374,7 @@ public class BikesharingBzDataConverter {
 
     /**
      * Converts the string returned by the Bikesharing "/api/v1/stations" service in a more useful internal representation
-     * 
+     *
      * @param responseString
      * @return
      * @throws Exception
@@ -415,14 +415,14 @@ public class BikesharingBzDataConverter {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("dto: "+dto); 
+            LOG.debug("dto: "+dto);
         }
         return dto;
     }
 
     /**
      * Converts the string returned by the Bikesharing "/cars/{id}/availability" service in a more useful internal representation
-     * 
+     *
      * @param responseString
      * @return
      * @throws Exception
@@ -456,7 +456,7 @@ public class BikesharingBzDataConverter {
         retval = stationDto;
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("retval: "+retval); 
+            LOG.debug("retval: "+retval);
         }
         return retval;
     }

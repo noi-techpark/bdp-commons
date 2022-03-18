@@ -1,7 +1,7 @@
 package it.bz.idm.bdp.dcbikesharingbz;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
@@ -16,7 +16,7 @@ import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 @Service
 public class BikesharingBzDataPusher extends NonBlockingJSONPusher {
 
-    private static final Logger LOG = LogManager.getLogger(BikesharingBzDataPusher.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(BikesharingBzDataPusher.class.getName());
 
     @Autowired
     private Environment env;
@@ -28,8 +28,7 @@ public class BikesharingBzDataPusher extends NonBlockingJSONPusher {
 
     @Override
     public String initIntegreenTypology() {
-        String stationType = BikesharingBzDataConverter.STATION_TYPE_STATION;
-        return stationType;
+        return BikesharingBzDataConverter.STATION_TYPE_STATION;
     }
 
 
@@ -52,7 +51,6 @@ public class BikesharingBzDataPusher extends NonBlockingJSONPusher {
 
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

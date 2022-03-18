@@ -14,8 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ import it.bz.idm.bdp.dto.StationList;
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class BikesharingBzDataRetrieverAuthIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(BikesharingBzDataRetrieverAuthIT.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(BikesharingBzDataRetrieverAuthIT.class.getName());
 
     @Autowired
     private BikesharingMappingUtil mappingUtil;
@@ -264,9 +264,6 @@ public class BikesharingBzDataRetrieverAuthIT extends AbstractJUnit4SpringContex
 
             //Get data of first Bay
             List<BikesharingBzStationDto> data = readFetchData();
-            String[] dataTypeNames = new String[] {
-                    BikesharingBzDataConverter.DATA_TYPE_BAY_AVAILABILITY, 
-                    BikesharingBzDataConverter.DATA_TYPE_BAY_USAGE_STATE};
 
             //Convert in Data Hub data structure
             DataMapDto<RecordDtoImpl> stationRec = mappingUtil.mapBayData(data);

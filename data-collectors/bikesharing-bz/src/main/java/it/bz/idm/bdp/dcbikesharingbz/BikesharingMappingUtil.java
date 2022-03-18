@@ -3,8 +3,8 @@ package it.bz.idm.bdp.dcbikesharingbz;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,10 +19,10 @@ import it.bz.idm.bdp.dto.StationList;
 
 @Component
 public class BikesharingMappingUtil {
-    private static final Logger LOG = LogManager.getLogger(BikesharingMappingUtil.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(BikesharingMappingUtil.class.getName());
     @Autowired
     private BikesharingBzDataConverter converter;
-    
+
     private List<DataTypeDto> dataTypes;
 
     public <T> DataMapDto<RecordDtoImpl> mapData(T rawData) {
@@ -53,7 +53,7 @@ public class BikesharingMappingUtil {
 
             //Level 1. Station
             String stationId = station.getId();
-            DataMapDto<RecordDtoImpl> recordsByStation = new DataMapDto<RecordDtoImpl>();
+            DataMapDto<RecordDtoImpl> recordsByStation = new DataMapDto<>();
             map.getBranch().put(stationId, recordsByStation);
 
             addMeasurementForStationAndType(period, measurementTimestamp, stationId, recordsByStation, BikesharingBzDataConverter.DATA_TYPE_STATION_AVAILABILITY,    station.getState());
@@ -89,7 +89,7 @@ public class BikesharingMappingUtil {
             for (BikesharingBzBayDto bay : bayList) {
                 //Level 2. Bay
                 String bayId = bay.getLabel();
-                DataMapDto<RecordDtoImpl> recordsByBay = new DataMapDto<RecordDtoImpl>();
+                DataMapDto<RecordDtoImpl> recordsByBay = new DataMapDto<>();
                 map.getBranch().put(bayId, recordsByBay);
 
                 addMeasurementForStationAndType(period, measurementTimestamp, bayId, recordsByBay, BikesharingBzDataConverter.DATA_TYPE_BAY_AVAILABILITY, bay.getState());
@@ -128,7 +128,7 @@ public class BikesharingMappingUtil {
                 //Level 3. Bicycle (may not be present)
                 String bicycleId = bay.getVehicleCode();
                 if ( bicycleId != null ) {
-                    DataMapDto<RecordDtoImpl> recordsByBicycle = new DataMapDto<RecordDtoImpl>();
+                    DataMapDto<RecordDtoImpl> recordsByBicycle = new DataMapDto<>();
                     map.getBranch().put(bicycleId, recordsByBicycle);
 
                     addMeasurementForStationAndType(period, measurementTimestamp, bicycleId, recordsByBicycle, BikesharingBzDataConverter.DATA_TYPE_BICYCLE_AVAILABILITY,  DCUtils.convertBooleanToString(bay.getVehiclePresent()));
@@ -225,12 +225,12 @@ public class BikesharingMappingUtil {
 
     /**
      * Return a static list of DataTypeDtos, for the three type of stations: Station, Bay, Bicycle
-     * 
+     *
      * @return
      */
     public List<DataTypeDto> mapDataTypes2Bdp() {
         if ( dataTypes == null ) {
-            dataTypes = new ArrayList<DataTypeDto>();
+            dataTypes = new ArrayList<>();
             //Station
             dataTypes.add(new DataTypeDto(BikesharingBzDataConverter.DATA_TYPE_STATION_AVAILABILITY,    null, BikesharingBzDataConverter.DATA_TYPE_STATION_AVAILABILITY,    null, converter.getPeriod()));
             dataTypes.add(new DataTypeDto(BikesharingBzDataConverter.DATA_TYPE_STATION_NUMBER_AVAILABE, null, BikesharingBzDataConverter.DATA_TYPE_STATION_NUMBER_AVAILABE, null, converter.getPeriod()));
@@ -247,24 +247,24 @@ public class BikesharingMappingUtil {
         }
         return dataTypes;
     }
-    
+
     private void addMeasurementForStationAndType(Integer period, Long measurementTimestamp, String stationId, DataMapDto<RecordDtoImpl> recordsByStation, String dataTypeName, Object measurementValue) {
         if ( DCUtils.paramNotNull(measurementValue) && measurementTimestamp != null ) {
-            SimpleRecordDto record = new SimpleRecordDto();
-            record.setValue(measurementValue);
-            record.setTimestamp(measurementTimestamp);
-            record.setPeriod(period);
+            SimpleRecordDto rec = new SimpleRecordDto();
+            rec.setValue(measurementValue);
+            rec.setTimestamp(measurementTimestamp);
+            rec.setPeriod(period);
 
             //Check if we already treated this type (branch), if not found create the map and the list of records
             DataMapDto<RecordDtoImpl> recordsByType = recordsByStation.getBranch().get(dataTypeName);
             if ( recordsByType == null ) {
-                recordsByType = new DataMapDto<RecordDtoImpl>();
+                recordsByType = new DataMapDto<>();
                 recordsByStation.getBranch().put(dataTypeName, recordsByType);
             }
 
             //Add the measure in the list
             List<RecordDtoImpl> records = recordsByType.getData();
-            records.add(record);
+            records.add(rec);
 
             LOG.debug("ADD  MEASURE:  id="+stationId+", typeName="+dataTypeName+"  value="+measurementValue);
         }

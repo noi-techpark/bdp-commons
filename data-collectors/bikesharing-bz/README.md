@@ -1,23 +1,36 @@
-Bikesharing BZ datacollector
-=========================
+# Bikesharing BZ Data Collector
 
-Datacollector providing bikesharing realtimedata to opendatahub.
+[![CI bikesharing-bz](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bikesharing-bz.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bikesharing-bz.yml)
 
+Datacollector providing bike sharing realtime data to the Open Data Hub.
 Data is provided by Ecospazio.
 
+**Table Of Contents**
+- [Bikesharing BZ Data Collector](#bikesharing-bz-data-collector)
+	- [Analysis](#analysis)
+	- [Configuration](#configuration)
+	- [Tests](#tests)
+	- [Build and deploy](#build-and-deploy)
+	- [Packages and important classes](#packages-and-important-classes)
+	- [Information](#information)
+		- [Support](#support)
+		- [Contributing](#contributing)
+		- [Documentation](#documentation)
+		- [License](#license)
 
-## Analysis:
+
+## Analysis
 
 For details regarding mapping from data provided by the service and the data used by the opendatahub, please see this analysis document:
-[200107_SpecificheIntegrationeODH.pdf](documentation/200107_SpecificheIntegrationeODH.pdf)
+[documentation/200115_SpecificheIntegrazioneODH.pdf](documentation/200115_SpecificheIntegrazioneODH.pdf)
 
-....TODO....
-
-
-## Configuration:
+## Configuration
   - See `src/main/resources/META-INF/spring/applicationContext.xml`
 
-    here you can configure the scheduler for the tasks "pushData" and "pushDataTypes". The scheduler is implemented in class it.bz.idm.bdp.dcbikesharingbz.BikesharingBzJobScheduler and uses Spring framework provided services. PushData is called every 5 minutes. 
+    here you can configure the scheduler for the tasks "pushData" and
+    "pushDataTypes". The scheduler is implemented in class
+    it.bz.idm.bdp.dcbikesharingbz.BikesharingBzJobScheduler and uses Spring
+    framework provided services. PushData is called every 5 minutes.
 
   - See `src/main/resources/META-INF/spring/application.properties`
 
@@ -26,34 +39,41 @@ For details regarding mapping from data provided by the service and the data use
     - other parameters like `app.origin` (origin of the data), `app.period` (period parameter given in the SimpleRecordDto);
 
 
-  - Logsystem: `src/main/resources/log4j.properties` (Make sure the log-files are writable)
-
-
-## Tests:
+## Tests
 
 In the Datacollector there are two types of test cases:
 
- - Integration Tests: this tests interact with the opendatahub. To execute them the writer and reader module of the opendatahub must be up and running, also ECOSPAZIO service endpoints must be reachable;
+ - Integration Tests: this tests interact with the opendatahub. To execute them
+   the writer and reader module of the opendatahub must be up and running, also
+   ECOSPAZIO service endpoints must be reachable;
+
+ - Unit Tests: this tests perform checks to the logic that converts data coming
+   from the source service into the DTOs used by the opendatahub. To execute
+   this tests it is not necessary that an instance of the opendatahub is
+   running. Logic is checked against a set of predefined test data stored if
+   folder `src/test/resources/test_data`.
 
 
- - Unit Tests: this tests perform checks to the logic that converts data coming from the source service into the DTOs used by the opendatahub. To execute this tests it is not necessary that an instance of the opendatahub is running. Logic is checked against a set of predefined test data stored if folder `src/test/resources/test_data`.
-
-
-## Build and deploy:
+## Build and deploy
 
 Java JDK version 7+ is required.
 
-Go to the folder where the datacollector is saved: `bdp-commons/data-collectors/bikesharing-bz`
+Go to the folder where the datacollector is saved:
+`bdp-commons/data-collectors/bikesharing-bz`
 
 Use Maven build system to package the war: `mvn clean package`
 
 A war file is located under the target folder: `target/dc-bikesharing-bz.war`
-This file can be deployed in the servlet container of your choice (for example Tomcat 8).
+This file can be deployed in the servlet container of your choice (for example
+Tomcat 8).
 
-To set up the Open Data Hub environment containing Tomcat, PostgreSQL and all required database objects see the detailed guide provided at [https://github.com/noi-techpark/bdp-core](https://github.com/noi-techpark/bdp-core) and run the setup script.
+To set up the Open Data Hub environment containing Tomcat, PostgreSQL and all
+required database objects see the detailed guide provided at
+[https://github.com/noi-techpark/bdp-core](https://github.com/noi-techpark/bdp-core)
+and run the setup script.
 
 
-## Packages and important classes:
+## Packages and important classes
 
 package **it.bz.idm.bdp.dcbikesharingbz**
 
@@ -65,15 +85,24 @@ This package contains the Pusher, the Retriever, the Scheduler and Converter cla
 
 package **it.bz.idm.bdp.dcbikesharingbz.dto**
 
-This package contains the following DTOs:
-....TODO....
+## Information
 
+### Support
 
-## Implementation details:
+For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
 
-....TODO....
+### Contributing
 
+If you'd like to contribute, please follow our [Getting
+Started](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Getting-started)
+instructions.
 
+### Documentation
 
+More documentation can be found at
+[https://docs.opendatahub.bz.it](https://docs.opendatahub.bz.it).
 
+### License
 
+The code in this project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3 license. See the [LICENSE](../../LICENSE) file for more information.

@@ -3,6 +3,7 @@ package it.bz.idm.bdp.dcbikesharingbz;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -22,8 +23,8 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -36,16 +37,13 @@ import it.bz.idm.bdp.dcbikesharingbz.dto.BikesharingBzStationDto;
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class BikesharingBzDataRetriever {
 
-    private static final Logger LOG = LogManager.getLogger(BikesharingBzDataRetriever.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(BikesharingBzDataRetriever.class.getName());
 
     @Autowired
     private Environment env;
 
     @Autowired
     private BikesharingBzDataConverter converter;
-
-    private HttpClientBuilder builderStations;
-    private HttpClientBuilder builderMeasurements;
 
     private CloseableHttpClient clientStations;
     private CloseableHttpClient clientMeasurements;
@@ -90,7 +88,7 @@ public class BikesharingBzDataRetriever {
             //Set CookieSpecs.STANDARD to avoid a possible warning 'Invalid cookie header: "Set-Cookie: expires=...'
             Builder requestConfigBuilder = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD);
             RequestConfig requestConfig = requestConfigBuilder.build();
-            builderStations = HttpClients.custom();
+            HttpClientBuilder builderStations = HttpClients.custom();
             builderStations.setDefaultRequestConfig(requestConfig);
             clientStations = builderStations.build();
 
@@ -124,7 +122,7 @@ public class BikesharingBzDataRetriever {
             //Set CookieSpecs.STANDARD to avoid a possible warning 'Invalid cookie header: "Set-Cookie: expires=...'
             Builder requestConfigBuilder = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD);
             RequestConfig requestConfig = requestConfigBuilder.build();
-            builderMeasurements = HttpClients.custom();
+            HttpClientBuilder builderMeasurements = HttpClients.custom();
             builderMeasurements.setDefaultRequestConfig(requestConfig);
             clientMeasurements = builderMeasurements.build();
 
@@ -134,7 +132,7 @@ public class BikesharingBzDataRetriever {
 
     /**
      * Performs the call to ECOSPAZIO service and returns exactly the response String without particular processing or formatting
-     * 
+     *
      * @return
      * @throws Exception
      */
@@ -157,7 +155,7 @@ public class BikesharingBzDataRetriever {
         request.setHeader("Accept", "application/json");
 
         URIBuilder uriBuilder = new URIBuilder(request.getURI());
-        if ( endpointParams!=null && endpointParams.size()>0 ) {
+        if ( endpointParams!=null && !endpointParams.isEmpty() ) {
             uriBuilder.addParameters(endpointParams);
         }
         URI uri = uriBuilder.build();
@@ -172,7 +170,7 @@ public class BikesharingBzDataRetriever {
         }
         InputStream entity = response.getEntity().getContent();
         StringWriter writer = new StringWriter();
-        IOUtils.copy(entity, writer);
+        IOUtils.copy(entity, writer, StandardCharsets.UTF_8);
         String responseData = writer.toString();
         response.close();
 
@@ -184,7 +182,7 @@ public class BikesharingBzDataRetriever {
 
 //    /**
 //     * Converts the string returned by the Bikesharing "/cars/{id}" service in a more useful internal representation
-//     * 
+//     *
 //     * @param responseString
 //     * @return
 //     * @throws Exception
@@ -194,7 +192,7 @@ public class BikesharingBzDataRetriever {
 //
 //
 //        if (LOG.isDebugEnabled()) {
-//            LOG.debug("dtoList: "+dtoList); 
+//            LOG.debug("dtoList: "+dtoList);
 //        }
 //        return dtoList;
 //    }
@@ -202,7 +200,7 @@ public class BikesharingBzDataRetriever {
     /**
      * Fetch anagrafic data from ECOSPAZIO service for all stations.
      * Fetch also availability information for each Bike.
-     * 
+     *
      * @return
      * @throws Exception
      */
@@ -210,7 +208,7 @@ public class BikesharingBzDataRetriever {
         LOG.info("START.fetchData");
         BikesharingBzDto retval = new BikesharingBzDto();
         try {
-            StringBuffer err = new StringBuffer();
+            StringBuilder err = new StringBuilder();
             long tsNow = System.currentTimeMillis();
 
             String responseStringStations = callRemoteService(clientStations, serviceUrlStations, endpointMethodStations, null);
@@ -237,7 +235,7 @@ public class BikesharingBzDataRetriever {
 
             }
 
-            if ( (retval==null || stationList==null || stationList.size()<=0) && err.length()>0 ) {
+            if ( (stationList==null || stationList.isEmpty()) && err.length()>0 ) {
                 throw new RuntimeException("NO DATA FETCHED: "+err);
             }
         } catch (Exception ex) {

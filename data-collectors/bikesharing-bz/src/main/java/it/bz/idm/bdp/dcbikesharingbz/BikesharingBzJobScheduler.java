@@ -2,8 +2,8 @@ package it.bz.idm.bdp.dcbikesharingbz;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -18,12 +18,11 @@ import it.bz.idm.bdp.dto.StationList;
 
 /**
  * Cronjob configuration can be found under src/main/resources/META-INF/spring/applicationContext.xml
- * XXX Do not forget to configure it!
  */
 @Component
 public class BikesharingBzJobScheduler {
 
-    private static final Logger LOG = LogManager.getLogger(BikesharingBzJobScheduler.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(BikesharingBzJobScheduler.class.getName());
 
     @Lazy
     @Autowired
