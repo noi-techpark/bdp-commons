@@ -3,11 +3,11 @@ name: CI/CD bike-chargers
 on:
   push:
     paths:
-      - "data-collectors/emobility-echarging/**"
+      - "data-collectors/bike-chargers/**"
       - ".github/workflows/ci-bike-chargers.yml"
 
 env:
-  WORKING_DIRECTORY: data-collectors/emobility-echarging
+  WORKING_DIRECTORY: data-collectors/bike-chargers
   PROJECT_NAME: odh-mobility-dc-bike-chargers
   DOCKER_IMAGE: docker.pkg.github.com/${{ github.repository }}/odh-mobility-dc-bike-chargers
   DOCKER_TAG: ${{ github.sha }}
