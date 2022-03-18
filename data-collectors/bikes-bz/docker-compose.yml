@@ -12,11 +12,11 @@ services:
     entrypoint: >
       mvn
         -Duser.home=/var/maven
-        -Dmaven.tomcat.port=9001
+        -Dmaven.tomcat.port=9002
         tomcat:run
     ports:
       - 9000:9000
-      - 9001:9001
+      - 9002:9002
     volumes:
       - ~/.m2/:/var/maven/.m2
       - ./:/code
