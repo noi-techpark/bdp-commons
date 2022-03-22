@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,6 +25,8 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
+
+import static net.logstash.logback.argument.StructuredArguments.v;
 
 @Component
 @Configuration
@@ -75,94 +78,106 @@ public class MainA22Sign
 
 			List<HashMap<String, String>> signs = a22Service.getSigns();
 			LOG.info("got " + signs.size() + " signs");
-			for (int i = 0; i < signs.size(); i++)
+			for (int i = 112; i < signs.size(); i++)
 			{
 				HashMap<String, String> sign = signs.get(i);
-
 				String sign_id = sign.get("id");
 				LOG.debug("sign_id: " + sign_id);
-				String sign_descr = sign.get("descr");
-				String road = sign.get("road");
-				String direction_id = sign.get("direction_id");
-				String pmv_type = sign.get("pmv_type");
-				String segment_start = sign.get("segment_start");
-				String segment_end = sign.get("segment_end");
-				String position_m = sign.get("position_m");
-				double sign_lat = Double.parseDouble(sign.get("lat"));
-				double sign_lon = Double.parseDouble(sign.get("long"));
 
-				long lastTimestampSeconds = getLastTimestampOfSignInSeconds(pusher, road + ":" + sign_id);
+				try {
 
-				List<HashMap<String, Object>> events = a22Service.getEvents(lastTimestampSeconds, nowSeconds,
-						Long.parseLong(sign_id));
-				LOG.info("Sign {} of {}: Got {} events", i+1, signs.size(), events.size());
-				for (HashMap<String, Object> event : events)
-				{
-					String event_timestamp = (String) event.get("timestamp");
+					String sign_descr = sign.get("descr");
+					String road = sign.get("road");
+					String direction_id = sign.get("direction_id");
+					String pmv_type = sign.get("pmv_type");
+					String segment_start = sign.get("segment_start");
+					String segment_end = sign.get("segment_end");
+					String position_m = sign.get("position_m");
+					double sign_lat = Double.parseDouble(sign.get("lat"));
+					double sign_lon = Double.parseDouble(sign.get("long"));
 
-					HashMap<String, SimpleRecordDto> esposizioneByComponentId = new HashMap<>();
-					HashMap<String, SimpleRecordDto> statoByComponentId = new HashMap<>();
+					long lastTimestampSeconds = getLastTimestampOfSignInSeconds(pusher, road + ":" + sign_id);
 
-					@SuppressWarnings("unchecked")
-					List<HashMap<String, Object>> components_pages = (ArrayList<HashMap<String, Object>>) event.get("component");
-					for (HashMap<String, Object> component_page : components_pages)
+					List<HashMap<String, Object>> events = a22Service.getEvents(lastTimestampSeconds, nowSeconds,
+							Long.parseLong(sign_id));
+					LOG.info(String.format("Sign %04d of %04d: Got %04d events", i+1, signs.size(), events.size()));
+					for (HashMap<String, Object> event : events)
 					{
-						String component_id = (String) component_page.get("component_id");
-						String data = (String) component_page.get("data");
-						String status = (String) component_page.get("status");
+						String event_timestamp = (String) event.get("timestamp");
 
-						String virtualStationId = road + ":" + sign_id + ":" + component_id;
+						HashMap<String, SimpleRecordDto> esposizioneByComponentId = new HashMap<>();
+						HashMap<String, SimpleRecordDto> statoByComponentId = new HashMap<>();
 
-						// esposizione
-
-						SimpleRecordDto esposizione = esposizioneByComponentId.get(component_id);
-						// 2019-06-26 d@vide.bz: replace multiple spaces with one space
-						String normalizedData = data.replaceAll("\\s+", " ");
-						if (esposizione == null)
+						@SuppressWarnings("unchecked")
+						List<HashMap<String, Object>> components_pages = (ArrayList<HashMap<String, Object>>) event.get("component");
+						for (HashMap<String, Object> component_page : components_pages)
 						{
-							esposizione = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, normalizedData, 1);
-							esposizioniDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.esposizione.key"), esposizione);
-							esposizioneByComponentId.put(component_id, esposizione);
-						}
-						else
-						{
-							esposizione.setValue(esposizione.getValue() + "|" + normalizedData);
-						}
+							String component_id = (String) component_page.get("component_id");
+							String data = (String) component_page.get("data");
+							String status = (String) component_page.get("status");
 
-						// stato
+							String virtualStationId = road + ":" + sign_id + ":" + component_id;
 
-						SimpleRecordDto stato = statoByComponentId.get(component_id);
-						if (stato == null)
-						{
-							stato = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, status, 1);
-							statoDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.stato.key"), stato);
-							statoByComponentId.put(component_id, stato);
-						}
-						else
-						{
-							stato.setValue(stato.getValue() + "|" + status);
-						}
+							// esposizione
 
-						// check when virtualStation alredy exists
-						boolean exists = stationList.stream()
-								.anyMatch((StationDto station) -> station.getId().equals(virtualStationId));
-						if (!exists)
-						{
-							String virtualStationIdName = sign_descr + " - component:" + component_id;
-							StationDto station = new StationDto(virtualStationId, virtualStationIdName, sign_lat,
-									sign_lon);
-							station.getMetaData().put("pmv_type", pmv_type);
-							station.setOrigin(a22stationProperties.getProperty("origin")); // 2019-06-26 d@vide.bz: required to make fetchStations work!
-							station.setStationType(a22stationProperties.getProperty("stationtype"));
-							// add other metadata
-							station.getMetaData().put("direction_id", direction_id);
-							station.getMetaData().put("segment_start", segment_start);
-							station.getMetaData().put("segment_end", segment_end);
-							station.getMetaData().put("position_m", position_m);
-							stationList.add(station);
-						}
+							SimpleRecordDto esposizione = esposizioneByComponentId.get(component_id);
+							// 2019-06-26 d@vide.bz: replace multiple spaces with one space
+							String normalizedData = data.replaceAll("\\s+", " ");
+							if (esposizione == null)
+							{
+								esposizione = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, normalizedData, 1);
+								esposizioniDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.esposizione.key"), esposizione);
+								esposizioneByComponentId.put(component_id, esposizione);
+							}
+							else
+							{
+								esposizione.setValue(esposizione.getValue() + "|" + normalizedData);
+							}
 
+							// stato
+
+							SimpleRecordDto stato = statoByComponentId.get(component_id);
+							if (stato == null)
+							{
+								stato = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, status, 1);
+								statoDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.stato.key"), stato);
+								statoByComponentId.put(component_id, stato);
+							}
+							else
+							{
+								stato.setValue(stato.getValue() + "|" + status);
+							}
+
+							// check when virtualStation alredy exists
+							boolean exists = stationList.stream()
+									.anyMatch((StationDto station) -> station.getId().equals(virtualStationId));
+							if (!exists)
+							{
+								String virtualStationIdName = sign_descr + " - component:" + component_id;
+								StationDto station = new StationDto(virtualStationId, virtualStationIdName, sign_lat,
+										sign_lon);
+								station.getMetaData().put("pmv_type", pmv_type);
+								station.setOrigin(a22stationProperties.getProperty("origin")); // 2019-06-26 d@vide.bz: required to make fetchStations work!
+								station.setStationType(a22stationProperties.getProperty("stationtype"));
+								// add other metadata
+								station.getMetaData().put("direction_id", direction_id);
+								station.getMetaData().put("segment_start", segment_start);
+								station.getMetaData().put("segment_end", segment_end);
+								station.getMetaData().put("position_m", position_m);
+								stationList.add(station);
+							}
+
+						}
 					}
+				} catch (Exception e) {
+					LOG.warn(
+						"ERROR while processing sign #{} with ID {} and exception '{}'... Skipping!",
+						i+1,
+						sign_id,
+						e.getMessage(),
+						v("sign", sign),
+						v("stacktrace", Arrays.asList(e.getStackTrace()))
+					);
 				}
 			}
 			pusher.syncStations(stationList);
