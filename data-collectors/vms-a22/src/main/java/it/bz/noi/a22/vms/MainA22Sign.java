@@ -78,7 +78,7 @@ public class MainA22Sign
 
 			List<HashMap<String, String>> signs = a22Service.getSigns();
 			LOG.info("got " + signs.size() + " signs");
-			for (int i = 112; i < signs.size(); i++)
+			for (int i = 0; i < signs.size(); i++)
 			{
 				HashMap<String, String> sign = signs.get(i);
 				String sign_id = sign.get("id");
