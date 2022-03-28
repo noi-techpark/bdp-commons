@@ -26,6 +26,7 @@ public class A22TraveltimesJSONPusher extends NonBlockingJSONPusher
 		throw new IllegalStateException("it is used by who?");
 	}
 
+	@Override
 	@PostConstruct
 	public void init() {
 		A22Properties prop = new A22Properties("a22traveltimes.properties");

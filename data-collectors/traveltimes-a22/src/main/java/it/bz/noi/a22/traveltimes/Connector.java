@@ -2,17 +2,17 @@
  *  A22 travel times API connector
  *
  *  (C) 2029 NOI Techpark Südtirol / Alto Adige
- *  
- *  
+ *
+ *
  *  changelog:
- *  	2020-02-26 chris@1006.org  
- *  
- *  
+ *  	2020-02-26 chris@1006.org
+ *
+ *
  *  upstream API reference:
  *   	2017-002 Autostrada del Brennero S.p.A. - Manutenzione ordinaria e straordinaria sistema di supervisione CAU - anno 2017
  *  	No doc: 2017-0046
  *  	Revisione: 3
- *  
+ *
  */
 package it.bz.noi.a22.traveltimes;
 
@@ -28,13 +28,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * encapsulates the A22 API to query travel times
  */
 public class Connector {
 
-    private static final String user_agent = "NOI/A22TravelTimesConnector";
+    private static final String USER_AGENT = "NOI/A22TravelTimesConnector";
     private static final int WS_CONN_TIMEOUT_MSEC = 30000;
     private static final int WS_READ_TIMEOUT_MSEC = 1800000;
     private static final boolean DEBUG = false;
@@ -60,7 +61,7 @@ public class Connector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/token")).openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -123,7 +124,7 @@ public class Connector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/token/" + token)).openConnection();
         conn.setRequestMethod("DELETE");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -146,7 +147,7 @@ public class Connector {
         os.close();
         conn.disconnect();
 
-        // parse response 
+        // parse response
         Boolean result = null;
         try {
             JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
@@ -156,7 +157,7 @@ public class Connector {
             e.printStackTrace();
             throw new RuntimeException("de-authentication failure (could not parse response)");
         }
-        if (result == null || result != true) {
+        if (result == null || !result) {
             throw new RuntimeException("de-authentication failure (de-authentication was not confirmed)");
         }
 
@@ -176,7 +177,7 @@ public class Connector {
      *
      * @throws IOException
      */
-    public ArrayList<HashMap<String, String>> getTravelTimeSegments() throws IOException {
+    public List<HashMap<String, String>> getTravelTimeSegments() throws IOException {
 
         if (url == null || token == null) {
             throw new RuntimeException("not authenticated");
@@ -185,7 +186,7 @@ public class Connector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/percorrenze/anagrafica")).openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -207,8 +208,8 @@ public class Connector {
         }
         os.close();
         conn.disconnect();
-        
-        // parse response 
+
+        // parse response
         ArrayList<HashMap<String, String>> output = new ArrayList<>();
         try {
             JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
@@ -223,18 +224,18 @@ public class Connector {
                 h.put("descrizione", (String)segment.get("descrizione"));
                 try
                 {
-                   h.put("latitudineinizio", String.valueOf((Double) segment.get("latitudineinizio")));
-                   h.put("longitudininizio", String.valueOf((Double) segment.get("longitudininizio")));
-                   h.put("latitudinefine", String.valueOf((Double) segment.get("latitudinefine")));
-                   h.put("longitudinefine", String.valueOf((Double) segment.get("longitudinefine")));
+                   h.put("latitudineinizio", String.valueOf(segment.get("latitudineinizio")));
+                   h.put("longitudininizio", String.valueOf(segment.get("longitudininizio")));
+                   h.put("latitudinefine", String.valueOf(segment.get("latitudinefine")));
+                   h.put("longitudinefine", String.valueOf(segment.get("longitudinefine")));
                 }
                 catch (Exception exxx)
                 {
                    continue;
                 }
-                h.put("iddirezione", String.valueOf((Long) segment.get("iddirezione")));
-                h.put("metroinizio", String.valueOf((Long) segment.get("metroinizio")));
-                h.put("metrofine", String.valueOf((Long) segment.get("metrofine")));
+                h.put("iddirezione", String.valueOf(segment.get("iddirezione")));
+                h.put("metroinizio", String.valueOf(segment.get("metroinizio")));
+                h.put("metrofine", String.valueOf(segment.get("metrofine")));
                 output.add(h);
             }
         } catch (Exception e) {
@@ -264,13 +265,13 @@ public class Connector {
      *
      * @throws IOException
      */
-    public ArrayList<HashMap<String, String>> getTravelTimes(long fr, long to, String id) throws IOException {
+    public List<HashMap<String, String>> getTravelTimes(long fr, long to, String id) throws IOException {
 
         if (url == null || token == null) {
             throw new RuntimeException("not authenticated");
         }
 
-        ArrayList<HashMap<String, String>> output = new ArrayList<>();
+        List<HashMap<String, String>> output = new ArrayList<>();
 
         HashMap<Integer, Integer> http_codes = new HashMap<>();
 
@@ -283,7 +284,7 @@ public class Connector {
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/percorrenze/tempi")).openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("User-Agent", user_agent);
+        conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
         conn.setConnectTimeout(WS_CONN_TIMEOUT_MSEC);
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
@@ -311,7 +312,7 @@ public class Connector {
         os.close();
         conn.disconnect();
 
-        // parse response 
+        // parse response
         try {
             JSONObject response_json = (JSONObject) JSONValue.parse(response.toString());
             JSONArray traveltimes_list = (JSONArray) response_json.get("Percorrenze_GetTempiResult");
@@ -325,7 +326,7 @@ public class Connector {
                 // (see the comment "Reverse engineering the A22 time stamp format" at the end of the file)
                 h.put("data", String.valueOf(Long.valueOf(((String)traveltime.get("data")).substring(6, 16))));
                 h.put("lds", (String)traveltime.get("lds"));
-                h.put("tempo", String.valueOf((Long) traveltime.get("tempo")));
+                h.put("tempo", String.valueOf(traveltime.get("tempo")));
                 // "velocita" can come as Long or Double from the JSON API, we parse it as Double
                 h.put("velocita", String.valueOf(Double.valueOf(String.valueOf(traveltime.get("velocita")))));
                 output.add(h);
@@ -345,7 +346,7 @@ public class Connector {
     }
 
     /*
-    
+
     Reverse engineering the A22 time stamp format
     --------------------------------------------
 
@@ -366,7 +367,7 @@ public class Connector {
     /Date(1540688648000+0100)/
     /Date(1540688656000+0100)/
     [...]
-    
+
     /Date(1540688390000+0200)/
 
         $ date --date='@1540688390'
@@ -382,8 +383,8 @@ public class Connector {
 
         01:02 UTC would be 02:02 CET ~ 02 CET
 
-    That means the first part of this string *is* the correct time stamp 
-    in unix epoch / UTC. 
+    That means the first part of this string *is* the correct time stamp
+    in unix epoch / UTC.
 
      */
 }

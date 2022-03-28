@@ -8,9 +8,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
@@ -19,10 +23,21 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
+@Component
+@Configuration
+@PropertySource("classpath:it/bz/noi/a22/traveltimes/a22connector.properties")
 public class MainA22Traveltimes
 {
+	@Value("${a22url}")
+    private String a22ConnectorURL;
 
-	private static Logger log = LogManager.getLogger(MainA22Traveltimes.class);
+    @Value("${a22user}")
+    private String a22ConnectorUsr;
+
+    @Value("${a22password}")
+    private String a22ConnectorPwd;
+
+	private static final Logger LOG = LoggerFactory.getLogger(MainA22Traveltimes.class);
 
 	private final A22Properties datatypesProperties;
 	private final A22Properties a22TraveltimesProperties;
@@ -30,7 +45,6 @@ public class MainA22Traveltimes
 	@Autowired
 	A22TraveltimesJSONPusher pusher;
 
-	private List<DataTypeDto> dataTypeDtoList;
 	private StationList stationList;
 
 	public MainA22Traveltimes() {
@@ -44,7 +58,7 @@ public class MainA22Traveltimes
 		long startTime = System.currentTimeMillis();
 		try
 		{
-			log.info("Start MainA22Traveltimes");
+			LOG.info("Start MainA22Traveltimes");
 
 			// step 1
 			// create a Connector instance: this will perform authentication and store the session
@@ -60,11 +74,10 @@ public class MainA22Traveltimes
 			// get the list of segments
 			stationList = new StationList();
 			try {
-				ArrayList<HashMap<String, String>> segments = a22Service.getTravelTimeSegments();
-				log.debug("got " + segments.size() + " segments");
-				if (segments.size() > 0) {
-					log.debug("the first segment is:");
-					log.debug(segments.get(0));
+				List<HashMap<String, String>> segments = a22Service.getTravelTimeSegments();
+				LOG.debug("got " + segments.size() + " segments");
+				if (!segments.isEmpty()) {
+					LOG.debug("the first segment is: {}", segments.get(0));
 					segments.forEach(segment -> {
 						StationDto edge = new StationDto(segment.get("idtratto"),
 								segment.get("descrizione"),
@@ -105,7 +118,7 @@ public class MainA22Traveltimes
 
 				}
 			} catch (Exception e) {
-				log.error("step 2 failed, continuing anyway to de-auth...", e);
+				LOG.error("step 2 failed, continuing anyway to de-auth...", e);
 			}
 
 			// step 3
@@ -128,12 +141,11 @@ public class MainA22Traveltimes
 					DataMapDto<RecordDtoImpl> velocitaDataMapDto = new DataMapDto<>();
 
 
-					ArrayList<HashMap<String, String>> traveltimes = a22Service.getTravelTimes(lastTimeStamp, lastTimeStamp + scanWindowSeconds, id);
+					List<HashMap<String, String>> traveltimes = a22Service.getTravelTimes(lastTimeStamp, lastTimeStamp + scanWindowSeconds, id);
 
-					log.debug("got " + traveltimes.size() + " traveltime data records for " + simpleDateFormat.format(new Date(lastTimeStamp * 1000)) + ", " + simpleDateFormat.format(new Date((lastTimeStamp + scanWindowSeconds) * 1000)) + ", " + id + ":");
+					LOG.debug("got " + traveltimes.size() + " traveltime data records for " + simpleDateFormat.format(new Date(lastTimeStamp * 1000)) + ", " + simpleDateFormat.format(new Date((lastTimeStamp + scanWindowSeconds) * 1000)) + ", " + id + ":");
 					if (!traveltimes.isEmpty()) {
-						log.debug("the first travel time is:");
-						log.debug(traveltimes.get(0));
+						LOG.debug("the first travel time is: {}", traveltimes.get(0));
 						traveltimes.forEach(traveltime -> {
 
 							// lds
@@ -175,15 +187,15 @@ public class MainA22Traveltimes
 									velocita);
 						});
 
-						log.debug("pushing all ldsDataMapDto data: " + stationList.size() + " records");
+						LOG.debug("pushing all ldsDataMapDto data: " + stationList.size() + " records");
 						pusher.pushData(ldsDataMapDto);
-						log.debug("pushing all ldsDescDataMapDto data: " + stationList.size() + " records");
+						LOG.debug("pushing all ldsDescDataMapDto data: " + stationList.size() + " records");
 						pusher.pushData(ldsDescDataMapDto);
-						log.debug("pushing all ldsValDataMapDto data: " + stationList.size() + " records");
+						LOG.debug("pushing all ldsValDataMapDto data: " + stationList.size() + " records");
 						pusher.pushData(ldsValDataMapDto);
-						log.debug("pushing all tempoDataMapDto data: " + stationList.size() + " records");
+						LOG.debug("pushing all tempoDataMapDto data: " + stationList.size() + " records");
 						pusher.pushData(tempoDataMapDto);
-						log.debug("pushing all velocitaDataMapDto data: " + stationList.size() + " records");
+						LOG.debug("pushing all velocitaDataMapDto data: " + stationList.size() + " records");
 						pusher.pushData(velocitaDataMapDto);
 					}
 						lastTimeStamp += scanWindowSeconds;
@@ -192,7 +204,7 @@ public class MainA22Traveltimes
 
 
 			} catch (Exception e) {
-				log.error("step 3 failed, continuing anyway to read de-auth...", e);
+				LOG.error("step 3 failed, continuing anyway to read de-auth...", e);
 			}
 
 			// step 4
@@ -201,31 +213,18 @@ public class MainA22Traveltimes
 		}
 		catch (Exception e)
 		{
-			log.error(e);
 			throw new IllegalStateException(e);
 		}
 		finally
 		{
 			long stopTime = System.currentTimeMillis();
-			log.debug("elaboration time (millis): " + (stopTime - startTime));
+			LOG.debug("elaboration time (millis): " + (stopTime - startTime));
 		}
 	}
 
 	private Connector setupA22ServiceConnector() throws IOException
 	{
-		String url;
-		String user;
-		String password;
-
-		// read connector auth informations
-		A22Properties prop = new A22Properties("a22connector.properties");
-		url = prop.getProperty("url");
-		user = prop.getProperty("user");
-		password = prop.getProperty("password");
-
-		Connector a22Service = new Connector(url, user, password);
-
-		return a22Service;
+		return new Connector(a22ConnectorURL, a22ConnectorUsr, a22ConnectorPwd);
 	}
 
 	private void setupDataType()
@@ -268,11 +267,10 @@ public class MainA22Traveltimes
 			long ret = stationIdLastTimestampMap.getOrDefault(stationId,
 					new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22TraveltimesProperties.getProperty("lastTimestamp")).getTime());
 
-			log.debug("getLastTimestampOfStationInSeconds(" + stationId + "): " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
+			LOG.debug("getLastTimestampOfStationInSeconds(" + stationId + "): " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
 
 			return ret / 1000;
 		} catch (ParseException e) {
-			log.error("Invalid lastTimestamp: " + a22TraveltimesProperties.getProperty("lastTimestamp"), e);
 			throw new RuntimeException("Invalid lastTimestamp: " + a22TraveltimesProperties.getProperty("lastTimestamp"), e);
 		}
 	}
@@ -284,7 +282,7 @@ public class MainA22Traveltimes
 		for(StationDto stationDto: this.stationList) {
 			String stationCode = stationDto.getId();
 			long lastTimestamp = ((Date) pusher.getDateOfLastRecord(stationCode, null, null)).getTime();
-			log.debug("Station Code: " + stationCode + ", lastTimestamp: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
+			LOG.debug("Station Code: " + stationCode + ", lastTimestamp: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
 			if(stationIdLastTimestampMap.getOrDefault(stationCode, 0L) < lastTimestamp) {
 				stationIdLastTimestampMap.put(stationCode, lastTimestamp);
 			}
