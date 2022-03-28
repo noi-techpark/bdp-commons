@@ -134,70 +134,70 @@ public class MainA22Traveltimes
 					long lastTimeStamp = getLastTimestampOfStationInSeconds(id);
 
 					do {
-					DataMapDto<RecordDtoImpl> ldsDataMapDto = new DataMapDto<>();
-					DataMapDto<RecordDtoImpl> ldsDescDataMapDto = new DataMapDto<>();
-					DataMapDto<RecordDtoImpl> ldsValDataMapDto = new DataMapDto<>();
-					DataMapDto<RecordDtoImpl> tempoDataMapDto = new DataMapDto<>();
-					DataMapDto<RecordDtoImpl> velocitaDataMapDto = new DataMapDto<>();
+						DataMapDto<RecordDtoImpl> ldsDataMapDto = new DataMapDto<>();
+						DataMapDto<RecordDtoImpl> ldsDescDataMapDto = new DataMapDto<>();
+						DataMapDto<RecordDtoImpl> ldsValDataMapDto = new DataMapDto<>();
+						DataMapDto<RecordDtoImpl> tempoDataMapDto = new DataMapDto<>();
+						DataMapDto<RecordDtoImpl> velocitaDataMapDto = new DataMapDto<>();
 
 
-					List<HashMap<String, String>> traveltimes = a22Service.getTravelTimes(lastTimeStamp, lastTimeStamp + scanWindowSeconds, id);
+						List<HashMap<String, String>> traveltimes = a22Service.getTravelTimes(lastTimeStamp, lastTimeStamp + scanWindowSeconds, id);
 
-					LOG.debug("got " + traveltimes.size() + " traveltime data records for " + simpleDateFormat.format(new Date(lastTimeStamp * 1000)) + ", " + simpleDateFormat.format(new Date((lastTimeStamp + scanWindowSeconds) * 1000)) + ", " + id + ":");
-					if (!traveltimes.isEmpty()) {
-						LOG.debug("the first travel time is: {}", traveltimes.get(0));
-						traveltimes.forEach(traveltime -> {
+						LOG.debug("got " + traveltimes.size() + " traveltime data records for " + simpleDateFormat.format(new Date(lastTimeStamp * 1000)) + ", " + simpleDateFormat.format(new Date((lastTimeStamp + scanWindowSeconds) * 1000)) + ", " + id + ":");
+						if (!traveltimes.isEmpty()) {
+							LOG.debug("the first travel time is: {}", traveltimes.get(0));
+							traveltimes.forEach(traveltime -> {
 
-							// lds
-							String ldsKey = datatypesProperties.getProperty("a22traveltimes.datatype.lds.key");
-							String ldsRaw = traveltime.get("lds");
-							SimpleRecordDto lds = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000,
-									ldsRaw,
-									1);
-							ldsDataMapDto.addRecord(traveltime.get("idtratto"),
-									ldsKey,
-									lds);
-							SimpleRecordDto ldsDesc = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000,
-									datatypesProperties.getProperty("a22traveltimes.datatype.lds.mapping." + ldsRaw + ".desc"),
-									1);
-							ldsDescDataMapDto.addRecord(traveltime.get("idtratto"),
-									ldsKey + "_desc",
-									ldsDesc);
-							SimpleRecordDto ldsVal = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000,
-									Double.parseDouble(datatypesProperties.getProperty("a22traveltimes.datatype.lds.mapping." + ldsRaw + ".val")),
-									1);
-							ldsValDataMapDto.addRecord(traveltime.get("idtratto"),
-									ldsKey + "_val",
-									ldsVal);
+								// lds
+								String ldsKey = datatypesProperties.getProperty("a22traveltimes.datatype.lds.key");
+								String ldsRaw = traveltime.get("lds");
+								SimpleRecordDto lds = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000,
+										ldsRaw,
+										1);
+								ldsDataMapDto.addRecord(traveltime.get("idtratto"),
+										ldsKey,
+										lds);
+								SimpleRecordDto ldsDesc = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000,
+										datatypesProperties.getProperty("a22traveltimes.datatype.lds.mapping." + ldsRaw + ".desc"),
+										1);
+								ldsDescDataMapDto.addRecord(traveltime.get("idtratto"),
+										ldsKey + "_desc",
+										ldsDesc);
+								SimpleRecordDto ldsVal = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000,
+										Double.parseDouble(datatypesProperties.getProperty("a22traveltimes.datatype.lds.mapping." + ldsRaw + ".val")),
+										1);
+								ldsValDataMapDto.addRecord(traveltime.get("idtratto"),
+										ldsKey + "_val",
+										ldsVal);
 
-							// tempo
-							SimpleRecordDto tempo = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000L,
-									Double.parseDouble(traveltime.get("tempo")),
-									1);
-							tempoDataMapDto.addRecord(traveltime.get("idtratto"),
-									datatypesProperties.getProperty("a22traveltimes.datatype.tempo.key"),
-									tempo);
+								// tempo
+								SimpleRecordDto tempo = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000L,
+										Double.parseDouble(traveltime.get("tempo")),
+										1);
+								tempoDataMapDto.addRecord(traveltime.get("idtratto"),
+										datatypesProperties.getProperty("a22traveltimes.datatype.tempo.key"),
+										tempo);
 
-							// velocita
-							SimpleRecordDto velocita = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000L,
-									Double.parseDouble(traveltime.get("velocita")),
-									1);
-							velocitaDataMapDto.addRecord(traveltime.get("idtratto"),
-									datatypesProperties.getProperty("a22traveltimes.datatype.velocita.key"),
-									velocita);
-						});
+								// velocita
+								SimpleRecordDto velocita = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000L,
+										Double.parseDouble(traveltime.get("velocita")),
+										1);
+								velocitaDataMapDto.addRecord(traveltime.get("idtratto"),
+										datatypesProperties.getProperty("a22traveltimes.datatype.velocita.key"),
+										velocita);
+							});
 
-						LOG.debug("pushing all ldsDataMapDto data: " + stationList.size() + " records");
-						pusher.pushData(ldsDataMapDto);
-						LOG.debug("pushing all ldsDescDataMapDto data: " + stationList.size() + " records");
-						pusher.pushData(ldsDescDataMapDto);
-						LOG.debug("pushing all ldsValDataMapDto data: " + stationList.size() + " records");
-						pusher.pushData(ldsValDataMapDto);
-						LOG.debug("pushing all tempoDataMapDto data: " + stationList.size() + " records");
-						pusher.pushData(tempoDataMapDto);
-						LOG.debug("pushing all velocitaDataMapDto data: " + stationList.size() + " records");
-						pusher.pushData(velocitaDataMapDto);
-					}
+							LOG.debug("pushing all ldsDataMapDto data: " + stationList.size() + " records");
+							pusher.pushData(ldsDataMapDto);
+							LOG.debug("pushing all ldsDescDataMapDto data: " + stationList.size() + " records");
+							pusher.pushData(ldsDescDataMapDto);
+							LOG.debug("pushing all ldsValDataMapDto data: " + stationList.size() + " records");
+							pusher.pushData(ldsValDataMapDto);
+							LOG.debug("pushing all tempoDataMapDto data: " + stationList.size() + " records");
+							pusher.pushData(tempoDataMapDto);
+							LOG.debug("pushing all velocitaDataMapDto data: " + stationList.size() + " records");
+							pusher.pushData(velocitaDataMapDto);
+						}
 						lastTimeStamp += scanWindowSeconds;
 					} while (lastTimeStamp < System.currentTimeMillis() / 1000);
 				}
