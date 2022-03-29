@@ -129,8 +129,7 @@ public class MainA22Sign
 								esposizioniDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.esposizione.key"), esposizione);
 								esposizioneByComponentId.put(component_id, esposizione);
 							}
-							else
-							{
+							else if (!esposizione.getValue().toString().trim().equals(normalizedData.trim())) {
 								esposizione.setValue(esposizione.getValue() + "|" + normalizedData);
 							}
 
@@ -143,8 +142,7 @@ public class MainA22Sign
 								statoDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.stato.key"), stato);
 								statoByComponentId.put(component_id, stato);
 							}
-							else
-							{
+							else if (!stato.getValue().toString().trim().equals(status.trim())) {
 								stato.setValue(stato.getValue() + "|" + status);
 							}
 
@@ -176,7 +174,7 @@ public class MainA22Sign
 						sign_id,
 						e.getMessage(),
 						v("sign", sign),
-						v("stacktrace", Arrays.asList(e.getStackTrace()))
+						v("stacktrace", Arrays.toString(e.getStackTrace()))
 					);
 				}
 			}
@@ -184,9 +182,9 @@ public class MainA22Sign
 			pusher.pushData(esposizioniDataMapDto);
 			pusher.pushData(statoDataMapDto);
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			throw new IllegalStateException(e);
+			LOG.error("ERROR while pushing data: {}", e.getMessage(), v("stacktrace", Arrays.toString(e.getStackTrace())));
 		}
 		finally
 		{
