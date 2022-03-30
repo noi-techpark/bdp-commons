@@ -16,7 +16,7 @@
     <context:component-scan base-package="it.bz.idm.bdp"/>
 
     <bean class="it.bz.idm.bdp.dcbikesharingmoqo.BikesharingMoqoJobScheduler" id="jobScheduler"/>
-    <task:scheduler id="Scheduler" pool-size="10" />
+    <task:scheduler id="Scheduler" pool-size="${SCHEDULER_POOL_SIZE:10}" />
     <task:scheduled-tasks scheduler="Scheduler">
         <!--
             Put every job from your JobScheduler class here, that you want to be executed
@@ -52,8 +52,8 @@
             -->
         <!-- <task:scheduled ref="jobScheduler" method="pushData"      cron="0 0   * * * *" /> -->       <!-- Every hour -->
         <!-- <task:scheduled ref="jobScheduler" method="pushData"      cron="0 0   1 * * *" /> --> <!-- Every day at 1pm -->
-        <task:scheduled ref="jobScheduler" method="pushData"      cron="0 0/5   * * * *" /> <!-- Every 5 minutes -->
-        <task:scheduled ref="jobScheduler" method="pushDataTypes" cron="0 0     * * * *" /> <!-- Every hour      -->
+        <task:scheduled ref="jobScheduler" method="pushData"      cron="${SCHEDULER_CRON_DATA:0 0/5   * * * *}" /> <!-- Every 5 minutes -->
+        <task:scheduled ref="jobScheduler" method="pushDataTypes" cron="${SCHEDULER_CRON_TYPES:0 0     * * * *}" /> <!-- Every hour      -->
 
         <!-- Stations are pushed together with the measurements in the job "pushData" -->
         <!-- <task:scheduled ref="jobScheduler" method="pushStations"  cron="0 0     1 * * *" /> Every day at 1pm -->
