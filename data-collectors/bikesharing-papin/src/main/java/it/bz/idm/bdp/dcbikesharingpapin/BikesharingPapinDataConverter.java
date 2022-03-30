@@ -34,8 +34,8 @@ public class BikesharingPapinDataConverter {
 
     public static final String STATION_TYPE_STATION      = "BikesharingStation";
 
-    public static final String ORIGIN_KEY                = "app.origin";
-    public static final String PERIOD_KEY                = "app.period";
+    public static final String ORIGIN_KEY                = "app_origin";
+    public static final String PERIOD_KEY                = "app_period";
 
     public static final String AUTH_TOKEN_KEY            = "app_auth_token";
 
