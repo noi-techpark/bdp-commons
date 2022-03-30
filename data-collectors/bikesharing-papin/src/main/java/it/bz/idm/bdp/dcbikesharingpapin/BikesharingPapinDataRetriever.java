@@ -153,6 +153,8 @@ public class BikesharingPapinDataRetriever {
         String authToken = converter.getAuthToken();
         if (DCUtils.paramNotNull(authToken)) {
             request.setHeader("X-Access-Token", authToken);
+            request.setHeader("Content-Length", authToken.length() + "");
+
         }
         request.setHeader("Accept", "application/json");
 
