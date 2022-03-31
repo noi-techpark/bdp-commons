@@ -70,10 +70,9 @@ jobs:
 
       - name: Configure a22connector.properties
         run: |
-          sed -i -e "s%\${A22_URL}%${{ secrets.ROADWEATHER_A22_URL }}%g" src/main/resourses/it/bz/noi/a22/roadweather/a22connector.properties
-          sed -i -e "s%\${A22_USER}%${{ secrets.ROADWEATHER_A22_USER }}%g" src/main/resourses/it/bz/noi/a22/roadweather/a22connector.properties
-          sed -i -e "s%\${A22_PASSWORD}%${{ secrets.ROADWEATHER_A22_PASSWORD }}%g" src/main/resourses/it/bz/noi/a22/roadweather/a22connector.properties
-
+          sed -i -e "s%\${A22_URL}%${{ secrets.ROADWEATHER_A22_URL }}%g" src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties
+          sed -i -e "s%\${A22_USER}%${{ secrets.ROADWEATHER_A22_USER }}%g" src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties
+          sed -i -e "s%\${A22_PASSWORD}%${{ secrets.ROADWEATHER_A22_PASSWORD }}%g" src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
