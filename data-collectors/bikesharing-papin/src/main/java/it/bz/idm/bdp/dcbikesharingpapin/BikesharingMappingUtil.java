@@ -3,8 +3,8 @@ package it.bz.idm.bdp.dcbikesharingpapin;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ import it.bz.idm.bdp.dto.StationList;
 
 @Component
 public class BikesharingMappingUtil {
-    private static final Logger LOG = LogManager.getLogger(BikesharingMappingUtil.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(BikesharingMappingUtil.class.getName());
     @Autowired
     private BikesharingPapinDataConverter converter;
     

@@ -3,8 +3,8 @@ package it.bz.idm.bdp.dcbikesharingpapin;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import it.bz.idm.bdp.dto.StationList;
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class BikesharingPapinDataPusherIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(BikesharingPapinDataPusherIT.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(BikesharingPapinDataPusherIT.class.getName());
 
     @Autowired
     private BikesharingPapinJobScheduler scheduler;
@@ -93,7 +93,7 @@ public class BikesharingPapinDataPusherIT extends AbstractJUnit4SpringContextTes
         try {
             //Push station data, we have three Station Types: Station
             StationList stations = mappingUtil.mapStations2Bdp(data);
-            LOG.debug(stations);
+            // LOG.debug(stations);
             if (stations != null) {
             	pusher.syncStations(BikesharingPapinDataConverter.STATION_TYPE_STATION, stations);
             }
@@ -106,7 +106,7 @@ public class BikesharingPapinDataPusherIT extends AbstractJUnit4SpringContextTes
     private void pushDataTypes(List<String> errors) {
         try {
             List<DataTypeDto> dataTypeList = mappingUtil.mapDataTypes2Bdp();
-            LOG.debug(dataTypeList);
+            // LOG.debug(dataTypeList);
             if (dataTypeList != null) {
                 pusher.syncDataTypes(dataTypeList);
             }

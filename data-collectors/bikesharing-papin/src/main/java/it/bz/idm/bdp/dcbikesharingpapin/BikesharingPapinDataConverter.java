@@ -3,8 +3,8 @@ package it.bz.idm.bdp.dcbikesharingpapin;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import it.bz.idm.bdp.dto.StationDto;
 @Service
 public class BikesharingPapinDataConverter {
 
-    private static final Logger LOG = LogManager.getLogger(BikesharingPapinDataConverter.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(BikesharingPapinDataConverter.class.getName());
 
     public static final String DATA_TYPE_STATION_AVAILABILITY             = DataTypeDto.AVAILABILITY;
     public static final String DATA_TYPE_STATION_IS_CLOSE                 = "isClosed";

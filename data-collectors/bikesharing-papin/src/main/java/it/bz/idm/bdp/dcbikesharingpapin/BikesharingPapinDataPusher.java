@@ -1,7 +1,7 @@
 package it.bz.idm.bdp.dcbikesharingpapin;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
@@ -16,7 +16,7 @@ import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 @Service
 public class BikesharingPapinDataPusher extends NonBlockingJSONPusher {
 
-    private static final Logger LOG = LogManager.getLogger(BikesharingPapinDataPusher.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(BikesharingPapinDataPusher.class.getName());
 
     @Autowired
     private Environment env;
