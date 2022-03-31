@@ -1,16 +1,16 @@
-name: CI traffic-bz
+name: CI environment-appa-bz-opendata
 
 on:
   push:
     paths:
-      - "data-collectors/traffic-bz/**"
-      - ".github/workflows/ci-traffic-bz.yml"
+      - "data-collectors/environment-appa-bz-opendata/**"
+      - ".github/workflows/ci-environment-appa-bz-opendata.yml"
 
 env:
-  WORKING_DIRECTORY: data-collectors/traffic-bz
-  PROJECT_NAME: odh-mobility-dc-traffic-bz
+  WORKING_DIRECTORY: data-collectors/environment-appa-bz-opendata
+  PROJECT_NAME: odh-mobility-dc-environment-appa-bz-opendata
   DOCKER_REGISTRY_HOST: ghcr.io
-  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-traffic-bz
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-environment-appa-bz-opendata
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
 
@@ -28,11 +28,11 @@ jobs:
           test-command: 'mvn -B -U clean compile test'
 
 # Deploy Test
-  deploy-test-traffic-bz:
+  deploy-test-environment-appa-bz-opendata:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
     needs: test
-    concurrency: deploy-test-traffic-bz
+    concurrency: deploy-test-environment-appa-bz-opendata
     env:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
@@ -98,11 +98,11 @@ jobs:
           docker-host: ${{ env.DOCKER_REGISTRY_HOST }}
 
   # Deploy Production
-  deploy-prod-traffic-bz:
+  deploy-prod-environment-appa-bz-opendata:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/prod'
     needs: test
-    concurrency: deploy-prod-traffic-bz
+    concurrency: deploy-prod-environment-appa-bz-opendata
     env:
       KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:
