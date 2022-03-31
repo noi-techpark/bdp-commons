@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import it.bz.idm.bdp.dto.StationDto;
 @Service
 public class BikesharingMoqoDataConverter {
 
-    private static final Logger LOG = LogManager.getLogger(BikesharingMoqoDataConverter.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(BikesharingMoqoDataConverter.class.getName());
 
     public static final String DATA_TYPE_AVAILABILITY        = DataTypeDto.AVAILABILITY;
     public static final String DATA_TYPE_FUTURE_AVAILABILITY = DataTypeDto.FUTURE_AVAILABILITY;
