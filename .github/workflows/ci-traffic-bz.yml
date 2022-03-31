@@ -43,7 +43,7 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
-          # Data Collector config for Moqo
+          # Data Collector config for Traffic bz
           X_endpoint_defaultUri: ${{ secrets.TRAFFIC_BZ_DATA_ENDPOINT }}
           
           # General deployment options
@@ -115,9 +115,8 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
-          # Data Collector config for Moqo
-          X_app_auth_token: ${{ secrets.BIKESHARING_MOQO_AUTH_TOKEN }}
-          X_app_auth_selectedTeam: ${{ secrets.BIKESHARING_MOQO_AUTH_SELECTED_TEAM }}
+          # Data Collector config for Traffic bz
+          X_endpoint_defaultUri: ${{ secrets.TRAFFIC_BZ_DATA_ENDPOINT }}
 
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
