@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
@@ -50,7 +50,7 @@ import it.bz.odh.spreadsheets.utils.WorkbookUtil;
 @Service
 public class SyncScheduler {
 
-    private static final Logger logger = LogManager.getLogger(SyncScheduler.class);
+    private static final Logger logger = LoggerFactory.getLogger(SyncScheduler.class);
 
     private Function<DataTypeWrapperDto, DataTypeDto> mapper = (dto) -> {
         return dto.getType();

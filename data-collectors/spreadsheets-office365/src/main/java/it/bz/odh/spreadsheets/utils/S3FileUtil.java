@@ -22,8 +22,8 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class S3FileUtil {
 
-    private Logger logger = LogManager.getLogger(S3FileUtil.class);
+    private Logger logger = LoggerFactory.getLogger(S3FileUtil.class);
 
     @Value("${aws.access-key}")
     private String accessKey;
