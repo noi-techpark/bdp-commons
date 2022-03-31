@@ -1,13 +1,13 @@
 package Helpers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 public class DateHelper {
 
-    private static final Logger LOG = LogManager.getLogger(DateHelper.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DateHelper.class.getName());
 
     /**
      * This method, given the input parameters, produces a timeStamp used

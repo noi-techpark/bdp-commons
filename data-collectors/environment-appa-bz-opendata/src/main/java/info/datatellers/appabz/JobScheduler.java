@@ -1,7 +1,7 @@
 package info.datatellers.appabz;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +20,7 @@ import it.bz.idm.bdp.dto.StationList;
 @Component("jobScheduler")
 public class JobScheduler {
 
-    private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(JobScheduler.class.getName());
     
     @Autowired
 	private DataPusher dataPusher;

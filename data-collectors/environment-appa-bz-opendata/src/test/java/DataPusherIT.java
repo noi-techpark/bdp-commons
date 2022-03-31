@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,7 +18,7 @@ import it.bz.idm.bdp.dto.StationList;
 public class DataPusherIT {
 
     private DataPusher pusher = new DataPusher();
-    private static final Logger LOG = LogManager.getLogger(DataPusherIT.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataPusherIT.class.getName());
     private final ResourceBundle rb = ResourceBundle.getBundle("test");
 
     @Test

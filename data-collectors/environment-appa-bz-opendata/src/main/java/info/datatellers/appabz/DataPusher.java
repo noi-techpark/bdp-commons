@@ -7,8 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.TreeMap;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -37,7 +37,7 @@ public class DataPusher extends NonBlockingJSONPusher {
 	
     @Autowired
     Environment env;
-    private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataPusher.class.getName());
     private int stationMeasurements = 0;
     private int totalMeasurements = 0;
 

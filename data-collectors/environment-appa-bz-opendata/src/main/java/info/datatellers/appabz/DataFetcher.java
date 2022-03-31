@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -27,7 +27,7 @@ import com.google.gson.JsonParser;
 public class DataFetcher {
 
     private final ResourceBundle rb = ResourceBundle.getBundle("config");
-    private static final Logger LOG = LogManager.getLogger(DataFetcher.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataFetcher.class.getName());
     private final String stationsEndpoint = rb.getString("odh.url.stations.metadata");
     private final String pollutersEndpoint = rb.getString("odh.url.polluters.metadata");
     private final String measurementsEndpoint = rb.getString("odh.url.polluters.measurements");
@@ -50,7 +50,7 @@ public class DataFetcher {
                 return fetchStationsHandler(connection, builder);
             } catch (IOException e)
             {
-                LOG.fatal("Unable to establish connection.");
+                LOG.error("Unable to establish connection.");
                 return null;
             }
     }
@@ -73,7 +73,7 @@ public class DataFetcher {
                 return fetchPollutersHandler(connection, builder);
             } catch (IOException e)
             {
-                LOG.fatal("Unable to establish connection.");
+                LOG.error("Unable to establish connection.");
                 return null;
             }
     }
@@ -273,7 +273,7 @@ public class DataFetcher {
             }
         }catch (IOException e)
         {
-            LOG.fatal("Unable to establish connection.");
+            LOG.error("Unable to establish connection.");
         }
         return null;
     }
