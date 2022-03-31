@@ -4,12 +4,12 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Properties;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class A22Properties extends Properties {
 
-    private static Logger log = LogManager.getLogger(A22Properties.class);
+    private static Logger log = LoggerFactory.getLogger(A22Properties.class);
 
     public A22Properties(String propertiesFile) {
         try {
@@ -18,7 +18,7 @@ public class A22Properties extends Properties {
                 this.load(in);
             }
         } catch (Exception e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
         }
     }
 }

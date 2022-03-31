@@ -25,8 +25,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -36,7 +36,7 @@ import org.json.simple.JSONValue;
  */
 public class Connector {
 
-    private static Logger log = LogManager.getLogger(Connector.class);
+    private static Logger log = LoggerFactory.getLogger(Connector.class);
 
     private static final String user_agent = "NOI/A22RoadWeatherConnector";
     private static final int WS_CONN_TIMEOUT_MSEC = 30000;

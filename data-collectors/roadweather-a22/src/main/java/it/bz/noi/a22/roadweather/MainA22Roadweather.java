@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ import it.bz.idm.bdp.dto.StationList;
 @Component
 public class MainA22Roadweather{
 
-    private static Logger log = LogManager.getLogger(MainA22Roadweather.class);
+    private static Logger log = LoggerFactory.getLogger(MainA22Roadweather.class);
 
     private final A22Properties datatypesProperties;
     private final A22Properties a22RoadweatherProperties;
@@ -116,7 +116,7 @@ public class MainA22Roadweather{
                         log.debug("got " + weatherdata_list.size() + " weather data records for " + simpleDateFormat.format(new Date(lastTimeStamp * 1000)) + ", " + simpleDateFormat.format(new Date((lastTimeStamp + scanWindowSeconds) * 1000)) + ", " + idCabina + ":");
                         if (weatherdata_list.size() > 0) {
                             log.debug("the first weather data record is: ");
-                            log.debug(weatherdata_list.get(0));
+                            log.debug(weatherdata_list.get(0).toString());
                             weatherdata_list.forEach(weatherdata -> {
                                 datatypeKeys.forEach(cname -> {
                                     if (!weatherdata.get(cname).equals("null")) {
@@ -145,7 +145,7 @@ public class MainA22Roadweather{
             // de-authentication
             a22Service.close();
         } catch (Exception e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
         } finally {
             long stopTime = System.currentTimeMillis();
             log.debug("elaboration time (millis): " + (stopTime - startTime));
