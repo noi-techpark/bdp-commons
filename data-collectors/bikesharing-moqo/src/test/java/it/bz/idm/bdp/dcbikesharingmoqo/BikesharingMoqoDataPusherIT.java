@@ -87,7 +87,7 @@ public class BikesharingMoqoDataPusherIT extends AbstractJUnit4SpringContextTest
     private void pushStations(List<BikeDto> data, List<String> errors) {
         try {
             StationList stations = pusher.mapStations2Bdp(data);
-            LOG.debug(stations);
+            // LOG.debug(stations);
             if (stations != null) {
                 pusher.syncStations(stations);
             }
@@ -99,7 +99,7 @@ public class BikesharingMoqoDataPusherIT extends AbstractJUnit4SpringContextTest
     private void pushDataTypes(List<String> errors) {
         try {
             List<DataTypeDto> dataTypeList = pusher.mapDataTypes2Bdp();
-            LOG.debug(dataTypeList);
+            // LOG.debug(dataTypeList);
             if (dataTypeList != null) {
                 pusher.syncDataTypes(dataTypeList);
             }
