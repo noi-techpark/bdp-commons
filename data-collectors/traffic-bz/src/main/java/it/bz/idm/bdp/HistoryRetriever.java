@@ -18,8 +18,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -43,7 +43,7 @@ public class HistoryRetriever {
 
 	@Autowired
 	public Environment environment;
-	private Logger logger = LogManager.getLogger(HistoryRetriever.class);
+	private Logger logger = LoggerFactory.getLogger(HistoryRetriever.class);
 
 	/*retrieve all history data from a given point in time and push it to the bdp */
 	public void getHistory(LocalDateTime newestDateMidnight){

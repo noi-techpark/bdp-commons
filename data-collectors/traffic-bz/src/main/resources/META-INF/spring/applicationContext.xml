@@ -35,11 +35,11 @@
         <property name="defaultUri" value="${endpoint.defaultUri}"/>
     </bean>
     
-    <task:scheduler id="Scheduler" pool-size="10"/>
+    <task:scheduler id="Scheduler" pool-size="${SCHEDULER_POOL_SIZE:10}"/>
     <task:scheduled-tasks scheduler="Scheduler">
-        <task:scheduled method="syncStations" ref="jobScheduler" cron="0 0 * * * *"/>
-        <task:scheduled method="syncDataTypes" ref="jobScheduler" cron="0 0 * * * *"/>
+        <task:scheduled method="syncStations" ref="jobScheduler" cron="${SCHEDULER_CRON_STATIONS:0 0 * * * *}"/>
+        <task:scheduled method="syncDataTypes" ref="jobScheduler" cron="${SCHEDULER_CRON_TYPES:0 0 * * * *}"/>
 <!--       <task:scheduled method="pushRecords" ref="jobScheduler" cron="0 1,6,11,16,21,26,31,36,41,46,51,56 * * * *"/>-->
-        <task:scheduled method="getLatestHistory" ref="jobScheduler"  cron="0 */5 * * * *"/>
+        <task:scheduled method="getLatestHistory" ref="jobScheduler"  cron="${SCHEDULER_CRON_HISTORY:0 */5 * * * *}"/>
     </task:scheduled-tasks>
 </beans>
