@@ -9,7 +9,7 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>5.2.12.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 		<finalName>ROOT</finalName>
 	</properties>
 	<repositories>
@@ -23,19 +23,19 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.8.5</version>
+			<version>2.9.0</version>
 		</dependency>
 		<!-- BigDataPlatform dependencies for data collectors -->
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>5.4.1</version>
+			<version>7.3.0</version>
 		</dependency>
-		<!-- Log4j for logging -->
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.17.1</version>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.1</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- Testing libraries -->
 		<dependency>

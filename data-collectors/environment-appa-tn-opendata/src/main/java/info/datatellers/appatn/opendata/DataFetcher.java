@@ -3,8 +3,8 @@ package info.datatellers.appatn.opendata;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import info.datatellers.appatn.helpers.CSVHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 public class DataFetcher {
 
     private final ResourceBundle rb = ResourceBundle.getBundle("config");
-    private static final Logger LOG = LogManager.getLogger(DataFetcher.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataFetcher.class.getName());
     private ArrayList<JsonElement> rawStations = new ArrayList<>();
 
     /*
@@ -95,7 +95,7 @@ public class DataFetcher {
 
                 in.close();
             } catch (IOException e) {
-                LOG.fatal("Unable to establish connection.");
+                LOG.error("Unable to establish connection.");
                 e.printStackTrace();
             }
         } else {

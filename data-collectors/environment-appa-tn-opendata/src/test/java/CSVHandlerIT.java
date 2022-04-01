@@ -1,6 +1,6 @@
 import info.datatellers.appatn.helpers.CSVHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 public class CSVHandlerIT {
 
     private ResourceBundle rb = ResourceBundle.getBundle("test");
-    private static final Logger LOG = LogManager.getLogger(CSVHandlerIT.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(CSVHandlerIT.class.getName());
 
     @Test
     public void parseStationsCSVTest()

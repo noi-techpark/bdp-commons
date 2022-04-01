@@ -18,9 +18,9 @@
 
 	<bean class="info.datatellers.appatn.opendata.JobScheduler" id="jobScheduler"/>
 
-	<task:scheduler id="Scheduler" pool-size="10" />
+	<task:scheduler id="Scheduler" pool-size="${SCHEDULER_POOL_SIZE:10}" />
 	<task:scheduled-tasks scheduler="Scheduler">
-		<task:scheduled ref="jobScheduler" method="pushData" cron="0 0 10 * * *" />
+		<task:scheduled ref="jobScheduler" method="pushData" cron="${SCHEDULER_CRON_DATA:0 0 10 * * *}" />
 	</task:scheduled-tasks>
 
 </beans>

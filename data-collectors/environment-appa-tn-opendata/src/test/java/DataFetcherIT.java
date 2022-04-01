@@ -3,8 +3,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import info.datatellers.appatn.helpers.DateHelper;
 import info.datatellers.appatn.opendata.DataFetcher;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 public class DataFetcherIT {
 
     private ResourceBundle rb = ResourceBundle.getBundle("test");
-    private static final Logger LOG = LogManager.getLogger(DataFetcherIT.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataFetcherIT.class.getName());
 
     @Test
     public void fetchTest()

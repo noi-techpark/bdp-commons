@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ import it.bz.idm.bdp.dto.StationList;
 @Component
 public class JobScheduler {
     private static final ResourceBundle rb = ResourceBundle.getBundle("config");
-    private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(JobScheduler.class.getName());
     static double numberOfRecords = 0;
     static double numberOfInvalidRecord = 0;
     
@@ -42,7 +42,7 @@ public class JobScheduler {
         DataMapDto<RecordDtoImpl> rootMap = constructRootMap();
 		String fromDate = String.valueOf(dataPusher.getDateOfLastRecord(rb.getString("odh.station.origin")+DataPusher.SEPARATOR+"2","co2",3600));
         String toDate = String.valueOf(dataPusher.getLastRetrievedDate());
-        if (fromDate.contains("1970"))
+        if (fromDate.contains("1969"))
         {
             //Database doesn't contain data. Historic function calling from 2017-01-01 to last retrieving date (yesterday).
             LOG.info("Historic function called.");

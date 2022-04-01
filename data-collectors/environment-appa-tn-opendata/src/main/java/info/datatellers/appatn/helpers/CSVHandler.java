@@ -15,8 +15,8 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 /**
  * @author Nicolò Molinari, Datatellers.
@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class CSVHandler {
     private final ResourceBundle rb = ResourceBundle.getBundle("config");
-  	private static final Logger LOG = LogManager.getLogger(CSVHandler.class.getName());
+  	private static final Logger LOG = LoggerFactory.getLogger(CSVHandler.class.getName());
   	public CSVHandler(){}
 
   	CloseableHttpClient client = HttpClientBuilder.create().build();

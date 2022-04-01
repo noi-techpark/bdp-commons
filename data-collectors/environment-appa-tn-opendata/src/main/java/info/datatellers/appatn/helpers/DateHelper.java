@@ -1,7 +1,7 @@
 package info.datatellers.appatn.helpers;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class DateHelper
 {
-    private static final Logger LOG = LogManager.getLogger(DateHelper.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DateHelper.class.getName());
     private SimpleDateFormat standardTimeFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
     private SimpleDateFormat appTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
     public DateHelper()

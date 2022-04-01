@@ -8,10 +8,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -40,7 +39,7 @@ import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 @Component
 public class DataPusher extends NonBlockingJSONPusher {
     public static final String SEPARATOR = "_";
-    private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataPusher.class.getName());
     private ArrayList<JsonElement> stations;
     private ArrayList<String> pollutersNames = new CSVHandler().getPollutersNames();
     private static int dayCounter = 0;
@@ -266,6 +265,7 @@ public class DataPusher extends NonBlockingJSONPusher {
             String polluter = polluters.get(index);
             StringBuilder missingValuesInfo = new StringBuilder();
             LOG.debug("Polluter selected: " + polluter + ", for stationID: " + stationIds[looper] + ". Filling branch...");
+            LOG.debug("Stations size: " + stations.size() + " looper: " + looper);
             JsonObject rawStation = (JsonObject) stations.get(looper);
             int consistencyChecker = 0;
 
@@ -422,7 +422,7 @@ public class DataPusher extends NonBlockingJSONPusher {
             fillRootMap((DataMapDto<RecordDtoImpl>) data, fromDate, toDate, test);
         }catch (ParseException e)
         {
-            LOG.fatal("Error while parsing dates.");
+            LOG.error("Error while parsing dates.");
         }
 
     }
