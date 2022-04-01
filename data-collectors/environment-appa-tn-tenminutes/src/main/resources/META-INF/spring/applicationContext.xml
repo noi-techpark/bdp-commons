@@ -11,9 +11,9 @@
 		location="classpath:META-INF/spring/application.properties" />
 	<bean class="info.datatellers.appatn.tenminutes.JobScheduler" id="jobScheduler"/>
 
-	<task:scheduler id="Scheduler" pool-size="10" />
+	<task:scheduler id="Scheduler" pool-size="${SCHEDULER_POOL_SIZE:10}" />
 	<task:scheduled-tasks scheduler="Scheduler">
-		<task:scheduled ref="jobScheduler" method="collectData" cron="0 0 * * * ?" />
+		<task:scheduled ref="jobScheduler" method="collectData" cron="${SCHEDULER_CRON_DATA:0 0 * * * ?}" />
 	</task:scheduled-tasks>
 
 </beans>

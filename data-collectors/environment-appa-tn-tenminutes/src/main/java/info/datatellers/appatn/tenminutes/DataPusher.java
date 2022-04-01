@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -33,7 +33,7 @@ import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 @Component
 public class DataPusher extends NonBlockingJSONPusher {
 
-	private static final Logger LOG = LogManager.getLogger(DataPusher.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger(DataPusher.class.getName());
 	
 	@Autowired
 	private Environment env;
