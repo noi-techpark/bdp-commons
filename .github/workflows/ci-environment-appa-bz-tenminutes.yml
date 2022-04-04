@@ -15,7 +15,7 @@ env:
   JAVA_VERSION: '8'
   SSH_FOLDER: data-collectors/environment-appa-bz-tenminutes/src/main/resources/META-INF/.ssh
   FTP_KEYFILE: ${{ secrets.ENVIRONMENT_APPA_BZ_TENMINUTES_SFTP_KEY}}
-  FTP_KNOWN_HOSTS: ${{ secrets.ENVIRONMENT_APPA_BZ_TENMINUTES_SFTP_KNOWN_HOSTS}}
+  FTP_KNOWN_HOSTS: ${{ secrets.ENVIRONMENT_APPA_BZ_TENMINUTES_SFTP_KNOWN_HOSTS_BASE64}}
   FTP_PASS: ${{ secrets.ENVIRONMENT_APPA_BZ_TENMINUTES_SFTP_PASS}}
 
 jobs:
@@ -82,7 +82,7 @@ jobs:
             mkdir -p "${{ env.SSH_FOLDER }}"
             rm -f "${{ env.SSH_FOLDER }}/id_rsa_sftp" "${{ env.SSH_FOLDER }}/known_hosts"
             echo ${{ env.FTP_KEYFILE }} >> "${{ env.SSH_FOLDER }}/id_rsa_sftp"
-            echo ${{ env.FTP_KNOWN_HOSTS }} >> "${{ env.SSH_FOLDER }}/known_hosts"
+            echo ${{ env.FTP_KNOWN_HOSTS }}  | base64 --decode > ${{ env.SSH_FOLDER }}/known_hosts
             chmod 400 "${{ env.SSH_FOLDER }}/id_rsa_sftp"
             chmod 644 "${{ env.SSH_FOLDER }}/known_hosts"
 
@@ -163,7 +163,7 @@ jobs:
             mkdir -p "${{ env.SSH_FOLDER }}"
             rm -f "${{ env.SSH_FOLDER }}/id_rsa_sftp" "${{ env.SSH_FOLDER }}/known_hosts"
             echo ${{ env.FTP_KEYFILE }} >> "${{ env.SSH_FOLDER }}/id_rsa_sftp"
-            echo ${{ env.FTP_KNOWN_HOSTS }} >> "${{ env.SSH_FOLDER }}/known_hosts"
+            echo ${{ env.FTP_KNOWN_HOSTS }}  | base64 --decode > ${{ env.SSH_FOLDER }}/known_hosts
             chmod 400 "${{ env.SSH_FOLDER }}/id_rsa_sftp"
             chmod 644 "${{ env.SSH_FOLDER }}/known_hosts"
 
