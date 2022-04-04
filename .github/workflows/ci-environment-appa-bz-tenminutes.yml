@@ -78,7 +78,7 @@ jobs:
           X_SCHEDULER_POOL_SIZE: 10
 
       - name: Configure SSH known hosts
-      - run: |
+        run: |
             mkdir -p "${{ env.SSH_FOLDER }}"
             rm -f "${{ env.SSH_FOLDER }}/id_rsa_sftp" "${{ env.SSH_FOLDER }}/known_hosts"
             echo ${{ env.FTP_KEYFILE }} >> "${{ env.SSH_FOLDER }}/id_rsa_sftp"
@@ -159,7 +159,7 @@ jobs:
           X_SCHEDULER_POOL_SIZE: 10
 
       - name: Configure SSH known hosts
-      - run: |
+        run: |
             mkdir -p "${{ env.SSH_FOLDER }}"
             rm -f "${{ env.SSH_FOLDER }}/id_rsa_sftp" "${{ env.SSH_FOLDER }}/known_hosts"
             echo ${{ env.FTP_KEYFILE }} >> "${{ env.SSH_FOLDER }}/id_rsa_sftp"
