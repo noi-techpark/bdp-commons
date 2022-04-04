@@ -74,9 +74,9 @@ jobs:
           STORED_CREDENTIALS_BASE64: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_STORED_CREDENTIAL_B64 }}
           GOOGLE_SECRET_BASE64: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_GOOGLE_SECRET_B64 }}
         run: |
-          echo $STORED_CREDENTIALS_BASE64 | base64 --decode > data-collectors/vehicletraffic-bluetooth/src/main/resources/META-INF/credentials/StoredCredential
-          echo $GOOGLE_SECRET_BASE64 | base64 --decode > data-collectors/vehicletraffic-bluetooth/src/main/resources/META-INF/spring/client_secret.json
-          echo $GOOGLE_SECRET_BASE64 | base64 --decode > data-collectors/vehicletraffic-bluetooth/src/test/resources/META-INF/spring/client_secret.json
+          echo $STORED_CREDENTIALS_BASE64 | base64 -i --decode > data-collectors/vehicletraffic-bluetooth/src/main/resources/META-INF/credentials/StoredCredential
+          echo $GOOGLE_SECRET_BASE64 | base64 -i --decode > data-collectors/vehicletraffic-bluetooth/src/main/resources/META-INF/spring/client_secret.json
+          echo $GOOGLE_SECRET_BASE64 | base64 -i --decode > data-collectors/vehicletraffic-bluetooth/src/test/resources/META-INF/spring/client_secret.json
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
