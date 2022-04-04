@@ -326,7 +326,7 @@ public class DataCom {
 			}
 			log.info("Deletion of old processed files: " + count + " out of " + list.size() + " deleted.");
 		} catch (JSchException | SftpException e) {
-			log.error(e);
+			log.error(e.getMessage());
 			throw e;
 		} finally {
 			if (ftp != null)
