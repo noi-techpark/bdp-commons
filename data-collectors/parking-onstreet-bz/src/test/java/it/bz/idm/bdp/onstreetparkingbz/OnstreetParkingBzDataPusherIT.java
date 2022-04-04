@@ -2,7 +2,6 @@ package it.bz.idm.bdp.onstreetparkingbz;
 
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -21,12 +20,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import it.bz.idm.bdp.dconstreetparkingbz.DCUtils;
 import it.bz.idm.bdp.dconstreetparkingbz.OnstreetParkingBzDataConverter;
 import it.bz.idm.bdp.dconstreetparkingbz.OnstreetParkingBzDataPusher;
 import it.bz.idm.bdp.dto.DataTypeDto;
-import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.StationList;
 
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class OnstreetParkingBzDataPusherIT extends AbstractJUnit4SpringContextTests {

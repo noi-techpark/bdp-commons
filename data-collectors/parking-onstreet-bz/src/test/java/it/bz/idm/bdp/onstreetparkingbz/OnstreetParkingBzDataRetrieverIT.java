@@ -12,10 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-
-import io.swagger.annotations.ApiModelProperty;
 import it.bz.idm.bdp.dconstreetparkingbz.DCUtils;
 import it.bz.idm.bdp.dconstreetparkingbz.OnstreetParkingBzDataPusher;
 import it.bz.idm.bdp.dconstreetparkingbz.OnstreetParkingBzDataRetriever;
