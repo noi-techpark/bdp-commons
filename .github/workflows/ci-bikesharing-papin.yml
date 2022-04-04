@@ -1,4 +1,4 @@
-name: CI bikesharing-papin
+name: CI/CD bikesharing-papin
 
 on:
   push:

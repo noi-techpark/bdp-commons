@@ -1,4 +1,4 @@
-name: CI environment-appa-bz-opendata
+name: CI/CD environment-appa-bz-opendata
 
 on:
   push:

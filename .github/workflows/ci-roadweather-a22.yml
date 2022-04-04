@@ -1,4 +1,4 @@
-name: CI roadweather-a22
+name: CI/CD roadweather-a22
 
 on:
   push:

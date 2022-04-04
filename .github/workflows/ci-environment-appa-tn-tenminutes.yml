@@ -1,4 +1,4 @@
-name: CI environment-appa-tn-tenminutes
+name: CI/CD environment-appa-tn-tenminutes
 
 on:
   push:

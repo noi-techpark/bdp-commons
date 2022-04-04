@@ -1,4 +1,4 @@
-name: CI bikesharing-moqo
+name: CI/CD bikesharing-moqo
 
 on:
   push:

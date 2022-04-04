@@ -1,4 +1,4 @@
-name: CI environment-appa-tn-opendata
+name: CI/CD environment-appa-tn-opendata
 
 on:
   push:

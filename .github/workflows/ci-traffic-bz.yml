@@ -1,4 +1,4 @@
-name: CI traffic-bz
+name: CI/CD traffic-bz
 
 on:
   push:
