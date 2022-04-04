@@ -1,8 +1,8 @@
 package it.bz.idm.bdp.dconstreetparkingbz;
 
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -20,7 +20,7 @@ import it.bz.idm.bdp.dto.StationList;
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class OnstreetParkingBzDataRetriever {
 
-    private static final Logger LOG = LogManager.getLogger(OnstreetParkingBzDataRetriever.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(OnstreetParkingBzDataRetriever.class.getName());
 
     @Value("${spreadsheet.sheetName}")
     private String SHEETNAME;

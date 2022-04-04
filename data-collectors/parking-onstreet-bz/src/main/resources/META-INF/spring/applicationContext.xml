@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:task="http://www.springframework.org/schema/task"
-    xsi:schemaLocation="http://www.springframework.org/schema/aop
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task" xsi:schemaLocation="http://www.springframework.org/schema/aop
     http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
     http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.2.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
     http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd ">
-    <context:spring-configured/>
+    <context:spring-configured />
 
-    <context:component-scan base-package="it.bz.idm.bdp"/>
+    <context:component-scan base-package="it.bz.idm.bdp" />
+    <context:property-placeholder location="classpath:META-INF/spring/application.properties" />
 
-    <bean class="it.bz.idm.bdp.dconstreetparkingbz.OnstreetParkingBzJobScheduler" id="jobScheduler"/>
-    <task:scheduler id="Scheduler" pool-size="10" />
+    <bean class="it.bz.idm.bdp.dconstreetparkingbz.OnstreetParkingBzJobScheduler" id="jobScheduler" />
+    <task:scheduler id="Scheduler" pool-size="${SCHEDULER_POOL_SIZE:10}" />
     <task:scheduled-tasks scheduler="Scheduler">
         <!--
             Put every job from your JobScheduler class here, that you want to be executed
@@ -50,10 +46,12 @@
             (taken from https://stackoverflow.com/a/26147143)
 
             -->
-        <!-- <task:scheduled ref="jobScheduler" method="pushData"      cron="0 0/5   * * * *" /> -->  <!-- Every 5 minutes -->
-        <!-- <task:scheduled ref="jobScheduler" method="pushData"      cron="0 0   1 * * *" />   -->  <!-- Every day at 1pm -->
-        <task:scheduled ref="jobScheduler" method="pushStations"  cron="0 0     * * * *" /> <!-- Every hour      -->
-        <task:scheduled ref="jobScheduler" method="pushDataTypes" cron="0 0     * * * *" /> <!-- Every hour      -->
+        <!-- <task:scheduled ref="jobScheduler" method="pushData"      cron="0 0/5   * * * *" /> -->
+        <!-- Every 5 minutes -->
+        <!-- <task:scheduled ref="jobScheduler" method="pushData"      cron="0 0   1 * * *" />   -->
+        <!-- Every day at 1pm -->
+        <task:scheduled ref="jobScheduler" method="pushStations" cron="${SCHEDULER_CRON_DATA:0 0 * * * *}" /> <!-- Every hour      -->
+        <task:scheduled ref="jobScheduler" method="pushDataTypes" cron="${SCHEDULER_CRON_DATA:0 0 * * * *}" /> <!-- Every hour      -->
 
         <!-- Stations are pushed together with the measurements in the job "pushData" -->
         <!-- <task:scheduled ref="jobScheduler" method="pushStations"  cron="0 0     1 * * *" /> Every day at 1pm -->

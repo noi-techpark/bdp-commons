@@ -10,8 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,7 +23,7 @@ import it.bz.idm.bdp.dconstreetparkingbz.OnstreetParkingBzDataConverter;
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class OnstreetParkingBzDataConverterTestIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(OnstreetParkingBzDataConverterTestIT.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(OnstreetParkingBzDataConverterTestIT.class.getName());
 
 //    @Autowired
 //    private OnstreetParkingBzDataPusher pusher;

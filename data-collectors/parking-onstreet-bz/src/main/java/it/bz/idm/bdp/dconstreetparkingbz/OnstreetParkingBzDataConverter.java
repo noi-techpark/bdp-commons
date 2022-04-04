@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import it.bz.idm.bdp.util.NominatimLocationLookupUtil;
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class OnstreetParkingBzDataConverter {
 
-    private static final Logger LOG = LogManager.getLogger(OnstreetParkingBzDataConverter.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(OnstreetParkingBzDataConverter.class.getName());
 
     public static final String DATA_TYPE_OCCUPIED        = "occupied";
     public static final String SENSOR_STATUS_FREE        = "free";
