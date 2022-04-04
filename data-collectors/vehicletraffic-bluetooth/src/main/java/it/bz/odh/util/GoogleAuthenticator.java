@@ -22,7 +22,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.SheetsScopes;
 
@@ -33,7 +33,7 @@ public abstract class GoogleAuthenticator {
     @Value("classpath:/META-INF/spring/client_secret.json")
     private Resource clientSecret;
     private NetHttpTransport HTTP_TRANSPORT;
-    private JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    private JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     @Value("classpath:/META-INF/credentials")
     private Resource CREDENTIALS_FOLDER;
 

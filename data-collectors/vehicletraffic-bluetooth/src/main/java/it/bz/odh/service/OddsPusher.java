@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.OddsRecordDto;
@@ -17,8 +17,8 @@ import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 import it.bz.odh.util.EncryptUtil;
 import it.bz.odh.web.RecordList;
 
-@Lazy
-@Component
+@Service
+@PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class OddsPusher extends NonBlockingJSONPusher {
 
 	@Autowired
@@ -58,7 +58,12 @@ public class OddsPusher extends NonBlockingJSONPusher {
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"),  env.getProperty("origin"));
+		return new ProvenanceDto(
+			null,
+			env.getProperty("app.provenance.name"),
+			env.getProperty("app.provenance.version"),
+			env.getProperty("app.origin")
+		);
 	}
 
     public List<String> hash(RecordList records) {

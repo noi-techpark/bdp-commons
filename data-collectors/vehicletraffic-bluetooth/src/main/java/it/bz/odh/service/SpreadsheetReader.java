@@ -22,7 +22,7 @@ public class SpreadsheetReader extends GoogleAuthenticator {
     @Value("${spreadsheetId}")
     private String spreadhSheetId;
 
-    @Value("${spreadsheet_range}")
+    @Value("${spreadsheet.range}")
 	private String spreadsheetRange;
 
     private Sheets service;
@@ -38,8 +38,7 @@ public class SpreadsheetReader extends GoogleAuthenticator {
 	public ValueRange getWholeSheet(String sheedTitle) {
 		return getValues(sheedTitle+"!"+ spreadsheetRange);
 	}
-	
-	
+
 	private ValueRange getValues(String range) {
 		try {
 			return service.spreadsheets().values().get(spreadhSheetId, range).execute();

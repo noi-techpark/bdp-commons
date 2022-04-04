@@ -1,0 +1,3 @@
+StoredCredential
+*.base64
+client_secret.json
