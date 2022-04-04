@@ -26,7 +26,7 @@ import it.bz.odh.service.SpreadsheetReader;
 @Component
 public class BluetoothMappingUtil {
 
-	@Value("${spreadsheet_requiredFields}")
+	@Value("${spreadsheet.requiredFields}")
 	private String[] requiredFields;
 	@Autowired
 	private EncryptUtil cryptUtil;
@@ -36,8 +36,8 @@ public class BluetoothMappingUtil {
 	@Autowired
 	private SpreadsheetReader reader;
 
-	@Value("${spreadsheet_sheetName}")
-	private String SHEETNAME;
+	@Value("${spreadsheet.sheetName}")
+	private String sheetName;
 
 	private List<Map<String, String>> cachedData;
 
@@ -110,7 +110,7 @@ public class BluetoothMappingUtil {
 		if (cachedData != null)
 				return cachedData;
 		List<Map<String, String>> validEntries = new ArrayList<Map<String,String>>();
-		List<Map<String, String>> objs = convertToMap(reader.getWholeSheet(SHEETNAME));
+		List<Map<String, String>> objs = convertToMap(reader.getWholeSheet(sheetName));
 		for (Map<String, String> obj : objs){
 			if (isValid(obj))
 				validEntries.add(obj);
@@ -126,7 +126,7 @@ public class BluetoothMappingUtil {
 		try {
 			double longitude = Double.parseDouble(longString);
 			double latitude = Double.parseDouble(latString);
-			
+
 			validCoordinates = (longitude <= 180 && longitude >= -180 &&latitude <= 90 && latitude >= -90);
 		}catch(NumberFormatException e){
 			e.printStackTrace();
@@ -146,7 +146,7 @@ public class BluetoothMappingUtil {
 				return new Double[] {lon, lat};
 			}
 		return null;
-		
+
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class BluetoothMappingUtil {
                 if (value instanceof String) {
                 	Object object = cleanMap.get(split[1]);
                 	Map<String,Object> existingMap = (object != null && object instanceof Map) ? (Map) object: new HashMap<>();
-                	existingMap.put(split[0], value.toString());                		
+                	existingMap.put(split[0], value.toString());
                     cleanMap.put(split[1], existingMap);
                 }
             }

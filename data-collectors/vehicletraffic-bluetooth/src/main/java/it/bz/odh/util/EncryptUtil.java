@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EncryptUtil {
 
-	@Value("${encryption_key}")
+	@Value("${encryption.key}")
 	private String key;
 
 	private HmacUtils utils;

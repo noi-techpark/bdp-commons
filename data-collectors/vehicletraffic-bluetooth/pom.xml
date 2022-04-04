@@ -9,7 +9,7 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>5.3.13</spring.version>
+		<spring.version>5.3.18</spring.version>
 		<log4j.version>2.17.0</log4j.version>
         <finalName>ROOT</finalName>
 	</properties>
@@ -27,21 +27,6 @@
 			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.17.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.17.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -93,7 +78,7 @@
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
-		    <version>2.10.5.1</version>
+		    <version>2.13.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-digester</groupId>
@@ -114,27 +99,27 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.11</version>
+			<version>1.15</version>
 		</dependency>
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>5.4.1</version>
+			<version>7.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>
-			<version>1.30.4</version>
+			<version>1.33.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.oauth-client</groupId>
 			<artifactId>google-oauth-client</artifactId>
-			<version>1.32.1</version>
+			<version>1.33.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.oauth-client</groupId>
 			<artifactId>google-oauth-client-jetty</artifactId>
-			<version>1.30.3</version>
+			<version>1.33.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.apis</groupId>
@@ -146,6 +131,20 @@
 			<artifactId>google-api-services-sheets</artifactId>
 			<version>v4-rev581-1.25.0</version>
 		</dependency>
+		<!-- This is to fix a "Cannot be cast to javax.servlet.Filter" severe error -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- embedded tomcat for development, provided: not included in the final jar/war -->
+		<dependency>
+			<groupId>com.github.jsimone</groupId>
+			<artifactId>webapp-runner-main</artifactId>
+			<version>9.0.27.0</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>${finalName}</finalName>
@@ -153,7 +152,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.2</version>
+				<version>2.3</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
