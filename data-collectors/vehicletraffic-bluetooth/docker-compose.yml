@@ -13,7 +13,7 @@ services:
       mvn
         -Duser.home=/var/maven
         -Dmaven.tomcat.port=9001
-        tomcat:run
+        test
     ports:
       - 9000:9000
       - 9001:9001
