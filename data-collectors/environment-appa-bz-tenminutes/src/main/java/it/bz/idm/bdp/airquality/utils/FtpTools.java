@@ -1,7 +1,7 @@
 package it.bz.idm.bdp.airquality.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.HostKey;
@@ -13,7 +13,7 @@ import com.jcraft.jsch.UserInfo;
 
 public class FtpTools {
 
-	private static final Logger log = LogManager.getLogger(FtpTools.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(FtpTools.class.getName());
 
 	JSch jsch = new JSch();
 	Session session = null;

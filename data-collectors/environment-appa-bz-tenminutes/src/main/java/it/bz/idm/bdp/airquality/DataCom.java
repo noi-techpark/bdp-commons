@@ -15,9 +15,8 @@ import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -37,7 +36,7 @@ import it.bz.idm.bdp.dto.StationDto;
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class DataCom {
 
-	private static final Logger log = LogManager.getLogger(DataCom.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(DataCom.class.getName());
 
 	@Autowired
 	private Environment env;
@@ -67,14 +66,14 @@ public class DataCom {
 
 			ChannelSftp c = ftp.connect();
 
-			log.log(Level.forName("FEEDBACK", 1), "Fetching " + remoteFolder + File.separator + mappingFile);
+			log.debug( "Fetching " + remoteFolder + File.separator + mappingFile);
 			c.get(remoteFolder + File.separator + mappingFile, localFolder + File.separator + mappingFile);
 			FileTools.unZip(localFolder + File.separator + mappingFile, localFolder);
-			log.log(Level.forName("FEEDBACK", 1),
+			log.debug(
 					"Download of " + remoteFolder + File.separator + mappingFile + " complete");
 		} catch (JSchException | SftpException e) {
 			log.error(e.getMessage());
-			log.log(Level.forName("FEEDBACK", 1), e.getMessage());
+			log.debug( e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} finally {
@@ -119,7 +118,7 @@ public class DataCom {
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			log.log(Level.forName("FEEDBACK", 1), e.getMessage());
+			log.debug( e.getMessage());
 			e.printStackTrace();
 		} finally {
 			if (ftp != null)
@@ -248,12 +247,12 @@ public class DataCom {
 				}
 			}
 			if (!found) {
-				log.log(Level.forName("FEEDBACK", 1),
+				log.debug(
 						"Mapping contains a station with name '{}', that could not be found or is not complete on {}.",
 						stationID, env.getRequiredProperty("odp.url.stations"));
-				log.log(Level.forName("FEEDBACK", 1),
+				log.debug(
 						"     Please note, only stations with valid LAT/LONG attributes can be accepted.");
-				log.log(Level.forName("FEEDBACK", 1), "     Station '{}' removed from list of valid stations.",
+				log.debug( "     Station '{}' removed from list of valid stations.",
 						stationID);
 			}
 		}

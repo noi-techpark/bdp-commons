@@ -7,9 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -25,7 +24,7 @@ import it.bz.idm.bdp.dto.StationList;
 @Component
 public class JobScheduler {
 
-	private static final Logger LOG = LogManager.getLogger(JobScheduler.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger(JobScheduler.class.getName());
 
 	/* Change this if it gets changed inside log4j2.properties */
 	private static final String RESPONSEFILE = "/var/log/opendatahub/data-collectors/air-quality-response.log";
@@ -70,19 +69,19 @@ public class JobScheduler {
 				continue;
 			}
 
-			LOG.log(Level.forName("FEEDBACK", 1), "Processing file {}", file.getName());
+			LOG.debug( "Processing file {}", file.getName());
 
 			try {
 				MyAirQualityListener listener = model.parse(new FileInputStream(file));
 
-				LOG.log(Level.forName("FEEDBACK", 1), "    Parsing done. Got some statistics:");
+				LOG.debug( "    Parsing done. Got some statistics:");
 				for (Map.Entry<String, Long> entry : listener.getStatistics().entrySet()) {
-					LOG.log(Level.forName("FEEDBACK", 1), "    > {} = {}", entry.getKey(), entry.getValue());
+					LOG.debug( "    > {} = {}", entry.getKey(), entry.getValue());
 				}
 
 				pusher.mapData(listener.getStations());
 				pusher.pushData();
-				LOG.log(Level.forName("FEEDBACK", 1), "    Pushing to the database... Done.");
+				LOG.debug( "    Pushing to the database... Done.");
 
 				com.moveProcessedFile(file.getName(), env.getRequiredProperty("ftp.folder.remote"),
 						env.getRequiredProperty("ftp.folder.remote") + File.separator + env
@@ -90,12 +89,12 @@ public class JobScheduler {
 				if (!file.delete()) {
 					throw new Exception(String.format("File %s not deletable locally.", file.getName()));
 				}
-				LOG.log(Level.forName("FEEDBACK", 1), "    Processing of file {} succeeded.", file.getName());
+				LOG.debug( "    Processing of file {} succeeded.", file.getName());
 			} catch (Exception e) {
 				LOG.error("Processing of '{}' failed: {}.", file.getAbsolutePath(), e.getMessage());
-				LOG.log(Level.forName("FEEDBACK", 1),
+				LOG.debug(
 						"    Processing of file " + file.getName() + " failed: " + e.getMessage());
-				LOG.log(Level.forName("FEEDBACK", 1), "    Stacktrace:\n{}", e);
+				LOG.debug( "    Stacktrace:\n{}", e);
 				com.moveProcessedFile(file.getName(), env.getRequiredProperty("ftp.folder.remote"),
 						env.getRequiredProperty("ftp.folder.remote") + File.separator + env
 								.getRequiredProperty("ftp.folder.remote.failed"));

@@ -3,8 +3,8 @@ package it.bz.idm.bdp.airquality;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 @Service
 public class DataPusher extends NonBlockingJSONPusher {
 
-	private static final Logger log = LogManager.getLogger(DataPusher.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(DataPusher.class.getName());
 
 	@Autowired
 	private Environment env;

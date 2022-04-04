@@ -9,12 +9,12 @@ import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class FileTools {
 
-	private static final Logger log = LogManager.getLogger(FileTools.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(FileTools.class.getName());
 
 	public static void createWriteableFolderIfNotExists(final String folderName) throws IOException {
 		File folder = new File(folderName);

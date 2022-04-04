@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import it.bz.idm.bdp.airquality.dto.AQBlockDto;
 import it.bz.idm.bdp.airquality.dto.AQStationDto;
@@ -19,7 +19,7 @@ import it.bz.idm.bdp.airquality.parser.AirQualityParser.TimeContext;
 
 public class MyAirQualityListener extends AirQualityBaseListener {
 
-	private static final Logger log = LogManager.getLogger(MyAirQualityListener.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(MyAirQualityListener.class.getName());
 
 	private List<Integer> validStations;
 	private List<Integer> validParameters;

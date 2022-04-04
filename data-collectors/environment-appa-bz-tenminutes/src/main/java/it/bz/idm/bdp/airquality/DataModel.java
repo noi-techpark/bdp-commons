@@ -17,9 +17,9 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -36,7 +36,7 @@ import it.bz.idm.bdp.dto.StationDto;
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class DataModel {
 
-	private static final Logger log = LogManager.getLogger(DataModel.class.getName());
+	private static final Logger log = LoggerFactory.getLogger(DataModel.class.getName());
 
 	@Autowired
 	private Environment env;
@@ -66,7 +66,7 @@ public class DataModel {
 			csvParser = new CSVParser(csvReader, CSVFormat.DEFAULT.withHeader().withQuote('\''));
 			return csvParser;
 		} catch (Exception e) {
-			log.log(Level.forName("FEEDBACK", 1), e.getMessage());
+			log.debug(e.getMessage());
 			log.error(e.getMessage());
 			throw e;
 		}
@@ -97,7 +97,7 @@ public class DataModel {
 				try {
 					lat = Double.parseDouble(record.get("lat"));
 					lon = Double.parseDouble(record.get("lon"));
-				} catch(Exception e) {
+				} catch (Exception e) {
 					/* Coordinates are optional; skip on failure */
 				}
 				validStationsFull.put(record.get("mapping"), new StationDto(record.get("mapping"), "", lat, lon));
@@ -110,7 +110,7 @@ public class DataModel {
 				String metric = record.get("metric").trim();
 
 				if (param == null || metric == null || param.length() == 0 || metric.length() == 0) {
-					log.log(Level.forName("FEEDBACK", 1), "Empty parameter mapping: " + record.toString());
+					log.debug("Empty parameter mapping: " + record.toString());
 					continue;
 				}
 
@@ -119,8 +119,7 @@ public class DataModel {
 				dtd.setPeriod(env.getRequiredProperty("odh.datatype.period", Integer.class));
 
 				if (validParametersFull.containsKey(record.get("name"))) {
-					log.log(Level.forName("FEEDBACK", 1),
-							"Parameter already exists... skipping: " + record.get("name"));
+					log.debug("Parameter already exists... skipping: " + record.get("name"));
 					continue;
 				}
 				validParametersFull.put(param + metric, dtd);
@@ -130,7 +129,7 @@ public class DataModel {
 					validParameters.add(Integer.parseInt(param));
 			}
 		} catch (Exception e) {
-			log.log(Level.forName("FEEDBACK", 1), e.getMessage());
+			log.debug(e.getMessage());
 			throw e;
 		} finally {
 			closeCSVReader();
