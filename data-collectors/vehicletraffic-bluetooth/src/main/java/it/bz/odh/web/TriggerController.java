@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +31,7 @@ public class TriggerController {
 
 	private static final int MINIMAL_SYNC_PAUSE_SECONDS = 60;
 
-	private Logger logger = LogManager.getLogger(TriggerController.class);
+	private Logger logger = LoggerFactory.getLogger(TriggerController.class);
 
 	private static Long lastRequest;
 

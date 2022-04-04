@@ -8,8 +8,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -41,7 +41,7 @@ import it.bz.odh.util.BluetoothMappingUtil;
 @EnableWebMvc
 public class ODController {
 
-	private Logger logger = LogManager.getLogger(ODController.class);
+	private Logger logger = LoggerFactory.getLogger(ODController.class);
 	@Autowired
 	private Environment env;
 

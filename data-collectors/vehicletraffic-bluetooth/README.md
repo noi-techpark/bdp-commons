@@ -43,3 +43,24 @@ cp target/[app].war [TOMCAT_HOME]/webapps
 ## Run Tests
 To run tests just go to the project home folder and run `mvn test`. To also run integration tests:`mvn verify`
 
+## Information
+
+### Support
+
+For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
+
+### Contributing
+
+If you'd like to contribute, please follow our [Getting
+Started](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Getting-started)
+instructions.
+
+### Documentation
+
+More documentation can be found at
+[https://docs.opendatahub.bz.it](https://docs.opendatahub.bz.it).
+
+### License
+
+The code in this project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3 license. See the [LICENSE](../../LICENSE) file for more information.

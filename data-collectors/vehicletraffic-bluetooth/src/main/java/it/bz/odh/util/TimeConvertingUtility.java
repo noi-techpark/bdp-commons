@@ -4,13 +4,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import it.bz.idm.bdp.dto.OddsRecordDto;
 
 public class TimeConvertingUtility {
-    public static Logger loggstuff = LogManager.getLogger(TimeConvertingUtility.class);
+    public static Logger loggstuff = LoggerFactory.getLogger(TimeConvertingUtility.class);
     public static long getLocalToUtcDelta() {
         Calendar local = Calendar.getInstance();
         local.clear();
@@ -33,6 +33,6 @@ public class TimeConvertingUtility {
 		for (OddsRecordDto dto : recs) {
 			dto.setUtcInMs(converLocalTimeToUtcTime(dto.getGathered_on().getTime()));
 		}
-		
+
 	}
 }

@@ -10,7 +10,6 @@
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>5.3.18</spring.version>
-		<log4j.version>2.17.0</log4j.version>
         <finalName>ROOT</finalName>
 	</properties>
 	<repositories>
