@@ -46,16 +46,17 @@ public class BluetoothMappingUtil {
 	 * @return rows as list of objects
 	 */
 	public List<Map<String,String>> convertToMap(ValueRange valueRange) {
-		int i,j;
+		int i;
+		int j;
 		List<String> headerRow = normalize(valueRange.getValues().get(0));
-		List<Map<String,String>> boxes = new ArrayList<Map<String,String>>();
+		List<Map<String,String>> boxes = new ArrayList<>();
 		int size = valueRange.getValues().size();
 		for (i = 1; i < size; i++) {
-			Map<String,String> object = new HashMap<String, String>();
+			Map<String,String> object = new HashMap<>();
 			for (j=0;j<headerRow.size();j++) {
 				List<Object> row = valueRange.getValues().get(i);
 				if (j<row.size())
-					object.put(headerRow.get(j).toString(), row.get(j).toString());
+					object.put(headerRow.get(j), row.get(j).toString());
 			}
 			boxes.add(object);
 		}
@@ -63,7 +64,7 @@ public class BluetoothMappingUtil {
 	}
 
 	private List<String> normalize(List<Object> list) {
-		List<String> stringList = new ArrayList<String>() ;
+		List<String> stringList = new ArrayList<>() ;
 		for (Object obj : list) {
 			stringList.add(obj.toString().toLowerCase());
 		}
@@ -93,7 +94,7 @@ public class BluetoothMappingUtil {
 	 */
 	public void validate(List<Map<String, String>> objs) {
 		int i=0;
-		Set<Integer> errorRows = new HashSet<Integer>();
+		Set<Integer> errorRows = new HashSet<>();
 		for (Map<String,String> obj:objs) {
 			if (!isValid(obj))
 				errorRows.add(i+2);
@@ -109,7 +110,7 @@ public class BluetoothMappingUtil {
 	public List<Map<String, String>> getValidEntries() {
 		if (cachedData != null)
 				return cachedData;
-		List<Map<String, String>> validEntries = new ArrayList<Map<String,String>>();
+		List<Map<String, String>> validEntries = new ArrayList<>();
 		List<Map<String, String>> objs = convertToMap(reader.getWholeSheet(sheetName));
 		for (Map<String, String> obj : objs){
 			if (isValid(obj))
@@ -131,7 +132,7 @@ public class BluetoothMappingUtil {
 		}catch(NumberFormatException e){
 			e.printStackTrace();
 		}
-		return (!(obj.get("id")==null) && !(obj.get("id").isEmpty()) && validCoordinates);
+		return (obj.get("id") != null && !obj.get("id").isEmpty() && validCoordinates);
 	}
 
 	/**
@@ -157,7 +158,7 @@ public class BluetoothMappingUtil {
 		List<String> req = Arrays.asList(requiredFields);
 		for (Map<String, String> obj :getValidEntries())
 			if (obj.get("id")!= null && obj.get("id").equals(id)) {
-				Map<String, Object> metaDataObj = new HashMap<String, Object>();
+				Map<String, Object> metaDataObj = new HashMap<>();
 				for (Map.Entry<String, String> entry : obj.entrySet()){
 					if (!(req.contains(entry.getKey().toLowerCase()))){
 						metaDataObj.put(entry.getKey(), entry.getValue());
@@ -197,14 +198,14 @@ public class BluetoothMappingUtil {
                     continue;
                 if (value instanceof String) {
                 	Object object = cleanMap.get(split[1]);
-                	Map<String,Object> existingMap = (object != null && object instanceof Map) ? (Map) object: new HashMap<>();
+					@SuppressWarnings("unchecked")
+					Map<String,Object> existingMap = object instanceof Map ? (Map<String, Object>) object : new HashMap<>();
                 	existingMap.put(split[0], value.toString());
                     cleanMap.put(split[1], existingMap);
                 }
             }
             catch (Exception e) {
                 e.printStackTrace();
-                continue;
             }
         }
         return cleanMap;
