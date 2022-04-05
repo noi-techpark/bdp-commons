@@ -30,7 +30,7 @@ jobs:
 # Deploy Test
   deploy-test-parking-tn:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/sd-parking-tn'
+    if: github.ref == 'refs/heads/main'
     needs: test
     concurrency: deploy-test-parking-tn
     env:
