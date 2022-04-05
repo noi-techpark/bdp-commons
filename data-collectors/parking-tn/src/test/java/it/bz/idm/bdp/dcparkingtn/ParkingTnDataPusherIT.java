@@ -3,8 +3,8 @@ package it.bz.idm.bdp.dcparkingtn;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import it.bz.idm.bdp.dto.StationList;
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class ParkingTnDataPusherIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(ParkingTnDataPusherIT.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(ParkingTnDataPusherIT.class.getName());
 
     @Autowired
     private ParkingTnJobScheduler scheduler;
