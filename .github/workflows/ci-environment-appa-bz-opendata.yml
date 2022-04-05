@@ -10,7 +10,7 @@ env:
   WORKING_DIRECTORY: data-collectors/environment-appa-bz-opendata
   PROJECT_NAME: odh-mobility-dc-environment-appa-bz-opendata
   DOCKER_REGISTRY_HOST: ghcr.io
-  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-environment-appa-bz-opendata
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/main
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
 
