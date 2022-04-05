@@ -133,7 +133,7 @@ jobs:
           X_prediction_url_time: http://prod-tomcat-elaborations.cf5sp37dvf.eu-west-1.elasticbeanstalk.com/parking-forecast/predictions?minutes=
           X_prediction_url_station: http://prod-tomcat-elaborations.cf5sp37dvf.eu-west-1.elasticbeanstalk.com/parking-forecast/lotprediction?pid=
           X_parking_url_stations: http://ipchannels.integreen-life.bz.it/parkingFrontEnd/rest/get-stations
-          
+
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
@@ -145,12 +145,12 @@ jobs:
           X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
           X_clientId: odh-mobility-datacollector
           X_clientName: odh-mobility-datacollector
-          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
+          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
           X_scope: openid
-          X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
+          X_BASE_URI: https://mobility.share.opendatahub.bz.it/json
 
           # Logging
-          X_LOG_LEVEL: info
+          X_LOG_LEVEL: "info"
           X_LOG_STYLE: json
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
