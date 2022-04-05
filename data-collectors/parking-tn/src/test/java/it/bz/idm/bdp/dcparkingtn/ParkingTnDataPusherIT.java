@@ -85,7 +85,7 @@ public class ParkingTnDataPusherIT extends AbstractJUnit4SpringContextTests {
     private void pushStations(List<ParkingTnDto> data, List<String> errors) {
         try {
             StationList stations = pusher.mapStations2Bdp(data);
-            LOG.debug(stations);
+            LOG.debug(stations.toString());
             if (stations != null) {
                 pusher.syncStations(stations);
             }
@@ -98,7 +98,7 @@ public class ParkingTnDataPusherIT extends AbstractJUnit4SpringContextTests {
         try {
             DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(data);
             List<DataTypeDto> dataTypeList = pusher.mapDataTypes2Bdp(stationRec);
-            LOG.debug(dataTypeList);
+            LOG.debug(dataTypeList.toString());
             if (dataTypeList != null) {
                 pusher.syncDataTypes(dataTypeList);
             }
