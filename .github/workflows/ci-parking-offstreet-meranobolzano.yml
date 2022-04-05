@@ -1,0 +1,200 @@
+name: CI/CD parking-offstreet-meranobolzano
+
+on:
+  push:
+    paths:
+      - "data-collectors/parking-offstreet-meranobolzano/**"
+      - ".github/workflows/ci-parking-offstreet-meranobolzano.yml"
+
+env:
+  WORKING_DIRECTORY: data-collectors/parking-offstreet-meranobolzano
+  PROJECT_NAME: odh-mobility-dc-parking-offstreet-meranobolzano
+  DOCKER_REGISTRY_HOST: ghcr.io
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-parking-offstreet-meranobolzano
+  DOCKER_TAG: ${{ github.sha }}
+  JAVA_VERSION: '8'
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      - name: Test code
+        uses: noi-techpark/github-actions/maven-test@v2
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+          test-command: 'mvn -B -U clean compile test'
+
+# Deploy Test
+  deploy-test-parking-offstreet-meranobolzano:
+    runs-on: ubuntu-20.04
+    if: github.ref == 'refs/heads/sd-parking-offstreet-meranobolzano'
+    needs: test
+    concurrency: deploy-test-parking-offstreet-meranobolzano
+    env:
+      KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      - name: Create .env file
+        uses: noi-techpark/github-actions/env-file@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+        env:
+          X_SERVER_PORT: 1008
+          X_stationtype: ParkingStation
+          X_pbz_origin: FAMAS
+          X_parking_mearno_endpoint: http://84.18.132.129/trafficstudiorestwebservice/getParkingAreasSituation
+          X_pbz_default_server_host: 109.117.22.203
+          X_pbz_default_server_port: 7075
+          X_pbz_default_site_name: /RPC2
+          X_prediction_url_time: http://prod-tomcat-elaborations.cf5sp37dvf.eu-west-1.elasticbeanstalk.com/parking-forecast/predictions?minutes=
+          X_prediction_url_station: http://prod-tomcat-elaborations.cf5sp37dvf.eu-west-1.elasticbeanstalk.com/parking-forecast/lotprediction?pid=
+          X_parking_url_stations: http://ipchannels.integreen-life.bz.it/parkingFrontEnd/rest/get-stations
+          
+          # General deployment options
+          X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
+          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
+          X_JAVA_OPTIONS: -Xms128m -Xmx512m
+
+          # Open Data Hub Writer Connectivity
+          X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
+          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+          X_clientId: odh-mobility-datacollector
+          X_clientName: odh-mobility-datacollector
+          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
+          X_scope: openid
+          X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
+
+          # Logging
+          X_LOG_LEVEL: info
+          X_LOG_STYLE: json
+          X_provenance_name: ${{ env.PROJECT_NAME }}
+          X_provenance_version: ${{ github.sha }}
+
+          # Scheduler
+          X_SCHEDULER_CRON_STATIONS: 0 11 0 * * *
+          X_SCHEDULER_CRON_SLOTS: 10 */5 * * * *
+          X_SCHEDULER_CRON_TYPES: 0 0 0 * * *
+          X_SCHEDULER_POOL_SIZE: 10
+
+      - name: Configure SSH known hosts
+        run: |
+            mkdir -p "${{ env.SSH_FOLDER }}"
+            rm -f "${{ env.SSH_FOLDER }}/id_rsa_sftp" "${{ env.SSH_FOLDER }}/known_hosts"
+            echo ${{ env.FTP_KEYFILE }} >> "${{ env.SSH_FOLDER }}/id_rsa_sftp"
+            echo ${{ env.FTP_KNOWN_HOSTS }}  | base64 --decode > ${{ env.SSH_FOLDER }}/known_hosts
+            chmod 400 "${{ env.SSH_FOLDER }}/id_rsa_sftp"
+            chmod 644 "${{ env.SSH_FOLDER }}/known_hosts"
+
+      - name: Build project
+        uses: noi-techpark/github-actions/maven-build@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+          java-version: ${{ env.JAVA_VERSION }}
+          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
+
+      - name: Build and push images
+        uses: noi-techpark/github-actions/docker-build-and-push@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
+          docker-username: ${{ github.actor }}
+          docker-password: ${{ secrets.GITHUB_TOKEN }}
+          docker-host: ${{ env.DOCKER_REGISTRY_HOST }}
+
+      - name: Deploy application
+        uses: noi-techpark/github-actions/docker-deploy@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
+          hosts: 'test'
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          docker-username: 'noi-techpark-bot'
+          docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          project-name: ${{ env.PROJECT_NAME }}
+          docker-host: ${{ env.DOCKER_REGISTRY_HOST }}
+
+  # Deploy Production
+  deploy-prod-parking-offstreet-meranobolzano:
+    runs-on: ubuntu-20.04
+    if: github.ref == 'refs/heads/prod'
+    needs: test
+    concurrency: deploy-prod-parking-offstreet-meranobolzano
+    env:
+      KEYCLOAK_URL: https://auth.opendatahub.bz.it
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      - name: Create .env file
+        uses: noi-techpark/github-actions/env-file@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+        env:
+          # Data Collector config for appa-bz
+          X_ftp_pass: ${{ env.FTP_PASS }}
+          X_ftp_folder_remote: uploads/.tests
+
+          # General deployment options
+          X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
+          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
+          X_JAVA_OPTIONS: -Xms128m -Xmx512m
+
+          # Open Data Hub Writer Connectivity
+          X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
+          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+          X_clientId: odh-mobility-datacollector
+          X_clientName: odh-mobility-datacollector
+          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
+          X_scope: openid
+          X_BASE_URI: https://mobility.share.opendatahub.bz.it/json
+
+          # Logging
+          X_LOG_LEVEL: "info"
+          X_LOG_STYLE: json
+          X_provenance_name: ${{ env.PROJECT_NAME }}
+          X_provenance_version: ${{ github.sha }}
+
+          # Scheduler
+          X_SCHEDULER_CRON_STATIONS: 0 11 0 * * *
+          X_SCHEDULER_CRON_SLOTS: 10 */5 * * * *
+          X_SCHEDULER_CRON_TYPES: 0 0 0 * * *
+          X_SCHEDULER_POOL_SIZE: 10
+
+      - name: Configure SSH known hosts
+        run: |
+            mkdir -p "${{ env.SSH_FOLDER }}"
+            rm -f "${{ env.SSH_FOLDER }}/id_rsa_sftp" "${{ env.SSH_FOLDER }}/known_hosts"
+            echo ${{ env.FTP_KEYFILE }} >> "${{ env.SSH_FOLDER }}/id_rsa_sftp"
+            echo ${{ env.FTP_KNOWN_HOSTS }}  | base64 --decode > ${{ env.SSH_FOLDER }}/known_hosts
+            chmod 400 "${{ env.SSH_FOLDER }}/id_rsa_sftp"
+            chmod 644 "${{ env.SSH_FOLDER }}/known_hosts"
+
+      - name: Build project
+        uses: noi-techpark/github-actions/maven-build@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+          java-version: ${{ env.JAVA_VERSION }}
+          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
+
+      - name: Build and push images
+        uses: noi-techpark/github-actions/docker-build-and-push@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
+          docker-username: ${{ github.actor }}
+          docker-password: ${{ secrets.GITHUB_TOKEN }}
+          docker-host: ${{ env.DOCKER_REGISTRY_HOST }}
+
+      - name: Deploy application
+        uses: noi-techpark/github-actions/docker-deploy@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
+          hosts: 'prod'
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          docker-username: 'noi-techpark-bot'
+          docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          project-name: ${{ env.PROJECT_NAME }}
+          docker-host: ${{ env.DOCKER_REGISTRY_HOST }}
+

@@ -8,7 +8,7 @@ It harvests the following data:
 2) Parking slot data from FAMAS
 3) Parking forecast data
 
-[![CI parking-MeBo](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-MeBo.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-MeBo.yml)
+[![CI/CD parking-offstreet-meranobolzano](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-offstreet-meranobolzano.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-offstreet-meranobolzano.yml)
 
 ## Setup
 
