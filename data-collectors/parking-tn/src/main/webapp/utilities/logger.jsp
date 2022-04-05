@@ -4,7 +4,7 @@
 <%@ page language="java" import="java.sql.*"  %>
 <%!
 public Level getCurrentLevel(String loggerName) {
-    Logger logger = "ROOT".equals(loggerName) ? LogManager.getRootLogger() : LogManager.getLogger(loggerName);
+    Logger logger = "ROOT".equals(loggerName) ? LogManager.getRootLogger() : LoggerFactory.getLogger(loggerName);
     Level loggerLevel = null;
     if ( logger!=null ) {
         loggerLevel = logger.getLevel();
@@ -24,7 +24,7 @@ try {
         if ( loggerName==null || loggerName.trim().equals("") ) {
             loggerName = request.getParameter("LOGGER_NAME_INSERTED");
         }
-        Logger logger = "ROOT".equals(loggerName) ? LogManager.getRootLogger() : LogManager.getLogger(loggerName);
+        Logger logger = "ROOT".equals(loggerName) ? LogManager.getRootLogger() : LoggerFactory.getLogger(loggerName);
         msg.append("Logger '"+loggerName+"' set to '"+level+"'");
     }
 }
