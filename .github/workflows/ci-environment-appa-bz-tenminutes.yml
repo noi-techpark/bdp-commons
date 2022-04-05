@@ -34,7 +34,7 @@ jobs:
 # Deploy Test
   deploy-test-environment-appa-bz-tenminutes:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/sd-environment-appa-bz-tenminutes'
     needs: test
     concurrency: deploy-test-environment-appa-bz-tenminutes
     env:
@@ -83,8 +83,6 @@ jobs:
             rm -f "${{ env.SSH_FOLDER }}/id_rsa_sftp" "${{ env.SSH_FOLDER }}/known_hosts"
             echo ${{ env.FTP_KEYFILE }} >> "${{ env.SSH_FOLDER }}/id_rsa_sftp"
             echo ${{ env.FTP_KNOWN_HOSTS }}  | base64 --decode > ${{ env.SSH_FOLDER }}/known_hosts
-            chmod 400 "${{ env.SSH_FOLDER }}/id_rsa_sftp"
-            chmod 644 "${{ env.SSH_FOLDER }}/known_hosts"
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -164,8 +162,7 @@ jobs:
             rm -f "${{ env.SSH_FOLDER }}/id_rsa_sftp" "${{ env.SSH_FOLDER }}/known_hosts"
             echo ${{ env.FTP_KEYFILE }} >> "${{ env.SSH_FOLDER }}/id_rsa_sftp"
             echo ${{ env.FTP_KNOWN_HOSTS }}  | base64 --decode > ${{ env.SSH_FOLDER }}/known_hosts
-            chmod 400 "${{ env.SSH_FOLDER }}/id_rsa_sftp"
-            chmod 644 "${{ env.SSH_FOLDER }}/known_hosts"
+
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
