@@ -81,15 +81,6 @@ jobs:
           X_SCHEDULER_CRON_TYPES: 0 0 0 * * *
           X_SCHEDULER_POOL_SIZE: 10
 
-      - name: Configure SSH known hosts
-        run: |
-            mkdir -p "${{ env.SSH_FOLDER }}"
-            rm -f "${{ env.SSH_FOLDER }}/id_rsa_sftp" "${{ env.SSH_FOLDER }}/known_hosts"
-            echo ${{ env.FTP_KEYFILE }} >> "${{ env.SSH_FOLDER }}/id_rsa_sftp"
-            echo ${{ env.FTP_KNOWN_HOSTS }}  | base64 --decode > ${{ env.SSH_FOLDER }}/known_hosts
-            chmod 400 "${{ env.SSH_FOLDER }}/id_rsa_sftp"
-            chmod 644 "${{ env.SSH_FOLDER }}/known_hosts"
-
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
         with:
@@ -162,15 +153,6 @@ jobs:
           X_SCHEDULER_CRON_SLOTS: 10 */5 * * * *
           X_SCHEDULER_CRON_TYPES: 0 0 0 * * *
           X_SCHEDULER_POOL_SIZE: 10
-
-      - name: Configure SSH known hosts
-        run: |
-            mkdir -p "${{ env.SSH_FOLDER }}"
-            rm -f "${{ env.SSH_FOLDER }}/id_rsa_sftp" "${{ env.SSH_FOLDER }}/known_hosts"
-            echo ${{ env.FTP_KEYFILE }} >> "${{ env.SSH_FOLDER }}/id_rsa_sftp"
-            echo ${{ env.FTP_KNOWN_HOSTS }}  | base64 --decode > ${{ env.SSH_FOLDER }}/known_hosts
-            chmod 400 "${{ env.SSH_FOLDER }}/id_rsa_sftp"
-            chmod 644 "${{ env.SSH_FOLDER }}/known_hosts"
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
