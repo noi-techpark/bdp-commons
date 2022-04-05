@@ -160,9 +160,10 @@ jobs:
       - name: Configure SSH known hosts
         run: |
             mkdir -p "${{ env.SSH_FOLDER }}"
-            rm -f "${{ env.SSH_FOLDER }}/id_rsa_sftp" "${{ env.SSH_FOLDER }}/known_hosts"
-            echo ${{ env.FTP_KEYFILE }} >> "${{ env.SSH_FOLDER }}/id_rsa_sftp"
+            echo ${{ env.FTP_KEYFILE }} | base64 --decode > "${{ env.SSH_FOLDER }}/id_rsa_sftp"
             echo ${{ env.FTP_KNOWN_HOSTS }}  | base64 --decode > ${{ env.SSH_FOLDER }}/known_hosts
+            chmod 400 "${{ env.SSH_FOLDER }}/id_rsa_sftp"
+            chmod 644 "${{ env.SSH_FOLDER }}/known_hosts"
 
 
       - name: Build project
