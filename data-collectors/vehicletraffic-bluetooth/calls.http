@@ -1,0 +1,17 @@
+@host = http://localhost:9002
+
+POST {{host}}/json
+Content-Type: application/json
+
+[
+	{
+		"stationcode": "TEST-TEST-TEST",
+		"mac": "abcdefgh"
+	}
+]
+
+###
+GET {{host}}/json?station-id=abc
+
+###
+GET {{host}}/trigger

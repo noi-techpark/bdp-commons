@@ -100,7 +100,7 @@ public class ODController {
 			}
 			pusher.syncStations(stationList);
 
-			List<DataTypeDto> dataTypes = new ArrayList<DataTypeDto>();
+			List<DataTypeDto> dataTypes = new ArrayList<>();
 			DataTypeDto dataType = new DataTypeDto();
 			dataType.setName(env.getRequiredProperty("datatype"));
 			dataType.setPeriod(1);
@@ -118,7 +118,7 @@ public class ODController {
 	 * @throws MalformedURLException
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody Date getLastRecord(@RequestParam("station-id")String id, HttpServletResponse httpResponse) throws MalformedURLException {
+	public @ResponseBody Date getLastRecord(@RequestParam("station-id")String id, HttpServletResponse httpResponse) {
 		Object bdpResponse = pusher.getDateOfLastRecord(id, env.getRequiredProperty("datatype"), null);
 		if (bdpResponse instanceof Date)
 			return (Date) bdpResponse;

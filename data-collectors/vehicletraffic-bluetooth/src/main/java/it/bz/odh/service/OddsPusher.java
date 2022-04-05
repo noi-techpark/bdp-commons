@@ -67,7 +67,7 @@ public class OddsPusher extends NonBlockingJSONPusher {
 	}
 
     public List<String> hash(RecordList records) {
-        List<String> hashes = new ArrayList<String>();
+        List<String> hashes = new ArrayList<>();
         for (OddsRecordDto r : records) {
             String hash = cryptUtil.encrypt(r.getMac());
             hashes.add(hash);
