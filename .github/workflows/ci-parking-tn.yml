@@ -66,8 +66,7 @@ jobs:
 
           # Scheduler: every 5 minutes and every hour
           X_SCHEDULER_CRON_DATA: 0 0/5 * * * *
-          # X_SCHEDULER_CRON_STATIONS: 0 0 1 * * *
-          X_SCHEDULER_CRON_STATIONS: 0 0/10 * * * *
+          X_SCHEDULER_CRON_STATIONS: 0 0 1 * * *
           X_SCHEDULER_POOL_SIZE: 10
 
       - name: Build project
