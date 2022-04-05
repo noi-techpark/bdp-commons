@@ -34,7 +34,7 @@ jobs:
 # Deploy Test
   deploy-test-environment-appa-bz-tenminutes:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/sd-environment-appa-bz-tenminutes'
+    if: github.ref == 'refs/heads/main'
     needs: test
     concurrency: deploy-test-environment-appa-bz-tenminutes
     env:
@@ -81,7 +81,7 @@ jobs:
       - name: Configure SSH known hosts
         run: |
             mkdir -p "${{ env.SSH_FOLDER }}"
-            echo ${{ env.FTP_KEYFILE }} | base64 --decode > "${{ env.SSH_FOLDER }}/id_rsa_sftp"
+            echo ${{ env.FTP_KEYFILE }} | base64 --decode > ${{ env.SSH_FOLDER }}/id_rsa_sftp
             echo ${{ env.FTP_KNOWN_HOSTS }}  | base64 --decode > ${{ env.SSH_FOLDER }}/known_hosts
             chmod 400 "${{ env.SSH_FOLDER }}/id_rsa_sftp"
             chmod 644 "${{ env.SSH_FOLDER }}/known_hosts"
@@ -161,7 +161,7 @@ jobs:
       - name: Configure SSH known hosts
         run: |
             mkdir -p "${{ env.SSH_FOLDER }}"
-            echo ${{ env.FTP_KEYFILE }} | base64 --decode > "${{ env.SSH_FOLDER }}/id_rsa_sftp"
+            echo ${{ env.FTP_KEYFILE }} | base64 --decode > ${{ env.SSH_FOLDER }}/id_rsa_sftp
             echo ${{ env.FTP_KNOWN_HOSTS }}  | base64 --decode > ${{ env.SSH_FOLDER }}/known_hosts
             chmod 400 "${{ env.SSH_FOLDER }}/id_rsa_sftp"
             chmod 644 "${{ env.SSH_FOLDER }}/known_hosts"
