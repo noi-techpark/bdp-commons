@@ -9,7 +9,7 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>5.2.11.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 		<xmlrpc.version>3.1.2</xmlrpc.version>
 		<finalName>ROOT</finalName>
 	</properties>
@@ -23,7 +23,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>5.4.1</version>
+			<version>7.3.0</version>
 		</dependency>
 		<!-- General dependencies for standard applications -->
 		<dependency>
@@ -36,17 +36,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>4.0.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.17.1</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
