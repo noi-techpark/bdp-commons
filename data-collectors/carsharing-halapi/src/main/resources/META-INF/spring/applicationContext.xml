@@ -7,9 +7,12 @@
     <context:spring-configured/>
 
     <context:component-scan base-package="it.bz.idm.bdp,it.bz.tis.integreen.carsharingbzit"/>
+    <context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
+
+
     <bean class="it.bz.tis.integreen.carsharingbzit.ConnectorServlet" id="jobScheduler"/>
-    <task:scheduler id="Scheduler" pool-size="10" />
+    <task:scheduler id="Scheduler" pool-size="${SCHEDULER_POOL_SIZE:10}" />
     <task:scheduled-tasks scheduler="Scheduler">
-        <task:scheduled ref="jobScheduler" method="run"  cron="10 0/10 * * * ?" /> <!-- Every day at 1pm -->
+        <task:scheduled ref="jobScheduler" method="run"  cron="${SCHEDULER_CRON_DATA:10 0/10 * * * ?}" /> <!-- Every day at 1pm -->
     </task:scheduled-tasks>
 </beans>

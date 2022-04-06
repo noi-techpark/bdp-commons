@@ -22,8 +22,8 @@ package it.bz.tis.integreen.carsharingbzit.tis;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -39,7 +39,7 @@ import it.bz.idm.bdp.dto.StationList;
  */
 public class FakeConnector implements IXMLRPCPusher
 {
-   static final Logger logger = LogManager.getLogger(FakeConnector.class);
+   static final Logger logger = LoggerFactory.getLogger(FakeConnector.class);
 
    ObjectMapper        mapper;
 

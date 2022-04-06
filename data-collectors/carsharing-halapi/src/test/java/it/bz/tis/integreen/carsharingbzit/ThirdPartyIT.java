@@ -22,7 +22,7 @@ public class ThirdPartyIT {
 
 	@Before
 	public void setup() throws FileNotFoundException, IOException {
-		URL resource = getClass().getClassLoader().getResource("app.properties");
+		URL resource = getClass().getClassLoader().getResource("application.properties");
 		props.load(new FileInputStream(resource.getFile()));
 		String endpoint = props.getProperty("endpoint");
 		String user = props.getProperty("user");
