@@ -86,7 +86,7 @@ public class HydrogenDataPusherIT extends AbstractJUnit4SpringContextTests {
     private void pushStations(List<HydrogenDto> data, List<String> errors) {
         try {
             StationList stations = pusher.mapStations2Bdp(data);
-            LOG.debug(stations);
+            LOG.debug(stations.toString());
             if (stations != null) {
                 pusher.syncStations(stations);
             }
@@ -100,7 +100,7 @@ public class HydrogenDataPusherIT extends AbstractJUnit4SpringContextTests {
             StationList plugs    = pusher.mapPlugs2Bdp(data);
             StationList tmp = new StationList();
             for (StationDto stationDto : plugs) {
-                LOG.debug(stationDto);
+                LOG.debug(stationDto.toString());
                 if ( tmp.size()==0 ) {
                     tmp.add(stationDto);
                 }
