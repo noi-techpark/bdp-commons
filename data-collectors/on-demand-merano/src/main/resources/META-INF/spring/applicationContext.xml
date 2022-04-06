@@ -7,11 +7,13 @@
     <context:spring-configured/>
 
     <context:component-scan base-package="it.bz.idm.bdp,it.bz.noi.ondemandmerano"/>
+    <context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
+
     <bean class="it.bz.noi.ondemandmerano.MainOnDemandMerano" id="jobScheduler"/>
-    <task:scheduler id="Scheduler" pool-size="10" />
+    <task:scheduler id="Scheduler" pool-size="${SCHEDULER_POOL_SIZE:10}" />
     <task:scheduled-tasks scheduler="Scheduler">
-        <task:scheduled ref="jobScheduler" method="executeStops"  cron="0 0 * * * ?" />
-        <task:scheduled ref="jobScheduler" method="executeActivities"  cron="*/10 * * * * ?" />
+        <task:scheduled ref="jobScheduler" method="executeStops"  cron="${SCHEDULER_CRON_STOPS:0 0 * * * ?}" />
+        <task:scheduled ref="jobScheduler" method="executeActivities"  cron="${SCHEDULER_CRON_ACTIVITIES:*/10 * * * * ?}" />
 <!--        <task:scheduled ref="jobScheduler" method="executePolygons"  cron="0 0 * * * ?" />-->
     </task:scheduled-tasks>
 </beans>
