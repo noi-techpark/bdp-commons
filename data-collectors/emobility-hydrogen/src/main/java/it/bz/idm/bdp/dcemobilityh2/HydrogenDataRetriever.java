@@ -20,8 +20,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -36,7 +36,7 @@ import it.bz.idm.bdp.dcemobilityh2.dto.HydrogenDto;
 @PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class HydrogenDataRetriever {
 
-    private static final Logger LOG = LogManager.getLogger(HydrogenDataRetriever.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(HydrogenDataRetriever.class.getName());
 
     @Autowired
     private Environment env;
