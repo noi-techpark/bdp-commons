@@ -55,8 +55,8 @@
         <!-- <task:scheduled ref="jobScheduler" method="pushData"      cron="0 0   1 * * *" /> --> <!-- Every day at 1pm -->
         <task:scheduled ref="jobScheduler" method="pushData"      cron="${SCHEDULER_CRON_DATA:0 0/5 * * * *}" />       <!-- Every 5 minutes -->
         <!-- <task:scheduled ref="jobScheduler" method="pushDataTypes" cron="0 0   1 * * *" /> --> <!-- Every day at 1pm -->
-        <task:scheduled ref="jobScheduler" method="pushStations"  cron="${SCHEDULER_CRON_STATIONS:0 0   1 * * *}" /> <!-- Every day at 1pm -->
-        <task:scheduled ref="jobScheduler" method="syncTypes"  cron="${SCHEDULER_CRON_TYPES:0 0   1 * * *}" /> <!-- Every day at 1pm -->
+        <task:scheduled ref="jobScheduler" method="pushStations"  cron="${SCHEDULER_CRON_STATIONS:0 0 1 * * *}" /> <!-- Every day at 1pm -->
+        <task:scheduled ref="jobScheduler" method="syncTypes"  cron="${SCHEDULER_CRON_TYPES:0 0 1 * * *}" /> <!-- Every day at 1pm -->
     </task:scheduled-tasks>
 
 </beans>
