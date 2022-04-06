@@ -45,7 +45,7 @@ jobs:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
           # Data Collector config
-          X_TOKEN_PARAMETER: $ {{ env.EMOBILITY_HYDROGEN_ACCESS_TOKEN }}
+          X_TOKEN_PARAMETER: ${{ env.EMOBILITY_HYDROGEN_ACCESS_TOKEN }}
           
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
@@ -117,7 +117,7 @@ jobs:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
           # Data Collector config
-          X_TOKEN_PARAMETER: $ {{ env.EMOBILITY_HYDROGEN_ACCESS_TOKEN }}
+          X_TOKEN_PARAMETER: ${{ env.EMOBILITY_HYDROGEN_ACCESS_TOKEN }}
 
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
