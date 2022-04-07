@@ -31,7 +31,7 @@ jobs:
 # Deploy Test
   deploy-test-emobility-hydrogen:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/sd-emobility-hydrogen'
+    if: github.ref == 'refs/heads/main'
     needs: test
     concurrency: deploy-test-emobility-hydrogen
     env:
