@@ -18,7 +18,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -41,22 +40,22 @@ public class DataModel {
 	@Autowired
 	private Environment env;
 
-	public Map<Integer, String> validStations = new HashMap<Integer, String>();
-	public Map<String, StationDto> validStationsFull = new HashMap<String, StationDto>();
-	public Map<String, DataTypeDto> validParametersFull = new HashMap<String, DataTypeDto>();
-	public Map<Integer, String> validErrors = new HashMap<Integer, String>();
-	public List<Character> validMetrics = new ArrayList<Character>();
-	public List<Integer> validParameters = new ArrayList<Integer>();
+	public Map<Integer, String> validStations = new HashMap<>();
+	public Map<String, StationDto> validStationsFull = new HashMap<>();
+	public Map<String, DataTypeDto> validParametersFull = new HashMap<>();
+	public Map<Integer, String> validErrors = new HashMap<>();
+	public List<Character> validMetrics = new ArrayList<>();
+	public List<Integer> validParameters = new ArrayList<>();
 
 	private Reader csvReader = null;
 	private CSVParser csvParser = null;
 
 	public List<Integer> getValidStationsAsList() {
-		return new ArrayList<Integer>(validStations.keySet());
+		return new ArrayList<>(validStations.keySet());
 	}
 
 	public List<Integer> getValidErrorsAsList() {
-		return new ArrayList<Integer>(validErrors.keySet());
+		return new ArrayList<>(validErrors.keySet());
 	}
 
 	private CSVParser getCSVRecords(final String filename) throws IOException {

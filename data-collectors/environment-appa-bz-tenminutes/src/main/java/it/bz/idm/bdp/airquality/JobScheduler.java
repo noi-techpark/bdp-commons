@@ -52,7 +52,7 @@ public class JobScheduler {
 		pusher.syncStations(new StationList(stationsODP));
 
 		/* Sync data types */
-		List<DataTypeDto> dataTypes = new ArrayList<DataTypeDto>(model.validParametersFull.values());
+		List<DataTypeDto> dataTypes = new ArrayList<>(model.validParametersFull.values());
 		pusher.syncDataTypes(dataTypes);
 
 		/* Sync measurements */

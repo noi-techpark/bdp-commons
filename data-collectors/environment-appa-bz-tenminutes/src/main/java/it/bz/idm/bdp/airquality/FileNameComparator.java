@@ -7,8 +7,6 @@ import java.util.Comparator;
 
 public class FileNameComparator implements Comparator<File> {
 
-	private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyddMM_HHmm");
-
 	@Override
 	public int compare(File a, File b) {
 		try {
@@ -21,6 +19,7 @@ public class FileNameComparator implements Comparator<File> {
 		return 0;
 	}
 	private static long asTime(String filename) throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyddMM_HHmm");
 		return formatter.parse(filename.substring(0, filename.lastIndexOf("."))).getTime();
 	}
 }
