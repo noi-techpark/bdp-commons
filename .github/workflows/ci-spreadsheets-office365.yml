@@ -30,7 +30,7 @@ jobs:
 # Deploy Test
   deploy-test-spreadheets-office365:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/spreadsheets-office365-migration$'
     needs: test
     concurrency: deploy-test-spreadheets-office365
     env:
@@ -43,8 +43,21 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
-          # Data Collector config for appa-bz
-          X_stationtype: EnvironmentStation
+          # Data Collector config
+          X_KEY_PATH: "classpath:auth/pkcs8_key"
+          X_CRT_PATH: "classpath:auth/cert.crt"
+          X_TENANT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_TENANT_ID }}
+          X_CLIENT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_CLIENT_ID }}
+          X_origin: NOI Techpark
+          X_SHAREPOINT_HOST: noibz.sharepoint.com
+          X_SHAREPOINT_SITE_ID: UNITshrdTech-TransferDigital
+          X_SHAREPOINT_PATH_TO_DOC: General/NOI-Techpark-MapsBackend.xlsx
+          X_SHAREPOINT_FETCH_FILES: false
+          X_SHAREPOINT_PATH_TO_FILES: YOUR_PATH_TO_FILES
+          X_AWS_BUCKET_NAME: YOUR_AWS_BUCKET_NAME
+          X_AWS_BUCKET_URL: YOUR_AWS_BUCKET_URL
+          X_AWS_ACCESS_KEY: YOUR_AWS_ACCESS_KEY
+          X_AWS_ACCESS_SECRET_KEY: YOUR_AWS_ACCESS_SECRET_KEY
           
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
@@ -67,9 +80,16 @@ jobs:
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
-          # Scheduler: every day at 10:00
-          X_SCHEDULER_CRON_DATA: 0 0 10 * * *
-          X_SCHEDULER_POOL_SIZE: 10
+          # Scheduler
+          X_SCHEDULER_CRON: 0 * * * * *
+
+      - name: Retrieve secret files and decode it to a file
+        env:
+          CERT_BASE64: ${{ secrets.SPREADSHEETS_OFFICE365_CERT_B64 }}
+          PKCS8_KEY_BASE64: ${{ secrets.SPREADSHEETS_OFFICE365_PKCS8_KEY_B64 }}
+        run: |
+          echo $CERT_BASE64 | base64 --decode > data-collectors/spreadheets-office365/src/main/resources/auth/cert.crt
+          echo $PKCS8_KEY_BASE64 | base64 --decode > data-collectors/spreadheets-office365/src/main/resources/auth/pkcs8_key
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -113,8 +133,21 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
-          # Data Collector config for appa-bz
-          X_stationtype: EnvironmentStation
+          # Data Collector config
+          X_KEY_PATH: "classpath:auth/pkcs8_key"
+          X_CRT_PATH: "classpath:auth/cert.crt"
+          X_TENANT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_TENANT_ID }}
+          X_CLIENT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_CLIENT_ID }}
+          X_origin: NOI Techpark
+          X_SHAREPOINT_HOST: noibz.sharepoint.com
+          X_SHAREPOINT_SITE_ID: UNITshrdTech-TransferDigital
+          X_SHAREPOINT_PATH_TO_DOC: General/NOI-Techpark-MapsBackend.xlsx
+          X_SHAREPOINT_FETCH_FILES: false
+          X_SHAREPOINT_PATH_TO_FILES: YOUR_PATH_TO_FILES
+          X_AWS_BUCKET_NAME: YOUR_AWS_BUCKET_NAME
+          X_AWS_BUCKET_URL: YOUR_AWS_BUCKET_URL
+          X_AWS_ACCESS_KEY: YOUR_AWS_ACCESS_KEY
+          X_AWS_ACCESS_SECRET_KEY: YOUR_AWS_ACCESS_SECRET_KEY
 
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
@@ -137,9 +170,16 @@ jobs:
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
-          # Scheduler: every day at 10:00
-          X_SCHEDULER_CRON_DATA: 0 0 10 * * *
-          X_SCHEDULER_POOL_SIZE: 10
+          # Scheduler
+          X_SCHEDULER_CRON: 0 * * * * *
+
+      - name: Retrieve secret files and decode it to a file
+        env:
+          CERT_BASE64: ${{ secrets.SPREADSHEETS_OFFICE365_CERT_B64 }}
+          PKCS8_KEY_BASE64: ${{ secrets.SPREADSHEETS_OFFICE365_PKCS8_KEY_B64 }}
+        run: |
+          echo $CERT_BASE64 | base64 --decode > data-collectors/spreadheets-office365/src/main/resources/auth/cert.crt
+          echo $PKCS8_KEY_BASE64 | base64 --decode > data-collectors/spreadheets-office365/src/main/resources/auth/pkcs8_key
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
