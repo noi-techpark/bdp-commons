@@ -30,7 +30,7 @@ jobs:
 # Deploy Test
   deploy-test-spreadheets-office365:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/spreadsheets-office365-migration$'
+    if: github.ref == 'refs/heads/spreadsheets-office365-migration'
     needs: test
     concurrency: deploy-test-spreadheets-office365
     env:
