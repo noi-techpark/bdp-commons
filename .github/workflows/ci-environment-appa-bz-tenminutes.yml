@@ -50,7 +50,7 @@ jobs:
           # Data Collector config for appa-bz
           X_ftp_pass: ${{ env.FTP_PASS }}
           X_ftp_folder_remote: uploads/.tests
-          
+
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
@@ -129,7 +129,7 @@ jobs:
         env:
           # Data Collector config for appa-bz
           X_ftp_pass: ${{ env.FTP_PASS }}
-          X_ftp_folder_remote: uploads/.tests
+          X_ftp_folder_remote: uploads
 
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
