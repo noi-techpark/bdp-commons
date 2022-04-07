@@ -1,4 +1,4 @@
-name: CI spreadheets-office365
+name: CI/CD spreadheets-office365
 
 on:
   push:
