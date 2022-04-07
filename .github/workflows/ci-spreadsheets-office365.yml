@@ -1,16 +1,16 @@
-name: CI/CD spreadheets-office365
+name: CI/CD spreadsheets-office365
 
 on:
   push:
     paths:
-      - "data-collectors/spreadheets-office365/**"
-      - ".github/workflows/ci-spreadheets-office365.yml"
+      - "data-collectors/spreadsheets-office365/**"
+      - ".github/workflows/ci-spreadsheets-office365.yml"
 
 env:
-  WORKING_DIRECTORY: data-collectors/spreadheets-office365
-  PROJECT_NAME: odh-mobility-dc-spreadheets-office365
+  WORKING_DIRECTORY: data-collectors/spreadsheets-office365
+  PROJECT_NAME: odh-mobility-dc-spreadsheets-office365
   DOCKER_REGISTRY_HOST: ghcr.io
-  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-spreadheets-office365
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-spreadsheets-office365
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
 
@@ -28,11 +28,11 @@ jobs:
           test-command: 'mvn -B -U clean compile test'
 
 # Deploy Test
-  deploy-test-spreadheets-office365:
+  deploy-test-spreadsheets-office365:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/spreadsheets-office365-migration'
     needs: test
-    concurrency: deploy-test-spreadheets-office365
+    concurrency: deploy-test-spreadsheets-office365
     env:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
@@ -88,8 +88,8 @@ jobs:
           CERT_BASE64: ${{ secrets.SPREADSHEETS_OFFICE365_CERT_B64 }}
           PKCS8_KEY_BASE64: ${{ secrets.SPREADSHEETS_OFFICE365_PKCS8_KEY_B64 }}
         run: |
-          echo $CERT_BASE64 | base64 --decode > data-collectors/spreadheets-office365/src/main/resources/auth/cert.crt
-          echo $PKCS8_KEY_BASE64 | base64 --decode > data-collectors/spreadheets-office365/src/main/resources/auth/pkcs8_key
+          echo $CERT_BASE64 | base64 --decode > data-collectors/spreadsheets-office365/src/main/resources/auth/cert.crt
+          echo $PKCS8_KEY_BASE64 | base64 --decode > data-collectors/spreadsheets-office365/src/main/resources/auth/pkcs8_key
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -118,11 +118,11 @@ jobs:
           docker-host: ${{ env.DOCKER_REGISTRY_HOST }}
 
   # Deploy Production
-  deploy-prod-spreadheets-office365:
+  deploy-prod-spreadsheets-office365:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/prod'
     needs: test
-    concurrency: deploy-prod-spreadheets-office365
+    concurrency: deploy-prod-spreadsheets-office365
     env:
       KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:
@@ -178,8 +178,8 @@ jobs:
           CERT_BASE64: ${{ secrets.SPREADSHEETS_OFFICE365_CERT_B64 }}
           PKCS8_KEY_BASE64: ${{ secrets.SPREADSHEETS_OFFICE365_PKCS8_KEY_B64 }}
         run: |
-          echo $CERT_BASE64 | base64 --decode > data-collectors/spreadheets-office365/src/main/resources/auth/cert.crt
-          echo $PKCS8_KEY_BASE64 | base64 --decode > data-collectors/spreadheets-office365/src/main/resources/auth/pkcs8_key
+          echo $CERT_BASE64 | base64 --decode > data-collectors/spreadsheets-office365/src/main/resources/auth/cert.crt
+          echo $PKCS8_KEY_BASE64 | base64 --decode > data-collectors/spreadsheets-office365/src/main/resources/auth/pkcs8_key
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
