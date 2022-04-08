@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/sd-spreadsheets-google'
     needs: test
-    concurrency: deploy-test-spreadsheets-google
+    concurrency: deploy-test-spreadsheets-google-centro-trevi
     env:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
@@ -121,7 +121,7 @@ jobs:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/prod'
     needs: test
-    concurrency: deploy-prod-spreadsheets-google
+    concurrency: deploy-prod-spreadsheets-google-centro-trevi
     env:
       KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:
