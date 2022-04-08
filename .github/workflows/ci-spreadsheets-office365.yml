@@ -48,7 +48,7 @@ jobs:
         env:
           # Data Collector config
           X_KEY_PATH: "classpath:auth/pkcs8_key"
-          X_CRT_PATH: "classpath:auth/cert.crt"
+          X_CERT_PATH: "classpath:auth/cert.crt"
           X_TENANT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_TENANT_ID }}
           X_CLIENT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_CLIENT_ID }}
           X_origin: NOI Techpark
@@ -135,7 +135,7 @@ jobs:
         env:
           # Data Collector config
           X_KEY_PATH: "classpath:auth/pkcs8_key"
-          X_CRT_PATH: "classpath:auth/cert.crt"
+          X_CERT_PATH: "classpath:auth/cert.crt"
           X_TENANT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_TENANT_ID }}
           X_CLIENT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_CLIENT_ID }}
           X_origin: NOI Techpark
