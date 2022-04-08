@@ -1,2 +1,3 @@
-FROM tomcat:8.5-jdk8-openjdk-slim-buster
-COPY target/ROOT.war /usr/local/tomcat/webapps/ROOT.war
+FROM maven:3-jdk-8-alpine as base
+COPY target/ROOT.jar app.jar
+CMD [ "java", "-jar", "app.jar" ]

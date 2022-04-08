@@ -86,7 +86,7 @@ public class SyncScheduler {
      */
     @Scheduled(cron = "${cron}")
     public void checkSharepoint() throws Exception {
-        logger.debug("Cron job manual sync started");
+        logger.info("Cron job manual sync started");
         Workbook sheet = workbookUtil.checkWorkbook();
         if (sheet != null) {
 
@@ -96,7 +96,7 @@ public class SyncScheduler {
         } else
             logger.debug("No new changes detected, skip sync with BDP");
 
-        logger.debug("Cron job manual sync end");
+        logger.info("Cron job manual sync end");
     }
 
     /**

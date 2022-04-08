@@ -96,7 +96,7 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
           java-version: ${{ env.JAVA_VERSION }}
-          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
+          build-command: 'mvn -DskipTests clean package spring-boot:repackage'
 
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2
@@ -183,7 +183,7 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
           java-version: ${{ env.JAVA_VERSION }}
-          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
+          build-command: 'mvn -DskipTests clean package spring-boot:repackage'
 
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2
