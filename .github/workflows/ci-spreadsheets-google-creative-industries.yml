@@ -36,7 +36,7 @@ jobs:
 # Deploy Test
   deploy-test-spreadsheets-google:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/sd-spreadsheets-google'
+    if: github.ref == 'refs/heads/main'
     needs: test
     concurrency: deploy-test-spreadsheets-google-creative-industries
     env:
