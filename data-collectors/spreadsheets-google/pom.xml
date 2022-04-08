@@ -9,7 +9,7 @@
 	<properties>
 		<java.version>8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>5.2.7.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 		<finalName>googleSpreadsheets</finalName>
 	</properties>
 	<repositories>
@@ -25,11 +25,6 @@
 			<artifactId>junit</artifactId>
 			<version>4.13.1</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.17.1</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -86,7 +81,7 @@
 		<dependency>
 			<groupId>it.bz.idm.bdp</groupId>
 			<artifactId>dc-interface</artifactId>
-			<version>5.4.1</version>
+			<version>7.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -102,17 +97,17 @@
 		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>
-			<version>1.30.10</version>
+			<version>1.33.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.oauth-client</groupId>
 			<artifactId>google-oauth-client</artifactId>
-			<version>1.32.1</version>
+			<version>1.33.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.oauth-client</groupId>
 			<artifactId>google-oauth-client-jetty</artifactId>
-			<version>1.30.6</version>
+			<version>1.33.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.apis</groupId>
@@ -128,16 +123,6 @@
 			<groupId>org.apache.tika</groupId>
 			<artifactId>tika-langdetect</artifactId>
 			<version>1.21</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.26</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.26</version>
 		</dependency>
 
 	</dependencies>
