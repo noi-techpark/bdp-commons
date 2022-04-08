@@ -3,8 +3,8 @@ package it.bz.odh.spreadsheets.services;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class SpreadsheetWatcher extends GoogleAuthenticator {
 	@Value("${spreadsheet_notificationUrl}")
 	private String notificationUrl;
 
-	private Logger logger = LogManager.getLogger(SpreadsheetWatcher.class);
+	private Logger logger = LoggerFactory.getLogger(SpreadsheetWatcher.class);
 
 	public void registerWatch() {
 		try {
