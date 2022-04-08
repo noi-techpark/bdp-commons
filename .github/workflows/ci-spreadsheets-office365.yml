@@ -15,7 +15,7 @@ env:
   JAVA_VERSION: '8'
   CERT_BASE64: ${{ secrets.SPREADSHEETS_OFFICE365_CERT_B64 }}
   PKCS8_KEY_BASE64: ${{ secrets.SPREADSHEETS_OFFICE365_PKCS8_KEY_B64 }}
-  SCHEDULER_CRON: "*/5 * * * * *"
+  SCHEDULER_CRON: "0 * * * * *"
 
 jobs:
   test:
