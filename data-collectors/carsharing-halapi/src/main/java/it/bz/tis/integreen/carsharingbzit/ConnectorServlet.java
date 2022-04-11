@@ -35,6 +35,7 @@ import javax.annotation.PostConstruct;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.IntegreenPushable;
@@ -47,45 +48,38 @@ import it.bz.tis.integreen.carsharingbzit.api.ApiClient;
 @Component
 public class ConnectorServlet
 {
-	static final Logger       logger       = LoggerFactory.getLogger(ConnectorServlet.class);
+	static final Logger logger = LoggerFactory.getLogger(ConnectorServlet.class);
 
-	boolean                   destroy;
+	boolean destroy;
 
-	ApiClient                 apiClient    = null;
+	ApiClient apiClient = null;
 
-	String[]                  cityUIDs;
+	String[] cityUIDs;
 
 	@Autowired
-	private IntegreenPushable             xmlrpcPusher;
+	private IntegreenPushable xmlrpcPusher;
 
 	HashMap<String, String[]> vehicleIdsByStationIds;
 
-	String                    serviceStartedAt;
-	ArrayList<ActivityLog>    activityLogs = new ArrayList<ActivityLog>();
+	String serviceStartedAt;
+	ArrayList<ActivityLog> activityLogs = new ArrayList<ActivityLog>();
 
-	private Properties props = new Properties();
+	@Value("${user}")
+	String user;
+	
+	@Value("${password}")
+	String password;
+
+	@Value("${endpoint}")
+	String endpoint;
+
+	@Value("${cityUIDs}")
+	String initCityUIDs;
 
 	@PostConstruct
 	public void init()
 	{
 		logger.debug("init(ServletConfig): begin");
-		URL resource = getClass().getClassLoader().getResource("application.properties");
-		try {
-			props.load(new FileInputStream(resource.getFile()));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String endpoint = props.getProperty("endpoint");
-		if (endpoint == null || endpoint.trim().length() == 0)
-		{
-			String msg = "endpoint not configured. Please configure it in the properties file";
-			logger.error(msg);
-		}
-		String user = props.getProperty("user");
-		String password = props.getProperty("password");
-		String initCityUIDs = props.getProperty("cityUIDs");
 
 		this.cityUIDs = initCityUIDs.split("\\s*,\\s*");
 
