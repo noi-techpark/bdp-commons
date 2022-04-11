@@ -45,7 +45,7 @@ jobs:
         env:
           # Data Collector config
           X_HALAPI_USER: ${{ secrets.CARSHARING_HALAPI_USER }}
-          X_HALAPI_PASS: ${{ secrets.CARSHARING_HALAPI_PASSWORD }}
+          X_HALAPI_PASS: ${{ secrets.CARSHARING_HALAPI_PASS }}
           
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
@@ -116,7 +116,7 @@ jobs:
         env:
           # Data Collector config
           X_HALAPI_USER: ${{ secrets.CARSHARING_HALAPI_USER }}
-          X_HALAPI_PASS: ${{ secrets.CARSHARING_HALAPI_PASSWORD }}
+          X_HALAPI_PASS: ${{ secrets.CARSHARING_HALAPI_PASS }}
 
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
