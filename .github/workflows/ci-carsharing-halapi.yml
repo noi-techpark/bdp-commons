@@ -30,7 +30,7 @@ jobs:
 # Deploy Test
   deploy-test-carsharing-halapi:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/sd-carsharing-halapi'
     needs: test
     concurrency: deploy-test-carsharing-halapi
     env:
@@ -45,7 +45,7 @@ jobs:
         env:
           # Data Collector config
           X_HALAPI_USER: ${{ secrets.CARSHARING_HALAPI_USER }}
-          X_HALAPI_PASSWORD: ${{ secrets.CARSHARING_HALAPI_PASSWORD }}
+          X_HALAPI_PASS: ${{ secrets.CARSHARING_HALAPI_PASSWORD }}
           
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
@@ -116,7 +116,7 @@ jobs:
         env:
           # Data Collector config
           X_HALAPI_USER: ${{ secrets.CARSHARING_HALAPI_USER }}
-          X_HALAPI_PASSWORD: ${{ secrets.CARSHARING_HALAPI_PASSWORD }}
+          X_HALAPI_PASS: ${{ secrets.CARSHARING_HALAPI_PASSWORD }}
 
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
