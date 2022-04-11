@@ -93,7 +93,7 @@ public class ConnectorServlet
 
 	public void run()
 	{
-		logger.debug("run(): begin");
+		logger.info("run(): begin");
 		this.serviceStartedAt = formatDateTime(System.currentTimeMillis());
 		long updateTime = calcLastPastIntervall();
 		long start = System.currentTimeMillis();
@@ -128,13 +128,13 @@ public class ConnectorServlet
 		catch (Throwable exxx)
 		{
 			activityLog.error = exxx.getClass().getName() + ": " + exxx.getMessage();
-			logger.debug("run(): exception executing task (catched)", exxx);
+			logger.error("run(): exception executing task (catched)", exxx);
 		}
 		finally
 		{
 			long stop = System.currentTimeMillis();
 			activityLog.durationSec = (int) ((stop - start) / 1000);
-			logger.debug(String.format("run(): iteration end in %08d millis!\n", stop - start));
+			logger.info(String.format("run(): iteration end in %08d millis!\n", stop - start));
 		}
 		try
 		{
@@ -159,7 +159,7 @@ public class ConnectorServlet
 				}
 			}
 		}
-		logger.debug("run(): end");
+		logger.info("run(): end");
 	}
 
 	static long calcLastPastIntervall()
