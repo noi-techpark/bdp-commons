@@ -322,13 +322,14 @@ public class ConnectorLogic
 				}
 				int free = 0;
 				for (VehicleAndOccupancies vehicleOccupancy : occupancies)
-				{
-					if (vehicleOccupancy.getOccupancy().length > 1)
+				{   
+					// increase to 2, because some cars have contemporary occupancy of "Foreign" and "Gap"
+					if (vehicleOccupancy.getOccupancy().length > 2)
 					{
 						throw new IllegalStateException("Why???");
 					}
 					int state = 0; // free
-					if (vehicleOccupancy.getOccupancy().length == 1)
+					if (vehicleOccupancy.getOccupancy().length == 1 || vehicleOccupancy.getOccupancy().length == 2)
 					{
 						state = 1;
 					}
