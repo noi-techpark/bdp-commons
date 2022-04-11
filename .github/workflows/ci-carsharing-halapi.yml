@@ -30,7 +30,7 @@ jobs:
 # Deploy Test
   deploy-test-carsharing-halapi:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/sd-carsharing-halapi'
+    if: github.ref == 'refs/heads/main'
     needs: test
     concurrency: deploy-test-carsharing-halapi
     env:
