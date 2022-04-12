@@ -16,7 +16,6 @@ Note: Any Big Data Platform can be used.
 **Table of Contents**
 
 - [Office 365 Spreadsheets DataCollector](#office-365-spreadsheets-datacollector)
-- [ATTENTION: Sharepoint/AWS S3 bucket synchronization is not working correct](#attention-sharepointaws-s3-bucket-synchronization-is-not-working-correct)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Source code](#source-code)
@@ -300,17 +299,7 @@ For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.
 
 If you'd like to contribute, please follow the following instructions:
 
-- Fork the repository.
-
-- Checkout a topic branch from th e `development` branch.
-
-- Make sure the tests are passing.
-
-- Create a pull request against the `development` branch.
-
-A more detailed description can be found
-here: [https://github.com/noi-techpark/documentation/blob/master/contributors.md](https://github.com/noi-techpark/documentation/blob/master/contributors.md)
-.
+https://docs.opendatahub.bz.it/en/latest/guidelines/contributors.html
 
 ### Documentation
 
