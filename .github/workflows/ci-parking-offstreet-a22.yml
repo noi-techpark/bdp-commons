@@ -1,14 +1,14 @@
-name: CI/CD parking-a22
+name: CI/CD parking-offstreet-a22
 
 on:
   push:
     paths:
-      - "data-collectors/parking-a22/**"
-      - ".github/workflows/ci-parking-a22.yml"
+      - "data-collectors/parking-offstreet-a22/**"
+      - ".github/workflows/ci-parking-offstreet-a22.yml"
 
 env:
-  WORKING_DIRECTORY: data-collectors/parking-a22
-  PROJECT_NAME: odh-mobility-dc-parking-a22
+  WORKING_DIRECTORY: data-collectors/parking-offstreet-a22
+  PROJECT_NAME: odh-mobility-dc-parking-offstreet-a22
   DOCKER_REGISTRY_HOST: ghcr.io
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/main
   DOCKER_TAG: ${{ github.sha }}
@@ -28,11 +28,11 @@ jobs:
           test-command: 'mvn -B -U clean compile test'
 
 # Deploy Test
-  deploy-test-parking-a22:
+  deploy-test-parking-offstreet-a22:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
     needs: test
-    concurrency: deploy-test-parking-a22
+    concurrency: deploy-test-parking-offstreet-a22
     env:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
@@ -100,11 +100,11 @@ jobs:
           docker-host: ${{ env.DOCKER_REGISTRY_HOST }}
 
   # Deploy Production
-  deploy-prod-parking-a22:
+  deploy-prod-parking-offstreet-a22:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/prod'
     needs: test
-    concurrency: deploy-prod-parking-a22
+    concurrency: deploy-prod-parking-offstreet-a22
     env:
       KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:

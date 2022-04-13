@@ -2,14 +2,23 @@
 
 Application which takes A22 parking data from a web service parses it and sends it to the opendatahub.
 
-[![CI parking-a22](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-a22.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-a22.yml)
+[![CI parking-offstreet-a22](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-offstreet-a22.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-offstreet-a22.yml)
 
 ## Table of contents
 
-- [Gettings started](#getting-started)
-- [Running tests](#running-tests)
-- [Deployment](#deployment)
-- [Information](#information)
+- [A22 Parking](#a22-parking)
+  - [Table of contents](#table-of-contents)
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Source code](#source-code)
+    - [Build](#build)
+  - [Running tests](#running-tests)
+  - [Deployment](#deployment)
+  - [Information](#information)
+    - [Support](#support)
+    - [Contributing](#contributing)
+    - [Documentation](#documentation)
+    - [License](#license)
 
 ## Getting started
 
@@ -35,7 +44,7 @@ git clone git clone https://github.com/noi-techpark/bdp-commons
 Change directory:
 
 ```bash
-cd bdp-commons/data-collectors/parking-a22
+cd bdp-commons/data-collectors/parking-offstreet-a22
 ```
 
 ### Build
