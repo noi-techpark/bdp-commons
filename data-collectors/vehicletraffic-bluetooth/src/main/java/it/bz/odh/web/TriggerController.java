@@ -52,7 +52,7 @@ public class TriggerController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody void post(@RequestBody(required = false) GooglePushDto gDto,
-			@RequestHeader(required = true, value = "x-goog-changed") String whatChanged) {
+			@RequestHeader(required = false, value = "x-goog-changed") String whatChanged) {
 		logger.debug("Sync triggered");
 		List<String> changeDetails = Arrays.asList(whatChanged.split(","));
 		Long now = new Date().getTime();

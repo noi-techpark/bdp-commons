@@ -1,4 +1,5 @@
-@host = http://localhost:9002
+@host = https://boxes.opendatahub.bz.it
+#@host = http://localhost:9002
 
 POST {{host}}/json
 Content-Type: application/json
@@ -15,3 +16,8 @@ GET {{host}}/json?station-id=abc
 
 ###
 GET {{host}}/trigger
+
+
+https://mobility.share.opendatahub.bz.it/json/syncStationStates/BluetoothStation
+?prn=odh-mobility-dc-vehicletraffic-bluetooth
+&prv=799912c053262d05ff81b9163ba7298907721c91
