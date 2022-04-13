@@ -13,8 +13,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.json.simple.*;
 
 /**
@@ -27,7 +27,7 @@ public class A22ParkingConnector {
     private static final int WS_CONN_TIMEOUT_MSEC = 30000;
     private static final int WS_READ_TIMEOUT_MSEC = 1800000;
 
-    private static final Logger LOG = LogManager.getLogger(A22ParkingConnector.class);
+    private static final Logger LOG = LoggerFactory.getLogger(A22ParkingConnector.class);
 
     private static final boolean DEBUG = true;
 

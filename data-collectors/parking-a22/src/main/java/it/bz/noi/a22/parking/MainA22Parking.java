@@ -14,9 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -39,11 +40,22 @@ public class MainA22Parking {
     private static final String STATION_METADATA_METRO = "metro";
     private static final String STATION_METADATA_AUTOSTRADA = "autostrada";
 
-    private static final Logger LOG = LogManager.getLogger(MainA22Parking.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MainA22Parking.class);
 
     private final A22Properties a22ParkingProperties;
     private final A22Properties datatypesProperties;
     private final A22Properties valuesMappingProperties;
+
+    @Value("${A22_URL}")
+    private String url;
+
+    @Value("${A22_USER}")
+    private String user;
+
+    @Value("${A22_PASSWORD}")
+    private String password;
+
+
     @Autowired
     private A22ParkingJSONPusher pusher;
 
@@ -94,7 +106,7 @@ public class MainA22Parking {
                     stationDtoMap.put(IDENTIFIER_NAMESPACE +":"+ parkInfo.getId().toString(), stationDto);
                 }
             } catch (Exception e) {
-                LOG.error("step 2 failed, continuing anyway to read de-auth...", e);
+                LOG.error("step 2 failed, continuing anyway to read de-auth...");
             }
 
             // step 3
@@ -133,34 +145,22 @@ public class MainA22Parking {
                 pusher.syncStations(stationList);
                 pusher.pushData(dataMap);
             } catch (Exception e) {
-                LOG.error("step 3 failed, continuing anyway to read de-auth...", e);
+                LOG.error("step 3 failed, continuing anyway to read de-auth...");
             }
 
             // step 4
             A22Service.close();
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.error(e);
+            LOG.error(e.getMessage());
         } finally {
             long stopTime = System.currentTimeMillis();
             LOG.debug("elaboration time (millis): " + (stopTime - startTime));
         }
     }
 
-    private A22ParkingConnector setupA22ServiceConnector() throws IOException {
-        String url;
-        String user;
-        String password;
-
-        // read connector auth informations
-        A22Properties prop = new A22Properties("a22connector.properties");
-        url = prop.getProperty("url");
-        user = prop.getProperty("user");
-        password = prop.getProperty("password");
-
-        A22ParkingConnector a22ParkingConnector = new A22ParkingConnector(url, user, password);
-
-        return a22ParkingConnector;
+    private A22ParkingConnector setupA22ServiceConnector() throws IOException{
+        return new A22ParkingConnector(url, user, password);
     }
 
     private void setupDataType() {
