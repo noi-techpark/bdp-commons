@@ -66,49 +66,58 @@ public class ODController {
 	 * @param records
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody void post(@RequestBody RecordList records){
+	public @ResponseBody void post(@RequestBody RecordList records) {
 		if (records == null || records.isEmpty()) {
 			logger.debug("No records present");
 			return;
 		}
 
 		List<OddsRecordDto> recs = records;
-		logger.debug("RemoveCorruptedRecords");
+		logger.debug("Removing corrupted records");
 		OddsRecordDto.removeCorruptedData(recs);
-		logger.debug(records.size()+"left to process");
-		DataMapDto<RecordDtoImpl> dataMap = pusher.mapData(records);
-		if (!recs.isEmpty()) {
 
-			StationList stationList = new StationList();
-			for (String stationName : dataMap.getBranch().keySet()) {
-				StationDto station = new StationDto();
-				Double[] coordinatesByIdentifier = mappingUtil.getCoordinatesByIdentifier(stationName);
-				if (coordinatesByIdentifier != null) {
-					station.setLongitude(coordinatesByIdentifier[0]);
-					station.setLatitude(coordinatesByIdentifier[1]);
-				}
-				Map<String, Object> metaDataByIdentifier = mappingUtil.getMetaDataByIdentifier(stationName);
-				if (metaDataByIdentifier != null) {
-					Map<String, Object> cleanMap = mappingUtil.mergeTranslations(metaDataByIdentifier);
-					if (cleanMap != null)
-						station.getMetaData().putAll(cleanMap);
-				}
-				station.setName(stationName);
-				station.setId(stationName);
-				station.setStationType(env.getRequiredProperty("stationtype"));
-				stationList.add(station);
-			}
-			pusher.syncStations(stationList);
-
-			List<DataTypeDto> dataTypes = new ArrayList<>();
-			DataTypeDto dataType = new DataTypeDto();
-			dataType.setName(env.getRequiredProperty("datatype"));
-			dataType.setPeriod(1);
-			dataTypes.add(dataType);
-			pusher.syncDataTypes(dataTypes);
-
-			pusher.pushData(dataMap);
+		if (recs.isEmpty()) {
+			logger.debug("Nothing left to process... returning!");
+			return;
 		}
+		logger.debug(records.size() + " records left to process");
+
+		String stationType = env.getRequiredProperty("stationtype");
+		String origin = env.getRequiredProperty("app.origin");
+		String dataTypeName = env.getRequiredProperty("datatype");
+
+		DataMapDto<RecordDtoImpl> dataMap = pusher.mapData(records);
+
+		StationList stationList = new StationList();
+		for (String stationName : dataMap.getBranch().keySet()) {
+			StationDto station = new StationDto();
+			Double[] coordinatesByIdentifier = mappingUtil.getCoordinatesByIdentifier(stationName);
+			if (coordinatesByIdentifier != null) {
+				station.setLongitude(coordinatesByIdentifier[0]);
+				station.setLatitude(coordinatesByIdentifier[1]);
+			}
+			Map<String, Object> metaDataByIdentifier = mappingUtil.getMetaDataByIdentifier(stationName);
+			if (metaDataByIdentifier != null) {
+				Map<String, Object> cleanMap = mappingUtil.mergeTranslations(metaDataByIdentifier);
+				if (cleanMap != null)
+					station.getMetaData().putAll(cleanMap);
+			}
+			station.setName(stationName);
+			station.setId(stationName);
+			station.setStationType(stationType);
+			station.setOrigin(origin);
+			stationList.add(station);
+		}
+		pusher.syncStations(stationList);
+
+		List<DataTypeDto> dataTypes = new ArrayList<>();
+		DataTypeDto dataType = new DataTypeDto();
+		dataType.setName(dataTypeName);
+		dataType.setPeriod(1);
+		dataTypes.add(dataType);
+		pusher.syncDataTypes(dataTypes);
+
+		pusher.pushData(dataMap);
 	}
 
 	/**
@@ -127,6 +136,7 @@ public class ODController {
 			httpResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
 		return null;
 	}
+
 	@RequestMapping(method = RequestMethod.POST,value="hash")
 	public @ResponseBody List<String> hash(@RequestBody RecordList records){
 	    return pusher.hash(records);
