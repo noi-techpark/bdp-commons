@@ -7,6 +7,7 @@
     <context:spring-configured/>
 
     <context:component-scan base-package="it.bz.idm.bdp,it.bz.noi.a22"/>
+	<context:property-placeholder location="classpath*:*.properties" />
     <bean class="it.bz.noi.a22.vms.MainA22Sign" id="jobScheduler"/>
     <task:scheduler id="Scheduler" pool-size="1" />
     <task:scheduled-tasks scheduler="Scheduler">
