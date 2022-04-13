@@ -4,14 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4ProcessedDataToAugeDto;
 import it.bz.idm.bdp.augeg4.face.DataPusherAugeFace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 public class DataPusherAugeMock implements DataPusherAugeFace {
 
-    private static final Logger LOG = LogManager.getLogger(DataPusherAugeMock.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataPusherAugeMock.class.getName());
     ObjectMapper mapper = new ObjectMapper();
 
 

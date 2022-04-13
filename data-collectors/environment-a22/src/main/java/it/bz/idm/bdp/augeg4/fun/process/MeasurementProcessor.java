@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import it.bz.idm.bdp.augeg4.dto.AugeG4RawData;
 import it.bz.idm.bdp.augeg4.dto.MeasurementId;
@@ -18,7 +18,7 @@ import it.bz.idm.bdp.augeg4.util.math.BigDecimalMath;
 
 public class MeasurementProcessor {
 
-    private static final Logger LOG = LogManager.getLogger(MeasurementProcessor.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(MeasurementProcessor.class.getName());
 
     public static final MeasurementId MEASUREMENT_ID_TEMPERATURA = new MeasurementId(7);
     public static final MeasurementId MEASUREMENT_ID_RH = new MeasurementId(3);

@@ -5,8 +5,8 @@ import it.bz.idm.bdp.augeg4.dto.RawMeasurement;
 import it.bz.idm.bdp.augeg4.dto.fromauge.AugeG4ElaboratedDataDto;
 import it.bz.idm.bdp.augeg4.dto.fromauge.ElaboratedResVal;
 import it.bz.idm.bdp.augeg4.face.DataDelinearizerFace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class DataDelinearizer implements DataDelinearizerFace {
 
-    private static final Logger LOG = LogManager.getLogger(DataDelinearizer.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataDelinearizer.class.getName());
 
     private final MeasurementDelinearizer measurementDelinearizer = new MeasurementDelinearizer();
 

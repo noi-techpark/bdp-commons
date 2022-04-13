@@ -3,15 +3,15 @@ package it.bz.idm.bdp.augeg4;
 import it.bz.idm.bdp.augeg4.fun.convert.MeasurementMapping;
 import it.bz.idm.bdp.augeg4.fun.convert.MeasurementMappings;
 import it.bz.idm.bdp.dto.DataTypeDto;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 class DataTypeDelegate {
 
-    private static final Logger LOG = LogManager.getLogger(DataTypeDelegate.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataTypeDelegate.class.getName());
 
     private final DataService dataService;
 

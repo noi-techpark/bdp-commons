@@ -1,14 +1,14 @@
 package it.bz.idm.bdp.augeg4.dto.tohub;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.Objects;
 import java.util.Optional;
 
 public class StationId {
 
-    private static final Logger LOG = LogManager.getLogger(StationId.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(StationId.class.getName());
 
     private String prefix;
     private final String controlUnitId;

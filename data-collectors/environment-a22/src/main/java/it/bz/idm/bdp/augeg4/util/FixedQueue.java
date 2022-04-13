@@ -1,12 +1,12 @@
 package it.bz.idm.bdp.augeg4.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class FixedQueue<T> extends LinkedBlockingQueue<T> {
-    private static final Logger LOG = LogManager.getLogger(FixedQueue.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(FixedQueue.class.getName());
 
     int max;
 

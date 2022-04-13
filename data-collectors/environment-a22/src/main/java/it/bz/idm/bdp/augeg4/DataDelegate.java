@@ -14,15 +14,15 @@ import it.bz.idm.bdp.augeg4.fun.convert.tohub.DataConverterHub;
 import it.bz.idm.bdp.augeg4.fun.delinearize.DataDelinearizer;
 import it.bz.idm.bdp.augeg4.fun.process.DataProcessor;
 import it.bz.idm.bdp.augeg4.util.FixedQueue;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataDelegate {
 
-    private static final Logger LOG = LogManager.getLogger(DataDelegate.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataDelegate.class.getName());
 
     private static final int MAX_QUEUE_SIZE = 100000;
     private static boolean first_error_stack_logged = false;

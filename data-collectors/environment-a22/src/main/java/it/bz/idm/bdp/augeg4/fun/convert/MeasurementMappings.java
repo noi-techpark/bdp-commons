@@ -8,8 +8,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.csv.CSVRecord;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import it.bz.idm.bdp.augeg4.dto.MeasurementId;
 import it.bz.idm.bdp.augeg4.fun.utils.CsvUtils;
@@ -25,7 +25,7 @@ public class MeasurementMappings {
     private static final String COLUMN_TOPROCESS = "toProcess";
 
 
-    private static final Logger LOG = LogManager.getLogger(MeasurementMappings.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(MeasurementMappings.class.getName());
 
     private static final String MEASUREMENT_MAPPINGS_FILE_NAME = "/mappings/measurementMappings.csv";
 

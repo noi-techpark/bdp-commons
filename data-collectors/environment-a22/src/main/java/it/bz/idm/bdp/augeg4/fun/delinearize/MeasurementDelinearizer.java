@@ -3,8 +3,8 @@ package it.bz.idm.bdp.augeg4.fun.delinearize;
 import it.bz.idm.bdp.augeg4.dto.MeasurementId;
 import it.bz.idm.bdp.augeg4.dto.RawMeasurement;
 import it.bz.idm.bdp.augeg4.dto.fromauge.ElaboratedResVal;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class MeasurementDelinearizer {
-    private static final Logger LOG = LogManager.getLogger(MeasurementDelinearizer.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(MeasurementDelinearizer.class.getName());
 
     static final int LINEAR_FUNCTION_1_LINFUNCID = 1;
     static final int LINEAR_FUNCTION_2_LINFUNCID = 2;

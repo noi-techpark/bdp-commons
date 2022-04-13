@@ -6,8 +6,8 @@ import it.bz.idm.bdp.augeg4.dto.toauge.AugeG4ProcessedDataToAugeDto;
 import it.bz.idm.bdp.augeg4.face.DataPusherAugeFace;
 import it.bz.idm.bdp.augeg4.util.AugeMqttClient;
 import it.bz.idm.bdp.augeg4.util.AugeMqttConfiguration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class DataPusherAuge implements DataPusherAugeFace {
 
-    private static final Logger LOG = LogManager.getLogger(DataPusherAuge.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataPusherAuge.class.getName());
 
 
     private AugeMqttConfiguration augeMqttConfiguration;

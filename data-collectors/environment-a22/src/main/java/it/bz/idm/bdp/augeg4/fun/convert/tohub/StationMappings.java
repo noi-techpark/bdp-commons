@@ -2,8 +2,8 @@ package it.bz.idm.bdp.augeg4.fun.convert.tohub;
 
 import it.bz.idm.bdp.augeg4.fun.utils.CsvUtils;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class StationMappings {
     private static final String COLUMN_LATITUDE = "latitude";
     private static final String COLUMN_LONGITUDE = "longitude";
 
-    private static final Logger LOG = LogManager.getLogger(StationMappings.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(StationMappings.class.getName());
 
     private final Map<String, StationMapping> stationByControlUnitId = new HashMap<>();
 

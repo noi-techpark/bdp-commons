@@ -3,8 +3,8 @@ package it.bz.idm.bdp.augeg4.fun.process;
 import it.bz.idm.bdp.augeg4.dto.MeasurementId;
 import it.bz.idm.bdp.augeg4.fun.utils.CsvUtils;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class MeasurementProcessorParameters {
     private static final String COLUMN_MEASUREMENT_ID = "Inquinante";
     private static final String COLUMN_TEMPERATURE_LEVEL = "Temperatura";
 
-    private static final Logger LOG = LogManager.getLogger(MeasurementProcessorParameters.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(MeasurementProcessorParameters.class.getName());
     public static final double HIGH_TEMPERATURE_VALUE = 20.0;
     public static final String HIGH_TEMPERATURE_LABEL = "20";
 

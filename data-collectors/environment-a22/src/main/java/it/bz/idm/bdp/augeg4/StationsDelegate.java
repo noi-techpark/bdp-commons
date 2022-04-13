@@ -6,8 +6,8 @@ import it.bz.idm.bdp.augeg4.fun.convert.tohub.StationMapping;
 import it.bz.idm.bdp.augeg4.fun.convert.tohub.StationMappings;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ import static it.bz.idm.bdp.augeg4.fun.convert.tohub.DataConverterHub.PREFIX;
 
 class StationsDelegate {
 
-    private static final Logger LOG = LogManager.getLogger(StationsDelegate.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(StationsDelegate.class.getName());
 
     private final DataService dataService;
     private Map<StationId, StationDto> stationsMap = new ConcurrentHashMap<>();

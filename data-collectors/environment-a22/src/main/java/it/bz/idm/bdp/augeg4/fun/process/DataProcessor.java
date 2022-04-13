@@ -4,8 +4,8 @@ import it.bz.idm.bdp.augeg4.dto.AugeG4ProcessedData;
 import it.bz.idm.bdp.augeg4.dto.AugeG4RawData;
 import it.bz.idm.bdp.augeg4.dto.ProcessedMeasurement;
 import it.bz.idm.bdp.augeg4.face.DataProcessorFace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.Date;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class DataProcessor implements DataProcessorFace {
 
-    private static final Logger LOG = LogManager.getLogger(DataProcessor.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataProcessor.class.getName());
 
     private final MeasurementProcessor measurementProcessor = new MeasurementProcessor();
 

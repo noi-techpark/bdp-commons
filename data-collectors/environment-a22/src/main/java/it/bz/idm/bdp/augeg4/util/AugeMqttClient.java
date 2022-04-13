@@ -1,8 +1,8 @@
 package it.bz.idm.bdp.augeg4.util;
 
 import it.bz.idm.bdp.augeg4.fun.retrieve.AugeCallback;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -10,7 +10,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class AugeMqttClient {
 
-    private static final Logger LOG = LogManager.getLogger(AugeMqttClient.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(AugeMqttClient.class.getName());
 
     public static MqttClient build(AugeMqttConfiguration mqttConfiguration) throws MqttException {
         MqttClient client = buildMqttClient(mqttConfiguration);

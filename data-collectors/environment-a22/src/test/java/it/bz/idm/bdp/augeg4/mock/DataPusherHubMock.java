@@ -5,14 +5,14 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationList;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 public class DataPusherHubMock implements DataPusherHubFace {
 
-    private static final Logger LOG = LogManager.getLogger(DataPusherHubMock.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DataPusherHubMock.class.getName());
 
     private boolean pushed = false;
 
