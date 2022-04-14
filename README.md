@@ -13,22 +13,22 @@ Postgres DB.
 
 **Table of contents**
 - [Open Data Hub Mobility - Data Collectors](#open-data-hub-mobility---data-collectors)
-  - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Source code](#source-code)
-    - [Build](#build)
-    - [Running tests](#running-tests)
-    - [Test the code with Docker](#test-the-code-with-docker)
-    - [Execute without Docker](#execute-without-docker)
-  - [Write a new data collector](#write-a-new-data-collector)
-  - [Deploy a new data collector](#deploy-a-new-data-collector)
-  - [Update pom dependencies](#update-pom-dependencies)
-  - [Information](#information)
-    - [Support](#support)
-    - [Contributing](#contributing)
-    - [Documentation](#documentation)
-    - [License](#license)
-
+	- [Getting started](#getting-started)
+		- [Prerequisites](#prerequisites)
+		- [Source code](#source-code)
+		- [Build](#build)
+		- [Running tests](#running-tests)
+		- [Test the code with Docker](#test-the-code-with-docker)
+			- [VSCode: Start a debug session](#vscode-start-a-debug-session)
+		- [Execute without Docker](#execute-without-docker)
+	- [Write a new data collector](#write-a-new-data-collector)
+	- [Deploy a new data collector](#deploy-a-new-data-collector)
+	- [Update pom dependencies](#update-pom-dependencies)
+	- [Information](#information)
+		- [Support](#support)
+		- [Contributing](#contributing)
+		- [Documentation](#documentation)
+		- [License](#license)
 
 ## Getting started
 
@@ -99,6 +99,28 @@ Please note, if that command does not work it might be that the data collector
 was not configured to allow `mvn tomcat:run`. Please, refer to the `README.md`
 inside that folder for further details, and report the incidence to
 `help@opendatahub.bz.it`.
+
+#### VSCode: Start a debug session
+
+Copy this file to `.vsode/launch.json`:
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+		{
+			"type": "java",
+			"name": "Attach",
+			"request": "attach",
+			"hostName": "0.0.0.0",
+			"port": "9000",
+			"justMyCode": false
+		}
+    ]
+}
+```
+
+Run `docker-compose up -d` inside the data-collector folder of your choice, and
+then launch `Attach` from VSCode. You are now ready to set breakpoints and debug.
 
 ### Execute without Docker
 
@@ -171,12 +193,12 @@ MY_PARAM_2=${ENV_VAR_FOR_MY_PARAM_2:or-this-default-if-missing}
 
 ## Update pom dependencies
 
-To update a dependency in all data-collectors the quickversionbump scripts can be used.  
+To update a dependency in all data-collectors the quickversionbump scripts can be used.
 - quickversionbump.sh: update dc-interface
 - quickversionbump-generic.sh: update any dependency
-- quickversionbump-min.sh: update min version in properties, if dependency is not used but a 
-  minimal version is mandatory  
-  
+- quickversionbump-min.sh: update min version in properties, if dependency is not used but a
+  minimal version is mandatory
+
 Note: Read the comments in every script for further instructions
 
 

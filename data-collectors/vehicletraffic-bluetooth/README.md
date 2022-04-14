@@ -1,7 +1,6 @@
-Vehicletraffic-Bluetooth
-========================
+# Vehicle Traffic Bluetooth
 
-This datacollector is meant to be the endpoint for all bluetooth-boxes spread
+This data collector is meant to be the endpoint for all bluetooth-boxes spread
 through the city and along the "strada statale" in proximity of the A22 highway.
 It removes invalid records anonymizes the collected MAC-addresses, adds missing
 metadata information and forwards it to the writer module of bdp-core.
@@ -13,16 +12,34 @@ metadata information and forwards it to the writer module of bdp-core.
 - JDK 8
 
 ## Encryption
-All mac addresses send to this data collector are getting hashed with a secrect
+All mac addresses send to this data collector are getting hashed with a secret
 key (HMAC) to avoid persisting the MAC-addresse, which could result in a
 security/privacy issue. Don't forget to set your secret key for encryption or
 your data collector won't work.
+
+## Endpoints
+
+We have two paths currently, with a base at https://boxes.opendatahub.bz.it
+
+### /json
+Bluetooth boxes will connect to this endpoint, and push MAC addresses to it.
+
+- `GET getLastRecord` gets the latest record timestamp of the given `station-id`
+- `POST post` a list of `OddsRecordDto` from the `dc-interface/dto` package
+
+### /trigger
+This is the API hook for Google Spreadsheet to check for updates. Google will
+call us, if the spreadsheet content changes.
 
 ## Metadata through Google Spreadsheet
 The bluetooth boxes are missing some information like their actual position. To
 add this information a google spreadsheet was created which in case of changes
 triggers the update mechanism. This will retrieve all metadata of all stations
 in the spreadsheet associate it with the box and synchronize with odh.
+
+To open the spreadsheet, do:
+- get the `spreadsheetId` from `src/main/resources/META-INF/spring/application.properties`
+- go to: `https://docs.google.com/spreadsheets/d/[your-spreadsheet-id]`
 
 ### How does the spreadsheet work
 The spreadsheet must have these 3 columns: `id`, `longitude`, `latitude`
@@ -49,8 +66,12 @@ deploy it on a java application server of your choice.
 git clone git@github.com:noi-techpark/bdp-commons.git
 cd data-collectors/vehicletraffic-bluetooth/
 
-#set an encryption secret of your choice and change the other props if needed
+# set an encryption secret of your choice and change the other props if needed
 vim src/main/resources/META-INF/spring/application.properties
+
+# copy the client_secret.json file to src/main/resources/META-INF/spring
+# copy the StoredCredential file to src/main/resources/META-INF/credentials
+# (see https://developers.google.com/drive/api/guides for details)
 
 mvn package
 cp target/[app].war [TOMCAT_HOME]/webapps
