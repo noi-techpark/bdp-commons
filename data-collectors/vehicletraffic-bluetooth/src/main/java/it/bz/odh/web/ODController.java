@@ -108,7 +108,7 @@ public class ODController {
 			station.setOrigin(origin);
 			stationList.add(station);
 		}
-		pusher.syncStations(stationList);
+		pusher.syncStations(stationList, true, true);
 
 		List<DataTypeDto> dataTypes = new ArrayList<>();
 		DataTypeDto dataType = new DataTypeDto();

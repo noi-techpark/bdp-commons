@@ -88,7 +88,7 @@ public class TriggerController {
 				}
 				if (!stations.isEmpty()) {
 					logger.debug("Push data to odh");
-					pusher.syncStations(stations);
+					pusher.syncStations(stations, false, false);
 					logger.debug("Finished pushing to odh");
 				}
 			}
