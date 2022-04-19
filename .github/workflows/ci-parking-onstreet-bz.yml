@@ -43,6 +43,8 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
+          X_SERVER_PORT: 1001
+
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
@@ -121,6 +123,8 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
+          X_SERVER_PORT: 1001
+          
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
