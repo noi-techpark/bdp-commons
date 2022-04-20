@@ -1,19 +1,28 @@
 # Traffic events + roadworks Province BZ
 
-Application which takes traffic events and roadworks data from a web service provided by Province BZ, parses it and
-sends it to the opendatahub.
+Application which takes traffic events and roadworks data from a web service
+provided by Province BZ, parses it and sends it to the opendatahub.
 
-## Table of contents
+[![CI traffic-event-roadworks-bz](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traffic-event-roadworks-bz.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traffic-event-roadworks-bz.yml)
 
-- [Gettings started](#getting-started)
-- [Running tests](#running-tests)
-- [Deployment](#deployment)
-- [Information](#information)
+**Table of contents**
+- [Traffic events + roadworks Province BZ](#traffic-events--roadworks-province-bz)
+	- [Getting started](#getting-started)
+		- [Prerequisites](#prerequisites)
+		- [Source code](#source-code)
+		- [Build](#build)
+	- [Running tests](#running-tests)
+	- [Deployment](#deployment)
+	- [Information](#information)
+		- [Support](#support)
+		- [Contributing](#contributing)
+		- [Documentation](#documentation)
+		- [License](#license)
 
 ## Getting started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing
-purposes.
+These instructions will get you a copy of the project up and running on your
+local machine for development and testing purposes.
 
 ### Prerequisites
 
@@ -28,7 +37,7 @@ To build the project, the following prerequisites must be met:
 Get a copy of the repository:
 
 ```bash
-git clone git clone https://github.com/noi-techpark/bdp-commons
+git clone https://github.com/noi-techpark/bdp-commons
 ```
 
 Change directory:
@@ -60,15 +69,15 @@ This is a maven project and will produce a war that can be deployed in any j2ee 
 Steps:
 
 * optionally change the origin, the provenance, the integreen namespace and the uuid namespace in the file
-  src/main/resources/trafficevents_roadworks.properties. (or configure it within a CI tool)
+  src/main/resources/trafficevents_roadworks.properties
 
 ```
-origin=PROVINCE_BZ
+app.origin=PROVINCE_BZ
+app.provenance.name=this-data-collectors-name
+app.provenance.version=this-data-collectors-version
 integreenTypology=Events
 uuidNamescpace=61c5e315-bf03-407d-a029-4032be31273c
 ```
-
-* configure the log4j.properties file as desidered
 
 * create the war executing the following command
 
@@ -82,26 +91,20 @@ mvn clean package
 
 ### Support
 
-For support, please contact [info@opendatahub.bz.it](mailto:info@opendatahub.bz.it).
+For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
 
 ### Contributing
 
-If you'd like to contribute, please follow the following instructions:
-
-- Fork the repository.
-
-- Checkout a topic branch from the `development` branch.
-
-- Make sure the tests are passing.
-
-- Create a pull request against the `development` branch.
+If you'd like to contribute, please follow our [Getting
+Started](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Getting-started)
+instructions.
 
 ### Documentation
 
-More documentation can be found
-at [https://opendatahub.readthedocs.io/en/latest/index.html](https://opendatahub.readthedocs.io/en/latest/index.html).
+More documentation can be found at
+[https://docs.opendatahub.bz.it](https://docs.opendatahub.bz.it).
 
 ### License
 
-The code in this project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE Version 3 license. See
-the [LICENSE.md](LICENSE.md) file for more information.
+The code in this project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3 license. See the [LICENSE](LICENSE) file for more information.

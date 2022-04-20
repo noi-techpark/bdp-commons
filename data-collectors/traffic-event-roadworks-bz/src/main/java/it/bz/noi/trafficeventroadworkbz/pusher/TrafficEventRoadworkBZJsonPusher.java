@@ -5,10 +5,9 @@ import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 import it.bz.noi.trafficeventroadworkbz.configuration.TrafficEventRoadworkBZConfiguration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -16,13 +15,13 @@ import javax.annotation.PostConstruct;
 @Service
 public class TrafficEventRoadworkBZJsonPusher extends NonBlockingJSONPusher {
 
-    private static final Logger LOG = LogManager.getLogger(TrafficEventRoadworkBZJsonPusher.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TrafficEventRoadworkBZJsonPusher.class);
 
     private String integreenTypology;
     private String origin;
+	private String provenanceName;
+	private String provenanceVersion;
 
-    @Autowired
-    private Environment env;
     @Autowired
     protected TrafficEventRoadworkBZConfiguration configuration;
 
@@ -30,11 +29,14 @@ public class TrafficEventRoadworkBZJsonPusher extends NonBlockingJSONPusher {
         throw new IllegalStateException("it is used by who?");
     }
 
+    @Override
     @PostConstruct
     public void init() {
         LOG.info("start init");
         integreenTypology = configuration.getIntegreenTypology();
         origin = configuration.getOrigin();
+		provenanceName = configuration.getProvenanceName();
+		provenanceVersion = configuration.getProvenanceVersion();
         super.init();
         LOG.info("end init");
     }
@@ -46,6 +48,6 @@ public class TrafficEventRoadworkBZJsonPusher extends NonBlockingJSONPusher {
 
     @Override
     public ProvenanceDto defineProvenance() {
-        return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"), origin);
+        return new ProvenanceDto(null, provenanceName, provenanceVersion, origin);
     }
 }

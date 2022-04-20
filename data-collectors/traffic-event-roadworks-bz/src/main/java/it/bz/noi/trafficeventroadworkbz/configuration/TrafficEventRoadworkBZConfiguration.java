@@ -7,17 +7,23 @@ import org.springframework.context.annotation.PropertySource;
 import java.util.UUID;
 
 @Configuration
-@PropertySource("classpath:trafficeventsroadworks.properties")
+@PropertySource("classpath:META-INF/spring/application.properties")
 public class TrafficEventRoadworkBZConfiguration {
 
-    @Value( "${origin}" )
+    @Value( "${app.origin}" )
     private String origin;
+
+	@Value( "${app.provenance.name}" )
+    private String provenanceName;
+
+	@Value( "${app.provenance.version}" )
+    private String provenanceVersion;
 
     @Value("${integreenTypology}")
     private String integreenTypology;
 
-    @Value("${uuidNamescpace}")
-    private UUID uuidNamescpace;
+    @Value("${uuidNamespace}")
+    private UUID uuidNamespace;
 
     public String getOrigin() {
         return origin;
@@ -27,7 +33,15 @@ public class TrafficEventRoadworkBZConfiguration {
         return integreenTypology;
     }
 
-    public UUID getUuidNamescpace() {
-        return uuidNamescpace;
+    public UUID getUuidNamespace() {
+        return uuidNamespace;
     }
+
+	public String getProvenanceName() {
+		return provenanceName;
+	}
+
+	public String getProvenanceVersion() {
+		return provenanceVersion;
+	}
 }

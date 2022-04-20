@@ -5,8 +5,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.bz.noi.trafficeventroadworkbz.model.TrafficEventRoadworkBZModel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 public class TrafficEventRoadworkBZConnector {
 
-    private static final Logger LOG = LogManager.getLogger(TrafficEventRoadworkBZConnector.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TrafficEventRoadworkBZConnector.class);
 
     private static final String END_POINT_URL = "http://www.provinz.bz.it/vmz/traffic.json";
 
@@ -120,7 +120,6 @@ public class TrafficEventRoadworkBZConnector {
                 LOG.warn(e.getMessage(), e);
                 LOG.warn("---");
                 skipped++;
-                continue;
             }
 
         }
