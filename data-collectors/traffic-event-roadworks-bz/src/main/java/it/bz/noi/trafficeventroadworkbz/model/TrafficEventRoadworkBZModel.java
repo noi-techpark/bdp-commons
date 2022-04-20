@@ -1,6 +1,7 @@
 package it.bz.noi.trafficeventroadworkbz.model;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class TrafficEventRoadworkBZModel {
 
@@ -63,6 +64,13 @@ public class TrafficEventRoadworkBZModel {
         return beginDate;
     }
 
+	public long getBeginDateAsEpochMillis() {
+		return beginDate
+			.atStartOfDay(ZoneId.systemDefault())
+			.toInstant()
+			.toEpochMilli();
+	}
+
     public void setBeginDate(LocalDate beginDate) {
         this.beginDate = beginDate;
     }
@@ -70,6 +78,13 @@ public class TrafficEventRoadworkBZModel {
     public LocalDate getEndDate() {
         return endDate;
     }
+
+	public long getEndDateAsEpochMillis() {
+		return endDate
+			.atStartOfDay(ZoneId.systemDefault())
+			.toInstant()
+			.toEpochMilli();
+	}
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;

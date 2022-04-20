@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,9 +56,9 @@ public class MainTrafficEventRoadworkBZ {
                     eventDto.setWktGeometry(point.toText());
                 }
 
-                eventDto.setEventStart(trafficEventRoadwork.getBeginDate().toEpochDay()  * 1000);
+                eventDto.setEventStart(trafficEventRoadwork.getBeginDateAsEpochMillis());
                 if(trafficEventRoadwork.getEndDate() != null)
-                    eventDto.setEventEnd((trafficEventRoadwork.getEndDate().toEpochDay() + 1) * 1000);  // +1 because we exclude the upper bound --> [lower,upper)
+                    eventDto.setEventEnd(trafficEventRoadwork.getEndDateAsEpochMillis() + 1);  // +1 because we exclude the upper bound --> [lower,upper)
 
                 eventDto.getMetaData().put("json_featuretype", trafficEventRoadwork.getJson_featuretype());
                 eventDto.getMetaData().put("publisherDateTime", trafficEventRoadwork.getPublisherDateTime());
