@@ -10,7 +10,7 @@ env:
   WORKING_DIRECTORY: data-collectors/environment-a22
   PROJECT_NAME: odh-mobility-dc-environment-a22
   DOCKER_REGISTRY_HOST: ghcr.io
-  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/main
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-environment-a22
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
 
