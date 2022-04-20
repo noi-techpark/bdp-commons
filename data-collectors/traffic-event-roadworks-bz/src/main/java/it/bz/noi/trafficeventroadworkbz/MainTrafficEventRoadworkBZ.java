@@ -42,8 +42,9 @@ public class MainTrafficEventRoadworkBZ {
             for (TrafficEventRoadworkBZModel trafficEventRoadwork : trafficEventRoadworkList) {
                 EventDto eventDto = new EventDto();
 
-                eventDto.setUuid(generateUuid(trafficEventRoadwork));
-				eventDto.setEventSeriesUuid(generateSeriesUuid(trafficEventRoadwork));
+				Map<String, Object> uuidFields = getUuidFields(trafficEventRoadwork);
+                eventDto.setUuid(uuidFields);
+				eventDto.setEventSeriesUuid(uuidFields);
                 eventDto.setCategory(trafficEventRoadwork.getTycodeIt() + " | " + trafficEventRoadwork.getTycodeDe());
                 eventDto.setOrigin(configuration.getOrigin());
 				eventDto.setName(Long.toString(trafficEventRoadwork.getMessageId()));
@@ -99,7 +100,7 @@ public class MainTrafficEventRoadworkBZ {
         }
     }
 
-    private Map<String, Object> generateUuid(TrafficEventRoadworkBZModel trafficEventRoadwork) {
+    private Map<String, Object> getUuidFields(TrafficEventRoadworkBZModel trafficEventRoadwork) {
         HashMap<String, Object> uuidMap = new HashMap<>();
         uuidMap.put("beginDate", trafficEventRoadwork.getBeginDate());
         uuidMap.put("endDate", trafficEventRoadwork.getEndDate());
@@ -107,13 +108,6 @@ public class MainTrafficEventRoadworkBZ {
         uuidMap.put("messageTypeId", trafficEventRoadwork.getMessageTypeId());
         uuidMap.put("X", trafficEventRoadwork.getX());
         uuidMap.put("Y", trafficEventRoadwork.getY());
-		return uuidMap;
-    }
-
-	private Map<String, Object> generateSeriesUuid(TrafficEventRoadworkBZModel trafficEventRoadwork) {
-        HashMap<String, Object> uuidMap = new HashMap<>();
-        uuidMap.put("messageId", trafficEventRoadwork.getMessageId());
-        uuidMap.put("messageTypeId", trafficEventRoadwork.getMessageTypeId());
 		return uuidMap;
     }
 
