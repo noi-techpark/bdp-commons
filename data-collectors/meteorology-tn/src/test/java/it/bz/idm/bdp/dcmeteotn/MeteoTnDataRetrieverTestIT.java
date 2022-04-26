@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import it.bz.idm.bdp.dto.StationList;
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class MeteoTnDataRetrieverTestIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(MeteoTnDataRetrieverTestIT.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(MeteoTnDataRetrieverTestIT.class.getName());
 
     @Autowired
     private MeteoTnDataPusher pusher;

@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -15,7 +15,7 @@ import org.w3c.dom.NodeList;
 
 public class DCUtils {
 
-    private static final Logger LOG = LogManager.getLogger(DCUtils.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(DCUtils.class.getName());
 
     public static final String TRUE_VALUE = "1";
     public static final String FALSE_VALUE = "0";

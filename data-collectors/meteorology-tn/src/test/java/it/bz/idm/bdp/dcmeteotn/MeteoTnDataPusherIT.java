@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import it.bz.idm.bdp.dto.StationList;
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class MeteoTnDataPusherIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(MeteoTnDataPusherIT.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(MeteoTnDataPusherIT.class.getName());
 
     @Autowired
     private MeteoTnJobScheduler scheduler;
@@ -92,7 +92,7 @@ public class MeteoTnDataPusherIT extends AbstractJUnit4SpringContextTests {
     private void pushStations(List<MeteoTnDto> data, List<String> errors) {
         try {
             StationList stations = pusher.mapStations2Bdp(data);
-            LOG.debug(stations);
+            LOG.debug(stations.toString());
             if (stations != null) {
                 pusher.syncStations(stations);
             }
@@ -106,7 +106,7 @@ public class MeteoTnDataPusherIT extends AbstractJUnit4SpringContextTests {
 //            DataMapDto<RecordDtoImpl> stationRec = pusher.mapData(data);
 //            List<DataTypeDto> dataTypeList = pusher.mapDataTypes2Bdp_OLD(stationRec);
             List<DataTypeDto> dataTypeList = pusher.mapDataTypes2Bdp(data);
-            LOG.debug(dataTypeList);
+            LOG.debug(dataTypeList.toString());
             if (dataTypeList != null) {
                 pusher.syncDataTypes(dataTypeList);
             }

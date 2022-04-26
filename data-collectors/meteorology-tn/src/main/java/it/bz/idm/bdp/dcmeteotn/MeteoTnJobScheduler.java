@@ -3,8 +3,8 @@ package it.bz.idm.bdp.dcmeteotn;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -22,7 +22,7 @@ import it.bz.idm.bdp.dto.StationList;
 @Component
 public class MeteoTnJobScheduler {
 
-    private static final Logger LOG = LogManager.getLogger(MeteoTnJobScheduler.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(MeteoTnJobScheduler.class.getName());
 
     @Autowired
     private MeteoTnDataPusher pusher;
