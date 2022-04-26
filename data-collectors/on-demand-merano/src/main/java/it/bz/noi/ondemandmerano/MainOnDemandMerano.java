@@ -18,8 +18,8 @@ import it.bz.noi.ondemandmerano.pusher.ItineraryJSONPusher;
 import it.bz.noi.ondemandmerano.pusher.PolygonJSONPusher;
 import it.bz.noi.ondemandmerano.pusher.StopJSONPusher;
 import it.bz.noi.ondemandmerano.pusher.VehicleJSONPusher;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Component
 public class MainOnDemandMerano {
 
-    private static final Logger LOG = LogManager.getLogger(MainOnDemandMerano.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MainOnDemandMerano.class);
 
     @Autowired
     private OnDemandMeranoConnector onDemandMeranoConnector;
@@ -86,7 +86,7 @@ public class MainOnDemandMerano {
                 EventDto eventDto = new EventDto();
                 String uuidNode = Integer.toHexString(polygon.getId());
                 String uuid = onDemandMeranoConfiguration.getPolygonUuidPrefix() + "-" + String.join("", Collections.nCopies(12 - uuidNode.length(), "0")) + uuidNode;
-                eventDto.setId(UUID.fromString(uuid).toString());
+                eventDto.setUuid(UUID.fromString(uuid).toString());
                 eventDto.setDescription(polygon.getName());
                 eventDto.setOrigin(onDemandMeranoConfiguration.getOrigin());
                 eventDto.setCategory(onDemandMeranoConfiguration.getPolygonsCategory());

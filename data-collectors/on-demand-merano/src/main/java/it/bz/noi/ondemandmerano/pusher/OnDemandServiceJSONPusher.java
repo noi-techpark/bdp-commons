@@ -5,8 +5,8 @@ import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 import it.bz.noi.ondemandmerano.configuration.OnDemandMeranoConfiguration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 
 public abstract class OnDemandServiceJSONPusher extends NonBlockingJSONPusher {
 
-    private static final Logger LOG = LogManager.getLogger(OnDemandServiceJSONPusher.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OnDemandServiceJSONPusher.class);
 
     protected String origin;
 
