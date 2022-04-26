@@ -24,8 +24,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -50,7 +50,7 @@ import it.bz.idm.bdp.dto.StationDto;
 @PropertySource({ "classpath:/META-INF/spring/application.properties", "classpath:/META-INF/spring/types.properties" })
 public class MeteorologyBzDataRetriever {
 
-    private static final Logger LOG = LogManager.getLogger(MeteorologyBzDataRetriever.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(MeteorologyBzDataRetriever.class.getName());
 
     @Autowired
     private Environment env;

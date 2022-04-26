@@ -4,8 +4,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
 public class MeteorologyBzDataRetrieverIT extends AbstractJUnit4SpringContextTests {
 
-    private static final Logger LOG = LogManager.getLogger(MeteorologyBzDataRetrieverIT.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(MeteorologyBzDataRetrieverIT.class.getName());
 
     @Autowired
     private MeteorologyBzDataRetriever reader;

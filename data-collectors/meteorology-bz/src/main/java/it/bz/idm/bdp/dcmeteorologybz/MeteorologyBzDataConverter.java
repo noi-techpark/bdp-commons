@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import it.bz.idm.bdp.dto.StationDto;
 @Service
 public class MeteorologyBzDataConverter {
 
-    private static final Logger LOG = LogManager.getLogger(MeteorologyBzDataConverter.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(MeteorologyBzDataConverter.class.getName());
 
     public static final long   MILLIS_ONE_DAY            = 24 * 60 * 60 * 1000;
 
