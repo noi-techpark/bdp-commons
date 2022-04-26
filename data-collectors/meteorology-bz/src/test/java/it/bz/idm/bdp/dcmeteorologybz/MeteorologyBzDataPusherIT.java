@@ -100,7 +100,7 @@ public class MeteorologyBzDataPusherIT extends AbstractJUnit4SpringContextTests 
     private void pushStations(List<MeteorologyBzDto> data, List<String> errors) {
         try {
             StationList stations = pusher.mapStations2Bdp(data);
-            LOG.debug(stations);
+            LOG.debug(stations.toString());
             if (stations != null) {
                 pusher.syncStations(stations);
             }
@@ -112,7 +112,7 @@ public class MeteorologyBzDataPusherIT extends AbstractJUnit4SpringContextTests 
     private void pushDataTypes(List<DataTypeDto> dataTypes, List<String> errors) {
         try {
             List<DataTypeDto> dataTypeList = dataTypes;
-            LOG.debug(dataTypeList);
+            LOG.debug(dataTypeList.toString());
             if (dataTypeList != null) {
                 pusher.syncDataTypes(dataTypeList);
             }
