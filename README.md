@@ -185,15 +185,16 @@ Guidelines](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines
 
 ### Deploy a new data collector
 
-- Go to `.github/workflows`
-- Copy/paste `ci-helloworld.yml` to `ci-your-new-datacollector.yml`
-- Inside, change all `helloworld` to `your-new-datacollector`
+- Copy `data-collectors/helloworld/ci-helloworld.yml` to `.github/workflows/ci-your-new-datacollector.yml`
+- Inside that file, replace all `helloworld` with `your-new-datacollector`
 - Go to `data-collectors/your-new-datacollector`
 - Check which docker servers have the least load recently, and choose them for
   testing and production inside the `infrastructure/ansible/hosts` file
 - If you need to inject credentials:
-  -  go to [Github Actions Secrets](https://github.com/noi-techpark/bdp-commons/settings/secrets/actions)
-  - Create new credentials with keys in uppercase letters, prefixed with the data collector name, if they are used only their, or with a generic meaningful name, if you use them in more collectors
+  - go to [Github Actions Secrets](https://github.com/noi-techpark/bdp-commons/settings/secrets/actions)
+  - create new credentials with keys in uppercase letters
+    - either, prefixed with the data collector name, if they are used only their
+    - or with a generic meaningful names, if you use them in more collectors
   - inject them in your Github Action Yaml like `${{ secrets.HELLOWORLD_SECRET_1 }}`
 
 ### Update pom dependencies
