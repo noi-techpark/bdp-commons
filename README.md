@@ -11,19 +11,23 @@ finally send it to the [Big Data Platform
 writer](https://github.com/noi-techpark/bdp-core), which stores it inside a
 Postgres DB.
 
+We use [Keycloak](https://www.keycloak.org/) for authentication against the
+[Open Data Hub](https://opendatahub.bz.it/) writer API.
+
 **Table of contents**
 - [Open Data Hub Mobility - Data Collectors](#open-data-hub-mobility---data-collectors)
 	- [Getting started](#getting-started)
 		- [Prerequisites](#prerequisites)
 		- [Source code](#source-code)
 		- [Build](#build)
-		- [Running tests](#running-tests)
-		- [Test the code with Docker](#test-the-code-with-docker)
+		- [Run tests](#run-tests)
+		- [Development with Docker](#development-with-docker)
 			- [VSCode: Start a debug session](#vscode-start-a-debug-session)
-		- [Execute without Docker](#execute-without-docker)
-	- [Write a new data collector](#write-a-new-data-collector)
-	- [Deploy a new data collector](#deploy-a-new-data-collector)
-	- [Update pom dependencies](#update-pom-dependencies)
+		- [Develop natively](#develop-natively)
+		- [Credentials needed?](#credentials-needed)
+	- [Instructions for Maintainers](#instructions-for-maintainers)
+		- [Deploy a new data collector](#deploy-a-new-data-collector)
+		- [Update pom dependencies](#update-pom-dependencies)
 	- [Information](#information)
 		- [Support](#support)
 		- [Contributing](#contributing)
@@ -34,9 +38,7 @@ Postgres DB.
 
 These instructions will get you a copy of the project up and running on your
 local machine for development and testing purposes. These are *just general
-guidelines*, for specific details, refer to the `README.md` file in each folder,
-or if missing, get an idea of how it works from the
-`infrastructure/Jenkinsfile*` files.
+guidelines*, for specific details, refer to the `README.md` file in each folder.
 
 ### Prerequisites
 
@@ -78,7 +80,7 @@ Build the project:
 mvn clean package
 ```
 
-### Running tests
+### Run tests
 
 The unit tests can be executed with the following command:
 
@@ -86,19 +88,15 @@ The unit tests can be executed with the following command:
 mvn clean test
 ```
 
-### Test the code with Docker
+### Development with Docker
 
 - Inside the corresponding data collector folder, copy `.env.example` to `.env`
   and configure it
-- Change to the root of this repository
-- Copy `.env.example` to `.env` and configure it
 - Run `docker-compose up -d`
 - You can follow the output with `docker-compose logs -f`
 
-Please note, if that command does not work it might be that the data collector
-was not configured to allow `mvn tomcat:run`. Please, refer to the `README.md`
-inside that folder for further details, and report the incidence to
-`help@opendatahub.bz.it`.
+Please, refer to the `README.md` inside that folder for further details, and
+report any incidence to `help@opendatahub.bz.it`.
 
 #### VSCode: Start a debug session
 
@@ -122,12 +120,29 @@ Copy this file to `.vsode/launch.json`:
 Run `docker-compose up -d` inside the data-collector folder of your choice, and
 then launch `Attach` from VSCode. You are now ready to set breakpoints and debug.
 
-### Execute without Docker
+### Develop natively
 
 Change directory into the data collector you want.
 
 You can set the parameters directly as environmental variables (see
-`.env.example`) and run ), as follows:
+`.env.example`) and start it, as follows:
+
+1) Newer data collectors are Spring Boot applications
+
+```bash
+mvn spring-boot:run
+```
+
+...or, if you want to use your personalized Spring profile:
+
+```bash
+cd data-collectors/[your-collector]
+cp src/main/resources/application.properties src/main/resources/application-local.properties
+# Now open src/main/resources/application-local.properties and modify values as you like
+mvn -D spring.profiles.active=local spring-boot:run
+```
+
+2) Older data collectors are Spring applications with an additional tomcat maven plugin:
 
 ```bash
 mvn tomcat:run \
@@ -143,55 +158,45 @@ corresponding `README.md` for details), and run:
 mvn tomcat:run
 ```
 
-Credentials needed? See
-[here](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Credentials).
-
-## Write a new data collector
-
-If you want to write a new Data Collector, mimic the code present in this
-repository and follow our [Contributing](#contributing) guidelines.
-
-One detail, which is also present in the guidelines, but very important, make
-sure your data collector can be configured with environmental variables. That
-is, `.properties` files must allow injection of ENV VARS as follows:
+### Credentials needed?
+You do not need special credentials for local development. Use the following
+Keycloak OAuth parameters inside `application.properties` to get started
+immediately (some data collectors have them already as defaults):
 
 ```ini
-MY_PARAM_1=${ENV_VAR_FOR_MY_PARAM_1}
-MY_PARAM_2=${ENV_VAR_FOR_MY_PARAM_2:or-this-default-if-missing}
+authorizationUri=https://auth.opendatahub.testingmachine.eu/auth
+tokenUri=https://auth.opendatahub.testingmachine.eu/auth/realms/noi/protocol/openid-connect/token
+BASE_URI=http://localhost:8999/json
+clientId=odh-mobility-datacollector-development
+clientName=odh-mobility-datacollector-development
+clientSecret=7bd46f8f-c296-416d-a13d-dc81e68d0830
+scope=openid
 ```
 
-## Deploy a new data collector
+Or, find the corresponding variable names inside the specific `.env` files of
+each data collector, if you develop with docker. Unfortunately, these were not
+standardized in the past.
 
-- Copy `skeleton/infrastructure` to the data collector folder
-  - Complete the `Jenkinsfile-Test.groovy` and `Jenkinsfile-Prod.groovy` where the
-    `PROJECT` variable must be set to the folder name
-  - Check which docker servers have the least load recently, and choose them for
-    testing and production inside the `infrastructure/ansible/hosts` file
-- Go to
-  [AWS/ECR](https://eu-west-1.console.aws.amazon.com/ecr/create-repository?region=eu-west-1)
-  and create a new repository called like the value of `PROJECT`
-- Push all new files to a new branch for testing purposes
-- Go to our [Jenkins CD server/Data Collectors
-  folder](https://jenkins.testingmachine.eu/job/it.bz.opendatahub.bigdataplatform/job/data-collectors/)
-- Create two new items there:
-  - Staging pipeline: item name = value of `PROJECT` ; choose "Copy from" and type
-    `bike-chargers` for instance
-  - Production pipeline: item name = `PROJECT` + `.prod` ; choose "Copy from" and type
-    `bike-chargers.prod` for instance
-  - For both of them:
-    - Set your test branch you've created before, for example
-      `*/pm-bike-chargers-cd`. You need to change this afterward your initial
-      tests to `*/development` inside your staging pipeline, and to `*/master`
-      inside your production pipeline.
-    - Adapt the "Script path"
-- If you need to inject credentials, go to [Jenkins CD server/Big Data Platform
-  folder](https://jenkins.testingmachine.eu/job/it.bz.opendatahub.bigdataplatform)
-- Create new Credentials under "Credentials>Folder>Global credentials". You can
-  inject them in your Jenkinsfiles with `credentials('your-credential-id')`.
-  Please try to always use secret texts, not files or there like (if possible).
+If you want to test it on our infrastructure directly, please read about
+[Credentials in our Contributor
+Guidelines](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Credentials).
 
+## Instructions for Maintainers
 
-## Update pom dependencies
+### Deploy a new data collector
+
+- Go to `.github/workflows`
+- Copy/paste `ci-helloworld.yml` to `ci-your-new-datacollector.yml`
+- Inside, change all `helloworld` to `your-new-datacollector`
+- Go to `data-collectors/your-new-datacollector`
+- Check which docker servers have the least load recently, and choose them for
+  testing and production inside the `infrastructure/ansible/hosts` file
+- If you need to inject credentials:
+  -  go to [Github Actions Secrets](https://github.com/noi-techpark/bdp-commons/settings/secrets/actions)
+  - Create new credentials with keys in uppercase letters, prefixed with the data collector name, if they are used only their, or with a generic meaningful name, if you use them in more collectors
+  - inject them in your Github Action Yaml like `${{ secrets.HELLOWORLD_SECRET_1 }}`
+
+### Update pom dependencies
 
 To update a dependency in all data-collectors the quickversionbump scripts can be used.
 - quickversionbump.sh: update dc-interface
@@ -210,9 +215,20 @@ For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.
 
 ### Contributing
 
-If you'd like to contribute, please follow our [Getting
-Started](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Getting-started)
-instructions.
+If you want to write a new Data Collector:
+1) Read and follow our [Getting Started] guidelines
+2) Copy/paste the [helloworld](data-collectors/helloworld/) example in a new folder under `data-collectors`, choose the name of your data collector for that folder
+3) Find `TODO` comments and follow their instructions
+4) See and alter code inside `SyncScheduler.java`
+5) Start the writer API locally and test everything:
+   - [Writer API with Docker](https://github.com/noi-techpark/bdp-core#getting-started-with-docker)
+   - Start your data collector
+   - Check log outputs of the writer and the data collector to find issues
+   - Connect to the DB, and see what is their after some tests
+6) Create a pull request as described in the guidelines above
+
+[Getting Started]:
+    https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Getting-started
 
 ### Documentation
 
@@ -222,4 +238,6 @@ More documentation can be found at
 ### License
 
 The code in this project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE
-Version 3 license. See the [LICENSE](LICENSE) file for more information.
+Version 3 license.
+
+See the [LICENSE](LICENSE) file for more information.
