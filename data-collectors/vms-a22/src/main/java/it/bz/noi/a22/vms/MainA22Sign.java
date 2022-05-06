@@ -113,33 +113,28 @@ public class MainA22Sign {
 							List<HashMap<String, Object>> components_pages = (ArrayList<HashMap<String, Object>>) event.get("component");
 							for (HashMap<String, Object> component_page : components_pages) {
 								String component_id = (String) component_page.get("component_id");
-								String data = (String) component_page.get("data");
-								String status = (String) component_page.get("status");
-
 								String virtualStationId = road + ":" + sign_id + ":" + component_id;
 
 								// esposizione
-
+								String normalizedEsposizione = normalizeData(component_page.get("data").toString());
 								SimpleRecordDto esposizione = esposizioneByComponentId.get(component_id);
-								// 2019-06-26 d@vide.bz: replace multiple spaces with one space
-								String normalizedData = data.replaceAll("\\s+", " ");
 								if (esposizione == null) {
-									esposizione = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, normalizedData, 1);
+									esposizione = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, normalizedEsposizione, 1);
 									esposizioniDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.esposizione.key"), esposizione);
 									esposizioneByComponentId.put(component_id, esposizione);
-								} else if (!esposizione.getValue().toString().trim().equals(normalizedData.trim())) {
-									esposizione.setValue(esposizione.getValue() + "|" + normalizedData);
+								} else {
+									concatenateValues(esposizione, normalizedEsposizione);
 								}
 
 								// stato
-
+								String normalizedStato = normalizeData(component_page.get("status").toString());
 								SimpleRecordDto stato = statoByComponentId.get(component_id);
 								if (stato == null) {
-									stato = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, status, 1);
+									stato = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, normalizedStato, 1);
 									statoDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.stato.key"), stato);
 									statoByComponentId.put(component_id, stato);
-								} else if (!stato.getValue().toString().trim().equals(status.trim())) {
-									stato.setValue(stato.getValue() + "|" + status);
+								} else  {
+									concatenateValues(stato, normalizedStato);
 								}
 
 								// check when virtualStation alredy exists
@@ -183,6 +178,32 @@ public class MainA22Sign {
 		} finally {
 			long stopTime = System.currentTimeMillis();
 			LOG.debug("elaboration time (millis): " + (stopTime - startTime));
+		}
+	}
+
+	private static String normalizeData(String data) {
+		// Remove leading and trailing whitespace characters
+		String normalizedData = data.trim();
+		// 2019-06-26 d@vide.bz: replace multiple internal spaces with one space
+		normalizedData = normalizedData.replaceAll("\\s+", " ");
+		// We need to store also "empty" data cells, to avoid gaps in time series
+		if (normalizedData.isEmpty())
+			return " ";
+		return normalizedData;
+	}
+
+	public static void concatenateValues(SimpleRecordDto rec, String newValue) {
+		String cleanValue = normalizeData(rec.getValue().toString());
+		newValue = normalizeData(newValue);
+
+		LOG.debug("concatenateValues: ->" + cleanValue + "----" + newValue + "<-");
+
+		if (cleanValue.equals(newValue) || newValue.equals(" "))
+			return;
+		if (cleanValue.equals(" ")) {
+			rec.setValue(newValue);
+		} else {
+			rec.setValue(cleanValue + "|" + newValue);
 		}
 	}
 

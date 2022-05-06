@@ -17,8 +17,7 @@ public class StreetSignalsImporter {
     public List<Object> getStreetCodes() throws IOException{
         List<Object> inputList = new ArrayList<>();
         InputStream stream = getClass().getResourceAsStream("streetcodes.csv");
-        BufferedReader br = null;
-        br = new BufferedReader(new InputStreamReader(stream));
+        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
         inputList = br.lines().map(mapperFunction).collect(Collectors.toList());
         br.close();
         return inputList;
