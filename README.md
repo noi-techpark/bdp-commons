@@ -193,7 +193,7 @@ Guidelines](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines
 - If you need to inject credentials:
   - go to [Github Actions Secrets](https://github.com/noi-techpark/bdp-commons/settings/secrets/actions)
   - create new credentials with keys in uppercase letters
-    - either, prefixed with the data collector name, if they are used only their
+    - either, prefixed with the data collector name, if they are used only there
     - or with a generic meaningful names, if you use them in more collectors
   - inject them in your Github Action Yaml like `${{ secrets.HELLOWORLD_SECRET_1 }}`
 
