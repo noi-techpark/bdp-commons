@@ -31,7 +31,7 @@ class StationsDelegate {
 
 
     void loadPreviouslySyncedStations() throws Exception {
-        LOG.info("loadPreviouslySyncedStations() called");
+        LOG.debug("loadPreviouslySyncedStations() called");
         try {
             StationList stations = dataService.getDataPusherHub().getSyncedStations();
             stations.forEach(this::insertStationInMapIfNew);
@@ -56,7 +56,7 @@ class StationsDelegate {
 
 
     void syncStationsWithHub() {
-        LOG.info("syncStations() called");
+        LOG.debug("syncStations() called");
         try {
             StationList stationList = dequeueStations();
             dataService.getDataPusherHub().syncStations(stationList);
@@ -69,13 +69,12 @@ class StationsDelegate {
 
     private StationList dequeueStations() {
         Map<StationId, StationDto> oldStationsMap = this.stationsMap;
-        //this.stationsMap = new ConcurrentHashMap<>(); //this may be removed
         return new StationList(oldStationsMap.values());
     }
 
 
     void prepareStationsForHub(List<AugeG4ProcessedDataToHubDto> data) {
-        LOG.info("prepareStationsForHub() called. Try to insert a new station if new. Size ["+data.size()+"]");
+        LOG.debug("prepareStationsForHub() called. Try to insert a new station if new. Size ["+data.size()+"]");
         data.forEach(this::insertStationFromConvertedData);
     }
 

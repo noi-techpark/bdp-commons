@@ -36,7 +36,7 @@ public class JobScheduler {
             DataPusherHub pusherHub,
             ConnectorConfig config
     ) {
-        //LOG.info("mqtt push pass:"+config.mqtt_publisher_password);
+		LOG.info("mqtt push pass: *****");
         LOG.info("mqtt push user:"+config.mqtt_publisher_username);
         LOG.info("mqtt push client:"+config.mqtt_publisher_clientid);
         LOG.info("mqtt push port:"+config.mqtt_publisher_port);
@@ -53,7 +53,7 @@ public class JobScheduler {
      */
     @PostConstruct
     public void onDeploy() {
-        LOG.info("onDeploy() called");
+        LOG.debug("onDeploy() called");
         DataPusherAuge pusherAuge = new DataPusherAuge(AugeMqttConfiguration.buildMqttPublisherConfiguration(config));
         dataService = new DataService(retriever, pusherHub, pusherAuge);
     }
@@ -63,7 +63,7 @@ public class JobScheduler {
      * JOB 1
      */
     public void pushDataTypes() throws Exception {
-        LOG.info("pushDataTypes() called.");
+        LOG.debug("pushDataTypes() called.");
         dataService.syncDataTypes();
     }
 
@@ -72,7 +72,7 @@ public class JobScheduler {
      * JOB 2
      */
     public void pushStations() throws Exception {
-        LOG.info("pushStations() called");
+        LOG.debug("pushStations() called");
         dataService.loadPreviouslySyncedStations();
         dataService.syncStations();
     }
@@ -82,7 +82,7 @@ public class JobScheduler {
      * JOB 3
      */
     public void pushData() throws Exception {
-        LOG.info("pushData() called.");
+        LOG.debug("pushData() called.");
         dataService.pushData();
     }
 

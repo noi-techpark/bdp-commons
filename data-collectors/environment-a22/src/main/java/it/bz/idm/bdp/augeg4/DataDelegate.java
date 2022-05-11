@@ -52,7 +52,7 @@ public class DataDelegate {
      * - prepares the data for push to HUB
      */
     void fetchData() {
-        LOG.info("fetchData() called.");
+        LOG.debug("fetchData() called.");
         try {
             List<AugeG4ElaboratedDataDto> elaboratedData = dataService.getDataRetriever().fetchData();
             if (elaboratedData.isEmpty()) {
@@ -104,7 +104,7 @@ public class DataDelegate {
     }
 
     private void pushDataToHub() {
-        LOG.info("pushDataToHub() called.");
+        LOG.debug("pushDataToHub() called.");
         try {
             List<AugeG4ProcessedDataToHubDto> data = dequeueProcessedDataToHub();
             if (data.isEmpty()) {
@@ -120,14 +120,14 @@ public class DataDelegate {
     }
 
     private List<AugeG4ProcessedDataToHubDto> dequeueProcessedDataToHub() {
-        LOG.info("dequeueProcessedDataToHub() called.");
+        LOG.debug("dequeueProcessedDataToHub() called.");
         List<AugeG4ProcessedDataToHubDto> list = new ArrayList<>();
         queuedDataToHub.drainTo(list);
         return list;
     }
 
     private void pushDataToAuge() {
-        LOG.info("pushDataToAuge() called.");
+        LOG.debug("pushDataToAuge() called.");
         try {
             List<AugeG4ProcessedDataToAugeDto> data = dequeueProcessedDataToAuge();
             if (data.isEmpty()) {
@@ -146,7 +146,7 @@ public class DataDelegate {
     }
 
     private List<AugeG4ProcessedDataToAugeDto> dequeueProcessedDataToAuge() {
-        LOG.info("dequeueProcessedDataToAuge() called.");
+        LOG.debug("dequeueProcessedDataToAuge() called.");
         List<AugeG4ProcessedDataToAugeDto> list = new ArrayList<AugeG4ProcessedDataToAugeDto>();
         queuedDataToAuge.drainTo(list);
         return list;

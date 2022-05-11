@@ -25,7 +25,7 @@ class DataTypeDelegate {
      * @throws Exception
      */
     void syncDataTypes() {
-        LOG.info("syncDataTypes() called.");
+        LOG.debug("syncDataTypes() called.");
         try {
             dataService.getDataPusherHub().syncDataTypes(getDataTypeList());
         } catch (Exception e) {
