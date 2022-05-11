@@ -15,7 +15,6 @@ import javax.annotation.PostConstruct;
 
 /**
  * Cronjob configuration can be found under src/main/resources/META-INF/spring/applicationContext.xml
- * XXX Do not forget to configure it!
  */
 @Component
 @PropertySource({"classpath:/META-INF/spring/application.properties"})
@@ -37,7 +36,7 @@ public class JobScheduler {
             DataPusherHub pusherHub,
             ConnectorConfig config
     ) {
-        LOG.info("mqtt push pass:"+config.mqtt_publisher_password);
+        //LOG.info("mqtt push pass:"+config.mqtt_publisher_password);
         LOG.info("mqtt push user:"+config.mqtt_publisher_username);
         LOG.info("mqtt push client:"+config.mqtt_publisher_clientid);
         LOG.info("mqtt push port:"+config.mqtt_publisher_port);
@@ -53,7 +52,7 @@ public class JobScheduler {
      * Called when the data collector has been deployed
      */
     @PostConstruct
-    public void onDeploy() throws Exception {
+    public void onDeploy() {
         LOG.info("onDeploy() called");
         DataPusherAuge pusherAuge = new DataPusherAuge(AugeMqttConfiguration.buildMqttPublisherConfiguration(config));
         dataService = new DataService(retriever, pusherHub, pusherAuge);
