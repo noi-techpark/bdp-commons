@@ -144,13 +144,7 @@ public class CSVHandler {
 	}
 
 	private InputStream getResourceAsInputStream(String path) {
-		File resource = new File(path);
-		try {
-			return new FileInputStream(resource);
-		} catch (FileNotFoundException e) {
-			LOG.error("File not found: " + path);
-		}
-		return null;
+		return CSVHandler.class.getResourceAsStream(path);
 	}
 
 	/**
