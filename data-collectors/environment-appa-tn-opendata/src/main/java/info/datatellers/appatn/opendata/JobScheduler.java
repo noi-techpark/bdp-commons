@@ -31,7 +31,7 @@ public class JobScheduler {
     private static final Logger LOG = LoggerFactory.getLogger(JobScheduler.class.getName());
     static double numberOfRecords = 0;
     static double numberOfInvalidRecord = 0;
-    
+
     @Autowired
 	private DataPusher dataPusher;
 
