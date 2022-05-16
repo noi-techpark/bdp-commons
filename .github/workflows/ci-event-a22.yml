@@ -29,11 +29,11 @@ jobs:
           test-command: 'mvn -B -U clean test'
 
   # Deploy Test
-  deploy-test-a22-event:
+  deploy-test-event-a22:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
     needs: test
-    concurrency: deploy-test-a22-event
+    concurrency: deploy-test-event-a22
     env:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
