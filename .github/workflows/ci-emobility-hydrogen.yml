@@ -10,7 +10,7 @@ env:
   WORKING_DIRECTORY: data-collectors/emobility-hydrogen
   PROJECT_NAME: odh-mobility-dc-emobility-hydrogen
   DOCKER_REGISTRY_HOST: ghcr.io
-  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/main
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-emobility-hydrogen
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
   ACCESS_TOKEN: ${{ secrets.EMOBILITY_HYDROGEN_ACCESS_TOKEN }}
@@ -46,7 +46,7 @@ jobs:
         env:
           # Data Collector config
           X_TOKEN_PARAMETER: ${{ env.ACCESS_TOKEN }}
-          
+
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
