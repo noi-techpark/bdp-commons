@@ -42,7 +42,7 @@ jobs:
         uses: noi-techpark/github-actions/env-file@v2
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
-        env:          
+        env:
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
@@ -65,7 +65,7 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Scheduler
-          X_SCHEDULER_CRON_EXECUTE: 0 */10 * * * ?
+          X_SCHEDULER_CRON_EXECUTE: 0 */10 * * * *
           X_SCHEDULER_POOL_SIZE: 10
 
       - name: Configure a22connector.properties
@@ -138,7 +138,7 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Scheduler
-          X_SCHEDULER_CRON_EXECUTE: 0 */10 * * * ?
+          X_SCHEDULER_CRON_EXECUTE: 0 */10 * * * *
           X_SCHEDULER_POOL_SIZE: 10
 
       - name: Configure a22connector.properties
