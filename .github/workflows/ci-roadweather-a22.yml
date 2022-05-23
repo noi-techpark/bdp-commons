@@ -58,6 +58,10 @@ jobs:
           X_scope: openid
           X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
+          X_A22_URL: ${{ secrets.ROADWEATHER_A22_URL }}
+          X_A22_USER: BT3
+          X_A22_PASSWORD: ${{ secrets.A22_BT3_PWD }}
+
           # Logging
           X_LOG_LEVEL: info
           X_LOG_STYLE: json
@@ -67,12 +71,6 @@ jobs:
           # Scheduler
           X_SCHEDULER_CRON_EXECUTE: 0 */10 * * * *
           X_SCHEDULER_POOL_SIZE: 10
-
-      - name: Configure a22connector.properties
-        run: |
-          sed -i -e "s%\${A22_URL}%${{ secrets.ROADWEATHER_A22_URL }}%g" data-collectors/roadweather-a22/src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties
-          sed -i -e "s%\${A22_USER}%${{ secrets.ROADWEATHER_A22_USER }}%g" data-collectors/roadweather-a22/src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties
-          sed -i -e "s%\${A22_PASSWORD}%${{ secrets.ROADWEATHER_A22_PASSWORD }}%g" data-collectors/roadweather-a22/src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -131,6 +129,10 @@ jobs:
           X_scope: openid
           X_BASE_URI: https://mobility.share.opendatahub.bz.it/json
 
+          X_A22_URL: ${{ secrets.ROADWEATHER_A22_URL }}
+          X_A22_USER: BN3
+          X_A22_PASSWORD: ${{ secrets.A22_BN3_PWD }}
+
           # Logging
           X_LOG_LEVEL: "info"
           X_LOG_STYLE: json
@@ -140,13 +142,6 @@ jobs:
           # Scheduler
           X_SCHEDULER_CRON_EXECUTE: 0 */10 * * * *
           X_SCHEDULER_POOL_SIZE: 10
-
-      - name: Configure a22connector.properties
-        run: |
-          sed -i -e "s%\${A22_URL}%${{ secrets.ROADWEATHER_A22_URL }}%g" data-collectors/roadweather-a22/src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties
-          sed -i -e "s%\${A22_USER}%${{ secrets.ROADWEATHER_A22_USER }}%g" data-collectors/roadweather-a22/src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties
-          sed -i -e "s%\${A22_PASSWORD}%${{ secrets.ROADWEATHER_A22_PASSWORD }}%g" data-collectors/roadweather-a22/src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties
-
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
