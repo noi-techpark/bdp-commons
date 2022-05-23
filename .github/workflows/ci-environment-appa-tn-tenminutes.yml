@@ -27,6 +27,8 @@ jobs:
           working-directory: ${{ env.WORKING_DIRECTORY }}
           test-command: 'mvn -B -U clean compile test'
 
+# Source API currently in stand-by, so deploy is disabled
+
 # Deploy Test
   # deploy-test-environment-appa-tn-tenminutes:
   #   runs-on: ubuntu-20.04
