@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -34,6 +35,15 @@ public class MainA22Roadweather{
     private A22RoadweatherJSONPusher pusher;
     private List<String> datatypeKeys;
     private StationList stationList;
+
+	@Value("${url}")
+	private String url;
+
+	@Value("${user}")
+	private String user;
+
+	@Value("${password}")
+	private String password;
 
     public MainA22Roadweather() {
         this.datatypesProperties = new A22Properties("a22roadweatherdatatypes.properties");
@@ -120,7 +130,7 @@ public class MainA22Roadweather{
                             weatherdata_list.forEach(weatherdata -> {
                                 datatypeKeys.forEach(cname -> {
                                     if (!weatherdata.get(cname).equals("null")) {
-                                    	stationMap.addRecord(idCabina, cname, 
+                                    	stationMap.addRecord(idCabina, cname,
                                     	new SimpleRecordDto(Long.parseLong(weatherdata.get("data")) * 1000, Double.parseDouble(weatherdata.get(cname)),1));
                                         if (datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".mapping").equals("true")) {
                                         	stationMap.addRecord(idCabina, cname + "_desc", new SimpleRecordDto(Long.parseLong(weatherdata.get("data")) * 1000,
@@ -153,16 +163,6 @@ public class MainA22Roadweather{
     }
 
     private Connector setupA22ServiceConnector() throws IOException {
-        String url;
-        String user;
-        String password;
-
-        // read connector auth informations
-        A22Properties prop = new A22Properties("a22connector.properties");
-        url = prop.getProperty("url");
-        user = prop.getProperty("user");
-        password = prop.getProperty("password");
-
         Connector a22Service = new Connector(url, user, password);
 
         return a22Service;

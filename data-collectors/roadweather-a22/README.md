@@ -7,10 +7,19 @@ Application which takes A22 road weather data from a web service parses it and s
 
 ## Table of contents
 
-- [Gettings started](#getting-started)
-- [Running tests](#running-tests)
-- [Deployment](#deployment)
-- [Information](#information)
+- [A22 Road weather](#a22-road-weather)
+	- [Table of contents](#table-of-contents)
+	- [Getting started](#getting-started)
+		- [Prerequisites](#prerequisites)
+		- [Source code](#source-code)
+		- [Build](#build)
+	- [Running tests](#running-tests)
+	- [Deployment](#deployment)
+	- [Information](#information)
+		- [Support](#support)
+		- [Contributing](#contributing)
+		- [Documentation](#documentation)
+		- [License](#license)
 
 ## Getting started
 
@@ -61,9 +70,9 @@ This is a maven project and will produce a war that can be deployed in any j2ee 
 
 Steps:
 
-* change the file src/main/resources/it/bz/noi/a22/roadweather/a22connector.properties. set the url, the username and the 
+* change the file src/main/resources/META-INF/spring/application.properties. set the url, the username and the
   password to connect to the A22 API to query historic values of road weather (or configure it within a CI tool)
-  
+
 ```
 url=
 user=
@@ -72,14 +81,14 @@ password=
 
 * optionally change frequence of elaborations in the file src/main/resources/it/bz/noi/a22/roadweather/cron.properties.
   (or configure it within a CI tool)
-  
+
 ```
 schedule=0 0/10 * * * ?
 ```
 
-* optionally change the origin, the provenance, the station type, the last timestamp and the scan window (in seconds) in the file 
+* optionally change the origin, the provenance, the station type, the last timestamp and the scan window (in seconds) in the file
 src/main/resources/it/bz/noi/a22/roadweather/a22roadweather.properties. (or configure it within a CI tool)
-  
+
 ```
 origin=A22
 provenance.name=dc-
@@ -91,7 +100,7 @@ scanWindowSeconds=604800
 
 * optionally change the data types in the file src/main/resources/it/bz/noi/a22/roadweather/a22roadweatherdatatypes.propertiess.
   (or configure it within a CI tool)
-  
+
 ```
 a22roadweather.datatype.temp_aria.key=temp_aria
 a22roadweather.datatype.temp_aria.unit=[°C]
