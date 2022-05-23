@@ -119,7 +119,7 @@ jobs:
         env:
           X_USERNAME: ${{ env.USERNAME }}
           X_PASSWORD: ${{ env.PASSWORD }}
-          
+
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
@@ -142,8 +142,8 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Scheduler
-          X_SCHEDULER_CRON_STOPS: "0 0 * * * ?"
-          X_SCHEDULER_CRON_ACTIVITIES: "*/10 * * * * ?"
+          X_SCHEDULER_CRON_STOPS: 0 0 * * * *
+          X_SCHEDULER_CRON_ACTIVITIES: */10 * * * * *
           X_SCHEDULER_POOL_SIZE: 10
 
       - name: Build project
