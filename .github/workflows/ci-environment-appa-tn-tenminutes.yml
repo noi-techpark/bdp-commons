@@ -9,7 +9,6 @@ on:
 env:
   WORKING_DIRECTORY: data-collectors/environment-appa-tn-tenminutes
   PROJECT_NAME: odh-mobility-dc-environment-appa-tn-tenminutes
-  DOCKER_REGISTRY_HOST: ghcr.io
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-environment-appa-tn-tenminutes
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'

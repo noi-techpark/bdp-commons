@@ -9,7 +9,7 @@ on:
 env:
   WORKING_DIRECTORY: data-collectors/bike-chargers
   PROJECT_NAME: odh-mobility-dc-bike-chargers
-  DOCKER_IMAGE: docker.pkg.github.com/${{ github.repository }}/odh-mobility-dc-bike-chargers
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-bike-chargers
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
 

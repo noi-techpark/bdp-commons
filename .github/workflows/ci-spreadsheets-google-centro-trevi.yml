@@ -9,7 +9,6 @@ on:
 env:
   WORKING_DIRECTORY: data-collectors/spreadsheets-google
   PROJECT_NAME: odh-mobility-dc-spreadsheets-google-centro-trevi
-  DOCKER_REGISTRY_HOST: ghcr.io
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-spreadsheets-google-centro-trevi
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
@@ -62,7 +61,7 @@ jobs:
           X_stationtype: Culture
           X_composite_unique_key: id
           X_origin: municipality bolzano
-          
+
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
@@ -103,7 +102,7 @@ jobs:
           working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
           docker-username: ${{ github.actor }}
           docker-password: ${{ secrets.GITHUB_TOKEN }}
-          docker-host: ${{ env.DOCKER_REGISTRY_HOST }}
+
 
       - name: Deploy application
         uses: noi-techpark/github-actions/docker-deploy@v2
@@ -114,7 +113,7 @@ jobs:
           docker-username: 'noi-techpark-bot'
           docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           project-name: ${{ env.PROJECT_NAME }}
-          docker-host: ${{ env.DOCKER_REGISTRY_HOST }}
+
 
   # Deploy Production
   deploy-prod-spreadsheets-google:
@@ -186,7 +185,7 @@ jobs:
           working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
           docker-username: ${{ github.actor }}
           docker-password: ${{ secrets.GITHUB_TOKEN }}
-          docker-host: ${{ env.DOCKER_REGISTRY_HOST }}
+
 
       - name: Deploy application
         uses: noi-techpark/github-actions/docker-deploy@v2
@@ -197,5 +196,5 @@ jobs:
           docker-username: 'noi-techpark-bot'
           docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           project-name: ${{ env.PROJECT_NAME }}
-          docker-host: ${{ env.DOCKER_REGISTRY_HOST }}
+
 
