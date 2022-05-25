@@ -44,8 +44,8 @@ jobs:
         env:
           # Data Collector config
           X_A22_URL: ${{ secrets.PARKING_A22_URL }}
-          X_A22_USER: ${{ secrets.PARKING_A22_USER }}
-          X_A22_PASSWORD: ${{ secrets.PARKING_A22_PASSWORD }}
+          X_A22_USER: BT4
+          X_A22_PASSWORD: ${{ secrets.A22_BT4_PWD }}
 
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
@@ -116,8 +116,8 @@ jobs:
         env:
           # Data Collector config
           X_A22_URL: ${{ secrets.PARKING_A22_URL }}
-          X_A22_USER: ${{ secrets.PARKING_A22_USER }}
-          X_A22_PASSWORD: ${{ secrets.PARKING_A22_PASSWORD }}
+          X_A22_USER: BN4
+          X_A22_PASSWORD: ${{ secrets.A22_BN4_PWD }}
 
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
