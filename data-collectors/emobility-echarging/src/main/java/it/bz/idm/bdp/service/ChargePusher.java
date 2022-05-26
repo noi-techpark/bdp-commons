@@ -36,21 +36,22 @@ public class ChargePusher extends NonBlockingJSONPusher {
 	public String initIntegreenTypology() {
 		return "EChargingStation";
 	}
+
 	private static final List<DataTypeDto> EMOBILTYTYPES = new ArrayList<DataTypeDto>() {
 		private static final long serialVersionUID = 1L;
 
-	{
-	    add(new DataTypeDto(
-			"number-available",
-			"",
-			"number of available vehicles / charging points","Instantaneous"
-		));
-	    add(new DataTypeDto(
-			"echarging-plug-status",
-			"",
-			"the state can either be 0, which means that the plug is currently not available, or it can be 1 which means it is",""
-			));
-	}};
+		{
+			add(new DataTypeDto(
+					"number-available",
+					"",
+					"number of available vehicles / charging points", "Instantaneous"));
+			add(new DataTypeDto(
+					"echarging-plug-status",
+					"",
+					"the state can either be 0, which means that the plug is currently not available, or it can be 1 which means it is",
+					""));
+		}
+	};
 
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T rawData) {
@@ -63,18 +64,18 @@ public class ChargePusher extends NonBlockingJSONPusher {
 		Date now = new Date();
 		Integer period = env.getProperty("app_period", Integer.class);
 		String plugStatusAvailable = env.getRequiredProperty("plug.status.available");
-		for(ChargerDtoV2 dto : data) {
+		for (ChargerDtoV2 dto : data) {
 
 			if ("REMOVED".equals(dto.getState()))
 				continue;
 
 			DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<>();
 			Integer availableStations = 0;
-			for (ChargingPointsDtoV2 point : dto.getChargingPoints()){
+			for (ChargingPointsDtoV2 point : dto.getChargingPoints()) {
 				List<RecordDtoImpl> records = new ArrayList<>();
 				if (plugStatusAvailable.equals(point.getState()))
 					availableStations++;
-				SimpleRecordDto rec = new SimpleRecordDto(now.getTime(),availableStations.doubleValue());
+				SimpleRecordDto rec = new SimpleRecordDto(now.getTime(), availableStations.doubleValue());
 				rec.setPeriod(period);
 				records.add(rec);
 				DataMapDto<RecordDtoImpl> dataSet = new DataMapDto<>(records);
@@ -97,19 +98,19 @@ public class ChargePusher extends NonBlockingJSONPusher {
 			s.setId(dto.getId());
 			s.setLongitude(dto.getLongitude());
 			s.setLatitude(dto.getLatitude());
-			s.setName(dto.getName());
+			s.setName(dto.getName() != null ? dto.getName() : dto.getId());
 			s.getMetaData().put("city", dto.getPosition().getCity());
-			s.getMetaData().put("provider",dto.getProvider());
-			s.getMetaData().put("capacity",dto.getChargingPoints().size());
-			s.getMetaData().put("state",dto.getState());
-			s.getMetaData().put("accessInfo",dto.getAccessInfo());
-			s.getMetaData().put("flashInfo",dto.getFlashInfo());
-			s.getMetaData().put("locationServiceInfo",dto.getLocationServiceInfo());
-			s.getMetaData().put("paymentInfo",dto.getPaymentInfo());
-			s.getMetaData().put("address",dto.getAddress());
-			s.getMetaData().put("reservable",dto.getIsReservable());
-			s.getMetaData().put("accessType",dto.getAccessType());
-			s.getMetaData().put("categories",dto.getCategories());
+			s.getMetaData().put("provider", dto.getProvider());
+			s.getMetaData().put("capacity", dto.getChargingPoints().size());
+			s.getMetaData().put("state", dto.getState());
+			s.getMetaData().put("accessInfo", dto.getAccessInfo());
+			s.getMetaData().put("flashInfo", dto.getFlashInfo());
+			s.getMetaData().put("locationServiceInfo", dto.getLocationServiceInfo());
+			s.getMetaData().put("paymentInfo", dto.getPaymentInfo());
+			s.getMetaData().put("address", dto.getAddress());
+			s.getMetaData().put("reservable", dto.getIsReservable());
+			s.getMetaData().put("accessType", dto.getAccessType());
+			s.getMetaData().put("categories", dto.getCategories());
 			s.setOrigin(origin);
 			s.setStationType(this.integreenTypology);
 			if (s.isValid()) {
@@ -126,15 +127,15 @@ public class ChargePusher extends NonBlockingJSONPusher {
 			return null;
 		StationList stations = new StationList();
 		String origin = env.getProperty(ORIGIN_KEY);
-		for (ChargerDtoV2 dto : fetchedStations){
-			for(ChargingPointsDtoV2 point:dto.getChargingPoints()){
+		for (ChargerDtoV2 dto : fetchedStations) {
+			for (ChargingPointsDtoV2 point : dto.getChargingPoints()) {
 				StationDto s = new StationDto();
-				s.setId(dto.getId()+ "-" + point.getOutlets().get(0).getId());
+				s.setId(dto.getName() != null ? dto.getName() : dto.getId() + "-" + point.getOutlets().get(0).getId());
 				s.setLongitude(dto.getLongitude());
 				s.setLatitude(dto.getLatitude());
-				s.setName(dto.getName()+"-"+point.getId());
+				s.setName(dto.getName() != null ? dto.getName() : dto.getId() + "-" + point.getId());
 				s.setParentStation(dto.getCode());
-				s.getMetaData().put("outlets",point.getOutlets());
+				s.getMetaData().put("outlets", point.getOutlets());
 				s.setOrigin(origin);
 				s.setStationType(E_CHARGING_PLUG_TYPOLOGY);
 				if (s.isValid()) {
@@ -154,9 +155,9 @@ public class ChargePusher extends NonBlockingJSONPusher {
 
 		DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
 		Date now = new Date();
-		for(ChargerDtoV2 dto: data ){
-			for (ChargingPointsDtoV2 point:dto.getChargingPoints()){
-				if (point.getState() != null){
+		for (ChargerDtoV2 dto : data) {
+			for (ChargingPointsDtoV2 point : dto.getChargingPoints()) {
+				if (point.getState() != null) {
 					DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<>();
 					List<RecordDtoImpl> records = new ArrayList<>();
 					SimpleRecordDto rec = new SimpleRecordDto();
@@ -166,19 +167,20 @@ public class ChargePusher extends NonBlockingJSONPusher {
 					rec.setPeriod(period);
 					records.add(rec);
 					recordsByType.getBranch().put("echarging-plug-status", new DataMapDto<>(records));
-					map.getBranch().put(dto.getId()+"-"+point.getOutlets().get(0).getId(), recordsByType);
+					map.getBranch().put(dto.getId() + "-" + point.getOutlets().get(0).getId(), recordsByType);
 				}
 			}
 		}
 		return map;
 	}
 
-	public List<DataTypeDto> getDataTypes(){
+	public List<DataTypeDto> getDataTypes() {
 		return EMOBILTYTYPES;
 	}
 
 	@Override
 	public ProvenanceDto defineProvenance() {
-		return new ProvenanceDto(null,env.getProperty("provenance_name"), env.getProperty("provenance_version"),env.getProperty(ORIGIN_KEY));
+		return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"),
+				env.getProperty(ORIGIN_KEY));
 	}
 }
