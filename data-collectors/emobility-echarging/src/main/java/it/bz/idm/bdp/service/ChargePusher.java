@@ -98,7 +98,7 @@ public class ChargePusher extends NonBlockingJSONPusher {
 			s.setId(dto.getId());
 			s.setLongitude(dto.getLongitude());
 			s.setLatitude(dto.getLatitude());
-			s.setName(dto.getName() != null ? dto.getName() : dto.getId());
+			s.setName(dto.getName() == null || dto.getName().isEmpty() ? dto.getId() : dto.getName());
 			s.getMetaData().put("city", dto.getPosition().getCity());
 			s.getMetaData().put("provider", dto.getProvider());
 			s.getMetaData().put("capacity", dto.getChargingPoints().size());
@@ -130,10 +130,10 @@ public class ChargePusher extends NonBlockingJSONPusher {
 		for (ChargerDtoV2 dto : fetchedStations) {
 			for (ChargingPointsDtoV2 point : dto.getChargingPoints()) {
 				StationDto s = new StationDto();
-				s.setId(dto.getName() != null ? dto.getName() : dto.getId() + "-" + point.getOutlets().get(0).getId());
+				s.setId(dto.getName() == null || dto.getName().isEmpty() ? dto.getId() : dto.getName() + "-" + point.getOutlets().get(0).getId());
 				s.setLongitude(dto.getLongitude());
 				s.setLatitude(dto.getLatitude());
-				s.setName(dto.getName() != null ? dto.getName() : dto.getId() + "-" + point.getId());
+				s.setName(dto.getName() == null || dto.getName().isEmpty() ? dto.getId() : dto.getName() + "-" + point.getId());
 				s.setParentStation(dto.getCode());
 				s.getMetaData().put("outlets", point.getOutlets());
 				s.setOrigin(origin);
