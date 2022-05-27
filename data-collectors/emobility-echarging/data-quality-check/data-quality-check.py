@@ -187,15 +187,18 @@ while True:
     plugs = map_plugs(odh_alperia_plugs, data_provider)
     append_to_csv(plugs,"alperia.csv")
 
-    # print("route220 " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
-    # odh_route220_plugs = get_odh_plugs("route220")
-    # data_provider_route220 = get_dataprovider_data(ROUTE220)
-    # analyze_plugs(odh_route220_plugs, data_provider_route220)
+    print("route220 " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
+    odh_route220_plugs = get_odh_plugs("route220")
+    data_provider_route220 = get_dataprovider_data(ROUTE220)
+    plugs = map_plugs(odh_route220_plugs, data_provider_route220)
+    append_to_csv(plugs,"route220.csv")
 
-    # print("DRIWE " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
-    # odh_driwe_plugs = get_odh_plugs("DRIVE")
-    # data_provider_driwe = get_dataprovider_data(DRIWE)
-    # map_plugs(odh_driwe_plugs, data_provider_driwe)
+
+    print("DRIWE " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
+    odh_driwe_plugs = get_odh_plugs("DRIVE")
+    data_provider_driwe = get_dataprovider_data(DRIWE)
+    plugs = map_plugs(odh_driwe_plugs, data_provider_driwe)
+    append_to_csv(plugs,"driwe.csv")
 
     time.sleep(300)
 
