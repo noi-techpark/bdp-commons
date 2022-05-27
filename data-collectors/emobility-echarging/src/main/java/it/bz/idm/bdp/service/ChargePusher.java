@@ -86,19 +86,21 @@ public class ChargePusher extends NonBlockingJSONPusher {
 		return map;
 	}
 
-	public StationList map2bdp(List<ChargerDtoV2> fetchedSations) {
+	public StationList map2bdp(List<ChargerDtoV2> fetchedStations) {
 		StationList stations = new StationList();
 		String origin = env.getProperty(ORIGIN_KEY);
-		for (ChargerDtoV2 dto : fetchedSations) {
+		for (ChargerDtoV2 dto : fetchedStations) {
 
 			if ("REMOVED".equals(dto.getState()))
 				continue;
 
 			StationDto s = new StationDto();
+			String name = dto.getName() == null || dto.getName().isEmpty() ? dto.getId()
+					: dto.getName();
 			s.setId(dto.getId());
 			s.setLongitude(dto.getLongitude());
 			s.setLatitude(dto.getLatitude());
-			s.setName(dto.getName() == null || dto.getName().isEmpty() ? dto.getId() : dto.getName());
+			s.setName(name);
 			s.getMetaData().put("city", dto.getPosition().getCity());
 			s.getMetaData().put("provider", dto.getProvider());
 			s.getMetaData().put("capacity", dto.getChargingPoints().size());
@@ -130,10 +132,12 @@ public class ChargePusher extends NonBlockingJSONPusher {
 		for (ChargerDtoV2 dto : fetchedStations) {
 			for (ChargingPointsDtoV2 point : dto.getChargingPoints()) {
 				StationDto s = new StationDto();
-				s.setId(dto.getName() == null || dto.getName().isEmpty() ? dto.getId() : dto.getName() + "-" + point.getOutlets().get(0).getId());
+				String name = dto.getName() == null || dto.getName().isEmpty() ? dto.getId()
+						: dto.getName();
+				s.setId(name + "-" + point.getOutlets().get(0).getId());
 				s.setLongitude(dto.getLongitude());
 				s.setLatitude(dto.getLatitude());
-				s.setName(dto.getName() == null || dto.getName().isEmpty() ? dto.getId() : dto.getName() + "-" + point.getId());
+				s.setName(name + "-" + point.getId());
 				s.setParentStation(dto.getCode());
 				s.getMetaData().put("outlets", point.getOutlets());
 				s.setOrigin(origin);
@@ -155,14 +159,15 @@ public class ChargePusher extends NonBlockingJSONPusher {
 
 		DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
 		Date now = new Date();
+		int plugCounter = 0;
 		for (ChargerDtoV2 dto : data) {
 			for (ChargingPointsDtoV2 point : dto.getChargingPoints()) {
 				if (point.getState() != null) {
+					plugCounter++;
 					DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<>();
 					List<RecordDtoImpl> records = new ArrayList<>();
 					SimpleRecordDto rec = new SimpleRecordDto();
 					rec.setTimestamp(now.getTime());
-
 					rec.setValue(point.getState().equals("AVAILABLE") ? 1. : 0);
 					rec.setPeriod(period);
 					records.add(rec);
@@ -171,6 +176,7 @@ public class ChargePusher extends NonBlockingJSONPusher {
 				}
 			}
 		}
+		System.out.println("Plug counter: " + plugCounter);
 		return map;
 	}
 
