@@ -4,8 +4,8 @@ import it.bz.idm.bdp.dto.*;
 import it.bz.noi.onstreetparking.configuration.OnStreetParkingConfiguration;
 import it.bz.noi.onstreetparking.dto.ParkingData;
 import it.bz.noi.onstreetparking.pusher.OnStreetParkingJsonPusher;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.*;
 @Service
 public class OnStreetParkingSensorService {
 
-	private static Logger LOG = LogManager.getLogger(OnStreetParkingSensorService.class);
+	private static Logger LOG = LoggerFactory.getLogger(OnStreetParkingSensorService.class);
 	private static final String STATION_DATA_SYNCRONIZATION_BLOCK = "STATION_DATA_SYNCRONIZATION_BLOCK";
 
 	private static final String STATION_DATATYPE_STATE = "state";

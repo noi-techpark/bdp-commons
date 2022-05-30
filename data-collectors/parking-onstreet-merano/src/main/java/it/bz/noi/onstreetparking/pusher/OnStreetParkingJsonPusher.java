@@ -5,8 +5,8 @@ import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 import it.bz.noi.onstreetparking.configuration.OnStreetParkingConfiguration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 @Service
 public class OnStreetParkingJsonPusher extends NonBlockingJSONPusher {
 
-	private static final Logger LOG = LogManager.getLogger(OnStreetParkingJsonPusher.class);
+	private static final Logger LOG = LoggerFactory.getLogger(OnStreetParkingJsonPusher.class);
 
 	protected String origin;
 

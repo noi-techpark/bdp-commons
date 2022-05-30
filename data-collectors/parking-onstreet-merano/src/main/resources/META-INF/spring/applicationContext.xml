@@ -7,9 +7,9 @@
 
     <context:component-scan base-package="it.bz.idm.bdp,it.bz.noi.onstreetparking"/>
     <bean class="it.bz.noi.onstreetparking.MainOnStreetParking" id="jobScheduler"/>
-    <task:scheduler id="Scheduler" pool-size="10" />
+    <task:scheduler id="Scheduler" pool-size="${SCHEDULER_POOL_SIZE:10}" />
     <task:scheduled-tasks scheduler="Scheduler">
-        <task:scheduled ref="jobScheduler" method="execute" cron="0 * * * * ?" />
-        <task:scheduled ref="jobScheduler" method="cleanupStations" cron="0 0 0 * * ?" />
+        <task:scheduled ref="jobScheduler" method="execute" cron="${SCHEDULER_EXECUTE:0 * * * * ?}" />
+        <task:scheduled ref="jobScheduler" method="cleanupStations" cron="${SCHEDULER_CLEAN_UP:0 0 0 * * ?}" />
     </task:scheduled-tasks>
 </beans>

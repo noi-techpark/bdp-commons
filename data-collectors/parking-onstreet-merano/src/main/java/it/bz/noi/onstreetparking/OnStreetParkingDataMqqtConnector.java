@@ -6,8 +6,8 @@ import com.google.gson.JsonObject;
 import it.bz.noi.onstreetparking.configuration.MqttClientConfiguration;
 import it.bz.noi.onstreetparking.dto.ParkingData;
 import it.bz.noi.onstreetparking.dto.Position;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.time.ZonedDateTime;
 @Service
 public class OnStreetParkingDataMqqtConnector implements MqttCallback {
 
-	private static final Logger LOG = LogManager.getLogger(OnStreetParkingDataMqqtConnector.class);
+	private static final Logger LOG = LoggerFactory.getLogger(OnStreetParkingDataMqqtConnector.class);
 	private static final String MQTT_CLIENT_SYNCRONIZATION_BLOCK = "MQTT_CLIENT_SYNCRONIZATION_BLOCK";
 
 	@Autowired

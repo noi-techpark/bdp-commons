@@ -10,15 +10,15 @@
 package it.bz.noi.onstreetparking;
 
 import it.bz.noi.onstreetparking.dto.ParkingData;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MainOnStreetParking implements IMqttMessageArrivedCallback {
 
-	private static Logger LOG = LogManager.getLogger(MainOnStreetParking.class);
+	private static Logger LOG = LoggerFactory.getLogger(MainOnStreetParking.class);
 
 	@Autowired
 	private OnStreetParkingDataMqqtConnector onStreetParkingDataMqqtConnector;
@@ -32,7 +32,7 @@ public class MainOnStreetParking implements IMqttMessageArrivedCallback {
 			onStreetParkingDataMqqtConnector.connect();
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.error(e);
+            LOG.error(e.getMessage());
         }
     }
     public void cleanupStations() {
@@ -41,7 +41,7 @@ public class MainOnStreetParking implements IMqttMessageArrivedCallback {
 			onStreetParkingSensorService.cleanupStationList();
         } catch (Exception e) {
             e.printStackTrace();
-            LOG.error(e);
+            LOG.error(e.getMessage());
         }
     }
 
