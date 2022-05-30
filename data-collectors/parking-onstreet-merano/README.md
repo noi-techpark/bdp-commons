@@ -1,4 +1,4 @@
-# On-Street Parking
+# Parking On-Street Merano
 
 [//]: # ([![CI on-street-parking]&#40;https://github.com/noi-techpark/bdp-commons/actions/workflows/on-street-parking.yml/badge.svg&#41;]&#40;https://github.com/noi-techpark/bdp-commons/actions/workflows/on-street-parking.yml&#41;)
 
@@ -7,7 +7,7 @@ to the [Open Data Hub](https://opendatahub.bz.it).
 
 **Table of contents**
 
-- [A22 Events](#a22-events)
+- [Parking On-Street Merano](#parking-on-street-merano)
 	- [Getting started](#getting-started)
 		- [Prerequisites](#prerequisites)
 		- [Source code](#source-code)
@@ -15,7 +15,6 @@ to the [Open Data Hub](https://opendatahub.bz.it).
 	- [Running tests](#running-tests)
 	- [Local execution with an Embedded Tomcat](#local-execution-with-an-embedded-tomcat)
 	- [Deployment](#deployment)
-	- [Mapping of Tipi and SottoTipi Event](#mapping-of-tipi-and-sottotipi-event)
 	- [Information](#information)
 		- [Support](#support)
 		- [Contributing](#contributing)
@@ -47,7 +46,7 @@ git clone git clone https://github.com/noi-techpark/bdp-commons
 Change directory:
 
 ```bash
-cd bdp-commons/data-collectors/on-street-parking
+cd bdp-commons/data-collectors/parking-onstreet-merano
 ```
 
 ### Build
