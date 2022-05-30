@@ -72,15 +72,15 @@ public class ChargePusher extends NonBlockingJSONPusher {
 			DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<>();
 			Integer availableStations = 0;
 			for (ChargingPointsDtoV2 point : dto.getChargingPoints()) {
-				List<RecordDtoImpl> records = new ArrayList<>();
 				if (plugStatusAvailable.equals(point.getState()))
 					availableStations++;
-				SimpleRecordDto rec = new SimpleRecordDto(now.getTime(), availableStations.doubleValue());
-				rec.setPeriod(period);
-				records.add(rec);
-				DataMapDto<RecordDtoImpl> dataSet = new DataMapDto<>(records);
-				recordsByType.getBranch().put(DataTypeDto.NUMBER_AVAILABE, dataSet);
 			}
+			List<RecordDtoImpl> records = new ArrayList<>();
+			SimpleRecordDto rec = new SimpleRecordDto(now.getTime(), availableStations.doubleValue());
+			rec.setPeriod(period);
+			records.add(rec);
+			DataMapDto<RecordDtoImpl> dataSet = new DataMapDto<>(records);
+			recordsByType.getBranch().put(DataTypeDto.NUMBER_AVAILABE, dataSet);
 			map.getBranch().put(dto.getId(), recordsByType);
 		}
 		return map;
@@ -159,11 +159,9 @@ public class ChargePusher extends NonBlockingJSONPusher {
 
 		DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
 		Date now = new Date();
-		int plugCounter = 0;
 		for (ChargerDtoV2 dto : data) {
 			for (ChargingPointsDtoV2 point : dto.getChargingPoints()) {
 				if (point.getState() != null) {
-					plugCounter++;
 					DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<>();
 					List<RecordDtoImpl> records = new ArrayList<>();
 					SimpleRecordDto rec = new SimpleRecordDto();
@@ -176,7 +174,6 @@ public class ChargePusher extends NonBlockingJSONPusher {
 				}
 			}
 		}
-		System.out.println("Plug counter: " + plugCounter);
 		return map;
 	}
 
