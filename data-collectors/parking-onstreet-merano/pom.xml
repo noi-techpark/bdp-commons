@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.noi.a22.events</groupId>
 	<artifactId>dc-events-a22</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<version>1.0.0</version>
 	<name>parking-onstreet-merano</name>
 	<properties>
