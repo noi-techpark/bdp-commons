@@ -14,6 +14,8 @@ to the [Open Data Hub](https://opendatahub.bz.it).
 		- [Build](#build)
 	- [Running tests](#running-tests)
 	- [Local execution with an Embedded Tomcat](#local-execution-with-an-embedded-tomcat)
+	- [Local execution with Docker](#local-execution-with-docker)
+	- [VSCode: Start a debug session with Docker](#vscode-start-a-debug-session-with-docker)
 	- [Deployment](#deployment)
 	- [Information](#information)
 		- [Support](#support)
@@ -86,6 +88,38 @@ mvn tomcat:run
 Credentials needed? See
 [here](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Credentials).
 
+## Local execution with Docker
+
+- Inside the corresponding data collector folder, copy `.env.example` to `.env`
+  and configure it
+- Run `docker-compose up -d`
+- You can follow the output with `docker-compose logs -f`
+
+Credentials needed? See
+[here](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Credentials).
+
+## VSCode: Start a debug session with Docker
+
+Copy this file to `.vsode/launch.json`:
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+		{
+			"type": "java",
+			"name": "Attach",
+			"request": "attach",
+			"hostName": "0.0.0.0",
+			"port": "9000",
+			"justMyCode": false
+		}
+    ]
+}
+```
+
+Run `docker-compose up -d` inside the data-collector folder of your choice, and
+then launch `Attach` from VSCode. You are now ready to set breakpoints and debug.
+
 ## Deployment
 
 This is a maven project and will produce a war that can be deployed in any j2ee
@@ -95,7 +129,7 @@ Steps:
 
 * change the file
   `src/main/resources/mqttclient.properties`. Set the server uri, username, the password, the clientId and the topic to
-  subscribe of your mqqt connection
+  subscribe of your mqtt connection
 
 ```ini
 mqttclient.serverURI=ssl://mqtt.kamote.io:8883
@@ -118,8 +152,6 @@ maxTimeSinceLastMeasurementSeconds=604800
 
 The property `maxTimeSinceLastMeasurementSeconds` defines the maximum number of seconds that a sensor can remain
 activated without a new message before it is classified as inactive.
-
-* configure the `log4j.properties` file as desidered
 
 * create the war executing the following command
 
