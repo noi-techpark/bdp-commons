@@ -35,16 +35,16 @@ public class PushScheduler {
 	 */
 	public void syncAll() {
 		syncDataTypes();
-		syncStationsV2();
-		pushChargerDataV2();
+		List<ChargerDtoV2> fetchedStations = retrieverV2.fetchStations();
+		syncStationsV2(fetchedStations);
+		pushChargerDataV2(fetchedStations);
 	}
 
-	public void syncStationsV2() {
+	public void syncStationsV2(List<ChargerDtoV2> fetchedStations) {
 		LOG.info("Sync Stations and Plugs: Fetching from source and parsing");
-		List<ChargerDtoV2> fetchedSations = retrieverV2.fetchStations();
 
-		StationList stations = pusher.map2bdp(fetchedSations);
-		StationList plugs = pusher.mapPlugs2Bdp(fetchedSations);
+		StationList stations = pusher.map2bdp(fetchedStations);
+		StationList plugs = pusher.mapPlugs2Bdp(fetchedStations);
 		LOG.info(
 			"Sync Stations and Plugs: Pushing {} stations and {} plugs to the writer",
 			stations == null ? 0 : stations.size(),
@@ -60,14 +60,12 @@ public class PushScheduler {
 	}
 
 
-	public void pushChargerDataV2() {
+	public void pushChargerDataV2(List<ChargerDtoV2> fetchedStations) {
 		LOG.info("Sync Charger Data: Fetching from source and parsing");
-		List<ChargerDtoV2> stations = retrieverV2.fetchStations();
-
-		int chunks = (int) Math.ceil((float) stations.size() / DATA_CHUNK_SIZE);
+		int chunks = (int) Math.ceil((float) fetchedStations.size() / DATA_CHUNK_SIZE);
 		LOG.info(
 			"Sync Charger Data: Found {} stations. Splitting into {} chunks of max. {} each!",
-			stations.size(),
+			fetchedStations.size(),
 			chunks,
 			DATA_CHUNK_SIZE
 		);
@@ -76,9 +74,9 @@ public class PushScheduler {
 			// We have the following interval boundaries for subList: [from, to)
 			int from = DATA_CHUNK_SIZE * i;
 			int to = from + DATA_CHUNK_SIZE;
-			if (to > stations.size())
-				to = stations.size();
-			List<ChargerDtoV2> stationChunk = stations.subList(from, to);
+			if (to > fetchedStations.size())
+				to = fetchedStations.size();
+			List<ChargerDtoV2> stationChunk = fetchedStations.subList(from, to);
 			DataMapDto<RecordDtoImpl> map = pusher.mapData(stationChunk);
 			DataMapDto<RecordDtoImpl> plugRec = pusher.mapPlugData2Bdp(stationChunk);
 			LOG.info("Sync Charger Data: Pushing to the writer: Chunk {} of {}", i+1, chunks);
