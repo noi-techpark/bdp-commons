@@ -35,13 +35,14 @@ public class PushScheduler {
 	 */
 	public void syncAll() {
 		syncDataTypes();
+		LOG.info("Sync: Fetching from source");
 		List<ChargerDtoV2> fetchedStations = retrieverV2.fetchStations();
 		syncStationsV2(fetchedStations);
 		pushChargerDataV2(fetchedStations);
 	}
 
 	public void syncStationsV2(List<ChargerDtoV2> fetchedStations) {
-		LOG.info("Sync Stations and Plugs: Fetching from source and parsing");
+		LOG.info("Sync Stations and Plugs");
 
 		StationList stations = pusher.map2bdp(fetchedStations);
 		StationList plugs = pusher.mapPlugs2Bdp(fetchedStations);
@@ -61,7 +62,7 @@ public class PushScheduler {
 
 
 	public void pushChargerDataV2(List<ChargerDtoV2> fetchedStations) {
-		LOG.info("Sync Charger Data: Fetching from source and parsing");
+		LOG.info("Sync Charger Data");
 		int chunks = (int) Math.ceil((float) fetchedStations.size() / DATA_CHUNK_SIZE);
 		LOG.info(
 			"Sync Charger Data: Found {} stations. Splitting into {} chunks of max. {} each!",
