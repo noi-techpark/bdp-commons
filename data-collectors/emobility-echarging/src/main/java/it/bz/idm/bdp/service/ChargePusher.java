@@ -95,12 +95,10 @@ public class ChargePusher extends NonBlockingJSONPusher {
 				continue;
 
 			StationDto s = new StationDto();
-			String name = dto.getName() == null || dto.getName().isEmpty() ? dto.getId()
-					: dto.getName();
 			s.setId(dto.getId());
 			s.setLongitude(dto.getLongitude());
 			s.setLatitude(dto.getLatitude());
-			s.setName(name);
+			s.setName(getName(dto));
 			s.getMetaData().put("city", dto.getPosition().getCity());
 			s.getMetaData().put("provider", dto.getProvider());
 			s.getMetaData().put("capacity", dto.getChargingPoints().size());
@@ -132,12 +130,10 @@ public class ChargePusher extends NonBlockingJSONPusher {
 		for (ChargerDtoV2 dto : fetchedStations) {
 			for (ChargingPointsDtoV2 point : dto.getChargingPoints()) {
 				StationDto s = new StationDto();
-				String name = dto.getName() == null || dto.getName().isEmpty() ? dto.getId()
-						: dto.getName();
-				s.setId(name + "-" + point.getOutlets().get(0).getId());
+				s.setId(dto.getId() + "-" + point.getOutlets().get(0).getId());
 				s.setLongitude(dto.getLongitude());
 				s.setLatitude(dto.getLatitude());
-				s.setName(name + "-" + point.getId());
+				s.setName(getName(dto) + "-" + point.getId());
 				s.setParentStation(dto.getCode());
 				s.getMetaData().put("outlets", point.getOutlets());
 				s.setOrigin(origin);
@@ -166,7 +162,7 @@ public class ChargePusher extends NonBlockingJSONPusher {
 					List<RecordDtoImpl> records = new ArrayList<>();
 					SimpleRecordDto rec = new SimpleRecordDto();
 					rec.setTimestamp(now.getTime());
-					rec.setValue(point.getState().equals("AVAILABLE") ? 1. : 0);
+					rec.setValue(point.getState().equals("AVAILABLE") ? 1. : 0.);
 					rec.setPeriod(period);
 					records.add(rec);
 					recordsByType.getBranch().put("echarging-plug-status", new DataMapDto<>(records));
@@ -185,5 +181,15 @@ public class ChargePusher extends NonBlockingJSONPusher {
 	public ProvenanceDto defineProvenance() {
 		return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"),
 				env.getProperty(ORIGIN_KEY));
+	}
+
+	/**
+	 * Returns the id as name, if name is null or empty
+	 * @param dto
+	 * @return
+	 */
+	private String getName(ChargerDtoV2 dto) {
+		return (dto.getName() == null || dto.getName().isEmpty()) ? dto.getId()
+				: dto.getName();
 	}
 }
