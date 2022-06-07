@@ -173,32 +173,41 @@ def map_plugs(odh, data_provider):
                     if charging_point["outlets"][0]["id"] == plug["plug_id"]:
                         plug["odh_mvalue"] = odh_plug["mvalue"]
                         plug["dp_state"] = charging_point["state"]
-                        plug["problem"] = odh_plug["mvalue"] == 1 and charging_point["state"] == "AVAILABLE"
+                        plug["problem"] = (odh_plug["mvalue"] == 1 and charging_point["state"] == "AVAILABLE") or (odh_plug["mvalue"] == 0 and charging_point["state"] != "AVAILABLE")
                         plug["timestamp"] = time_stamp
         plugs.append(plug)
     return plugs
 
 
+print("ALPERIA")
+odh_stations = get_odh_stations("ALPERIA")
+odh_plugs = get_odh_plugs("ALPERIA")
+
+print("ANALYZE ODH STATIONS <-> PLUGS")
+analyze_odh_stations_to_plugs(odh_stations, odh_plugs)
+
+
+start_time_stamp = time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime())
 
 while True:
     print("ALPERIA " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
     odh_alperia_plugs = get_odh_plugs("ALPERIA")
     data_provider = get_dataprovider_data(ALPERIA)
     plugs = map_plugs(odh_alperia_plugs, data_provider)
-    append_to_csv(plugs,"alperia.csv")
+    append_to_csv(plugs,"logs/alperia-" + start_time_stamp + ".csv")
 
     print("route220 " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
     odh_route220_plugs = get_odh_plugs("route220")
     data_provider_route220 = get_dataprovider_data(ROUTE220)
     plugs = map_plugs(odh_route220_plugs, data_provider_route220)
-    append_to_csv(plugs,"route220.csv")
+    append_to_csv(plugs,"logs/route220-" + start_time_stamp + ".csv")
 
 
     print("DRIWE " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
-    odh_driwe_plugs = get_odh_plugs("DRIVE")
+    odh_driwe_plugs = get_odh_plugs("DRIWE")
     data_provider_driwe = get_dataprovider_data(DRIWE)
     plugs = map_plugs(odh_driwe_plugs, data_provider_driwe)
-    append_to_csv(plugs,"driwe.csv")
+    append_to_csv(plugs,"logs/driwe-" + start_time_stamp + ".csv")
 
     time.sleep(300)
 
