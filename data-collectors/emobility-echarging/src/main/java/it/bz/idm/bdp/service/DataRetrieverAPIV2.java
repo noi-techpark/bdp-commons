@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.bz.idm.bdp.service.dto.ChargerDtoV2;
 
 @Component
-@PropertySource({"classpath:/META-INF/spring/types.properties","classpath:/META-INF/spring/application.properties"})
+@PropertySource({ "classpath:/META-INF/spring/types.properties", "classpath:/META-INF/spring/application.properties" })
 public class DataRetrieverAPIV2 {
 	private HttpClientBuilder builder = HttpClients.custom();
 	private CloseableHttpClient client;
@@ -37,25 +37,27 @@ public class DataRetrieverAPIV2 {
 
 	@Autowired
 	private Environment env;
-	private List<ChargerDtoV2> stations;
 
 	@PostConstruct
-	private void initClient(){
-		if (client==null){
-			endPoint = new HttpHost(env.getRequiredProperty("endpoint_host"), env.getProperty("endpoint_port", Integer.class, 443) , ("yes").equals(env.getProperty("endpoint_ssl"))?"https":"http");
+	private void initClient() {
+		if (client == null) {
+			endPoint = new HttpHost(env.getRequiredProperty("endpoint_host"),
+					env.getProperty("endpoint_port", Integer.class, 443),
+					("yes").equals(env.getProperty("endpoint_ssl")) ? "https" : "http");
 			localContext = HttpClientContext.create();
 			client = builder.build();
 		}
 	}
+
 	private String fetchResponseEntity(String path) {
 		HttpGet get = new HttpGet(path);
 		String xcallerHeader = env.getProperty("app_callerId");
 		String apikey = env.getProperty("app_apikey");
 		if (xcallerHeader != null)
-			get.setHeader("X-Caller-ID",xcallerHeader);
+			get.setHeader("X-Caller-ID", xcallerHeader);
 		if (apikey != null)
-			get.setHeader("apikey",apikey);
-		get.setHeader("Accept","application/json");
+			get.setHeader("apikey", apikey);
+		get.setHeader("Accept", "application/json");
 		try {
 			CloseableHttpResponse response = client.execute(endPoint, get, localContext);
 			InputStream entity = response.getEntity().getContent();
@@ -69,15 +71,18 @@ public class DataRetrieverAPIV2 {
 		}
 		return null;
 	}
+
 	public List<ChargerDtoV2> fetchStations() {
-		if (stations == null){
-			String responseEntity = fetchResponseEntity(env.getProperty("endpoint_path"));
-			try {
-				stations = mapper.readValue(responseEntity,new TypeReference<List<ChargerDtoV2>>() {});
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		List<ChargerDtoV2> stations;
+
+		String responseEntity = fetchResponseEntity(env.getProperty("endpoint_path"));
+		try {
+			stations = mapper.readValue(responseEntity, new TypeReference<List<ChargerDtoV2>>() {
+			});
+			return stations;
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return stations;
+		return null;
 	}
 }
