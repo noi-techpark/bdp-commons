@@ -17,7 +17,8 @@ public class OnStreetParkingSensorService {
 	private static Logger LOG = LoggerFactory.getLogger(OnStreetParkingSensorService.class);
 	private static final String STATION_DATA_SYNCRONIZATION_BLOCK = "STATION_DATA_SYNCRONIZATION_BLOCK";
 
-	private static final String STATION_DATATYPE_STATE = "state";
+	private static final String STATION_DATATYPE_FREE = "free";
+	private static final String STATION_DATATYPE_OCCUPIED = "occupied";
 
 	@Autowired
 	private OnStreetParkingJsonPusher jsonPusher;
@@ -74,9 +75,22 @@ public class OnStreetParkingSensorService {
 			jsonPusher.syncStations(new StationList(stationCodeStationMap.values()));
 		}
 
+		Integer freeValue = null;
+		Integer occupiedValue = null;
+
+		if(parkingData.getState().equals("free")) {
+			freeValue = 1;
+			occupiedValue = 0;
+		} else if(parkingData.getState().equals("occupied")) {
+			freeValue = 0;
+			occupiedValue = 1;
+		}
+
 		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
-		dataMap.addRecord(parkingData.getGuid(), STATION_DATATYPE_STATE,
-			new SimpleRecordDto(parkingData.getLastChange().toInstant().toEpochMilli(), parkingData.getState(), onStreetParkingConfiguration.getPeriod()));
+		dataMap.addRecord(parkingData.getGuid(), STATION_DATATYPE_FREE,
+			new SimpleRecordDto(parkingData.getLastChange().toInstant().toEpochMilli(), freeValue, onStreetParkingConfiguration.getPeriod()));
+		dataMap.addRecord(parkingData.getGuid(), STATION_DATATYPE_OCCUPIED,
+			new SimpleRecordDto(parkingData.getLastChange().toInstant().toEpochMilli(), occupiedValue, onStreetParkingConfiguration.getPeriod()));
 		jsonPusher.pushData(dataMap);
 	}
 
@@ -84,9 +98,15 @@ public class OnStreetParkingSensorService {
 		LOG.info("setupDataType");
 		List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
 			dataTypeDtoList.add(
-				new DataTypeDto(STATION_DATATYPE_STATE,
+				new DataTypeDto(STATION_DATATYPE_FREE,
 					"",
-					STATION_DATATYPE_STATE,
+					STATION_DATATYPE_FREE,
+					"Instantaneous")
+			);
+			dataTypeDtoList.add(
+				new DataTypeDto(STATION_DATATYPE_OCCUPIED,
+					"",
+					STATION_DATATYPE_OCCUPIED,
 					"Instantaneous")
 			);
 		jsonPusher.syncDataTypes(dataTypeDtoList);
