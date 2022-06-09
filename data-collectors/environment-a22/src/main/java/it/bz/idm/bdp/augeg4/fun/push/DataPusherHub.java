@@ -38,7 +38,7 @@ public class DataPusherHub extends NonBlockingJSONPusher implements DataPusherHu
     @Autowired
     private Environment env;
 
-    public DataPusherHub(@Value("${station.period}") int period) {
+    public DataPusherHub(@Value("${period}") int period) {
         mapper = new DataPusherMapper(period);
     }
 

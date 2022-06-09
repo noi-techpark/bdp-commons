@@ -147,7 +147,7 @@ public class DataDelegate {
 
     private List<AugeG4ProcessedDataToAugeDto> dequeueProcessedDataToAuge() {
         LOG.debug("dequeueProcessedDataToAuge() called.");
-        List<AugeG4ProcessedDataToAugeDto> list = new ArrayList<AugeG4ProcessedDataToAugeDto>();
+        List<AugeG4ProcessedDataToAugeDto> list = new ArrayList<>();
         queuedDataToAuge.drainTo(list);
         return list;
     }
