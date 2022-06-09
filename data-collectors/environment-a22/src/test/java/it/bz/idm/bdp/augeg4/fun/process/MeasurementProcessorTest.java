@@ -15,8 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
-import static it.bz.idm.bdp.augeg4.fun.process.MeasurementProcessor.MEASUREMENT_ID_O3;
-import static it.bz.idm.bdp.augeg4.fun.process.MeasurementProcessor.MEASUREMENT_ID_TEMPERATURA;
+import static it.bz.idm.bdp.augeg4.fun.process.MeasurementProcessor.*;
 import static org.junit.Assert.assertTrue;
 
 public class MeasurementProcessorTest {
@@ -58,8 +57,8 @@ public class MeasurementProcessorTest {
         RawMeasurement temperaturaEsterna = new RawMeasurement( new MeasurementId(2), 22.6);
 
         RawMeasurement O3 = new RawMeasurement(MEASUREMENT_ID_O3, 306);
-        RawMeasurement NO2 = new RawMeasurement(measurementProcessor.MEASUREMENT_ID_NO2, 92);
-        RawMeasurement NO = new RawMeasurement(measurementProcessor.MEASUREMENT_ID_NO, 79);
+        RawMeasurement NO2 = new RawMeasurement(MEASUREMENT_ID_NO2, 92);
+        RawMeasurement NO = new RawMeasurement(MEASUREMENT_ID_NO, 79);
         AugeG4RawData rawData = new AugeG4RawData("AIRQ10", new Date(), Arrays.asList(temperatura,temperaturaEsterna, O3,NO2,NO));
 
         // when
