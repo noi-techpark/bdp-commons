@@ -6,8 +6,6 @@
 
   - See `src/main/resources/META-INF/spring/application.properties`
   - See `src/main/resources/META-INF/spring/applicationContext.xml`
-  - Logsystem: `src/main/resources/log4j2.properties` (Make sure the log-files
-    are writable)
   - Staging and production parameters are read by ConnectorConfig using spring
     config, to override test config parameters they have to be set in operating
     system environment variables.
