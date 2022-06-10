@@ -14,8 +14,8 @@ import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 import it.bz.noi.sta.parkingforecast.configuration.ParkingForecstConfiguration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -25,7 +25,7 @@ import javax.annotation.PostConstruct;
 @PropertySource("classpath:odh-writer.properties")
 public abstract class AbstractParkingForecastJSONPusher extends NonBlockingJSONPusher {
 
-    private static final Logger LOG = LogManager.getLogger(AbstractParkingForecastJSONPusher.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractParkingForecastJSONPusher.class);
 
     protected String origin;
 

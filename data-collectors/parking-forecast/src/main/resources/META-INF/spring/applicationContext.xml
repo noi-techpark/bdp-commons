@@ -6,9 +6,11 @@
     <context:spring-configured/>
 
     <context:component-scan base-package="it.bz.idm.bdp,it.bz.noi.sta.parkingforecast"/>
-    <bean class="it.bz.noi.sta.parkingforecast.MainParkingForecast" id="jobScheduler"/>
-    <task:scheduler id="Scheduler" pool-size="10" />
+    <context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
+
+	<bean class="it.bz.noi.sta.parkingforecast.MainParkingForecast" id="jobScheduler"/>
+	<task:scheduler id="Scheduler" pool-size="${SCHEDULER_POOL_SIZE:10}" />
     <task:scheduled-tasks scheduler="Scheduler">
-        <task:scheduled ref="jobScheduler" method="execute" cron="0 */10 * * * ?" />
+        <task:scheduled ref="jobScheduler" method="execute" cron="${SCHEDULER_CRON_EXECUTE:0 */10 * * * ?}" />
     </task:scheduled-tasks>
 </beans>

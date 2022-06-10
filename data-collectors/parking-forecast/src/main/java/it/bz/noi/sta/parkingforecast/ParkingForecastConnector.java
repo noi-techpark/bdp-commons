@@ -17,8 +17,8 @@ import com.google.gson.JsonObject;
 import it.bz.noi.sta.parkingforecast.configuration.ParkingForecstConfiguration;
 import it.bz.noi.sta.parkingforecast.dto.ParkingForecastDataPoint;
 import it.bz.noi.sta.parkingforecast.dto.ParkingForecastResult;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ import java.util.List;
 @Service
 public class ParkingForecastConnector {
 
-	private static final Logger LOG = LogManager.getLogger(ParkingForecastConnector.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ParkingForecastConnector.class);
 
 	@Autowired
 	private ParkingForecstConfiguration connectorConfiguration;

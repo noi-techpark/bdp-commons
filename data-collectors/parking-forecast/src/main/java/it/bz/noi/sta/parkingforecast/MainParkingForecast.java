@@ -17,8 +17,8 @@ import it.bz.noi.sta.parkingforecast.dto.ParkingForecastResult;
 import it.bz.noi.sta.parkingforecast.pusher.AbstractParkingForecastJSONPusher;
 import it.bz.noi.sta.parkingforecast.pusher.ParkingSensorJSONPusher;
 import it.bz.noi.sta.parkingforecast.pusher.ParkingStationJSONPusher;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +38,7 @@ public class MainParkingForecast {
 	@Autowired
 	private ParkingForecastConnector staParkingForecastConnector;
 
-	private static Logger LOG = LogManager.getLogger(MainParkingForecast.class);
+	private static Logger LOG = LoggerFactory.getLogger(MainParkingForecast.class);
 
 	public void execute() {
 		LOG.info("MainParkingForecast execute");
