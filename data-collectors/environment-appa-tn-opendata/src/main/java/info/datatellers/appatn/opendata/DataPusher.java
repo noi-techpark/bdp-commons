@@ -388,10 +388,10 @@ public class DataPusher extends NonBlockingJSONPusher {
 			for (String polluterName : pollutersNames) {
 				// rootMap is emptied every 30 days so that the data syncing doesn't take too
 				// much time.
-				JobScheduler.numberOfRecords += rootMap.getBranch().get(origin + SEPARATOR + stationIds[looper])
-						.getBranch().get(polluterName).getData().size();
-				List<RecordDtoImpl> measurements = new ArrayList<>();
 				try {
+					JobScheduler.numberOfRecords += rootMap.getBranch().get(origin + SEPARATOR + stationIds[looper])
+							.getBranch().get(polluterName).getData().size();
+					List<RecordDtoImpl> measurements = new ArrayList<>();
 					rootMap.getBranch().get(origin + SEPARATOR + stationIds[looper]).getBranch().get(polluterName)
 							.setData(measurements);
 				} catch (NullPointerException e) {
