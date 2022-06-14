@@ -17,7 +17,6 @@ already available in the Open Data Hub.
 	- [Running tests](#running-tests)
 	- [Local execution with an Embedded Tomcat](#local-execution-with-an-embedded-tomcat)
 	- [Deployment](#deployment)
-	- [Mapping of Tipi and SottoTipi Event](#mapping-of-tipi-and-sottotipi-event)
 	- [Information](#information)
 		- [Support](#support)
 		- [Contributing](#contributing)
