@@ -1,6 +1,6 @@
 [
 	{
-		"key": "PARKING-FORECAST-30",
+		"key": "parking-forecast-30",
 		"unit": "",
 		"description": "30 minutes forecast",
 		"rtype": "Forecast",
@@ -8,7 +8,7 @@
 		"property": "mean"
 	},
 	{
-		"key": "PARKING-FORECAST-60",
+		"key": "parking-forecast-60",
 		"unit": "",
 		"description": "60 minutes forecast",
 		"rtype": "Forecast",
@@ -16,7 +16,7 @@
 		"property": "mean"
 	},
 	{
-		"key": "PARKING-FORECAST-90",
+		"key": "parking-forecast-90",
 		"unit": "",
 		"description": "90 minutes forecast",
 		"rtype": "Forecast",
@@ -24,7 +24,7 @@
 		"property": "mean"
 	},
 	{
-		"key": "PARKING-FORECAST-120",
+		"key": "parking-forecast-120",
 		"unit": "",
 		"description": "120 minutes forecast",
 		"rtype": "Forecast",
@@ -32,7 +32,7 @@
 		"property": "mean"
 	},
 	{
-		"key": "PARKING-FORECAST-150",
+		"key": "parking-forecast-150",
 		"unit": "",
 		"description": "150 minutes forecast",
 		"rtype": "Forecast",
@@ -40,7 +40,7 @@
 		"property": "mean"
 	},
 	{
-		"key": "PARKING-FORECAST-180",
+		"key": "parking-forecast-180",
 		"unit": "",
 		"description": "180 minutes forecast",
 		"rtype": "Forecast",
@@ -48,7 +48,7 @@
 		"property": "mean"
 	},
 	{
-		"key": "PARKING-FORECAST-210",
+		"key": "parking-forecast-210",
 		"unit": "",
 		"description": "210 minutes forecast",
 		"rtype": "Forecast",
@@ -56,7 +56,7 @@
 		"property": "mean"
 	},
 	{
-		"key": "PARKING-FORECAST-240",
+		"key": "parking-forecast-240",
 		"unit": "",
 		"description": "240 minutes forecast",
 		"rtype": "Forecast",
@@ -64,7 +64,7 @@
 		"property": "mean"
 	},
 	{
-		"key": "PARKING-FORECAST-LOW-30",
+		"key": "parking-forecast-low-30",
 		"unit": "",
 		"description": "conservative 30 minutes forecast",
 		"rtype": "Forecast",
@@ -72,7 +72,7 @@
 		"property": "lo"
 	},
 	{
-		"key": "PARKING-FORECAST-LOW-60",
+		"key": "parking-forecast-low-60",
 		"unit": "",
 		"description": "conservative 60 minutes forecast",
 		"rtype": "Forecast",
@@ -80,7 +80,7 @@
 		"property": "lo"
 	},
 	{
-		"key": "PARKING-FORECAST-LOW-90",
+		"key": "parking-forecast-low-90",
 		"unit": "",
 		"description": "conservative 90 minutes forecast",
 		"rtype": "Forecast",
@@ -88,7 +88,7 @@
 		"property": "lo"
 	},
 	{
-		"key": "PARKING-FORECAST-LOW-120",
+		"key": "parking-forecast-low-120",
 		"unit": "",
 		"description": "conservative 120 minutes forecast",
 		"rtype": "Forecast",
@@ -96,7 +96,7 @@
 		"property": "lo"
 	},
 	{
-		"key": "PARKING-FORECAST-LOW-150",
+		"key": "parking-forecast-low-150",
 		"unit": "",
 		"description": "conservative 150 minutes forecast",
 		"rtype": "Forecast",
@@ -104,7 +104,7 @@
 		"property": "lo"
 	},
 	{
-		"key": "PARKING-FORECAST-LOW-180",
+		"key": "parking-forecast-low-180",
 		"unit": "",
 		"description": "conservative 180 minutes forecast",
 		"rtype": "Forecast",
@@ -112,7 +112,7 @@
 		"property": "lo"
 	},
 	{
-		"key": "PARKING-FORECAST-LOW-210",
+		"key": "parking-forecast-low-210",
 		"unit": "",
 		"description": "conservative 210 minutes forecast",
 		"rtype": "Forecast",
@@ -120,7 +120,7 @@
 		"property": "lo"
 	},
 	{
-		"key": "PARKING-FORECAST-LOW-240",
+		"key": "parking-forecast-low-240",
 		"unit": "",
 		"description": "conservative 240 minutes forecast",
 		"rtype": "Forecast",
@@ -128,7 +128,7 @@
 		"property": "lo"
 	},
 	{
-		"key": "PARKING-FORECAST-HIGH-30",
+		"key": "parking-forecast-high-30",
 		"unit": "",
 		"description": "optimistic 30 minutes forecast",
 		"rtype": "Forecast",
@@ -136,7 +136,7 @@
 		"property": "hi"
 	},
 	{
-		"key": "PARKING-FORECAST-HIGH-60",
+		"key": "parking-forecast-high-60",
 		"unit": "",
 		"description": "optimistic 60 minutes forecast",
 		"rtype": "Forecast",
@@ -144,7 +144,7 @@
 		"property": "hi"
 	},
 	{
-		"key": "PARKING-FORECAST-HIGH-90",
+		"key": "parking-forecast-high-90",
 		"unit": "",
 		"description": "optimistic 90 minutes forecast",
 		"rtype": "Forecast",
@@ -152,7 +152,7 @@
 		"property": "hi"
 	},
 	{
-		"key": "PARKING-FORECAST-HIGH-120",
+		"key": "parking-forecast-high-120",
 		"unit": "",
 		"description": "optimistic 120 minutes forecast",
 		"rtype": "Forecast",
@@ -160,7 +160,7 @@
 		"property": "hi"
 	},
 	{
-		"key": "PARKING-FORECAST-HIGH-150",
+		"key": "parking-forecast-high-150",
 		"unit": "",
 		"description": "optimistic 150 minutes forecast",
 		"rtype": "Forecast",
@@ -168,7 +168,7 @@
 		"property": "hi"
 	},
 	{
-		"key": "PARKING-FORECAST-HIGH-180",
+		"key": "parking-forecast-high-180",
 		"unit": "",
 		"description": "optimistic 180 minutes forecast",
 		"rtype": "Forecast",
@@ -176,7 +176,7 @@
 		"property": "hi"
 	},
 	{
-		"key": "PARKING-FORECAST-HIGH-210",
+		"key": "parking-forecast-high-210",
 		"unit": "",
 		"description": "optimistic 210 minutes forecast",
 		"rtype": "Forecast",
@@ -184,7 +184,7 @@
 		"property": "hi"
 	},
 	{
-		"key": "PARKING-FORECAST-HIGH-240",
+		"key": "parking-forecast-high-240",
 		"unit": "",
 		"description": "optimistic 240 minutes forecast",
 		"rtype": "Forecast",
@@ -192,7 +192,7 @@
 		"property": "hi"
 	},
 	{
-		"key": "PARKING-FORECAST-RMSE-30",
+		"key": "parking-forecast-rmse-30",
 		"unit": "",
 		"description": "mean square error of 30 minutes forecasts",
 		"rtype": "Forecast",
@@ -200,7 +200,7 @@
 		"property": "rmse"
 	},
 	{
-		"key": "PARKING-FORECAST-RMSE-60",
+		"key": "parking-forecast-rmse-60",
 		"unit": "",
 		"description": "mean square error of 60 minutes forecasts",
 		"rtype": "Forecast",
@@ -208,7 +208,7 @@
 		"property": "rmse"
 	},
 	{
-		"key": "PARKING-FORECAST-RMSE-90",
+		"key": "parking-forecast-rmse-90",
 		"unit": "",
 		"description": "mean square error of 90 minutes forecasts",
 		"rtype": "Forecast",
@@ -216,7 +216,7 @@
 		"property": "rmse"
 	},
 	{
-		"key": "PARKING-FORECAST-RMSE-120",
+		"key": "parking-forecast-rmse-120",
 		"unit": "",
 		"description": "mean square error of 120 minutes forecasts",
 		"rtype": "Forecast",
@@ -224,7 +224,7 @@
 		"property": "rmse"
 	},
 	{
-		"key": "PARKING-FORECAST-RMSE-150",
+		"key": "parking-forecast-rmse-150",
 		"unit": "",
 		"description": "mean square error of 150 minutes forecasts",
 		"rtype": "Forecast",
@@ -232,7 +232,7 @@
 		"property": "rmse"
 	},
 	{
-		"key": "PARKING-FORECAST-RMSE-180",
+		"key": "parking-forecast-rmse-180",
 		"unit": "",
 		"description": "mean square error of 180 minutes forecasts",
 		"rtype": "Forecast",
@@ -240,7 +240,7 @@
 		"property": "rmse"
 	},
 	{
-		"key": "PARKING-FORECAST-RMSE-210",
+		"key": "parking-forecast-rmse-210",
 		"unit": "",
 		"description": "mean square error of 210 minutes forecasts",
 		"rtype": "Forecast",
@@ -248,7 +248,7 @@
 		"property": "rmse"
 	},
 	{
-		"key": "PARKING-FORECAST-RMSE-240",
+		"key": "parking-forecast-rmse-240",
 		"unit": "",
 		"description": "mean square error of 240 minutes forecasts",
 		"rtype": "Forecast",
