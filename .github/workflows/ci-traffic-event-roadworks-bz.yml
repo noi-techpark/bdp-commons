@@ -128,6 +128,7 @@ jobs:
           # Logging
           X_ROOT_LOG_LEVEL: info
           X_LOG_LEVEL: info
+          X_LOG_STYLE: json
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
