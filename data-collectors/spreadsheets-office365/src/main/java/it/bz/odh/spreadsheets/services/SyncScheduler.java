@@ -89,7 +89,6 @@ public class SyncScheduler {
         logger.info("Cron job manual sync started");
         Workbook sheet = workbookUtil.checkWorkbook();
         if (sheet != null) {
-
             logger.info("Syncing data with BDP");
             syncDataWithBdp(sheet);
             logger.info("Done: Syncing data with BDP");
@@ -101,7 +100,7 @@ public class SyncScheduler {
 
     /**
      * Converts a XSSFWorkbook to BDP Stations
-     * 
+     *
      * @throws Exception
      */
     private void syncDataWithBdp(Workbook workbook) throws Exception {
@@ -189,7 +188,7 @@ public class SyncScheduler {
      * Synchronizes the files from a sharepoint folder with an S3 bucket
      * First the object listing from S3 gets fetched and then only files that are
      * new or have a more recent lastModifiedDate get uploaded
-     * 
+     *
      * @param dtos
      * @throws Exception
      */
