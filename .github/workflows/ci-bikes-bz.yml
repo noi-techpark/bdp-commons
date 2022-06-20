@@ -67,9 +67,9 @@ jobs:
 
           # Data Origin Configuration
           X_endpoint_defaultUri: ${{ secrets.BIKES_BZ_ENDPOINT }}
-          X_CRON_STATION_SYNC: "0 2 6 * * *"
-          X_CRON_TYPE_SYNC: "0 0 0 * * 0"
-          X_CRON_HISTORY_SYNC: "0 3 6 * * *"
+          X_CRON_STATION_SYNC: "0 */10 * * * *"
+          X_CRON_TYPE_SYNC: "0 */10 * * * *"
+          X_CRON_HISTORY_SYNC: "0 15 */1 * * *"
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -134,9 +134,9 @@ jobs:
 
           # Data Origin Configuration
           X_endpoint_defaultUri: ${{ secrets.BIKES_BZ_ENDPOINT }}
-          X_CRON_STATION_SYNC: "0 2 6 * * *"
-          X_CRON_TYPE_SYNC: "0 0 0 * * 0"
-          X_CRON_HISTORY_SYNC: "0 3 6 * * *"
+          X_CRON_STATION_SYNC: "0 */10 * * * *"
+          X_CRON_TYPE_SYNC: "0 */10 * * * *"
+          X_CRON_HISTORY_SYNC: "0 15 */1 * * *"
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
