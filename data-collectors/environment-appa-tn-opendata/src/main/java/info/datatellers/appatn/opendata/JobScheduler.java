@@ -40,9 +40,9 @@ public class JobScheduler {
     {
         LOG.info("Starting Data Collector execution...");
         DataMapDto<RecordDtoImpl> rootMap = constructRootMap();
-		String fromDate = String.valueOf(dataPusher.getDateOfLastRecord(rb.getString("odh.station.origin")+DataPusher.SEPARATOR+"2","co2",3600));
+		String fromDate = String.valueOf(dataPusher.getDateOfLastRecord(rb.getString("odh.station.origin")+DataPusher.SEPARATOR+"2","nitrogen-dioxide",3600));
         String toDate = String.valueOf(dataPusher.getLastRetrievedDate());
-        if (fromDate.contains("1969"))
+        if (fromDate.contains("1970"))
         {
             //Database doesn't contain data. Historic function calling from 2017-01-01 to last retrieving date (yesterday).
             LOG.info("Historic function called.");
