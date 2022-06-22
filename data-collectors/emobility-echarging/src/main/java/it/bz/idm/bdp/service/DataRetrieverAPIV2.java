@@ -16,6 +16,8 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -29,6 +31,9 @@ import it.bz.idm.bdp.service.dto.ChargerDtoV2;
 @Component
 @PropertySource({ "classpath:/META-INF/spring/types.properties", "classpath:/META-INF/spring/application.properties" })
 public class DataRetrieverAPIV2 {
+
+	private static final Logger LOG = LoggerFactory.getLogger(DataRetrieverAPIV2.class);
+
 	private HttpClientBuilder builder = HttpClients.custom();
 	private CloseableHttpClient client;
 	private HttpClientContext localContext;
@@ -67,6 +72,7 @@ public class DataRetrieverAPIV2 {
 			response.close();
 			return data;
 		} catch (IOException e) {
+			LOG.error("error occurred during fetching stations with message: {}", e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -81,6 +87,7 @@ public class DataRetrieverAPIV2 {
 			});
 			return stations;
 		} catch (IOException e) {
+			LOG.error("error occurred during mapping stations with message: {}", e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
