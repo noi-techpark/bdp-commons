@@ -86,7 +86,7 @@ public class MainParkingForecast {
 						Object propertyValue = forecastDataPoint.isPresent()? forecastDataPoint.get().getProperty(datatypeConfiguration.getProperty()): null;
 						if (propertyValue != null) {
 							dataMap.addRecord(stationCode, datatypeConfiguration.getKey(),
-								new SimpleRecordDto(timestampMillis, propertyValue, datatypeConfiguration.getPeriod()));
+								new SimpleRecordDto(forecastDatatypeTimestamp.toEpochSecond() * 1000, propertyValue, datatypeConfiguration.getPeriod()));
 							pushDataCount++;
 						} else
 							skipDataCount++;
