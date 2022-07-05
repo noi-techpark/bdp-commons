@@ -106,9 +106,14 @@ public class MainElaborations
 					// 2019-07-10 d@vide.bz: go back 1 hour from last time elaboration because data can't be in realtime
 					lastTimestamp -= 3600L * 1000L;
 				}
+				
+				// 2022-07-05 d@vide.bz: temporary workaround that reduce the problem of pushData not updating values
+				//                       don't write data for windows near now because the probability that are incomplete is high
+				long horizon = now - 45L * 60L * 1000L;
+				LOG.debug("Horizon: " + horizon);
 
 				// loop over the windows
-				while (lastTimestamp + winStepLength.length < now) // loop until the window is entirely in the past
+				while (lastTimestamp + winStepLength.length < horizon) // loop until the window is entirely in the past
 				{
 					LOG.debug("elaborating station: " + station.getName() + " window from: " + new java.sql.Timestamp(lastTimestamp).toString()
 					+ " to: " + new java.sql.Timestamp(lastTimestamp + winStepLength.length).toString());
