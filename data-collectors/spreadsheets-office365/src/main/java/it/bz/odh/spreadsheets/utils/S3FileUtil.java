@@ -67,7 +67,7 @@ public class S3FileUtil {
 
     /**
      * Uploads a fileInputStream to a S3 bucket
-     * 
+     *
      * @param fileInputStream
      * @param fileName
      * @param contentLength
@@ -78,20 +78,20 @@ public class S3FileUtil {
      */
     public void uploadFile(InputStream fileInputStream, String fileName, int contentLength)
             throws AmazonServiceException, AmazonClientException, InterruptedException {
-        logger.info("upload of file: " + fileName + " to S3");
+        logger.info("upload of file: {} to S3", fileName);
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(contentLength);
 
         Upload upload = transferManager.upload(bucketName, fileName, fileInputStream, objectMetadata);
         // upload.waitForCompletion();
 
-        logger.info("upload of file: " + fileName + " to S3 done");
+        logger.info("upload of file: {} to S3 done", fileName);
     }
 
     /**
      * Returns the object list of a S3 bucket in form of a map with key: objectname
      * and value: lastModifiedDate
-     * 
+     *
      * @return a map of the objects
      */
     public Map getObjectListing() {

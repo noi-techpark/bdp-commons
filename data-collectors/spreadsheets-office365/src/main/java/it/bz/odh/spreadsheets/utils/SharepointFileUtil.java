@@ -23,98 +23,97 @@ import it.bz.odh.spreadsheets.services.microsoft.AuthTokenGenerator;
 @Component
 public class SharepointFileUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(SharepointFileUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(SharepointFileUtil.class);
 
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
+	@Autowired
+	private AuthTokenGenerator authTokenGenerator;
 
-    @Autowired
-    private SharepointDateUtil dateUtil;
+	@Autowired
+	private SharepointDateUtil dateUtil;
 
-    @Value("${sharepoint.host}")
-    private String sharePointHost;
+	@Value("${sharepoint.host}")
+	private String sharePointHost;
 
-    @Value("${sharepoint.site-id}")
-    private String siteId;
+	@Value("${sharepoint.site-id}")
+	private String siteId;
 
-    @Value("${sharepoint.path-to-files}")
-    private String pathToFiles;
+	@Value("${sharepoint.path-to-files}")
+	private String pathToFiles;
 
-    private URL pathToImage;
+	private URL pathToImage;
 
-    
+	public HttpURLConnection fetchFile(String name) throws Exception {
 
+		String token = authTokenGenerator.getToken();
 
-    public HttpURLConnection fetchFile(String name) throws Exception {
+		pathToImage = new URL(
+				"https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/"
+						+ siteId + "/Shared%20Documents/" + pathToFiles + name + "')/$value");
 
-        String token = authTokenGenerator.getToken();
+		// Test that both URLs are valid
+		pathToImage.toURI(); // does the extra checking required for validation of URI
 
-        pathToImage = new URL(
-                "https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/"
-                        + siteId + "/Shared%20Documents/" + pathToFiles + name + "')/$value");
+		HttpURLConnection conn = (HttpURLConnection) pathToImage.openConnection();
 
-        // Test that both URLs are valid
-        pathToImage.toURI(); // does the extra checking required for validation of URI
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Authorization", "Bearer " + token);
 
-        HttpURLConnection conn = (HttpURLConnection) pathToImage.openConnection();
+		int httpResponseCode = conn.getResponseCode();
+		if (httpResponseCode == HTTPResponse.SC_OK) {
+			logger.info("Fetching file done");
+			return conn;
 
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Authorization", "Bearer " + token);
+		} else {
+			String errorMessage = String.format(
+					"Fetching workbook failed. Connection returned HTTP code: %s with message: %s",
+					httpResponseCode, conn.getResponseMessage());
+			logger.error(errorMessage);
+			throw new IOException(errorMessage);
+		}
+	}
 
-        int httpResponseCode = conn.getResponseCode();
-        if (httpResponseCode == HTTPResponse.SC_OK) {
-            logger.info("Fetching file done");
-            return conn;
+	public Date getLastTimeModified(String name) throws Exception {
 
-        } else {
-            String errorMessage = String.format("Fetching workbook failed. Connection returned HTTP code: %s with message: %s",
-                    httpResponseCode, conn.getResponseMessage());
-            logger.error(errorMessage);
-            throw new IOException(errorMessage);
-        }
-    }
+		String token = authTokenGenerator.getToken();
 
-    public Date getLastTimeModified(String name) throws Exception {
+		pathToImage = new URL(
+				"https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/"
+						+ siteId + "/Shared%20Documents/" + pathToFiles + name + "')/TimeLastModified/$value");
 
-        String token = authTokenGenerator.getToken();
+		// Test that both URLs are valid
+		pathToImage.toURI(); // does the extra checking required for validation of URI
 
-        pathToImage = new URL(
-                "https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/"
-                        + siteId + "/Shared%20Documents/" + pathToFiles + name + "')/TimeLastModified/$value");
+		HttpURLConnection conn = (HttpURLConnection) pathToImage.openConnection();
 
-        // Test that both URLs are valid
-        pathToImage.toURI(); // does the extra checking required for validation of URI
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Authorization", "Bearer " + token);
+		conn.setRequestProperty("Accept", "application/json");
+		conn.setRequestProperty("odata", "verbose");
 
-        HttpURLConnection conn = (HttpURLConnection) pathToImage.openConnection();
+		int httpResponseCode = conn.getResponseCode();
+		if (httpResponseCode == HTTPResponse.SC_OK) {
+			logger.info("Fetching file done");
+			StringBuilder response;
+			try (BufferedReader in = new BufferedReader(
+					new InputStreamReader(conn.getInputStream()))) {
 
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Authorization", "Bearer " + token);
-        conn.setRequestProperty("Accept", "application/json");
-        conn.setRequestProperty("odata", "verbose");
+				String inputLine;
+				response = new StringBuilder();
+				while ((inputLine = in.readLine()) != null) {
+					response.append(inputLine);
+				}
+			}
+			String dateTime = response.toString();
 
-        int httpResponseCode = conn.getResponseCode();
-        if (httpResponseCode == HTTPResponse.SC_OK) {
-            logger.info("Fetching file done");
-            StringBuilder response;
-            try (BufferedReader in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()))) {
+			logger.info("Getting TimeLastModified of file: {} done: {}", name, dateTime);
+			return dateUtil.parseDate(dateTime);
 
-                String inputLine;
-                response = new StringBuilder();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-            }
-            String dateTime = response.toString();
-            
-            logger.info("Getting TimeLastModified of file: " + name + " done: " + dateTime);
-            return dateUtil.parseDate(dateTime);
-
-        } else {
-            String errorMessage = String.format("Fetching last time modified of file: " +name + " failed. Connection returned HTTP code: %s with message: %s",
-                    httpResponseCode, conn.getResponseMessage());
-            logger.error(errorMessage);
-            throw new IOException(errorMessage);
-        }
-    }
+		} else {
+			String errorMessage = String.format(
+					"Fetching last time modified of file: %s failed. Connection returned HTTP code: %s with message: %s",
+					name, httpResponseCode, conn.getResponseMessage());
+			logger.error(errorMessage);
+			throw new IOException(errorMessage);
+		}
+	}
 }

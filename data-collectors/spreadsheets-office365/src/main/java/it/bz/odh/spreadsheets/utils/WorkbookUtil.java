@@ -46,8 +46,8 @@ public class WorkbookUtil {
     // to save lastChangeDate of last fetch
     private Date lastChangeDate;
 
-    private URL timeLastModified;
-    private URL downloadWorkbook;
+    private URL timeLastModifiedURL;
+    private URL downloadWorkbookURL;
 
     private static final Logger logger = LoggerFactory.getLogger(WorkbookUtil.class);
 
@@ -57,12 +57,12 @@ public class WorkbookUtil {
     @PostConstruct
     private void postConstruct() throws MalformedURLException, URISyntaxException {
 
-        downloadWorkbook = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/$value");
-        timeLastModified = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/TimeLastModified/$value");
+        downloadWorkbookURL = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/$value");
+        timeLastModifiedURL = new URL("https://" + sharePointHost + "/sites/" + siteId + "/_api/web/getfilebyserverrelativeurl('/sites/" + siteId + "/Shared%20Documents/" + pathToDoc + "')/TimeLastModified/$value");
 
         //Test that both URLs are valid
-        downloadWorkbook.toURI(); // does the extra checking required for validation of URI
-        timeLastModified.toURI(); // does the extra checking required for validation of URI
+        downloadWorkbookURL.toURI(); // does the extra checking required for validation of URI
+        timeLastModifiedURL.toURI(); // does the extra checking required for validation of URI
     }
 
     /**
@@ -93,7 +93,7 @@ public class WorkbookUtil {
     private Workbook getWorkbook(String token) throws IOException {
         logger.info("Fetching workbook...");
 
-        HttpURLConnection conn = (HttpURLConnection) downloadWorkbook.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) downloadWorkbookURL.openConnection();
 
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Authorization", "Bearer " + token);
@@ -115,7 +115,7 @@ public class WorkbookUtil {
     private Date getTimeLastModified(String token) throws IOException, ParseException {
         logger.info("Getting TimeLastModified...");
 
-        HttpURLConnection conn = (HttpURLConnection) timeLastModified.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) timeLastModifiedURL.openConnection();
 
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Authorization", "Bearer " + token);
@@ -136,7 +136,7 @@ public class WorkbookUtil {
                 }
             }
             String dateTime = response.toString();
-            logger.info("Getting TimeLastModified done: " + dateTime);
+            logger.info("Getting TimeLastModified done: {}", dateTime);
             return dateUtil.parseDate(dateTime);
         } else {
             String errorMessage = String.format("Get TimeLastModified failed. Connection returned HTTP code: %s with message: %s",
