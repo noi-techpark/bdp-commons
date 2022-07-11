@@ -7,13 +7,13 @@ public class ClimatologyDto {
     
     private int month;
     
-    private double tmin;
+    private Double tmin;
     
-    private double tmax;
+    private Double tmax;
 
-    private double tmean;
+    private Double tmean;
     
-    private double prec;
+    private Double prec;
     
     private int id;
     
@@ -35,35 +35,35 @@ public class ClimatologyDto {
         this.month = month;
     }
 
-    public double getTmin() {
+    public Double getTmin() {
         return tmin;
     }
 
-    public void setTmin(double tmin) {
+    public void setTmin(Double tmin) {
         this.tmin = tmin;
     }
 
-    public double getTmax() {
+    public Double getTmax() {
         return tmax;
     }
 
-    public void setTmax(double tmax) {
+    public void setTmax(Double tmax) {
         this.tmax = tmax;
     }
 
-    public double getTmean() {
+    public Double getTmean() {
         return tmean;
     }
 
-    public void setTmean(double tmean) {
+    public void setTmean(Double tmean) {
         this.tmean = tmean;
     }
 
-    public double getPrec() {
+    public Double getPrec() {
         return prec;
     }
 
-    public void setPrec(double prec) {
+    public void setPrec(Double prec) {
         this.prec = prec;
     }
 
