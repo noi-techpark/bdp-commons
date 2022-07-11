@@ -159,7 +159,7 @@ public class SyncScheduler {
      */
     @Scheduled(cron = "${scheduler.job_climateDaily}")
     public void syncJobClimateDaily() throws IOException {
-        LOG.info("Cron job C started: Pushing cliamte daily measurements for {}", odhClient.getIntegreenTypology());
+        LOG.info("Cron job C started: Pushing climate daily measurements for {}", odhClient.getIntegreenTypology());
 
         DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
 

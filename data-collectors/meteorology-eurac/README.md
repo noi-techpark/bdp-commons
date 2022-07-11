@@ -1,22 +1,18 @@
 # Eurac meteorology Data Collector
 
-> TODO: Replace all "helloworld" or TODO sections with your documenation.
-> Please, do not write general information that is already contained inside the
-> general [Open Data Hub Mobility - Data Collectors README](../../README.md)
+[![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-meteorology-eurac.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-meteorology-eurac.yml)
 
-[![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-helloworld.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-helloworld.yml)
-
-> TODO: Describe this data collector shortly:  This **helloworld** project is a
-> showcase on how data collector development works.
+Data collector for taking data from the Eurac Weather API and pushing it to Open Data Hub.
 
 **Table of Contents**
-- [Helloworld Data Collector](#helloworld-data-collector)
+- [Eurac meteorology Data Collector](#eurac-meteorology-data-collector)
 	- [Getting started](#getting-started)
+		- [Analysis](#analysis)
 		- [Prerequisites](#prerequisites)
 		- [Configuration](#configuration)
-		- [Additional information](#additional-information)
+	- [Packages and important classes](#packages-and-important-classes)
+	- [Implementation details](#implementation-details)
 
-> TODO: At the final end of this README update the Table Of Contents
 
 ## Getting started
 
@@ -27,18 +23,45 @@ chapters will only contain specific configuration and setup steps.
 These instructions will get you a copy of the project up and running on your
 local machine for development and testing purposes.
 
+### Analysis
+
+For details regarding mapping from data provided by the service and the data used by the opendatahub, please see this analysis document:
+[documentation/220701_SpecificheIntegrazioneODH_NOI.pdf](documentation/220701_SpecificheIntegrazioneODH_NOI.pdf)
+
 ### Prerequisites
 
 To build the project, the following prerequisites must be met:
 - Everything inside [Open Data Hub Mobility - Data Collectors README](../../README.md#prerequisites)
-- > **TODO** put your additional requisites here, do not add stuff that is already covered in the main README
 
 ### Configuration
 
-> TODO: Write your data collector configuration descriptions here
+  - See [src/main/resources/application.properties](src/main/resources/application.properties)
 
-### Additional information
+    please refer to the comments provided in the file, here you can configure the parameters for:
+		- CRON expressions for job intervals;
+    - the service endpoints (no credentials are required);
+    - request params required by the services (climate daily endpoint needs station id);
 
-> TODO: Add some additinal information, like what this DC does, how it works
-> Talks also about the original data source and eventually provide links or
-> documentation that describes the data that we retrieve
+## Packages and important classes:
+
+package **it.bz.idm.bdp.dcmeteoeurac**
+
+ - EuracClient class: provides functionality to get data from the Eurac API;
+ - OdhClient class: provides functionality to push data to the Open Data Hub platform;
+ - SyncScheduler class: provides functionality to schedule retrieve and push operations for Stations, DataTypes and Measurements.
+
+
+package **it.bz.idm.bdp.dcmeteoeurac.dto**  
+
+ - MetadataDto: used to convert JSON string provided by `/metadata` service into Java objects.
+ - ClimatologyDto: used to convert JSON string provided by `/climatologies` service into Java objects.
+ - ClimateDailyDto: used to convert JSON string provided by `/climate_daily` service into Java objects.
+
+
+## Implementation details:
+
+There are 3 scheduled jobs:
+
+- syncJobStations: synchronizes stations and data types. Stations are provided by EuracClient class as Metadata, meanwhile data types are described in the code based on the documentation (see [Analysis](#analysis));
+- syncJobClimatologies: synchronizes monthly climatology data. For detailed information about data mapping between Eurac API and Open Data Hub, see documentation ([Analysis](#analysis));
+- syncJobClimateDaily: synchronizes daily climate data. First, all Eurac stations are retrieved, then a separate request is made for each station to retrieve its daily climate data. This is because the `/climate_daily` endpoint returns too much data if no filter parameters are provided. For detailed information about data mapping between Eurac API and Open Data Hub, see documentation ([Analysis](#analysis));
