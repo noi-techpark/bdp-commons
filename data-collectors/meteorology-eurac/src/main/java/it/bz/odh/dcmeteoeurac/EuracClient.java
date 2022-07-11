@@ -23,7 +23,7 @@ import it.bz.odh.dcmeteoeurac.dto.MetadataDto;
 public class EuracClient {
     private static final String RESPONSE_CHARSET = "UTF-8";
 
-    private static final String STATION_ID_URL_PARAM = "#STATION_ID#";
+    private static final String STATION_ID_URL_PARAM = "%STATION_ID%";
 
     @Value("${endpoint.stations.url}")
     private String stationsUrl;
