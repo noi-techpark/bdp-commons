@@ -38,7 +38,8 @@ To build the project, the following prerequisites must be met:
   - See [src/main/resources/application.properties](src/main/resources/application.properties)
 
     please refer to the comments provided in the file, here you can configure the parameters for:
-		- CRON expressions for job intervals;
+
+    - CRON expressions for job intervals;
     - the service endpoints (no credentials are required);
     - request params required by the services (climate daily endpoint needs station id);
 
