@@ -180,7 +180,8 @@ public class HydrogenDataRetriever {
         List<HydrogenDto> dtoList = null;
         try {
             String responseString = callRemoteService();
-            dtoList = convertResponseToInternalDTO(responseString);
+			String cleanedString = responseString.replace("\n", "").replace("\t", "");
+            dtoList = convertResponseToInternalDTO(cleanedString);
         } catch (Exception ex) {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
             throw ex;
