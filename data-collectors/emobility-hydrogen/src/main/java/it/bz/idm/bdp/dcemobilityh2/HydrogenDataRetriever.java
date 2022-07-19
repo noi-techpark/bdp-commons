@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -112,7 +110,7 @@ public class HydrogenDataRetriever {
 
     /**
      * Performs the call to IIT service and returns exactly the response String without particular processing or formatting
-     * 
+     *
      * @return
      * @throws Exception
      */
@@ -150,7 +148,7 @@ public class HydrogenDataRetriever {
 
     /**
      * Converts the string returned by the IIT service in a more useful internal representation
-     * 
+     *
      * @param responseString
      * @return
      * @throws Exception
