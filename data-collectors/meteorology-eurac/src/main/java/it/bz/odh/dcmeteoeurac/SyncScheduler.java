@@ -78,6 +78,13 @@ public class SyncScheduler {
             StationDto station = new StationDto(getStationIdNOI(s), s.getName(), s.getLat(), s.getLon());
 
             station.setOrigin(odhClient.getProvenance().getLineage());
+            station.setElevation(s.getEle());
+
+            // As an exception, we add ID to the map because we need it for other methods,
+            // so it is not in the Map by default
+            s.setOtherField("id", s.getId());
+            station.setMetaData(s.getOtherFields());
+
             odhStationList.add(station);
         }
 

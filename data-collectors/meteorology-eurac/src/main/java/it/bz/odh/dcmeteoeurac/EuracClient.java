@@ -34,10 +34,11 @@ public class EuracClient {
     @Value("${endpoint.climateDaily.url}")
     private String climateDailyUrl;
 
-    public MetadataDto[] getStations() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-        HttpClient client = HttpClientBuilder.create().build();
+    private HttpClient client = HttpClientBuilder.create().build();
+
+    public MetadataDto[] getStations() throws IOException {
         HttpResponse response = client.execute(new HttpGet(stationsUrl));
         HttpEntity entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
@@ -45,25 +46,17 @@ public class EuracClient {
     }
 
     public ClimatologyDto[] getClimatologies() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        HttpClient client = HttpClientBuilder.create().build();
         HttpResponse response = client.execute(new HttpGet(climatologiesUrl));
         HttpEntity entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
-
         return objectMapper.readValue(responseString, ClimatologyDto[].class);
     }
 
     public ClimateDailyDto[] getClimateDaily(int stationId) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        HttpClient client = HttpClientBuilder.create().build();
         HttpResponse response = client
                 .execute(new HttpGet(climateDailyUrl.replace(STATION_ID_URL_PARAM, String.valueOf(stationId))));
         HttpEntity entity = response.getEntity();
         String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
-
         return objectMapper.readValue(responseString, ClimateDailyDto[].class);
     }
 }
