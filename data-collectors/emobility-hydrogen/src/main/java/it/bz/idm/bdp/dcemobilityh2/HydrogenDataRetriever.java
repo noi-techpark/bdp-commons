@@ -180,7 +180,9 @@ public class HydrogenDataRetriever {
         List<HydrogenDto> dtoList = null;
         try {
             String responseString = callRemoteService();
-			String cleanedString = responseString.replace("\n", "").replace("\t", "");
+
+			// removes paymenttypes from XML response
+			String cleanedString = responseString.replaceAll("<paymenttypes>[\\s\\S]*?</paymenttypes>","");
             dtoList = convertResponseToInternalDTO(cleanedString);
         } catch (Exception ex) {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
