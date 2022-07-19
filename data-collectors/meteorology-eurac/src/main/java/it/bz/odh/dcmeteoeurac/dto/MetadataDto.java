@@ -1,16 +1,20 @@
 package it.bz.odh.dcmeteoeurac.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MetadataDto {
-    
+
     private Double lat;
-    
+
     private Double lon;
-    
+
     private String name;
-    
+
+    @JsonProperty("id_source")
+    private String idSource;
+
     private int id;
 
     public Double getLat() {
@@ -43,5 +47,13 @@ public class MetadataDto {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getIdSource() {
+        return idSource;
+    }
+
+    public void setIdSource(String idSource) {
+        this.idSource = idSource;
     }
 }

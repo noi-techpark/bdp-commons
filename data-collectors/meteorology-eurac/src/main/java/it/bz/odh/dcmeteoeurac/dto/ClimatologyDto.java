@@ -1,6 +1,7 @@
 package it.bz.odh.dcmeteoeurac.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClimatologyDto {
@@ -18,6 +19,9 @@ public class ClimatologyDto {
     private int id;
     
     private String station;
+    
+    @JsonProperty("id_source")
+    private String idSource;
 
     public int getId() {
         return id;
@@ -73,5 +77,13 @@ public class ClimatologyDto {
 
     public void setStation(String station) {
         this.station = station;
+    }
+
+    public String getIdSource() {
+        return idSource;
+    }
+
+    public void setIdSource(String idSource) {
+        this.idSource = idSource;
     }
 }

@@ -65,6 +65,7 @@ public class SyncScheduler {
         LOG.info("Cron job A started: Sync Stations with type {} and data types", odhClient.getIntegreenTypology());
 
         List<DataTypeDto> odhDataTypeList = new ArrayList<>();
+
         odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_TMIN, "°C", "Minimum temperature", "min"));
         odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_TMAX, "°C", "Maximum temperature", "max"));
         odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_TMEAN, "°C", "Mean temperature", "mean"));
@@ -74,7 +75,7 @@ public class SyncScheduler {
 
         StationList odhStationList = new StationList();
         for (MetadataDto s : euracStations) {
-            StationDto station = new StationDto(STATION_ID_PREFIX + s.getId(), s.getName(), s.getLat(), s.getLon());
+            StationDto station = new StationDto(getStationIdNOI(s), s.getName(), s.getLat(), s.getLon());
 
             station.setOrigin(odhClient.getProvenance().getLineage());
             odhStationList.add(station);
@@ -113,7 +114,7 @@ public class SyncScheduler {
 
         for (ClimatologyDto climatology : climatologies) {
             if (prevStationId != climatology.getId()) {
-                stationMap = rootMap.upsertBranch(STATION_ID_PREFIX + climatology.getId());
+                stationMap = rootMap.upsertBranch(getStationIdNOI(climatology));
 
                 tMinMetricMap = stationMap.upsertBranch(DATATYPE_ID_TMIN);
                 tMaxMetricMap = stationMap.upsertBranch(DATATYPE_ID_TMAX);
@@ -166,7 +167,7 @@ public class SyncScheduler {
         MetadataDto[] euracStations = euracClient.getStations();
 
         for (MetadataDto station : euracStations) {
-            DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(STATION_ID_PREFIX + station.getId());
+            DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(getStationIdNOI(station));
 
             DataMapDto<RecordDtoImpl> tMinMetricMap = stationMap.upsertBranch(DATATYPE_ID_TMIN);
             DataMapDto<RecordDtoImpl> tMaxMetricMap = stationMap.upsertBranch(DATATYPE_ID_TMAX);
@@ -211,6 +212,22 @@ public class SyncScheduler {
         if (map != null) {
             measurement.setPeriod(period);
             map.getData().add(measurement);
+        }
+    }
+
+    private String getStationIdNOI(MetadataDto euracStation) {
+        return getStationIdNOI(euracStation.getIdSource(), euracStation.getId());
+    }
+
+    private String getStationIdNOI(ClimatologyDto climatology) {
+        return getStationIdNOI(climatology.getIdSource(), climatology.getId());
+    }
+
+    private String getStationIdNOI(String stationIdSource, int stationId) {
+        if (stationIdSource != null) {
+            return stationIdSource;
+        } else {
+            return STATION_ID_PREFIX + stationId;
         }
     }
 }
