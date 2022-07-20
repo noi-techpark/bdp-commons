@@ -10,8 +10,8 @@ Data collector for taking data from the Eurac Weather API and pushing it to Open
 		- [Analysis](#analysis)
 		- [Prerequisites](#prerequisites)
 		- [Configuration](#configuration)
-	- [Packages and important classes](#packages-and-important-classes)
-	- [Implementation details](#implementation-details)
+	- [Packages and important classes:](#packages-and-important-classes)
+	- [Implementation details:](#implementation-details)
 
 
 ## Getting started
@@ -26,7 +26,7 @@ local machine for development and testing purposes.
 ### Analysis
 
 For details regarding mapping from data provided by the service and the data used by the opendatahub, please see this analysis document:
-[documentation/220701_SpecificheIntegrazioneODH_NOI.pdf](documentation/220701_SpecificheIntegrazioneODH_NOI.pdf)
+[documentation/220718_SpecificheIntegrazioneODH_NOI.pdf](documentation/220718_SpecificheIntegrazioneODH_NOI.pdf)
 
 ### Prerequisites
 
@@ -52,7 +52,7 @@ package **it.bz.idm.bdp.dcmeteoeurac**
  - SyncScheduler class: provides functionality to schedule retrieve and push operations for Stations, DataTypes and Measurements.
 
 
-package **it.bz.idm.bdp.dcmeteoeurac.dto**  
+package **it.bz.idm.bdp.dcmeteoeurac.dto**
 
  - MetadataDto: used to convert JSON string provided by `/metadata` service into Java objects.
  - ClimatologyDto: used to convert JSON string provided by `/climatologies` service into Java objects.
