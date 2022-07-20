@@ -75,17 +75,19 @@ public class SyncScheduler {
 
         StationList odhStationList = new StationList();
         for (MetadataDto s : euracStations) {
-            StationDto station = new StationDto(getStationIdNOI(s), s.getName(), s.getLat(), s.getLon());
+            if (s.getIdSource() == null) { // id_source is null, we have to create a new station
+                StationDto station = new StationDto(getStationIdNOI(s), s.getName(), s.getLat(), s.getLon());
 
-            station.setOrigin(odhClient.getProvenance().getLineage());
-            station.setElevation(s.getEle());
+                station.setOrigin(odhClient.getProvenance().getLineage());
+                station.setElevation(s.getEle());
 
-            // As an exception, we add ID to the map because we need it for other methods,
-            // so it is not in the Map by default
-            s.setOtherField("id", s.getId());
-            station.setMetaData(s.getOtherFields());
+                // As an exception, we add ID to the map because we need it for other methods,
+                // It is not in the Map by default
+                s.setOtherField("id", s.getId());
+                station.setMetaData(s.getOtherFields());
 
-            odhStationList.add(station);
+                odhStationList.add(station);
+            }
         }
 
         try {
