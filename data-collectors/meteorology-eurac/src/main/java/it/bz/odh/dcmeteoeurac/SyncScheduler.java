@@ -171,11 +171,11 @@ public class SyncScheduler {
     public void syncJobClimateDaily() throws IOException {
         LOG.info("Cron job C started: Pushing climate daily measurements for {}", odhClient.getIntegreenTypology());
 
-        DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
-
         MetadataDto[] euracStations = euracClient.getStations();
 
         for (MetadataDto station : euracStations) {
+            DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+
             DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(getStationIdNOI(station));
 
             DataMapDto<RecordDtoImpl> tMinMetricMap = stationMap.upsertBranch(DATATYPE_ID_TMIN);
@@ -200,21 +200,18 @@ public class SyncScheduler {
                 addMeasurementToMap(precMetricMap, new SimpleRecordDto(timestamp, climateDaily.getPrec()),
                         climateDailyPeriod);
             }
+
+            try {
+                // Push data for every station separately to avoid out of memory errors
+                odhClient.pushData(rootMap);
+                LOG.info("Push data for station {} climate daily successful", station.getName());
+            } catch (WebClientRequestException e) {
+                LOG.error("Push data for station {} climate daily failed: Request exception: {}", station.getName(),
+                        e.getMessage());
+            }
         }
 
-        // Send the measurements to the Open Data Hub INBOUND API (writer)
-        // WARNING: stations and datatypes must already exist, otherwise this call will
-        // fail
-        // It does not throw any exception, it will just not insert that data (this is a
-        // known issue)
-        // Exception will only be thrown on connection errors here! Please refer to the
-        // writer log output or the database itself to see if data has been inserted
-        try {
-            odhClient.pushData(rootMap);
-            LOG.info("Cron job for climate daily successful");
-        } catch (WebClientRequestException e) {
-            LOG.error("Cron job for climate daily failed: Request exception: {}", e.getMessage());
-        }
+        LOG.info("Cron job for climate daily successful");
     }
 
     private void addMeasurementToMap(DataMapDto<RecordDtoImpl> map, SimpleRecordDto measurement, int period) {
