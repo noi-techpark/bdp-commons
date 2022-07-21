@@ -68,9 +68,9 @@ jobs:
           X_ODH_CLIENT_PERIOD_CLIMATEDAILY: 86400
 
           # Scheduler
-          X_SCHEDULER_JOB_STATIONS: 0 */12 * * * *
-          X_SCHEDULER_JOB_CLIMATOLOGIES:  0 */12 * * * *
-          X_SCHEDULER_JOB_CLIMATEDAILY:  0 */12 * * * *
+          X_SCHEDULER_JOB_STATIONS: 0 0 */12 * * *
+          X_SCHEDULER_JOB_CLIMATOLOGIES:  0 0 */12 * * *
+          X_SCHEDULER_JOB_CLIMATEDAILY:  0 0 */12 * * *
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -140,9 +140,9 @@ jobs:
   #         X_ODH_CLIENT_PERIOD_CLIMATEDAILY: 86400
 
   #         # Scheduler
-  #         X_SCHEDULER_JOB_STATIONS: 0 */12 * * * *
-  #         X_SCHEDULER_JOB_CLIMATOLOGIES:  0 */12 * * * *
-  #         X_SCHEDULER_JOB_CLIMATEDAILY:  0 */12 * * * *
+  #         X_SCHEDULER_JOB_STATIONS: 0 0 */12 * * *
+  #         X_SCHEDULER_JOB_CLIMATOLOGIES:  0 0 */12 * * *
+  #         X_SCHEDULER_JOB_CLIMATEDAILY:  0 0 */12 * * *
 
   #     - name: Build project
   #       uses: noi-techpark/github-actions/maven-build@v2
