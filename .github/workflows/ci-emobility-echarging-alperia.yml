@@ -73,8 +73,9 @@ jobs:
           X_app_callerId: NOI-Techpark
           X_app_dataOrigin: ALPERIA
           X_app_period: 600
-
-          X_SCHEDULER_CRON: 0 */5 * * * *
+          
+          # so that it doesnt run syncron with prod
+          X_SCHEDULER_CRON: 30 2/5 * * * *
           X_SCHEDULER_POOL_SIZE: 2
 
       - name: Build project

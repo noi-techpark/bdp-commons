@@ -88,9 +88,9 @@ public class DataRetrieverAPIV2 {
 		String responseEntity = fetchResponseEntity(env.getProperty("endpoint_path"));
 
 		// write api response to file for debug reasons
-		if (env.getProperty("endpoint_path").contains("alperia")) {
+		if (env.getProperty("endpoint_host").contains("alperia")) {
 			String ts = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-			String fileName = "log-" + ts + ".json";
+			String fileName = "api-logs/log-" + ts + ".json";
 			BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
 			writer.append(' ');
 			writer.append(responseEntity);
