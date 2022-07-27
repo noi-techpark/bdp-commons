@@ -82,6 +82,7 @@ public class DataRetrieverAPIV2 {
 		List<ChargerDtoV2> stations;
 
 		String responseEntity = fetchResponseEntity(env.getProperty("endpoint_path"));
+		LOG.debug("API response: {}", responseEntity);
 		try {
 			stations = mapper.readValue(responseEntity, new TypeReference<List<ChargerDtoV2>>() {
 			});
