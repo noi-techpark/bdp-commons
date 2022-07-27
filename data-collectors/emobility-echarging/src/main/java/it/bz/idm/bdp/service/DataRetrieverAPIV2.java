@@ -87,14 +87,15 @@ public class DataRetrieverAPIV2 {
 
 		String responseEntity = fetchResponseEntity(env.getProperty("endpoint_path"));
 
-
 		// write api response to file for debug reasons
-		String ts = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-		String fileName = "api-response-" + ts + ".json";
-		BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
-		writer.append(' ');
-		writer.append(responseEntity);
-		writer.close();
+		if (env.getProperty("endpoint_path").contains("alperia")) {
+			String ts = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+			String fileName = "api-logs/log-" + ts + ".json";
+			BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+			writer.append(' ');
+			writer.append(responseEntity);
+			writer.close();
+		}
 
 		try {
 			stations = mapper.readValue(responseEntity, new TypeReference<List<ChargerDtoV2>>() {
