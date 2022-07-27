@@ -53,40 +53,7 @@ public class ChargePusher extends NonBlockingJSONPusher {
 		}
 	};
 
-	@Override
-	public <T> DataMapDto<RecordDtoImpl> mapData(T rawData) {
-		if (rawData == null)
-			return null;
-
-		@SuppressWarnings("unchecked")
-		List<ChargerDtoV2> data = (List<ChargerDtoV2>) rawData;
-		DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
-		Date now = new Date();
-		Integer period = env.getProperty("app_period", Integer.class);
-		String plugStatusAvailable = env.getRequiredProperty("plug.status.available");
-		for (ChargerDtoV2 dto : data) {
-
-			if ("REMOVED".equals(dto.getState()))
-				continue;
-
-			DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<>();
-			Integer availableStations = 0;
-			for (ChargingPointsDtoV2 point : dto.getChargingPoints()) {
-				List<RecordDtoImpl> records = new ArrayList<>();
-				if (plugStatusAvailable.equals(point.getState()))
-					availableStations++;
-				SimpleRecordDto rec = new SimpleRecordDto(now.getTime(), availableStations.doubleValue());
-				rec.setPeriod(period);
-				records.add(rec);
-				DataMapDto<RecordDtoImpl> dataSet = new DataMapDto<>(records);
-				recordsByType.getBranch().put(DataTypeDto.NUMBER_AVAILABE, dataSet);
-			}
-			map.getBranch().put(dto.getId(), recordsByType);
-		}
-		return map;
-	}
-
-	public StationList map2bdp(List<ChargerDtoV2> fetchedStations) {
+	public StationList mapStations2bdp(List<ChargerDtoV2> fetchedStations) {
 		StationList stations = new StationList();
 		String origin = env.getProperty(ORIGIN_KEY);
 		for (ChargerDtoV2 dto : fetchedStations) {
@@ -122,7 +89,7 @@ public class ChargePusher extends NonBlockingJSONPusher {
 		return stations;
 	}
 
-	public StationList mapPlugs2Bdp(List<ChargerDtoV2> fetchedStations) {
+	public StationList mapPlugsStations2Bdp(List<ChargerDtoV2> fetchedStations) {
 		if (fetchedStations == null)
 			return null;
 		StationList stations = new StationList();
@@ -146,6 +113,39 @@ public class ChargePusher extends NonBlockingJSONPusher {
 			}
 		}
 		return stations;
+	}
+
+	@Override
+	public <T> DataMapDto<RecordDtoImpl> mapData(T rawData) {
+		if (rawData == null)
+			return null;
+
+		@SuppressWarnings("unchecked")
+		List<ChargerDtoV2> data = (List<ChargerDtoV2>) rawData;
+		DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
+		Date now = new Date();
+		Integer period = env.getProperty("app_period", Integer.class);
+		String plugStatusAvailable = env.getRequiredProperty("plug.status.available");
+		for (ChargerDtoV2 dto : data) {
+
+			if ("REMOVED".equals(dto.getState()))
+				continue;
+
+			DataMapDto<RecordDtoImpl> recordsByType = new DataMapDto<>();
+			Integer availableStations = 0;
+			for (ChargingPointsDtoV2 point : dto.getChargingPoints()) {
+				if (plugStatusAvailable.equals(point.getState()))
+					availableStations++;
+			}
+			List<RecordDtoImpl> records = new ArrayList<>();
+			SimpleRecordDto rec = new SimpleRecordDto(now.getTime(), availableStations.doubleValue());
+			rec.setPeriod(period);
+			records.add(rec);
+			DataMapDto<RecordDtoImpl> dataSet = new DataMapDto<>(records);
+			recordsByType.getBranch().put(DataTypeDto.NUMBER_AVAILABE, dataSet);
+			map.getBranch().put(dto.getId(), recordsByType);
+		}
+		return map;
 	}
 
 	public DataMapDto<RecordDtoImpl> mapPlugData2Bdp(List<ChargerDtoV2> data) {
