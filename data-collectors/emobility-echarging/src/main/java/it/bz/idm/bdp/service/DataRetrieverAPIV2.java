@@ -1,9 +1,13 @@
 package it.bz.idm.bdp.service;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -78,11 +82,20 @@ public class DataRetrieverAPIV2 {
 		return null;
 	}
 
-	public List<ChargerDtoV2> fetchStations() {
+	public List<ChargerDtoV2> fetchStations() throws IOException {
 		List<ChargerDtoV2> stations;
 
 		String responseEntity = fetchResponseEntity(env.getProperty("endpoint_path"));
-		LOG.debug("API response: {}", responseEntity);
+
+
+		// write api response to file for debug reasons
+		String ts = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		String fileName = "api-response-" + ts + ".json";
+		BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+		writer.append(' ');
+		writer.append(responseEntity);
+		writer.close();
+
 		try {
 			stations = mapper.readValue(responseEntity, new TypeReference<List<ChargerDtoV2>>() {
 			});
