@@ -1,5 +1,6 @@
 package it.bz.idm.bdp.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -32,8 +33,9 @@ public class PushScheduler {
 	 * so the former call fails or overwrites data that has been half-synced.
 	 * To avoid this we use a single sync call, and put just a single job per
 	 * scheduler. That is the job will not trigger, if it is still running.
+	 * @throws IOException
 	 */
-	public void syncAll() {
+	public void syncAll() throws IOException {
 		syncDataTypes();
 		LOG.info("Sync: Fetching from source");
 		List<ChargerDtoV2> fetchedStations = retrieverV2.fetchStations();
