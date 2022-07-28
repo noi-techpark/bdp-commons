@@ -23,7 +23,7 @@ public class EndpointIT extends AbstractJUnit4SpringContextTests{
 
 
 	@Test
-	public void testFetchStations() throws IOException{
+	public void testFetchStations() {
 		List<ChargerDtoV2> data = retriever.fetchStations();
 		assertNotNull(data);
 		assertTrue(data.size()>0);

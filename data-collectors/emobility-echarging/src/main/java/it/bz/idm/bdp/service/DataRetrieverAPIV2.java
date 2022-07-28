@@ -1,13 +1,9 @@
 package it.bz.idm.bdp.service;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -82,7 +78,7 @@ public class DataRetrieverAPIV2 {
 		return null;
 	}
 
-	public List<ChargerDtoV2> fetchStations() throws IOException {
+	public List<ChargerDtoV2> fetchStations() {
 		List<ChargerDtoV2> stations;
 
 		String responseEntity = fetchResponseEntity(env.getProperty("endpoint_path"));
