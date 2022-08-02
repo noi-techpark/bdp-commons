@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.dcparkingtn.metadata;
+package it.bz.idm.bdp.metadata;
 
 import java.io.IOException;
 import java.util.ArrayList;
