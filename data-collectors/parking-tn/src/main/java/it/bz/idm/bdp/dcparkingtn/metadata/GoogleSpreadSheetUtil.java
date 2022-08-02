@@ -39,12 +39,14 @@ public class GoogleSpreadSheetUtil extends GoogleAuthenticator {
 	@Override
 	public void initGoogleClient(NetHttpTransport HTTP_TRANSPORT, JsonFactory JSON_FACTORY, Credential credential)
 			throws IOException {
-		service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).build();
+		service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+				.setApplicationName("parking-tn-dc").build();
 	}
 
 	public ValueRange getValues() {
 		try {
-			ValueRange sheet = service.spreadsheets().values().get(spreadhSheetId, spreadsheetName + "!" + spreadsheetRange).execute();
+			ValueRange sheet = service.spreadsheets().values()
+					.get(spreadhSheetId, spreadsheetName + "!" + spreadsheetRange).execute();
 			return sheet;
 		} catch (IOException e) {
 			e.printStackTrace();
