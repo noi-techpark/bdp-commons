@@ -126,7 +126,7 @@ jobs:
   #         X_OAUTH_BASE_URI: https://mobility.share.opendatahub.bz.it/json
   #         X_OAUTH_CLIENT_ID: odh-mobility-datacollector
   #         X_OAUTH_CLIENT_NAME: odh-mobility-datacollector
-  #         X_OAUTH_CLIENT_SECRET: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
+  #         X_OAUTH_CLIENT_SECRET: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
 
   #         # Logging
   #         X_LOG_LEVEL: info
