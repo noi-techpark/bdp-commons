@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -22,14 +20,9 @@ import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
-import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.StationList;
-
 @Lazy
 @Component
 public class GoogleSpreadSheetUtil extends GoogleAuthenticator {
-
-	private static final Logger LOG = LoggerFactory.getLogger(GoogleSpreadSheetUtil.class.getName());
 
 	@Value("${SPREADSHEET_ID}")
 	private String spreadSheetId;
