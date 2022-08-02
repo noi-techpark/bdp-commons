@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -26,36 +28,42 @@ public class MetadataEnrichment {
 	@Value("#{'${METADATA_ENRICHED_FIELDS}'.split(',')}")
 	private List<String> enrichedFields;
 
+	private List<String> stationIdsInSheet;
+	private HashMap<String, HashMap<String, String>> mapping;
+	private List<Integer> metadataColumnIndexes;
+	private int sheetId;
+
+	@PostConstruct
+	private void init() {
+		sheetId = sheetDataFetcher.getSheetId();
+		stationIdsInSheet = new ArrayList<>();
+		mapping = new HashMap<>();
+		metadataColumnIndexes = new ArrayList<>();
+	}
+
 	public void mapData(StationList stations) throws IOException {
-
-		List<String> stationIdsInSheet = new ArrayList<>();
-		List<String> stationIdsFromApi = new ArrayList<>();
-
-		List<String> newStations = new ArrayList<>();
-		List<Integer> deletedStationsRowIndexes = new ArrayList<>();
-
-		HashMap<String, HashMap<String, String>> mapping = new HashMap<>();
-
-		int sheetId = sheetDataFetcher.getSheetId();
-
 		List<List<Object>> rows = sheetDataFetcher.getValues().getValues();
+		List<String> headerRow = extractHeaderRow(rows);
 
-		List<Object> headerObjectRow = rows.remove(0);
-		List<String> headerRow = headerObjectRow.stream().map(object -> Objects.toString(object, null).trim())
-				.collect(Collectors.toList());
+		resetValues();
 
-		// check index of enriched metadata columns
-		List<Integer> metadataColumnIndexes = new ArrayList<>();
+		initializeMetadataColumnIndexes(headerRow);
+		initializeMapping(rows, headerRow);
+
+		removeStationsFromSheet(stations);
+		insertStationsInSheet(stations);
+		enrichMetadata(stations);
+	}
+
+	private void initializeMetadataColumnIndexes(List<String> headerRow) {
 		for (int i = 0; i < headerRow.size(); i++) {
 			String header = headerRow.get(i);
 			if (enrichedFields.contains(header))
 				metadataColumnIndexes.add(i);
 		}
+	}
 
-		// create id lists
-		for (StationDto station : stations) {
-			stationIdsFromApi.add(station.getId());
-		}
+	private void initializeMapping(List<List<Object>> rows, List<String> headerRow ){
 		for (List<Object> row : rows) {
 			String id = (String) row.get(0);
 			stationIdsInSheet.add(id);
@@ -63,44 +71,41 @@ public class MetadataEnrichment {
 
 			for (String enrichedField : enrichedFields) {
 				int headerIndex = headerRow.indexOf(enrichedField);
-				if (headerIndex >= 0 && headerIndex < row.size()) {
-					String value = (String) row.get(headerIndex);
-					langMapping.put(enrichedField, value);
-				}
+				if (headerIndex >= 0 && headerIndex < row.size())
+					langMapping.put(enrichedField, (String) row.get(headerIndex));
 			}
 			mapping.put(id, langMapping);
 		}
+	}
 
-		// check which stations are already present
+	private void removeStationsFromSheet(StationList stations)
+			throws IOException {
+		List<Integer> deletedStationsRowIndexes = new ArrayList<>();
+		List<String> stationIdsFromApi = new ArrayList<>();
+
+		for (StationDto station : stations)
+			stationIdsFromApi.add(station.getId());
+
+		// check which stations are no longer coming from the api, but are inside the
+		// sheet
 		for (int i = 0; i < stationIdsInSheet.size(); i++)
 			if (!stationIdsFromApi.contains(stationIdsInSheet.get(i)))
 				deletedStationsRowIndexes.add(i + 1);
-		// delete removed stations
-		sheetDataFetcher.deleteRows(deletedStationsRowIndexes, sheetId);
 
-		// check which stations are not already in sheet
-		for (String id : stationIdsFromApi)
-			if (!stationIdsInSheet.contains(id))
-				newStations.add(id);
-		// insert new stations
-		insertStationsInSheet(stations, newStations);
-
-		// add enriched metadata from sheet to stations
-		for (StationDto station : stations) {
-			for (String enrichedField : enrichedFields) {
-				if (mapping.get(station.getId()) != null && mapping.get(station.getId()).get(enrichedField) != null) {
-					String newMetadata = mapping.get(station.getId()).get(enrichedField);
-					station.getMetaData().put(enrichedField, newMetadata);
-				}
-			}
-		}
+		sheetDataFetcher.deleteRows(sheetId, deletedStationsRowIndexes);
 	}
 
-	private void insertStationsInSheet(StationList stations, List<String> stationIds) throws IOException {
+	private void insertStationsInSheet(StationList stations) throws IOException {
 		List<List<Object>> values = new ArrayList<>();
 
+		// check which stations are not already in sheet
+		List<String> newStations = new ArrayList<>();
+		for (StationDto station : stations)
+			if (!stationIdsInSheet.contains(station.getId()))
+				newStations.add(station.getId());
+
 		for (StationDto station : stations) {
-			if (stationIds.contains(station.getId())) {
+			if (newStations.contains(station.getId())) {
 				List<Object> value = new ArrayList<>();
 				value.add(station.getId());
 				value.add(station.getOrigin());
@@ -111,5 +116,29 @@ public class MetadataEnrichment {
 		}
 
 		sheetDataFetcher.appendRows(values);
+	}
+
+	private List<String> extractHeaderRow(List<List<Object>> rows) {
+		List<Object> headerObjectRow = rows.remove(0);
+		// transform object list top string list
+		return headerObjectRow.stream().map(object -> Objects.toString(object, null).trim())
+				.collect(Collectors.toList());
+	}
+
+	private void enrichMetadata(StationList stations) {
+		for (StationDto station : stations) {
+			for (String enrichedField : enrichedFields) {
+				if (mapping.get(station.getId()) != null && mapping.get(station.getId()).get(enrichedField) != null) {
+					String newMetadata = mapping.get(station.getId()).get(enrichedField);
+					station.getMetaData().put(enrichedField, newMetadata);
+				}
+			}
+		}
+	}
+
+	private void resetValues() {
+		stationIdsInSheet.clear();
+		mapping.clear();
+		metadataColumnIndexes.clear();
 	}
 }

@@ -44,7 +44,7 @@ public class ParkingTnJobScheduler {
         int stationCounter = -1;
         try {
             List<ParkingTnDto> data = retrieval.fetchData();
-            // patchMunicipality(data);
+            patchMunicipality(data);
             StationList stations = pusher.mapStations2Bdp(data);
 
 			metadataEnrichment.mapData(stations);
