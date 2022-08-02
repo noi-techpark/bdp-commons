@@ -12,7 +12,6 @@ import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.model.AppendValuesResponse;
 import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest;
 import com.google.api.services.sheets.v4.model.DeleteRangeRequest;
 import com.google.api.services.sheets.v4.model.GridRange;
@@ -26,7 +25,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 public class GoogleSpreadSheetUtil extends GoogleAuthenticator {
 
 	@Value("${SPREADSHEET_ID}")
-	private String spreadhSheetId;
+	private String spreadSheetId;
 
 	@Value("${SPREADSHEET_RANGE}")
 	private String spreadsheetRange;
@@ -39,13 +38,14 @@ public class GoogleSpreadSheetUtil extends GoogleAuthenticator {
 	@Override
 	public void initGoogleClient(NetHttpTransport HTTP_TRANSPORT, JsonFactory JSON_FACTORY, Credential credential)
 			throws IOException {
-		service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).build();
+		service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+				.setApplicationName("parking-offstreet-meranobolzano-dc").build();
 	}
 
 	public ValueRange getValues() {
 		try {
-			ValueRange sheet = service.spreadsheets().values().get(spreadhSheetId, spreadsheetName + "!" + spreadsheetRange).execute();
-			return sheet;
+			return service.spreadsheets().values()
+					.get(spreadSheetId, spreadsheetName + "!" + spreadsheetRange).execute();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -54,7 +54,7 @@ public class GoogleSpreadSheetUtil extends GoogleAuthenticator {
 
 	public int getSheetId() {
 		try {
-			Spreadsheet spreadSheet = service.spreadsheets().get(spreadhSheetId).execute();
+			Spreadsheet spreadSheet = service.spreadsheets().get(spreadSheetId).execute();
 			for (Sheet sheet : spreadSheet.getSheets()) {
 				if (sheet.getProperties().getTitle().trim().equals(spreadsheetName))
 					return sheet.getProperties().getSheetId();
@@ -66,26 +66,24 @@ public class GoogleSpreadSheetUtil extends GoogleAuthenticator {
 		return -1;
 	}
 
-	public boolean appendRows(List<List<Object>> values) throws IOException {
-		if (values == null || values.size() == 0)
-			return false;
+	public void appendRows(List<List<Object>> values) throws IOException {
+		if (values == null || values.isEmpty())
+			return;
 
 		ValueRange body = new ValueRange()
 				.setValues(values);
 
-		AppendValuesResponse result = service.spreadsheets().values()
-				.append(spreadhSheetId, spreadsheetName + "!" + spreadsheetRange, body)
+		service.spreadsheets().values()
+				.append(spreadSheetId, spreadsheetName + "!" + spreadsheetRange, body)
 				.setValueInputOption("RAW")
 				.setInsertDataOption("INSERT_ROWS")
 				.execute();
-
-		// check if result was successful
-		return result.getUpdates().getUpdatedRows() == values.size();
 	}
 
-	public boolean deleteRows(List<Integer> rowIndexes, int sheetId) throws IOException {
+	public void deleteRows(int sheetId, List<Integer> deletedStationsRowIndexes) throws IOException {
 
-		for (int rowIndex : rowIndexes) {
+		// delete those stations from the sheet
+		for (int rowIndex : deletedStationsRowIndexes) {
 			List<Request> requests = new ArrayList<>();
 
 			DeleteRangeRequest deleteRequest = new DeleteRangeRequest()
@@ -99,10 +97,8 @@ public class GoogleSpreadSheetUtil extends GoogleAuthenticator {
 
 			BatchUpdateSpreadsheetRequest body = new BatchUpdateSpreadsheetRequest().setRequests(requests);
 
-			service.spreadsheets().batchUpdate(spreadhSheetId, body).execute();
+			service.spreadsheets().batchUpdate(spreadSheetId, body).execute();
 		}
-
-		return true;
 	}
 
 }
