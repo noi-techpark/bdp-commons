@@ -1,17 +1,18 @@
-name: CI/CD helloworld
+name: CI/CD carpooling
 
 on:
   push:
     paths:
-      - "data-collectors/helloworld/**"
-      - ".github/workflows/ci-helloworld.yml"
+      - "data-collectors/carpooling/**"
+      - ".github/workflows/ci-carpooling.yml"
 
 env:
-  WORKING_DIRECTORY: data-collectors/car-pooling
-  PROJECT_NAME: odh-mobility-dc-car-pooling
-  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-car-pooling
+  WORKING_DIRECTORY: data-collectors/carpooling
+  PROJECT_NAME: odh-mobility-dc-carpooling
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-carpooling
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
+  GOOGLE_API_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_API_SERVICE_ACCOUNT }}
 
 jobs:
   test:
@@ -27,11 +28,11 @@ jobs:
           test-command: 'mvn -B -U clean compile test'
 
   # Deploy Test
-  deploy-test-helloworld:
+  deploy-test-carpooling:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
     needs: test
-    concurrency: deploy-test-helloworld
+    concurrency: deploy-test-carpooling
     env:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
@@ -49,23 +50,28 @@ jobs:
           X_JAVA_OPTIONS: -Xms128m -Xmx512m
 
           # Open Data Hub Writer Connectivity
-          X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
-          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
-          X_clientId: odh-mobility-datacollector
-          X_clientName: odh-mobility-datacollector
-          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
-          X_scope: openid
-          X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
+          X_OAUTH_AUTH_URI: ${{ env.KEYCLOAK_URL }}/auth
+          X_OAUTH_TOKEN_URI: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+          X_OAUTH_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
+          X_OAUTH_CLIENT_ID: odh-mobility-datacollector
+          X_OAUTH_CLIENT_NAME: odh-mobility-datacollector
+          X_OAUTH_CLIENT_SECRET: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
+
+          X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
+          X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
 
           # Logging
-          X_LOG_LEVEL: info
+          X_LOG_LEVEL: "info"
           X_LOG_STYLE: json
-          X_provenance_name: ${{ env.PROJECT_NAME }}
-          X_provenance_version: ${{ github.sha }}
 
-          # TODO: Add your env vars here, prefixed with X_
-          X_SCHEDULER_CRON_CAR_POOLING: "* * * */10 * *"
-          X_SCHEDULER_CRON_B: "* * * */10 * *"
+          X_GOOGLE_API_APPLICATION_NAME: rides_italy.csv
+          X_GOOGLE_API_DRIVE_FILE_ID: 1HzmEq-XB4dJEFlb0MAeupS3LRUXf86eI
+          X_GOOGLE_API_CREDENTIALS_FILE: /google-api-service-account.json
+
+          X_SCHEDULER_CRON_CAR_POOLING: 0 */10 * * * *
+
+      - name: Create google service account json
+        run: echo -ne $GOOGLE_API_SERVICE_ACCOUNT > $WORKING_DIRECTORY/src/main/resources/google-api-service-account.json
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -94,11 +100,11 @@ jobs:
 
 
   # Deploy Production
-  deploy-prod-helloworld:
+  deploy-prod-carpooling:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/prod'
     needs: test
-    concurrency: deploy-prod-helloworld
+    concurrency: deploy-prod-carpooling
     env:
       KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:
@@ -116,23 +122,28 @@ jobs:
           X_JAVA_OPTIONS: -Xms128m -Xmx512m
 
           # Open Data Hub Writer Connectivity
-          X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
-          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
-          X_clientId: odh-mobility-datacollector
-          X_clientName: odh-mobility-datacollector
-          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
-          X_scope: openid
-          X_BASE_URI: https://mobility.share.opendatahub.bz.it/json
+          X_OAUTH_AUTH_URI: ${{ env.KEYCLOAK_URL }}/auth
+          X_OAUTH_TOKEN_URI: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+          X_OAUTH_BASE_URI: https://mobility.share.opendatahub.bz.it/json
+          X_OAUTH_CLIENT_ID: odh-mobility-datacollector
+          X_OAUTH_CLIENT_NAME: odh-mobility-datacollector
+          X_OAUTH_CLIENT_SECRET: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
+
+          X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
+          X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
 
           # Logging
           X_LOG_LEVEL: "info"
           X_LOG_STYLE: json
-          X_provenance_name: ${{ env.PROJECT_NAME }}
-          X_provenance_version: ${{ github.sha }}
 
-          # TODO: Add your env vars here, prefixed with X_
-          X_SCHEDULER_CRON_A: "* * * */10 * *"
-          X_SCHEDULER_CRON_B: "* * * */10 * *"
+          X_GOOGLE_API_APPLICATION_NAME: rides_italy.csv
+          X_GOOGLE_API_DRIVE_FILE_ID: 1HzmEq-XB4dJEFlb0MAeupS3LRUXf86eI
+          X_GOOGLE_API_CREDENTIALS_FILE: /google-api-service-account.json
+
+          X_SCHEDULER_CRON_CAR_POOLING: 0 */10 * * * *
+
+      - name: Create google service account json
+        run: echo -ne $GOOGLE_API_SERVICE_ACCOUNT > $WORKING_DIRECTORY/src/main/resources/google-api-service-account.json
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
