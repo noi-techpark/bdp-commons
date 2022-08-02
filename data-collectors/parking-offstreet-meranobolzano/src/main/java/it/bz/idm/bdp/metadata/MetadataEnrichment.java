@@ -64,7 +64,7 @@ public class MetadataEnrichment {
 
 			for (String enrichedField : enrichedFields) {
 				int headerIndex = headerRow.indexOf(enrichedField);
-				if (headerIndex >= 0) {
+				if (headerIndex >= 0 && headerIndex < row.size()) {
 					String value = (String) row.get(headerIndex);
 					langMapping.put(enrichedField, value);
 				}

@@ -1,7 +1,6 @@
-package it.bz.idm.bdp.metadata;
+package it.bz.idm.bdp.dcparkingtn.metadata;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class GoogleSpreadSheetUtil extends GoogleAuthenticator {
 
 	public ValueRange getValues() {
 		try {
-			ValueRange sheet = service.spreadsheets().values().get(spreadhSheetId, spreadsheetRange).execute();
+			ValueRange sheet = service.spreadsheets().values().get(spreadhSheetId, spreadsheetName + "!" + spreadsheetRange).execute();
 			return sheet;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -75,7 +74,7 @@ public class GoogleSpreadSheetUtil extends GoogleAuthenticator {
 				.setValues(values);
 
 		AppendValuesResponse result = service.spreadsheets().values()
-				.append(spreadhSheetId, spreadsheetRange, body)
+				.append(spreadhSheetId, spreadsheetName + "!" + spreadsheetRange, body)
 				.setValueInputOption("RAW")
 				.setInsertDataOption("INSERT_ROWS")
 				.execute();
