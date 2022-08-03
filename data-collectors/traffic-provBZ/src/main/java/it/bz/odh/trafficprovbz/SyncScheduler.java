@@ -15,7 +15,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 
+import javax.swing.text.DateFormatter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -95,7 +100,7 @@ public class SyncScheduler {
 	 * Scheduled job measurements: Example on how to send measurements
 	 */
 	@Scheduled(cron = "${scheduler.job_measurements}")
-	public void syncJobMeasurements() throws IOException {
+	public void syncJobMeasurements() throws IOException, ParseException {
 		LOG.info("Cron job measurements started: Pushing measurements for {}", odhClient.getIntegreenTypology());
 
 		DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
@@ -107,23 +112,57 @@ public class SyncScheduler {
 			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(String.valueOf(aggregatedDataDto.getId()));
 			DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch(DATATYPE_ID);
 			Map<String, Object> aggregatedDataMap = new HashMap<>();
+			System.out.println(new Date().getTime());
+			aggregatedDataMap.put("created_on", new Date().getTime());
 			aggregatedDataMap.put("total-transits", aggregatedDataDto.getTotalTransits());
-			//TODO: LOGIC FOR BIKES AND SO ON
 			JSONObject otherFields = new JSONObject(aggregatedDataDto.getOtherFields());
 			if (otherFields.containsKey("TotaliPerClasseVeicolare")) {
-				System.out.println("HERER");
-			} else {
-				System.out.println("NOT ALWAYS HERER");
-
+				LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.TotaliPerClasseVeicolare");
+				Set<String> keys = classes.keySet();
+				for (String key : keys) {
+					switch (key) {
+						case "1":
+							aggregatedDataMap.put("number-of-motorcycles", classes.get(key));
+							break;
+						case "2":
+							aggregatedDataMap.put("number-of-cars", classes.get(key));
+							break;
+						case "3":
+							aggregatedDataMap.put("number-of-cars-and-minivans-with-trailer", classes.get(key));
+							break;
+						case "4":
+							aggregatedDataMap.put("number-of-small-trucks-and-vans", classes.get(key));
+							break;
+						case "5":
+							aggregatedDataMap.put("number-of-medium-sized-trucks", classes.get(key));
+							break;
+						case "6":
+							aggregatedDataMap.put("number-of-big-trucks", classes.get(key));
+							break;
+						case "7":
+							aggregatedDataMap.put("number-of-articulated-trucks", classes.get(key));
+							break;
+						case "8":
+							aggregatedDataMap.put("number-of-articulated-lorries", classes.get(key));
+							break;
+						case "9":
+							aggregatedDataMap.put("number-of-busses", classes.get(key));
+							break;
+						case "10":
+							aggregatedDataMap.put("number-of-unclassified-vehicles", classes.get(key));
+							break;
+					}
+				}
+				aggregatedDataMap.put("average-vehicle-speed", aggregatedDataDto.getAverageVehicleSpeed());
+				aggregatedDataMap.put("headway", aggregatedDataDto.getHeadway());
+				aggregatedDataMap.put("headway-variance", aggregatedDataDto.getHeadwayVariance());
+				aggregatedDataMap.put("gap", aggregatedDataDto.getGap());
+				aggregatedDataMap.put("gap-variance", aggregatedDataDto.getGapVariance());
 			}
-			aggregatedDataMap.put("average-vehicle-speed", aggregatedDataDto.getAverageVehicleSpeed());
-			aggregatedDataMap.put("headway", aggregatedDataDto.getHeadway());
-			aggregatedDataMap.put("headway-variance", aggregatedDataDto.getHeadwayVariance());
-			aggregatedDataMap.put("gap", aggregatedDataDto.getGap());
-			aggregatedDataMap.put("gap-variance", aggregatedDataDto.getGapVariance());
 
-
-			SimpleRecordDto measurement = new SimpleRecordDto(22323L, aggregatedDataMap, period);
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+			Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
+			SimpleRecordDto measurement = new SimpleRecordDto(timestamp, aggregatedDataMap, period);
 			List<RecordDtoImpl> values = metricMap.getData();
 			values.add(measurement);
 		}

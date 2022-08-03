@@ -18,23 +18,26 @@ public class AggregatedDataDto {
 	@JsonProperty("Corsia")
 	private String lane;
 
+	@JsonProperty("Direzione")
+	private String direction;
+
 	@JsonProperty("TotaleVeicoli")
-	private String totalTransits ;
+	private Double totalTransits ;
 
 	@JsonProperty("MediaArmonicaVelocita")
-	private String averageVehicleSpeed ;
+	private Double averageVehicleSpeed ;
 
 	@JsonProperty("HeadwayMedioSecondi")
-	private String headway;
+	private Double headway;
 
 	@JsonProperty("VarianzaHeadwayMedioSecondi")
-	private String headwayVariance;
+	private Double headwayVariance;
 
 	@JsonProperty("GapMedioSecondi")
-	private String gap;
+	private Double gap;
 
 	@JsonProperty("VarianzaGapMedioSecondi")
-	private String gapVariance;
+	private Double gapVariance;
 
 	private final Map<String, Object> otherFields = new HashMap<>();
 
@@ -62,51 +65,59 @@ public class AggregatedDataDto {
 		this.lane = lane;
 	}
 
-	public String getTotalTransits() {
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+
+	public Double getTotalTransits() {
 		return totalTransits;
 	}
 
-	public void setTotalTransits(String totalTransits) {
+	public void setTotalTransits(Double totalTransits) {
 		this.totalTransits = totalTransits;
 	}
 
-	public String getAverageVehicleSpeed() {
+	public Double getAverageVehicleSpeed() {
 		return averageVehicleSpeed;
 	}
 
-	public void setAverageVehicleSpeed(String averageVehicleSpeed) {
+	public void setAverageVehicleSpeed(Double averageVehicleSpeed) {
 		this.averageVehicleSpeed = averageVehicleSpeed;
 	}
 
-	public String getHeadway() {
+	public Double getHeadway() {
 		return headway;
 	}
 
-	public void setHeadway(String headway) {
+	public void setHeadway(Double headway) {
 		this.headway = headway;
 	}
 
-	public String getHeadwayVariance() {
+	public Double getHeadwayVariance() {
 		return headwayVariance;
 	}
 
-	public void setHeadwayVariance(String headwayVariance) {
+	public void setHeadwayVariance(Double headwayVariance) {
 		this.headwayVariance = headwayVariance;
 	}
 
-	public String getGap() {
+	public Double getGap() {
 		return gap;
 	}
 
-	public void setGap(String gap) {
+	public void setGap(Double gap) {
 		this.gap = gap;
 	}
 
-	public String getGapVariance() {
+	public Double getGapVariance() {
 		return gapVariance;
 	}
 
-	public void setGapVariance(String gapVariance) {
+	public void setGapVariance(Double gapVariance) {
 		this.gapVariance = gapVariance;
 	}
 
