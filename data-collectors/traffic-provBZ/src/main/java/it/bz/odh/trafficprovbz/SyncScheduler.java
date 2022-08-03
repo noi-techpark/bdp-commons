@@ -5,6 +5,8 @@ import it.bz.idm.bdp.dto.*;
 import it.bz.odh.trafficprovbz.dto.AggregatedDataDto;
 import it.bz.odh.trafficprovbz.dto.ClassificationSchemaDto;
 import it.bz.odh.trafficprovbz.dto.MetadataDto;
+import it.bz.odh.trafficprovbz.dto.PassagesDataDto;
+import net.bytebuddy.build.Plugin;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -30,6 +34,7 @@ public class SyncScheduler {
 
 	private static final String STATION_TYPE = "TrafficSensor";
 	private static final String DATATYPE_ID = "TrafficSensor";
+	private static final String DATATYPE_ID_BlUETOOTH = "vehicle detection";
 
 	@Value("${odh_client.period}")
 	private Integer period;
@@ -97,10 +102,10 @@ public class SyncScheduler {
 	}
 
 	/**
-	 * Scheduled job measurements: Example on how to send measurements
+	 * Scheduled job traffic measurements: Example on how to send measurements
 	 */
 	@Scheduled(cron = "${scheduler.job_measurements}")
-	public void syncJobMeasurements() throws IOException, ParseException {
+	public void syncJobTrafficMeasurements() throws IOException, ParseException {
 		LOG.info("Cron job measurements started: Pushing measurements for {}", odhClient.getIntegreenTypology());
 
 		DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
@@ -160,7 +165,7 @@ public class SyncScheduler {
 				aggregatedDataMap.put("gap-variance", aggregatedDataDto.getGapVariance());
 			}
 
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 			Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
 			SimpleRecordDto measurement = new SimpleRecordDto(timestamp, aggregatedDataMap, period);
 			List<RecordDtoImpl> values = metricMap.getData();
@@ -168,10 +173,53 @@ public class SyncScheduler {
 		}
 		try {
 			odhClient.pushData(rootMap);
-			LOG.info("Cron job measurements successful");
+			LOG.info("Cron job traffic measurements successful");
 		} catch (WebClientRequestException e) {
-			LOG.error("Cron job measurements failed: Request exception: {}", e.getMessage());
+			LOG.error("Cron job traffic measurements failed: Request exception: {}", e.getMessage());
 		}
+	}
+
+	/**
+	 * Scheduled job bluetooth measurements: sync climate daily
+	 */
+	@Scheduled(cron = "${scheduler.job_measurements}")
+	public void syncJobBluetoothMeasurements() throws IOException, ParseException {
+		LOG.info("Cron job measurements started: Pushing bluetooth measurements for {}", odhClient.getIntegreenTypology());
+
+		MetadataDto[] metadataDtos = famasClient.getStationsData();
+
+		for (MetadataDto metadataDto : metadataDtos) {
+			System.out.println("HERE");
+			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+
+			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(String.valueOf(metadataDto.getId()));
+
+			DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch(DATATYPE_ID_BlUETOOTH);
+
+			PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(metadataDto.getId());
+
+			for (PassagesDataDto passagesDataDto : passagesDataDtos) {
+				System.out.println("HERE2");
+				System.out.println(passagesDataDto.getId());
+				System.out.println(passagesDataDto.getDate());
+				System.out.println(passagesDataDto.getIdVehicle());
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+				Long timestamp = formatter.parse(passagesDataDto.getDate()).getTime();
+				SimpleRecordDto measurement = new SimpleRecordDto(timestamp, passagesDataDto.getIdVehicle(), period);
+				bluetoothMetricMap.getData().add(measurement);
+			}
+
+			try {
+				// Push data for every station separately to avoid out of memory errors
+				odhClient.pushData(rootMap);
+				LOG.info("Push data for station {} bluetooth measurement successful", metadataDto.getName());
+			} catch (WebClientRequestException e) {
+				LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}", metadataDto.getName(),
+					e.getMessage());
+			}
+		}
+
+		LOG.info("Cron job for climate daily successful");
 	}
 
 	public LinkedHashMap<String, String> getClassificationSchema(ArrayList<LinkedHashMap<String, String>> odhClassesList, MetadataDto s) {

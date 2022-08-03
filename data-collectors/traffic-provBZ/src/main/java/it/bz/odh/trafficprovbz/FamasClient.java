@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.bz.odh.trafficprovbz.dto.AggregatedDataDto;
 import it.bz.odh.trafficprovbz.dto.ClassificationSchemaDto;
 import it.bz.odh.trafficprovbz.dto.MetadataDto;
+import it.bz.odh.trafficprovbz.dto.PassagesDataDto;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -52,7 +53,7 @@ public class FamasClient {
         //HttpResponse response = client.execute(new HttpGet(stationsDataUrl));
         //HttpEntity entity = response.getEntity();
         //String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
-		String responseString = "[{ \"Id\": 3, \"Nome\": \"4\",\"GeoInfo\": {\"Latitudine\": 46.4497009548582, \"Longitudine\":11.3448734664564, \"Regione\":\"Trentino-Alto Adige\", \"Provincia\":\"Bolzano\", \"Comune\":\"Laives\"},\"StradaInfo\": {\"Nome\": \"SS 12 dell'Abetone e del Brennero\", \"Chilometrica\": 432.69},\"Direzioni\": [{\"Tipo\": \"ascendente\",\"Descrizione\": \"Verso Bolzano\"},{\"Tipo\": \"discendente\", \"Descrizione\": \"Verso Trento\"}], \"SchemaDiClassificazione\": 1,\"NumeroCorsie\": 2,\"CorsieInfo\": [{\"Id\": 1,\"Descrizione\": \"verso Bolzano\", \"SensoDiMarcia\": \"ascendente\"},{\"Id\": 2,\"Descrizione\": \"verso Trento\",\"SensoDiMarcia\": \"discendente\"}]}, { \"Id\": 4, \"Nome\": \"4\",\"GeoInfo\": {\"Latitudine\": 47.4497009548582, \"Longitudine\":12.3448734664564, \"Regione\":\"Trentino-Alto Adige\", \"Provincia\":\"Bolzano\", \"Comune\":\"Bolzano\"},\"StradaInfo\": {\"Nome\": \"SS 17 dell'Abetone e del Brennero\", \"Chilometrica\": 421.69},\"Direzioni\": [{\"Tipo\": \"descendente\",\"Descrizione\": \"Verso Laives\"},{\"Tipo\": \"discendente\", \"Descrizione\": \"Verso Trento\"}], \"SchemaDiClassificazione\": 1,\"NumeroCorsie\": 2,\"CorsieInfo\": [{\"Id\": 1,\"Descrizione\": \"verso Bolzano\", \"SensoDiMarcia\": \"ascendente\"},{\"Id\": 2,\"Descrizione\": \"verso Trento\",\"SensoDiMarcia\": \"discendente\"}]}]";
+		String responseString = "[{ \"Id\": 1, \"Nome\": \"4\",\"GeoInfo\": {\"Latitudine\": 46.4497009548582, \"Longitudine\":11.3448734664564, \"Regione\":\"Trentino-Alto Adige\", \"Provincia\":\"Bolzano\", \"Comune\":\"Laives\"},\"StradaInfo\": {\"Nome\": \"SS 12 dell'Abetone e del Brennero\", \"Chilometrica\": 432.69},\"Direzioni\": [{\"Tipo\": \"ascendente\",\"Descrizione\": \"Verso Bolzano\"},{\"Tipo\": \"discendente\", \"Descrizione\": \"Verso Trento\"}], \"SchemaDiClassificazione\": 1,\"NumeroCorsie\": 2,\"CorsieInfo\": [{\"Id\": 1,\"Descrizione\": \"verso Bolzano\", \"SensoDiMarcia\": \"ascendente\"},{\"Id\": 2,\"Descrizione\": \"verso Trento\",\"SensoDiMarcia\": \"discendente\"}]}, { \"Id\": 2, \"Nome\": \"4\",\"GeoInfo\": {\"Latitudine\": 47.4497009548582, \"Longitudine\":12.3448734664564, \"Regione\":\"Trentino-Alto Adige\", \"Provincia\":\"Bolzano\", \"Comune\":\"Bolzano\"},\"StradaInfo\": {\"Nome\": \"SS 17 dell'Abetone e del Brennero\", \"Chilometrica\": 421.69},\"Direzioni\": [{\"Tipo\": \"descendente\",\"Descrizione\": \"Verso Laives\"},{\"Tipo\": \"discendente\", \"Descrizione\": \"Verso Trento\"}], \"SchemaDiClassificazione\": 1,\"NumeroCorsie\": 2,\"CorsieInfo\": [{\"Id\": 1,\"Descrizione\": \"verso Bolzano\", \"SensoDiMarcia\": \"ascendente\"},{\"Id\": 2,\"Descrizione\": \"verso Trento\",\"SensoDiMarcia\": \"discendente\"}]}]";
 		System.out.println(responseString);
         return objectMapper.readValue(responseString, MetadataDto[].class);
     }
@@ -74,9 +75,12 @@ public class FamasClient {
         return objectMapper.readValue(responseString, AggregatedDataDto[].class);
     }
 
-    public void getPassagesDataOnStations(int stationId) throws IOException {
+    public PassagesDataDto[] getPassagesDataOnStations(int stationId) throws IOException {
 		//String payload = """
 		//        data={
+		//			  "IdPostazioni": [
+		//				stationId
+		//			]
 		//            "InizioPeriodo": "admin",
 		//            "FinePeriodo": "System",
 		//        }
@@ -87,6 +91,7 @@ public class FamasClient {
 		//request.setEntity(entity);
 		//HttpResponse response = client.execute(request);
 		//String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
-        //return objectMapper.readValue(responseString, PassagesData[].class);
+		String responseString = "[{\"IdPostazione\": 3, \"Data\": \"2021-12-03T08:25:06Z\", \"IdVeicolo\": \"9532E31173B863BE28A5B76CF1BB91C5\" }, { \"IdPostazione\": 3, \"Data\": \"2021-12-03T08:25:08Z\", \"IdVeicolo\": \"A032FA4CC79C8EB1342A2F4A53D2260E\" }, { \"IdPostazione\": 3, \"Data\": \"2021-12-03T08:25:12Z\", \"IdVeicolo\": \"E51B97BB2C56050F1F91C74E5AAF738E\" }]";
+        return objectMapper.readValue(responseString, PassagesDataDto[].class);
     }
 }
