@@ -58,11 +58,11 @@ public class FamasClient {
         return objectMapper.readValue(responseString, MetadataDto[].class);
     }
 
-    public AggregatedDataDto[] getAggregatedDataOnStations() throws IOException {
+    public AggregatedDataDto[] getAggregatedDataOnStations(String startPeriod, String endPeriod) throws IOException {
 		//String payload = """
         //        data={
-        //            "InizioPeriodo": "admin",
-        //            "FinePeriodo": "System",
+        //            "InizioPeriodo": startPeriod,
+        //            "FinePeriodo": "endPeriod",
         //        }
         //        """;
 		//StringEntity entity = new StringEntity(payload,
@@ -75,7 +75,7 @@ public class FamasClient {
         return objectMapper.readValue(responseString, AggregatedDataDto[].class);
     }
 
-    public PassagesDataDto[] getPassagesDataOnStations(int stationId) throws IOException {
+    public PassagesDataDto[] getPassagesDataOnStations(int stationId, String startPeriod, String endPeriod) throws IOException {
 		//String payload = """
 		//        data={
 		//			  "IdPostazioni": [

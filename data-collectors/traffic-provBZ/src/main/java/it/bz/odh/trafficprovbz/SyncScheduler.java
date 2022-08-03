@@ -9,7 +9,6 @@ import it.bz.odh.trafficprovbz.dto.PassagesDataDto;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,6 +35,12 @@ public class SyncScheduler {
 	private final OdhClient odhClient;
 
 	private final FamasClient famasClient;
+
+	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+	private Date startPeriodTraffic = new Date(System.currentTimeMillis() - period * 1000);
+
+	private Date startPeriodBluetooth = new Date(System.currentTimeMillis() - period * 1000);
 
 	public SyncScheduler(@Lazy OdhClient odhClient, @Lazy FamasClient famasClient) {
 		this.odhClient = odhClient;
@@ -90,10 +95,8 @@ public class SyncScheduler {
 			odhClient.syncStations(odhStationList);
 			odhClient.syncDataTypes(odhDataTypeList);
 			LOG.info("Cron job stations successful");
-		} catch (WebClientRequestException e) {
-			LOG.error("Cron job stations failed: Request exception: {}", e.getMessage());
 		} catch (Exception e) {
-			LOG.error(e.getMessage());
+			LOG.error("Cron job stations failed: Request exception: {}", e.getMessage());
 		}
 	}
 
@@ -104,20 +107,19 @@ public class SyncScheduler {
 	public void syncJobTrafficMeasurements() throws IOException, ParseException {
 		LOG.info("Cron job measurements started: Pushing measurements for {}", odhClient.getIntegreenTypology());
 		try {
-		DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
 
-		AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations();
+			AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(sdf.format(startPeriodTraffic), sdf.format(new Date()));
 
-		for (AggregatedDataDto aggregatedDataDto : aggregatedDataDtos) {
+			for (AggregatedDataDto aggregatedDataDto : aggregatedDataDtos) {
 
-			mapAggregatedDataToRoot(rootMap, aggregatedDataDto);
-		}
+				mapAggregatedDataToRoot(rootMap, aggregatedDataDto);
+			}
 			odhClient.pushData(rootMap);
 			LOG.info("Cron job traffic measurements successful");
-		} catch (WebClientRequestException e) {
-			LOG.error("Cron job traffic measurements failed: Request exception: {}", e.getMessage());
+			startPeriodTraffic = new Date();
 		} catch (Exception e) {
-			LOG.error(e.getMessage());
+			LOG.error("Cron job traffic measurements failed: Request exception: {}", e.getMessage());
 		}
 	}
 
@@ -127,39 +129,39 @@ public class SyncScheduler {
 	@Scheduled(cron = "${scheduler.job_measurements}")
 	public void syncJobBluetoothMeasurements() throws IOException, ParseException {
 		LOG.info("Cron job measurements started: Pushing bluetooth measurements for {}", odhClient.getIntegreenTypology());
+		try {
+			MetadataDto[] metadataDtos = famasClient.getStationsData();
 
-		MetadataDto[] metadataDtos = famasClient.getStationsData();
+			for (MetadataDto metadataDto : metadataDtos) {
+				DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
 
-		for (MetadataDto metadataDto : metadataDtos) {
-			System.out.println("HERE");
-			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(String.valueOf(metadataDto.getId()));
 
-			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(String.valueOf(metadataDto.getId()));
+				DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch(DATATYPE_ID_BlUETOOTH);
 
-			DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch(DATATYPE_ID_BlUETOOTH);
+				PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(metadataDto.getId(), sdf.format(startPeriodBluetooth), sdf.format(new Date()));
 
-			PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(metadataDto.getId());
+				for (PassagesDataDto passagesDataDto : passagesDataDtos) {
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+					Long timestamp = formatter.parse(passagesDataDto.getDate()).getTime();
+					SimpleRecordDto measurement = new SimpleRecordDto(timestamp, passagesDataDto.getIdVehicle(), period);
+					bluetoothMetricMap.getData().add(measurement);
+				}
 
-			for (PassagesDataDto passagesDataDto : passagesDataDtos) {
-				System.out.println(passagesDataDto.getDate());
-				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-				Long timestamp = formatter.parse(passagesDataDto.getDate()).getTime();
-				System.out.println(timestamp);
-				SimpleRecordDto measurement = new SimpleRecordDto(timestamp, passagesDataDto.getIdVehicle(), period);
-				bluetoothMetricMap.getData().add(measurement);
+				try {
+					// Push data for every station separately to avoid out of memory errors
+					odhClient.pushData(rootMap);
+					LOG.info("Push data for station {} bluetooth measurement successful", metadataDto.getName());
+				} catch (WebClientRequestException e) {
+					LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}", metadataDto.getName(),
+						e.getMessage());
+				}
 			}
-
-			try {
-				// Push data for every station separately to avoid out of memory errors
-				odhClient.pushData(rootMap);
-				LOG.info("Push data for station {} bluetooth measurement successful", metadataDto.getName());
-			} catch (WebClientRequestException e) {
-				LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}", metadataDto.getName(),
-					e.getMessage());
-			}
+			LOG.info("Cron job for bluetooth measurements successful");
+			startPeriodBluetooth = new Date();
+		} catch (Exception e) {
+			LOG.error("Push data for bluetooth measurements failed: Request exception: {}", e.getMessage());
 		}
-
-		LOG.info("Cron job for climate daily successful");
 	}
 
 	public LinkedHashMap<String, String> getClassificationSchema(ArrayList<LinkedHashMap<String, String>> odhClassesList, MetadataDto s) {

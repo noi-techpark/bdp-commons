@@ -34,7 +34,7 @@ class SyncSchedulerTest {
 
 	@Test
 	void checkSyncTrafficMeasurements() throws Exception {
-		Mockito.when(famasClient.getAggregatedDataOnStations()).thenReturn(null);
+		Mockito.when(famasClient.getAggregatedDataOnStations(null, null)).thenReturn(null);
 
 		SyncScheduler sut = new SyncScheduler(odhClient, famasClient);
 
@@ -44,7 +44,7 @@ class SyncSchedulerTest {
 	@Test
 	void checkSyncBluetoothMeasurements() throws Exception {
 		int STATION_ID = 1;
-		Mockito.when(famasClient.getPassagesDataOnStations(STATION_ID)).thenReturn(null);
+		Mockito.when(famasClient.getPassagesDataOnStations(STATION_ID, null, null)).thenReturn(null);
 
 		SyncScheduler sut = new SyncScheduler(odhClient, famasClient);
 
