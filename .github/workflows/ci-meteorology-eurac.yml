@@ -99,73 +99,73 @@ jobs:
 
 
   # Deploy Production
-  # deploy-prod-meteorology-eurac:
-  #   runs-on: ubuntu-20.04
-  #   if: github.ref == 'refs/heads/prod'
-  #   needs: test
-  #   concurrency: deploy-prod-meteorology-eurac
-  #   env:
-  #     KEYCLOAK_URL: https://auth.opendatahub.bz.it
-  #   steps:
-  #     - name: Checkout source code
-  #       uses: actions/checkout@v2
-  #     - name: Create .env file
-  #       uses: noi-techpark/github-actions/env-file@v2
-  #       with:
-  #         working-directory: ${{ env.WORKING_DIRECTORY }}
-  #       env:
-  #         # General deployment options
-  #         X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
-  #         X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
-  #         X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-  #         X_JAVA_OPTIONS: -Xms128m -Xmx512m
+  deploy-prod-meteorology-eurac:
+    runs-on: ubuntu-20.04
+    if: github.ref == 'refs/heads/prod'
+    needs: test
+    concurrency: deploy-prod-meteorology-eurac
+    env:
+      KEYCLOAK_URL: https://auth.opendatahub.bz.it
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      - name: Create .env file
+        uses: noi-techpark/github-actions/env-file@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+        env:
+          # General deployment options
+          X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
+          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
+          X_JAVA_OPTIONS: -Xms128m -Xmx512m
 
-  #         # Open Data Hub Writer Connectivity
-  #         X_OAUTH_AUTH_URI: ${{ env.KEYCLOAK_URL }}/auth
-  #         X_OAUTH_TOKEN_URI: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
-  #         X_OAUTH_BASE_URI: https://mobility.share.opendatahub.bz.it/json
-  #         X_OAUTH_CLIENT_ID: odh-mobility-datacollector
-  #         X_OAUTH_CLIENT_NAME: odh-mobility-datacollector
-  #         X_OAUTH_CLIENT_SECRET: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
+          # Open Data Hub Writer Connectivity
+          X_OAUTH_AUTH_URI: ${{ env.KEYCLOAK_URL }}/auth
+          X_OAUTH_TOKEN_URI: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+          X_OAUTH_BASE_URI: https://mobility.share.opendatahub.bz.it/json
+          X_OAUTH_CLIENT_ID: odh-mobility-datacollector
+          X_OAUTH_CLIENT_NAME: odh-mobility-datacollector
+          X_OAUTH_CLIENT_SECRET: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
 
-  #         # Logging
-  #         X_LOG_LEVEL: info
-  #         X_ROOT_LOG_LEVEL: info
-  #         X_LOG_STYLE: json
+          # Logging
+          X_LOG_LEVEL: info
+          X_ROOT_LOG_LEVEL: info
+          X_LOG_STYLE: json
 
-  #         X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
-  #         X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
-  #         X_ODH_CLIENT_PROVENANCE_ORIGIN: EURAC
-  #         X_ODH_CLIENT_PERIOD_CLIMATOLOGY: 31536000
-  #         X_ODH_CLIENT_PERIOD_CLIMATEDAILY: 86400
+          X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
+          X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
+          X_ODH_CLIENT_PROVENANCE_ORIGIN: EURAC
+          X_ODH_CLIENT_PERIOD_CLIMATOLOGY: 31536000
+          X_ODH_CLIENT_PERIOD_CLIMATEDAILY: 86400
 
-  #         # Scheduler
-  #         X_SCHEDULER_JOB_STATIONS: 0 0 */12 * * *
-  #         X_SCHEDULER_JOB_CLIMATOLOGIES:  0 0 */12 * * *
-  #         X_SCHEDULER_JOB_CLIMATEDAILY:  0 0 */12 * * *
+          # Scheduler
+          X_SCHEDULER_JOB_STATIONS: 0 0 */12 * * *
+          X_SCHEDULER_JOB_CLIMATOLOGIES:  0 0 */12 * * *
+          X_SCHEDULER_JOB_CLIMATEDAILY:  0 0 */12 * * *
 
-  #     - name: Build project
-  #       uses: noi-techpark/github-actions/maven-build@v2
-  #       with:
-  #         working-directory: ${{ env.WORKING_DIRECTORY }}
-  #         java-version: ${{ env.JAVA_VERSION }}
-  #         build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
+      - name: Build project
+        uses: noi-techpark/github-actions/maven-build@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}
+          java-version: ${{ env.JAVA_VERSION }}
+          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
 
-  #     - name: Build and push images
-  #       uses: noi-techpark/github-actions/docker-build-and-push@v2
-  #       with:
-  #         working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
-  #         docker-username: ${{ github.actor }}
-  #         docker-password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push images
+        uses: noi-techpark/github-actions/docker-build-and-push@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
+          docker-username: ${{ github.actor }}
+          docker-password: ${{ secrets.GITHUB_TOKEN }}
 
 
-  #     - name: Deploy application
-  #       uses: noi-techpark/github-actions/docker-deploy@v2
-  #       with:
-  #         working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
-  #         hosts: 'prod'
-  #         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #         docker-username: 'noi-techpark-bot'
-  #         docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-  #         project-name: ${{ env.PROJECT_NAME }}
+      - name: Deploy application
+        uses: noi-techpark/github-actions/docker-deploy@v2
+        with:
+          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
+          hosts: 'prod'
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          docker-username: 'noi-techpark-bot'
+          docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          project-name: ${{ env.PROJECT_NAME }}
 
