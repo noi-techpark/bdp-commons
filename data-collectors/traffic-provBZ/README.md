@@ -1,7 +1,7 @@
 # Traffic Province BZ Data Collector
 
 
-[![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traffic-prov-bz.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traffic-bz.yml)
+[![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traffic-provbz.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-trafficbz.yml)
 
 Application which takes data from the API provided by the company Famas, parses it
 and stores it in the opendatahub.
