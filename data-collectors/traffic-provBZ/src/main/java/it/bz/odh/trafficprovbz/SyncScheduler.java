@@ -15,7 +15,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -25,9 +24,11 @@ public class SyncScheduler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
 
-	private static final String STATION_TYPE = "TrafficSensor/BluetoothSensor";
-	private static final String DATATYPE_ID = "TrafficSensor";
-	private static final String DATATYPE_ID_BlUETOOTH = "vehicle-detection";
+	private static final String STATION_TYPE = "TrafficSensor";
+
+	//TODO: Ask PO of NOI if I should use a datatype for each value or one general and with json
+	private static final String DATATYPE_ID_TRAFFIC = "type";
+	private static final String DATATYPE_ID_BlUETOOTH = "vehicle detection";
 
 	@Value("${odh_client.period}")
 	private Integer period;
@@ -38,9 +39,9 @@ public class SyncScheduler {
 
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-	private Date startPeriodTraffic = new Date(System.currentTimeMillis() - period * 1000);
+	private Date startPeriodTraffic = new Date(System.currentTimeMillis() - 300 * 1000);
 
-	private Date startPeriodBluetooth = new Date(System.currentTimeMillis() - period * 1000);
+	private Date startPeriodBluetooth = new Date(System.currentTimeMillis() - 300 * 1000);
 
 	public SyncScheduler(@Lazy OdhClient odhClient, @Lazy FamasClient famasClient) {
 		this.odhClient = odhClient;
@@ -51,10 +52,12 @@ public class SyncScheduler {
 	 * Scheduled job stations: Sync stations and data types
 	 */
 	@Scheduled(cron = "${scheduler.job_stations}")
-	public void syncJobStations() throws IOException {
+	public void syncJobStations() {
 		LOG.info("Cron job stations started: Sync Stations with type {} and data types", odhClient.getIntegreenTypology());
 		try {
 			List<DataTypeDto> odhDataTypeList = new ArrayList<>();
+			odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_TRAFFIC, null, "Data of traffic", "string"));
+			odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_BlUETOOTH, null, "Detects the passed vehicles", "string"));
 
 			ClassificationSchemaDto[] classificationDtos;
 			classificationDtos = famasClient.getClassificationSchemas();
@@ -78,12 +81,11 @@ public class SyncScheduler {
 				metadataDto.setOtherField("SchemaDiClassificazione", classificationSchema);
 
 				ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.CorsieInfo");
-				LOG.info(String.valueOf(lanes.get(0)));
 
 				for (LinkedHashMap<String, String> lane : lanes) {
 					String description = JsonPath.read(lane, "$.Descrizione");
 					String stationName = metadataDto.getName() + ":" + description;
-					StationDto station = new StationDto(String.valueOf(metadataDto.getId()), stationName, lat, lon);
+					StationDto station = new StationDto(metadataDto.getId(), stationName, lat, lon);
 					station.setOrigin(odhClient.getProvenance().getLineage());
 					station.setStationType(STATION_TYPE);
 					station.setMetaData(metadataDto.getOtherFields());
@@ -104,7 +106,7 @@ public class SyncScheduler {
 	 * Scheduled job traffic measurements: Example on how to send measurements
 	 */
 	@Scheduled(cron = "${scheduler.job_measurements}")
-	public void syncJobTrafficMeasurements() throws IOException, ParseException {
+	public void syncJobTrafficMeasurements() {
 		LOG.info("Cron job measurements started: Pushing measurements for {}", odhClient.getIntegreenTypology());
 		try {
 			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
@@ -127,7 +129,7 @@ public class SyncScheduler {
 	 * Scheduled job bluetooth measurements: sync climate daily
 	 */
 	@Scheduled(cron = "${scheduler.job_measurements}")
-	public void syncJobBluetoothMeasurements() throws IOException, ParseException {
+	public void syncJobBluetoothMeasurements() {
 		LOG.info("Cron job measurements started: Pushing bluetooth measurements for {}", odhClient.getIntegreenTypology());
 		try {
 			MetadataDto[] metadataDtos = famasClient.getStationsData();
@@ -135,7 +137,7 @@ public class SyncScheduler {
 			for (MetadataDto metadataDto : metadataDtos) {
 				DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
 
-				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(String.valueOf(metadataDto.getId()));
+				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(metadataDto.getId());
 
 				DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch(DATATYPE_ID_BlUETOOTH);
 
@@ -175,8 +177,8 @@ public class SyncScheduler {
 	}
 
 	private void mapAggregatedDataToRoot(DataMapDto<RecordDtoImpl> rootMap, AggregatedDataDto aggregatedDataDto) throws ParseException {
-		DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(String.valueOf(aggregatedDataDto.getId()));
-		DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch(DATATYPE_ID);
+		DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(aggregatedDataDto.getId());
+		DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch(DATATYPE_ID_TRAFFIC);
 		Map<String, Object> aggregatedDataMap = new HashMap<>();
 		aggregatedDataMap.put("created_on", new Date().getTime());
 		aggregatedDataMap.put("total-transits", aggregatedDataDto.getTotalTransits());
@@ -228,8 +230,7 @@ public class SyncScheduler {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
 		SimpleRecordDto measurement = new SimpleRecordDto(timestamp, aggregatedDataMap, period);
-		List<RecordDtoImpl> values = metricMap.getData();
-		values.add(measurement);
+		metricMap.getData().add(measurement);
 	}
 
 }

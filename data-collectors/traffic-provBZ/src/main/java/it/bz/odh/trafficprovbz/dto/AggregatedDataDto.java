@@ -10,7 +10,7 @@ import java.util.Map;
 public class AggregatedDataDto {
 
 	@JsonProperty("IdPostazione")
-	private int id;
+	private String id;
 
 	@JsonProperty("Data")
 	private String date;
@@ -41,11 +41,11 @@ public class AggregatedDataDto {
 
 	private final Map<String, Object> otherFields = new HashMap<>();
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

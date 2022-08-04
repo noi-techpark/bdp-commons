@@ -10,7 +10,7 @@ import java.util.Map;
 public class MetadataDto {
 
 	@JsonProperty("Id")
-	private int id;
+	private String id;
 
 	@JsonProperty("Nome")
 	private String name;
@@ -20,11 +20,11 @@ public class MetadataDto {
 
 	private final Map<String, Object> otherFields = new HashMap<>();
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
