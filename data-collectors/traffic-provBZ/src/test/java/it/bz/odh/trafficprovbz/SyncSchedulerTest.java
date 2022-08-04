@@ -18,11 +18,6 @@ class SyncSchedulerTest {
 	OdhClient odhClient = Mockito.mock(OdhClient.class);
 
 	@Test
-	void test() {
-		assertThat(true).isEqualTo(true);
-	}
-
-	@Test
 	void checkSyncStations() throws Exception {
 		Mockito.when(famasClient.getClassificationSchemas()).thenReturn(null);
 		Mockito.when(famasClient.getStationsData()).thenReturn(null);
