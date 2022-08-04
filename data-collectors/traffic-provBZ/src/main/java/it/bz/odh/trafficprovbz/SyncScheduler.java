@@ -74,22 +74,14 @@ public class SyncScheduler {
 
 			for (MetadataDto metadataDto : metadataDtos) {
 				JSONObject otherFields = new JSONObject(metadataDto.getOtherFields());
-				Double lat = JsonPath.read(otherFields, "$.GeoInfo.Latitudine");
-				Double lon = JsonPath.read(otherFields, "$.GeoInfo.Longitudine");
-
-				LinkedHashMap<String, String> classificationSchema = getClassificationSchema(odhClassesList, metadataDto);
-				metadataDto.setOtherField("SchemaDiClassificazione", classificationSchema);
 
 				ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.CorsieInfo");
-
+				LinkedHashMap<String, String> classificationSchema = getClassificationSchema(odhClassesList, metadataDto);
 				for (LinkedHashMap<String, String> lane : lanes) {
-					String description = JsonPath.read(lane, "$.Descrizione");
-					String stationName = metadataDto.getName() + ":" + description;
-					StationDto station = new StationDto(metadataDto.getId(), stationName, lat, lon);
+					StationDto station = Parser.createStation(metadataDto, otherFields, lane, classificationSchema);
 					station.setOrigin(odhClient.getProvenance().getLineage());
 					station.setStationType(STATION_TYPE);
 					station.setMetaData(metadataDto.getOtherFields());
-
 					odhStationList.add(station);
 				}
 				LOG.info(odhStationList.toString());
@@ -114,8 +106,10 @@ public class SyncScheduler {
 			AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(sdf.format(startPeriodTraffic), sdf.format(new Date()));
 
 			for (AggregatedDataDto aggregatedDataDto : aggregatedDataDtos) {
-
-				mapAggregatedDataToRoot(rootMap, aggregatedDataDto);
+				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(aggregatedDataDto.getId());
+				DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch(DATATYPE_ID_TRAFFIC);
+				SimpleRecordDto measurement = Parser.createTrafficMeasurement(aggregatedDataDto, period);
+				metricMap.getData().add(measurement);
 			}
 			odhClient.pushData(rootMap);
 			LOG.info("Cron job traffic measurements successful");
@@ -144,9 +138,7 @@ public class SyncScheduler {
 				PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(metadataDto.getId(), sdf.format(startPeriodBluetooth), sdf.format(new Date()));
 
 				for (PassagesDataDto passagesDataDto : passagesDataDtos) {
-					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-					Long timestamp = formatter.parse(passagesDataDto.getDate()).getTime();
-					SimpleRecordDto measurement = new SimpleRecordDto(timestamp, passagesDataDto.getIdVehicle(), period);
+					SimpleRecordDto measurement = Parser.createBluetoothMeasurement(passagesDataDto, period);
 					bluetoothMetricMap.getData().add(measurement);
 				}
 
@@ -174,63 +166,6 @@ public class SyncScheduler {
 			}
 		}
 		return null;
-	}
-
-	private void mapAggregatedDataToRoot(DataMapDto<RecordDtoImpl> rootMap, AggregatedDataDto aggregatedDataDto) throws ParseException {
-		DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(aggregatedDataDto.getId());
-		DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch(DATATYPE_ID_TRAFFIC);
-		Map<String, Object> aggregatedDataMap = new HashMap<>();
-		aggregatedDataMap.put("created_on", new Date().getTime());
-		aggregatedDataMap.put("total-transits", aggregatedDataDto.getTotalTransits());
-		JSONObject otherFields = new JSONObject(aggregatedDataDto.getOtherFields());
-		if (otherFields.containsKey("TotaliPerClasseVeicolare")) {
-			LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.TotaliPerClasseVeicolare");
-			//Set<String> keys = classes.keySet();
-			for (Map.Entry<String, Integer> entry : classes.entrySet()) {
-				switch (entry.getKey()) {
-					case "1":
-						aggregatedDataMap.put("number-of-motorcycles", entry.getValue());
-						break;
-					case "2":
-						aggregatedDataMap.put("number-of-cars", entry.getValue());
-						break;
-					case "3":
-						aggregatedDataMap.put("number-of-cars-and-minivans-with-trailer", entry.getValue());
-						break;
-					case "4":
-						aggregatedDataMap.put("number-of-small-trucks-and-vans", entry.getValue());
-						break;
-					case "5":
-						aggregatedDataMap.put("number-of-medium-sized-trucks", entry.getValue());
-						break;
-					case "6":
-						aggregatedDataMap.put("number-of-big-trucks", entry.getValue());
-						break;
-					case "7":
-						aggregatedDataMap.put("number-of-articulated-trucks", entry.getValue());
-						break;
-					case "8":
-						aggregatedDataMap.put("number-of-articulated-lorries", entry.getValue());
-						break;
-					case "9":
-						aggregatedDataMap.put("number-of-busses", entry.getValue());
-						break;
-					case "10":
-						aggregatedDataMap.put("number-of-unclassified-vehicles", entry.getValue());
-						break;
-				}
-			}
-			aggregatedDataMap.put("average-vehicle-speed", aggregatedDataDto.getAverageVehicleSpeed());
-			aggregatedDataMap.put("headway", aggregatedDataDto.getHeadway());
-			aggregatedDataMap.put("headway-variance", aggregatedDataDto.getHeadwayVariance());
-			aggregatedDataMap.put("gap", aggregatedDataDto.getGap());
-			aggregatedDataMap.put("gap-variance", aggregatedDataDto.getGapVariance());
-		}
-
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-		Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
-		SimpleRecordDto measurement = new SimpleRecordDto(timestamp, aggregatedDataMap, period);
-		metricMap.getData().add(measurement);
 	}
 
 }

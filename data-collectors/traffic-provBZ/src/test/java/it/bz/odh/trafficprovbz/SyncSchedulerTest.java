@@ -43,8 +43,7 @@ class SyncSchedulerTest {
 
 	@Test
 	void checkSyncBluetoothMeasurements() throws Exception {
-		String STATION_ID = "1";
-		Mockito.when(famasClient.getPassagesDataOnStations(STATION_ID, null, null)).thenReturn(null);
+		Mockito.when(famasClient.getPassagesDataOnStations(null, null, null)).thenReturn(null);
 
 		SyncScheduler sut = new SyncScheduler(odhClient, famasClient);
 

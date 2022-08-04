@@ -46,7 +46,6 @@ public class FamasClient {
 		//HttpEntity entity = response.getEntity();
 		//String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
 		String responseString = "[{\"Id\": 1, \"Nome\": \"Schema Famas 9+1\", \"Classi\": [{\"Codice\": 0,\"Descrizione\": \"Conteggio\"},{\"Codice\": 1,\"Descrizione\": \"Moto\"},{\"Codice\": 2,\"Descrizione\": \"Auto\"},{\"Codice\": 3,\"Descrizione\": \"Auto con rimorchio\"},{\"Codice\": 4,\"Descrizione\": \"Furgoni\"},{\"Codice\": 5,\"Descrizione\": \"Camion <7,5m\"},{\"Codice\": 6,\"Descrizione\": \"Camion >7,5m\"},{\"Codice\": 7,\"Descrizione\": \"Autotreni\"},{\"Codice\": 8,\"Descrizione\": \"Autoarticolati\"},{\"Codice\": 9,\"Descrizione\": \"Autobus\"},{\"Codice\": 10,\"Descrizione\": \"Altri\"}]}]";
-		System.out.println(responseString);
 		return objectMapper.readValue(responseString, ClassificationSchemaDto[].class);
 	}
 
@@ -55,7 +54,6 @@ public class FamasClient {
 		//HttpEntity entity = response.getEntity();
 		//String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
 		String responseString = "[{ \"Id\": 1, \"Nome\": \"4\",\"GeoInfo\": {\"Latitudine\": 46.4497009548582, \"Longitudine\":11.3448734664564, \"Regione\":\"Trentino-Alto Adige\", \"Provincia\":\"Bolzano\", \"Comune\":\"Laives\"},\"StradaInfo\": {\"Nome\": \"SS 12 dell'Abetone e del Brennero\", \"Chilometrica\": 432.69},\"Direzioni\": [{\"Tipo\": \"ascendente\",\"Descrizione\": \"Verso Bolzano\"},{\"Tipo\": \"discendente\", \"Descrizione\": \"Verso Trento\"}], \"SchemaDiClassificazione\": 1,\"NumeroCorsie\": 2,\"CorsieInfo\": [{\"Id\": 1,\"Descrizione\": \"verso Bolzano\", \"SensoDiMarcia\": \"ascendente\"},{\"Id\": 2,\"Descrizione\": \"verso Trento\",\"SensoDiMarcia\": \"discendente\"}]}, { \"Id\": 2, \"Nome\": \"4\",\"GeoInfo\": {\"Latitudine\": 47.4497009548582, \"Longitudine\":12.3448734664564, \"Regione\":\"Trentino-Alto Adige\", \"Provincia\":\"Bolzano\", \"Comune\":\"Bolzano\"},\"StradaInfo\": {\"Nome\": \"SS 17 dell'Abetone e del Brennero\", \"Chilometrica\": 421.69},\"Direzioni\": [{\"Tipo\": \"descendente\",\"Descrizione\": \"Verso Laives\"},{\"Tipo\": \"discendente\", \"Descrizione\": \"Verso Trento\"}], \"SchemaDiClassificazione\": 1,\"NumeroCorsie\": 2,\"CorsieInfo\": [{\"Id\": 1,\"Descrizione\": \"verso Bolzano\", \"SensoDiMarcia\": \"ascendente\"},{\"Id\": 2,\"Descrizione\": \"verso Trento\",\"SensoDiMarcia\": \"discendente\"}]}]";
-		System.out.println(responseString);
 		return objectMapper.readValue(responseString, MetadataDto[].class);
 	}
 
