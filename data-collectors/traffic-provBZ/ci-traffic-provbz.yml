@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - "data-collectors/trafficprovbz/**"
-      - ".github/workflows/ci-trafficprovbz.yml"
+      - ".github/workflows/ci-traffic-provbz.yml"
 
 env:
   WORKING_DIRECTORY: data-collectors/trafficprovbz

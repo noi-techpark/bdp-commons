@@ -1,22 +1,17 @@
-# trafficprovbz Data Collector
+# Traffic Province BZ Data Collector
 
-> TODO: Replace all "trafficprovbz" or TODO sections with your documenation.
-> Please, do not write general information that is already contained inside the
-> general [Open Data Hub Mobility - Data Collectors README](../../README.md)
 
-[![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-trafficprovbz.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-trafficprovbz.yml)
+[![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traffic-prov-bz.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traffic-bz.yml)
 
-> TODO: Describe this data collector shortly:  This **trafficprovbz** project is a
-> showcase on how data collector development works.
+Application which takes data from the API provided by the company Famas, parses it
+and stores it in the opendatahub.
 
 **Table of Contents**
-- [trafficprovbz Data Collector](#trafficprovbz-data-collector)
+- [Traffic Province BZ Data Collector](#traffic-provBZ-data-collector)
 	- [Getting started](#getting-started)
 		- [Prerequisites](#prerequisites)
 		- [Configuration](#configuration)
 		- [Additional information](#additional-information)
-
-> TODO: At the final end of this README update the Table Of Contents
 
 ## Getting started
 
@@ -31,14 +26,14 @@ local machine for development and testing purposes.
 
 To build the project, the following prerequisites must be met:
 - Everything inside [Open Data Hub Mobility - Data Collectors README](../../README.md#prerequisites)
-- > **TODO** put your additional requisites here, do not add stuff that is already covered in the main README
 
 ### Configuration
 
-> TODO: Write your data collector configuration descriptions here
+The data collector consists of three schedulers:
+- For syncing the traffic stations
+- For syncing the traffic data
+- For syncing the bluetooth data
 
-### Additional information
+After cloning the project setup the project as a maven project. Afterwards start the project as a spring boot application.
 
-> TODO: Add some additinal information, like what this DC does, how it works
-> Talks also about the original data source and eventually provide links or
-> documentation that describes the data that we retrieve
+Important note: The bdp-core repository has to be up and running (on docker) as well.
