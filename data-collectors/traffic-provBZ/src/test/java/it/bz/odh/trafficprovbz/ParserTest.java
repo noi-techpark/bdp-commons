@@ -32,7 +32,7 @@ class ParserTest {
 		ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.CorsieInfo");
 
 		for (LinkedHashMap<String, String> lane: lanes) {
-			StationDto stationUnderTest = Parser.createStation(stationsUnderTest[0], otherFields, lane, null);
+			StationDto stationUnderTest = Parser.createStation(stationsUnderTest[0], otherFields, lane, null, "TrafficSensor");
 			assertThat("1").isEqualTo(stationUnderTest.getId());
 			assertThat(46.4497009548582).isEqualTo(stationUnderTest.getLatitude());
 			assertThat(11.3448734664564).isEqualTo(stationUnderTest.getLongitude());

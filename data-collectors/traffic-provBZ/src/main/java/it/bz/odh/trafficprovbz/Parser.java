@@ -1,8 +1,6 @@
 package it.bz.odh.trafficprovbz;
 
 import com.jayway.jsonpath.JsonPath;
-import it.bz.idm.bdp.dto.DataMapDto;
-import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.odh.trafficprovbz.dto.AggregatedDataDto;
@@ -22,14 +20,21 @@ public class Parser {
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
 
-	public static StationDto createStation(MetadataDto metadataDto, JSONObject otherFields, LinkedHashMap<String, String> lane, LinkedHashMap<String, String> classificationSchema) {
+	public static StationDto createStation(MetadataDto metadataDto, JSONObject otherFields, LinkedHashMap<String, String> lane, LinkedHashMap<String, String> classificationSchema, String stationType) {
 		Double lat = JsonPath.read(otherFields, "$.GeoInfo.Latitudine");
 		Double lon = JsonPath.read(otherFields, "$.GeoInfo.Longitudine");
 
 		metadataDto.setOtherField("SchemaDiClassificazione", classificationSchema);
-		String description = JsonPath.read(lane, "$.Descrizione");
-		String stationName = metadataDto.getName() + ":" + description;
-		return new StationDto(metadataDto.getId(), stationName, lat, lon);
+		String stationId = metadataDto.getId();
+		String stationName = metadataDto.getName();
+		if (lane != null) {
+			String description = JsonPath.read(lane, "$.Descrizione");
+			stationId = metadataDto.getId() + ":" + description;
+			stationName = metadataDto.getName() + ":" + description;
+		}
+		StationDto station =  new StationDto(stationId, stationName, lat, lon);
+		station.setStationType(stationType);
+		return station;
 	}
 
 	public static SimpleRecordDto createTrafficMeasurement(AggregatedDataDto aggregatedDataDto, Integer period) throws ParseException {
