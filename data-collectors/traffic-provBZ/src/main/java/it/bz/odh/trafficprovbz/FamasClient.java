@@ -15,6 +15,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,6 +51,7 @@ public class FamasClient {
 	private final HttpClient client = HttpClientBuilder.create().build();
 
 	public ClassificationSchemaDto[] getClassificationSchemas() throws IOException {
+		// TODO: Comment out code and remove test json files if api is available
 		//HttpResponse response = client.execute(new HttpGet(classificationSchemasUrl));
 		//HttpEntity entity = response.getEntity();
 		//String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
@@ -57,6 +60,7 @@ public class FamasClient {
 	}
 
 	public MetadataDto[] getStationsData() throws IOException {
+		// TODO: Comment out code and remove test json files if api is available
 		//HttpResponse response = client.execute(new HttpGet(stationsDataUrl));
 		//HttpEntity entity = response.getEntity();
 		//String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
@@ -65,37 +69,36 @@ public class FamasClient {
 	}
 
 	public AggregatedDataDto[] getAggregatedDataOnStations(String stationId, String startPeriod, String endPeriod) throws IOException {
-		//String payload = """
-		//        data={
-		//            "InizioPeriodo": startPeriod,
-		//            "FinePeriodo": "endPeriod",
-		//        }
-		//        """;
-		//StringEntity entity = new StringEntity(payload,
+		// TODO: Comment out code and remove test json files if api is available
+		//JSONObject payload = new JSONObject();
+		//JSONArray stationIdArray = new JSONArray();
+		//stationIdArray.add(stationId);
+		//payload.put("IdPostazioni", stationIdArray);
+		//payload.put("InizioPeriodo", startPeriod);
+		//payload.put("FinePeriodo", endPeriod);
+		//StringEntity stringEntity = new StringEntity(String.valueOf(payload),
 		//	ContentType.APPLICATION_JSON);
 		//HttpPost request = new HttpPost(aggregatedDataOnStationsUrl);
-		//request.setEntity(entity);
-		//HttpResponse response = client.execute(request);
+		//request.setEntity(stringEntity);
+		//HttpEntity entity = client.execute(request).getEntity();
 		//String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
 		String responseString = readJsonFile("jsonfiles/aggregatedDataOnStations.json");
 		return objectMapper.readValue(responseString, AggregatedDataDto[].class);
 	}
 
 	public PassagesDataDto[] getPassagesDataOnStations(String stationId, String startPeriod, String endPeriod) throws IOException {
-		//String payload = """
-		//        data={
-		//			  "IdPostazioni": [
-		//				stationId
-		//			]
-		//            "InizioPeriodo": "admin",
-		//            "FinePeriodo": "System",
-		//        }
-		//        """;
-		//StringEntity entity = new StringEntity(payload,
+		// TODO: Comment out code and remove test json files if api is available
+		//JSONObject payload = new JSONObject();
+		//JSONArray stationIdArray = new JSONArray();
+		//stationIdArray.add(stationId);
+		//payload.put("IdPostazioni", stationIdArray);
+		//payload.put("InizioPeriodo", startPeriod);
+		//payload.put("FinePeriodo", endPeriod);
+		//StringEntity stringEntity = new StringEntity(String.valueOf(payload),
 		//	ContentType.APPLICATION_JSON);
 		//HttpPost request = new HttpPost(passagesDataOnStationsUrl);
-		//request.setEntity(entity);
-		//HttpResponse response = client.execute(request);
+		//request.setEntity(stringEntity);
+		//HttpEntity entity = client.execute(request).getEntity();
 		//String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
 		String responseString = readJsonFile("jsonfiles/passagesDataOnStations.json");
 		return objectMapper.readValue(responseString, PassagesDataDto[].class);
