@@ -31,8 +31,8 @@ public class SyncScheduler {
 
 
 	//TODO: Ask PO of NOI if I should use a datatype for each value or one general and with json
-	private static final String DATATYPE_ID_TRAFFIC = "type";
-	private static final String DATATYPE_ID_BlUETOOTH = "vehicle detection";
+	private static final String DATATYPE_ID_HEADWAY_VARIANCE = "headway-variance";
+	private static final String DATATYPE_ID_GAP_VARIANCE = "gap-variance";
 
 	@Value("${odh_client.period}")
 	private Integer period;
@@ -59,11 +59,7 @@ public class SyncScheduler {
 	public void syncJobStations() {
 		LOG.info("Cron job stations started: Sync Stations with type {} and data types", odhClient.getIntegreenTypology());
 		try {
-
-			//TODO: initDataTypes()
-			List<DataTypeDto> odhDataTypeList = new ArrayList<>();
-			odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_TRAFFIC, null, "Data of traffic", "string"));
-			odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_BlUETOOTH, null, "Detects the passed vehicles", "string"));
+			initDataTypes();
 
 			LOG.info("Syncing traffic stations");
 			ClassificationSchemaDto[] classificationDtos;
@@ -93,7 +89,6 @@ public class SyncScheduler {
 				}
 			}
 			odhClient.syncStations(odhTrafficStationList);
-			odhClient.syncDataTypes(odhDataTypeList);
 			LOG.info("Cron job traffic stations successful");
 
 			LOG.info("Syncing bluetooth stations");
@@ -104,7 +99,7 @@ public class SyncScheduler {
 			for (MetadataDto metadataDto : metadataDtos) {
 				JSONObject otherFields = new JSONObject(metadataDto.getOtherFields());
 				LinkedHashMap<String, String> classificationSchema = getClassificationSchema(odhClassesList, metadataDto);
-				StationDto station = Parser.createStation(metadataDto, otherFields, null, classificationSchema, STATION_TYPE_TRAFFIC_SENSOR);
+				StationDto station = Parser.createStation(metadataDto, otherFields, null, classificationSchema, STATION_TYPE_BLUETOOTH_SENSOR);
 				station.setOrigin(odhClient.getProvenance().getLineage());
 				station.setMetaData(metadataDto.getOtherFields());
 				odhBluetoothStationList.add(station);
@@ -130,7 +125,7 @@ public class SyncScheduler {
 			for (AggregatedDataDto aggregatedDataDto : aggregatedDataDtos) {
 				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(aggregatedDataDto.getId());
 				// TODO: Insert string of type
-				DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch(DATATYPE_ID_TRAFFIC);
+				DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch("DATATYPE_ID_TRAFFIC");
 				SimpleRecordDto measurement = Parser.createTrafficMeasurement(aggregatedDataDto, period);
 				metricMap.getData().add(measurement);
 			}
@@ -156,7 +151,7 @@ public class SyncScheduler {
 
 				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(metadataDto.getId());
 
-				DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch(DATATYPE_ID_BlUETOOTH);
+				DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("df");
 
 				PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(metadataDto.getId(), sdf.format(startPeriodBluetooth), sdf.format(new Date()));
 
@@ -181,7 +176,21 @@ public class SyncScheduler {
 		}
 	}
 
-	public LinkedHashMap<String, String> getClassificationSchema(ArrayList<LinkedHashMap<String, String>> odhClassesList, MetadataDto s) {
+	private void initDataTypes() {
+		LOG.info("Syncing data types");
+		List<DataTypeDto> odhDataTypeList = new ArrayList<>();
+
+		odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_HEADWAY_VARIANCE, "m/s", DATATYPE_ID_HEADWAY_VARIANCE, "Average"));
+		odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_GAP_VARIANCE, "m/s", DATATYPE_ID_GAP_VARIANCE, "Average"));
+
+		try {
+			odhClient.syncDataTypes(odhDataTypeList);
+		} catch (WebClientRequestException e) {
+			LOG.error("Sync data types failed: Request exception: {}", e.getMessage());
+		}
+	}
+
+	private LinkedHashMap<String, String> getClassificationSchema(ArrayList<LinkedHashMap<String, String>> odhClassesList, MetadataDto s) {
 		for (LinkedHashMap<String, String> odhClass : odhClassesList) {
 			int code = JsonPath.read(odhClass, "$.Codice");
 			if (code == s.getClassificationSchema()) {
