@@ -3,6 +3,8 @@ package it.bz.odh.trafficprovbz;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.odh.trafficprovbz.dto.AggregatedDataDto;
@@ -33,7 +35,7 @@ class ParserTest {
 
 		for (LinkedHashMap<String, String> lane: lanes) {
 			StationDto stationUnderTest = Parser.createStation(stationsUnderTest[0], otherFields, lane, null, "TrafficSensor");
-			assertThat("1").isEqualTo(stationUnderTest.getId());
+			assertThat(stationUnderTest.getId()).startsWith("1");
 			assertThat(46.4497009548582).isEqualTo(stationUnderTest.getLatitude());
 			assertThat(11.3448734664564).isEqualTo(stationUnderTest.getLongitude());
 		}
@@ -47,11 +49,10 @@ class ParserTest {
 		String aggregatedData = "[{\"IdPostazione\": 3, \"Data\": \"2021-12-02T11:10:00Z\", \"Corsia\": 0, \"Direzione\": \"ascendente\", \"TotaleVeicoli\": 64, \"TotaliPerClasseVeicolare\": { \"2\": 59, \"4\": 5 }, \"MediaArmonicaVelocita\": 79.3, \"HeadwayMedioSecondi\": 4.68, \"VarianzaHeadwayMedioSecondi\": 26.01, \"GapMedioSecondi\": 4.42, \"VarianzaGapMedioSecondi\": 26.12}]";
 		AggregatedDataDto[] aggregatedDataDtos = objectMapper.readValue(aggregatedData, AggregatedDataDto[].class);
 
-			SimpleRecordDto measurementUnderTest = Parser.createTrafficMeasurement(aggregatedDataDtos[0], period);
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-			Long timestamp = formatter.parse(aggregatedDataDtos[0].getDate()).getTime();
-			assertThat(period).isEqualTo(measurementUnderTest.getPeriod());
-			assertThat(new Date().getTime()).isCloseTo(measurementUnderTest.getCreated_on(), Percentage.withPercentage(2));
-			assertThat(timestamp).isEqualTo(measurementUnderTest.getTimestamp());
+		DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+
+		DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(aggregatedDataDtos[0].getId());
+		Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap);
+
 	}
 }

@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SyncScheduler {
@@ -30,7 +27,6 @@ public class SyncScheduler {
 	private static final String STATION_TYPE_BLUETOOTH_SENSOR = "BluetoothSensor";
 
 
-	//TODO: Ask PO of NOI if I should use a datatype for each value or one general and with json
 	private static final String DATATYPE_ID_HEADWAY_VARIANCE = "headway-variance";
 	private static final String DATATYPE_ID_GAP_VARIANCE = "gap-variance";
 
@@ -118,19 +114,20 @@ public class SyncScheduler {
 	public void syncJobTrafficMeasurements() {
 		LOG.info("Cron job measurements started: Pushing measurements for {}", odhClient.getIntegreenTypology());
 		try {
-			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+			MetadataDto[] metadataDtos = famasClient.getStationsData();
 
-			AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(sdf.format(startPeriodTraffic), sdf.format(new Date()));
+			for (MetadataDto metadataDto : metadataDtos) {
 
-			for (AggregatedDataDto aggregatedDataDto : aggregatedDataDtos) {
-				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(aggregatedDataDto.getId());
-				// TODO: Insert string of type
-				DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch("DATATYPE_ID_TRAFFIC");
-				SimpleRecordDto measurement = Parser.createTrafficMeasurement(aggregatedDataDto, period);
-				metricMap.getData().add(measurement);
+				DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(metadataDto.getId());
+
+				AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(metadataDto.getId(), sdf.format(startPeriodTraffic), sdf.format(new Date()));
+
+				Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap);
+
+				odhClient.pushData(rootMap);
+				LOG.info("Cron job traffic for station {} successful", metadataDto.getId());
 			}
-			odhClient.pushData(rootMap);
-			LOG.info("Cron job traffic measurements successful");
 			startPeriodTraffic = new Date();
 		} catch (Exception e) {
 			LOG.error("Cron job traffic measurements failed: Request exception: {}", e.getMessage());

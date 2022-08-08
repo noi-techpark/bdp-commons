@@ -1,6 +1,8 @@
 package it.bz.odh.trafficprovbz;
 
 import com.jayway.jsonpath.JsonPath;
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.odh.trafficprovbz.dto.AggregatedDataDto;
@@ -10,10 +12,7 @@ import net.minidev.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Parser {
 
@@ -32,63 +31,61 @@ public class Parser {
 			stationId = metadataDto.getId() + ":" + description;
 			stationName = metadataDto.getName() + ":" + description;
 		}
-		StationDto station =  new StationDto(stationId, stationName, lat, lon);
+		StationDto station = new StationDto(stationId, stationName, lat, lon);
 		station.setStationType(stationType);
 		return station;
 	}
 
-	public static SimpleRecordDto createTrafficMeasurement(AggregatedDataDto aggregatedDataDto, Integer period) throws ParseException {
-		Map<String, Object> aggregatedDataMap = new HashMap<>();
-		aggregatedDataMap.put("total-transits", aggregatedDataDto.getTotalTransits());
-		JSONObject otherFields = new JSONObject(aggregatedDataDto.getOtherFields());
-		if (otherFields.containsKey("TotaliPerClasseVeicolare")) {
-			LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.TotaliPerClasseVeicolare");
-			//Set<String> keys = classes.keySet();
-			for (Map.Entry<String, Integer> entry : classes.entrySet()) {
-				switch (entry.getKey()) {
-					case "1":
-						aggregatedDataMap.put("number-of-motorcycles", entry.getValue());
-						break;
-					case "2":
-						aggregatedDataMap.put("number-of-cars", entry.getValue());
-						break;
-					case "3":
-						aggregatedDataMap.put("number-of-cars-and-minivans-with-trailer", entry.getValue());
-						break;
-					case "4":
-						aggregatedDataMap.put("number-of-small-trucks-and-vans", entry.getValue());
-						break;
-					case "5":
-						aggregatedDataMap.put("number-of-medium-sized-trucks", entry.getValue());
-						break;
-					case "6":
-						aggregatedDataMap.put("number-of-big-trucks", entry.getValue());
-						break;
-					case "7":
-						aggregatedDataMap.put("number-of-articulated-trucks", entry.getValue());
-						break;
-					case "8":
-						aggregatedDataMap.put("number-of-articulated-lorries", entry.getValue());
-						break;
-					case "9":
-						aggregatedDataMap.put("number-of-busses", entry.getValue());
-						break;
-					case "10":
-						aggregatedDataMap.put("number-of-unclassified-vehicles", entry.getValue());
-						break;
-				}
-			}
-			aggregatedDataMap.put("average-vehicle-speed", aggregatedDataDto.getAverageVehicleSpeed());
-			aggregatedDataMap.put("headway", aggregatedDataDto.getHeadway());
-			aggregatedDataMap.put("headway-variance", aggregatedDataDto.getHeadwayVariance());
-			aggregatedDataMap.put("gap", aggregatedDataDto.getGap());
-			aggregatedDataMap.put("gap-variance", aggregatedDataDto.getGapVariance());
+	public static void insertDataIntoStationMap(AggregatedDataDto[] aggregatedDataDtos, Integer period, DataMapDto<RecordDtoImpl> stationMap) throws ParseException {
+
+		List<String> trafficDataTypes = Parser.getTrafficDataTypes();
+
+		@SuppressWarnings("unchecked")
+		DataMapDto<RecordDtoImpl>[] metricMaps = new DataMapDto[trafficDataTypes.size()];
+
+		for (int i = 0; i < trafficDataTypes.size(); i++) {
+			DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch(trafficDataTypes.get(i));
+			metricMaps[i] = metricMap;
 		}
 
-		Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
-		SimpleRecordDto simpleRecordDto = new SimpleRecordDto(timestamp, aggregatedDataMap, period);
-		simpleRecordDto.setCreated_on(new Date().getTime());
-		return simpleRecordDto;
+		for (AggregatedDataDto aggregatedDataDto : aggregatedDataDtos) {
+			Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
+			JSONObject otherFields = new JSONObject(aggregatedDataDto.getOtherFields());
+			if (otherFields.containsKey("TotaliPerClasseVeicolare")) {
+				addMeasurementToMap(metricMaps[0], new SimpleRecordDto(timestamp, aggregatedDataDto.getTotalTransits(), period));
+				LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.TotaliPerClasseVeicolare");
+				Set<String> keys = classes.keySet();
+				for (String key : keys) {
+					for (int i = 1; i <= 10; i++) {
+						if (String.valueOf(i).equals(key)) {
+							addMeasurementToMap(metricMaps[i], new SimpleRecordDto(timestamp, classes.get(key), period));
+						}
+					}
+				}
+				addMeasurementToMap(metricMaps[11], new SimpleRecordDto(timestamp, aggregatedDataDto.getAverageVehicleSpeed(), period));
+				addMeasurementToMap(metricMaps[12], new SimpleRecordDto(timestamp, aggregatedDataDto.getHeadway(), period));
+				addMeasurementToMap(metricMaps[13], new SimpleRecordDto(timestamp, aggregatedDataDto.getHeadwayVariance(), period));
+				addMeasurementToMap(metricMaps[14], new SimpleRecordDto(timestamp, aggregatedDataDto.getGap(), period));
+				addMeasurementToMap(metricMaps[15], new SimpleRecordDto(timestamp, aggregatedDataDto.getGapVariance(), period));
+			} else {
+				// In case of zero transits of a certain traffic category the reference data point will not be provided.
+				// In this case, the Data Collector should provide a ‘0’ to the ODH so that the time series in the ODH is complete and without holes.
+				addMeasurementToMap(metricMaps[0], new SimpleRecordDto(timestamp, 0.0, period));
+			}
+		}
+	}
+
+	private static List<String> getTrafficDataTypes() {
+		return Arrays.asList("total-transits", "number-of-motorcycles", "number-of-cars", "number-of-cars-and-minivans-with-trailer", "number-of-small-trucks-and-vans ",
+			"number-of-medium-sized-trucks", "number-of-big-trucks", "number-of-articulated-trucks", "number-of-articulated-lorries", "number-of-busses",
+			"number-of-unclassified-vehicles", "average-vehicle-speed", "headway", "headway-variance", "gap", "gap-variance");
+	}
+
+	private static void addMeasurementToMap(DataMapDto<RecordDtoImpl> map, SimpleRecordDto measurement) {
+		if (map != null) {
+			measurement.setCreated_on(new Date().getTime());
+			map.getData().add(measurement);
+		}
 	}
 
 	public static SimpleRecordDto createBluetoothMeasurement(PassagesDataDto passagesDataDto, Integer period) throws ParseException {

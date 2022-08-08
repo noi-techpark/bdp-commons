@@ -29,7 +29,7 @@ class SyncSchedulerTest {
 
 	@Test
 	void checkSyncTrafficMeasurements() throws Exception {
-		Mockito.when(famasClient.getAggregatedDataOnStations(null, null)).thenReturn(null);
+		Mockito.when(famasClient.getAggregatedDataOnStations(null,null, null)).thenReturn(null);
 
 		SyncScheduler sut = new SyncScheduler(odhClient, famasClient);
 

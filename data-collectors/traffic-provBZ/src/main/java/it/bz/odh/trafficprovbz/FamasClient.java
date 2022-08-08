@@ -64,7 +64,7 @@ public class FamasClient {
 		return objectMapper.readValue(responseString, MetadataDto[].class);
 	}
 
-	public AggregatedDataDto[] getAggregatedDataOnStations(String startPeriod, String endPeriod) throws IOException {
+	public AggregatedDataDto[] getAggregatedDataOnStations(String stationId, String startPeriod, String endPeriod) throws IOException {
 		//String payload = """
 		//        data={
 		//            "InizioPeriodo": startPeriod,
