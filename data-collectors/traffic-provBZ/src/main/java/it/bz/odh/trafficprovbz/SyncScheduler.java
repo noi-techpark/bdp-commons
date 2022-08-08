@@ -60,10 +60,10 @@ public class SyncScheduler {
 			LOG.info("Syncing traffic stations");
 			ClassificationSchemaDto[] classificationDtos;
 			classificationDtos = famasClient.getClassificationSchemas();
-			ArrayList<LinkedHashMap<String, String>> odhClassesList = new ArrayList<>();
+			ArrayList<LinkedHashMap<String, String>> classificationSchemaList = new ArrayList<>();
 			for (ClassificationSchemaDto c : classificationDtos) {
 				ArrayList<LinkedHashMap<String, String>> classes = JsonPath.read(c.getOtherFields(), "$.Classi");
-				odhClassesList.addAll(classes);
+				classificationSchemaList.addAll(classes);
 			}
 			MetadataDto[] metadataDtos = famasClient.getStationsData();
 			StationList odhTrafficStationList = new StationList();
@@ -72,7 +72,7 @@ public class SyncScheduler {
 			for (MetadataDto metadataDto : metadataDtos) {
 				JSONObject otherFields = new JSONObject(metadataDto.getOtherFields());
 				ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.CorsieInfo");
-				LinkedHashMap<String, String> classificationSchema = getClassificationSchema(odhClassesList, metadataDto);
+				LinkedHashMap<String, String> classificationSchema = getClassificationSchema(classificationSchemaList, metadataDto);
 				for (LinkedHashMap<String, String> lane : lanes) {
 					StationDto station = Parser.createStation(metadataDto, otherFields, lane, classificationSchema, STATION_TYPE_TRAFFIC_SENSOR);
 					station.setOrigin(odhClient.getProvenance().getLineage());
@@ -89,7 +89,7 @@ public class SyncScheduler {
 			// Insert bluetooth sensors in station list to insert them in ODH
 			for (MetadataDto metadataDto : metadataDtos) {
 				JSONObject otherFields = new JSONObject(metadataDto.getOtherFields());
-				LinkedHashMap<String, String> classificationSchema = getClassificationSchema(odhClassesList, metadataDto);
+				LinkedHashMap<String, String> classificationSchema = getClassificationSchema(classificationSchemaList, metadataDto);
 				StationDto station = Parser.createStation(metadataDto, otherFields, null, classificationSchema, STATION_TYPE_BLUETOOTH_SENSOR);
 				station.setOrigin(odhClient.getProvenance().getLineage());
 				station.setMetaData(metadataDto.getOtherFields());
@@ -161,6 +161,9 @@ public class SyncScheduler {
 		}
 	}
 
+	/**
+	 * Helper method to initialize the data types
+	 */
 	private void initDataTypes() {
 		LOG.info("Syncing data types");
 		List<DataTypeDto> odhDataTypeList = new ArrayList<>();
@@ -175,11 +178,18 @@ public class SyncScheduler {
 		}
 	}
 
-	private LinkedHashMap<String, String> getClassificationSchema(ArrayList<LinkedHashMap<String, String>> odhClassesList, MetadataDto s) {
-		for (LinkedHashMap<String, String> odhClass : odhClassesList) {
-			int code = JsonPath.read(odhClass, "$.Codice");
-			if (code == s.getClassificationSchema()) {
-				return odhClass;
+	/**
+	 * This helper function finds the classification schema for a given station
+	 *
+	 * @param classificationSchemaList is a list containing all the classification schemas
+	 * @param metadataDto is a variable where the station is stored
+	 * @return the appropriate classification schema for the station
+	 */
+	private LinkedHashMap<String, String> getClassificationSchema(ArrayList<LinkedHashMap<String, String>> classificationSchemaList, MetadataDto metadataDto) {
+		for (LinkedHashMap<String, String> classificationSchema : classificationSchemaList) {
+			int code = JsonPath.read(classificationSchema, "$.Codice");
+			if (code == metadataDto.getClassificationSchema()) {
+				return classificationSchema;
 			}
 		}
 		return null;

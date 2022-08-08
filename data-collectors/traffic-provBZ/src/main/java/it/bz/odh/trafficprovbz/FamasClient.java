@@ -50,6 +50,12 @@ public class FamasClient {
 
 	private final HttpClient client = HttpClientBuilder.create().build();
 
+	/**
+	 * This function gets all the classification schemas via an api from famas
+	 *
+	 * @return ClassificationSchemaDto-array with all the classification schemas
+	 * @throws IOException used in the code to throw a failure in input and output operations
+	 */
 	public ClassificationSchemaDto[] getClassificationSchemas() throws IOException {
 		// TODO: Comment out code and remove test json files if api is available
 		//HttpResponse response = client.execute(new HttpGet(classificationSchemasUrl));
@@ -59,6 +65,12 @@ public class FamasClient {
 		return objectMapper.readValue(responseString, ClassificationSchemaDto[].class);
 	}
 
+	/**
+	 * This function gets all the data about the stations via an api from famas
+	 *
+	 * @return MetadataDto-array with all the stations
+	 * @throws IOException used in the code to throw a failure in input and output operations
+	 */
 	public MetadataDto[] getStationsData() throws IOException {
 		// TODO: Comment out code and remove test json files if api is available
 		//HttpResponse response = client.execute(new HttpGet(stationsDataUrl));
@@ -68,6 +80,12 @@ public class FamasClient {
 		return objectMapper.readValue(responseString, MetadataDto[].class);
 	}
 
+	/**
+	 * This function gets all the traffic data about the stations via an api from famas
+	 *
+	 * @return AggregatedDataDto-array with all traffic of the stations
+	 * @throws IOException used in the code to throw a failure in input and output operations
+	 */
 	public AggregatedDataDto[] getAggregatedDataOnStations(String stationId, String startPeriod, String endPeriod) throws IOException {
 		// TODO: Comment out code and remove test json files if api is available
 		//JSONObject payload = new JSONObject();
@@ -86,6 +104,12 @@ public class FamasClient {
 		return objectMapper.readValue(responseString, AggregatedDataDto[].class);
 	}
 
+	/**
+	 * This function gets all the bluetooth addressess about the devices passed the stations via an api from famas
+	 *
+	 * @return PassagesDataDto-array with all bluetooth devices passed the stations
+	 * @throws IOException used in the code to throw a failure in input and output operations
+	 */
 	public PassagesDataDto[] getPassagesDataOnStations(String stationId, String startPeriod, String endPeriod) throws IOException {
 		// TODO: Comment out code and remove test json files if api is available
 		//JSONObject payload = new JSONObject();
