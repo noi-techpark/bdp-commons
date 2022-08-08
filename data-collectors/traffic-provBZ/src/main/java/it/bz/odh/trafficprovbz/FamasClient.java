@@ -1,6 +1,5 @@
 package it.bz.odh.trafficprovbz;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.nimbusds.jose.shaded.json.parser.ParseException;
@@ -8,22 +7,12 @@ import it.bz.odh.trafficprovbz.dto.AggregatedDataDto;
 import it.bz.odh.trafficprovbz.dto.ClassificationSchemaDto;
 import it.bz.odh.trafficprovbz.dto.MetadataDto;
 import it.bz.odh.trafficprovbz.dto.PassagesDataDto;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 

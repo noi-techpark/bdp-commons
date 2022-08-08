@@ -22,10 +22,10 @@ public class AggregatedDataDto {
 	private String direction;
 
 	@JsonProperty("TotaleVeicoli")
-	private Double totalTransits ;
+	private Double totalTransits;
 
 	@JsonProperty("MediaArmonicaVelocita")
-	private Double averageVehicleSpeed ;
+	private Double averageVehicleSpeed;
 
 	@JsonProperty("HeadwayMedioSecondi")
 	private Double headway;

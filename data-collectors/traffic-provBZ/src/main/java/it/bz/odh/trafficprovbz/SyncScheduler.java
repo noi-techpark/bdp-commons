@@ -16,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @Service
 public class SyncScheduler {
@@ -168,6 +171,7 @@ public class SyncScheduler {
 		LOG.info("Syncing data types");
 		List<DataTypeDto> odhDataTypeList = new ArrayList<>();
 
+		// TODO: What to insert for unit and rtype?
 		odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_HEADWAY_VARIANCE, "double", DATATYPE_ID_HEADWAY_VARIANCE, "Average"));
 		odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_GAP_VARIANCE, "double", DATATYPE_ID_GAP_VARIANCE, "Average"));
 
@@ -182,7 +186,7 @@ public class SyncScheduler {
 	 * This helper function finds the classification schema for a given station
 	 *
 	 * @param classificationSchemaList is a list containing all the classification schemas
-	 * @param metadataDto is a variable where the station is stored
+	 * @param metadataDto              is a variable where the station is stored
 	 * @return the appropriate classification schema for the station
 	 */
 	private LinkedHashMap<String, String> getClassificationSchema(ArrayList<LinkedHashMap<String, String>> classificationSchemaList, MetadataDto metadataDto) {

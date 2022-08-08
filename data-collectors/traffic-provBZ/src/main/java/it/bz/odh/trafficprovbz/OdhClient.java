@@ -12,33 +12,33 @@ import org.springframework.stereotype.Service;
 @Service
 public class OdhClient extends NonBlockingJSONPusher {
 
-    @Value("${odh_client.stationtype}")
-    private String stationtype;
+	@Value("${odh_client.stationtype}")
+	private String stationtype;
 
-    @Value("${odh_client.provenance.name}")
-    private String provenanceName;
+	@Value("${odh_client.provenance.name}")
+	private String provenanceName;
 
-    @Value("${odh_client.provenance.version}")
-    private String provenanceVersion;
+	@Value("${odh_client.provenance.version}")
+	private String provenanceVersion;
 
-    @Value("${odh_client.provenance.origin}")
-    private String provenanceOrigin;
+	@Value("${odh_client.provenance.origin}")
+	private String provenanceOrigin;
 
-    @Override
-    public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
+	@Override
+	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
 		/* You can ignore this legacy method call */
-        return null;
-    }
+		return null;
+	}
 
-    @Override
-    public String initIntegreenTypology() {
-        return stationtype;
-    }
+	@Override
+	public String initIntegreenTypology() {
+		return stationtype;
+	}
 
-    @Override
-    public ProvenanceDto defineProvenance() {
-        return new ProvenanceDto(null, provenanceName, provenanceVersion, provenanceOrigin);
-    }
+	@Override
+	public ProvenanceDto defineProvenance() {
+		return new ProvenanceDto(null, provenanceName, provenanceVersion, provenanceOrigin);
+	}
 
 	public ProvenanceDto getProvenance() {
 		return provenance;

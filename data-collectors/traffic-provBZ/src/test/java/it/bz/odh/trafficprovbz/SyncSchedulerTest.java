@@ -1,13 +1,7 @@
 package it.bz.odh.trafficprovbz;
 
-import it.bz.idm.bdp.dto.StationList;
-import it.bz.odh.trafficprovbz.dto.ClassificationSchemaDto;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 
 class SyncSchedulerTest {
 
@@ -29,7 +23,7 @@ class SyncSchedulerTest {
 
 	@Test
 	void checkSyncTrafficMeasurements() throws Exception {
-		Mockito.when(famasClient.getAggregatedDataOnStations(null,null, null)).thenReturn(null);
+		Mockito.when(famasClient.getAggregatedDataOnStations(null, null, null)).thenReturn(null);
 
 		SyncScheduler sut = new SyncScheduler(odhClient, famasClient);
 

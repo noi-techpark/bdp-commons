@@ -21,12 +21,11 @@ public class Parser {
 	/**
 	 * This is a function to create a station, either of type traffic or bluetooth
 	 *
-	 *
-	 * @param metadataDto where the station is stored
-	 * @param otherFields is a jsonobject where all other fields that Jackson did not match are stored
-	 * @param lane is a param set if it´s a traffic sensor and viceversa for bluetooth sensor containing the info of the lane
+	 * @param metadataDto          where the station is stored
+	 * @param otherFields          is a jsonobject where all other fields that Jackson did not match are stored
+	 * @param lane                 is a param set if it´s a traffic sensor and viceversa for bluetooth sensor containing the info of the lane
 	 * @param classificationSchema is a hash map where the schema is stored
-	 * @param stationType is a string either of type traffic or bluetooth
+	 * @param stationType          is a string either of type traffic or bluetooth
 	 * @return station containing the data from the params
 	 */
 	public static StationDto createStation(MetadataDto metadataDto, JSONObject otherFields, LinkedHashMap<String, String> lane, LinkedHashMap<String, String> classificationSchema, String stationType) {
@@ -50,8 +49,8 @@ public class Parser {
 	 * This is a function where the traffic data of the stations is inserted into the stationmap
 	 *
 	 * @param aggregatedDataDtos is an array where the traffic data is stored
-	 * @param period is an integer where the period in seconds is stored
-	 * @param stationMap is a map where the traffic data is stored
+	 * @param period             is an integer where the period in seconds is stored
+	 * @param stationMap         is a map where the traffic data is stored
 	 * @throws ParseException is thrown if parsing causes an error
 	 */
 	public static void insertDataIntoStationMap(AggregatedDataDto[] aggregatedDataDtos, Integer period, DataMapDto<RecordDtoImpl> stationMap) throws ParseException {
@@ -103,8 +102,8 @@ public class Parser {
 	/**
 	 * This is a function where the bluetooth data of the stations is inserted to the bluetoothMetricMap
 	 *
-	 * @param passagesDataDtos is an array where the bluetooth data is stored
-	 * @param period is an integer where the period in seconds is stored
+	 * @param passagesDataDtos   is an array where the bluetooth data is stored
+	 * @param period             is an integer where the period in seconds is stored
 	 * @param bluetoothMetricMap is a map where the bluetooth data is stored
 	 * @throws ParseException is thrown if parsing causes an error
 	 */
@@ -118,7 +117,7 @@ public class Parser {
 	/**
 	 * This is a function where the measurement is added to a map
 	 *
-	 * @param map where the measurement is stored
+	 * @param map         where the measurement is stored
 	 * @param measurement who gets stored in the map
 	 */
 	private static void addMeasurementToMap(DataMapDto<RecordDtoImpl> map, SimpleRecordDto measurement) {

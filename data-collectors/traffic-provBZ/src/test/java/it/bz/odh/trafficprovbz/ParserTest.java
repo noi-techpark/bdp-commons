@@ -5,22 +5,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.odh.trafficprovbz.dto.AggregatedDataDto;
 import it.bz.odh.trafficprovbz.dto.MetadataDto;
 import net.minidev.json.JSONObject;
-import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ParserTest {
 
@@ -33,7 +28,7 @@ class ParserTest {
 		JSONObject otherFields = new JSONObject(stationsUnderTest[0].getOtherFields());
 		ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.CorsieInfo");
 
-		for (LinkedHashMap<String, String> lane: lanes) {
+		for (LinkedHashMap<String, String> lane : lanes) {
 			StationDto stationUnderTest = Parser.createStation(stationsUnderTest[0], otherFields, lane, null, "TrafficSensor");
 			assertThat(stationUnderTest.getId()).startsWith("1");
 			assertThat(46.4497009548582).isEqualTo(stationUnderTest.getLatitude());

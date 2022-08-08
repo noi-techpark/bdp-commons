@@ -44,14 +44,14 @@ public class MetadataDto {
 		this.classificationSchema = classificationSchema;
 	}
 
-    // Capture ac
-    @JsonAnyGetter
-    public Map<String, Object> getOtherFields() {
-        return otherFields;
-    }
+	// Capture ac
+	@JsonAnyGetter
+	public Map<String, Object> getOtherFields() {
+		return otherFields;
+	}
 
-    @JsonAnySetter
-    public void setOtherField(String name, Object value) {
-        otherFields.put(name, value);
-    }
+	@JsonAnySetter
+	public void setOtherField(String name, Object value) {
+		otherFields.put(name, value);
+	}
 }
