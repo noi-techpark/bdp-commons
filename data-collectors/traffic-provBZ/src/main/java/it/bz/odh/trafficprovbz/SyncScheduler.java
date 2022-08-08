@@ -148,14 +148,9 @@ public class SyncScheduler {
 
 				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(metadataDto.getId());
 
-				DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("df");
-
+				DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("vehicle detection");
 				PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(metadataDto.getId(), sdf.format(startPeriodBluetooth), sdf.format(new Date()));
-
-				for (PassagesDataDto passagesDataDto : passagesDataDtos) {
-					SimpleRecordDto measurement = Parser.createBluetoothMeasurement(passagesDataDto, period);
-					bluetoothMetricMap.getData().add(measurement);
-				}
+				Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
 
 				try {
 					// Push data for every station separately to avoid out of memory errors
@@ -177,8 +172,8 @@ public class SyncScheduler {
 		LOG.info("Syncing data types");
 		List<DataTypeDto> odhDataTypeList = new ArrayList<>();
 
-		odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_HEADWAY_VARIANCE, "m/s", DATATYPE_ID_HEADWAY_VARIANCE, "Average"));
-		odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_GAP_VARIANCE, "m/s", DATATYPE_ID_GAP_VARIANCE, "Average"));
+		odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_HEADWAY_VARIANCE, "double", DATATYPE_ID_HEADWAY_VARIANCE, "Average"));
+		odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_GAP_VARIANCE, "double", DATATYPE_ID_GAP_VARIANCE, "Average"));
 
 		try {
 			odhClient.syncDataTypes(odhDataTypeList);

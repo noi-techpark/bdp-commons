@@ -81,15 +81,17 @@ public class Parser {
 			"number-of-unclassified-vehicles", "average-vehicle-speed", "headway", "headway-variance", "gap", "gap-variance");
 	}
 
+	public static void insertDataIntoBluetoothmap(PassagesDataDto[] passagesDataDtos, Integer period, DataMapDto<RecordDtoImpl> bluetoothMetricMap) throws ParseException {
+		for (PassagesDataDto passagesDataDto : passagesDataDtos) {
+			Long timestamp = formatter.parse(passagesDataDto.getDate()).getTime();
+			addMeasurementToMap(bluetoothMetricMap, new SimpleRecordDto(timestamp, passagesDataDto.getIdVehicle(), period));
+		}
+	}
+
 	private static void addMeasurementToMap(DataMapDto<RecordDtoImpl> map, SimpleRecordDto measurement) {
 		if (map != null) {
 			measurement.setCreated_on(new Date().getTime());
 			map.getData().add(measurement);
 		}
-	}
-
-	public static SimpleRecordDto createBluetoothMeasurement(PassagesDataDto passagesDataDto, Integer period) throws ParseException {
-		Long timestamp = formatter.parse(passagesDataDto.getDate()).getTime();
-		return new SimpleRecordDto(timestamp, passagesDataDto.getIdVehicle(), period);
 	}
 }

@@ -42,7 +42,7 @@ class ParserTest {
 	}
 
 	@Test
-	void checkIfCreationOfTrafficMeasurmentWorks() throws JsonProcessingException, ParseException {
+	void checkIfCreationOfTrafficMeasurementWorks() throws JsonProcessingException, ParseException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Integer period = 300;
 
