@@ -18,7 +18,18 @@ public class Parser {
 
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-
+	/**
+	 * This is a function to create a station, either of type traffic or bluetooth
+	 *
+	 * @author Peter Schweigkofler
+	 *
+	 * @param metadataDto where the station is stored
+	 * @param otherFields is a jsonobject where all other fields that Jackson did not match are stored
+	 * @param lane is a param set if it´s a traffic sensor and viceversa for bluetooth sensor containing the info of the lane
+	 * @param classificationSchema is a hash map where the schema is stored
+	 * @param stationType is a string either of type traffic or bluetooth
+	 * @return station containing the data from the params
+	 */
 	public static StationDto createStation(MetadataDto metadataDto, JSONObject otherFields, LinkedHashMap<String, String> lane, LinkedHashMap<String, String> classificationSchema, String stationType) {
 		Double lat = JsonPath.read(otherFields, "$.GeoInfo.Latitudine");
 		Double lon = JsonPath.read(otherFields, "$.GeoInfo.Longitudine");
@@ -51,8 +62,8 @@ public class Parser {
 		for (AggregatedDataDto aggregatedDataDto : aggregatedDataDtos) {
 			Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
 			JSONObject otherFields = new JSONObject(aggregatedDataDto.getOtherFields());
+			addMeasurementToMap(metricMaps[0], new SimpleRecordDto(timestamp, aggregatedDataDto.getTotalTransits(), period));
 			if (otherFields.containsKey("TotaliPerClasseVeicolare")) {
-				addMeasurementToMap(metricMaps[0], new SimpleRecordDto(timestamp, aggregatedDataDto.getTotalTransits(), period));
 				LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.TotaliPerClasseVeicolare");
 				Set<String> keys = classes.keySet();
 				for (String key : keys) {
@@ -67,10 +78,6 @@ public class Parser {
 				addMeasurementToMap(metricMaps[13], new SimpleRecordDto(timestamp, aggregatedDataDto.getHeadwayVariance(), period));
 				addMeasurementToMap(metricMaps[14], new SimpleRecordDto(timestamp, aggregatedDataDto.getGap(), period));
 				addMeasurementToMap(metricMaps[15], new SimpleRecordDto(timestamp, aggregatedDataDto.getGapVariance(), period));
-			} else {
-				// In case of zero transits of a certain traffic category the reference data point will not be provided.
-				// In this case, the Data Collector should provide a ‘0’ to the ODH so that the time series in the ODH is complete and without holes.
-				addMeasurementToMap(metricMaps[0], new SimpleRecordDto(timestamp, 0.0, period));
 			}
 		}
 	}

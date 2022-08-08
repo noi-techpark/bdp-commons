@@ -39,9 +39,9 @@ public class SyncScheduler {
 
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-	private Date startPeriodTraffic = new Date(System.currentTimeMillis() - 300 * 1000);
+	private Date startPeriodTraffic;
 
-	private Date startPeriodBluetooth = new Date(System.currentTimeMillis() - 300 * 1000);
+	private Date startPeriodBluetooth;
 
 	public SyncScheduler(@Lazy OdhClient odhClient, @Lazy FamasClient famasClient) {
 		this.odhClient = odhClient;
@@ -61,20 +61,16 @@ public class SyncScheduler {
 			ClassificationSchemaDto[] classificationDtos;
 			classificationDtos = famasClient.getClassificationSchemas();
 			ArrayList<LinkedHashMap<String, String>> odhClassesList = new ArrayList<>();
-
 			for (ClassificationSchemaDto c : classificationDtos) {
 				ArrayList<LinkedHashMap<String, String>> classes = JsonPath.read(c.getOtherFields(), "$.Classi");
 				odhClassesList.addAll(classes);
 			}
-
-
 			MetadataDto[] metadataDtos = famasClient.getStationsData();
 			StationList odhTrafficStationList = new StationList();
 
-			// Insert traffic sensors in station list to insert them in **ODH
+			// Insert traffic sensors in station list to insert them in ODH
 			for (MetadataDto metadataDto : metadataDtos) {
 				JSONObject otherFields = new JSONObject(metadataDto.getOtherFields());
-
 				ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.CorsieInfo");
 				LinkedHashMap<String, String> classificationSchema = getClassificationSchema(odhClassesList, metadataDto);
 				for (LinkedHashMap<String, String> lane : lanes) {
@@ -88,7 +84,6 @@ public class SyncScheduler {
 			LOG.info("Cron job traffic stations successful");
 
 			LOG.info("Syncing bluetooth stations");
-
 			StationList odhBluetoothStationList = new StationList();
 
 			// Insert bluetooth sensors in station list to insert them in ODH
@@ -114,17 +109,15 @@ public class SyncScheduler {
 	public void syncJobTrafficMeasurements() {
 		LOG.info("Cron job measurements started: Pushing measurements for {}", odhClient.getIntegreenTypology());
 		try {
+			if (startPeriodTraffic == null) {
+				startPeriodTraffic = new Date(new Date().getTime() - period * 1000);
+			}
 			MetadataDto[] metadataDtos = famasClient.getStationsData();
-
 			for (MetadataDto metadataDto : metadataDtos) {
-
 				DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
 				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(metadataDto.getId());
-
 				AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(metadataDto.getId(), sdf.format(startPeriodTraffic), sdf.format(new Date()));
-
 				Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap);
-
 				odhClient.pushData(rootMap);
 				LOG.info("Cron job traffic for station {} successful", metadataDto.getId());
 			}
@@ -141,17 +134,17 @@ public class SyncScheduler {
 	public void syncJobBluetoothMeasurements() {
 		LOG.info("Cron job measurements started: Pushing bluetooth measurements for {}", odhClient.getIntegreenTypology());
 		try {
+			if (startPeriodBluetooth == null) {
+				startPeriodBluetooth = new Date(new Date().getTime() - period * 1000);
+			}
 			MetadataDto[] metadataDtos = famasClient.getStationsData();
 
 			for (MetadataDto metadataDto : metadataDtos) {
 				DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
-
 				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(metadataDto.getId());
-
 				DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("vehicle detection");
 				PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(metadataDto.getId(), sdf.format(startPeriodBluetooth), sdf.format(new Date()));
 				Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
-
 				try {
 					// Push data for every station separately to avoid out of memory errors
 					odhClient.pushData(rootMap);

@@ -44,7 +44,7 @@ public class MetadataDto {
 		this.classificationSchema = classificationSchema;
 	}
 
-    // Capture all other fields that Jackson do not match
+    // Capture ac
     @JsonAnyGetter
     public Map<String, Object> getOtherFields() {
         return otherFields;
