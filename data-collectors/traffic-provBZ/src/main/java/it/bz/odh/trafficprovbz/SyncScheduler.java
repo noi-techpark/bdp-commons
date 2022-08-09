@@ -112,6 +112,7 @@ public class SyncScheduler {
 	public void syncJobTrafficMeasurements() {
 		LOG.info("Cron job measurements started: Pushing measurements for {}", odhClient.getIntegreenTypology());
 		try {
+			// TODO: Rework logic of start period
 			if (startPeriodTraffic == null) {
 				startPeriodTraffic = new Date(new Date().getTime() - period * 1000);
 			}

@@ -73,11 +73,7 @@ public class Parser {
 				LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.TotaliPerClasseVeicolare");
 				Set<String> keys = classes.keySet();
 				for (String key : keys) {
-					for (int i = 1; i <= 10; i++) {
-						if (String.valueOf(i).equals(key)) {
-							addMeasurementToMap(metricMaps[i], new SimpleRecordDto(timestamp, classes.get(key), period));
-						}
-					}
+					addMeasurementToMap(metricMaps[Integer.parseInt(key)], new SimpleRecordDto(timestamp, classes.get(key), period));
 				}
 				addMeasurementToMap(metricMaps[11], new SimpleRecordDto(timestamp, aggregatedDataDto.getAverageVehicleSpeed(), period));
 				addMeasurementToMap(metricMaps[12], new SimpleRecordDto(timestamp, aggregatedDataDto.getHeadway(), period));
