@@ -24,6 +24,9 @@ public class SyncScheduler {
 	@Value("${odh_client.period}")
     private Integer period;
 
+	@Value("${odh_client.stationNamePrefix}")
+    private String stationNamePrefix;
+
     @Lazy
     @Autowired
     private OdhClient odhClient;
@@ -48,7 +51,7 @@ public class SyncScheduler {
 		for(int i = 0; i < carPoolingTripList.size(); i++) {
 			CarPoolingTripDto carPoolingTrip = carPoolingTripList.get(i);
 			StationDto stationDto = new StationDto(carPoolingTrip.getHashedId(),
-				"-",
+				stationNamePrefix + i,
 				carPoolingTrip.getStartLatApprox(),
 				carPoolingTrip.getStartLonApprox());
 

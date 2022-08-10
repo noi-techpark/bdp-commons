@@ -25,13 +25,11 @@ public class MetadataEnrichment {
 	@Autowired
 	private GoogleSpreadSheetUtil sheetDataFetcher;
 
-	@Value("#{'${METADATA_ENRICHED_FIELDS}'.split(',')}")
-	private List<String> enrichedFields;
-
 	private List<String> stationIdsInSheet;
 	private HashMap<String, HashMap<String, String>> mapping;
 	private List<Integer> metadataColumnIndexes;
 	private int sheetId;
+	private List<String> enrichedFields;
 
 	@PostConstruct
 	private void init() {
@@ -39,13 +37,18 @@ public class MetadataEnrichment {
 		stationIdsInSheet = new ArrayList<>();
 		mapping = new HashMap<>();
 		metadataColumnIndexes = new ArrayList<>();
+		enrichedFields = new ArrayList<>();
 	}
 
 	public void mapData(StationList stations) throws IOException {
-		List<List<Object>> rows = sheetDataFetcher.getValues().getValues();
+		resetValues();
+
+		List<List<Object>> rows = sheetDataFetcher.getAllValues().getValues();
 		List<String> headerRow = extractHeaderRow(rows);
 
-		resetValues();
+		// initialize enriched fields
+		for(int i = 3; i < headerRow.size(); i++)
+			enrichedFields.add(headerRow.get(i));
 
 		initializeMetadataColumnIndexes(headerRow);
 		initializeMapping(rows, headerRow);
@@ -140,5 +143,6 @@ public class MetadataEnrichment {
 		stationIdsInSheet.clear();
 		mapping.clear();
 		metadataColumnIndexes.clear();
+		enrichedFields.clear();
 	}
 }

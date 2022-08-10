@@ -42,7 +42,7 @@ public class GoogleSpreadSheetUtil extends GoogleAuthenticator {
 				.setApplicationName("parking-offstreet-meranobolzano-dc").build();
 	}
 
-	public ValueRange getValues() {
+	public ValueRange getAllValues() {
 		try {
 			return service.spreadsheets().values()
 					.get(spreadSheetId, spreadsheetName + "!" + spreadsheetRange).execute();

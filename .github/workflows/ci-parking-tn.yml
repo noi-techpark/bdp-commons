@@ -60,9 +60,8 @@ jobs:
           X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
           # Google sheet enriched metadata fields
-          X_METADATA_ENRICHED_FIELDS: name_en,name_de,name_it
           X_SPREADSHEET_ID: 1QMe22_3GrhErkqRY7m7ZKr19YbD1HZ5ZWuB-G3n0KoY
-          X_SPREADSHEET_RANGE: A1:F255
+          X_SPREADSHEET_RANGE: A1:Z255
           X_SPREADSHEET_NAME: Trento
 
           # Logging
@@ -139,7 +138,6 @@ jobs:
   #         X_BASE_URI: https://mobility.share.opendatahub.bz.it/json
 
   #         # Google sheet enriched metadata fields
-  #         X_METADATA_ENRICHED_FIELDS: name_en,name_de,name_it
   #         X_SPREADSHEET_ID: 1pv5MJyITBb8TOeBTiMIZVDeeC2OM79ksc379bonAjwY
   #         X_SPREADSHEET_RANGE: A1:F255
   #         X_SPREADSHEET_NAME: Trento
