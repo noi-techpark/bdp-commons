@@ -1,15 +1,15 @@
-name: CI/CD traffic-provbz
+name: CI/CD traffic-provBz
 
 on:
   push:
     paths:
-      - "data-collectors/traffic-provbz/**"
-      - ".github/workflows/ci-traffic-provbz.yml"
+      - "data-collectors/traffic-provBz/**"
+      - ".github/workflows/ci-traffic-provBz.yml"
 
 env:
-  WORKING_DIRECTORY: data-collectors/traffic-provbz
-  PROJECT_NAME: odh-mobility-dc-traffic-provbz
-  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-traffic-provbz
+  WORKING_DIRECTORY: data-collectors/traffic-provBz
+  PROJECT_NAME: odh-mobility-dc-traffic-provBz
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-traffic-provBz
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
 
@@ -27,11 +27,11 @@ jobs:
           test-command: 'mvn -B -U clean compile test'
 
   # Deploy Test
-  deploy-test-traffic-provbz:
+  deploy-test-traffic-provBz:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
     needs: test
-    concurrency: deploy-test-traffic-provbz
+    concurrency: deploy-test-traffic-provBz
     env:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
@@ -94,11 +94,11 @@ jobs:
 
 
 #  # Deploy Production
-#  deploy-prod-traffic-provbz:
+#  deploy-prod-traffic-provBz:
 #    runs-on: ubuntu-20.04
 #    if: github.ref == 'refs/heads/prod'
 #    needs: test
-#    concurrency: deploy-prod-traffic-provbz
+#    concurrency: deploy-prod-traffic-provBz
 #    env:
 #      KEYCLOAK_URL: https://auth.opendatahub.bz.it
 #    steps:
