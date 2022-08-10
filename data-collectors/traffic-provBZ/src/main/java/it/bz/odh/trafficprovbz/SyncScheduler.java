@@ -16,35 +16,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SyncScheduler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
-
 	private static final String STATION_TYPE_TRAFFIC_SENSOR = "TrafficSensor";
 	private static final String STATION_TYPE_BLUETOOTH_SENSOR = "BluetoothSensor";
-
-
 	private static final String DATATYPE_ID_HEADWAY_VARIANCE = "headway-variance";
 	private static final String DATATYPE_ID_GAP_VARIANCE = "gap-variance";
-
 	@Value("${odh_client.period}")
 	private Integer period;
-
 	private final OdhClient odhClient;
-
 	private final FamasClient famasClient;
-
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-	private Date startPeriodTraffic;
-
-	private Date startPeriodBluetooth;
+	private Map<String, Date> startPeriodTrafficList;
+	private Map<String, Date> endPeriodTrafficList;
+	private Map<String, Date> startPeriodBluetoothList;
+	private Map<String, Date> endPeriodBluetoothList;
 
 	public SyncScheduler(@Lazy OdhClient odhClient, @Lazy FamasClient famasClient) {
 		this.odhClient = odhClient;
@@ -112,21 +102,28 @@ public class SyncScheduler {
 	public void syncJobTrafficMeasurements() {
 		LOG.info("Cron job measurements started: Pushing measurements for {}", odhClient.getIntegreenTypology());
 		try {
-			// TODO: Rework logic of start period
-			if (startPeriodTraffic == null) {
-				startPeriodTraffic = new Date(new Date().getTime() - period * 1000);
-			}
 			MetadataDto[] metadataDtos = famasClient.getStationsData();
 			for (MetadataDto metadataDto : metadataDtos) {
+				String stationId = metadataDto.getId();
+				endPeriodTrafficList = updateEndPeriod(stationId, endPeriodTrafficList);
+				startPeriodTrafficList = updateStartPeriod(stationId, startPeriodTrafficList, endPeriodTrafficList.get(stationId));
+				LOG.info("After Initialisation for {}", stationId);
 				DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
-				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(metadataDto.getId());
-				AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(metadataDto.getId(), sdf.format(startPeriodTraffic), sdf.format(new Date()));
+				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(stationId);
+				AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(stationId, sdf.format(startPeriodTrafficList.get(stationId)), sdf.format(endPeriodTrafficList.get(stationId)));
 				Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap);
-				odhClient.pushData(rootMap);
+				try {
+					odhClient.pushData(rootMap);
+				} catch (Exception e) {
+					LOG.info("Cron job traffic for station {} failed because of {}", metadataDto.getId(), e.getMessage());
+				}
+				// If everything was successful we set the start of the next period equal to the end of the period queried right now
+				startPeriodTrafficList.put(stationId, endPeriodTrafficList.get(stationId));
+				LOG.info("After inserting to DB for {}", stationId);
 				LOG.info("Cron job traffic for station {} successful", metadataDto.getId());
 			}
-			startPeriodTraffic = new Date();
 		} catch (Exception e) {
+			e.printStackTrace();
 			LOG.error("Cron job traffic measurements failed: Request exception: {}", e.getMessage());
 		}
 	}
@@ -138,31 +135,69 @@ public class SyncScheduler {
 	public void syncJobBluetoothMeasurements() {
 		LOG.info("Cron job measurements started: Pushing bluetooth measurements for {}", odhClient.getIntegreenTypology());
 		try {
-			if (startPeriodBluetooth == null) {
-				startPeriodBluetooth = new Date(new Date().getTime() - period * 1000);
-			}
 			MetadataDto[] metadataDtos = famasClient.getStationsData();
 
 			for (MetadataDto metadataDto : metadataDtos) {
+				String stationId = metadataDto.getId();
+				endPeriodBluetoothList = updateEndPeriod(metadataDto.getId(), endPeriodBluetoothList);
+				startPeriodBluetoothList = updateStartPeriod(metadataDto.getId(), startPeriodBluetoothList, endPeriodBluetoothList.get(stationId));
 				DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
 				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(metadataDto.getId());
 				DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("vehicle detection");
-				PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(metadataDto.getId(), sdf.format(startPeriodBluetooth), sdf.format(new Date()));
+				PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(metadataDto.getId(), sdf.format(startPeriodBluetoothList.get(stationId)), sdf.format(endPeriodBluetoothList.get(stationId)));
 				Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
 				try {
 					// Push data for every station separately to avoid out of memory errors
 					odhClient.pushData(rootMap);
-					LOG.info("Push data for station {} bluetooth measurement successful", metadataDto.getName());
 				} catch (WebClientRequestException e) {
 					LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}", metadataDto.getName(),
 						e.getMessage());
 				}
+				// If everything was successful we set the start of the next period equal to the end of the period queried right now
+				startPeriodBluetoothList.put(stationId, endPeriodTrafficList.get(stationId));
+				LOG.info("Push data for station {} bluetooth measurement successful", metadataDto.getName());
 			}
 			LOG.info("Cron job for bluetooth measurements successful");
-			startPeriodBluetooth = new Date();
 		} catch (Exception e) {
 			LOG.error("Push data for bluetooth measurements failed: Request exception: {}", e.getMessage());
+			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Helper method to initialize and analyze the start period
+	 *
+	 * @param id              string containing the station di
+	 * @param startPeriodList list of dates containing the start of the period
+	 * @param endPeriod       date containing the end of the period
+	 * @return hash map with (eventually updated) list with start dates
+	 */
+	private Map<String, Date> updateStartPeriod(String id, Map<String, Date> startPeriodList, Date endPeriod) {
+		if (startPeriodList == null) {
+			startPeriodList = new HashMap<>();
+		}
+		// Set date of start period to now minus seven days if not existing or if range
+		// of start and end period is bigger than seven days (otherwise 400 error from api)
+		if (!startPeriodList.containsKey(id) || startPeriodList.get(id).getTime() - endPeriod.getTime() > 604800 * 1000) {
+			startPeriodList.put(id, new Date(endPeriod.getTime() - 604800 * 1000));
+		}
+		return startPeriodList;
+	}
+
+	/**
+	 * Helper method to initialize and analyze the start period
+	 *
+	 * @param id              string containing the station di
+	 * @param endPeriodList list of dates containing the end of the period
+	 * @return hash map with (eventually updated) list with end dates
+	 */
+	private Map<String, Date> updateEndPeriod(String id, Map<String, Date> endPeriodList) {
+		if (endPeriodList == null) {
+			endPeriodList = new HashMap<>();
+		}
+		// Set date of end period always to now
+		endPeriodList.put(id, new Date());
+		return endPeriodList;
 	}
 
 	/**
