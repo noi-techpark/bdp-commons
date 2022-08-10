@@ -1,0 +1,52 @@
+[ 
+  { 
+    "Id": 1, 
+    "Nome": "Schema Famas 9+1", 
+    "Classi": [ 
+      { 
+        "Codice": 0, 
+        "Descrizione": "Conteggio" 
+      }, 
+      { 
+        "Codice": 1, 
+        "Descrizione": "Moto" 
+      }, 
+      { 
+        "Codice": 2,
+        "Descrizione": "Auto" 
+      }, 
+      { 
+        "Codice": 3, 
+        "Descrizione": "Auto con rimorchio" 
+      }, 
+      { 
+        "Codice": 4, 
+        "Descrizione": "Furgoni" 
+      }, 
+      { 
+        "Codice": 5, 
+        "Descrizione": "Camion <7,5m" 
+      }, 
+      { 
+        "Codice": 6, 
+        "Descrizione": "Camion >7,5m" 
+      }, 
+      { 
+        "Codice": 7, 
+        "Descrizione": "Autotreni" 
+      }, 
+      { 
+        "Codice": 8, 
+        "Descrizione": "Autoarticolati" 
+      }, 
+      { 
+        "Codice": 9, 
+        "Descrizione": "Autobus" 
+      }, 
+      { 
+        "Codice": 10, 
+        "Descrizione": "Altri" 
+      } 
+    ] 
+  } 
+] 
