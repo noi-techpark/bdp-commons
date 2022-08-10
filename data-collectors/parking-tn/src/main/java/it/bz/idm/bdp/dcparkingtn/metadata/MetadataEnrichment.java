@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +42,7 @@ public class MetadataEnrichment {
 	public void mapData(StationList stations) throws IOException {
 		resetValues();
 
-		List<List<Object>> rows = sheetDataFetcher.getAllValues().getValues();
+		List<List<Object>> rows = sheetDataFetcher.getValues().getValues();
 		List<String> headerRow = extractHeaderRow(rows);
 
 		// initialize enriched fields
