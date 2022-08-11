@@ -154,7 +154,7 @@ public class SyncScheduler {
 						e.getMessage());
 				}
 				// If everything was successful we set the start of the next period equal to the end of the period queried right now
-				startPeriodBluetoothList.put(stationId, endPeriodTrafficList.get(stationId));
+				startPeriodBluetoothList.put(stationId, endPeriodBluetoothList.get(stationId));
 				LOG.info("Push data for station {} bluetooth measurement successful", metadataDto.getName());
 			}
 			LOG.info("Cron job for bluetooth measurements successful");
