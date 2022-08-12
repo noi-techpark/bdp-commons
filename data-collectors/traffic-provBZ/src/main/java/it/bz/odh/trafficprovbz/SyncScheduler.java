@@ -178,8 +178,10 @@ public class SyncScheduler {
 		}
 		// Set date of start period to now minus seven days if not existing or if range
 		// of start and end period is bigger than seven days (otherwise 400 error from api)
-		if (!startPeriodList.containsKey(id) || startPeriodList.get(id).getTime() - endPeriod.getTime() > 604800 * 1000) {
-			startPeriodList.put(id, new Date(endPeriod.getTime() - 604800 * 1000));
+
+		// api gives actually error if period is bigger than 12 hours (previus value 604800)
+		if (!startPeriodList.containsKey(id) || startPeriodList.get(id).getTime() - endPeriod.getTime() > 43200 * 1000) {
+			startPeriodList.put(id, new Date(endPeriod.getTime() - 43200 * 1000));
 		}
 		return startPeriodList;
 	}
