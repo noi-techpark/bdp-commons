@@ -67,6 +67,9 @@ jobs:
           X_SCHEDULER_JOB_STATIONS: "* */10 * * * *"
           X_SCHEDULER_JOB_MEASUREMENTS: "* */10 * * * *"
 
+          X_FAMAS_USER: ${{ secrets.FAMAS_USER }}
+          X_FAMAS_PASSWORD: ${{ secrets.FAMAS_PASSWORD }}
+
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
         with:
@@ -133,6 +136,9 @@ jobs:
 #          # TODO: Add your env vars here, prefixed with X_
 #          X_SCHEDULER_JOB_STATIONS: "* */10 * * * *"
 #          X_SCHEDULER_JOB_MEASUREMENTS: "* */10 * * * *"
+
+#          X_FAMAS_USER: ${{ secrets.FAMAS_USER }}
+#          X_FAMAS_PASSWORD: ${{ secrets.FAMAS_PASSWORD }}
 #
 #      - name: Build project
 #        uses: noi-techpark/github-actions/maven-build@v2
