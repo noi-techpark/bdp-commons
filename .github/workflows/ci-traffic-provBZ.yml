@@ -60,8 +60,9 @@ jobs:
           # Logging
           X_LOG_LEVEL: info
           X_LOG_STYLE: json
-          X_provenance_name: ${{ env.PROJECT_NAME }}
-          X_provenance_version: ${{ github.sha }}
+          X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
+          X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
+          X_ODH_CLIENT_PROVENANCE_ORIGIN: FAMAS-traffic-provinceBZ
 
           # TODO: Add your env vars here, prefixed with X_
           X_SCHEDULER_JOB_STATIONS: "* */10 * * * *"
@@ -130,8 +131,9 @@ jobs:
 #          # Logging
 #          X_LOG_LEVEL: "info"
 #          X_LOG_STYLE: json
-#          X_provenance_name: ${{ env.PROJECT_NAME }}
-#          X_provenance_version: ${{ github.sha }}
+#          X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
+#          X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
+#          X_ODH_CLIENT_PROVENANCE_ORIGIN: FAMAS-traffic-provinceBZ
 #
 #          # TODO: Add your env vars here, prefixed with X_
 #          X_SCHEDULER_JOB_STATIONS: "* */10 * * * *"
