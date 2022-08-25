@@ -83,7 +83,7 @@ public class FamasClient {
 		HttpResponse response = client.execute(new HttpGet(classificationSchemasUrl));
 		HttpEntity entity = response.getEntity();
 		String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
-		LOG.debug("getClassificationSchemas: {} ", responseString);
+		LOG.info("getClassificationSchemas: {} ", responseString);
 		return objectMapper.readValue(responseString, ClassificationSchemaDto[].class);
 	}
 
@@ -98,7 +98,7 @@ public class FamasClient {
 		HttpResponse response = client.execute(new HttpGet(stationsDataUrl));
 		HttpEntity entity = response.getEntity();
 		String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
-		LOG.debug("getStationsData: {} ", responseString);
+		LOG.info("getStationsData: {} ", responseString);
 		return objectMapper.readValue(responseString, MetadataDto[].class);
 	}
 
@@ -124,7 +124,7 @@ public class FamasClient {
 		request.setEntity(stringEntity);
 		HttpEntity entity = client.execute(request).getEntity();
 		String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
-		LOG.debug("getAggregatedDataOnStations: {} ", responseString);
+		LOG.info("getAggregatedDataOnStations: {} ", responseString);
 		return objectMapper.readValue(responseString, AggregatedDataDto[].class);
 	}
 
@@ -150,7 +150,7 @@ public class FamasClient {
 		request.setEntity(stringEntity);
 		HttpEntity entity = client.execute(request).getEntity();
 		String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
-		LOG.debug("getPassagesDataOnStations: {} ", responseString);
+		LOG.info("getPassagesDataOnStations: {} ", responseString);
 		return objectMapper.readValue(responseString, PassagesDataDto[].class);
 	}
 }
