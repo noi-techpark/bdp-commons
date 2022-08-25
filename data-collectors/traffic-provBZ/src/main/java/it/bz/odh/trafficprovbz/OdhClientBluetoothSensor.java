@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Lazy
 @Service
-public class OdhClient extends NonBlockingJSONPusher {
-
-	@Value("${odh_client.stationtype}")
-	private String stationtype;
+public class OdhClientBluetoothSensor extends NonBlockingJSONPusher {
 
 	@Value("${odh_client.provenance.name}")
 	private String provenanceName;
@@ -23,6 +20,8 @@ public class OdhClient extends NonBlockingJSONPusher {
 
 	@Value("${odh_client.provenance.origin}")
 	private String provenanceOrigin;
+
+	private String stationtype = "BluetoothSensor";
 
 	@Override
 	public <T> DataMapDto<RecordDtoImpl> mapData(T data) {
