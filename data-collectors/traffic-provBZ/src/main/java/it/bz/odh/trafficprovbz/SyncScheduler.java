@@ -166,37 +166,37 @@ public class SyncScheduler {
 	 * Scheduled job bluetooth measurements: sync climate daily
 	 */
 	// @Scheduled(cron = "${scheduler.job_measurements}")
-	// public void syncJobBluetoothMeasurements() {
-	// 	LOG.info("Cron job measurements started: Pushing bluetooth measurements for {}", odhClient.getIntegreenTypology());
-	// 	try {
-	// 		MetadataDto[] metadataDtos = famasClient.getStationsData();
+	public void syncJobBluetoothMeasurements() {
+		LOG.info("Cron job measurements started: Pushing bluetooth measurements for {}", odhClient.getIntegreenTypology());
+		try {
+			MetadataDto[] metadataDtos = famasClient.getStationsData();
 
-	// 		for (MetadataDto metadataDto : metadataDtos) {
-	// 			String stationId = metadataDto.getId();
-	// 			endPeriodBluetoothList = updateEndPeriod(metadataDto.getId(), endPeriodBluetoothList);
-	// 			startPeriodBluetoothList = updateStartPeriod(metadataDto.getId(), startPeriodBluetoothList, endPeriodBluetoothList.get(stationId));
-	// 			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
-	// 			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(metadataDto.getId());
-	// 			DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("vehicle detection");
-	// 			PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(metadataDto.getId(), sdf.format(startPeriodBluetoothList.get(stationId)), sdf.format(endPeriodBluetoothList.get(stationId)));
-	// 			Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
-	// 			try {
-	// 				// Push data for every station separately to avoid out of memory errors
-	// 				odhClient.pushData(rootMap);
-	// 			} catch (WebClientRequestException e) {
-	// 				LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}", metadataDto.getName(),
-	// 					e.getMessage());
-	// 			}
-	// 			// If everything was successful we set the start of the next period equal to the end of the period queried right now
-	// 			startPeriodBluetoothList.put(stationId, endPeriodBluetoothList.get(stationId));
-	// 			LOG.info("Push data for station {} bluetooth measurement successful", metadataDto.getName());
-	// 		}
-	// 		LOG.info("Cron job for bluetooth measurements successful");
-	// 	} catch (Exception e) {
-	// 		LOG.error("Push data for bluetooth measurements failed: Request exception: {}", e.getMessage());
-	// 		e.printStackTrace();
-	// 	}
-	// }
+			for (MetadataDto metadataDto : metadataDtos) {
+				String stationId = metadataDto.getId();
+				endPeriodBluetoothList = updateEndPeriod(metadataDto.getId(), endPeriodBluetoothList);
+				startPeriodBluetoothList = updateStartPeriod(metadataDto.getId(), startPeriodBluetoothList, endPeriodBluetoothList.get(stationId));
+				DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(metadataDto.getId());
+				DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("vehicle detection");
+				PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(metadataDto.getId(), sdf.format(startPeriodBluetoothList.get(stationId)), sdf.format(endPeriodBluetoothList.get(stationId)));
+				Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
+				try {
+					// Push data for every station separately to avoid out of memory errors
+					odhClient.pushData(rootMap);
+				} catch (WebClientRequestException e) {
+					LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}", metadataDto.getName(),
+						e.getMessage());
+				}
+				// If everything was successful we set the start of the next period equal to the end of the period queried right now
+				startPeriodBluetoothList.put(stationId, endPeriodBluetoothList.get(stationId));
+				LOG.info("Push data for station {} bluetooth measurement successful", metadataDto.getName());
+			}
+			LOG.info("Cron job for bluetooth measurements successful");
+		} catch (Exception e) {
+			LOG.error("Push data for bluetooth measurements failed: Request exception: {}", e.getMessage());
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Helper method to initialize and analyze the start period
