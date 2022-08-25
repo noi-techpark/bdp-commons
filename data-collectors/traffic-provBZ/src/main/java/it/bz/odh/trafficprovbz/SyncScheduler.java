@@ -180,8 +180,8 @@ public class SyncScheduler {
 		// of start and end period is bigger than seven days (otherwise 400 error from api)
 
 		// api gives actually error if period is bigger than 12 hours (previus value 604800)
-		if (!startPeriodList.containsKey(id) || startPeriodList.get(id).getTime() - endPeriod.getTime() > 43200 * 1000) {
-			startPeriodList.put(id, new Date(endPeriod.getTime() - 43200 * 1000));
+		if (!startPeriodList.containsKey(id) || startPeriodList.get(id).getTime() - endPeriod.getTime() > 39600 * 1000) {
+			startPeriodList.put(id, new Date(endPeriod.getTime() - 39600 * 1000));
 		}
 		return startPeriodList;
 	}
