@@ -9,14 +9,16 @@ class SyncSchedulerTest {
 	FamasClient famasClient = Mockito.mock(FamasClient.class);
 
 	//@Mock
-	OdhClient odhClient = Mockito.mock(OdhClient.class);
+	OdhClientBluetoothSensor odhClientBluetoothSensor = Mockito.mock(OdhClientBluetoothSensor.class);
+	OdhClientTrafficSensor odhClientTrafficSensor = Mockito.mock(OdhClientTrafficSensor.class);
+
 
 	@Test
 	void checkSyncStations() throws Exception {
 		Mockito.when(famasClient.getClassificationSchemas()).thenReturn(null);
 		Mockito.when(famasClient.getStationsData()).thenReturn(null);
 
-		SyncScheduler sut = new SyncScheduler(odhClient, famasClient);
+		SyncScheduler sut = new SyncScheduler(odhClientTrafficSensor, odhClientBluetoothSensor, famasClient);
 
 		sut.syncJobStations();
 	}
@@ -25,7 +27,7 @@ class SyncSchedulerTest {
 	void checkSyncTrafficMeasurements() throws Exception {
 		Mockito.when(famasClient.getAggregatedDataOnStations(null, null, null)).thenReturn(null);
 
-		SyncScheduler sut = new SyncScheduler(odhClient, famasClient);
+		SyncScheduler sut = new SyncScheduler(odhClientTrafficSensor, odhClientBluetoothSensor, famasClient);
 
 		sut.syncJobTrafficMeasurements();
 	}
@@ -34,7 +36,7 @@ class SyncSchedulerTest {
 	void checkSyncBluetoothMeasurements() throws Exception {
 		Mockito.when(famasClient.getPassagesDataOnStations(null, null, null)).thenReturn(null);
 
-		SyncScheduler sut = new SyncScheduler(odhClient, famasClient);
+		SyncScheduler sut = new SyncScheduler(odhClientTrafficSensor, odhClientBluetoothSensor, famasClient);
 
 		sut.syncJobBluetoothMeasurements();
 	}
