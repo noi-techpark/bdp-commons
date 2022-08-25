@@ -39,6 +39,7 @@ public class SyncScheduler {
 	public SyncScheduler(@Lazy OdhClient odhClient, @Lazy FamasClient famasClient) {
 		this.odhClient = odhClient;
 		this.famasClient = famasClient;
+		initDataTypes();
 	}
 
 	/**
@@ -48,8 +49,6 @@ public class SyncScheduler {
 	public void syncJobStations() {
 		LOG.info("Cron job stations started: Sync Stations with type {} and data types", odhClient.getIntegreenTypology());
 		try {
-			initDataTypes();
-
 			LOG.info("Syncing traffic stations");
 			ClassificationSchemaDto[] classificationDtos;
 			classificationDtos = famasClient.getClassificationSchemas();

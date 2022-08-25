@@ -65,9 +65,9 @@ jobs:
           X_ODH_CLIENT_PROVENANCE_ORIGIN: FAMAS-traffic-provinceBZ
 
           # TODO: Add your env vars here, prefixed with X_
-          X_SCHEDULER_JOB_STATIONS: "* */10 * * * *"
-          X_SCHEDULER_JOB_MEASUREMENTS: "* */10 * * * *"
-          X_SCHEDULER_POOL_SIZE: 3
+          X_SCHEDULER_JOB_STATIONS: "* */5 * * * *"
+          X_SCHEDULER_JOB_MEASUREMENTS: "* */5 * * * *"
+          X_SCHEDULER_POOL_SIZE: 1 
 
           X_FAMAS_USER: ${{ secrets.TRAFFIC_PROVBZ_FAMAS_USER }}
           X_FAMAS_PASSWORD: ${{ secrets.TRAFFIC_PROVBZ_FAMAS_PASSWORD }}
