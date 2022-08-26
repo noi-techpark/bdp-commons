@@ -20,7 +20,7 @@ class SyncSchedulerTest {
 
 		SyncScheduler sut = new SyncScheduler(odhClientTrafficSensor, odhClientBluetoothSensor, famasClient);
 
-		sut.syncJobStations();
+		// sut.syncJobStations();
 	}
 
 	@Test
@@ -29,7 +29,7 @@ class SyncSchedulerTest {
 
 		SyncScheduler sut = new SyncScheduler(odhClientTrafficSensor, odhClientBluetoothSensor, famasClient);
 
-		sut.syncJobTrafficMeasurements();
+		// sut.syncJobTrafficMeasurements();
 	}
 
 	@Test
@@ -38,6 +38,6 @@ class SyncSchedulerTest {
 
 		SyncScheduler sut = new SyncScheduler(odhClientTrafficSensor, odhClientBluetoothSensor, famasClient);
 
-		sut.syncJobBluetoothMeasurements();
+		// sut.syncJobBluetoothMeasurements();
 	}
 }
