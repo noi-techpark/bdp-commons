@@ -72,7 +72,7 @@ jobs:
 
           # Google sheet enriched metadata fields
           X_SPREADSHEET_ID: 1QMe22_3GrhErkqRY7m7ZKr19YbD1HZ5ZWuB-G3n0KoY
-          X_SPREADSHEET_RANGE: A1:F255
+          X_SPREADSHEET_RANGE: A1:Z255
           X_SPREADSHEET_NAME: MeranoBolzano
 
           # Logging
