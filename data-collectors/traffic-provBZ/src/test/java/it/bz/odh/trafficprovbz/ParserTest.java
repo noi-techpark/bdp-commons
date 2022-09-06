@@ -30,7 +30,8 @@ class ParserTest {
 
 		for (LinkedHashMap<String, String> lane : lanes) {
 			StationDto stationUnderTest = Parser.createStation(stationsUnderTest[0], otherFields, lane, null, "TrafficSensor");
-			assertThat(stationUnderTest.getId()).startsWith("1");
+			// check for Nome, because Nome is used for id
+			assertThat(stationUnderTest.getId()).startsWith("4");
 			assertThat(46.4497009548582).isEqualTo(stationUnderTest.getLatitude());
 			assertThat(11.3448734664564).isEqualTo(stationUnderTest.getLongitude());
 		}
