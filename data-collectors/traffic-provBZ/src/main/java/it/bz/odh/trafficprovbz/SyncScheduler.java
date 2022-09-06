@@ -57,11 +57,11 @@ public class SyncScheduler {
 			classificationSchemaList.addAll(classes);
 		}
 
-		StationList syncTrafficStations = syncTrafficStations(metadataDtos, classificationSchemaList);
-		StationList syncBluetoothStations = syncBluetoothStations(metadataDtos, classificationSchemaList);
+		syncTrafficStations(metadataDtos, classificationSchemaList);
+		syncBluetoothStations(metadataDtos, classificationSchemaList);
 
-		syncJobTrafficMeasurements(syncTrafficStations);
-		syncJobBluetoothMeasurements(syncBluetoothStations);
+		syncJobTrafficMeasurements(metadataDtos);
+		syncJobBluetoothMeasurements(metadataDtos);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class SyncScheduler {
 	 *
 	 * @throws IOException
 	 */
-	public StationList syncTrafficStations(MetadataDto[] metadataDtos,
+	public void syncTrafficStations(MetadataDto[] metadataDtos,
 			ArrayList<LinkedHashMap<String, String>> classificationSchemaList) throws IOException {
 		LOG.info("Cron job stations started: Sync Stations with type {} and data types",
 				odhClientTrafficSensor.getIntegreenTypology());
@@ -93,10 +93,9 @@ public class SyncScheduler {
 		}
 		odhClientTrafficSensor.syncStations(odhTrafficStationList);
 		LOG.info("Cron job traffic stations successful");
-		return odhTrafficStationList;
 	}
 
-	public StationList syncBluetoothStations(MetadataDto[] metadataDtos,
+	public void syncBluetoothStations(MetadataDto[] metadataDtos,
 			ArrayList<LinkedHashMap<String, String>> classificationSchemaList) {
 		LOG.info("Syncing bluetooth stations");
 		StationList odhBluetoothStationList = new StationList();
@@ -114,7 +113,6 @@ public class SyncScheduler {
 		}
 		odhClientBluetoothSensor.syncStations(odhBluetoothStationList);
 		LOG.info("Cron job bluetooth stations successful");
-		return odhBluetoothStationList;
 	}
 
 	/**
@@ -123,13 +121,13 @@ public class SyncScheduler {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public void syncJobTrafficMeasurements(StationList stations) throws IOException, ParseException {
+	public void syncJobTrafficMeasurements(MetadataDto[] stationDtos) throws IOException, ParseException {
 		LOG.info("Cron job measurements started: Pushing measurements for {}",
 				odhClientTrafficSensor.getIntegreenTypology());
-		for (StationDto station : stations) {
+		for (MetadataDto station : stationDtos) {
 			String stationId = station.getId();
 			// extract id from 3:corsiaBolzano to make request to API
-			String requestStationId = station.getId().split(":")[0];
+			String requestStationId = station.getId();
 			endPeriodTrafficList = updateEndPeriod(stationId, endPeriodTrafficList);
 			startPeriodTrafficList = updateStartPeriod(stationId, startPeriodTrafficList,
 					endPeriodTrafficList.get(stationId));
@@ -160,21 +158,23 @@ public class SyncScheduler {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public void syncJobBluetoothMeasurements(StationList stations) throws IOException, ParseException {
+	public void syncJobBluetoothMeasurements(MetadataDto[] stationDtos) throws IOException, ParseException {
 		LOG.info("Cron job measurements started: Pushing bluetooth measurements for {}",
 				odhClientBluetoothSensor.getIntegreenTypology());
 
-		for (StationDto station : stations) {
+		for (MetadataDto station : stationDtos) {
 			String stationId = station.getId();
-			endPeriodBluetoothList = updateEndPeriod(station.getId(), endPeriodBluetoothList);
-			startPeriodBluetoothList = updateStartPeriod(station.getId(), startPeriodBluetoothList,
+			endPeriodBluetoothList = updateEndPeriod(stationId, endPeriodBluetoothList);
+			startPeriodBluetoothList = updateStartPeriod(stationId, startPeriodBluetoothList,
 					endPeriodBluetoothList.get(stationId));
 			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
-			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getId());
+			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(stationId);
 			DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("vehicle detection");
-			PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(station.getId(),
+			PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(stationId,
 					sdf.format(startPeriodBluetoothList.get(stationId)),
 					sdf.format(endPeriodBluetoothList.get(stationId)));
+					LOG.info("Push data for station {} bluetooth measurement successful", station.getName());
+
 			Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
 			try {
 				// Push data for every station separately to avoid out of memory errors
