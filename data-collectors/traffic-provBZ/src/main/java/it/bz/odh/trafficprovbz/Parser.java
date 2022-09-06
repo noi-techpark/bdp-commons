@@ -33,11 +33,11 @@ public class Parser {
 		Double lon = JsonPath.read(otherFields, "$.GeoInfo.Longitudine");
 
 		metadataDto.setOtherField("SchemaDiClassificazione", classificationSchema);
-		String stationId = metadataDto.getId();
+		String stationId = metadataDto.getName();
 		String stationName = metadataDto.getName();
 		if (lane != null) {
 			String description = JsonPath.read(lane, "$.Descrizione");
-			stationId = metadataDto.getId() + ":" + description;
+			stationId = metadataDto.getName() + ":" + description;
 			stationName = metadataDto.getName() + ":" + description;
 		}
 		StationDto station = new StationDto(stationId, stationName, lat, lon);
