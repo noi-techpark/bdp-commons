@@ -8,14 +8,10 @@ services:
       - .env
     environment:
       MAVEN_CONFIG: /var/maven/.m2
-      MAVEN_OPTS: -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9000
     command: >
-      mvn
-      -Duser.home=/var/maven
-      spring-boot:run
-    ports:
-      - 9000:9000
-      - 9001:9001
+      mvn -DskipTests clean package spring-boot:repackage
+      java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:9000 -jar target/ROOT.jar
+
     volumes:
       - ~/.m2/:/var/maven/.m2
       - ./:/code
