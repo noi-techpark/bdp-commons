@@ -11,11 +11,8 @@ metadata information and forwards it to the writer module of bdp-core.
 - maven
 - JDK 8
 
-## Encryption
-All mac addresses send to this data collector are getting hashed with a secret
-key (HMAC) to avoid persisting the MAC-addresse, which could result in a
-security/privacy issue. Don't forget to set your secret key for encryption or
-your data collector won't work.
+## Mac address hashing
+All mac addresses send to this data collector are getting hashed with MD5.
 
 ## Endpoints
 
