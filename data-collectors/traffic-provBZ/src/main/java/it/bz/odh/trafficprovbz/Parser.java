@@ -18,6 +18,8 @@ public class Parser {
 
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
+	public static final String ODH_ID = "odhId";
+
 	/**
 	 * This is a function to create a station, either of type traffic or bluetooth
 	 *
@@ -39,6 +41,8 @@ public class Parser {
 			String description = JsonPath.read(lane, "$.Descrizione");
 			stationId = metadataDto.getName() + ":" + description;
 			stationName = metadataDto.getName() + ":" + description;
+			// save odhId to otherFields to use in syncJobTrafficMeasurements()
+			metadataDto.setOtherField(ODH_ID, stationId);
 		}
 		StationDto station = new StationDto(stationId, stationName, lat, lon);
 		station.setStationType(stationType);

@@ -126,14 +126,14 @@ public class SyncScheduler {
 				odhClientTrafficSensor.getIntegreenTypology());
 		for (MetadataDto station : stationDtos) {
 			String stationId = station.getId();
-			// extract id from 3:corsiaBolzano to make request to API
 			String requestStationId = station.getId();
 			endPeriodTrafficList = updateEndPeriod(stationId, endPeriodTrafficList);
 			startPeriodTrafficList = updateStartPeriod(stationId, startPeriodTrafficList,
 					endPeriodTrafficList.get(stationId));
 			LOG.info("After Initialisation for {}", stationId);
 			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
-			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(stationId);
+			// use id that has been written to odh
+			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getOtherFields().get(Parser.ODH_ID).toString());
 			AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(requestStationId,
 					sdf.format(startPeriodTrafficList.get(stationId)),
 					sdf.format(endPeriodTrafficList.get(stationId)));
