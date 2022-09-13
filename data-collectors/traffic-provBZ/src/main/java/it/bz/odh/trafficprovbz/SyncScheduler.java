@@ -132,8 +132,8 @@ public class SyncScheduler {
 					endPeriodTrafficList.get(stationId));
 			LOG.info("After Initialisation for {}", stationId);
 			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
-			// use id that has been written to odh
-			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getOtherFields().get(Parser.ODH_ID).toString());
+			// use id that has been written to odh by station sync
+			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getOdhId());
 			AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(requestStationId,
 					sdf.format(startPeriodTrafficList.get(stationId)),
 					sdf.format(endPeriodTrafficList.get(stationId)));

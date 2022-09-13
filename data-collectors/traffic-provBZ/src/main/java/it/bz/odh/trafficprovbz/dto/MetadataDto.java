@@ -20,6 +20,17 @@ public class MetadataDto {
 
 	private final Map<String, Object> otherFields = new HashMap<>();
 
+	// save odhId because name/id mismatch and to save the data the odhId is needed
+	private String odhId;
+
+	public String getOdhId() {
+		return odhId;
+	}
+
+	public void setOdhId(String odhId) {
+		this.odhId = odhId;
+	}
+
 	public String getId() {
 		return id;
 	}
