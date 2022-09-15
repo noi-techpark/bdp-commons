@@ -48,7 +48,7 @@ class ParserTest {
 		DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
 
 		DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(aggregatedDataDtos[0].getId());
-		Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap);
+		Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap,1);
 
 	}
 }

@@ -21,14 +21,16 @@ public class MetadataDto {
 	private final Map<String, Object> otherFields = new HashMap<>();
 
 	// save odhId because name/id mismatch and to save the data the odhId is needed
-	private String odhId;
+	private HashMap<String, Integer> lanes;
 
-	public String getOdhId() {
-		return odhId;
+	public Map<String, Integer> getLanes() {
+		return lanes;
 	}
 
-	public void setOdhId(String odhId) {
-		this.odhId = odhId;
+	public void addLane(int id, String name) {
+		if (lanes == null)
+			lanes = new HashMap<>();
+		lanes.put(name, id);
 	}
 
 	public String getId() {

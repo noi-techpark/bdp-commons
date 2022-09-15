@@ -130,25 +130,29 @@ public class SyncScheduler {
 			endPeriodTrafficList = updateEndPeriod(stationId, endPeriodTrafficList);
 			startPeriodTrafficList = updateStartPeriod(stationId, startPeriodTrafficList,
 					endPeriodTrafficList.get(stationId));
-			LOG.info("After Initialisation for {}", station.getOdhId());
-			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
-			// use id that has been written to odh by station sync
-			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getOdhId());
-			AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(requestStationId,
-					sdf.format(startPeriodTrafficList.get(stationId)),
-					sdf.format(endPeriodTrafficList.get(stationId)));
-			Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap);
-			try {
-				odhClientTrafficSensor.pushData(rootMap);
-			} catch (Exception e) {
-				LOG.info("Cron job traffic for station {} failed because of {}", station.getOdhId(),
-						e.getMessage());
+			LOG.info("After Initialisation for {}", station.getId());
+
+			for (String laneName : station.getLanes().keySet()) {
+				DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+				// use id that has been written to odh by station sync
+				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(laneName);
+				AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(requestStationId,
+						sdf.format(startPeriodTrafficList.get(stationId)),
+						sdf.format(endPeriodTrafficList.get(stationId)));
+				Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap, station.getLanes().get(laneName));
+				try {
+					odhClientTrafficSensor.pushData(rootMap);
+				} catch (Exception e) {
+					LOG.info("Cron job traffic for station {} failed because of {}", station.getId(),
+							e.getMessage());
+				}
 			}
+
 			// If everything was successful we set the start of the next period equal to the
 			// end of the period queried right now
 			startPeriodTrafficList.put(stationId, endPeriodTrafficList.get(stationId));
-			LOG.info("After inserting to DB for {}", station.getOdhId());
-			LOG.info("Cron job traffic for station {} successful", station.getOdhId());
+			LOG.info("After inserting to DB for {}", station.getId());
+			LOG.info("Cron job traffic for station {} successful", station.getId());
 		}
 	}
 
@@ -168,7 +172,7 @@ public class SyncScheduler {
 			startPeriodBluetoothList = updateStartPeriod(stationId, startPeriodBluetoothList,
 					endPeriodBluetoothList.get(stationId));
 			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
-			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getOdhId());
+			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getId());
 			DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("vehicle detection");
 			PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(stationId,
 					sdf.format(startPeriodBluetoothList.get(stationId)),
@@ -180,13 +184,13 @@ public class SyncScheduler {
 				odhClientBluetoothSensor.pushData(rootMap);
 			} catch (WebClientRequestException e) {
 				LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}",
-						station.getOdhId(),
+						station.getId(),
 						e.getMessage());
 			}
 			// If everything was successful we set the start of the next period equal to the
 			// end of the period queried right now
 			startPeriodBluetoothList.put(stationId, endPeriodBluetoothList.get(stationId));
-			LOG.info("Push data for station {} bluetooth measurement successful", station.getOdhId());
+			LOG.info("Push data for station {} bluetooth measurement successful", station.getId());
 		}
 		LOG.info("Cron job for bluetooth measurements successful");
 	}

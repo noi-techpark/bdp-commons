@@ -42,10 +42,13 @@ public class Parser {
 		String stationName = metadataDto.getName();
 		if (lane != null) {
 			String description = JsonPath.read(lane, "$.Descrizione");
+			int laneId = JsonPath.read(lane, "$.Id");
+
 			stationId = metadataDto.getName() + ":" + description;
 			stationName = metadataDto.getName() + ":" + description;
 			// save odhId to otherFields to use in syncJobTrafficMeasurements()
-			metadataDto.setOdhId(stationId);
+			// -1 because in aggregated data lanes start from 0
+			metadataDto.addLane(laneId - 1, stationId);
 		}
 		StationDto station = new StationDto(stationId, stationName, lat, lon);
 		station.setStationType(stationType);
@@ -62,7 +65,7 @@ public class Parser {
 	 * @throws ParseException is thrown if parsing causes an error
 	 */
 	public static void insertDataIntoStationMap(AggregatedDataDto[] aggregatedDataDtos, Integer period,
-			DataMapDto<RecordDtoImpl> stationMap) throws ParseException {
+			DataMapDto<RecordDtoImpl> stationMap, Integer laneId) throws ParseException {
 
 		List<String> trafficDataTypes = Parser.getTrafficDataTypes();
 
@@ -75,27 +78,31 @@ public class Parser {
 		}
 
 		for (AggregatedDataDto aggregatedDataDto : aggregatedDataDtos) {
-			Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
-			JSONObject otherFields = new JSONObject(aggregatedDataDto.getOtherFields());
-			addMeasurementToMap(metricMaps[0],
-					new SimpleRecordDto(timestamp, aggregatedDataDto.getTotalTransits(), period));
-			if (otherFields.containsKey("TotaliPerClasseVeicolare")) {
-				LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.TotaliPerClasseVeicolare");
-				Set<String> keys = classes.keySet();
-				for (String key : keys) {
-					addMeasurementToMap(metricMaps[Integer.parseInt(key)],
-							new SimpleRecordDto(timestamp, classes.get(key), period));
+			if (aggregatedDataDto.getLane().equals((laneId - 1) + "")) {
+				Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
+				JSONObject otherFields = new JSONObject(aggregatedDataDto.getOtherFields());
+				addMeasurementToMap(metricMaps[0],
+						new SimpleRecordDto(timestamp, aggregatedDataDto.getTotalTransits(), period));
+				if (otherFields.containsKey("TotaliPerClasseVeicolare")) {
+					LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.TotaliPerClasseVeicolare");
+					Set<String> keys = classes.keySet();
+					for (String key : keys) {
+						addMeasurementToMap(metricMaps[Integer.parseInt(key)],
+								new SimpleRecordDto(timestamp, classes.get(key), period));
+					}
+					addMeasurementToMap(metricMaps[11],
+							new SimpleRecordDto(timestamp, aggregatedDataDto.getAverageVehicleSpeed(), period));
+					addMeasurementToMap(metricMaps[12],
+							new SimpleRecordDto(timestamp, aggregatedDataDto.getHeadway(), period));
+					addMeasurementToMap(metricMaps[13],
+							new SimpleRecordDto(timestamp, aggregatedDataDto.getHeadwayVariance(), period));
+					addMeasurementToMap(metricMaps[14],
+							new SimpleRecordDto(timestamp, aggregatedDataDto.getGap(), period));
+					addMeasurementToMap(metricMaps[15],
+							new SimpleRecordDto(timestamp, aggregatedDataDto.getGapVariance(), period));
 				}
-				addMeasurementToMap(metricMaps[11],
-						new SimpleRecordDto(timestamp, aggregatedDataDto.getAverageVehicleSpeed(), period));
-				addMeasurementToMap(metricMaps[12],
-						new SimpleRecordDto(timestamp, aggregatedDataDto.getHeadway(), period));
-				addMeasurementToMap(metricMaps[13],
-						new SimpleRecordDto(timestamp, aggregatedDataDto.getHeadwayVariance(), period));
-				addMeasurementToMap(metricMaps[14], new SimpleRecordDto(timestamp, aggregatedDataDto.getGap(), period));
-				addMeasurementToMap(metricMaps[15],
-						new SimpleRecordDto(timestamp, aggregatedDataDto.getGapVariance(), period));
 			}
+
 		}
 	}
 
