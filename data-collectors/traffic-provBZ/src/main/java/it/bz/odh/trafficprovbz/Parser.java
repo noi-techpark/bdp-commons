@@ -78,7 +78,7 @@ public class Parser {
 		}
 
 		for (AggregatedDataDto aggregatedDataDto : aggregatedDataDtos) {
-			if (aggregatedDataDto.getLane().equals((laneId - 1) + "")) {
+			if (aggregatedDataDto.getLane().equals((laneId) + "")) {
 				Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
 				JSONObject otherFields = new JSONObject(aggregatedDataDto.getOtherFields());
 				addMeasurementToMap(metricMaps[0],
