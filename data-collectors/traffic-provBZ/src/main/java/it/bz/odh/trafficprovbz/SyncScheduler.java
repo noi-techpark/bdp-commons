@@ -130,7 +130,7 @@ public class SyncScheduler {
 			endPeriodTrafficList = updateEndPeriod(stationId, endPeriodTrafficList);
 			startPeriodTrafficList = updateStartPeriod(stationId, startPeriodTrafficList,
 					endPeriodTrafficList.get(stationId));
-			LOG.info("After Initialisation for {}", stationId);
+			LOG.info("After Initialisation for {}", station.getOdhId());
 			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
 			// use id that has been written to odh by station sync
 			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getOdhId());
@@ -141,14 +141,14 @@ public class SyncScheduler {
 			try {
 				odhClientTrafficSensor.pushData(rootMap);
 			} catch (Exception e) {
-				LOG.info("Cron job traffic for station {} failed because of {}", station.getId(),
+				LOG.info("Cron job traffic for station {} failed because of {}", station.getOdhId(),
 						e.getMessage());
 			}
 			// If everything was successful we set the start of the next period equal to the
 			// end of the period queried right now
 			startPeriodTrafficList.put(stationId, endPeriodTrafficList.get(stationId));
-			LOG.info("After inserting to DB for {}", stationId);
-			LOG.info("Cron job traffic for station {} successful", station.getId());
+			LOG.info("After inserting to DB for {}", station.getOdhId());
+			LOG.info("Cron job traffic for station {} successful", station.getOdhId());
 		}
 	}
 
@@ -173,7 +173,6 @@ public class SyncScheduler {
 			PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(stationId,
 					sdf.format(startPeriodBluetoothList.get(stationId)),
 					sdf.format(endPeriodBluetoothList.get(stationId)));
-					LOG.info("Push data for station {} bluetooth measurement successful", station.getName());
 
 			Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
 			try {
@@ -181,13 +180,13 @@ public class SyncScheduler {
 				odhClientBluetoothSensor.pushData(rootMap);
 			} catch (WebClientRequestException e) {
 				LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}",
-						station.getName(),
+						station.getOdhId(),
 						e.getMessage());
 			}
 			// If everything was successful we set the start of the next period equal to the
 			// end of the period queried right now
 			startPeriodBluetoothList.put(stationId, endPeriodBluetoothList.get(stationId));
-			LOG.info("Push data for station {} bluetooth measurement successful", station.getName());
+			LOG.info("Push data for station {} bluetooth measurement successful", station.getOdhId());
 		}
 		LOG.info("Cron job for bluetooth measurements successful");
 	}

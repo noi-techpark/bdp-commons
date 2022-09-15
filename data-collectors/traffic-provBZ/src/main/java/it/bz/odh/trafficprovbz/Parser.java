@@ -40,8 +40,6 @@ public class Parser {
 		metadataDto.setOtherField("SchemaDiClassificazione", classificationSchema);
 		String stationId = metadataDto.getName();
 		String stationName = metadataDto.getName();
-		// save odhId to otherFields to use in syncJobBluetoothMeasurements()
-		metadataDto.setOdhId(stationId);
 		if (lane != null) {
 			String description = JsonPath.read(lane, "$.Descrizione");
 			stationId = metadataDto.getName() + ":" + description;
@@ -49,7 +47,6 @@ public class Parser {
 			// save odhId to otherFields to use in syncJobTrafficMeasurements()
 			metadataDto.setOdhId(stationId);
 		}
-
 		StationDto station = new StationDto(stationId, stationName, lat, lon);
 		station.setStationType(stationType);
 		return station;
