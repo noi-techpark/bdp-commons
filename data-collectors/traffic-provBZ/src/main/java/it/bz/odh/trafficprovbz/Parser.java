@@ -37,7 +37,8 @@ public class Parser {
 		Double lat = JsonPath.read(otherFields, "$.GeoInfo.Latitudine");
 		Double lon = JsonPath.read(otherFields, "$.GeoInfo.Longitudine");
 
-		metadataDto.setOtherField("SchemaDiClassificazione", classificationSchema.toString());
+		metadataDto.setOtherField("SchemaDiClassificazione",
+				classificationSchema != null ? classificationSchema.toString() : null);
 		String stationId = metadataDto.getName();
 		String stationName = metadataDto.getName();
 		if (lane != null) {
