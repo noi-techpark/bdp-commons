@@ -165,7 +165,7 @@ public class Parser {
 		// is an array
 		if (laneId > -1)
 			metadata.put("direction",
-					JsonPath.read(otherFields, "$.CorsieInfo[?(@.ID == " + laneId + ")].Descrizione"));
+					JsonPath.read(otherFields, "$.CorsieInfo[?(@.Id == " + laneId + ")].Descrizione"));
 		metadata.put("street_name", JsonPath.read(otherFields, "$.StradaInfo.Nome"));
 		metadata.put("kilometric", JsonPath.read(otherFields, "$.StradaInfo.Chilometrica"));
 		metadata.put("total_lanes", JsonPath.read(otherFields, "$.NumeroCorsie"));
