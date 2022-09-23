@@ -14,6 +14,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.apache.commons.logging.Log;
+
 public class Parser {
 
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -41,9 +43,10 @@ public class Parser {
 		// classificationSchema != null ? classificationSchema.toString() : null);
 		String stationId = metadataDto.getName();
 		String stationName = metadataDto.getName();
+		int laneId = -1;
 		if (lane != null) {
 			String description = JsonPath.read(lane, "$.Descrizione");
-			int laneId = JsonPath.read(lane, "$.Id");
+			laneId = JsonPath.read(lane, "$.Id");
 
 			stationId = metadataDto.getName() + ":" + description;
 			stationName = metadataDto.getName() + ":" + description;
@@ -53,7 +56,7 @@ public class Parser {
 		}
 		StationDto station = new StationDto(stationId, stationName, lat, lon);
 		station.setStationType(stationType);
-		station.setMetaData(createMetadata(otherFields));
+		station.setMetaData(createMetadata(otherFields, laneId));
 		return station;
 	}
 
@@ -153,18 +156,19 @@ public class Parser {
 		}
 	}
 
-	private static Map<String, Object> createMetadata(JSONObject otherFields) {
+	private static Map<String, Object> createMetadata(JSONObject otherFields, int laneId) {
 		Map<String, Object> metadata = new HashMap<>();
 		// geoinfo
-		metadata.put("municipality",  JsonPath.read(otherFields, "$.GeoInfo.Comune"));
-		metadata.put("region",  JsonPath.read(otherFields, "$.GeoInfo.Regione"));
+		metadata.put("municipality", JsonPath.read(otherFields, "$.GeoInfo.Comune"));
+		metadata.put("region", JsonPath.read(otherFields, "$.GeoInfo.Regione"));
 
 		// is an array
-		// metadata.put("direction",  JsonPath.read(otherFields, "$.CorsieInfo.Descrizione"));
-		metadata.put("street_name",  JsonPath.read(otherFields, "$.StradaInfo.Nome"));
-		metadata.put("kilometric",  JsonPath.read(otherFields, "$.StradaInfo.Chilometrica"));
-		metadata.put("total_lanes",  JsonPath.read(otherFields, "$.NumeroCorsie"));
-
+		if (laneId > -1)
+			metadata.put("direction",
+					JsonPath.read(otherFields, "$.CorsieInfo[?(@.ID == " + laneId + ")].Descrizione"));
+		metadata.put("street_name", JsonPath.read(otherFields, "$.StradaInfo.Nome"));
+		metadata.put("kilometric", JsonPath.read(otherFields, "$.StradaInfo.Chilometrica"));
+		metadata.put("total_lanes", JsonPath.read(otherFields, "$.NumeroCorsie"));
 
 		return metadata;
 	}
