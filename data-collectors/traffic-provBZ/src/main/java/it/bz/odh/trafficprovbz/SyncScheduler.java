@@ -31,7 +31,7 @@ public class SyncScheduler {
 	@Value("${odh_client.period}")
 	private Integer period;
 	private final OdhClientTrafficSensor odhClientTrafficSensor;
-	private final OdhClientBluetoothSensor odhClientBluetoothSensor;
+	private final OdhClientBluetoothStation odhClientBluetoothStation;
 	private final FamasClient famasClient;
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	private Map<String, Date> startPeriodTrafficList;
@@ -40,9 +40,9 @@ public class SyncScheduler {
 	private Map<String, Date> endPeriodBluetoothList;
 
 	public SyncScheduler(@Lazy OdhClientTrafficSensor odhClientTrafficSensor,
-			@Lazy OdhClientBluetoothSensor odhClientBluetoothSensor, @Lazy FamasClient famasClient) {
+			@Lazy OdhClientBluetoothStation odhClientBluetoothStation, @Lazy FamasClient famasClient) {
 		this.odhClientTrafficSensor = odhClientTrafficSensor;
-		this.odhClientBluetoothSensor = odhClientBluetoothSensor;
+		this.odhClientBluetoothStation = odhClientBluetoothStation;
 		this.famasClient = famasClient;
 		initDataTypes();
 	}
@@ -87,7 +87,6 @@ public class SyncScheduler {
 				StationDto station = Parser.createStation(metadataDto, otherFields, lane, classificationSchema,
 						STATION_TYPE_TRAFFIC_SENSOR);
 				station.setOrigin(odhClientTrafficSensor.getProvenance().getLineage());
-				// station.setMetaData(metadataDto.getOtherFields());
 				odhTrafficStationList.add(station);
 			}
 		}
@@ -107,11 +106,11 @@ public class SyncScheduler {
 					metadataDto);
 			StationDto station = Parser.createStation(metadataDto, otherFields, null, classificationSchema,
 					STATION_TYPE_BLUETOOTH_SENSOR);
-			station.setOrigin(odhClientBluetoothSensor.getProvenance().getLineage());
+			station.setOrigin(odhClientBluetoothStation.getProvenance().getLineage());
 			// station.setMetaData(metadataDto.getOtherFields());
 			odhBluetoothStationList.add(station);
 		}
-		odhClientBluetoothSensor.syncStations(odhBluetoothStationList);
+		odhClientBluetoothStation.syncStations(odhBluetoothStationList);
 		LOG.info("Cron job bluetooth stations successful");
 	}
 
@@ -164,7 +163,7 @@ public class SyncScheduler {
 	 */
 	public void syncJobBluetoothMeasurements(MetadataDto[] stationDtos) throws IOException, ParseException {
 		LOG.info("Cron job measurements started: Pushing bluetooth measurements for {}",
-				odhClientBluetoothSensor.getIntegreenTypology());
+				odhClientBluetoothStation.getIntegreenTypology());
 
 		for (MetadataDto station : stationDtos) {
 			String stationId = station.getId();
@@ -181,7 +180,7 @@ public class SyncScheduler {
 			Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
 			try {
 				// Push data for every station separately to avoid out of memory errors
-				odhClientBluetoothSensor.pushData(rootMap);
+				odhClientBluetoothStation.pushData(rootMap);
 			} catch (WebClientRequestException e) {
 				LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}",
 						station.getId(),
@@ -249,7 +248,7 @@ public class SyncScheduler {
 		odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_GAP_VARIANCE, "double", DATATYPE_ID_GAP_VARIANCE, "Average"));
 
 		try {
-			odhClientBluetoothSensor.syncDataTypes(odhDataTypeList);
+			odhClientBluetoothStation.syncDataTypes(odhDataTypeList);
 			odhClientTrafficSensor.syncDataTypes(odhDataTypeList);
 		} catch (WebClientRequestException e) {
 			LOG.error("Sync data types failed: Request exception: {}", e.getMessage());
