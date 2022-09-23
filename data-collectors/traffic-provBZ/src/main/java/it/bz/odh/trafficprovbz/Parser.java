@@ -37,8 +37,8 @@ public class Parser {
 		Double lat = JsonPath.read(otherFields, "$.GeoInfo.Latitudine");
 		Double lon = JsonPath.read(otherFields, "$.GeoInfo.Longitudine");
 
-		metadataDto.setOtherField("SchemaDiClassificazione",
-				classificationSchema != null ? classificationSchema.toString() : null);
+		// metadataDto.setOtherField("SchemaDiClassificazione",
+		// classificationSchema != null ? classificationSchema.toString() : null);
 		String stationId = metadataDto.getName();
 		String stationName = metadataDto.getName();
 		if (lane != null) {
@@ -53,6 +53,7 @@ public class Parser {
 		}
 		StationDto station = new StationDto(stationId, stationName, lat, lon);
 		station.setStationType(stationType);
+		station.setMetaData(createMetadata(otherFields));
 		return station;
 	}
 
@@ -150,5 +151,21 @@ public class Parser {
 			measurement.setCreated_on(new Date().getTime());
 			map.getData().add(measurement);
 		}
+	}
+
+	private static Map<String, Object> createMetadata(JSONObject otherFields) {
+		Map<String, Object> metadata = new HashMap<>();
+		// geoinfo
+		metadata.put("municipality",  JsonPath.read(otherFields, "$.GeoInfo.Comune"));
+		metadata.put("region",  JsonPath.read(otherFields, "$.GeoInfo.Regione"));
+
+		// is an array
+		// metadata.put("direction",  JsonPath.read(otherFields, "$.CorsieInfo.Descrizione"));
+		metadata.put("street_name",  JsonPath.read(otherFields, "$.StradaInfo.Nome"));
+		metadata.put("kilometric",  JsonPath.read(otherFields, "$.StradaInfo.Chilometrica"));
+		metadata.put("total_lanes",  JsonPath.read(otherFields, "$.NumeroCorsie"));
+
+
+		return metadata;
 	}
 }

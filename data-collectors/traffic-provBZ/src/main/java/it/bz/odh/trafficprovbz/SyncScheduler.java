@@ -87,7 +87,7 @@ public class SyncScheduler {
 				StationDto station = Parser.createStation(metadataDto, otherFields, lane, classificationSchema,
 						STATION_TYPE_TRAFFIC_SENSOR);
 				station.setOrigin(odhClientTrafficSensor.getProvenance().getLineage());
-				station.setMetaData(metadataDto.getOtherFields());
+				// station.setMetaData(metadataDto.getOtherFields());
 				odhTrafficStationList.add(station);
 			}
 		}
@@ -108,7 +108,7 @@ public class SyncScheduler {
 			StationDto station = Parser.createStation(metadataDto, otherFields, null, classificationSchema,
 					STATION_TYPE_BLUETOOTH_SENSOR);
 			station.setOrigin(odhClientBluetoothSensor.getProvenance().getLineage());
-			station.setMetaData(metadataDto.getOtherFields());
+			// station.setMetaData(metadataDto.getOtherFields());
 			odhBluetoothStationList.add(station);
 		}
 		odhClientBluetoothSensor.syncStations(odhBluetoothStationList);
