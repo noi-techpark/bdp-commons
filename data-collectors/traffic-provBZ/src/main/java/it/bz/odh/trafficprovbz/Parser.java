@@ -14,8 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import org.apache.commons.logging.Log;
-
 public class Parser {
 
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -137,9 +135,10 @@ public class Parser {
 	public static void insertDataIntoBluetoothmap(PassagesDataDto[] passagesDataDtos, Integer period,
 			DataMapDto<RecordDtoImpl> bluetoothMetricMap) throws ParseException {
 		for (PassagesDataDto passagesDataDto : passagesDataDtos) {
+			String value = passagesDataDto.getIdVehicle() != null ? passagesDataDto.getIdVehicle().toUpperCase() : null;
 			Long timestamp = formatter.parse(passagesDataDto.getDate()).getTime();
 			addMeasurementToMap(bluetoothMetricMap,
-					new SimpleRecordDto(timestamp, passagesDataDto.getIdVehicle(), period));
+					new SimpleRecordDto(timestamp, value, period));
 		}
 	}
 
@@ -158,14 +157,14 @@ public class Parser {
 
 	private static Map<String, Object> createMetadata(JSONObject otherFields, int laneId) {
 		Map<String, Object> metadata = new HashMap<>();
-		// geoinfo
+
 		metadata.put("municipality", JsonPath.read(otherFields, "$.GeoInfo.Comune"));
 		metadata.put("region", JsonPath.read(otherFields, "$.GeoInfo.Regione"));
 
-		// is an array
 		if (laneId > -1)
 			metadata.put("direction",
 					JsonPath.read(otherFields, "$.CorsieInfo[?(@.Id == " + laneId + ")].Descrizione"));
+
 		metadata.put("street_name", JsonPath.read(otherFields, "$.StradaInfo.Nome"));
 		metadata.put("kilometric", JsonPath.read(otherFields, "$.StradaInfo.Chilometrica"));
 		metadata.put("total_lanes", JsonPath.read(otherFields, "$.NumeroCorsie"));
