@@ -52,16 +52,17 @@ public class ODController {
 	private BluetoothMappingUtil mappingUtil;
 
 	@ExceptionHandler({ RestClientException.class })
-    public ResponseEntity<Object> handleException(RestClientException ex, WebRequest request) {
+	public ResponseEntity<Object> handleException(RestClientException ex, WebRequest request) {
 		ExceptionDto dto = new ExceptionDto();
 		dto.setStatus(HttpStatus.GATEWAY_TIMEOUT.value());
 		dto.setDescription(ex.getMessage());
 		dto.setName(HttpStatus.GATEWAY_TIMEOUT.toString());
-		return new ResponseEntity<>(dto,HttpStatus.GATEWAY_TIMEOUT);
-    }
+		return new ResponseEntity<>(dto, HttpStatus.GATEWAY_TIMEOUT);
+	}
 
 	/**
-	 * Endpoint for Bluetoothboxes which synchronizes single BluetoothStations and sends data records to ODH
+	 * Endpoint for Bluetoothboxes which synchronizes single BluetoothStations and
+	 * sends data records to ODH
 	 *
 	 * @param records
 	 */
@@ -121,25 +122,26 @@ public class ODController {
 	}
 
 	/**
-	 * @param id BluetoothStation identifier
+	 * @param id           BluetoothStation identifier
 	 * @param httpResponse
 	 * @return unix timestamp of the last inserted record of that station and type
 	 * @throws MalformedURLException
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody Date getLastRecord(@RequestParam("station-id")String id, HttpServletResponse httpResponse) {
-		Object bdpResponse = pusher.getDateOfLastRecord(id, env.getRequiredProperty("datatype"), null);
+	public @ResponseBody Date getLastRecord(@RequestParam("station-id") String id, HttpServletResponse httpResponse) {
+		Object bdpResponse = pusher.getDateOfLastRecord(id, env.getRequiredProperty("datatype"), 1);
 		if (bdpResponse instanceof Date)
 			return (Date) bdpResponse;
 
 		if (bdpResponse instanceof IntegreenException)
 			httpResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+		logger.debug("No last record dound for station-id " + id);
 		return null;
 	}
 
-	@RequestMapping(method = RequestMethod.POST,value="hash")
-	public @ResponseBody List<String> hash(@RequestBody RecordList records){
+	@RequestMapping(method = RequestMethod.POST, value = "hash")
+	public @ResponseBody List<String> hash(@RequestBody RecordList records) {
 		logger.debug(records.size() + " records called /hash");
-	    return pusher.hash(records);
+		return pusher.hash(records);
 	}
 }
