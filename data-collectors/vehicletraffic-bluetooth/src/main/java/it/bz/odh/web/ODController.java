@@ -139,6 +139,7 @@ public class ODController {
 
 	@RequestMapping(method = RequestMethod.POST,value="hash")
 	public @ResponseBody List<String> hash(@RequestBody RecordList records){
+		logger.debug(records.size() + " records called /hash");
 	    return pusher.hash(records);
 	}
 }
