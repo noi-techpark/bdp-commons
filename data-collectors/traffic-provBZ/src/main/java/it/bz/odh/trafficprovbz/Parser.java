@@ -135,7 +135,7 @@ public class Parser {
 	public static void insertDataIntoBluetoothmap(PassagesDataDto[] passagesDataDtos, Integer period,
 			DataMapDto<RecordDtoImpl> bluetoothMetricMap) throws ParseException {
 		for (PassagesDataDto passagesDataDto : passagesDataDtos) {
-			String value = passagesDataDto.getIdVehicle() != null ? passagesDataDto.getIdVehicle().toUpperCase() : null;
+			String value = passagesDataDto.getIdVehicle() != null ? passagesDataDto.getIdVehicle().toLowerCase() : null;
 			Long timestamp = formatter.parse(passagesDataDto.getDate()).getTime();
 			addMeasurementToMap(bluetoothMetricMap,
 					new SimpleRecordDto(timestamp, value, period));
