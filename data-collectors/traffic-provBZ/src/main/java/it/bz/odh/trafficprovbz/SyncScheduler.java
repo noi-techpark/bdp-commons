@@ -25,7 +25,7 @@ public class SyncScheduler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
 	private static final String STATION_TYPE_TRAFFIC_SENSOR = "TrafficSensor";
-	private static final String STATION_TYPE_BLUETOOTH_SENSOR = "BluetoothSensor";
+	private static final String STATION_TYPE_BLUETOOTH_STATION = "BluetoothStation";
 	private static final String DATATYPE_ID_HEADWAY_VARIANCE = "headway-variance";
 	private static final String DATATYPE_ID_GAP_VARIANCE = "gap-variance";
 	@Value("${odh_client.period}")
@@ -105,7 +105,7 @@ public class SyncScheduler {
 			LinkedHashMap<String, String> classificationSchema = getClassificationSchema(classificationSchemaList,
 					metadataDto);
 			StationDto station = Parser.createStation(metadataDto, otherFields, null, classificationSchema,
-					STATION_TYPE_BLUETOOTH_SENSOR);
+					STATION_TYPE_BLUETOOTH_STATION);
 			station.setOrigin(odhClientBluetoothStation.getProvenance().getLineage());
 			// station.setMetaData(metadataDto.getOtherFields());
 			odhBluetoothStationList.add(station);
@@ -138,7 +138,8 @@ public class SyncScheduler {
 				AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(requestStationId,
 						sdf.format(startPeriodTrafficList.get(stationId)),
 						sdf.format(endPeriodTrafficList.get(stationId)));
-				Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap, station.getLanes().get(laneName));
+				Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap,
+						station.getLanes().get(laneName));
 				try {
 					odhClientTrafficSensor.pushData(rootMap);
 				} catch (Exception e) {
