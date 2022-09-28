@@ -84,9 +84,11 @@ public class Parser {
 			if (aggregatedDataDto.getLane().equals((laneId) + "")) {
 				Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
 				JSONObject otherFields = new JSONObject(aggregatedDataDto.getOtherFields());
-				addMeasurementToMap(metricMaps[0],
-						new SimpleRecordDto(timestamp, aggregatedDataDto.getTotalTransits(), period));
+
 				if (otherFields.containsKey("TotaliPerClasseVeicolare")) {
+					addMeasurementToMap(metricMaps[0],
+							new SimpleRecordDto(timestamp, aggregatedDataDto.getTotalTransits(), period));
+
 					LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.TotaliPerClasseVeicolare");
 					Set<String> keys = classes.keySet();
 					for (String key : keys) {
