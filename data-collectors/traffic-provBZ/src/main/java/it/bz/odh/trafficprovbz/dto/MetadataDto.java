@@ -21,16 +21,18 @@ public class MetadataDto {
 	private final Map<String, Object> otherFields = new HashMap<>();
 
 	// save odhId because name/id mismatch and to save the data the odhId is needed
-	private HashMap<String, Integer> lanes;
+	// also direction is needed becuase FAMAS API gives data for one lane in both
+	// directions, but only the correct one is needed
+	private HashMap<String, LaneDto> lanes;
 
-	public Map<String, Integer> getLanes() {
+	public Map<String, LaneDto> getLanes() {
 		return lanes;
 	}
 
-	public void addLane(int id, String name) {
+	public void addLane(String stationId, String laneId, String direction) {
 		if (lanes == null)
 			lanes = new HashMap<>();
-		lanes.put(name, id);
+		lanes.put(stationId, new LaneDto(laneId, direction));
 	}
 
 	public String getId() {

@@ -50,15 +50,17 @@ public class SyncScheduler {
 	@Scheduled(cron = "${scheduler.sync}")
 	public void sync() throws IOException, ParseException {
 		MetadataDto[] metadataDtos = famasClient.getStationsData();
-		ClassificationSchemaDto[] classificationDtos = famasClient.getClassificationSchemas();
-		ArrayList<LinkedHashMap<String, String>> classificationSchemaList = new ArrayList<>();
-		for (ClassificationSchemaDto c : classificationDtos) {
-			ArrayList<LinkedHashMap<String, String>> classes = JsonPath.read(c.getOtherFields(), "$.Classi");
-			classificationSchemaList.addAll(classes);
-		}
 
-		syncTrafficStations(metadataDtos, classificationSchemaList);
-		syncBluetoothStations(metadataDtos, classificationSchemaList);
+		
+		// ClassificationSchemaDto[] classificationDtos = famasClient.getClassificationSchemas();
+		// ArrayList<LinkedHashMap<String, String>> classificationSchemaList = new ArrayList<>();
+		// for (ClassificationSchemaDto c : classificationDtos) {
+		// 	ArrayList<LinkedHashMap<String, String>> classes = JsonPath.read(c.getOtherFields(), "$.Classi");
+		// 	classificationSchemaList.addAll(classes);
+		// }
+
+		syncTrafficStations(metadataDtos);
+		syncBluetoothStations(metadataDtos);
 
 		syncJobTrafficMeasurements(metadataDtos);
 		syncJobBluetoothMeasurements(metadataDtos);
@@ -69,8 +71,7 @@ public class SyncScheduler {
 	 *
 	 * @throws IOException
 	 */
-	public void syncTrafficStations(MetadataDto[] metadataDtos,
-			ArrayList<LinkedHashMap<String, String>> classificationSchemaList) throws IOException {
+	public void syncTrafficStations(MetadataDto[] metadataDtos) throws IOException {
 		LOG.info("Cron job stations started: Sync Stations with type {} and data types",
 				odhClientTrafficSensor.getIntegreenTypology());
 		LOG.info("Syncing traffic stations");
@@ -81,10 +82,8 @@ public class SyncScheduler {
 		for (MetadataDto metadataDto : metadataDtos) {
 			JSONObject otherFields = new JSONObject(metadataDto.getOtherFields());
 			ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.CorsieInfo");
-			LinkedHashMap<String, String> classificationSchema = getClassificationSchema(classificationSchemaList,
-					metadataDto);
 			for (LinkedHashMap<String, String> lane : lanes) {
-				StationDto station = Parser.createStation(metadataDto, otherFields, lane, classificationSchema,
+				StationDto station = Parser.createStation(metadataDto, otherFields, lane,
 						STATION_TYPE_TRAFFIC_SENSOR);
 				station.setOrigin(odhClientTrafficSensor.getProvenance().getLineage());
 				odhTrafficStationList.add(station);
@@ -94,17 +93,14 @@ public class SyncScheduler {
 		LOG.info("Cron job traffic stations successful");
 	}
 
-	public void syncBluetoothStations(MetadataDto[] metadataDtos,
-			ArrayList<LinkedHashMap<String, String>> classificationSchemaList) {
+	public void syncBluetoothStations(MetadataDto[] metadataDtos) {
 		LOG.info("Syncing bluetooth stations");
 		StationList odhBluetoothStationList = new StationList();
 
 		// Insert bluetooth sensors in station list to insert them in ODH
 		for (MetadataDto metadataDto : metadataDtos) {
 			JSONObject otherFields = new JSONObject(metadataDto.getOtherFields());
-			LinkedHashMap<String, String> classificationSchema = getClassificationSchema(classificationSchemaList,
-					metadataDto);
-			StationDto station = Parser.createStation(metadataDto, otherFields, null, classificationSchema,
+			StationDto station = Parser.createStation(metadataDto, otherFields, null,
 					STATION_TYPE_BLUETOOTH_STATION);
 			station.setOrigin(odhClientBluetoothStation.getProvenance().getLineage());
 			// station.setMetaData(metadataDto.getOtherFields());
@@ -131,15 +127,15 @@ public class SyncScheduler {
 					endPeriodTrafficList.get(stationId));
 			LOG.info("After Initialisation for {}", station.getId());
 
-			for (String laneName : station.getLanes().keySet()) {
+			for (String key : station.getLanes().keySet()) {
 				DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
 				// use id that has been written to odh by station sync
-				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(laneName);
+				DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(key);
 				AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(requestStationId,
 						sdf.format(startPeriodTrafficList.get(stationId)),
 						sdf.format(endPeriodTrafficList.get(stationId)));
 				Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap,
-						station.getLanes().get(laneName));
+						station.getLanes().get(key));
 				try {
 					odhClientTrafficSensor.pushData(rootMap);
 				} catch (Exception e) {

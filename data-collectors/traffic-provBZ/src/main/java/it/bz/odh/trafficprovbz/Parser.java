@@ -6,6 +6,7 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.odh.trafficprovbz.dto.AggregatedDataDto;
+import it.bz.odh.trafficprovbz.dto.LaneDto;
 import it.bz.odh.trafficprovbz.dto.MetadataDto;
 import it.bz.odh.trafficprovbz.dto.PassagesDataDto;
 import net.minidev.json.JSONObject;
@@ -32,25 +33,23 @@ public class Parser {
 	 * @return station containing the data from the params
 	 */
 	public static StationDto createStation(MetadataDto metadataDto, JSONObject otherFields,
-			LinkedHashMap<String, String> lane, LinkedHashMap<String, String> classificationSchema,
-			String stationType) {
+			LinkedHashMap<String, String> lanes, String stationType) {
 		Double lat = JsonPath.read(otherFields, "$.GeoInfo.Latitudine");
 		Double lon = JsonPath.read(otherFields, "$.GeoInfo.Longitudine");
 
-		// metadataDto.setOtherField("SchemaDiClassificazione",
-		// classificationSchema != null ? classificationSchema.toString() : null);
 		String stationId = metadataDto.getName();
 		String stationName = metadataDto.getName();
-		int laneId = -1;
-		if (lane != null) {
-			String description = JsonPath.read(lane, "$.Descrizione");
-			laneId = JsonPath.read(lane, "$.Id");
+		Integer laneId = null;
+		if (lanes != null) {
+			String description = JsonPath.read(lanes, "$.Descrizione");
+			String direction = JsonPath.read(lanes, "$.SensoDiMarcia");
+			laneId = JsonPath.read(lanes, "$.Id");
 
 			stationId = metadataDto.getName() + ":" + description;
 			stationName = metadataDto.getName() + ":" + description;
 			// save odhId to otherFields to use in syncJobTrafficMeasurements()
 			// -1 because in aggregated data lanes start from 0
-			metadataDto.addLane(laneId - 1, stationId);
+			metadataDto.addLane(stationId, String.valueOf(laneId - 1), direction);
 		}
 		StationDto station = new StationDto(stationId, stationName, lat, lon);
 		station.setStationType(stationType);
@@ -68,7 +67,7 @@ public class Parser {
 	 * @throws ParseException is thrown if parsing causes an error
 	 */
 	public static void insertDataIntoStationMap(AggregatedDataDto[] aggregatedDataDtos, Integer period,
-			DataMapDto<RecordDtoImpl> stationMap, Integer laneId) throws ParseException {
+			DataMapDto<RecordDtoImpl> stationMap, LaneDto laneDto) throws ParseException {
 
 		List<String> trafficDataTypes = Parser.getTrafficDataTypes();
 
@@ -81,13 +80,15 @@ public class Parser {
 		}
 
 		for (AggregatedDataDto aggregatedDataDto : aggregatedDataDtos) {
-			if (aggregatedDataDto.getLane().equals((laneId) + "")) {
+			if (aggregatedDataDto.getLane().equals((laneDto.getId()) + "")
+					&& aggregatedDataDto.getDirection().equals(laneDto.getDirection())) {
 				Long timestamp = formatter.parse(aggregatedDataDto.getDate()).getTime();
 				JSONObject otherFields = new JSONObject(aggregatedDataDto.getOtherFields());
 
+				addMeasurementToMap(metricMaps[0],
+						new SimpleRecordDto(timestamp, aggregatedDataDto.getTotalTransits(), period));
+
 				if (otherFields.containsKey("TotaliPerClasseVeicolare")) {
-					addMeasurementToMap(metricMaps[0],
-							new SimpleRecordDto(timestamp, aggregatedDataDto.getTotalTransits(), period));
 
 					LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.TotaliPerClasseVeicolare");
 					Set<String> keys = classes.keySet();

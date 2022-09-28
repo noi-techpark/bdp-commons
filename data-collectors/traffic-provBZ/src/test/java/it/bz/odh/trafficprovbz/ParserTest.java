@@ -7,6 +7,7 @@ import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.odh.trafficprovbz.dto.AggregatedDataDto;
+import it.bz.odh.trafficprovbz.dto.LaneDto;
 import it.bz.odh.trafficprovbz.dto.MetadataDto;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,8 @@ class ParserTest {
 		ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.CorsieInfo");
 
 		for (LinkedHashMap<String, String> lane : lanes) {
-			StationDto stationUnderTest = Parser.createStation(stationsUnderTest[0], otherFields, lane, null, "TrafficSensor");
+			StationDto stationUnderTest = Parser.createStation(stationsUnderTest[0], otherFields, lane,
+					"TrafficSensor");
 			// check for Nome, because Nome is used for id
 			assertThat(stationUnderTest.getId()).startsWith("4");
 			assertThat(46.4497009548582).isEqualTo(stationUnderTest.getLatitude());
@@ -48,7 +50,7 @@ class ParserTest {
 		DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
 
 		DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(aggregatedDataDtos[0].getId());
-		Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap,1);
+		Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap, new LaneDto("0", "ascendente"));
 
 	}
 }
