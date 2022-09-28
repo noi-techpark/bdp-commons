@@ -158,13 +158,13 @@ public class Parser {
 		}
 	}
 
-	private static Map<String, Object> createMetadata(JSONObject otherFields, int laneId) {
+	private static Map<String, Object> createMetadata(JSONObject otherFields, Integer laneId) {
 		Map<String, Object> metadata = new HashMap<>();
 
 		metadata.put("municipality", JsonPath.read(otherFields, "$.GeoInfo.Comune"));
 		metadata.put("region", JsonPath.read(otherFields, "$.GeoInfo.Regione"));
 
-		if (laneId > -1)
+		if (laneId != null)
 			metadata.put("direction",
 					JsonPath.read(otherFields, "$.CorsieInfo[?(@.Id == " + laneId + ")].Descrizione"));
 
