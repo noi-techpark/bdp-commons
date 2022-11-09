@@ -18,7 +18,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
@@ -41,6 +40,9 @@ public class SyncScheduler {
 	 * to configure it!
 	 */
 	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
+
+	private static final String TYPE_DEST = "flight-destination";
+	private static final String TYPE_NR = "flight-number";
 
 	@Value("${odh_client.STATION_ID_PREFIX}")
 	private String STATION_ID_PREFIX;
@@ -84,6 +86,27 @@ public class SyncScheduler {
 	@SuppressWarnings("static-access")
 	@Scheduled(cron = "${scheduler.job_stations}")
 	public void syncJobStations() throws IOException, ParseException {
+
+		//////////////////////////
+		// Sync data types
+		/////////////////////////
+		List<DataTypeDto> dataTypeList = new ArrayList<DataTypeDto>();
+		DataTypeDto typeDst = new DataTypeDto(TYPE_DEST, null, "Destination of a flight",
+				null);
+		DataTypeDto typeNr = new DataTypeDto(TYPE_NR, null, "ID number of a flight",
+				null);
+		dataTypeList.add(typeDst);
+		dataTypeList.add(typeNr);
+
+		LOG.info("Trying to sync data types...");
+		odhclient.syncDataTypes(odhclient.getIntegreenTypology(), dataTypeList);
+		LOG.info("Syncing data types successful");
+
+
+
+		//////////////////////////
+		// Sync stations
+		/////////////////////////
 		// Get current date
 		// Subtracting certain amount of days defined in the application.properties
 		// Adding certain amount of days defined in the application.properties
@@ -100,14 +123,14 @@ public class SyncScheduler {
 
 		AeroCRSGetScheduleSuccessResponse aero = acrsclient.getSchedule(template, fltsFROMPeriod, fltsTOPeriod,
 				aeroconst.getIatacode(), aeroconst.getCompanycode(), false, false);
-		List<DataTypeDto> dataTypeList = new ArrayList<DataTypeDto>();
 
 		StationList odhStationlist = new StationList();
 
 		for (AeroCRSFlight dto : aero.getAerocrs().getFlight()) {
 			StationDto stationDto = new StationDto();
+			stationDto.setId(dto.getFltnumber());
+			stationDto.setName(dto.getFromdestination() + "-" + dto.getTodestination());
 			stationDto.setOrigin(odhclient.getProvenanceOrigin());
-			stationDto.setName(odhclient.getProvenanceName());
 			stationDto.setLatitude(LA);
 			stationDto.setLongitude(LON);
 			Map<String, Object> metaData = new HashMap<>();
@@ -130,97 +153,44 @@ public class SyncScheduler {
 			metaData.put(aeroconst.getTodestination(), dto.getTodestination());
 			stationDto.setMetaData(metaData);
 			odhStationlist.add(stationDto);
-			// DataType object representing a specific data type, values are:
-			// unique name identifier: SkyAlps
-			// Unit of the data type - /
-			// Descriptions of the data: Flights
-			// Metric of specific measurements: Fromtodestination
-			// Data for fltnumber will be added in the type3Map below
-			DataTypeDto type = new DataTypeDto(STATION_ID_PREFIX, null, odhclient.getIntegreenTypology(),
-					aeroconst.getFromtodestination());
-
-			dataTypeList.add(type);
-
-			// DataType object representing a specific data type, values are:
-			// unique name identifier: SkyAlps
-			// Unit of the data type - /
-			// Descriptions of the data: Flights
-			// Metric of specific measurements: Fltnumber
-			// Data for fltnumber will be added in the type2Map below
-			DataTypeDto type2 = new DataTypeDto(STATION_ID_PREFIX, null, odhclient.getIntegreenTypology(),
-					aeroconst.getFltnumber());
-
-			dataTypeList.add(type2);
 		}
-		LOG.info("Stations print: ");
-		for (int i = 0; i < odhStationlist.size(); i++) {
-			System.out.println(odhStationlist.get(i).getMetaData());
-		}
-		// {} refers to odh_stationtype which is Flights
-		LOG.info("Cron job C started: Pushing {}", odhclient.getIntegreenTypology());
+
+		LOG.info("Trying to sync the stations: ");
+		odhclient.syncDataTypes(odhclient.getIntegreenTypology(), dataTypeList);
+		odhclient.syncStations(odhclient.getIntegreenTypology(), odhStationlist);
+		LOG.info("Syncing data types successful");
+
+
+		//////////////////////////
+		// Push data
+		/////////////////////////
 
 		DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<RecordDtoImpl>();
-		rootMap.setProvenance(odhclient.getProvenanceOrigin());
-		// Map for metadata
-		DataMapDto<RecordDtoImpl> metricMap = new DataMapDto<RecordDtoImpl>();
-		metricMap.setProvenance(rootMap.getProvenance());
-		// Map for type1 DataType
-		DataMapDto<RecordDtoImpl> type1Map = new DataMapDto<RecordDtoImpl>();
-		// Map for type2 DataType
-		DataMapDto<RecordDtoImpl> type2Map = new DataMapDto<RecordDtoImpl>();
+		Long currentTimestamp = System.currentTimeMillis();
+
 		for (AeroCRSFlight dto : aero.getAerocrs().getFlight()) {
+			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(dto.getFltnumber());
+			// metricMap.setProvenance(rootMap.getProvenance());
+			// Map for type1 DataType
+			DataMapDto<RecordDtoImpl> destinationMap = stationMap.upsertBranch(TYPE_DEST);
+			// Map for type2 DataType
+			DataMapDto<RecordDtoImpl> numberMap = stationMap.upsertBranch(TYPE_NR);
 			// Creating new branch for maps
-			metricMap = rootMap.upsertBranch(STATION_ID_PREFIX);
-			type1Map = metricMap.upsertBranch(aeroconst.getFromtodestination());
-			type2Map = metricMap.upsertBranch(aeroconst.getFltnumber());
+
 			// Creating lists of data transfer object
-			List<RecordDtoImpl> values = metricMap.getData();
-			List<RecordDtoImpl> valuesType1 = type1Map.getData();
-			List<RecordDtoImpl> valuesType2 = type2Map.getData();
-			// creating simple records to be added in the Metadata list map
-			SimpleRecordDto simpleRecordDto = new SimpleRecordDto();
-			simpleRecordDto.setTimestamp(null);
-			simpleRecordDto.setPeriod(env.getProperty(aeroconst.getEnvperiod(), Integer.class));
-			simpleRecordDto.setValue(dto);
-			values.add(simpleRecordDto);
-			// creating simple records to be added in the Type1 DataType map
-			SimpleRecordDto simpleRecordDtoType1 = new SimpleRecordDto();
-			simpleRecordDtoType1.setValue(dto.getFromdestination() + " " + dto.getTodestination());
-			valuesType1.add(simpleRecordDtoType1);
-			// creating simple records to be added in the Type2 DataType map
-			SimpleRecordDto simpleRecordDtoType2 = new SimpleRecordDto();
-			simpleRecordDtoType2.setValue(dto.getFltsfromperiod() + " " + dto.getFltstoperiod());
-			valuesType2.add(simpleRecordDtoType2);
+			List<RecordDtoImpl> destinationValues = destinationMap.getData();
+			destinationValues.add(new SimpleRecordDto(currentTimestamp, dto.getFromdestination() + "-" + dto.getTodestination(), env.getProperty(aeroconst.getEnvperiod(), Integer.class)));
+			
+			List<RecordDtoImpl> numberValues = numberMap.getData();
+			numberValues.add(new SimpleRecordDto(currentTimestamp, dto.getFltnumber(), env.getProperty(aeroconst.getEnvperiod(), Integer.class)));
+
 		}
 
-		// Stations Lists sync
-		try {
-			LOG.info("Trying to sync the stations: ");
-			odhclient.syncStations(odhclient.getIntegreenTypology(), odhStationlist);
-			odhclient.syncDataTypes(odhclient.getIntegreenTypology(), dataTypeList);
-			LOG.info("Cron job for stations successful");
-		} catch (WebClientRequestException e) {
-			LOG.error("Cron job for stations failed: Request exception: {}", e.getMessage());
-		}
 		// Stations Lists push
-		try {
-			/*
-			 * LOG.info("Map Provenance is: "); System.out.println(rootMap.getProvenance());
-			 * LOG.info("Map Data are: "); for (int i = 0; i < metricMap.getData().size();
-			 * i++) { System.out.println(metricMap.getData().get(i)); } for (int i = 0; i <
-			 * type1Map.getData().size(); i++) {
-			 * System.out.println(type1Map.getData().get(i)); } for (int i = 0; i <
-			 * type2Map.getData().size(); i++) {
-			 * System.out.println(type2Map.getData().get(i)); }
-			 */
-			LOG.info("Trying to push the data: ");
-			odhclient.pushData(odhclient.getIntegreenTypology(), rootMap);
-			LOG.info("Pushing job for stations successful");
-
-		} catch (Exception e) {
-			LOG.error("Cron job Push for stations failed: Request exception: {}", e.getMessage());
-
-		}
+		LOG.info("Trying to push the data: ");
+		odhclient.pushData(rootMap);
+		LOG.info("Pushing data successful");
 
 	}
+
 }
