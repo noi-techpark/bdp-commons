@@ -93,7 +93,7 @@ public class SyncScheduler {
 		List<DataTypeDto> dataTypeList = new ArrayList<DataTypeDto>();
 		DataTypeDto typeDst = new DataTypeDto(TYPE_DEST, null, "Destination of a flight",
 				null);
-		DataTypeDto typeNr = new DataTypeDto(TYPE_NR, null, "ID number of a flight",
+		DataTypeDto typeNr = new DataTypeDto(TYPE_NR, null, "Number of a flight",
 				null);
 		dataTypeList.add(typeDst);
 		dataTypeList.add(typeNr);
@@ -164,25 +164,22 @@ public class SyncScheduler {
 		//////////////////////////
 		// Push data
 		/////////////////////////
-
 		DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<RecordDtoImpl>();
 		Long currentTimestamp = System.currentTimeMillis();
 
 		for (AeroCRSFlight dto : aero.getAerocrs().getFlight()) {
 			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(dto.getFltnumber());
 			// metricMap.setProvenance(rootMap.getProvenance());
-			// Map for type1 DataType
 			DataMapDto<RecordDtoImpl> destinationMap = stationMap.upsertBranch(TYPE_DEST);
-			// Map for type2 DataType
 			DataMapDto<RecordDtoImpl> numberMap = stationMap.upsertBranch(TYPE_NR);
 			// Creating new branch for maps
 
 			// Creating lists of data transfer object
 			List<RecordDtoImpl> destinationValues = destinationMap.getData();
-			destinationValues.add(new SimpleRecordDto(currentTimestamp, dto.getFromdestination() + "-" + dto.getTodestination(), env.getProperty(aeroconst.getEnvperiod(), Integer.class)));
+			destinationValues.add(new SimpleRecordDto(currentTimestamp, dto.getFromdestination() + "-" + dto.getTodestination(), 600));
 			
 			List<RecordDtoImpl> numberValues = numberMap.getData();
-			numberValues.add(new SimpleRecordDto(currentTimestamp, dto.getFltnumber(), env.getProperty(aeroconst.getEnvperiod(), Integer.class)));
+			numberValues.add(new SimpleRecordDto(currentTimestamp, dto.getFltnumber(), 600));
 
 		}
 
