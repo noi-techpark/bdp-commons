@@ -134,8 +134,8 @@ public class SyncScheduler {
 				}
 
 				// increase by time frame
-				currentStartDate.plus(timeframe, ChronoUnit.MILLIS);
-				currentEndDate.plus(timeframe, ChronoUnit.MILLIS);
+				currentStartDate = currentStartDate.plus(timeframe, ChronoUnit.MILLIS);
+				currentEndDate = currentEndDate.plus(timeframe, ChronoUnit.MILLIS);
 				timeFrameCounter++;
 			}
 			LOG.info("Historical done. Imported {} times 11 hours of data.", timeFrameCounter);
