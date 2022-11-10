@@ -21,6 +21,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class SyncScheduler {
 
@@ -44,10 +46,10 @@ public class SyncScheduler {
 	// api gives actually error if period is bigger than 12 hours
 	private int timeframe = 39600 * 1000;
 
-	@Value("${hisotryimport.enabled}")
-	private boolean historyEnabled;
+	@Value("${historyimport.enabled}")
+	private Boolean historyEnabled;
 
-	@Value("#{new java.text.SimpleDateFormat('${hisotryimport.dateformat}').parse('${hisotryimport.startdate}')}")
+	@Value("#{new java.text.SimpleDateFormat('${historyimport.dateformat}').parse('${historyimport.startdate}')}")
 	private Date historyStartDate;
 
 	public SyncScheduler(@Lazy OdhClientTrafficSensor odhClientTrafficSensor,
@@ -57,8 +59,73 @@ public class SyncScheduler {
 		this.odhClientBluetoothStation = odhClientBluetoothStation;
 		this.famasClient = famasClient;
 		initDataTypes();
+	}
 
-		historyImport();
+	/**
+	 * To import historical data
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	@PostConstruct
+	private void historyImport() throws IOException, ParseException {
+		if (historyEnabled) {
+			LOG.info("Start historical import from {}...", historyStartDate.toString());
+			MetadataDto[] metadataDtos = famasClient.getStationsData();
+
+			LOG.info("Syncing stations...");
+			syncTrafficStations(metadataDtos);
+			syncBluetoothStations(metadataDtos);
+			LOG.info("Syncing stations done");
+
+			Instant now = Instant.now();
+			Instant currentStartDate = historyStartDate.toInstant();
+			Instant currentEndDate = historyStartDate.toInstant().plus(timeframe, ChronoUnit.MILLIS);
+
+			int timeFrameCounter = 0;
+
+			while (currentEndDate.isBefore(now)) {
+				// bluetooth
+				for (MetadataDto station : metadataDtos) {
+					String stationId = station.getId();
+
+					DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+					DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getId());
+					DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("vehicle detection");
+					PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(stationId,
+							sdf.format(currentStartDate),
+							sdf.format(currentEndDate));
+					Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
+					// Push data for every station separately to avoid out of memory errors
+					odhClientBluetoothStation.pushData(rootMap);
+				}
+
+				// traffic
+				for (MetadataDto station : metadataDtos) {
+					String requestStationId = station.getId();
+					for (String key : station.getLanes().keySet()) {
+						DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+						// use id that has been written to odh by station sync
+						DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(key);
+						AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(
+								requestStationId,
+								sdf.format(currentStartDate),
+								sdf.format(currentEndDate));
+						Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap,
+								station.getLanes().get(key));
+						odhClientTrafficSensor.pushData(rootMap);
+					}
+				}
+
+				// increase by time frame
+				currentStartDate.plus(timeframe, ChronoUnit.MILLIS);
+				currentEndDate.plus(timeframe, ChronoUnit.MILLIS);
+				timeFrameCounter++;
+			}
+			LOG.info("Historical done. Imported {} times 11 hours of data.", timeFrameCounter);
+		} else
+			LOG.info("Historical import not enabled, skipping it...");
+
 	}
 
 	@Scheduled(cron = "${scheduler.sync}")
@@ -205,72 +272,6 @@ public class SyncScheduler {
 			LOG.info("Push data for station {} bluetooth measurement successful", station.getId());
 		}
 		LOG.info("Cron job for bluetooth measurements successful");
-	}
-
-	/**
-	 * To import historical data
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 */
-	private void historyImport() throws IOException, ParseException {
-		if (historyEnabled) {
-			LOG.info("Start historical import from {}...", historyStartDate.toString());
-			MetadataDto[] metadataDtos = famasClient.getStationsData();
-
-			LOG.info("Syncing stations...");
-			syncTrafficStations(metadataDtos);
-			syncBluetoothStations(metadataDtos);
-			LOG.info("Syncing stations done");
-
-			Instant now = Instant.now();
-			Instant currentStartDate = historyStartDate.toInstant();
-			Instant currentEndDate = historyStartDate.toInstant().plus(timeframe, ChronoUnit.MILLIS);
-
-			int timeFrameCounter = 0;
-
-			while (currentEndDate.isBefore(now)) {
-				// bluetooth
-				for (MetadataDto station : metadataDtos) {
-					String stationId = station.getId();
-
-					DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
-					DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getId());
-					DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("vehicle detection");
-					PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(stationId,
-							sdf.format(currentStartDate),
-							sdf.format(currentEndDate));
-					Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
-					// Push data for every station separately to avoid out of memory errors
-					odhClientBluetoothStation.pushData(rootMap);
-				}
-
-				// traffic
-				for (MetadataDto station : metadataDtos) {
-					String requestStationId = station.getId();
-					for (String key : station.getLanes().keySet()) {
-						DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
-						// use id that has been written to odh by station sync
-						DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(key);
-						AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(
-								requestStationId,
-								sdf.format(currentStartDate),
-								sdf.format(currentEndDate));
-						Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap,
-								station.getLanes().get(key));
-						odhClientTrafficSensor.pushData(rootMap);
-					}
-				}
-
-				// increase by time frame
-				currentStartDate.plus(timeframe, ChronoUnit.MILLIS);
-				currentEndDate.plus(timeframe, ChronoUnit.MILLIS);
-				timeFrameCounter ++;
-			}
-			LOG.info("Historical done. Imported {} times 11 hours of data.", timeFrameCounter);
-		} else
-			LOG.info("Historical import not enabled, skipping it...");
-
 	}
 
 	/**
