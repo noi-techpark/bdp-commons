@@ -93,8 +93,8 @@ public class SyncScheduler {
 					DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getId());
 					DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("vehicle detection");
 					PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(stationId,
-							sdf.format(currentStartDate),
-							sdf.format(currentEndDate));
+							sdf.format(Date.from(currentStartDate)),
+							sdf.format(Date.from(currentEndDate)));
 					Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
 					// Push data for every station separately to avoid out of memory errors
 					odhClientBluetoothStation.pushData(rootMap);
