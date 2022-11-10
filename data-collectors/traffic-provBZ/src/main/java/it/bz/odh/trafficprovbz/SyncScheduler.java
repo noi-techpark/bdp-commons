@@ -85,6 +85,7 @@ public class SyncScheduler {
 			int timeFrameCounter = 0;
 
 			while (currentEndDate.isBefore(now)) {
+			LOG.info("Importing from {} to {}...", currentStartDate, currentEndDate);
 				// bluetooth
 				for (MetadataDto station : metadataDtos) {
 					String stationId = station.getId();
