@@ -97,7 +97,14 @@ public class SyncScheduler {
 							sdf.format(Date.from(currentEndDate)));
 					Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
 					// Push data for every station separately to avoid out of memory errors
-					odhClientBluetoothStation.pushData(rootMap);
+					try {
+						// Push data for every station separately to avoid out of memory errors
+						odhClientBluetoothStation.pushData(rootMap);
+					} catch (WebClientRequestException e) {
+						LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}",
+								station.getId(),
+								e.getMessage());
+					}
 				}
 
 				// traffic
@@ -113,7 +120,14 @@ public class SyncScheduler {
 								sdf.format(Date.from(currentEndDate)));
 						Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap,
 								station.getLanes().get(key));
-						odhClientTrafficSensor.pushData(rootMap);
+						try {
+							// Push data for every station separately to avoid out of memory errors
+							odhClientTrafficSensor.pushData(rootMap);
+						} catch (WebClientRequestException e) {
+							LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}",
+									station.getId(),
+									e.getMessage());
+						}
 					}
 				}
 
