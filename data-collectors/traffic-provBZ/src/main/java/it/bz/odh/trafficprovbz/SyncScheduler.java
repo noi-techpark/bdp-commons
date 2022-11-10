@@ -241,8 +241,8 @@ public class SyncScheduler {
 
 		// TODO: What to insert for unit and rtype?
 		odhDataTypeList
-				.add(new DataTypeDto(DATATYPE_ID_HEADWAY_VARIANCE, "double", DATATYPE_ID_HEADWAY_VARIANCE, "Average"));
-		odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_GAP_VARIANCE, "double", DATATYPE_ID_GAP_VARIANCE, "Average"));
+				.add(new DataTypeDto(DATATYPE_ID_HEADWAY_VARIANCE, null, DATATYPE_ID_HEADWAY_VARIANCE, "Average"));
+		odhDataTypeList.add(new DataTypeDto(DATATYPE_ID_GAP_VARIANCE, null, DATATYPE_ID_GAP_VARIANCE, "Average"));
 
 		try {
 			odhClientBluetoothStation.syncDataTypes(odhDataTypeList);
