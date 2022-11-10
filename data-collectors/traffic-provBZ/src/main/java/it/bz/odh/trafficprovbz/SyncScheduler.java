@@ -3,7 +3,6 @@ package it.bz.odh.trafficprovbz;
 import com.jayway.jsonpath.JsonPath;
 import it.bz.idm.bdp.dto.*;
 import it.bz.odh.trafficprovbz.dto.AggregatedDataDto;
-import it.bz.odh.trafficprovbz.dto.ClassificationSchemaDto;
 import it.bz.odh.trafficprovbz.dto.MetadataDto;
 import it.bz.odh.trafficprovbz.dto.PassagesDataDto;
 import net.minidev.json.JSONObject;
@@ -18,6 +17,8 @@ import org.springframework.web.reactive.function.client.WebClientRequestExceptio
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -39,24 +40,39 @@ public class SyncScheduler {
 	private Map<String, Date> startPeriodBluetoothList;
 	private Map<String, Date> endPeriodBluetoothList;
 
+	// Frame of data requested from Famas API
+	// api gives actually error if period is bigger than 12 hours
+	private int timeframe = 39600 * 1000;
+
+	@Value("${hisotryimport.enabled}")
+	private boolean historyEnabled;
+
+	@Value("#{new java.text.SimpleDateFormat(‘${hisotryimport.dateformat}’).parse(‘${hisotryimport.startdate}’)}")
+	private Date historyStartDate;
+
 	public SyncScheduler(@Lazy OdhClientTrafficSensor odhClientTrafficSensor,
-			@Lazy OdhClientBluetoothStation odhClientBluetoothStation, @Lazy FamasClient famasClient) {
+			@Lazy OdhClientBluetoothStation odhClientBluetoothStation, @Lazy FamasClient famasClient)
+			throws IOException, ParseException {
 		this.odhClientTrafficSensor = odhClientTrafficSensor;
 		this.odhClientBluetoothStation = odhClientBluetoothStation;
 		this.famasClient = famasClient;
 		initDataTypes();
+
+		historyImport();
 	}
 
 	@Scheduled(cron = "${scheduler.sync}")
 	public void sync() throws IOException, ParseException {
 		MetadataDto[] metadataDtos = famasClient.getStationsData();
 
-		
-		// ClassificationSchemaDto[] classificationDtos = famasClient.getClassificationSchemas();
-		// ArrayList<LinkedHashMap<String, String>> classificationSchemaList = new ArrayList<>();
+		// ClassificationSchemaDto[] classificationDtos =
+		// famasClient.getClassificationSchemas();
+		// ArrayList<LinkedHashMap<String, String>> classificationSchemaList = new
+		// ArrayList<>();
 		// for (ClassificationSchemaDto c : classificationDtos) {
-		// 	ArrayList<LinkedHashMap<String, String>> classes = JsonPath.read(c.getOtherFields(), "$.Classi");
-		// 	classificationSchemaList.addAll(classes);
+		// ArrayList<LinkedHashMap<String, String>> classes =
+		// JsonPath.read(c.getOtherFields(), "$.Classi");
+		// classificationSchemaList.addAll(classes);
 		// }
 
 		syncTrafficStations(metadataDtos);
@@ -192,6 +208,72 @@ public class SyncScheduler {
 	}
 
 	/**
+	 * To import historical data
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	private void historyImport() throws IOException, ParseException {
+		if (historyEnabled) {
+			LOG.info("Start historical import from {}...", historyStartDate.toString());
+			MetadataDto[] metadataDtos = famasClient.getStationsData();
+
+			LOG.info("Syncing stations...");
+			syncTrafficStations(metadataDtos);
+			syncBluetoothStations(metadataDtos);
+			LOG.info("Syncing stations done");
+
+			Instant now = Instant.now();
+			Instant currentStartDate = historyStartDate.toInstant();
+			Instant currentEndDate = historyStartDate.toInstant().plus(timeframe, ChronoUnit.MILLIS);
+
+			int timeFrameCounter = 0;
+
+			while (currentEndDate.isBefore(now)) {
+				// bluetooth
+				for (MetadataDto station : metadataDtos) {
+					String stationId = station.getId();
+
+					DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+					DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(station.getId());
+					DataMapDto<RecordDtoImpl> bluetoothMetricMap = stationMap.upsertBranch("vehicle detection");
+					PassagesDataDto[] passagesDataDtos = famasClient.getPassagesDataOnStations(stationId,
+							sdf.format(currentStartDate),
+							sdf.format(currentEndDate));
+					Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
+					// Push data for every station separately to avoid out of memory errors
+					odhClientBluetoothStation.pushData(rootMap);
+				}
+
+				// traffic
+				for (MetadataDto station : metadataDtos) {
+					String requestStationId = station.getId();
+					for (String key : station.getLanes().keySet()) {
+						DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
+						// use id that has been written to odh by station sync
+						DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(key);
+						AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(
+								requestStationId,
+								sdf.format(currentStartDate),
+								sdf.format(currentEndDate));
+						Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap,
+								station.getLanes().get(key));
+						odhClientTrafficSensor.pushData(rootMap);
+					}
+				}
+
+				// increase by time frame
+				currentStartDate.plus(timeframe, ChronoUnit.MILLIS);
+				currentEndDate.plus(timeframe, ChronoUnit.MILLIS);
+				timeFrameCounter ++;
+			}
+			LOG.info("Historical done. Imported {} times 11 hours of data.", timeFrameCounter);
+		} else
+			LOG.info("Historical import not enabled, skipping it...");
+
+	}
+
+	/**
 	 * Helper method to initialize and analyze the start period
 	 *
 	 * @param id              string containing the station di
@@ -206,12 +288,9 @@ public class SyncScheduler {
 		// Set date of start period to now minus seven days if not existing or if range
 		// of start and end period is bigger than seven days (otherwise 400 error from
 		// api)
-
-		// api gives actually error if period is bigger than 12 hours (previus value
-		// 604800) 39600 are 11 hours
 		if (!startPeriodList.containsKey(id)
-				|| startPeriodList.get(id).getTime() - endPeriod.getTime() > 39600 * 1000) {
-			startPeriodList.put(id, new Date(endPeriod.getTime() - 39600 * 1000));
+				|| startPeriodList.get(id).getTime() - endPeriod.getTime() > timeframe) {
+			startPeriodList.put(id, new Date(endPeriod.getTime() - timeframe));
 		}
 		return startPeriodList;
 	}
