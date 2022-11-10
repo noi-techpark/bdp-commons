@@ -119,7 +119,7 @@ public class Parser {
 	 */
 	private static List<String> getTrafficDataTypes() {
 		return Arrays.asList("total-transits", "number-of-motorcycles", "number-of-cars",
-				"number-of-cars-and-minivans-with-trailer", "number-of-small-trucks-and-vans ",
+				"number-of-cars-and-minivans-with-trailer", "number-of-small-trucks-and-vans",
 				"number-of-medium-sized-trucks", "number-of-big-trucks", "number-of-articulated-trucks",
 				"number-of-articulated-lorries", "number-of-busses",
 				"number-of-unclassified-vehicles", "average-vehicle-speed", "headway", "headway-variance", "gap",
