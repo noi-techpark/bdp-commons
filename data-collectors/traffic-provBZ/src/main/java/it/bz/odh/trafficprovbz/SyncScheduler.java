@@ -127,6 +127,7 @@ public class SyncScheduler {
 							LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}",
 									station.getId(),
 									e.getMessage());
+							
 						}
 					}
 				}
