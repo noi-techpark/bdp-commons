@@ -109,8 +109,8 @@ public class SyncScheduler {
 						DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(key);
 						AggregatedDataDto[] aggregatedDataDtos = famasClient.getAggregatedDataOnStations(
 								requestStationId,
-								sdf.format(currentStartDate),
-								sdf.format(currentEndDate));
+								sdf.format(Date.from(currentStartDate)),
+								sdf.format(Date.from(currentEndDate)));
 						Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap,
 								station.getLanes().get(key));
 						odhClientTrafficSensor.pushData(rootMap);
