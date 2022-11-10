@@ -47,7 +47,7 @@ public class SyncScheduler {
 	@Value("${hisotryimport.enabled}")
 	private boolean historyEnabled;
 
-	@Value("#{new java.text.SimpleDateFormat(‘${hisotryimport.dateformat}’).parse(‘${hisotryimport.startdate}’)}")
+	@Value("#{new java.text.SimpleDateFormat('${hisotryimport.dateformat}').parse('${hisotryimport.startdate}')}")
 	private Date historyStartDate;
 
 	public SyncScheduler(@Lazy OdhClientTrafficSensor odhClientTrafficSensor,
