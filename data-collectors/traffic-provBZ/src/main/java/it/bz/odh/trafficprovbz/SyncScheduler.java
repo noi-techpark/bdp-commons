@@ -2,6 +2,7 @@ package it.bz.odh.trafficprovbz;
 
 import com.jayway.jsonpath.JsonPath;
 import it.bz.idm.bdp.dto.*;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 import it.bz.odh.trafficprovbz.dto.AggregatedDataDto;
 import it.bz.odh.trafficprovbz.dto.MetadataDto;
 import it.bz.odh.trafficprovbz.dto.PassagesDataDto;
@@ -44,7 +45,9 @@ public class SyncScheduler {
 
 	// Frame of data requested from Famas API
 	// api gives actually error if period is bigger than 12 hours
-	private int timeframe = 39600 * 1000;
+	private final int TIME_FRAME = 39600 * 1000;
+
+	private final int MAX_PUSH_RETRIES = 3;
 
 	@Value("${historyimport.enabled}")
 	private Boolean historyEnabled;
@@ -80,12 +83,12 @@ public class SyncScheduler {
 
 			Instant now = Instant.now();
 			Instant currentStartDate = historyStartDate.toInstant();
-			Instant currentEndDate = historyStartDate.toInstant().plus(timeframe, ChronoUnit.MILLIS);
+			Instant currentEndDate = historyStartDate.toInstant().plus(TIME_FRAME, ChronoUnit.MILLIS);
 
 			int timeFrameCounter = 0;
 
 			while (currentEndDate.isBefore(now)) {
-			LOG.info("Importing from {} to {}...", currentStartDate, currentEndDate);
+				LOG.info("Importing from {} to {}...", currentStartDate, currentEndDate);
 				// bluetooth
 				for (MetadataDto station : metadataDtos) {
 					String stationId = station.getId();
@@ -98,14 +101,8 @@ public class SyncScheduler {
 							sdf.format(Date.from(currentEndDate)));
 					Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
 					// Push data for every station separately to avoid out of memory errors
-					try {
-						// Push data for every station separately to avoid out of memory errors
-						odhClientBluetoothStation.pushData(rootMap);
-					} catch (WebClientRequestException e) {
-						LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}",
-								station.getId(),
-								e.getMessage());
-					}
+					pushWithRetryOnException(rootMap, station, odhClientBluetoothStation);
+
 				}
 
 				// traffic
@@ -121,21 +118,14 @@ public class SyncScheduler {
 								sdf.format(Date.from(currentEndDate)));
 						Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap,
 								station.getLanes().get(key));
-						try {
-							// Push data for every station separately to avoid out of memory errors
-							odhClientTrafficSensor.pushData(rootMap);
-						} catch (WebClientRequestException e) {
-							LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}",
-									station.getId(),
-									e.getMessage());
-							
-						}
+
+						pushWithRetryOnException(rootMap, station, odhClientTrafficSensor);
 					}
 				}
 
 				// increase by time frame
-				currentStartDate = currentStartDate.plus(timeframe, ChronoUnit.MILLIS);
-				currentEndDate = currentEndDate.plus(timeframe, ChronoUnit.MILLIS);
+				currentStartDate = currentStartDate.plus(TIME_FRAME, ChronoUnit.MILLIS);
+				currentEndDate = currentEndDate.plus(TIME_FRAME, ChronoUnit.MILLIS);
 				timeFrameCounter++;
 			}
 			LOG.info("Historical done. Imported {} times 11 hours of data.", timeFrameCounter);
@@ -235,12 +225,9 @@ public class SyncScheduler {
 						sdf.format(endPeriodTrafficList.get(stationId)));
 				Parser.insertDataIntoStationMap(aggregatedDataDtos, period, stationMap,
 						station.getLanes().get(key));
-				try {
-					odhClientTrafficSensor.pushData(rootMap);
-				} catch (Exception e) {
-					LOG.info("Cron job traffic for station {} failed because of {}", station.getId(),
-							e.getMessage());
-				}
+
+				pushWithRetryOnException(rootMap, station, odhClientTrafficSensor);
+
 			}
 
 			// If everything was successful we set the start of the next period equal to the
@@ -274,20 +261,40 @@ public class SyncScheduler {
 					sdf.format(endPeriodBluetoothList.get(stationId)));
 
 			Parser.insertDataIntoBluetoothmap(passagesDataDtos, period, bluetoothMetricMap);
-			try {
-				// Push data for every station separately to avoid out of memory errors
-				odhClientBluetoothStation.pushData(rootMap);
-			} catch (WebClientRequestException e) {
-				LOG.error("Push data for station {} bluetooth measurement failed: Request exception: {}",
-						station.getId(),
-						e.getMessage());
-			}
+
+			pushWithRetryOnException(rootMap, station, odhClientBluetoothStation);
+
 			// If everything was successful we set the start of the next period equal to the
 			// end of the period queried right now
 			startPeriodBluetoothList.put(stationId, endPeriodBluetoothList.get(stationId));
 			LOG.info("Push data for station {} bluetooth measurement successful", station.getId());
 		}
 		LOG.info("Cron job for bluetooth measurements successful");
+	}
+
+	private void pushWithRetryOnException(DataMapDto<RecordDtoImpl> rootMap, MetadataDto station,
+			NonBlockingJSONPusher pusher) {
+		// retry push if Exception is thrown
+		int pushCount = 0;
+		while (true) {
+			try {
+				// Push data for every station separately to avoid out of memory errors
+				pusher.pushData(rootMap);
+				break;
+			} catch (WebClientRequestException e) {
+				// handle exception
+				if (++pushCount == MAX_PUSH_RETRIES) {
+					LOG.error("Push data for station {} of type {} failed: Request exception: {}",
+							station.getId(), pusher.getIntegreenTypology(),
+							e.getMessage());
+					throw e;
+				}
+				LOG.error(
+						"Push data for station {} of type {} failed: Request exception: {}. Retrying push for {} time of max {} tries",
+						station.getId(), pusher.getIntegreenTypology(),
+						e.getMessage(), pushCount, MAX_PUSH_RETRIES);
+			}
+		}
 	}
 
 	/**
@@ -306,8 +313,8 @@ public class SyncScheduler {
 		// of start and end period is bigger than seven days (otherwise 400 error from
 		// api)
 		if (!startPeriodList.containsKey(id)
-				|| startPeriodList.get(id).getTime() - endPeriod.getTime() > timeframe) {
-			startPeriodList.put(id, new Date(endPeriod.getTime() - timeframe));
+				|| startPeriodList.get(id).getTime() - endPeriod.getTime() > TIME_FRAME) {
+			startPeriodList.put(id, new Date(endPeriod.getTime() - TIME_FRAME));
 		}
 		return startPeriodList;
 	}
