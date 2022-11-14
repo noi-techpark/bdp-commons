@@ -72,7 +72,7 @@ jobs:
           X_FAMAS_PASSWORD: ${{ secrets.TRAFFIC_PROVBZ_FAMAS_PASSWORD }}
 
           # to import historical data from a given date
-          X_HISTORY_IMPORT: true
+          X_HISTORY_IMPORT: false
           X_HISTORY_START_DATE: 01.01.2022
           X_HISTORY_DATE_FORMAT: dd.mm.yyyy
 
