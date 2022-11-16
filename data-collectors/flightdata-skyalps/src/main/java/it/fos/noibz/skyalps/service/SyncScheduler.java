@@ -125,7 +125,7 @@ public class SyncScheduler {
 			metaData.put(aeroconst.getWeekdaymon(), dto.getWeekdaymon());
 			metaData.put(aeroconst.getWeekdaytue(), dto.getWeekdaytue());
 			metaData.put(aeroconst.getWeekdaywed(), dto.getWeekdaywed());
-			metaData.put(aeroconst.getWeekdaywed(), dto.getWeekdaythu());
+			metaData.put(aeroconst.getWeekdaythu(), dto.getWeekdaythu());
 			metaData.put(aeroconst.getWeekdayfri(), dto.getWeekdayfri());
 			metaData.put(aeroconst.getWeekdaysat(), dto.getWeekdaysat());
 			metaData.put(aeroconst.getWeekdaysun(), dto.getWeekdaysun());
