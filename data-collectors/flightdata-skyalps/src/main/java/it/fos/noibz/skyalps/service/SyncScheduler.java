@@ -41,9 +41,6 @@ public class SyncScheduler {
 	 */
 	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
 
-	private static final String TYPE_DEST = "flight-destination";
-	private static final String TYPE_NR = "flight-number";
-
 	@Value("${odh_client.STATION_ID_PREFIX}")
 	private String STATION_ID_PREFIX;
 
@@ -86,23 +83,6 @@ public class SyncScheduler {
 	@SuppressWarnings("static-access")
 	@Scheduled(cron = "${scheduler.job_stations}")
 	public void syncJobStations() throws IOException, ParseException {
-
-		//////////////////////////
-		// Sync data types
-		/////////////////////////
-		List<DataTypeDto> dataTypeList = new ArrayList<DataTypeDto>();
-		DataTypeDto typeDst = new DataTypeDto(TYPE_DEST, null, "Destination of a flight",
-				null);
-		DataTypeDto typeNr = new DataTypeDto(TYPE_NR, null, "Number of a flight",
-				null);
-		dataTypeList.add(typeDst);
-		dataTypeList.add(typeNr);
-
-		LOG.info("Trying to sync data types...");
-		odhclient.syncDataTypes(odhclient.getIntegreenTypology(), dataTypeList);
-		LOG.info("Syncing data types successful");
-
-
 
 		//////////////////////////
 		// Sync stations
@@ -156,37 +136,8 @@ public class SyncScheduler {
 		}
 
 		LOG.info("Trying to sync the stations: ");
-		odhclient.syncDataTypes(odhclient.getIntegreenTypology(), dataTypeList);
 		odhclient.syncStations(odhclient.getIntegreenTypology(), odhStationlist);
 		LOG.info("Syncing data types successful");
-
-
-		//////////////////////////
-		// Push data
-		/////////////////////////
-		DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<RecordDtoImpl>();
-		Long currentTimestamp = System.currentTimeMillis();
-
-		for (AeroCRSFlight dto : aero.getAerocrs().getFlight()) {
-			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(dto.getFltnumber());
-			// metricMap.setProvenance(rootMap.getProvenance());
-			DataMapDto<RecordDtoImpl> destinationMap = stationMap.upsertBranch(TYPE_DEST);
-			DataMapDto<RecordDtoImpl> numberMap = stationMap.upsertBranch(TYPE_NR);
-			// Creating new branch for maps
-
-			// Creating lists of data transfer object
-			List<RecordDtoImpl> destinationValues = destinationMap.getData();
-			destinationValues.add(new SimpleRecordDto(currentTimestamp, dto.getFromdestination() + "-" + dto.getTodestination(), 600));
-			
-			List<RecordDtoImpl> numberValues = numberMap.getData();
-			numberValues.add(new SimpleRecordDto(currentTimestamp, dto.getFltnumber(), 600));
-
-		}
-
-		// Stations Lists push
-		LOG.info("Trying to push the data: ");
-		odhclient.pushData(rootMap);
-		LOG.info("Pushing data successful");
 
 	}
 
