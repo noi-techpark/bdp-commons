@@ -2,11 +2,9 @@ package it.fos.noibz.skyalps.service;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -19,10 +17,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import it.bz.idm.bdp.dto.DataMapDto;
-import it.bz.idm.bdp.dto.DataTypeDto;
-import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.fos.noibz.skyalps.dto.json.AeroCRSFlight;
