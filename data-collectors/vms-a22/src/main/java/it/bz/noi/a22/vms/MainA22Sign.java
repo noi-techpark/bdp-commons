@@ -54,6 +54,8 @@ public class MainA22Sign {
 	private final A22Properties a22stationProperties;
 	private HashMap<String, Long> signIdLastTimestampMap;
 
+	private SimpleDateFormat dateFormat;
+
 	@Autowired
 	private A22SignJSONPusher pusher;
 	private StreetSignalsImporter signalsUtil = new StreetSignalsImporter();
@@ -61,6 +63,8 @@ public class MainA22Sign {
 	public MainA22Sign() {
 		this.datatypesProperties = new A22Properties("a22vmsdatatypes.properties");
 		this.a22stationProperties = new A22Properties("a22sign.properties");
+
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	}
 
 	public void execute() {
@@ -113,7 +117,8 @@ public class MainA22Sign {
 								searchEventTo < nowSeconds ? searchEventTo : nowSeconds,
 								Long.parseLong(sign_id));
 						LOG.info(String.format("Sign %04d of %04d: Got %04d events", i + 1, signs.size(),
-								events.size()));
+								events.size()) + " from {} to {}", dateFormat.format(searchEventFrom),
+								dateFormat.format(searchEventTo));
 						for (HashMap<String, Object> event : events) {
 							String event_timestamp = (String) event.get("timestamp");
 
@@ -245,7 +250,7 @@ public class MainA22Sign {
 			String stationCode = stationDto.getId();
 			long lastTimestamp = ((Date) pusher.getDateOfLastRecord(stationCode, null, null)).getTime();
 			LOG.debug("Station Code: " + stationCode + ", lastTimestamp: "
-					+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
+					+ dateFormat.format(lastTimestamp));
 			String signId = stationCode.substring(0, stationCode.lastIndexOf(":"));
 			if (signIdLastTimestampMap.getOrDefault(signId, 0L) < lastTimestamp) {
 				signIdLastTimestampMap.put(signId, lastTimestamp);
@@ -260,11 +265,11 @@ public class MainA22Sign {
 		}
 		try {
 			long ret = signIdLastTimestampMap.getOrDefault(roadSignId,
-					new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22stationProperties.getProperty("lastTimestamp"))
+					dateFormat.parse(a22stationProperties.getProperty("lastTimestamp"))
 							.getTime());
 
 			LOG.debug("getLastTimestampOfSignInSeconds(" + roadSignId + "): "
-					+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
+					+ dateFormat.format(ret));
 
 			return ret / 1000;
 		} catch (ParseException e) {
