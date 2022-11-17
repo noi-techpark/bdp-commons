@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Component;
 
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -30,7 +31,10 @@ import static net.logstash.logback.argument.StructuredArguments.v;
 
 @Component
 @Configuration
-@PropertySource("classpath:it/bz/noi/a22/vms/a22connector.properties")
+@PropertySources({
+	@PropertySource("classpath:it/bz/noi/a22/vms/a22connector.properties"),
+	@PropertySource("classpath:it/bz/noi/a22/vms/a22sign.properties"),
+})
 public class MainA22Sign {
 	private static final Logger LOG = LoggerFactory.getLogger(MainA22Sign.class);
 
@@ -42,6 +46,9 @@ public class MainA22Sign {
 
 	@Value("${a22password}")
 	private String a22ConnectorPwd;
+
+	@Value("${scanWindowSeconds}")
+	private long scanWindowSeconds;
 
 	private final A22Properties datatypesProperties;
 	private final A22Properties a22stationProperties;
@@ -72,8 +79,6 @@ public class MainA22Sign {
 			StationList stationList = new StationList();
 			DataMapDto<RecordDtoImpl> esposizioniDataMapDto = new DataMapDto<>();
 			DataMapDto<RecordDtoImpl> statoDataMapDto = new DataMapDto<>();
-
-			long scanWindowSeconds = Long.parseLong(a22stationProperties.getProperty("scanWindowSeconds"));
 
 			List<HashMap<String, String>> signs = a22Service.getSigns();
 			LOG.info("got " + signs.size() + " signs");
