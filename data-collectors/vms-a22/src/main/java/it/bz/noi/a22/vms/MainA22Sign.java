@@ -32,8 +32,8 @@ import static net.logstash.logback.argument.StructuredArguments.v;
 @Component
 @Configuration
 @PropertySources({
-	@PropertySource("classpath:it/bz/noi/a22/vms/a22connector.properties"),
-	@PropertySource("classpath:it/bz/noi/a22/vms/a22sign.properties"),
+		@PropertySource("classpath:it/bz/noi/a22/vms/a22connector.properties"),
+		@PropertySource("classpath:it/bz/noi/a22/vms/a22sign.properties"),
 })
 public class MainA22Sign {
 	private static final Logger LOG = LoggerFactory.getLogger(MainA22Sign.class);
@@ -74,7 +74,12 @@ public class MainA22Sign {
 
 			setupDataType(pusher);
 
-			readLastTimestampsForAllSigns(pusher);
+			// fetch last timestamp from ODH only first time
+			// then use values of last sync
+			// so if in the last scans no new data arrived, we don't scan again for the same
+			// time windows, but only from the last sync timestamp
+			if (signIdLastTimestampMap == null)
+				readLastTimestampsForAllSigns(pusher);
 
 			StationList stationList = new StationList();
 			DataMapDto<RecordDtoImpl> esposizioniDataMapDto = new DataMapDto<>();
@@ -104,10 +109,11 @@ public class MainA22Sign {
 					while (searchEventFrom < nowSeconds) {
 						long searchEventTo = searchEventFrom + scanWindowSeconds;
 						List<HashMap<String, Object>> events = a22Service.getEvents(
-							searchEventFrom,
-							searchEventTo < nowSeconds ? searchEventTo : nowSeconds,
-							Long.parseLong(sign_id));
-						LOG.info(String.format("Sign %04d of %04d: Got %04d events", i + 1, signs.size(), events.size()));
+								searchEventFrom,
+								searchEventTo < nowSeconds ? searchEventTo : nowSeconds,
+								Long.parseLong(sign_id));
+						LOG.info(String.format("Sign %04d of %04d: Got %04d events", i + 1, signs.size(),
+								events.size()));
 						for (HashMap<String, Object> event : events) {
 							String event_timestamp = (String) event.get("timestamp");
 
@@ -115,7 +121,8 @@ public class MainA22Sign {
 							HashMap<String, SimpleRecordDto> statoByComponentId = new HashMap<>();
 
 							@SuppressWarnings("unchecked")
-							List<HashMap<String, Object>> components_pages = (ArrayList<HashMap<String, Object>>) event.get("component");
+							List<HashMap<String, Object>> components_pages = (ArrayList<HashMap<String, Object>>) event
+									.get("component");
 							for (HashMap<String, Object> component_page : components_pages) {
 								String component_id = (String) component_page.get("component_id");
 								String virtualStationId = road + ":" + sign_id + ":" + component_id;
@@ -124,8 +131,11 @@ public class MainA22Sign {
 								String normalizedEsposizione = normalizeData(component_page.get("data").toString());
 								SimpleRecordDto esposizione = esposizioneByComponentId.get(component_id);
 								if (esposizione == null) {
-									esposizione = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, normalizedEsposizione, 1);
-									esposizioniDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.esposizione.key"), esposizione);
+									esposizione = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000,
+											normalizedEsposizione, 1);
+									esposizioniDataMapDto.addRecord(virtualStationId,
+											datatypesProperties.getProperty("a22vms.datatype.esposizione.key"),
+											esposizione);
 									esposizioneByComponentId.put(component_id, esposizione);
 								} else {
 									concatenateValues(esposizione, normalizedEsposizione);
@@ -135,22 +145,29 @@ public class MainA22Sign {
 								String normalizedStato = normalizeData(component_page.get("status").toString());
 								SimpleRecordDto stato = statoByComponentId.get(component_id);
 								if (stato == null) {
-									stato = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, normalizedStato, 1);
-									statoDataMapDto.addRecord(virtualStationId, datatypesProperties.getProperty("a22vms.datatype.stato.key"), stato);
+									stato = new SimpleRecordDto(Long.parseLong(event_timestamp) * 1000, normalizedStato,
+											1);
+									statoDataMapDto.addRecord(virtualStationId,
+											datatypesProperties.getProperty("a22vms.datatype.stato.key"), stato);
 									statoByComponentId.put(component_id, stato);
-								} else  {
+								} else {
 									concatenateValues(stato, normalizedStato);
 								}
 
 								// check when virtualStation alredy exists
 								boolean exists = stationList.stream()
-									.anyMatch((StationDto station) -> station.getId().equals(virtualStationId));
+										.anyMatch((StationDto station) -> station.getId().equals(virtualStationId));
 								if (!exists) {
 									String virtualStationIdName = sign_descr + " - component:" + component_id;
-									StationDto station = new StationDto(virtualStationId, virtualStationIdName, sign_lat,
-										sign_lon);
+									StationDto station = new StationDto(virtualStationId, virtualStationIdName,
+											sign_lat,
+											sign_lon);
 									station.getMetaData().put("pmv_type", pmv_type);
-									station.setOrigin(a22stationProperties.getProperty("origin")); // 2019-06-26 d@vide.bz: required to make fetchStations work!
+									station.setOrigin(a22stationProperties.getProperty("origin")); // 2019-06-26
+																									// d@vide.bz:
+																									// required to make
+																									// fetchStations
+																									// work!
 									station.setStationType(a22stationProperties.getProperty("stationtype"));
 									// add other metadata
 									station.getMetaData().put("direction_id", direction_id);
@@ -164,22 +181,25 @@ public class MainA22Sign {
 						}
 						searchEventFrom += scanWindowSeconds + 1;
 					}
+
+					signIdLastTimestampMap.put(road + ":" + sign_id, nowSeconds);
+
 				} catch (Exception e) {
 					LOG.warn(
-						"ERROR while processing sign #{} with ID {} and exception '{}'... Skipping!",
-						i + 1,
-						sign_id,
-						e.getMessage(),
-						v("sign", sign),
-						v("stacktrace", Arrays.toString(e.getStackTrace()))
-					);
+							"ERROR while processing sign #{} with ID {} and exception '{}'... Skipping!",
+							i + 1,
+							sign_id,
+							e.getMessage(),
+							v("sign", sign),
+							v("stacktrace", Arrays.toString(e.getStackTrace())));
 				}
 			}
 			pusher.syncStations(stationList);
 			pusher.pushData(esposizioniDataMapDto);
 			pusher.pushData(statoDataMapDto);
 		} catch (Exception e) {
-			LOG.error("ERROR while pushing data: {}", e.getMessage(), v("stacktrace", Arrays.toString(e.getStackTrace())));
+			LOG.error("ERROR while pushing data: {}", e.getMessage(),
+					v("stacktrace", Arrays.toString(e.getStackTrace())));
 		} finally {
 			long stopTime = System.currentTimeMillis();
 			LOG.debug("elaboration time (millis): " + (stopTime - startTime));
@@ -218,12 +238,14 @@ public class MainA22Sign {
 
 	private void readLastTimestampsForAllSigns(A22SignJSONPusher pusher) {
 		signIdLastTimestampMap = new HashMap<>();
-		List<StationDto> stations = pusher.fetchStations(pusher.initIntegreenTypology(), a22stationProperties.getProperty("origin"));
+		List<StationDto> stations = pusher.fetchStations(pusher.initIntegreenTypology(),
+				a22stationProperties.getProperty("origin"));
 
 		for (StationDto stationDto : stations) {
 			String stationCode = stationDto.getId();
 			long lastTimestamp = ((Date) pusher.getDateOfLastRecord(stationCode, null, null)).getTime();
-			LOG.debug("Station Code: " + stationCode + ", lastTimestamp: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
+			LOG.debug("Station Code: " + stationCode + ", lastTimestamp: "
+					+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
 			String signId = stationCode.substring(0, stationCode.lastIndexOf(":"));
 			if (signIdLastTimestampMap.getOrDefault(signId, 0L) < lastTimestamp) {
 				signIdLastTimestampMap.put(signId, lastTimestamp);
@@ -238,14 +260,17 @@ public class MainA22Sign {
 		}
 		try {
 			long ret = signIdLastTimestampMap.getOrDefault(roadSignId,
-				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22stationProperties.getProperty("lastTimestamp")).getTime());
+					new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22stationProperties.getProperty("lastTimestamp"))
+							.getTime());
 
-			LOG.debug("getLastTimestampOfSignInSeconds(" + roadSignId + "): " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
+			LOG.debug("getLastTimestampOfSignInSeconds(" + roadSignId + "): "
+					+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
 
 			return ret / 1000;
 		} catch (ParseException e) {
 			LOG.error("Invalid lastTimestamp: " + a22stationProperties.getProperty("lastTimestamp"));
-			throw new RuntimeException("Invalid lastTimestamp: " + a22stationProperties.getProperty("lastTimestamp"), e);
+			throw new RuntimeException("Invalid lastTimestamp: " + a22stationProperties.getProperty("lastTimestamp"),
+					e);
 		}
 	}
 
@@ -259,15 +284,15 @@ public class MainA22Sign {
 			LOG.warn("Unable to parse additional metadata from csv file");
 		}
 		DataTypeDto esportazione = new DataTypeDto(datatypesProperties.getProperty("a22vms.datatype.esposizione.key"),
-			datatypesProperties.getProperty("a22vms.datatype.esposizione.unit"),
-			datatypesProperties.getProperty("a22vms.datatype.esposizione.description"),
-			datatypesProperties.getProperty("a22vms.datatype.esposizione.rtype"));
+				datatypesProperties.getProperty("a22vms.datatype.esposizione.unit"),
+				datatypesProperties.getProperty("a22vms.datatype.esposizione.description"),
+				datatypesProperties.getProperty("a22vms.datatype.esposizione.rtype"));
 		esportazione.setMetaData(map);
 		dataTypeDtoList.add(esportazione);
 		DataTypeDto stato = new DataTypeDto(datatypesProperties.getProperty("a22vms.datatype.stato.key"),
-			datatypesProperties.getProperty("a22vms.datatype.stato.unit"),
-			datatypesProperties.getProperty("a22vms.datatype.stato.description"),
-			datatypesProperties.getProperty("a22vms.datatype.stato.rtype"));
+				datatypesProperties.getProperty("a22vms.datatype.stato.unit"),
+				datatypesProperties.getProperty("a22vms.datatype.stato.description"),
+				datatypesProperties.getProperty("a22vms.datatype.stato.rtype"));
 		dataTypeDtoList.add(stato);
 		pusher.syncDataTypes(dataTypeDtoList);
 	}
