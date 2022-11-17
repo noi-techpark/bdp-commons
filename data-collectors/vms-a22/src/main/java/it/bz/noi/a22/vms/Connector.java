@@ -31,7 +31,7 @@ import org.json.simple.JSONValue;
 public class Connector {
 
     private static final String USER_AGENT = "NOI/A22SignConnector";
-    private static final int WS_CONN_TIMEOUT_MSEC = 30000;
+    private static final int WS_CONN_TIMEOUT_MSEC = 180000;
     private static final int WS_READ_TIMEOUT_MSEC = 1800000;
     private static final boolean DEBUG = false;
 
