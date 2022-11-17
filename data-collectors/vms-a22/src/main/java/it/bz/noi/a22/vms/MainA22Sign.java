@@ -117,8 +117,8 @@ public class MainA22Sign {
 								searchEventTo < nowSeconds ? searchEventTo : nowSeconds,
 								Long.parseLong(sign_id));
 						LOG.info(String.format("Sign %04d of %04d: Got %04d events", i + 1, signs.size(),
-								events.size()) + " from {} to {}", dateFormat.format(searchEventFrom),
-								dateFormat.format(searchEventTo));
+								events.size()) + " from {} to {}", dateFormat.format(searchEventFrom * 1000),
+								dateFormat.format(searchEventTo * 1000));
 						for (HashMap<String, Object> event : events) {
 							String event_timestamp = (String) event.get("timestamp");
 
