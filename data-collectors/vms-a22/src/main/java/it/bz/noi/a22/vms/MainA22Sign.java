@@ -252,8 +252,14 @@ public class MainA22Sign {
 			LOG.debug("Station Code: " + stationCode + ", lastTimestamp: "
 					+ dateFormat.format(lastTimestamp));
 			String signId = stationCode.substring(0, stationCode.lastIndexOf(":"));
-			if (signIdLastTimestampMap.getOrDefault(signId, 0L) < lastTimestamp) {
-				signIdLastTimestampMap.put(signId, lastTimestamp);
+			try {
+				if (signIdLastTimestampMap.getOrDefault(signId,
+						dateFormat.parse(a22stationProperties.getProperty("lastTimestamp"))
+								.getTime()) < lastTimestamp) {
+					signIdLastTimestampMap.put(signId, lastTimestamp);
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
 		}
 	}
