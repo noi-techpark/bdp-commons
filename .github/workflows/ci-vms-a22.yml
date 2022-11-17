@@ -70,6 +70,8 @@ jobs:
           X_A22_CONNECTOR_USR: BT2
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BT2_PWD }}
 
+          X_SCAN_WINDOW_SECONDS: 604800
+
           X_SCHEDULER_CRON: 0 */5 * * * ?
 
       - name: Build project
@@ -137,6 +139,8 @@ jobs:
           X_A22_CONNECTOR_URL: http://webservices.cau-a22.org:8080/A22Data
           X_A22_CONNECTOR_USR: BN2
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BN2_PWD }}
+
+          X_SCAN_WINDOW_SECONDS: 604800
 
           X_SCHEDULER_CRON: 0 */5 * * * ?
 
