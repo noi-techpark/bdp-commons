@@ -187,7 +187,7 @@ public class MainA22Sign {
 						searchEventFrom += scanWindowSeconds + 1;
 					}
 
-					signIdLastTimestampMap.put(road + ":" + sign_id, nowSeconds);
+					signIdLastTimestampMap.put(road + ":" + sign_id, nowSeconds * 1000);
 
 				} catch (Exception e) {
 					LOG.warn(
