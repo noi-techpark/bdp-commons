@@ -50,6 +50,9 @@ public class SyncScheduler {
 	@Value("${sched_days_after}")
 	private int days_after;
 
+	@Value("${ssim_enabled}")
+	private boolean ssimEnabled;
+
 	@Autowired
 	AeroCRSConst aeroconst;
 
@@ -96,7 +99,7 @@ public class SyncScheduler {
 		LOG.info("Cron job A started: Sync Stations with type {} and data types", odhclient.getIntegreenTypology());
 
 		AeroCRSGetScheduleSuccessResponse aero = acrsclient.getSchedule(template, fltsFROMPeriod, fltsTOPeriod,
-				aeroconst.getIatacode(), aeroconst.getCompanycode(), false, false);
+				aeroconst.getIatacode(), aeroconst.getCompanycode(), false, ssimEnabled);
 
 		StationList odhStationlist = new StationList();
 
