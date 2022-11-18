@@ -3,6 +3,9 @@ package it.bz.noi.a22.vms;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,11 +53,16 @@ public class MainA22Sign {
 	@Value("${scanWindowSeconds}")
 	private long scanWindowSeconds;
 
+	@Value("${historyScanWindowInDays}")
+	private int historyScanWindowInDays;
+
 	private final A22Properties datatypesProperties;
 	private final A22Properties a22stationProperties;
 	private HashMap<String, Long> signIdLastTimestampMap;
 
 	private SimpleDateFormat dateFormat;
+
+	private long defaultLastTimestamp;
 
 	@Autowired
 	private A22SignJSONPusher pusher;
@@ -69,6 +77,12 @@ public class MainA22Sign {
 
 	public void execute() {
 		long startTime = System.currentTimeMillis();
+
+		// update default value to be lat X days instead of hardcoded date
+		// otherwise import in X years will need to import X years instead of only X
+		// last days
+		defaultLastTimestamp = Instant.now().minus(historyScanWindowInDays, ChronoUnit.DAYS).toEpochMilli();
+
 		try {
 			LOG.info("Start A22SignMain");
 
@@ -254,14 +268,8 @@ public class MainA22Sign {
 			LOG.debug("Station Code: " + stationCode + ", lastTimestamp: "
 					+ dateFormat.format(lastTimestamp));
 			String signId = stationCode.substring(0, stationCode.lastIndexOf(":"));
-			try {
-				if (signIdLastTimestampMap.getOrDefault(signId,
-						dateFormat.parse(a22stationProperties.getProperty("lastTimestamp"))
-								.getTime()) < lastTimestamp) {
-					signIdLastTimestampMap.put(signId, lastTimestamp);
-				}
-			} catch (ParseException e) {
-				e.printStackTrace();
+			if (signIdLastTimestampMap.getOrDefault(signId, defaultLastTimestamp) < lastTimestamp) {
+				signIdLastTimestampMap.put(signId, lastTimestamp);
 			}
 		}
 	}
@@ -271,20 +279,12 @@ public class MainA22Sign {
 		if (signIdLastTimestampMap == null) {
 			readLastTimestampsForAllSigns(pusher);
 		}
-		try {
-			long ret = signIdLastTimestampMap.getOrDefault(roadSignId,
-					dateFormat.parse(a22stationProperties.getProperty("lastTimestamp"))
-							.getTime());
+		long ret = signIdLastTimestampMap.getOrDefault(roadSignId, defaultLastTimestamp);
 
-			LOG.debug("getLastTimestampOfSignInSeconds(" + roadSignId + "): "
-					+ dateFormat.format(ret));
+		LOG.debug("getLastTimestampOfSignInSeconds(" + roadSignId + "): "
+				+ dateFormat.format(ret));
 
-			return ret / 1000;
-		} catch (ParseException e) {
-			LOG.error("Invalid lastTimestamp: " + a22stationProperties.getProperty("lastTimestamp"));
-			throw new RuntimeException("Invalid lastTimestamp: " + a22stationProperties.getProperty("lastTimestamp"),
-					e);
-		}
+		return ret / 1000;
 	}
 
 	private void setupDataType(A22SignJSONPusher pusher) {
