@@ -112,9 +112,9 @@ public class MainA22Sign {
 
 					while (searchEventFrom < nowSeconds) {
 						long searchEventTo = searchEventFrom + scanWindowSeconds;
+						searchEventTo = searchEventTo < nowSeconds ? searchEventTo : nowSeconds;
 						List<HashMap<String, Object>> events = a22Service.getEvents(
-								searchEventFrom,
-								searchEventTo < nowSeconds ? searchEventTo : nowSeconds,
+								searchEventFrom, searchEventTo,
 								Long.parseLong(sign_id));
 						LOG.info(String.format("Sign %04d of %04d: Got %04d events", i + 1, signs.size(),
 								events.size()) + " from {} to {}", dateFormat.format(searchEventFrom * 1000),
@@ -185,9 +185,11 @@ public class MainA22Sign {
 							}
 						}
 						searchEventFrom += scanWindowSeconds + 1;
-					}
 
-					signIdLastTimestampMap.put(road + ":" + sign_id, nowSeconds * 1000);
+						// save last timestamp searched for events
+						// so next time we start from this point instead of lastDateRecord of ODH
+						signIdLastTimestampMap.put(road + ":" + sign_id, searchEventTo * 1000);
+					}
 
 				} catch (Exception e) {
 					LOG.warn(
