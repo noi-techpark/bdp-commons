@@ -70,7 +70,7 @@ jobs:
           X_A22_CONNECTOR_USR: BT2
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BT2_PWD }}
 
-          # defines scan window that calls A22 event API
+          # defines scan window that calls A22 event API, 6048000 are seven days
           X_SCAN_WINDOW_SECONDS: 604800
           # defines if no entry is found the days that it goes back in history to get events
           X_HISTORY_SCAN_WINDOW_DAYS: 14
@@ -144,7 +144,7 @@ jobs:
   #         X_A22_CONNECTOR_USR: BN2
   #         X_A22_CONNECTOR_PWD: ${{ secrets.A22_BN2_PWD }}
 
-  #         # defines scan window that calls A22 event API
+  #         # defines scan window that calls A22 event API, 6048000 are seven days
   #         X_SCAN_WINDOW_SECONDS: 604800
   #         # defines if no entry is found the days that it goes back in history to get events
   #         X_HISTORY_SCAN_WINDOW_DAYS: 14
