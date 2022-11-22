@@ -371,7 +371,8 @@ public class MainA22Sign {
 	 * Method used only for development/debugging
 	 */
 	public static void main(String[] args) {
-		new MainA22Sign().execute();
+		new MainA22Sign().pushData();
+		new MainA22Sign().syncStations();
 	}
 
 }
