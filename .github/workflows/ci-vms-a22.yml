@@ -76,7 +76,7 @@ jobs:
           X_HISTORY_SCAN_WINDOW_DAYS: 14
 
           X_SCHEDULER_CRON_DATA: 0 */5 * * * ?
-          X_SCHEDULER_CRON_STATIONS: 0 0 */24 * * ?
+          X_SCHEDULER_CRON_STATIONS: 0 0 */12 * * ?
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
