@@ -1,11 +1,9 @@
 package it.bz.noi.a22.vms;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -75,7 +73,7 @@ public class MainA22Sign {
 		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	}
 
-	public void execute() {
+	public void pushData() {
 		long startTime = System.currentTimeMillis();
 
 		// update default value to be lat X days instead of hardcoded date
@@ -84,7 +82,7 @@ public class MainA22Sign {
 		defaultLastTimestamp = Instant.now().minus(historyScanWindowInDays, ChronoUnit.DAYS).toEpochMilli();
 
 		try {
-			LOG.info("Start A22SignMain");
+			LOG.info("Start pushing data...");
 
 			long nowSeconds = System.currentTimeMillis() / 1000;
 
@@ -99,7 +97,6 @@ public class MainA22Sign {
 			if (signIdLastTimestampMap == null)
 				readLastTimestampsForAllSigns(pusher);
 
-			StationList stationList = new StationList();
 			DataMapDto<RecordDtoImpl> esposizioniDataMapDto = new DataMapDto<>();
 			DataMapDto<RecordDtoImpl> statoDataMapDto = new DataMapDto<>();
 
@@ -112,16 +109,7 @@ public class MainA22Sign {
 
 				try {
 
-					String sign_descr = sign.get("descr");
 					String road = sign.get("road");
-					String direction_id = sign.get("direction_id");
-					String pmv_type = sign.get("pmv_type");
-					String segment_start = sign.get("segment_start");
-					String segment_end = sign.get("segment_end");
-					String position_m = sign.get("position_m");
-					double sign_lat = Double.parseDouble(sign.get("lat"));
-					double sign_lon = Double.parseDouble(sign.get("long"));
-
 					long searchEventFrom = getLastTimestampOfSignInSeconds(pusher, road + ":" + sign_id);
 
 					while (searchEventFrom < nowSeconds) {
@@ -172,30 +160,6 @@ public class MainA22Sign {
 								} else {
 									concatenateValues(stato, normalizedStato);
 								}
-
-								// check when virtualStation alredy exists
-								boolean exists = stationList.stream()
-										.anyMatch((StationDto station) -> station.getId().equals(virtualStationId));
-								if (!exists) {
-									String virtualStationIdName = sign_descr + " - component:" + component_id;
-									StationDto station = new StationDto(virtualStationId, virtualStationIdName,
-											sign_lat,
-											sign_lon);
-									station.getMetaData().put("pmv_type", pmv_type);
-									station.setOrigin(a22stationProperties.getProperty("origin")); // 2019-06-26
-																									// d@vide.bz:
-																									// required to make
-																									// fetchStations
-																									// work!
-									station.setStationType(a22stationProperties.getProperty("stationtype"));
-									// add other metadata
-									station.getMetaData().put("direction_id", direction_id);
-									station.getMetaData().put("segment_start", segment_start);
-									station.getMetaData().put("segment_end", segment_end);
-									station.getMetaData().put("position_m", position_m);
-									stationList.add(station);
-								}
-
 							}
 						}
 						searchEventFrom += scanWindowSeconds + 1;
@@ -215,11 +179,104 @@ public class MainA22Sign {
 							v("stacktrace", Arrays.toString(e.getStackTrace())));
 				}
 			}
-			pusher.syncStations(stationList);
 			pusher.pushData(esposizioniDataMapDto);
 			pusher.pushData(statoDataMapDto);
 		} catch (Exception e) {
 			LOG.error("ERROR while pushing data: {}", e.getMessage(),
+					v("stacktrace", Arrays.toString(e.getStackTrace())));
+		} finally {
+			long stopTime = System.currentTimeMillis();
+			LOG.debug("elaboration time (millis): " + (stopTime - startTime));
+		}
+	}
+
+	public void syncStations() {
+		long startTime = System.currentTimeMillis();
+
+		try {
+			LOG.info("Start station sync...");
+
+			long nowSeconds = System.currentTimeMillis() / 1000;
+
+			long searchEventFrom = nowSeconds - scanWindowSeconds;
+			long searchEventTo = nowSeconds;
+
+			Connector a22Service = setupA22ServiceConnector();
+
+			StationList stationList = new StationList();
+
+			List<HashMap<String, String>> signs = a22Service.getSigns();
+			LOG.info("got " + signs.size() + " signs");
+			for (int i = 0; i < signs.size(); i++) {
+				HashMap<String, String> sign = signs.get(i);
+				String sign_id = sign.get("id");
+				LOG.debug("sign_id: " + sign_id);
+
+				try {
+					String sign_descr = sign.get("descr");
+					String road = sign.get("road");
+					String direction_id = sign.get("direction_id");
+					String pmv_type = sign.get("pmv_type");
+					String segment_start = sign.get("segment_start");
+					String segment_end = sign.get("segment_end");
+					String position_m = sign.get("position_m");
+					double sign_lat = Double.parseDouble(sign.get("lat"));
+					double sign_lon = Double.parseDouble(sign.get("long"));
+
+					List<HashMap<String, Object>> events = a22Service.getEvents(
+							searchEventFrom, searchEventTo,
+							Long.parseLong(sign_id));
+					LOG.info(String.format("Sign %04d of %04d: Got %04d events", i + 1, signs.size(),
+							events.size()) + " from {} to {}", dateFormat.format(searchEventFrom * 1000),
+							dateFormat.format(searchEventTo * 1000));
+					for (HashMap<String, Object> event : events) {
+
+						@SuppressWarnings("unchecked")
+						List<HashMap<String, Object>> components_pages = (ArrayList<HashMap<String, Object>>) event
+								.get("component");
+						for (HashMap<String, Object> component_page : components_pages) {
+							String component_id = (String) component_page.get("component_id");
+							String virtualStationId = road + ":" + sign_id + ":" + component_id;
+
+							// check when virtualStation alredy exists
+							boolean exists = stationList.stream()
+									.anyMatch((StationDto station) -> station.getId().equals(virtualStationId));
+							if (!exists) {
+								String virtualStationIdName = sign_descr + " - component:" + component_id;
+								StationDto station = new StationDto(virtualStationId, virtualStationIdName,
+										sign_lat,
+										sign_lon);
+								station.getMetaData().put("pmv_type", pmv_type);
+								station.setOrigin(a22stationProperties.getProperty("origin")); // 2019-06-26
+																								// d@vide.bz:
+																								// required to make
+																								// fetchStations
+																								// work!
+								station.setStationType(a22stationProperties.getProperty("stationtype"));
+								// add other metadata
+								station.getMetaData().put("direction_id", direction_id);
+								station.getMetaData().put("segment_start", segment_start);
+								station.getMetaData().put("segment_end", segment_end);
+								station.getMetaData().put("position_m", position_m);
+								stationList.add(station);
+							}
+
+						}
+					}
+
+				} catch (Exception e) {
+					LOG.warn(
+							"ERROR while processing sign #{} with ID {} and exception '{}'... Skipping!",
+							i + 1,
+							sign_id,
+							e.getMessage(),
+							v("sign", sign),
+							v("stacktrace", Arrays.toString(e.getStackTrace())));
+				}
+			}
+			pusher.syncStations(stationList);
+		} catch (Exception e) {
+			LOG.error("ERROR while syncing stations: {}", e.getMessage(),
 					v("stacktrace", Arrays.toString(e.getStackTrace())));
 		} finally {
 			long stopTime = System.currentTimeMillis();
