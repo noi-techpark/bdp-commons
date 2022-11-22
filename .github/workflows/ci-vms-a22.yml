@@ -77,6 +77,7 @@ jobs:
 
           X_SCHEDULER_CRON_DATA: 0 */5 * * * ?
           X_SCHEDULER_CRON_STATIONS: 0 0 */12 * * ?
+          X_SCHEDULER_POOL_SIZE: 2
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -151,6 +152,7 @@ jobs:
 
   #         X_SCHEDULER_CRON_DATA: 0 */5 * * * ?
   #         X_SCHEDULER_CRON_STATIONS: 0 0 */24 * * ?
+  #         X_SCHEDULER_POOL_SIZE: 2
 
   #     - name: Build project
   #       uses: noi-techpark/github-actions/maven-build@v2
