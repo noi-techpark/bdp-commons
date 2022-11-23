@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Test code
         uses: noi-techpark/github-actions/maven-test@v2
         with:
@@ -36,7 +36,7 @@ jobs:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Create .env file
         uses: noi-techpark/github-actions/env-file@v2
         with:
@@ -114,7 +114,7 @@ jobs:
       KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Create .env file
         uses: noi-techpark/github-actions/env-file@v2
         with:
