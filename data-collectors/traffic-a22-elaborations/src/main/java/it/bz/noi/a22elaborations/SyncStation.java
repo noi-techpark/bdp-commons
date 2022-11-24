@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -110,6 +111,10 @@ public class SyncStation
 				StationDto station = new StationDto(code, name, lat, lng);
 				station.setOrigin(origin);
 				station.setStationType(stationtype);
+				HashMap<String, Object> metadataMap = new HashMap<String, Object>();
+				String metadata = resultSet.getString("metadata");
+				metadataMap.put("a22_metadata", metadata);
+				station.setMetaData(metadataMap);
 				LOG.debug("Add stationDto to stationList");
 				stationList.add(station);
 			}
