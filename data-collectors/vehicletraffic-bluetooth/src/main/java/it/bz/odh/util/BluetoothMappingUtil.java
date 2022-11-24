@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import com.google.api.services.sheets.v4.model.ValueRange;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.OddsRecordDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
@@ -28,8 +30,6 @@ public class BluetoothMappingUtil {
 
 	@Value("${spreadsheet.requiredFields}")
 	private String[] requiredFields;
-	@Autowired
-	private EncryptUtil cryptUtil;
 	@Value("${datatype}")
 	private String datatype;
 	@Lazy
@@ -80,8 +80,7 @@ public class BluetoothMappingUtil {
 			DataMapDto<RecordDtoImpl> typeMap = stationMap.upsertBranch(datatype);
 			SimpleRecordDto textDto = new SimpleRecordDto();
 			String stringValue = dto.getMac();
-			if (cryptUtil.isValid())
-				stringValue = cryptUtil.encrypt(stringValue);
+			stringValue = DigestUtils.md5Hex(stringValue);
 			textDto.setValue(stringValue);
 			textDto.setTimestamp(dto.getGathered_on().getTime());
 			textDto.setPeriod(1);

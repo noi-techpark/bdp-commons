@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
 import it.bz.idm.bdp.dcparkingtn.dto.ParkingTnDto;
+import it.bz.idm.bdp.dcparkingtn.metadata.MetadataEnrichment;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationList;
@@ -30,18 +31,24 @@ public class ParkingTnJobScheduler {
     @Autowired
     private ParkingTnDataRetriever retrieval;
 
+	@Autowired
+	private MetadataEnrichment metadataEnrichment;
+
 	private NominatimLocationLookupUtil lookupUtil = new NominatimLocationLookupUtil();
 
     /** JOB 1 */
     public void pushStations() throws Exception {
         LOG.info("START.pushStations");
-        
+
         // to log how many stations have been pushed
         int stationCounter = -1;
         try {
             List<ParkingTnDto> data = retrieval.fetchData();
             patchMunicipality(data);
             StationList stations = pusher.mapStations2Bdp(data);
+
+			metadataEnrichment.mapData(stations);
+
             if (stations != null) {
                 stationCounter = stations.size();
                 pusher.syncStations(stations);
@@ -65,7 +72,7 @@ public class ParkingTnJobScheduler {
 	/** JOB 2 */
     public void pushData() throws Exception {
         LOG.info("START.pushData");
-        
+
         // to log how many data records have been pushed
         int dataCounter = -1;
         try {

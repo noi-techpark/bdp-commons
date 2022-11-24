@@ -13,7 +13,6 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 @Component
 public class JobScheduler {
 
-	@Lazy
 	@Autowired
 	private ParkingPusher pusher;
 

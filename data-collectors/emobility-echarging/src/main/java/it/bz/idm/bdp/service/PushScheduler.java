@@ -44,8 +44,8 @@ public class PushScheduler {
 	public void syncStationsV2(List<ChargerDtoV2> fetchedStations) {
 		LOG.info("Sync Stations and Plugs");
 
-		StationList stations = pusher.map2bdp(fetchedStations);
-		StationList plugs = pusher.mapPlugs2Bdp(fetchedStations);
+		StationList stations = pusher.mapStations2bdp(fetchedStations);
+		StationList plugs = pusher.mapPlugsStations2Bdp(fetchedStations);
 		LOG.info(
 			"Sync Stations and Plugs: Pushing {} stations and {} plugs to the writer",
 			stations == null ? 0 : stations.size(),

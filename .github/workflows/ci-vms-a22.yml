@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Test code
         uses: noi-techpark/github-actions/maven-test@v2
         with:
@@ -38,7 +38,7 @@ jobs:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Create .env file
         uses: noi-techpark/github-actions/env-file@v2
         with:
@@ -48,7 +48,7 @@ jobs:
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-          X_JAVA_OPTIONS: -Xms128m -Xmx512m
+          X_JAVA_OPTIONS: -Xms512m -Xmx2048m
 
           # Open Data Hub Writer Connectivity
           X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
@@ -70,7 +70,14 @@ jobs:
           X_A22_CONNECTOR_USR: BT2
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BT2_PWD }}
 
-          X_SCHEDULER_CRON: 0 */5 * * * ?
+          # defines scan window that calls A22 event API, 6048000 are seven days
+          X_SCAN_WINDOW_SECONDS: 604800
+          # defines if no entry is found the days that it goes back in history to get events
+          X_HISTORY_SCAN_WINDOW_DAYS: 14
+
+          X_SCHEDULER_CRON_DATA: 0 */5 * * * ?
+          X_SCHEDULER_CRON_STATIONS: 0 0 */12 * * ?
+          X_SCHEDULER_POOL_SIZE: 2
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -106,7 +113,7 @@ jobs:
       KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Create .env file
         uses: noi-techpark/github-actions/env-file@v2
         with:
@@ -116,7 +123,7 @@ jobs:
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-          X_JAVA_OPTIONS: -Xms128m -Xmx512m
+          X_JAVA_OPTIONS: -Xms512m -Xmx2048m
 
           # Open Data Hub Writer Connectivity
           X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
@@ -138,7 +145,14 @@ jobs:
           X_A22_CONNECTOR_USR: BN2
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BN2_PWD }}
 
-          X_SCHEDULER_CRON: 0 */5 * * * ?
+          # defines scan window that calls A22 event API, 6048000 are seven days
+          X_SCAN_WINDOW_SECONDS: 604800
+          # defines if no entry is found the days that it goes back in history to get events
+          X_HISTORY_SCAN_WINDOW_DAYS: 14
+
+          X_SCHEDULER_CRON_DATA: 0 */5 * * * ?
+          X_SCHEDULER_CRON_STATIONS: 0 0 */12 * * ?
+          X_SCHEDULER_POOL_SIZE: 2
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
