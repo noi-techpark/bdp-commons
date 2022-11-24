@@ -8,13 +8,14 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.OddsRecordDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.json.NonBlockingJSONPusher;
-import it.bz.odh.util.EncryptUtil;
 import it.bz.odh.web.RecordList;
 
 @Service
@@ -23,9 +24,6 @@ public class OddsPusher extends NonBlockingJSONPusher {
 
 	@Autowired
 	private Environment env;
-
-	@Autowired
-	private EncryptUtil cryptUtil;
 
 	@Override
 	public String initIntegreenTypology() {
@@ -41,13 +39,12 @@ public class OddsPusher extends NonBlockingJSONPusher {
 		@SuppressWarnings("unchecked")
 		List<OddsRecordDto> dtos = (List<OddsRecordDto>) data;
 		String dataType = env.getRequiredProperty("datatype");
-		for (OddsRecordDto dto : dtos){
+		for (OddsRecordDto dto : dtos) {
 			DataMapDto<RecordDtoImpl> stationMap = dataMap.upsertBranch(dto.getStationcode());
 			DataMapDto<RecordDtoImpl> typeMap = stationMap.upsertBranch(dataType);
 			SimpleRecordDto textDto = new SimpleRecordDto();
 			String stringValue = dto.getMac();
-			if (cryptUtil.isValid())
-				stringValue = cryptUtil.encrypt(stringValue);
+			stringValue = DigestUtils.md5Hex(stringValue);
 			textDto.setValue(stringValue);
 			textDto.setTimestamp(dto.getGathered_on().getTime());
 			textDto.setPeriod(1);
@@ -59,19 +56,18 @@ public class OddsPusher extends NonBlockingJSONPusher {
 	@Override
 	public ProvenanceDto defineProvenance() {
 		return new ProvenanceDto(
-			null,
-			env.getProperty("app.provenance.name"),
-			env.getProperty("app.provenance.version"),
-			env.getProperty("app.origin")
-		);
+				null,
+				env.getProperty("app.provenance.name"),
+				env.getProperty("app.provenance.version"),
+				env.getProperty("app.origin"));
 	}
 
-    public List<String> hash(RecordList records) {
-        List<String> hashes = new ArrayList<>();
-        for (OddsRecordDto r : records) {
-            String hash = cryptUtil.encrypt(r.getMac());
-            hashes.add(hash);
-        }
-        return hashes;
-    }
+	public List<String> hash(RecordList records) {
+		List<String> hashes = new ArrayList<>();
+		for (OddsRecordDto r : records) {
+			String hash = DigestUtils.md5Hex(r.getMac());
+			hashes.add(hash);
+		}
+		return hashes;
+	}
 }

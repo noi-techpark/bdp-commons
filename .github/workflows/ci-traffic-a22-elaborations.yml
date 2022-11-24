@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Test code
         uses: noi-techpark/github-actions/maven-test@v2
         with:
@@ -38,7 +38,7 @@ jobs:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Create .env file
         uses: noi-techpark/github-actions/env-file@v2
         with:
@@ -60,7 +60,7 @@ jobs:
           X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
           # Logging
-          X_LOG_LEVEL: debug
+          X_LOG_LEVEL: info
           X_LOG_STYLE: json
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
@@ -109,7 +109,7 @@ jobs:
       KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Create .env file
         uses: noi-techpark/github-actions/env-file@v2
         with:
@@ -131,7 +131,7 @@ jobs:
           X_BASE_URI: https://mobility.share.opendatahub.bz.it/json
 
           # Logging
-          X_LOG_LEVEL: debug
+          X_LOG_LEVEL: info
           X_LOG_STYLE: json
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}

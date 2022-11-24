@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.bz.idm.bdp.service.dto.ChargerDtoV2;
 
 @Component
-@PropertySource({ "classpath:/META-INF/spring/types.properties", "classpath:/META-INF/spring/application.properties" })
+@PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class DataRetrieverAPIV2 {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DataRetrieverAPIV2.class);

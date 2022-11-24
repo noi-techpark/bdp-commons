@@ -96,7 +96,7 @@ public class PusherTestIT extends AbstractJUnit4SpringContextTests{
 	}
 	@Test
 	public void testMappingStations() {
-		StationList stationList = pusher.map2bdp(charger);
+		StationList stationList = pusher.mapStations2bdp(charger);
 		assertFalse(stationList.isEmpty());
 		assertNotNull(stationList.get(0));
 		assertTrue(stationList.get(0) instanceof StationDto);

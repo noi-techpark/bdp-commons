@@ -12,13 +12,15 @@ env:
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-parking-tn
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
+  CLIENT_SECRET_BASE64: ${{ secrets.SPREADSHEETS_GOOGLE_CLIENT_SECRET_BASE64 }}
+  STORED_CREDENTIAL_BASE64: ${{ secrets.SPREADSHEETS_GOOGLE_STORED_CREDENTIAL_BASE64 }}
 
 jobs:
   test:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Test code
         uses: noi-techpark/github-actions/maven-test@v2
         with:
@@ -36,7 +38,7 @@ jobs:
       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Create .env file
         uses: noi-techpark/github-actions/env-file@v2
         with:
@@ -57,6 +59,11 @@ jobs:
           X_scope: openid
           X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
+          # Google sheet enriched metadata fields
+          X_SPREADSHEET_ID: 1QMe22_3GrhErkqRY7m7ZKr19YbD1HZ5ZWuB-G3n0KoY
+          X_SPREADSHEET_RANGE: A1:Z255
+          X_SPREADSHEET_NAME: Trento
+
           # Logging
           X_LOG_LEVEL: info
           X_LOG_STYLE: json
@@ -65,8 +72,13 @@ jobs:
 
           # Scheduler: every 5 minutes and every hour
           X_SCHEDULER_CRON_DATA: 0 0/5 * * * *
-          X_SCHEDULER_CRON_STATIONS: 0 0 1 * * *
+          X_SCHEDULER_CRON_STATIONS: 0 0 */1 * * *
           X_SCHEDULER_POOL_SIZE: 10
+
+      - name: Retrieve secret files and decode it to a file
+        run: |
+          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/META-INF/spring/client_secret.json
+          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/META-INF/credentials/StoredCredential
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -104,7 +116,7 @@ jobs:
       KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: noi-techpark/github-actions/checkout@v2
       - name: Create .env file
         uses: noi-techpark/github-actions/env-file@v2
         with:
@@ -125,6 +137,11 @@ jobs:
           X_scope: openid
           X_BASE_URI: https://mobility.share.opendatahub.bz.it/json
 
+          # Google sheet enriched metadata fields
+          X_SPREADSHEET_ID: 1pv5MJyITBb8TOeBTiMIZVDeeC2OM79ksc379bonAjwY
+          X_SPREADSHEET_RANGE: A1:Z255
+          X_SPREADSHEET_NAME: Trento
+
           # Logging
           X_LOG_LEVEL: "info"
           X_LOG_STYLE: json
@@ -133,8 +150,13 @@ jobs:
 
           # Scheduler: every 5 minutes and every hour
           X_SCHEDULER_CRON_DATA: 0 0/5 * * * *
-          X_SCHEDULER_CRON_STATIONS: 0 0 1 * * *
+          X_SCHEDULER_CRON_STATIONS: 0 0 */1 * * *
           X_SCHEDULER_POOL_SIZE: 10
+
+      - name: Retrieve secret files and decode it to a file
+        run: |
+          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/META-INF/spring/client_secret.json
+          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/META-INF/credentials/StoredCredential
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2

@@ -54,47 +54,51 @@ public class ParkingMeranoClient {
 				ret[i].setId(ID_NAME_SPACE + dtos[i].getAreaName());
 				ret[i].setName(dtos[i].getAreaName());
 				ret[i].setOrigin(ORIGIN);
-				ret[i].getMetaData().put("capacity",dtos[i].getTotalParkingSpaces());
+				ret[i].getMetaData().put("capacity", dtos[i].getTotalParkingSpaces());
 			}
 		}
 		return ret;
 	}
 
 	public void insertDataInto(DataMapDto<RecordDtoImpl> sMap) {
-		for (ParkingMeranoStationDto e : this.getParkingStations()) {
-			DataMapDto<RecordDtoImpl> dMap = new DataMapDto<>();
-			DataMapDto<RecordDtoImpl> tMap = new DataMapDto<>();
-			List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
-			SimpleRecordDto record = new SimpleRecordDto();
-			record.setValue(e.getTotalParkingSpaces()-e.getFreeParkingSpaces());
-			Date date;
-			try {
-				date = format.parse(e.getCurrentDateTime());
-				record.setTimestamp(date.getTime());
-				record.setPeriod(PERIOD);
-			} catch (ParseException e1) {
-				e1.printStackTrace();
-			}
-			records.add(record);
-			dMap.setData(records);
-			if (tMap.getBranch().get(OCCUPIED_TYPE) == null)
-				tMap.getBranch().put(OCCUPIED_TYPE, dMap);
+		ParkingMeranoStationDto[] stationDtos = getParkingStations();
+		if (stationDtos != null)
+			for (ParkingMeranoStationDto e : stationDtos) {
+				DataMapDto<RecordDtoImpl> dMap = new DataMapDto<>();
+				DataMapDto<RecordDtoImpl> tMap = new DataMapDto<>();
+				List<RecordDtoImpl> records = new ArrayList<RecordDtoImpl>();
+				SimpleRecordDto record = new SimpleRecordDto();
+				record.setValue(e.getTotalParkingSpaces() - e.getFreeParkingSpaces());
+				Date date;
+				try {
+					date = format.parse(e.getCurrentDateTime());
+					record.setTimestamp(date.getTime());
+					record.setPeriod(PERIOD);
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				records.add(record);
+				dMap.setData(records);
+				if (tMap.getBranch().get(OCCUPIED_TYPE) == null)
+					tMap.getBranch().put(OCCUPIED_TYPE, dMap);
 
-			String stationKey = "me:"+e.getAreaName().toLowerCase().replaceAll("\\s+","");
-			if (sMap.getBranch().get(stationKey) == null)
-				sMap.getBranch().put(stationKey, tMap);
-		}
+				String stationKey = "me:" + e.getAreaName().toLowerCase().replaceAll("\\s+", "");
+				if (sMap.getBranch().get(stationKey) == null)
+					sMap.getBranch().put(stationKey, tMap);
+			}
 	}
+
 	public void insertParkingMetaDataInto(List<StationDto> stations) {
-		ParkingMeranoStationDto[] parkingStations = this.getParkingStations();
-		for (ParkingMeranoStationDto dto:parkingStations) {
-			StationDto stationDto = new StationDto();
-			stationDto.setId("me:"+dto.getAreaName().toLowerCase().replaceAll("\\s+",""));
-			stationDto.setName(dto.getAreaName());
-			stationDto.getMetaData().put("capacity", dto.getTotalParkingSpaces());
-			stationDto.getMetaData().put("municipality", "Meran - Merano");
-			stationDto.setOrigin("Municipality Merano");
-			stations.add(stationDto);
-		}
+		ParkingMeranoStationDto[] stationDtos = getParkingStations();
+		if (stationDtos != null)
+			for (ParkingMeranoStationDto dto : stationDtos) {
+				StationDto stationDto = new StationDto();
+				stationDto.setId("me:" + dto.getAreaName().toLowerCase().replaceAll("\\s+", ""));
+				stationDto.setName(dto.getAreaName());
+				stationDto.getMetaData().put("capacity", dto.getTotalParkingSpaces());
+				stationDto.getMetaData().put("municipality", "Meran - Merano");
+				stationDto.setOrigin("Municipality Merano");
+				stations.add(stationDto);
+			}
 	}
 }

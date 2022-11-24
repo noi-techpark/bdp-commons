@@ -1,5 +1,6 @@
 package it.bz.idm.bdp;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +16,10 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.idm.bdp.forecast.domain.ParkingForecasts;
 import it.bz.idm.bdp.json.NonBlockingJSONPusher;
+import it.bz.idm.bdp.metadata.MetadataEnrichment;
 import it.bz.idm.bdp.util.MappingUtil;
 
 @Component
-@Lazy
 public class ParkingPusher extends NonBlockingJSONPusher{
 
 	private static final String MUNICIPALITY_MERANO = "Municipality Merano";
@@ -53,15 +54,22 @@ public class ParkingPusher extends NonBlockingJSONPusher{
 	@Autowired
 	private Environment env;
 
+	@Lazy
+    @Autowired
+	private MetadataEnrichment metadataEnrichment;
+
 	public void connectToParkingServer() {
 		parkingClient.connect();
 	}
 
-	public void pushParkingMetaData() {
-		connectToParkingServer();
+	public void pushParkingMetaData() throws IOException {
 		StationList stations = new StationList();
 		parkingClient.insertParkingMetaDataInto(stations);
 		parkingMeranoClient.insertParkingMetaDataInto(stations);
+
+		// metadata enrichment
+		metadataEnrichment.mapData(stations);
+
 		if (!stations.isEmpty())
 			syncStations(this.integreenTypology,stations);
 	}
@@ -84,7 +92,9 @@ public class ParkingPusher extends NonBlockingJSONPusher{
 	public void pushData() {
 		connectToParkingServer();
 		connectToDataCenterCollector();
-		DataMapDto<RecordDtoImpl> bolzanoDataMap = new DataMapDto<RecordDtoImpl>(), meranoDataMap = new DataMapDto<>();
+		DataMapDto<RecordDtoImpl> bolzanoDataMap = new DataMapDto<RecordDtoImpl>();
+		DataMapDto<RecordDtoImpl> meranoDataMap = new DataMapDto<RecordDtoImpl>();
+
 		this.provenance = new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"), env.getProperty("pbz_origin"));
 		parkingClient.insertDataInto(bolzanoDataMap);
 		pushData(bolzanoDataMap);

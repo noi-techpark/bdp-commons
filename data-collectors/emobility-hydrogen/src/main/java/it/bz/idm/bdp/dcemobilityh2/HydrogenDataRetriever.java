@@ -112,7 +112,7 @@ public class HydrogenDataRetriever {
 
     /**
      * Performs the call to IIT service and returns exactly the response String without particular processing or formatting
-     * 
+     *
      * @return
      * @throws Exception
      */
@@ -150,7 +150,7 @@ public class HydrogenDataRetriever {
 
     /**
      * Converts the string returned by the IIT service in a more useful internal representation
-     * 
+     *
      * @param responseString
      * @return
      * @throws Exception
@@ -180,7 +180,10 @@ public class HydrogenDataRetriever {
         List<HydrogenDto> dtoList = null;
         try {
             String responseString = callRemoteService();
-            dtoList = convertResponseToInternalDTO(responseString);
+
+			// removes paymenttypes from XML response
+			String cleanedString = responseString.replaceAll("<paymenttypes>[\\s\\S]*?</paymenttypes>","");
+            dtoList = convertResponseToInternalDTO(cleanedString);
         } catch (Exception ex) {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
             throw ex;
