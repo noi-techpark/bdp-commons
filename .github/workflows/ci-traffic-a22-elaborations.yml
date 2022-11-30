@@ -73,7 +73,7 @@ jobs:
           X_A22DB_DBNAME: a22db
 
           X_SCHEDULER_CRON: 0 0/10 * * * ?
-          X_SCHEDULER_POOL_SIZE: 10
+          X_SCHEDULER_POOL_SIZE: 1
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -144,7 +144,7 @@ jobs:
           X_A22DB_DBNAME: a22db
 
           X_SCHEDULER_CRON: 0 0/10 * * * ?
-          X_SCHEDULER_POOL_SIZE: 10
+          X_SCHEDULER_POOL_SIZE: 1
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
