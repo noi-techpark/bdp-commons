@@ -38,7 +38,7 @@ public class AeroCRSGetScheduleSuccessString {
 	private static final int MONTHFROMFIRST = 16;
 	private static final int MONTHFROM = 17;
 	private static final int MONTHFROMFINAL = 19;
-	private static final int MONTHTOFIST = 23;
+	private static final int MONTHTOFIRST = 23;
 	private static final int MONTHTO = 24;
 	private static final int MONTHTOFINAL = 26;
 	private static final int FLTNUMBERSTART = 2;
@@ -146,10 +146,13 @@ public class AeroCRSGetScheduleSuccessString {
 					String staHour = flightArray[i].substring(STAHOURSTART, STAHOUREND);
 					String staMinute = flightArray[i].substring(STAMINUTESTART, STAMINUTEND);
 
+					String monthFromFull = flightArray[i].charAt(MONTHFROMFIRST) + monthfromComplete.toLowerCase();
+					String monthToFull = flightArray[i].charAt(MONTHTOFIRST) + monthToComplete.toLowerCase();
+
 					TemporalAccessor accessorFrom = parser
-							.parse(flightArray[i].charAt(MONTHFROMFIRST) + monthfromComplete.toLowerCase());
+							.parse(monthFromFull);
 					TemporalAccessor accessorTo = parser
-							.parse(flightArray[i].charAt(MONTHTOFIST) + monthToComplete.toLowerCase());
+							.parse(monthToFull);
 
 					int yearFrom = YEAR + Integer.parseInt(yearFromComplete);
 					int yearTo = YEAR + Integer.parseInt(yearToComplete);
@@ -186,8 +189,8 @@ public class AeroCRSGetScheduleSuccessString {
 					aeroFlight.setFltstoperiod(DFFROMTO.format(calTo.getTime()));
 					aeroFlight.setStd(dfs.format(caSTD.getTime()));
 					aeroFlight.setSta(dfs.format(caSTA.getTime()));
-					aeroFlight.setDateStart(dayFromComplete + monthfromComplete + yearFromComplete);
-					aeroFlight.setDateEnd(dayToComplete + monthToComplete + yearToComplete);
+					aeroFlight.setDateStart(dayFromComplete + monthFromFull + yearFromComplete);
+					aeroFlight.setDateEnd(dayToComplete + monthToFull + yearToComplete);
 					aeroFlight.setSsimMessage(flightArray[i]);
 
 					if (String.valueOf(flightArray[i].charAt(MONDAYCHAR)).equals(MONDAY)) {
