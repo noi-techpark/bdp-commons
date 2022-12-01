@@ -212,7 +212,7 @@ public class AeroCRSFlight implements Serializable {
 	}
 
 	public void setDateEnd(String dateEnd) {
-		this.dateStart = dateEnd;
+		this.dateEnd = dateEnd;
 	}
 	
 	public String getSsimMessage() {

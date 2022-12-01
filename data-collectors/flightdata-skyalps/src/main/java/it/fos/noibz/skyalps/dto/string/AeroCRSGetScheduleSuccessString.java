@@ -189,8 +189,8 @@ public class AeroCRSGetScheduleSuccessString {
 					aeroFlight.setFltstoperiod(DFFROMTO.format(calTo.getTime()));
 					aeroFlight.setStd(dfs.format(caSTD.getTime()));
 					aeroFlight.setSta(dfs.format(caSTA.getTime()));
-					aeroFlight.setDateStart(dayFromComplete + monthFromFull + yearFromComplete);
-					aeroFlight.setDateEnd(dayToComplete + monthToFull + yearToComplete);
+					aeroFlight.setDateStart(dayFromComplete + monthFromFull.toUpperCase() + yearFromComplete);
+					aeroFlight.setDateEnd(dayToComplete + monthToFull.toUpperCase() + yearToComplete);
 					aeroFlight.setSsimMessage(flightArray[i]);
 
 					if (String.valueOf(flightArray[i].charAt(MONDAYCHAR)).equals(MONDAY)) {
