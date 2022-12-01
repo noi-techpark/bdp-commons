@@ -2,10 +2,14 @@ package it.fos.noibz.skyalps.service;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,13 +108,31 @@ public class SyncScheduler {
 		StationList odhStationlist = new StationList();
 
 		for (AeroCRSFlight dto : aero.getAerocrs().getFlight()) {
-			StationDto stationDto = new StationDto();
-			stationDto.setId(dto.getFltnumber());
-			stationDto.setName(dto.getFromdestination() + "-" + dto.getTodestination());
-			stationDto.setOrigin(odhclient.getProvenanceOrigin());
-			stationDto.setLatitude(LA);
-			stationDto.setLongitude(LON);
-			odhStationlist.add(stationDto);
+
+			// use Set to be bale to differ if start end is different from end date
+			// in that case 2 flight station should be created
+			Set<String> dates = new HashSet<String>();
+			dates.add(dto.getDateStart());
+			dates.add(dto.getDateEnd());
+
+			Iterator<String> dateIterator = dates.iterator();
+
+			while (dateIterator.hasNext()) {
+				String date = dateIterator.next();
+				StationDto stationDto = new StationDto();
+				stationDto.setId(dto.getFltnumber() + "_" + date);
+				stationDto.setName(dto.getFromdestination() + "-" + dto.getTodestination());
+				stationDto.setOrigin(odhclient.getProvenanceOrigin());
+				stationDto.setLatitude(LA);
+				stationDto.setLongitude(LON);
+
+				Map<String, Object> metaData = new HashMap<>();
+				metaData.put("ssim", dto.getSsimMessage());
+				stationDto.setMetaData(metaData);
+
+				odhStationlist.add(stationDto);
+			}
+
 		}
 
 		LOG.info("Trying to sync the stations: ");

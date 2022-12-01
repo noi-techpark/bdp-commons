@@ -9,10 +9,6 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -42,7 +38,6 @@ import it.fos.noibz.skyalps.service.AeroCRSConst;
  */
 public class AeroCRSRest {
 
-	private static RestTemplate restTemplate = new RestTemplate();
 	private static final String URL_GET_SCHEDULE = "https://api.aerocrs.com/v5/getSchedule";
 	private static final Logger LOG = LoggerFactory.getLogger(AeroCRSRest.class);
 

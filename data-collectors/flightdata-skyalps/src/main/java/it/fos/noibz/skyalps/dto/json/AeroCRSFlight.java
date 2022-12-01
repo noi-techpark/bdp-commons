@@ -22,6 +22,8 @@ public class AeroCRSFlight implements Serializable {
 	private String todestination; // Destination TO code
 	private String std; // HH:MM departure time
 	private String sta; // HH:MM arrival time
+	private String dateStart; // DDMMMYY date 10NOV22
+	private String dateEnd; // DDMMMYY date 22NOV22
 	private Boolean weekdaysun; // Sunday operating (true/false)
 	private Boolean weekdaymon; // Monday operating (true/false)
 	private Boolean weekdaytue; // Tuesday operating (true/false)
@@ -32,6 +34,8 @@ public class AeroCRSFlight implements Serializable {
 	private String accode; // Aircraft code (might not appear to all airlines)
 	private String fltsfromperiod; // Start period of the flight active
 	private String fltstoperiod; // End period of the flight active
+	private String ssimMessage; // Whole SSIM message line for metadata
+
 
 	public AeroCRSFlight() {
 	}
@@ -193,6 +197,30 @@ public class AeroCRSFlight implements Serializable {
 
 	public void setFltstoperiod(String fltstoperiod) {
 		this.fltstoperiod = fltstoperiod;
+	}
+
+	public String getDateStart() {
+		return dateStart;
+	}
+
+	public void setDateStart(String dateStart) {
+		this.dateStart = dateStart;
+	}
+
+	public String getDateEnd() {
+		return dateEnd;
+	}
+
+	public void setDateEnd(String dateEnd) {
+		this.dateStart = dateEnd;
+	}
+	
+	public String getSsimMessage() {
+		return ssimMessage;
+	}
+
+	public void setSsimMessage(String ssimMessage) {
+		this.ssimMessage = ssimMessage;
 	}
 
 	@Override
