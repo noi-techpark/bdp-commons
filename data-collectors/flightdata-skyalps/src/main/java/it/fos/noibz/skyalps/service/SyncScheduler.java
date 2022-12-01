@@ -110,25 +110,6 @@ public class SyncScheduler {
 			stationDto.setOrigin(odhclient.getProvenanceOrigin());
 			stationDto.setLatitude(LA);
 			stationDto.setLongitude(LON);
-			Map<String, Object> metaData = new HashMap<>();
-			metaData.put(aeroconst.getAirlineId(), dto.getAirlineid());
-			metaData.put(aeroconst.getAirlinename(), dto.getAirlinename());
-			metaData.put(aeroconst.getAccode(), dto.getAccode());
-			metaData.put(aeroconst.getFltnumber(), dto.getFltnumber());
-			metaData.put(aeroconst.getFltstoperiod(), dto.getFltstoperiod());
-			metaData.put(aeroconst.getFltsfromperiod(), dto.getFltsfromperiod());
-			metaData.put(aeroconst.getSta(), dto.getSta());
-			metaData.put(aeroconst.getStd(), dto.getStd());
-			metaData.put(aeroconst.getWeekdaymon(), dto.getWeekdaymon());
-			metaData.put(aeroconst.getWeekdaytue(), dto.getWeekdaytue());
-			metaData.put(aeroconst.getWeekdaywed(), dto.getWeekdaywed());
-			metaData.put(aeroconst.getWeekdaythu(), dto.getWeekdaythu());
-			metaData.put(aeroconst.getWeekdayfri(), dto.getWeekdayfri());
-			metaData.put(aeroconst.getWeekdaysat(), dto.getWeekdaysat());
-			metaData.put(aeroconst.getWeekdaysun(), dto.getWeekdaysun());
-			metaData.put(aeroconst.getFromdestination(), dto.getFromdestination());
-			metaData.put(aeroconst.getTodestination(), dto.getTodestination());
-			stationDto.setMetaData(metaData);
 			odhStationlist.add(stationDto);
 		}
 
