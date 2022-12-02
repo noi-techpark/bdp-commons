@@ -183,7 +183,6 @@ public class AeroCRSGetScheduleSuccessString {
 					LOG.debug("Extracting flights done.");
 
 				} catch (Exception e) {
-					e.printStackTrace();
 					LOG.debug("error while parsing line {} with exception {}", flightArray[i], e.getMessage());
 				}
 			}
@@ -265,7 +264,7 @@ public class AeroCRSGetScheduleSuccessString {
 		aeroFlight.setStd(dfs.format(caSTD.getTime()));
 		aeroFlight.setSta(dfs.format(caSTA.getTime()));
 		aeroFlight.setDate(date);
-		aeroFlight.setSsimMessage(flight);
+		aeroFlight.setSsimMessage(singleFlight);
 
 		aeroFlight.setWeekdaymon(weekday == MONDAY);
 		aeroFlight.setWeekdaytue(weekday == TUESDAY);
