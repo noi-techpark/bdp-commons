@@ -109,46 +109,35 @@ public class SyncScheduler {
 
 		for (AeroCRSFlight dto : aero.getAerocrs().getFlight()) {
 
-			// use Set to be bale to differ if start end is different from end date
-			// in that case 2 flight station should be created
-			Set<String> dates = new HashSet<String>();
-			dates.add(dto.getDateStart());
-			dates.add(dto.getDateEnd());
+			StationDto stationDto = new StationDto();
+			stationDto.setId(dto.getFltnumber() + "_" + dto.getDate());
+			stationDto.setName(dto.getFromdestination() + "-" + dto.getTodestination());
+			stationDto.setOrigin(odhclient.getProvenanceOrigin());
+			stationDto.setLatitude(LA);
+			stationDto.setLongitude(LON);
 
-			Iterator<String> dateIterator = dates.iterator();
+			Map<String, Object> metaData = new HashMap<>();
+			metaData.put(aeroconst.getAirlineId(), dto.getAirlineid());
+			metaData.put(aeroconst.getAirlinename(), dto.getAirlinename());
+			metaData.put(aeroconst.getAccode(), dto.getAccode());
+			metaData.put(aeroconst.getFltnumber(), dto.getFltnumber());
+			metaData.put(aeroconst.getFltstoperiod(), dto.getFltstoperiod());
+			metaData.put(aeroconst.getFltsfromperiod(), dto.getFltsfromperiod());
+			metaData.put(aeroconst.getSta(), dto.getSta());
+			metaData.put(aeroconst.getStd(), dto.getStd());
+			metaData.put(aeroconst.getWeekdaymon(), dto.getWeekdaymon());
+			metaData.put(aeroconst.getWeekdaytue(), dto.getWeekdaytue());
+			metaData.put(aeroconst.getWeekdaywed(), dto.getWeekdaywed());
+			metaData.put(aeroconst.getWeekdaythu(), dto.getWeekdaythu());
+			metaData.put(aeroconst.getWeekdayfri(), dto.getWeekdayfri());
+			metaData.put(aeroconst.getWeekdaysat(), dto.getWeekdaysat());
+			metaData.put(aeroconst.getWeekdaysun(), dto.getWeekdaysun());
+			metaData.put(aeroconst.getFromdestination(), dto.getFromdestination());
+			metaData.put(aeroconst.getTodestination(), dto.getTodestination());
+			metaData.put("ssim", dto.getSsimMessage());
+			stationDto.setMetaData(metaData);
 
-			while (dateIterator.hasNext()) {
-				String date = dateIterator.next();
-				StationDto stationDto = new StationDto();
-				stationDto.setId(dto.getFltnumber() + "_" + date);
-				stationDto.setName(dto.getFromdestination() + "-" + dto.getTodestination());
-				stationDto.setOrigin(odhclient.getProvenanceOrigin());
-				stationDto.setLatitude(LA);
-				stationDto.setLongitude(LON);
-
-				Map<String, Object> metaData = new HashMap<>();
-				metaData.put(aeroconst.getAirlineId(), dto.getAirlineid());
-				metaData.put(aeroconst.getAirlinename(), dto.getAirlinename());
-				metaData.put(aeroconst.getAccode(), dto.getAccode());
-				metaData.put(aeroconst.getFltnumber(), dto.getFltnumber());
-				metaData.put(aeroconst.getFltstoperiod(), dto.getFltstoperiod());
-				metaData.put(aeroconst.getFltsfromperiod(), dto.getFltsfromperiod());
-				metaData.put(aeroconst.getSta(), dto.getSta());
-				metaData.put(aeroconst.getStd(), dto.getStd());
-				metaData.put(aeroconst.getWeekdaymon(), dto.getWeekdaymon());
-				metaData.put(aeroconst.getWeekdaytue(), dto.getWeekdaytue());
-				metaData.put(aeroconst.getWeekdaywed(), dto.getWeekdaywed());
-				metaData.put(aeroconst.getWeekdaythu(), dto.getWeekdaythu());
-				metaData.put(aeroconst.getWeekdayfri(), dto.getWeekdayfri());
-				metaData.put(aeroconst.getWeekdaysat(), dto.getWeekdaysat());
-				metaData.put(aeroconst.getWeekdaysun(), dto.getWeekdaysun());
-				metaData.put(aeroconst.getFromdestination(), dto.getFromdestination());
-				metaData.put(aeroconst.getTodestination(), dto.getTodestination());
-				metaData.put("ssim", dto.getSsimMessage());
-				stationDto.setMetaData(metaData);
-
-				odhStationlist.add(stationDto);
-			}
+			odhStationlist.add(stationDto);
 
 		}
 
