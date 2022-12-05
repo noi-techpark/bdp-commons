@@ -11,7 +11,7 @@ env:
   PROJECT_NAME: odh-mobility-dc-flightdata-skyalps
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-flightdata-skyalps
   DOCKER_TAG: ${{ github.sha }}
-  JAVA_VERSION: '11'
+  JAVA_VERSION: "11"
 
 jobs:
   test:
@@ -24,7 +24,7 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
           working-directory: ${{ env.WORKING_DIRECTORY }}
-          test-command: 'mvn -B -U clean compile test'
+          test-command: "mvn -B -U clean compile test"
 
   # Deploy Test
   deploy-test-flightdata-skyalps:
@@ -57,7 +57,7 @@ jobs:
           X_scope: openid
           X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
-          # Authentication 
+          # Authentication
           X_AUTH_ID: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_ID }}
           X_AUTH_PASSWORD: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_PASSWORD }}
           X_ssim_enabled: true
@@ -69,6 +69,11 @@ jobs:
           X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
           X_ODH_CLIENT_PROVENANCE_ORIGIN: SKYALPS
 
+          # Days for the request range starting from current date when the scheduled
+          # job runs +/- days before/days after
+          X_DAYS_BEFORE: 0
+          X_DAYS_AFTER: 60
+
           X_SCHEDULER_JOB_STATIONS: 0 */5 * * * *
           X_SCHEDULER_POOL_SIZE: 1
 
@@ -77,7 +82,7 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
           java-version: ${{ env.JAVA_VERSION }}
-          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
+          build-command: "mvn -B -DskipTests -DfinalName=ROOT clean package"
 
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2
@@ -86,17 +91,15 @@ jobs:
           docker-username: ${{ github.actor }}
           docker-password: ${{ secrets.GITHUB_TOKEN }}
 
-
       - name: Deploy application
         uses: noi-techpark/github-actions/docker-deploy@v2
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
-          hosts: 'test'
+          hosts: "test"
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          docker-username: 'noi-techpark-bot'
+          docker-username: "noi-techpark-bot"
           docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           project-name: ${{ env.PROJECT_NAME }}
-
 
   #  Deploy Production
   # deploy-prod-flightdata-skyalps:
@@ -129,7 +132,7 @@ jobs:
   #        X_scope: openid
   #        X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
-  #        # Authentication 
+  #        # Authentication
   #        X_AUTH_ID: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_ID }}
   #        X_AUTH_PASSWORD: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_PASSWORD }}
   #        X_ssim_enabled: true
@@ -140,6 +143,12 @@ jobs:
   #        X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
   #        X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
   #        X_ODH_CLIENT_PROVENANCE_ORIGIN: SKYALPS
+
+
+  #        # Days for the request range starting from current date when the scheduled
+  #        # job runs +/- days before/days after
+  #        X_DAYS_BEFORE: 0
+  #        X_DAYS_AFTER: 60
 
   #        X_SCHEDULER_JOB_STATIONS: 0 */5 * * * *
   #        X_SCHEDULER_POOL_SIZE: 1
@@ -157,7 +166,6 @@ jobs:
   #         working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
   #         docker-username: ${{ github.actor }}
   #         docker-password: ${{ secrets.GITHUB_TOKEN }}
-
 
   #     - name: Deploy application
   #       uses: noi-techpark/github-actions/docker-deploy@v2
