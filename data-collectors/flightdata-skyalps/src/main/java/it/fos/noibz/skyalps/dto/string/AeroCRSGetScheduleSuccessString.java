@@ -78,13 +78,13 @@ public class AeroCRSGetScheduleSuccessString {
 	private static final int STAMINUTEND = 71;
 	private static final int MONDAYCHAR = 28;
 	private static final int SUNCHAR = 34;
-	private static final char MONDAY = '1';
-	private static final char TUESDAY = '2';
-	private static final char WEDNESDAY = '3';
-	private static final char THURSDAY = '4';
-	private static final char FRIDAY = '5';
-	private static final char SATURDAY = '6';
-	private static final char SUNDAY = '7';
+	private static final int MONDAY = 1;
+	private static final int TUESDAY = 2;
+	private static final int WEDNESDAY = 3;
+	private static final int THURSDAY = 4;
+	private static final int FRIDAY = 5;
+	private static final int SATURDAY = 6;
+	private static final int SUNDAY = 7;
 	private static final SimpleDateFormat DFFROMTO = new SimpleDateFormat("yyyy/MM/dd");
 	private static final SimpleDateFormat DFSTDA = new SimpleDateFormat("yyyy/MM/dd HH:mmZZZZ");
 
@@ -149,27 +149,37 @@ public class AeroCRSGetScheduleSuccessString {
 					Instant instantTo = Instant
 							.parse(String.format("%04d-%02d-%02dT00:00:00.00Z", yearTo, monthTo, dayTo));
 
-					char weekdayFrom = Character
-							.forDigit(instantFrom.atZone(ZoneId.of("UTC")).getDayOfWeek().getValue(), 10);
+					int weekdayFrom = instantFrom.atZone(ZoneId.of("UTC")).getDayOfWeek().getValue();
 
-					// extract weekdays
-					char[] weekdays = flightArray[i].substring(MONDAYCHAR, SUNCHAR + 1).replace(" ", "").toCharArray();
+					// extract weekdays and convert to int
+					int[] weekdays = flightArray[i].substring(MONDAYCHAR, SUNCHAR + 1).replace(" ", "").chars()
+							.map(x -> x - '0')
+							.toArray();
 
 					// put weekday of from date to first position
-					// special case: first flight would be on friday but next monday
-					int shiftCounter = 0;
-					while (weekdays[0] != weekdayFrom && shiftCounter < 7) {
-						char last = weekdays[weekdays.length - 1];
-						System.arraycopy(weekdays, 0, weekdays, 1, weekdays.length - 1);
-						weekdays[0] = last;
-						shiftCounter++;
-					}
+					// special case: first flight would be on friday but the next one on monday
+					// int shiftCounter = 0;
+					// while (weekdays[0] != weekdayFrom && shiftCounter < 7) {
+					// 	int last = weekdays[weekdays.length - 1];
+					// 	System.arraycopy(weekdays, 0, weekdays, 1, weekdays.length - 1);
+					// 	weekdays[0] = last;
+					// 	shiftCounter++;
+					// }
 
 					LOG.debug("Extracting flights...");
 					// iterate over weekdays and the add up 7 days until to date is reached
-					for (char weekday : weekdays) {
+					for (int weekday : weekdays) {
 
 						Instant currentInstant = instantFrom;
+
+						int weekdayCurrent = currentInstant.atZone(ZoneId.of("UTC")).getDayOfWeek().getValue();
+
+						// increase by days difference for other weekdays
+						// example flight goes on Monday (1) and Friday (5)
+						// first loop over monday flight then add difference 5 - 1 = 4 to loop over
+						// friday flights
+						currentInstant = currentInstant.plus(weekday - weekdayCurrent, ChronoUnit.DAYS);
+
 						do {
 							// actual flight date
 							AeroCRSFlight aeroFlight = createAereoFlight(singleFlight, monthParser, dateFormatter,
@@ -196,7 +206,7 @@ public class AeroCRSGetScheduleSuccessString {
 
 	private AeroCRSFlight createAereoFlight(String singleFlight, DateTimeFormatter monthParser,
 			SimpleDateFormat dateFormatter, Instant currentInstant,
-			char weekday)
+			int weekday)
 			throws ParseException {
 		AeroCRSFlight aeroFlight = new AeroCRSFlight();
 
