@@ -178,7 +178,7 @@ public class AeroCRSGetScheduleSuccessString {
 							flightsList.add(aeroFlight);
 							// go to next week
 							currentInstant = currentInstant.plus(7, ChronoUnit.DAYS);
-						} while (currentInstant.isBefore(instantTo));
+						} while (!currentInstant.isAfter(instantTo));
 					}
 					LOG.debug("Extracting flights done.");
 
