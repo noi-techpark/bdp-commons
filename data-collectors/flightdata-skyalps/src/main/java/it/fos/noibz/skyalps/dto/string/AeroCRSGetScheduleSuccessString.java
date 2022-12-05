@@ -160,10 +160,10 @@ public class AeroCRSGetScheduleSuccessString {
 					// special case: first flight would be on friday but the next one on monday
 					// int shiftCounter = 0;
 					// while (weekdays[0] != weekdayFrom && shiftCounter < 7) {
-					// 	int last = weekdays[weekdays.length - 1];
-					// 	System.arraycopy(weekdays, 0, weekdays, 1, weekdays.length - 1);
-					// 	weekdays[0] = last;
-					// 	shiftCounter++;
+					// int last = weekdays[weekdays.length - 1];
+					// System.arraycopy(weekdays, 0, weekdays, 1, weekdays.length - 1);
+					// weekdays[0] = last;
+					// shiftCounter++;
 					// }
 
 					LOG.debug("Extracting flights...");
@@ -178,7 +178,15 @@ public class AeroCRSGetScheduleSuccessString {
 						// example flight goes on Monday (1) and Friday (5)
 						// first loop over monday flight then add difference 5 - 1 = 4 to loop over
 						// friday flights
-						currentInstant = currentInstant.plus(weekday - weekdayCurrent, ChronoUnit.DAYS);
+						if (weekday - weekdayCurrent >= 0)
+							currentInstant = currentInstant.plus(weekday - weekdayCurrent, ChronoUnit.DAYS);
+						else
+							// in case the first flight of the period is not on the first weekday of
+							// schedule
+							// example: flight is on mondays and fridays from but first flight of period is
+							// on friday
+							// so first monday is out of range and next monday is used as start
+							currentInstant = currentInstant.plus(7, ChronoUnit.DAYS);
 
 						do {
 							// actual flight date
