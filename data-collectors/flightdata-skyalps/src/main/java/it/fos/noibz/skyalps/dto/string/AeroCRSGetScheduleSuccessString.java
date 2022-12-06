@@ -149,22 +149,10 @@ public class AeroCRSGetScheduleSuccessString {
 					Instant instantTo = Instant
 							.parse(String.format("%04d-%02d-%02dT00:00:00.00Z", yearTo, monthTo, dayTo));
 
-					int weekdayFrom = instantFrom.atZone(ZoneId.of("UTC")).getDayOfWeek().getValue();
-
 					// extract weekdays and convert to int
 					int[] weekdays = flightArray[i].substring(MONDAYCHAR, SUNCHAR + 1).replace(" ", "").chars()
 							.map(x -> x - '0')
 							.toArray();
-
-					// put weekday of from date to first position
-					// special case: first flight would be on friday but the next one on monday
-					// int shiftCounter = 0;
-					// while (weekdays[0] != weekdayFrom && shiftCounter < 7) {
-					// int last = weekdays[weekdays.length - 1];
-					// System.arraycopy(weekdays, 0, weekdays, 1, weekdays.length - 1);
-					// weekdays[0] = last;
-					// shiftCounter++;
-					// }
 
 					LOG.debug("Extracting flights...");
 					// iterate over weekdays and the add up 7 days until to date is reached
@@ -243,8 +231,8 @@ public class AeroCRSGetScheduleSuccessString {
 
 		int yearFrom = YEAR + Integer.parseInt(yearFromComplete);
 		int yearTo = YEAR + Integer.parseInt(yearToComplete);
-		int monthFrom = accessorFrom.get(ChronoField.MONTH_OF_YEAR);
-		int monthTo = accessorTo.get(ChronoField.MONTH_OF_YEAR);
+		int monthFrom = accessorFrom.get(ChronoField.MONTH_OF_YEAR) - 1;
+		int monthTo = accessorTo.get(ChronoField.MONTH_OF_YEAR) - 1;
 		int dayFrom = Integer.parseInt(dayFromComplete);
 		int dayTo = Integer.parseInt(dayToComplete);
 		Calendar calFrom = Calendar.getInstance();
