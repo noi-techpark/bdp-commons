@@ -108,7 +108,7 @@ public class AeroCRSGetScheduleSuccessString {
 	}
 
 	public AeroCRSGetScheduleSuccessResponse decodeFlights() throws ParseException {
-		LOG.info("Start parsing...");
+		LOG.debug("Start parsing...");
 		AeroCRSGetScheduleSuccess flights = new AeroCRSGetScheduleSuccess();
 		AeroCRSGetScheduleSuccessResponse flightFinal = new AeroCRSGetScheduleSuccessResponse();
 		String[] flightArray = flight.trim().split("\\R");
@@ -196,7 +196,7 @@ public class AeroCRSGetScheduleSuccessString {
 		flights.setSuccess(true);
 		flights.setFlight(flightsList);
 		flightFinal.setAerocrs(flights);
-		LOG.info("Parsing done.");
+		LOG.debug("Parsing done.");
 		return flightFinal;
 	}
 

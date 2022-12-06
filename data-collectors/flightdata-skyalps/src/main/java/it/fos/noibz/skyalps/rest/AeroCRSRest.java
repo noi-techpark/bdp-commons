@@ -89,13 +89,13 @@ public class AeroCRSRest {
 					request, AeroCRSGetScheduleSuccessResponse.class);
 			// check response
 			if (response.getStatusCode() == HttpStatus.OK && request.getBody() != null) {
-				LOG.info("Request Successful");
-				LOG.info("" + response.getBody());
+				LOG.debug("Request Successful");
+				LOG.debug("" + response.getBody());
 				return response.getBody();
 
 			} else {
-				LOG.info("Request Failed");
-				LOG.info("" + response.getStatusCode());
+				LOG.debug("Request Failed");
+				LOG.debug("" + response.getStatusCode());
 			}
 		} else if (ssim == true) {
 			restTemplate.getMessageConverters().add(0, mappingJacksonHttpMessageConverter());
@@ -103,13 +103,13 @@ public class AeroCRSRest {
 					.postForEntity(URL_GET_SCHEDULE, request, AeroCRSGetScheduleSuccessResponseString.class);
 			// check response
 			if (response.getStatusCode() == HttpStatus.OK && request.getBody() != null) {
-				LOG.info("Request Successful");
-				LOG.info("" + response.getBody());
+				LOG.debug("Request Successful");
+				LOG.debug("" + response.getBody());
 				return response.getBody().getAerocrs().decodeFlights();
 
 			} else {
-				LOG.info("Request Failed");
-				LOG.info("" + response.getStatusCode());
+				LOG.debug("Request Failed");
+				LOG.debug("" + response.getStatusCode());
 			}
 		}
 		return (null);
