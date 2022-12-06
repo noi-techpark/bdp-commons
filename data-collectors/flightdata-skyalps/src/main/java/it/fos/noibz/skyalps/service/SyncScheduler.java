@@ -92,53 +92,57 @@ public class SyncScheduler {
 		// Subtracting certain amount of days defined in the application.properties
 		// Adding certain amount of days defined in the application.properties
 		// Synch stations in between the date
-		Calendar from = Calendar.getInstance();
-		from.add(Calendar.DATE, -days_before);
-		Date fltsFROMPeriod = from.getTime();
-		Calendar to = Calendar.getInstance();
-		to.add(Calendar.DATE, +days_after);
-		Date fltsTOPeriod = to.getTime();
-		LOG.info("Cron job A started: Sync Stations from {} to {}", fltsFROMPeriod, fltsTOPeriod);
-		// {} refers to odh.stationtype which is Flights
-		LOG.info("Cron job A started: Sync Stations with type {} and data types", odhclient.getIntegreenTypology());
-
-		AeroCRSGetScheduleSuccessResponse aero = acrsclient.getSchedule(template, fltsFROMPeriod, fltsTOPeriod,
-				aeroconst.getIatacode(), aeroconst.getCompanycode(), false, ssimEnabled);
 
 		StationList odhStationlist = new StationList();
 
-		for (AeroCRSFlight dto : aero.getAerocrs().getFlight()) {
+		for (int i = 0 - days_before; i < days_after; i++) {
 
-			StationDto stationDto = new StationDto();
-			stationDto.setId(dto.getFltnumber() + "_" + dto.getDate());
-			stationDto.setName(dto.getFromdestination() + "-" + dto.getTodestination());
-			stationDto.setOrigin(odhclient.getProvenanceOrigin());
-			stationDto.setLatitude(LA);
-			stationDto.setLongitude(LON);
+			Calendar from = Calendar.getInstance();
+			from.add(Calendar.DATE, i);
+			Date fltsFROMPeriod = from.getTime();
+			Calendar to = Calendar.getInstance();
+			to.add(Calendar.DATE, i + 1);
+			Date fltsTOPeriod = to.getTime();
+			LOG.info("Cron job A started: Sync Stations from {} to {}", fltsFROMPeriod, fltsTOPeriod);
+			// {} refers to odh.stationtype which is Flights
+			LOG.info("Cron job A started: Sync Stations with type {} and data types", odhclient.getIntegreenTypology());
 
-			Map<String, Object> metaData = new HashMap<>();
-			metaData.put(aeroconst.getAirlineId(), dto.getAirlineid());
-			metaData.put(aeroconst.getAirlinename(), dto.getAirlinename());
-			metaData.put(aeroconst.getAccode(), dto.getAccode());
-			metaData.put(aeroconst.getFltnumber(), dto.getFltnumber());
-			metaData.put(aeroconst.getFltstoperiod(), dto.getFltstoperiod());
-			metaData.put(aeroconst.getFltsfromperiod(), dto.getFltsfromperiod());
-			metaData.put(aeroconst.getSta(), dto.getSta());
-			metaData.put(aeroconst.getStd(), dto.getStd());
-			metaData.put(aeroconst.getWeekdaymon(), dto.getWeekdaymon());
-			metaData.put(aeroconst.getWeekdaytue(), dto.getWeekdaytue());
-			metaData.put(aeroconst.getWeekdaywed(), dto.getWeekdaywed());
-			metaData.put(aeroconst.getWeekdaythu(), dto.getWeekdaythu());
-			metaData.put(aeroconst.getWeekdayfri(), dto.getWeekdayfri());
-			metaData.put(aeroconst.getWeekdaysat(), dto.getWeekdaysat());
-			metaData.put(aeroconst.getWeekdaysun(), dto.getWeekdaysun());
-			metaData.put(aeroconst.getFromdestination(), dto.getFromdestination());
-			metaData.put(aeroconst.getTodestination(), dto.getTodestination());
-			metaData.put("ssim", dto.getSsimMessage());
-			stationDto.setMetaData(metaData);
+			AeroCRSGetScheduleSuccessResponse aero = acrsclient.getSchedule(template, fltsFROMPeriod, fltsTOPeriod,
+					aeroconst.getIatacode(), aeroconst.getCompanycode(), false, ssimEnabled);
 
-			odhStationlist.add(stationDto);
+			for (AeroCRSFlight dto : aero.getAerocrs().getFlight()) {
 
+				StationDto stationDto = new StationDto();
+				stationDto.setId(dto.getFltnumber() + "_" + dto.getDate());
+				stationDto.setName(dto.getFromdestination() + "-" + dto.getTodestination());
+				stationDto.setOrigin(odhclient.getProvenanceOrigin());
+				stationDto.setLatitude(LA);
+				stationDto.setLongitude(LON);
+
+				Map<String, Object> metaData = new HashMap<>();
+				metaData.put(aeroconst.getAirlineId(), dto.getAirlineid());
+				metaData.put(aeroconst.getAirlinename(), dto.getAirlinename());
+				metaData.put(aeroconst.getAccode(), dto.getAccode());
+				metaData.put(aeroconst.getFltnumber(), dto.getFltnumber());
+				metaData.put(aeroconst.getFltstoperiod(), dto.getFltstoperiod());
+				metaData.put(aeroconst.getFltsfromperiod(), dto.getFltsfromperiod());
+				metaData.put(aeroconst.getSta(), dto.getSta());
+				metaData.put(aeroconst.getStd(), dto.getStd());
+				metaData.put(aeroconst.getWeekdaymon(), dto.getWeekdaymon());
+				metaData.put(aeroconst.getWeekdaytue(), dto.getWeekdaytue());
+				metaData.put(aeroconst.getWeekdaywed(), dto.getWeekdaywed());
+				metaData.put(aeroconst.getWeekdaythu(), dto.getWeekdaythu());
+				metaData.put(aeroconst.getWeekdayfri(), dto.getWeekdayfri());
+				metaData.put(aeroconst.getWeekdaysat(), dto.getWeekdaysat());
+				metaData.put(aeroconst.getWeekdaysun(), dto.getWeekdaysun());
+				metaData.put(aeroconst.getFromdestination(), dto.getFromdestination());
+				metaData.put(aeroconst.getTodestination(), dto.getTodestination());
+				metaData.put("ssim", dto.getSsimMessage());
+				stationDto.setMetaData(metaData);
+
+				odhStationlist.add(stationDto);
+
+			}
 		}
 
 		LOG.info("Trying to sync the stations: ");
