@@ -33,7 +33,7 @@ import it.bz.idm.bdp.dto.StationDto;
 @PropertySource("classpath:/META-INF/spring/application.properties")
 public class HistoryRetriever {
 
-	private static final int TIME_INTERVAL = 1000*60*60*24;
+	private static final int TIME_INTERVAL = 1000 * 60 * 60 * 24;
 
 	@Autowired
 	public DataParser parser;
@@ -45,7 +45,9 @@ public class HistoryRetriever {
 	public Environment environment;
 	private Logger logger = LoggerFactory.getLogger(HistoryRetriever.class);
 
-	/*retrieve all history data from a given point in time and push it to the bdp */
+	/*
+	 * retrieve all history data from a given point in time and push it to the bdp
+	 */
 	public void getHistory(LocalDateTime newestDateMidnight){
 
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -68,15 +70,21 @@ public class HistoryRetriever {
 				logger.debug("3rd party took" + (new Date().getTime()-now)/1000 +" s");
 
 				DataMapDto<RecordDtoImpl> dataMapDto = retrieveHistoricData.get(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER);
-				if (retrieveHistoricData.containsKey(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER))
+				if (retrieveHistoricData.containsKey(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER)){
 					bdpClient.pushData(dataMapDto);
-				logger.debug("traffic data sent");
-				if (retrieveHistoricData.containsKey(TrafficPusher.METEOSTATION_IDENTIFIER))
-					bdpClient.pushData(TrafficPusher.METEOSTATION_IDENTIFIER,retrieveHistoricData.get(TrafficPusher.METEOSTATION_IDENTIFIER));
-				logger.debug("meteo data sent");
-				if (retrieveHistoricData.containsKey(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER))
-					bdpClient.pushData(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER,retrieveHistoricData.get(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER));
-				logger.debug("environment data sent");
+					logger.debug("traffic data sent amount: {}",dataMapDto.getData().size());
+				}
+				if (retrieveHistoricData.containsKey(TrafficPusher.METEOSTATION_IDENTIFIER)){
+					DataMapDto<RecordDtoImpl> dataMapDtoMeteo = retrieveHistoricData.get(TrafficPusher.METEOSTATION_IDENTIFIER);
+					bdpClient.pushData(TrafficPusher.METEOSTATION_IDENTIFIER,dataMapDtoMeteo);
+					logger.debug("meteo data sent amount: {}", dataMapDtoMeteo.getData().size());
+				}
+				if (retrieveHistoricData.containsKey(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER)){
+					DataMapDto<RecordDtoImpl> dataMapDtoEnvironment = retrieveHistoricData.get(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER)
+					bdpClient.pushData(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER,dataMapDtoEnvironment);
+					logger.debug("environment data sent amount: {}", dataMapDtoEnvironment.getData().size());
+
+				}
 				newestDateMidnight = LocalDateTime.ofInstant(Instant.ofEpochMilli(to.toGregorianCalendar().getTimeInMillis()),ZoneOffset.UTC);
 			}
 		} catch (DatatypeConfigurationException e) {
@@ -87,24 +95,27 @@ public class HistoryRetriever {
 
 	public void getLatestHistory() {
 		Date newestDate = fetchNewestExistingDate();
-		LocalDateTime newestDateMidnight =  LocalDateTime.of(LocalDateTime.ofInstant(Instant.ofEpochMilli(newestDate.getTime()),ZoneOffset.UTC).toLocalDate(), LocalTime.MIDNIGHT);
+		LocalDateTime newestDateMidnight = LocalDateTime.of(
+				LocalDateTime.ofInstant(Instant.ofEpochMilli(newestDate.getTime()), ZoneOffset.UTC).toLocalDate(),
+				LocalTime.MIDNIGHT);
 		getHistory(newestDateMidnight);
 	}
 
 	public Date fetchNewestExistingDate() {
 		logger.debug("Start fetching newest records for all stations");
 		List<Date> dateList = new ArrayList<>();
-		List<StationDto> fetchStations = bdpClient.fetchStations(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER,DataParser.DATA_ORIGIN);
+		List<StationDto> fetchStations = bdpClient.fetchStations(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER,
+				DataParser.DATA_ORIGIN);
 		logger.debug("Number of fetched stations" + fetchStations.size());
 		for (StationDto dto : fetchStations) {
 			Date hui = new Date();
 			Date dateOfLastRecord = (Date) bdpClient.getDateOfLastRecord(dto.getId(), null, null);
-			if (dateOfLastRecord!=null)
+			if (dateOfLastRecord != null)
 				dateList.add(dateOfLastRecord);
-			logger.debug("Querry took" + (new Date().getTime()-hui.getTime()));
+			logger.debug("Querry took" + (new Date().getTime() - hui.getTime()));
 		}
 		Collections.sort(dateList);
-		return dateList.get(dateList.size()-1);
+		return dateList.get(dateList.size() - 1);
 	}
 
 }
