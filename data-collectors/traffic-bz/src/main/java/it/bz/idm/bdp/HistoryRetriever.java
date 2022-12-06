@@ -80,10 +80,9 @@ public class HistoryRetriever {
 					logger.debug("meteo data sent amount: {}", dataMapDtoMeteo.getData().size());
 				}
 				if (retrieveHistoricData.containsKey(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER)){
-					DataMapDto<RecordDtoImpl> dataMapDtoEnvironment = retrieveHistoricData.get(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER)
+					DataMapDto<RecordDtoImpl> dataMapDtoEnvironment = retrieveHistoricData.get(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER);
 					bdpClient.pushData(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER,dataMapDtoEnvironment);
 					logger.debug("environment data sent amount: {}", dataMapDtoEnvironment.getData().size());
-
 				}
 				newestDateMidnight = LocalDateTime.ofInstant(Instant.ofEpochMilli(to.toGregorianCalendar().getTimeInMillis()),ZoneOffset.UTC);
 			}
