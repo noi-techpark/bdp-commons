@@ -79,20 +79,20 @@ public class SkyAlpsconf {
 		calTo.add(Calendar.DATE, DAYS_AFTER);
 		Date fltsFROMperiod = calFrom.getTime();
 		Date fltsTOperiod = calTo.getTime();
-		LOG.info("Date flight retrieval will start from {} to {}", fltsFROMperiod, fltsTOperiod);
+		LOG.debug("Date flight retrieval will start from {} to {}", fltsFROMperiod, fltsTOperiod);
 		return args -> {
 			AeroCRSGetScheduleSuccessResponse result = AeroCRSRest.getSchedule(clients, fltsFROMperiod, fltsTOperiod,
 					IATA, BN, false, ssim);
-			LOG.info("The Result is " + result.getAerocrs());
-			LOG.info("The result AeroCRS is " + result.getAerocrs());
+			LOG.debug("The Result is " + result.getAerocrs());
+			LOG.debug("The result AeroCRS is " + result.getAerocrs());
 			if (result.getAerocrs() instanceof AeroCRSGetScheduleSuccess) {
 				AeroCRSGetScheduleSuccess success = (AeroCRSGetScheduleSuccess) result.getAerocrs();
-				LOG.info("AeroCRSGetScheduleSuccess: " + success);
+				LOG.debug("AeroCRSGetScheduleSuccess: " + success);
 				if (success.isSuccess()) {
 					for (AeroCRSFlight flight : success.getFlight()) {
-						LOG.info("Flights: " + flight);
+						LOG.debug("Flights: " + flight);
 					}
-					LOG.info("Result are displayed...moving on sync and push flights: ");
+					LOG.debug("Result are displayed...moving on sync and push flights: ");
 					try {
 						sync.syncJobStations();
 
