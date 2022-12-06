@@ -95,6 +95,7 @@ public class SyncScheduler {
 
 		StationList odhStationlist = new StationList();
 
+		LOG.info("Cron job started: Sync Stations with type {} and data types", odhclient.getIntegreenTypology());
 		for (int i = 0 - days_before; i < days_after; i++) {
 
 			Calendar from = Calendar.getInstance();
@@ -103,9 +104,6 @@ public class SyncScheduler {
 			Calendar to = Calendar.getInstance();
 			to.add(Calendar.DATE, i + 1);
 			Date fltsTOPeriod = to.getTime();
-			LOG.info("Cron job A started: Sync Stations from {} to {}", fltsFROMPeriod, fltsTOPeriod);
-			// {} refers to odh.stationtype which is Flights
-			LOG.info("Cron job A started: Sync Stations with type {} and data types", odhclient.getIntegreenTypology());
 
 			AeroCRSGetScheduleSuccessResponse aero = acrsclient.getSchedule(template, fltsFROMPeriod, fltsTOPeriod,
 					aeroconst.getIatacode(), aeroconst.getCompanycode(), false, ssimEnabled);
@@ -145,9 +143,9 @@ public class SyncScheduler {
 			}
 		}
 
-		LOG.info("Trying to sync the stations: ");
+		LOG.info("Trying to sync the stations...");
 		odhclient.syncStations(odhclient.getIntegreenTypology(), odhStationlist);
-		LOG.info("Syncing data types successful");
+		LOG.info("Syncing stations done.");
 
 	}
 
