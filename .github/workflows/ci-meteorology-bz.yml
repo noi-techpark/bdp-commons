@@ -102,7 +102,7 @@ jobs:
     needs: test
     concurrency: deploy-prod-meteorology-bz
     env:
-      KEYCLOAK_URL: https://auth.opendatahub.com
+      KEYCLOAK_URL: https://auth.opendatahub.bz.it
     steps:
       - name: Checkout source code
         uses: noi-techpark/github-actions/checkout@v2
