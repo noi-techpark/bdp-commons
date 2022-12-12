@@ -38,6 +38,8 @@ public class AeroCRSGetScheduleSuccessString {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AeroCRSGetScheduleSuccessString.class);
 
+	// Reference example
+	// 3 BN 19510101J29JAN2329JAN23      7 BER09400940+0100  BZO11251125+0100
 	private boolean success;
 	private String flight;
 	private List<AeroCRSFlight> flightsList;
@@ -70,11 +72,11 @@ public class AeroCRSGetScheduleSuccessString {
 	private static final int DAYTOEND = 23;
 	private static final int STDHOURSTART = 43;
 	private static final int STDHOUREND = 45;
-	private static final int STDMINUTESTART = 46;
+	private static final int STDMINUTESTART = 45;
 	private static final int STDMINUTEEND = 52;
 	private static final int STAHOURSTART = 61;
 	private static final int STAHOUREND = 63;
-	private static final int STAMINUTESTART = 64;
+	private static final int STAMINUTESTART = 63;
 	private static final int STAMINUTEND = 71;
 	private static final int MONDAYCHAR = 28;
 	private static final int SUNCHAR = 34;
