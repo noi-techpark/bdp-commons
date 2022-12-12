@@ -2,13 +2,15 @@
 # Create a .env file and set the corresponding variables
 # See all $dotenv fields below
 
+# .env vars
+@user = {{$dotenv FAMAS_USER}}
+@password = {{$dotenv FAMAS_PASSWORD}}
 
+# other vars
 @endpoint-classificationSchemas = https://webservices.trafficopab.famassystem.it/api/v1/SchemiDiClassificazione
 @endpoint-stationsData-url=https://webservices.trafficopab.famassystem.it/api/v1/AnagrafichePostazioni
 @endpoint-aggregatedDataOnStations-url=https://webservices.trafficopab.famassystem.it/api/v1/DatiAggregatiSuPostazioni
 @endpoint-passageDataOnStations-url=https://webservices.trafficopab.famassystem.it/api/v1/DatiPassaggiSuPostazioni
-@user = {{$dotenv FAMAS_USER}}
-@password = {{$dotenv FAMAS_PASSWORD}}
 
 ### Classification 
 GET {{endpoint-classificationSchemas}} 
