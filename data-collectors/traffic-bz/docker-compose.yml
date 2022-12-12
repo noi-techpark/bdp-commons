@@ -14,9 +14,6 @@ services:
         -Duser.home=/var/maven
         -Dmaven.tomcat.port=9001
         tomcat:run
-    ports:
-      - 9000:9000
-      - 9001:9001
     volumes:
       - ~/.m2/:/var/maven/.m2
       - ./:/code
