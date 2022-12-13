@@ -130,7 +130,7 @@ jobs:
          X_clientName: odh-mobility-datacollector
          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
          X_scope: openid
-         X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
+         X_BASE_URI: https://mobility.share.opendatahub.com/json
 
          # Authentication
          X_AUTH_ID: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_ID }}
