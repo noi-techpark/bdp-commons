@@ -128,7 +128,7 @@ jobs:
          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
          X_clientId: odh-mobility-datacollector
          X_clientName: odh-mobility-datacollector
-         X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
+         X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
          X_scope: openid
          X_BASE_URI: https://mobility.share.opendatahub.com/json
 
