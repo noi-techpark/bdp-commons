@@ -8,13 +8,15 @@ import java.util.Locale;
  * Use this class to save static variables for memory optimizations
  */
 public class AereoCRSConstants {
-    protected static final SimpleDateFormat DFFROMTO = new SimpleDateFormat("yyyy/MM/dd");
-    protected static final SimpleDateFormat dfs = new SimpleDateFormat("HH:mm");
-    protected static final SimpleDateFormat DFSTDA = new SimpleDateFormat("yyyy/MM/dd HH:mmZZZZ");
-    protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat("ddMMMyy", Locale.ENGLISH);
-    protected static final DateTimeFormatter monthParser = DateTimeFormatter.ofPattern("MMM")
+    protected static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
+    protected static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+    protected static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
+    protected static final SimpleDateFormat DATE_FORMAT_EN = new SimpleDateFormat("ddMMMyy", Locale.ENGLISH);
+    protected static final DateTimeFormatter MONTH_FORMAT_EN = DateTimeFormatter.ofPattern("MMM")
             .withLocale(Locale.ENGLISH);
 
+    // Reference example
+    // 3 BN 19510101J29JAN2329JAN23 7 BER09400940+0100 BZO11251125+0100
     protected static final int SSIMSTRINGLENGHT = 200;
     protected static final int MONTHFROMFIRST = 16;
     protected static final int MONTHFROM = 17;
@@ -45,11 +47,11 @@ public class AereoCRSConstants {
     protected static final int STDHOURSTART = 43;
     protected static final int STDHOUREND = 45;
     protected static final int STDMINUTESTART = 45;
-    protected static final int STDMINUTEEND = 52;
+    protected static final int STDMINUTEEND = 47;
     protected static final int STAHOURSTART = 61;
     protected static final int STAHOUREND = 63;
     protected static final int STAMINUTESTART = 63;
-    protected static final int STAMINUTEND = 71;
+    protected static final int STAMINUTEND = 65;
     protected static final int MONDAYCHAR = 28;
     protected static final int SUNCHAR = 34;
     protected static final int MONDAY = 1;

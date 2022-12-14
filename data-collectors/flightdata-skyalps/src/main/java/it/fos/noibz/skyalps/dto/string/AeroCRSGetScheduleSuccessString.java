@@ -29,9 +29,6 @@ import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 public class AeroCRSGetScheduleSuccessString {
 
 	private final Logger LOG = LoggerFactory.getLogger(AeroCRSGetScheduleSuccessString.class);
-
-	// Reference example
-	// 3 BN 19510101J29JAN2329JAN23 7 BER09400940+0100 BZO11251125+0100
 	private boolean success;
 	private String flight;
 
@@ -83,9 +80,9 @@ public class AeroCRSGetScheduleSuccessString {
 					String monthToFull = singleFlight.charAt(AereoCRSConstants.MONTHTOFIRST)
 							+ monthToComplete.toLowerCase();
 
-					TemporalAccessor accessorFrom = AereoCRSConstants.monthParser
+					TemporalAccessor accessorFrom = AereoCRSConstants.MONTH_FORMAT_EN
 							.parse(monthFromFull);
-					TemporalAccessor accessorTo = AereoCRSConstants.monthParser
+					TemporalAccessor accessorTo = AereoCRSConstants.MONTH_FORMAT_EN
 							.parse(monthToFull);
 
 					int yearFrom = AereoCRSConstants.YEAR + Integer.parseInt(yearFromComplete);
@@ -179,9 +176,9 @@ public class AeroCRSGetScheduleSuccessString {
 		String monthFromFull = singleFlight.charAt(AereoCRSConstants.MONTHFROMFIRST) + monthfromComplete.toLowerCase();
 		String monthToFull = singleFlight.charAt(AereoCRSConstants.MONTHTOFIRST) + monthToComplete.toLowerCase();
 
-		TemporalAccessor accessorFrom = AereoCRSConstants.monthParser
+		TemporalAccessor accessorFrom = AereoCRSConstants.MONTH_FORMAT_EN
 				.parse(monthFromFull);
-		TemporalAccessor accessorTo = AereoCRSConstants.monthParser
+		TemporalAccessor accessorTo = AereoCRSConstants.MONTH_FORMAT_EN
 				.parse(monthToFull);
 
 		int yearFrom = AereoCRSConstants.YEAR + Integer.parseInt(yearFromComplete);
@@ -201,17 +198,17 @@ public class AeroCRSGetScheduleSuccessString {
 
 		Calendar caSTD = Calendar.getInstance();
 		Calendar caSTA = Calendar.getInstance();
-		Date paredDateSTD = AereoCRSConstants.DFSTDA
-				.parse(AereoCRSConstants.DFFROMTO.format(calFrom.getTime()) + " " + stdHour + ":" + stdMinute);
+		Date paredDateSTD = AereoCRSConstants.DATE_FORMAT
+				.parse(AereoCRSConstants.DATE_TIME_FORMAT.format(calFrom.getTime()) + " " + stdHour + ":" + stdMinute);
 		caSTD.setTime(paredDateSTD);
-		Date paredDateSTA = AereoCRSConstants.DFSTDA
-				.parse(AereoCRSConstants.DFFROMTO.format(calTo.getTime()) + " " + staHour + ":" + staMinute);
+		Date paredDateSTA = AereoCRSConstants.DATE_FORMAT
+				.parse(AereoCRSConstants.DATE_TIME_FORMAT.format(calTo.getTime()) + " " + staHour + ":" + staMinute);
 		caSTA.setTime(paredDateSTA);
 
 		Calendar currentCalendar = Calendar.getInstance();
 		currentCalendar.setTimeInMillis(currentInstant.toEpochMilli());
 
-		String date = AereoCRSConstants.dateFormatter.format(Date.from(currentInstant)).toUpperCase();
+		String date = AereoCRSConstants.DATE_FORMAT_EN.format(Date.from(currentInstant)).toUpperCase();
 
 		aeroFlight.setFltnumber(StringUtils.deleteWhitespace(fltnumber));
 		aeroFlight.setAirlinename(AereoCRSConstants.AIRLINENAME);
@@ -219,10 +216,10 @@ public class AeroCRSGetScheduleSuccessString {
 		aeroFlight.setTodestination(toDestination);
 		aeroFlight.setAirlineid(airlineID);
 		aeroFlight.setAccode(accode);
-		aeroFlight.setFltsfromperiod(AereoCRSConstants.DFFROMTO.format(calFrom.getTime()));
-		aeroFlight.setFltstoperiod(AereoCRSConstants.DFFROMTO.format(calTo.getTime()));
-		aeroFlight.setStd(AereoCRSConstants.dfs.format(caSTD.getTime()));
-		aeroFlight.setSta(AereoCRSConstants.dfs.format(caSTA.getTime()));
+		aeroFlight.setFltsfromperiod(AereoCRSConstants.DATE_FORMAT.format(calFrom.getTime()));
+		aeroFlight.setFltstoperiod(AereoCRSConstants.DATE_FORMAT.format(calTo.getTime()));
+		aeroFlight.setStd(AereoCRSConstants.TIME_FORMAT.format(caSTD.getTime()));
+		aeroFlight.setSta(AereoCRSConstants.TIME_FORMAT.format(caSTA.getTime()));
 		aeroFlight.setDate(date);
 		aeroFlight.setSsimMessage(singleFlight);
 
