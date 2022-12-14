@@ -46,10 +46,7 @@ jobs:
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-          # temporarily increase RAM to prevent out of memory exception
-          # after fixing memory problem revert to original value
           X_JAVA_OPTIONS: -Xms128m -Xmx512m
-          # X_JAVA_OPTIONS: -Xms256m -Xmx1024m
 
           # Open Data Hub Writer Connectivity
           X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
@@ -77,7 +74,8 @@ jobs:
           X_DAYS_BEFORE: 0
           X_DAYS_AFTER: 60
 
-          X_SCHEDULER_JOB_STATIONS: 0 */5 * * * *
+          # make test calls every hour:30 mins to not overlap with prod sync to reduce request on aerorcrs API
+          X_SCHEDULER_JOB_STATIONS: 0 30 */1 * * *
           X_SCHEDULER_POOL_SIZE: 1
 
       - name: Build project
@@ -120,51 +118,47 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
-         # General deployment options
-         X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
-         X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
-         X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-         # temporarily increase RAM to prevent out of memory exception
-         # after fixing memory problem revert to original value
-         # X_JAVA_OPTIONS: -Xms128m -Xmx512m
-         X_JAVA_OPTIONS: -Xms256m -Xmx1024m
+          # General deployment options
+          X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
+          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
+          X_JAVA_OPTIONS: -Xms128m -Xmx512m
 
-         # Open Data Hub Writer Connectivity
-         X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
-         X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
-         X_clientId: odh-mobility-datacollector
-         X_clientName: odh-mobility-datacollector
-         X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
-         X_scope: openid
-         X_BASE_URI: https://mobility.share.opendatahub.com/json
+          # Open Data Hub Writer Connectivity
+          X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
+          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+          X_clientId: odh-mobility-datacollector
+          X_clientName: odh-mobility-datacollector
+          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
+          X_scope: openid
+          X_BASE_URI: https://mobility.share.opendatahub.com/json
 
-         # Authentication
-         X_AUTH_ID: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_ID }}
-         X_AUTH_PASSWORD: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_PASSWORD }}
-         X_ssim_enabled: true
+          # Authentication
+          X_AUTH_ID: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_ID }}
+          X_AUTH_PASSWORD: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_PASSWORD }}
+          X_ssim_enabled: true
 
-         # Logging
-         X_LOG_LEVEL: info
-         X_LOG_STYLE: json
-         X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
-         X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
-         X_ODH_CLIENT_PROVENANCE_ORIGIN: SKYALPS
+          # Logging
+          X_LOG_LEVEL: info
+          X_LOG_STYLE: json
+          X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
+          X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
+          X_ODH_CLIENT_PROVENANCE_ORIGIN: SKYALPS
 
+          # Days for the request range starting from current date when the scheduled
+          # job runs +/- days before/days after
+          X_DAYS_BEFORE: 0
+          X_DAYS_AFTER: 60
 
-         # Days for the request range starting from current date when the scheduled
-         # job runs +/- days before/days after
-         X_DAYS_BEFORE: 0
-         X_DAYS_AFTER: 60
-
-         X_SCHEDULER_JOB_STATIONS: 0 */5 * * * *
-         X_SCHEDULER_POOL_SIZE: 1
+          X_SCHEDULER_JOB_STATIONS: 0 0 */1 * * *
+          X_SCHEDULER_POOL_SIZE: 1
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
           java-version: ${{ env.JAVA_VERSION }}
-          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
+          build-command: "mvn -B -DskipTests -DfinalName=ROOT clean package"
 
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2
@@ -177,8 +171,8 @@ jobs:
         uses: noi-techpark/github-actions/docker-deploy@v2
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
-          hosts: 'prod'
+          hosts: "prod"
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          docker-username: 'noi-techpark-bot'
+          docker-username: "noi-techpark-bot"
           docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           project-name: ${{ env.PROJECT_NAME }}
