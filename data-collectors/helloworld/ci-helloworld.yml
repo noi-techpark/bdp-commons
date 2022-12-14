@@ -102,7 +102,7 @@ jobs:
     needs: test
     concurrency: deploy-prod-helloworld
     env:
-      KEYCLOAK_URL: https://auth.opendatahub.bz.it
+      KEYCLOAK_URL: https://auth.opendatahub.com
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
