@@ -2,10 +2,7 @@ package it.fos.noibz.skyalps.dto.string;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
@@ -19,11 +16,9 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.format.datetime.DateFormatter;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import ch.qos.logback.classic.db.names.SimpleDBNameResolver;
 import it.fos.noibz.skyalps.dto.json.AeroCRSFlight;
 import it.fos.noibz.skyalps.dto.json.AeroCRSGetScheduleSuccess;
 import it.fos.noibz.skyalps.dto.json.AeroCRSGetScheduleSuccessResponse;
@@ -43,50 +38,6 @@ public class AeroCRSGetScheduleSuccessString {
 	private boolean success;
 	private String flight;
 	private List<AeroCRSFlight> flightsList;
-	private static final int SSIMSTRINGLENGHT = 200;
-	private static final int MONTHFROMFIRST = 16;
-	private static final int MONTHFROM = 17;
-	private static final int MONTHFROMFINAL = 19;
-	private static final int MONTHTOFIRST = 23;
-	private static final int MONTHTO = 24;
-	private static final int MONTHTOFINAL = 26;
-	private static final int FLTNUMBERSTART = 2;
-	private static final int FLTNUMBEREND = 9;
-	private static final String AIRLINENAME = "Sky Alps";
-	private static final int FROMDESTINATIONSTART = 36;
-	private static final int FROMDESTINATIONEND = 39;
-	private static final int TODESTINATIONSTART = 54;
-	private static final int TODESTINATIONEND = 57;
-	private static final int AIRLINEIDSTART = 10;
-	private static final int AIRLINEIDEND = 13;
-	private static final int ACCODESTART = 72;
-	private static final int ACCODEND = 75;
-	private static final int YEAR = 2000;
-	private static final int YEAFROMSTART = 19;
-	private static final int YEARFROMEND = 21;
-	private static final int YEARTOSTART = 26;
-	private static final int YEARTOEND = 28;
-	private static final int DAYFROMSTART = 14;
-	private static final int DAYFROMEND = 16;
-	private static final int DAYTOSTART = 21;
-	private static final int DAYTOEND = 23;
-	private static final int STDHOURSTART = 43;
-	private static final int STDHOUREND = 45;
-	private static final int STDMINUTESTART = 45;
-	private static final int STDMINUTEEND = 52;
-	private static final int STAHOURSTART = 61;
-	private static final int STAHOUREND = 63;
-	private static final int STAMINUTESTART = 63;
-	private static final int STAMINUTEND = 71;
-	private static final int MONDAYCHAR = 28;
-	private static final int SUNCHAR = 34;
-	private static final int MONDAY = 1;
-	private static final int TUESDAY = 2;
-	private static final int WEDNESDAY = 3;
-	private static final int THURSDAY = 4;
-	private static final int FRIDAY = 5;
-	private static final int SATURDAY = 6;
-	private static final int SUNDAY = 7;
 	private static final SimpleDateFormat DFFROMTO = new SimpleDateFormat("yyyy/MM/dd");
 	private static final SimpleDateFormat DFSTDA = new SimpleDateFormat("yyyy/MM/dd HH:mmZZZZ");
 
@@ -118,29 +69,29 @@ public class AeroCRSGetScheduleSuccessString {
 
 		for (int i = 1; i < flightArray.length; i++) {
 			int flightSSIMLenght = flightArray[i].length();
-			if (flightArray[i].contains(" ") && flightSSIMLenght == SSIMSTRINGLENGHT) {
+			if (flightArray[i].contains(" ") && flightSSIMLenght == AereoCRSConstants.SSIMSTRINGLENGHT) {
 				try {
 					String singleFlight = flightArray[i];
 
 					DateTimeFormatter monthParser = DateTimeFormatter.ofPattern("MMM").withLocale(Locale.ENGLISH);
 					SimpleDateFormat dateFormatter = new SimpleDateFormat("ddMMMyy", Locale.ENGLISH);
 
-					String yearFromComplete = singleFlight.substring(YEAFROMSTART, YEARFROMEND);
-					String yearToComplete = singleFlight.substring(YEARTOSTART, YEARTOEND);
-					String monthfromComplete = singleFlight.substring(MONTHFROM, MONTHFROMFINAL);
-					String monthToComplete = singleFlight.substring(MONTHTO, MONTHTOFINAL);
-					String dayFromComplete = singleFlight.substring(DAYFROMSTART, DAYFROMEND);
-					String dayToComplete = singleFlight.substring(DAYTOSTART, DAYTOEND);
-					String monthFromFull = singleFlight.charAt(MONTHFROMFIRST) + monthfromComplete.toLowerCase();
-					String monthToFull = singleFlight.charAt(MONTHTOFIRST) + monthToComplete.toLowerCase();
+					String yearFromComplete = singleFlight.substring(AereoCRSConstants.YEAFROMSTART, AereoCRSConstants.YEARFROMEND);
+					String yearToComplete = singleFlight.substring(AereoCRSConstants.YEARTOSTART, AereoCRSConstants.YEARTOEND);
+					String monthfromComplete = singleFlight.substring(AereoCRSConstants.MONTHFROM, AereoCRSConstants.MONTHFROMFINAL);
+					String monthToComplete = singleFlight.substring(AereoCRSConstants.MONTHTO, AereoCRSConstants.MONTHTOFINAL);
+					String dayFromComplete = singleFlight.substring(AereoCRSConstants.DAYFROMSTART, AereoCRSConstants.DAYFROMEND);
+					String dayToComplete = singleFlight.substring(AereoCRSConstants.DAYTOSTART, AereoCRSConstants.DAYTOEND);
+					String monthFromFull = singleFlight.charAt(AereoCRSConstants.MONTHFROMFIRST) + monthfromComplete.toLowerCase();
+					String monthToFull = singleFlight.charAt(AereoCRSConstants.MONTHTOFIRST) + monthToComplete.toLowerCase();
 
 					TemporalAccessor accessorFrom = monthParser
 							.parse(monthFromFull);
 					TemporalAccessor accessorTo = monthParser
 							.parse(monthToFull);
 
-					int yearFrom = YEAR + Integer.parseInt(yearFromComplete);
-					int yearTo = YEAR + Integer.parseInt(yearToComplete);
+					int yearFrom = AereoCRSConstants.YEAR + Integer.parseInt(yearFromComplete);
+					int yearTo = AereoCRSConstants.YEAR + Integer.parseInt(yearToComplete);
 					int monthFrom = accessorFrom.get(ChronoField.MONTH_OF_YEAR);
 					int monthTo = accessorTo.get(ChronoField.MONTH_OF_YEAR);
 					int dayFrom = Integer.parseInt(dayFromComplete);
@@ -152,7 +103,7 @@ public class AeroCRSGetScheduleSuccessString {
 							.parse(String.format("%04d-%02d-%02dT00:00:00.00Z", yearTo, monthTo, dayTo));
 
 					// extract weekdays and convert to int
-					int[] weekdays = flightArray[i].substring(MONDAYCHAR, SUNCHAR + 1).replace(" ", "").chars()
+					int[] weekdays = flightArray[i].substring(AereoCRSConstants.MONDAYCHAR, AereoCRSConstants.SUNCHAR + 1).replace(" ", "").chars()
 							.map(x -> x - '0')
 							.toArray();
 
@@ -208,31 +159,31 @@ public class AeroCRSGetScheduleSuccessString {
 			throws ParseException {
 		AeroCRSFlight aeroFlight = new AeroCRSFlight();
 
-		String fltnumber = singleFlight.substring(FLTNUMBERSTART, FLTNUMBEREND);
-		String fromDestination = singleFlight.substring(FROMDESTINATIONSTART, FROMDESTINATIONEND);
-		String toDestination = singleFlight.substring(TODESTINATIONSTART, TODESTINATIONEND);
-		String airlineID = singleFlight.substring(AIRLINEIDSTART, AIRLINEIDEND);
-		String accode = singleFlight.substring(ACCODESTART, ACCODEND);
-		String yearFromComplete = singleFlight.substring(YEAFROMSTART, YEARFROMEND);
-		String yearToComplete = singleFlight.substring(YEARTOSTART, YEARTOEND);
-		String monthfromComplete = singleFlight.substring(MONTHFROM, MONTHFROMFINAL);
-		String monthToComplete = singleFlight.substring(MONTHTO, MONTHTOFINAL);
-		String dayFromComplete = singleFlight.substring(DAYFROMSTART, DAYFROMEND);
-		String dayToComplete = singleFlight.substring(DAYTOSTART, DAYTOEND);
-		String stdHour = singleFlight.substring(STDHOURSTART, STDHOUREND);
-		String stdMinute = singleFlight.substring(STDMINUTESTART, STDMINUTEEND);
-		String staHour = singleFlight.substring(STAHOURSTART, STAHOUREND);
-		String staMinute = singleFlight.substring(STAMINUTESTART, STAMINUTEND);
-		String monthFromFull = singleFlight.charAt(MONTHFROMFIRST) + monthfromComplete.toLowerCase();
-		String monthToFull = singleFlight.charAt(MONTHTOFIRST) + monthToComplete.toLowerCase();
+		String fltnumber = singleFlight.substring(AereoCRSConstants.FLTNUMBERSTART, AereoCRSConstants.FLTNUMBEREND);
+		String fromDestination = singleFlight.substring(AereoCRSConstants.FROMDESTINATIONSTART, AereoCRSConstants.FROMDESTINATIONEND);
+		String toDestination = singleFlight.substring(AereoCRSConstants.TODESTINATIONSTART, AereoCRSConstants.TODESTINATIONEND);
+		String airlineID = singleFlight.substring(AereoCRSConstants.AIRLINEIDSTART, AereoCRSConstants.AIRLINEIDEND);
+		String accode = singleFlight.substring(AereoCRSConstants.ACCODESTART, AereoCRSConstants.ACCODEND);
+		String yearFromComplete = singleFlight.substring(AereoCRSConstants.YEAFROMSTART, AereoCRSConstants.YEARFROMEND);
+		String yearToComplete = singleFlight.substring(AereoCRSConstants.YEARTOSTART, AereoCRSConstants.YEARTOEND);
+		String monthfromComplete = singleFlight.substring(AereoCRSConstants.MONTHFROM, AereoCRSConstants.MONTHFROMFINAL);
+		String monthToComplete = singleFlight.substring(AereoCRSConstants.MONTHTO, AereoCRSConstants.MONTHTOFINAL);
+		String dayFromComplete = singleFlight.substring(AereoCRSConstants.DAYFROMSTART, AereoCRSConstants.DAYFROMEND);
+		String dayToComplete = singleFlight.substring(AereoCRSConstants.DAYTOSTART, AereoCRSConstants.DAYTOEND);
+		String stdHour = singleFlight.substring(AereoCRSConstants.STDHOURSTART, AereoCRSConstants.STDHOUREND);
+		String stdMinute = singleFlight.substring(AereoCRSConstants.STDMINUTESTART, AereoCRSConstants.STDMINUTEEND);
+		String staHour = singleFlight.substring(AereoCRSConstants.STAHOURSTART, AereoCRSConstants.STAHOUREND);
+		String staMinute = singleFlight.substring(AereoCRSConstants.STAMINUTESTART, AereoCRSConstants.STAMINUTEND);
+		String monthFromFull = singleFlight.charAt(AereoCRSConstants.MONTHFROMFIRST) + monthfromComplete.toLowerCase();
+		String monthToFull = singleFlight.charAt(AereoCRSConstants.MONTHTOFIRST) + monthToComplete.toLowerCase();
 
 		TemporalAccessor accessorFrom = monthParser
 				.parse(monthFromFull);
 		TemporalAccessor accessorTo = monthParser
 				.parse(monthToFull);
 
-		int yearFrom = YEAR + Integer.parseInt(yearFromComplete);
-		int yearTo = YEAR + Integer.parseInt(yearToComplete);
+		int yearFrom = AereoCRSConstants.YEAR + Integer.parseInt(yearFromComplete);
+		int yearTo = AereoCRSConstants.YEAR + Integer.parseInt(yearToComplete);
 		int monthFrom = accessorFrom.get(ChronoField.MONTH_OF_YEAR) - 1;
 		int monthTo = accessorTo.get(ChronoField.MONTH_OF_YEAR) - 1;
 		int dayFrom = Integer.parseInt(dayFromComplete);
@@ -262,7 +213,7 @@ public class AeroCRSGetScheduleSuccessString {
 		String date = dateFormatter.format(Date.from(currentInstant)).toUpperCase();
 
 		aeroFlight.setFltnumber(StringUtils.deleteWhitespace(fltnumber));
-		aeroFlight.setAirlinename(AIRLINENAME);
+		aeroFlight.setAirlinename(AereoCRSConstants.AIRLINENAME);
 		aeroFlight.setFromdestination(fromDestination);
 		aeroFlight.setTodestination(toDestination);
 		aeroFlight.setAirlineid(airlineID);
@@ -274,13 +225,13 @@ public class AeroCRSGetScheduleSuccessString {
 		aeroFlight.setDate(date);
 		aeroFlight.setSsimMessage(singleFlight);
 
-		aeroFlight.setWeekdaymon(weekday == MONDAY);
-		aeroFlight.setWeekdaytue(weekday == TUESDAY);
-		aeroFlight.setWeekdaywed(weekday == WEDNESDAY);
-		aeroFlight.setWeekdaythu(weekday == THURSDAY);
-		aeroFlight.setWeekdayfri(weekday == FRIDAY);
-		aeroFlight.setWeekdaysat(weekday == SATURDAY);
-		aeroFlight.setWeekdaysun(weekday == SUNDAY);
+		aeroFlight.setWeekdaymon(weekday == AereoCRSConstants.MONDAY);
+		aeroFlight.setWeekdaytue(weekday == AereoCRSConstants.TUESDAY);
+		aeroFlight.setWeekdaywed(weekday == AereoCRSConstants.WEDNESDAY);
+		aeroFlight.setWeekdaythu(weekday == AereoCRSConstants.THURSDAY);
+		aeroFlight.setWeekdayfri(weekday == AereoCRSConstants.FRIDAY);
+		aeroFlight.setWeekdaysat(weekday == AereoCRSConstants.SATURDAY);
+		aeroFlight.setWeekdaysun(weekday == AereoCRSConstants.SUNDAY);
 
 		return aeroFlight;
 	}

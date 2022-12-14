@@ -1,7 +1,5 @@
 package it.fos.noibz.skyalps.conf;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -26,13 +24,9 @@ import it.fos.noibz.skyalps.service.SyncScheduler;
 
 @Configuration
 public class SkyAlpsconf {
-	private static final DateFormat SDF_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
 	private static final String IATA = "IATA";
 	private static final String BN = "BN";
 	private static final Logger LOG = LoggerFactory.getLogger(SpringBootApp.class);
-
-	@Autowired
-	private RestTemplate clients;
 
 	@Autowired
 	SyncScheduler sync;

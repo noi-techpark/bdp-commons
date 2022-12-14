@@ -1,0 +1,48 @@
+package it.fos.noibz.skyalps.dto.string;
+
+public class AereoCRSConstants {
+    static final int SSIMSTRINGLENGHT = 200;
+	static final int MONTHFROMFIRST = 16;
+	static final int MONTHFROM = 17;
+	static final int MONTHFROMFINAL = 19;
+	static final int MONTHTOFIRST = 23;
+	static final int MONTHTO = 24;
+	static final int MONTHTOFINAL = 26;
+	static final int FLTNUMBERSTART = 2;
+	static final int FLTNUMBEREND = 9;
+	static final String AIRLINENAME = "Sky Alps";
+	static final int FROMDESTINATIONSTART = 36;
+	static final int FROMDESTINATIONEND = 39;
+	static final int TODESTINATIONSTART = 54;
+	static final int TODESTINATIONEND = 57;
+	static final int AIRLINEIDSTART = 10;
+	static final int AIRLINEIDEND = 13;
+	static final int ACCODESTART = 72;
+	static final int ACCODEND = 75;
+	static final int YEAR = 2000;
+	static final int YEAFROMSTART = 19;
+	static final int YEARFROMEND = 21;
+	static final int YEARTOSTART = 26;
+	static final int YEARTOEND = 28;
+	static final int DAYFROMSTART = 14;
+	static final int DAYFROMEND = 16;
+	static final int DAYTOSTART = 21;
+	static final int DAYTOEND = 23;
+	static final int STDHOURSTART = 43;
+	static final int STDHOUREND = 45;
+	static final int STDMINUTESTART = 45;
+	static final int STDMINUTEEND = 52;
+	static final int STAHOURSTART = 61;
+	static final int STAHOUREND = 63;
+	static final int STAMINUTESTART = 63;
+	static final int STAMINUTEND = 71;
+	static final int MONDAYCHAR = 28;
+	static final int SUNCHAR = 34;
+	static final int MONDAY = 1;
+	static final int TUESDAY = 2;
+	static final int WEDNESDAY = 3;
+	static final int THURSDAY = 4;
+	static final int FRIDAY = 5;
+	static final int SATURDAY = 6;
+	static final int SUNDAY = 7;
+}

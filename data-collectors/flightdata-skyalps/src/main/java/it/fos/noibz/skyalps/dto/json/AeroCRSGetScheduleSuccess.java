@@ -1,7 +1,6 @@
 package it.fos.noibz.skyalps.dto.json;
 
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
