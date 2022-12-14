@@ -198,11 +198,11 @@ public class AeroCRSGetScheduleSuccessString {
 
 		Calendar caSTD = Calendar.getInstance();
 		Calendar caSTA = Calendar.getInstance();
-		Date paredDateSTD = AereoCRSConstants.DATE_FORMAT
-				.parse(AereoCRSConstants.DATE_TIME_FORMAT.format(calFrom.getTime()) + " " + stdHour + ":" + stdMinute);
+		Date paredDateSTD = AereoCRSConstants.DATE_TIME_FORMAT
+				.parse(AereoCRSConstants.DATE_FORMAT.format(calFrom.getTime()) + " " + stdHour + ":" + stdMinute);
 		caSTD.setTime(paredDateSTD);
-		Date paredDateSTA = AereoCRSConstants.DATE_FORMAT
-				.parse(AereoCRSConstants.DATE_TIME_FORMAT.format(calTo.getTime()) + " " + staHour + ":" + staMinute);
+		Date paredDateSTA = AereoCRSConstants.DATE_TIME_FORMAT
+				.parse(AereoCRSConstants.DATE_FORMAT.format(calTo.getTime()) + " " + staHour + ":" + staMinute);
 		caSTA.setTime(paredDateSTA);
 
 		Calendar currentCalendar = Calendar.getInstance();
