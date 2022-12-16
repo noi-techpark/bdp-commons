@@ -131,6 +131,9 @@ public class SyncScheduler {
 				metaData.put(aeroconst.getWeekdaysun(), dto.getWeekdaysun());
 				metaData.put(aeroconst.getFromdestination(), dto.getFromdestination());
 				metaData.put(aeroconst.getTodestination(), dto.getTodestination());
+				// unix timestamp
+				metaData.put("departure_timestamp", dto.getTodestination());
+				metaData.put("arrival_timestamp", dto.getTodestination());
 				metaData.put("ssim", dto.getSsimMessage());
 				stationDto.setMetaData(metaData);
 

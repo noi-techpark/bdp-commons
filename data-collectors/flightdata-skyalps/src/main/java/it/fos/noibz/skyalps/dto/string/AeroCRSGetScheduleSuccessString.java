@@ -222,6 +222,8 @@ public class AeroCRSGetScheduleSuccessString {
 		aeroFlight.setSta(AereoCRSConstants.TIME_FORMAT.format(caSTA.getTime()));
 		aeroFlight.setDate(date);
 		aeroFlight.setSsimMessage(singleFlight);
+		aeroFlight.setDepartureTimestamp(paredDateSTD.getTime());
+		aeroFlight.setArrivalTimestamp(paredDateSTA.getTime());
 
 		aeroFlight.setWeekdaymon(weekday == AereoCRSConstants.MONDAY);
 		aeroFlight.setWeekdaytue(weekday == AereoCRSConstants.TUESDAY);

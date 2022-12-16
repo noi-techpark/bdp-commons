@@ -19,6 +19,8 @@ public class AeroCRSFlight implements Serializable {
 	private String std; // HH:MM departure time
 	private String sta; // HH:MM arrival time
 	private String date; // DDMMMYY actual date 22NOV22
+	private Long departureTimestamp; // unix timestamp
+	private Long arrivalTimestamp; // unix timestamp
 	private Boolean weekdaysun; // Sunday operating (true/false)
 	private Boolean weekdaymon; // Monday operating (true/false)
 	private Boolean weekdaytue; // Tuesday operating (true/false)
@@ -207,6 +209,22 @@ public class AeroCRSFlight implements Serializable {
 
 	public void setSsimMessage(String ssimMessage) {
 		this.ssimMessage = ssimMessage;
+	}
+
+	public Long getDepartureTimestamp() {
+		return departureTimestamp;
+	}
+
+	public void setDepartureTimestamp(Long departureTimestamp) {
+		this.departureTimestamp = departureTimestamp;
+	}
+
+	public Long getArrivalTimestamp() {
+		return arrivalTimestamp;
+	}
+
+	public void setArrivalTimestamp(Long arrivalTimestamp) {
+		this.arrivalTimestamp = arrivalTimestamp;
 	}
 
 	@Override
