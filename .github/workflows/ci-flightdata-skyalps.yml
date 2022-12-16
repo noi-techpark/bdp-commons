@@ -72,7 +72,7 @@ jobs:
           # Days for the request range starting from current date when the scheduled
           # job runs +/- days before/days after
           X_DAYS_BEFORE: 0
-          X_DAYS_AFTER: 60
+          X_DAYS_AFTER: 180
 
           # make test calls every hour:30 mins to not overlap with prod sync to reduce request on aerorcrs API
           X_SCHEDULER_JOB_STATIONS: 0 30 */1 * * *
