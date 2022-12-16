@@ -128,9 +128,7 @@ public class AeroCRSGetScheduleSuccessString {
 
 						do {
 							// actual flight date
-							AeroCRSFlight aeroFlight = createAereoFlight(singleFlight,
-									currentInstant,
-									weekday);
+							AeroCRSFlight aeroFlight = createAereoFlight(singleFlight, currentInstant, weekday);
 							flightsList.add(aeroFlight);
 							// go to next week
 							currentInstant = currentInstant.plus(7, ChronoUnit.DAYS);

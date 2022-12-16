@@ -39,7 +39,7 @@ public class AeroCRSFlight implements Serializable {
 	public AeroCRSFlight(String fltnumber, String airlinename, String airlineid, String fromdestination,
 			String todestination, String std, String sta, Boolean weekdaysun, Boolean weekdaymon, Boolean weekdaytue,
 			Boolean weekdaywed, Boolean weekdaythu, Boolean weekdayfri, Boolean weekdaysat, String accode,
-			String fltsfromperiod, String fltstoperiod, Long departureTimestamp, Long arrivalTimestamp) {
+			String fltsfromperiod, String fltstoperiod) {
 		this.fltnumber = fltnumber;
 		this.airlinename = airlinename;
 		this.airlineid = airlineid;
@@ -57,8 +57,6 @@ public class AeroCRSFlight implements Serializable {
 		this.accode = accode;
 		this.fltsfromperiod = fltsfromperiod;
 		this.fltstoperiod = fltstoperiod;
-		this.departureTimestamp = departureTimestamp;
-		this.arrivalTimestamp = arrivalTimestamp;
 	}
 
 	public String getFltnumber() {
@@ -236,7 +234,8 @@ public class AeroCRSFlight implements Serializable {
 				+ ", sta=" + sta + ", weekdaysun=" + weekdaysun + ", weekdaymon=" + weekdaymon + ", weekdaytue="
 				+ weekdaytue + ", weekdaywed=" + weekdaywed + ", weekdaythu=" + weekdaythu + ", weekdayfri="
 				+ weekdayfri + ", weekdaysat=" + weekdaysat + ", accode=" + accode + ", fltsfromperiod="
-				+ fltsfromperiod + ", fltstoperiod=" + fltstoperiod + ", arrival_timestamp=" + arrivalTimestamp + ", departureTimestamp=" + departureTimestamp +'}';
+				+ fltsfromperiod + ", fltstoperiod=" + fltstoperiod + ", arrival_timestamp=" + arrivalTimestamp
+				+ ", departureTimestamp=" + departureTimestamp + '}';
 	}
 
 }
