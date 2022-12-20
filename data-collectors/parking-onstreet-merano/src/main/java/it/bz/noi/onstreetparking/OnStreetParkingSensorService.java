@@ -59,7 +59,7 @@ public class OnStreetParkingSensorService {
 	}
 
 	public void applyParkingData(ParkingData parkingData) {
-		LOG.debug("apply parking data message: guid={}, name={}, status={}, lastChange:{}",
+		LOG.info("apply parking data message: guid={}, name={}, status={}, lastChange:{}",
 			parkingData.getGuid(), parkingData.getName(), parkingData.getState(), parkingData.getLastChange());
 		synchronized (STATION_DATA_SYNCRONIZATION_BLOCK) {
 			fetchStationIfAbsent(false);
