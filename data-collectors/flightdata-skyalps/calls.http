@@ -1,0 +1,24 @@
+##### VSCODE / REST Client https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+# Create a .env file and set the corresponding variables
+# See all $dotenv fields below
+
+# .env vars
+@auth_id_fares = {{$dotenv AUTH_ID_FARES}}
+@auth_password_fares = {{$dotenv AUTH_PASSWORD_FARES}}
+
+# other vars
+@endpoint-fares = https://api.aerocrs.com/v5/getFares
+@start=2022/12/09
+@end=2022/12/10
+@from=BZO
+@to=DUS
+
+### Classification 
+GET {{endpoint-fares}}
+?start={{start}}
+&end={{end}}
+&from={{from}}
+&to={{to}}
+Accept: application/json
+auth_id: {{auth_id_fares}}
+auth_password: {{auth_password_fares}}
