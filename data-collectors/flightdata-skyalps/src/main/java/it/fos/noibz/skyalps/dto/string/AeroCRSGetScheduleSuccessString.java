@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import it.fos.noibz.skyalps.dto.json.AeroCRSFlight;
-import it.fos.noibz.skyalps.dto.json.AeroCRSGetScheduleSuccess;
-import it.fos.noibz.skyalps.dto.json.AeroCRSGetScheduleSuccessResponse;
+import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSFlight;
+import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccess;
+import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccessResponse;
 import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
 /**

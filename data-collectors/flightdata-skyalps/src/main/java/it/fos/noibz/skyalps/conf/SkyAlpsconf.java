@@ -16,9 +16,9 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import it.fos.noibz.skyalps.SpringBootApp;
-import it.fos.noibz.skyalps.dto.json.AeroCRSFlight;
-import it.fos.noibz.skyalps.dto.json.AeroCRSGetScheduleSuccess;
-import it.fos.noibz.skyalps.dto.json.AeroCRSGetScheduleSuccessResponse;
+import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSFlight;
+import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccess;
+import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccessResponse;
 import it.fos.noibz.skyalps.rest.AeroCRSRest;
 import it.fos.noibz.skyalps.service.SyncScheduler;
 

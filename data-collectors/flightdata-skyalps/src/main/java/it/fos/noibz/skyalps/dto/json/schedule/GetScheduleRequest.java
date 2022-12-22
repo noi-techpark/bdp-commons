@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package it.fos.noibz.skyalps.dto.json;
+package it.fos.noibz.skyalps.dto.json.schedule;
 
 import java.io.Serializable;
 import java.util.Date;

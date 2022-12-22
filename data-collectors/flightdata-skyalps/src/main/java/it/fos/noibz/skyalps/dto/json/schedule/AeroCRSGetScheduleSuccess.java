@@ -1,4 +1,4 @@
-package it.fos.noibz.skyalps.dto.json;
+package it.fos.noibz.skyalps.dto.json.schedule;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

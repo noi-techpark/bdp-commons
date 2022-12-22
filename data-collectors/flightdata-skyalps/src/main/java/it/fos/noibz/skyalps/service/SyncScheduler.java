@@ -19,8 +19,8 @@ import org.springframework.web.client.RestTemplate;
 
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
-import it.fos.noibz.skyalps.dto.json.AeroCRSFlight;
-import it.fos.noibz.skyalps.dto.json.AeroCRSGetScheduleSuccessResponse;
+import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSFlight;
+import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccessResponse;
 import it.fos.noibz.skyalps.rest.AeroCRSRest;
 
 //This class is responsible to schedule retrieve and push operations for Stations.

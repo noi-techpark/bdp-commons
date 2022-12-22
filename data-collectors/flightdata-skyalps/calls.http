@@ -20,5 +20,5 @@ GET {{endpoint-fares}}
 &from={{from}}
 &to={{to}}
 Accept: application/json
-auth_id: {{auth_id_fares}}
 auth_password: {{auth_password_fares}}
+auth_id: {{auth_id_fares}}

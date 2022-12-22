@@ -25,10 +25,10 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.fos.noibz.skyalps.dto.json.AeroCRSGetScheduleSuccessResponse;
 import it.fos.noibz.skyalps.dto.json.AeroCRSParms;
 import it.fos.noibz.skyalps.dto.json.AeroCRSRequest;
-import it.fos.noibz.skyalps.dto.json.GetScheduleRequest;
+import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccessResponse;
+import it.fos.noibz.skyalps.dto.json.schedule.GetScheduleRequest;
 import it.fos.noibz.skyalps.dto.string.AeroCRSGetScheduleSuccessResponseString;
 import it.fos.noibz.skyalps.service.AeroCRSConst;
 
