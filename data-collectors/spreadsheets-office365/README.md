@@ -164,6 +164,8 @@ A new Application needs to be created in Azure Active Directories:
 5. Create a certificate to be able to call the Graph API Generate the private key in PEM format and create a PKCS8
    version
 
+    **Last certificate cerated on 23.12.2022 and valid until 23.12.2032**
+
     You can simply execute the script and copy the generated files into the `src/main/resources/auth` directory.
 
     ```
