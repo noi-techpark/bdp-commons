@@ -13,32 +13,33 @@ Note: Any Big Data Platform can be used.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 **Table of Contents**
 
-- [Office 365 Spreadsheets DataCollector](#office-365-spreadsheets-datacollector)
-  - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Source code](#source-code)
-    - [Set Up](#set-up)
-      - [Without Docker](#without-docker)
-      - [With Docker](#with-docker)
-      - [Create a Microsoft Sharepoint site](#create-a-microsoft-sharepoint-site)
-      - [Create the Excel spreadsheet](#create-the-excel-spreadsheet)
-      - [Fetch files from Sharepoint](#fetch-files-from-sharepoint)
-      - [Upload files to AWS S3 bucket](#upload-files-to-aws-s3-bucket)
-      - [Azure Active Directory](#azure-active-directory)
-      - [Keycloak](#keycloak)
-      - [OpenDataHub configuration](#opendatahub-configuration)
-    - [Execute without Docker](#execute-without-docker)
-    - [Execute with Docker](#execute-with-docker)
-  - [Additional information](#additional-information)
-    - [Possible optimizations](#possible-optimizations)
-      - [Microsoft change notifications to replace cron scheduler](#microsoft-change-notifications-to-replace-cron-scheduler)
-    - [Guidelines](#guidelines)
-    - [Support](#support)
-    - [Contributing](#contributing)
-    - [Documentation](#documentation)
-    - [License](#license)
+-   [Office 365 Spreadsheets DataCollector](#office-365-spreadsheets-datacollector)
+    -   [Getting started](#getting-started)
+        -   [Prerequisites](#prerequisites)
+        -   [Source code](#source-code)
+        -   [Set Up](#set-up)
+            -   [Without Docker](#without-docker)
+            -   [With Docker](#with-docker)
+            -   [Create a Microsoft Sharepoint site](#create-a-microsoft-sharepoint-site)
+            -   [Create the Excel spreadsheet](#create-the-excel-spreadsheet)
+            -   [Fetch files from Sharepoint](#fetch-files-from-sharepoint)
+            -   [Upload files to AWS S3 bucket](#upload-files-to-aws-s3-bucket)
+            -   [Azure Active Directory](#azure-active-directory)
+            -   [Keycloak](#keycloak)
+            -   [OpenDataHub configuration](#opendatahub-configuration)
+        -   [Execute without Docker](#execute-without-docker)
+        -   [Execute with Docker](#execute-with-docker)
+    -   [Additional information](#additional-information)
+        -   [Possible optimizations](#possible-optimizations)
+            -   [Microsoft change notifications to replace cron scheduler](#microsoft-change-notifications-to-replace-cron-scheduler)
+        -   [Guidelines](#guidelines)
+        -   [Support](#support)
+        -   [Contributing](#contributing)
+        -   [Documentation](#documentation)
+        -   [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -51,10 +52,10 @@ purposes.
 
 To build the project, the following prerequisites must be met:
 
-- Java JDK 1.8 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
-- [Maven](https://maven.apache.org/) 3.x
-- Microsoft Sharepoint site
-- Excel Document hosted on the Sharepoint site (in the Shared Documents Folder)
+-   Java JDK 1.8 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
+-   [Maven](https://maven.apache.org/) 3.x
+-   Microsoft Sharepoint site
+-   Excel Document hosted on the Sharepoint site (in the Shared Documents Folder)
 
 If you want to run the application using [Docker](https://www.docker.com/), the environment is already set up with all
 dependencies for you. You only have to install [Docker](https://www.docker.com/)
@@ -78,12 +79,14 @@ cd bdp-commons/data-collectors/spreadsheets-office365
 ### Set Up
 
 #### Without Docker
+
 Copy the file `src/main/resources/application.properties` to `src/main/resources/application-local.properties`.  
 This file will be your environment variables file.  
 Note: The environment variables in application.properties are in lower case, but in further set up instructions  
-They are UPPER case. *Just leave them lower case*
+They are UPPER case. _Just leave them lower case_
 
 #### With Docker
+
 Copy the file `.env.example` to `.env`.  
 This file will be your environment variables file.
 
@@ -94,17 +97,18 @@ In the most cases you need to contact the Microsoft Administrator of your organi
 Your created site then has a full URL. For example `https://your-organization.sharepoint.com/sites/your-site-id`
 
 Now you can fill the environment variables file:
+
 ```
 SHAREPOINT_HOST=your-organization.sharepoint.com
 SHAREPOINT_SITE_ID=your-site-id
 ```
 
-#### Create the Excel spreadsheet 
+#### Create the Excel spreadsheet
 
 Create a Excel spreadsheet in the previous step created Sharepoint sites "Shared Documents" folder.  
 The spreadsheet can also be inside a folder of the "Shared Documents" folder.
 
-Write into environment variables file the full path starting from the  "Shared Documents" folder.
+Write into environment variables file the full path starting from the "Shared Documents" folder.
 For example if you have the path `Shared Documents/Example/Example.xlsx` you put only `Example/Example.xlsx`  
 into environment variables file:
 
@@ -113,26 +117,30 @@ SHAREPOINT_PATH_TO_DOC=Example/Example.xlsx
 ```
 
 #### Fetch files from Sharepoint
+
 If you also need to fetch files like images from Sharepoint, please set the following environment variables.  
 The header in the spreadsheet for the column with the filenames needs to have `file` in it.  
 `ex. file logo`  
 Note: The syncing of the files from Sharepoint with S3 gets only triggered, if the spreadsheet had changes too.  
-So only changing files in Sharepoint folder doesn't upload them to S3.  
+So only changing files in Sharepoint folder doesn't upload them to S3.
+
 ```
 SHAREPOINT_FETCH_FILES=true
 SHAREPOINT_PATH_TO_FILES=Images_Directory/
 ```
 
 #### Upload files to AWS S3 bucket
+
 To upload the files to an S3 bucket set the following environment variables.
+
 ```
 AWS_BUCKET_NAME=YOUR_BUCKET_NAME
 AWS_BUCKET_URL=YOUR_BUCKET_URL
 AWS_ACCESS_KEY=YOUR_ACCESS_KEY
 AWS_ACCESS_SECRET_KEY=YOUR_ACCESS_SECRET
 ```
-Note: To get an access key and secret you must create a Access Point in your S3 bucket configuration in the AWS console.
 
+Note: To get an access key and secret you must create a Access Point in your S3 bucket configuration in the AWS console.
 
 #### Azure Active Directory
 
@@ -141,45 +149,58 @@ A new Application needs to be created in Azure Active Directories:
 1. Open [Azure Admin Center](https://aad.portal.azure.com/) and Select Azure Active Directory on the left Sidebar
 2. Then select App Registrations under Manager
 3. Select New registration:
+
     - Set Name as you likes
     - Set Supported account types to Account in any organizational directory and personal Microsoft accounts.
     - Under Redirect URI, change the dropdown to Public client/native (mobile & desktop), and set the value to
-      ```https://login.microsoftonline.com/common/oauth2/nativeclient```
+      `https://login.microsoftonline.com/common/oauth2/nativeclient`
 
 4. Set permissions in API permissions by clicking the "+" button, selecting Graph API and then in Application
    Permissions check the following Permissions
     ```
     Sites.Read.All
-    ```  
+    ```
     Make sure Sites.Read.All access is granted by your Azure Admin
-      
 5. Create a certificate to be able to call the Graph API Generate the private key in PEM format and create a PKCS8
    version
+
+    You can simply execute the script and copy the generated files into the `src/main/resources/auth` directory.
+
+    ```
+    sh create-cert.sh
+    ```
+
+    Or you can execute every step manually:
 
     ```
     openssl genrsa -out private_key.pem 2048
     openssl pkcs8 -topk8 -inform PEM -outform DER -in private_key.pem -nocrypt > pkcs8_key
     ```
-   Generate a certificate using the private key.
+
+    Generate a certificate using the private key.
+
     ```
     openssl req -new -key private_key.pem -out cert.csr
-   ```
-   This first command will ask for a variety of extra information, like company name, country, and a password. None of
-   this is used by the application, so you can set these values as nothing/anything you want
+    ```
+
+    This first command will ask for a variety of extra information, like company name, country, and a password. None of
+    this is used by the application, so you can set these values as nothing/anything you want
+
     ```
     openssl x509 -req -days 365 -in cert.csr -signkey private_key.pem -out cert.crt
-   ``` 
-   Finally, go back to the Azure portalIn the Application menu blade, click on the **Certificates & secrets**, in the
-   Certificates section, **upload the certificate (cert.crt file) you created.**
+    ```
+
+    Finally, go back to the Azure portalIn the Application menu blade, click on the **Certificates & secrets**, in the
+    Certificates section, **upload the certificate (cert.crt file) you created.**
 
 6. Take note of ClientID, TenantID you find in Overview in Active Directory and put it into environment variables file.  
-   Put also the path to the generated certificate and public key there. 
+   Put also the path to the generated certificate and public key there.
    Note: You can put the certificates in /resources/auth but also wherever you want,  
    just use an **absolute path** in environment variables files.
     ```
     TENANT_ID=your_tenant_id
     CLIENT_ID=your_tenant_id
-    #put pkcs8_key public key here 
+    #put pkcs8_key public key here
     KEY_PATH=auth/pkcs8_key
     #put cert.crt certiticate here
     CERT_PATH=auth/cert.crt
@@ -187,15 +208,16 @@ A new Application needs to be created in Azure Active Directories:
 7. Config the cron annotation to change the Scheduler as you desire.  
    When executed, the last edit timestamp gets compared and if the workbook changed, the workbook gets fetched  
    and synced with the BDP.
-   
+
     ```
     CRON=0 0 6-20 * * 1-5
     ```
 
 #### Keycloak
 
-For authentication with the Big data Platform, Keycloak O-Auth is used. 
+For authentication with the Big data Platform, Keycloak O-Auth is used.
 Fill the environment variables file with your Keycloak configuration.
+
 ```
 OAUTH_AUTH_URI=https://your-auth-uri.com/your-auth-uri
 OAUTH_TOKEN_URI=https://your-token-uri.com/your-token-uri
@@ -208,7 +230,8 @@ OAUTH_CLIENT_SECRET=your-client-secret
 #### OpenDataHub configuration
 
 To be able to push the generated data to the OpenDataHub, you need to set the following environment variables.
- ```
+
+```
 spreadsheetId=office365
 suportedLanguages=en,de,it,lad
 headers.nameId=name
@@ -221,7 +244,7 @@ spreadsheet.sheets.metadataId=metadata-id
 composite.unique.key=organization - short name: de
 provenance.name=dc-office365
 provenance.version=1.0.0-SNAPSHOT
- ```
+```
 
 ### Execute without Docker
 
@@ -266,6 +289,7 @@ docker-compose run --rm app mvn clean test
 ### Possible optimizations
 
 #### Microsoft change notifications to replace cron scheduler
+
 The Microsoft graphs offers a [change notification system](https://docs.microsoft.com/en-us/graph/webhooks) to trigger
 an application over webhooks, when changes (for example on a document) where made.
 
@@ -273,10 +297,10 @@ In this application a cron job scheduler is used to see if changes where made on
 but it could be replaced by Microsoft's change notifications.  
 The cron job is used at the moment, because its simpler and more secure:
 
-- Microsoft's Webhooks don't have any Authentication. So anybody knowing the link could trigger the Webhooks with a
-  simple cURL.
-- Webhooks could be secured by Firewall and IP-blocking, but Microsoft IPs change periodically without notice, so it
-  would break the application, without noticing it.
+-   Microsoft's Webhooks don't have any Authentication. So anybody knowing the link could trigger the Webhooks with a
+    simple cURL.
+-   Webhooks could be secured by Firewall and IP-blocking, but Microsoft IPs change periodically without notice, so it
+    would break the application, without noticing it.
 
 See [here](https://docs.microsoft.com/en-us/graph/webhooks) for the official statement about the security issue.
 
