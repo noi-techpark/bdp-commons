@@ -60,6 +60,8 @@ jobs:
           # Authentication
           X_AUTH_ID: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_ID }}
           X_AUTH_PASSWORD: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_PASSWORD }}
+          X_AUTH_ID_FARES: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_ID_FARES }}
+          X_AUTH_PASSWORD_FARES: ${{ secrets.FLIGHTSDATA_SKYALPS_AUTH_PASSWORD_FARES }}
           X_ssim_enabled: true
 
           # Logging
