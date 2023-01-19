@@ -120,30 +120,5 @@ public class AeroCRSConst {
 	public static String getEnvperiod() {
 		return ENVPERIOD;
 	}
-	
-	 @Value("${auth.id}")
-	    public void setAUTHIDStatic(String authid){
-	        AeroCRSConst.AUTHID_STATIC = authid;
-	    }
-	 
-	 @Value("${auth.password}")
-	    public void setPASSWORDIDStatic(String authpassword){
-	        AeroCRSConst.AUTHPASSWORD_STATIC = authpassword;
-	    }
-
-	public String getAuthid() {
-		return authid;
-	}
-
-	public String getAuthpassword() {
-		return authpassword;
-	}
-
-	public static String getAUTHID_STATIC() {
-		return AUTHID_STATIC;
-	}
-	public static String getAUTHPASSWORD_STATIC() {
-		return AUTHPASSWORD_STATIC;
-	}
 	 
 }

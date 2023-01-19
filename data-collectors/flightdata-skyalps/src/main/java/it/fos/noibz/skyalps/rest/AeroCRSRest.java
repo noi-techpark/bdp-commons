@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,51 +29,63 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.fos.noibz.skyalps.dto.json.AeroCRSParms;
 import it.fos.noibz.skyalps.dto.json.AeroCRSRequest;
+import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFaresSuccessResponse;
+import it.fos.noibz.skyalps.dto.json.fares.GetFaresRequest;
 import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccessResponse;
 import it.fos.noibz.skyalps.dto.json.schedule.GetScheduleRequest;
 import it.fos.noibz.skyalps.dto.string.AeroCRSGetScheduleSuccessResponseString;
-import it.fos.noibz.skyalps.service.AeroCRSConst;
 
 /**
  *
  * @author Thierry BODHUIN, bodhuin@gmail.com
  */
+@Service
 public class AeroCRSRest {
 
-	private static final String URL_GET_SCHEDULE = "https://api.aerocrs.com/v5/getSchedule";
-	private static final Logger LOG = LoggerFactory.getLogger(AeroCRSRest.class);
+	private final String URL_GET_SCHEDULE = "https://api.aerocrs.com/v5/getSchedule";
+	private final Logger LOG = LoggerFactory.getLogger(AeroCRSRest.class);
 
-	@RequestMapping(value = "/getSchedule", method = RequestMethod.POST)
-	@ResponseBody
-	public static AeroCRSGetScheduleSuccessResponse getSchedule(RestTemplate restTemplate,
-			@RequestParam @DateTimeFormat(pattern = "yyyy/MM/dd") Date fltsFROMperiod, // YYYY/MM/DD start period of the
-																						// required data
-			@RequestParam @DateTimeFormat(pattern = "yyyy/MM/dd") Date fltsTOperiod, // YYYY/MM/DD end period of the
-																						// required data
-			@RequestParam String codeformat, // IATA / ICAO / INTERNAL / AIRLINE – output of codes
-			// IATA - the system will generate the output only for routes with IATA codes,
-			// and the output codes will be IATA
-			// ICAO - the system will generate the output only for routes with ICAO codes,
-			// and the output codes will be ICAO
-			// INTERNAL - The system will generate the output with internal assigned codes
-			// for non IATA destinations, note that AeroCRS internal codes can conflict with
-			// real IATA destinations, the rest of the destinations will be in IATA codes.
-			// AIRLINE - The system will output the destinations in the airline defined
-			// codes
-			@RequestParam String companycode, // Company short code (as supplied to you by the team) - Adding this
-												// element will narrow the search of the data for the specific airline.
-			@RequestParam boolean soldonline, // when set to true will show only flights which are sold online.
-			@RequestParam(required = false) boolean ssim
-	// 1 - when the response should be in an SSIM format, 0 - string SSIM format
-	// (for non SSIM results do not send this prameter)) {
-	) throws MalformedURLException, IOException, ParseException {
+	@Value("${auth.fares.id}")
+	private String faresAuthId;
+
+	@Value("${auth.fares.password}")
+	private String faresAuthPassword;
+
+	@Value("${auth.schedule.id}")
+	private String scheduleAuthId;
+
+	@Value("${auth.schedule.password}")
+	private String scheduleAuthPassword;
+
+	@Value("${fares.currency}")
+	private String currency;
+
+	private RestTemplate restTemplate;
+
+	public AeroCRSRest() {
+		restTemplate = new RestTemplate();
+	}
+
+	// IATA / ICAO / INTERNAL / AIRLINE – output of codes
+	// IATA - the system will generate the output only for routes with IATA codes,
+	// and the output codes will be IATA
+	// ICAO - the system will generate the output only for routes with ICAO codes,
+	// and the output codes will be ICAO
+	// INTERNAL - The system will generate the output with internal assigned codes
+	// for non IATA destinations, note that AeroCRS internal codes can conflict with
+	// real IATA destinations, the rest of the destinations will be in IATA codes.
+	// AIRLINE - The system will output the destinations in the airline defined
+	// codes
+	public AeroCRSGetScheduleSuccessResponse getSchedule(Date fltsFROMperiod, Date fltsTOperiod, String codeformat,
+			String companycode, boolean soldonline, boolean ssim)
+			throws MalformedURLException, IOException, ParseException {
 		// create an instance of RestTemplate
 		// RestTemplate restTemplate = new RestTemplate();
 		// create headers
 		HttpHeaders headers = new HttpHeaders();
 		// headers.setBasicAuth(AUTH_ID, AUTH_PASSWORD);
-		headers.set("auth_id", AeroCRSConst.getAUTHID_STATIC());
-		headers.set("auth_password", AeroCRSConst.getAUTHPASSWORD_STATIC());
+		headers.set("auth_id", scheduleAuthId);
+		headers.set("auth_password", scheduleAuthPassword);
 		// set `content-type` header
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		// set `accept` header
@@ -112,7 +126,38 @@ public class AeroCRSRest {
 				LOG.debug("" + response.getStatusCode());
 			}
 		}
-		return (null);
+		return null;
+	}
+
+	public AeroCRSFaresSuccessResponse getFares(
+			Date fltsFROMperiod, Date fltsTOperiod, String from, String to) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("auth_id", faresAuthId);
+		headers.set("auth_password", faresAuthPassword);
+		// set `content-type` header
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		// set `accept` header
+		headers.setAccept(Arrays.asList(MediaType.ALL) /* Collections.singletonList(MediaType.APPLICATION_JSON) */);
+		// build the request
+		GetFaresRequest faresRequest = new GetFaresRequest(fltsFROMperiod, fltsTOperiod, from, to, currency);
+		// build the request
+		HttpEntity<AeroCRSRequest> request = new HttpEntity<>(new AeroCRSRequest(new AeroCRSParms(faresRequest)),
+				headers);
+
+		restTemplate.getMessageConverters().add(0, mappingJacksonHttpMessageConverter());
+		ResponseEntity<AeroCRSFaresSuccessResponse> response = restTemplate
+				.postForEntity(URL_GET_SCHEDULE, request, AeroCRSFaresSuccessResponse.class);
+		// check response
+		if (response.getStatusCode() == HttpStatus.OK && request.getBody() != null) {
+			LOG.debug("Request Successful");
+			LOG.debug("" + response.getBody());
+			return response.getBody();
+
+		} else {
+			LOG.debug("Request Failed");
+			LOG.debug("" + response.getStatusCode());
+		}
+		return null;
 	}
 
 	public static MappingJackson2HttpMessageConverter mappingJacksonHttpMessageConverter() {

@@ -15,10 +15,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
+import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFaresSuccessResponse;
 import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSFlight;
 import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccessResponse;
 import it.fos.noibz.skyalps.rest.AeroCRSRest;
@@ -55,9 +55,6 @@ public class SyncScheduler {
 
 	@Autowired
 	AeroCRSConst aeroconst;
-
-	@Autowired
-	RestTemplate template;
 
 	@Lazy
 	@Autowired
@@ -101,7 +98,9 @@ public class SyncScheduler {
 			to.add(Calendar.DATE, i + 1);
 			Date fltsTOPeriod = to.getTime();
 
-			AeroCRSGetScheduleSuccessResponse aero = acrsclient.getSchedule(template, fltsFROMPeriod, fltsTOPeriod,
+			// SCHEDULES
+
+			AeroCRSGetScheduleSuccessResponse aero = acrsclient.getSchedule(fltsFROMPeriod, fltsTOPeriod,
 					aeroconst.getIatacode(), aeroconst.getCompanycode(), false, ssimEnabled);
 
 			for (AeroCRSFlight dto : aero.getAerocrs().getFlight()) {
@@ -139,6 +138,14 @@ public class SyncScheduler {
 
 				odhStationlist.add(stationDto);
 
+			}
+
+			// FARES
+
+
+			for (StationDto dto: odhStationlist) {
+			AeroCRSFaresSuccessResponse fares = acrsclient.getFares(fltsFROMPeriod, fltsTOPeriod, (String)dto.getMetaData().get(aeroconst.getFromdestination()), (String) dto.getMetaData().get(aeroconst.getTodestination()));
+				dto.getMetaData().put("fares", fares.getFares().getFares().getAdultFareOW());
 			}
 		}
 
