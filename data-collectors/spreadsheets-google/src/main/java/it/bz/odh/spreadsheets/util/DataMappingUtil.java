@@ -159,10 +159,15 @@ public class DataMappingUtil {
         StationList dtos = new StationList();
         Set<Integer> missingPositions = new HashSet<>();
 
-        int i = 0;
+        int i = -1;
 
         for (final List<Object> row : spreadSheetValues) {
             i++;
+
+            // always skip header row
+            if (i == 0) {
+                continue;
+            }
 
             StationDto dto = null;
             try {
