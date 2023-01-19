@@ -13,10 +13,10 @@ env:
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
   SERVER_PORT: 1020
-  VENDOR: staEcharging
+  VENDOR: STA
   CLIENT_SECRET_BASE64: ${{ secrets.SPREADSHEETS_GOOGLE_CLIENT_SECRET_BASE64 }}
   STORED_CREDENTIAL_BASE64: ${{ secrets.SPREADSHEETS_GOOGLE_STORED_CREDENTIAL_BASE64 }}
-  SPREADSHEET_ID: 1ucCQzAVGmvyRpeq-lIPffALQaWcG4LfPakc2mjt79fY
+  SPREADSHEET_ID: ${{ secrets.SPREADSHEETS_GOOGLE_STA_ECHARGING_SPREADSHEET_ID }}
 
 
 jobs:
@@ -53,10 +53,10 @@ jobs:
           X_VENDOR: ${{ env.VENDOR }}
           X_spreadsheetId: ${{ env.SPREADSHEET_ID }}
           X_suportedLanguages: en,de,it,lad
-          X_headers_nameId: STATION_NAME
-          X_headers_metaDataId: STATE
-          X_headers_latitudeId: LATITUDE
-          X_headers_longitudeId: LONGITUDE
+          X_headers_nameId: station_name
+          X_headers_metaDataId: state
+          X_headers_latitudeId: latitude
+          X_headers_longitudeId: longitude
           X_spreadsheet_range: A1:Z
           X_spreadsheet_notificationUrl: https://spreadsheets.testingmachine.eu/sta-echarging/trigger
           X_stationtype: EChargingStation

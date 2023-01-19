@@ -1,0 +1,12 @@
+##### VSCODE / REST Client https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+# Create a .env file and set the corresponding variables
+# See all $dotenv fields below
+
+# other vars
+@url = http://localhost:9001/trigger 
+
+
+### Classification 
+POST {{url}}
+x-goog-changed: content
+Accept: application/json
