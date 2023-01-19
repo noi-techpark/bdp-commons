@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
+import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFare;
+import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFares;
 import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFaresSuccessResponse;
 import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSFlight;
 import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccessResponse;
@@ -141,15 +144,34 @@ public class SyncScheduler {
 			}
 
 			// FARES
+			for (StationDto dto : odhStationlist) {
+				AeroCRSFaresSuccessResponse faresResponse = acrsclient.getFares(fltsFROMPeriod, fltsTOPeriod,
+						(String) dto.getMetaData().get(aeroconst.getFromdestination()),
+						(String) dto.getMetaData().get(aeroconst.getTodestination()));
 
+				if (faresResponse != null && faresResponse.getAerocrs().isSuccess() && faresResponse.getAerocrs().getFares() != null) {
+					AeroCRSFares fares = faresResponse.getAerocrs().getFares();
+					
 
-			for (StationDto dto: odhStationlist) {
-			AeroCRSFaresSuccessResponse fares = acrsclient.getFares(fltsFROMPeriod, fltsTOPeriod, (String)dto.getMetaData().get(aeroconst.getFromdestination()), (String) dto.getMetaData().get(aeroconst.getTodestination()));
-				dto.getMetaData().put("fares", fares.getFares().getFares().getAdultFareOW());
+					// TODO
+					// check also for date and include different price models
+					AeroCRSFare fare = fares.getFare().get(0);
+
+					dto.getMetaData().put("adultFareOW", fare.getAdultFareOW());
+					dto.getMetaData().put("adultFareRT", fare.getAdultFareRT());
+					dto.getMetaData().put("childFareOW", fare.getChildFareOW());
+					dto.getMetaData().put("childFareRT", fare.getChildFareRT());
+
+					LOG.debug("metadata {}", dto.getMetaData());
+				} else {
+					LOG.info("fares request not successful");
+				}
+
 			}
 		}
 
 		LOG.info("Trying to sync the stations...");
+
 		odhclient.syncStations(odhclient.getIntegreenTypology(), odhStationlist);
 		LOG.info("Syncing stations done.");
 

@@ -8,7 +8,7 @@ import java.util.Locale;
  * Use this class to save static variables for memory optimizations
  */
 public class AereoCRSConstants {
-    protected static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
     protected static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm");
     protected static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
     protected static final SimpleDateFormat DATE_FORMAT_EN = new SimpleDateFormat("ddMMMyy", Locale.ENGLISH);

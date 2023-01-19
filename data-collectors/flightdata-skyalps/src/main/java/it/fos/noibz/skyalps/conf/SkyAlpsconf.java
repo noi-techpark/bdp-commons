@@ -39,64 +39,9 @@ public class SkyAlpsconf {
 	@Value("${ssim_enabled}")
 	private boolean ssimEnabled;
 
-	@Bean(name = "appRestClient")
-	public static RestTemplate getRestClient() {
-		RestTemplate restClient = new RestTemplate(
-				new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
-		restClient.setInterceptors(Collections.singletonList((request, body, execution) -> {
-			LOG.debug("Intercepting...");
-			return execution.execute(request, body);
-		}));
-		return restClient;
-	}
-
-
 	//Boolean to retrieve ssim format
 	@Bean
 	public boolean ssim(){
 		return ssimEnabled;
 	}
-	
-	// @SuppressWarnings("static-access")
-	// @Bean
-	// public CommandLineRunner runner(RestTemplate clients, boolean ssim) throws Exception {
-	// 	// Parsing user string into a Date object
-	// 	// Adding fixed amount of days to the Date object
-	// 	// Substracting fixed amount of days to the Date object
-	// 	// Retrieving flights in between
-	// 	Date date = new Date();
-	// 	Calendar calFrom = Calendar.getInstance();
-	// 	calFrom.setTime(date);
-	// 	calFrom.add(Calendar.DATE, -DAYS_BEFORE);
-	// 	Calendar calTo = Calendar.getInstance();
-	// 	calTo.setTime(date);
-	// 	calTo.add(Calendar.DATE, DAYS_AFTER);
-	// 	Date fltsFROMperiod = calFrom.getTime();
-	// 	Date fltsTOperiod = calTo.getTime();
-	// 	LOG.debug("Date flight retrieval will start from {} to {}", fltsFROMperiod, fltsTOperiod);
-	// 	return args -> {
-	// 		AeroCRSGetScheduleSuccessResponse result = AeroCRSRest.getSchedule(fltsFROMperiod, fltsTOperiod,
-	// 				IATA, BN, false, ssim);
-	// 		LOG.debug("The Result is " + result.getAerocrs());
-	// 		LOG.debug("The result AeroCRS is " + result.getAerocrs());
-	// 		if (result.getAerocrs() instanceof AeroCRSGetScheduleSuccess) {
-	// 			AeroCRSGetScheduleSuccess success = (AeroCRSGetScheduleSuccess) result.getAerocrs();
-	// 			LOG.debug("AeroCRSGetScheduleSuccess: " + success);
-	// 			if (success.isSuccess()) {
-	// 				for (AeroCRSFlight flight : success.getFlight()) {
-	// 					LOG.debug("Flights: " + flight);
-	// 				}
-	// 				LOG.debug("Result are displayed...moving on sync and push flights: ");
-	// 				try {
-	// 					sync.syncJobStations();
-
-	// 				} catch (Exception e) {
-	// 					e.getCause();
-	// 				}
-	// 			}
-	// 		}
-
-	// 	};
-	// }
-
 }

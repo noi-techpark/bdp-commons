@@ -26,4 +26,5 @@ public class AeroCRSFaresSuccess {
     public void setFares(AeroCRSFares fares) {
         this.fares = fares;
     }
+
 }
