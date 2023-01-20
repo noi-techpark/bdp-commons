@@ -22,8 +22,10 @@ import it.bz.idm.bdp.dto.StationList;
 import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFare;
 import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFares;
 import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFaresSuccessResponse;
+import it.fos.noibz.skyalps.dto.json.fares.ODHFare;
 import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSFlight;
 import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccessResponse;
+import it.fos.noibz.skyalps.dto.string.AereoCRSConstants;
 import it.fos.noibz.skyalps.rest.AeroCRSRest;
 
 //This class is responsible to schedule retrieve and push operations for Stations.
@@ -153,16 +155,19 @@ public class SyncScheduler {
 						&& faresResponse.getAerocrs().getFares() != null) {
 					AeroCRSFares fares = faresResponse.getAerocrs().getFares();
 
-					// TODO
-					// check also for date and include different price models
 					List<AeroCRSFare> decodeFare = fares.decodeFare();
 
+					// map fares by type like SKY LIGHT, SKY BASIC, SKY GO, SKY PLUS
+					Map<String, ODHFare> faresByType = new HashMap<>();
 					for (AeroCRSFare fare : decodeFare) {
-						dto.getMetaData().put("adultFareOW", fare.getAdultFareOW());
-						dto.getMetaData().put("adultFareRT", fare.getAdultFareRT());
-						dto.getMetaData().put("childFareOW", fare.getChildFareOW());
-						dto.getMetaData().put("childFareRT", fare.getChildFareRT());
+						String key = fare.getType().replace(" ", "_");
+						Date farePeriodToDate = AereoCRSConstants.DATE_FORMAT.parse(fare.getToDate());
+						if (!faresByType.containsKey(key) && !fltsTOPeriod.after(farePeriodToDate)) {
+							faresByType.put(key, new ODHFare(fare));
+						}
 					}
+
+					dto.getMetaData().put("fares", faresByType);
 
 					LOG.debug("metadata {}", dto.getMetaData());
 				} else {

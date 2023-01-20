@@ -27,7 +27,7 @@ public class AeroCRSFare {
     private Double adultFareOW;
     private Double childFareOW;
     private Double infantFareOW;
-
+    private String type;
     private Double tax1OW;
     private Double tax2OW;
     private Double tax3OW;
@@ -39,10 +39,11 @@ public class AeroCRSFare {
 
     }
 
-    public AeroCRSFare(int count, String airlineDesignator, String airlineICAOcode, String airlinename,
-            String fromCode, String toCode, String fromDate, String toDate, List<String> classes, Double adultFareRT,
-            Double childFareRT, Double infantFareRT, Double tax1rt, Double tax2rt, Double tax3rt, Double tax4rt,
-            Double adultFareOW, Double childFareOW, Double infantFareOW, Double tax1ow, Double tax2ow, Double tax3ow,
+    
+    public AeroCRSFare(int count, String airlineDesignator, String airlineICAOcode, String airlinename, String fromCode,
+            String toCode, String fromDate, String toDate, List<String> classes, Double adultFareRT, Double childFareRT,
+            Double infantFareRT, Double tax1rt, Double tax2rt, Double tax3rt, Double tax4rt, Double adultFareOW,
+            Double childFareOW, Double infantFareOW, String type, Double tax1ow, Double tax2ow, Double tax3ow,
             Double tax4ow, String chargeTaxOnReturnTrip, String notification) {
         this.count = count;
         this.airlineDesignator = airlineDesignator;
@@ -63,6 +64,7 @@ public class AeroCRSFare {
         this.adultFareOW = adultFareOW;
         this.childFareOW = childFareOW;
         this.infantFareOW = infantFareOW;
+        this.type = type;
         tax1OW = tax1ow;
         tax2OW = tax2ow;
         tax3OW = tax3ow;
@@ -70,6 +72,7 @@ public class AeroCRSFare {
         this.chargeTaxOnReturnTrip = chargeTaxOnReturnTrip;
         this.notification = notification;
     }
+
 
     public int getCount() {
         return count;
@@ -270,5 +273,14 @@ public class AeroCRSFare {
     public void setNotification(String notification) {
         this.notification = notification;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 
 }
