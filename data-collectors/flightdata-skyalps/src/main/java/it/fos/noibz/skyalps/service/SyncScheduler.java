@@ -149,18 +149,20 @@ public class SyncScheduler {
 						(String) dto.getMetaData().get(aeroconst.getFromdestination()),
 						(String) dto.getMetaData().get(aeroconst.getTodestination()));
 
-				if (faresResponse != null && faresResponse.getAerocrs().isSuccess() && faresResponse.getAerocrs().getFares() != null) {
+				if (faresResponse != null && faresResponse.getAerocrs().isSuccess()
+						&& faresResponse.getAerocrs().getFares() != null) {
 					AeroCRSFares fares = faresResponse.getAerocrs().getFares();
-					
 
 					// TODO
 					// check also for date and include different price models
-					AeroCRSFare fare = fares.getFare().get(0);
+					List<AeroCRSFare> decodeFare = fares.decodeFare();
 
-					dto.getMetaData().put("adultFareOW", fare.getAdultFareOW());
-					dto.getMetaData().put("adultFareRT", fare.getAdultFareRT());
-					dto.getMetaData().put("childFareOW", fare.getChildFareOW());
-					dto.getMetaData().put("childFareRT", fare.getChildFareRT());
+					for (AeroCRSFare fare : decodeFare) {
+						dto.getMetaData().put("adultFareOW", fare.getAdultFareOW());
+						dto.getMetaData().put("adultFareRT", fare.getAdultFareRT());
+						dto.getMetaData().put("childFareOW", fare.getChildFareOW());
+						dto.getMetaData().put("childFareRT", fare.getChildFareRT());
+					}
 
 					LOG.debug("metadata {}", dto.getMetaData());
 				} else {
