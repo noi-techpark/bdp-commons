@@ -94,6 +94,8 @@ public class SyncScheduler {
 		StationList odhStationlist = new StationList();
 
 		LOG.info("Cron job started: Sync Stations with type {} and data types", odhclient.getIntegreenTypology());
+
+		LOG.info("Get schedules...");
 		for (int i = 0 - days_before; i < days_after; i++) {
 
 			Calendar from = Calendar.getInstance();
@@ -144,8 +146,10 @@ public class SyncScheduler {
 				odhStationlist.add(stationDto);
 
 			}
+			LOG.info("Get schedules done.");
 
 			// FARES
+			LOG.info("Get fares...");
 			for (StationDto dto : odhStationlist) {
 				AeroCRSFaresSuccessResponse faresResponse = acrsclient.getFares(fltsFROMPeriod, fltsTOPeriod,
 						(String) dto.getMetaData().get(aeroconst.getFromdestination()),
@@ -176,6 +180,7 @@ public class SyncScheduler {
 
 			}
 		}
+		LOG.info("Get fares done.");
 
 		LOG.info("Trying to sync the stations...");
 
