@@ -5,21 +5,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AeroCRSFaresSuccessResponse {
 
-    private AeroCRSFaresSuccess fares;
+    private AeroCRSFaresSuccess aerocrs;
 
     public AeroCRSFaresSuccessResponse() {
     }
 
-    public AeroCRSFaresSuccessResponse(AeroCRSFaresSuccess fares) {
-        this.fares = fares;
+    public AeroCRSFaresSuccess getAerocrs() {
+        return aerocrs;
     }
 
-    public AeroCRSFaresSuccess getFares() {
-        return fares;
-    }
-
-    public void setFares(AeroCRSFaresSuccess fares) {
-        this.fares = fares;
+    public void setAerocrs(AeroCRSFaresSuccess aerocrs) {
+        this.aerocrs = aerocrs;
     }
 
 }

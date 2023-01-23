@@ -1,6 +1,5 @@
 package it.fos.noibz.skyalps.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +28,6 @@ public class AeroCRSConst {
 	private static final String ENVPERIOD = "period";
 	private static final String FROMDESTINATION = "fromdestination";
 	private static final String TODESTINATION = "todestination";
-	@Value("${auth.id}")
-	private String authid;
-	@Value("${auth.password}")
-	private String authpassword;
-	
-	private static String AUTHID_STATIC;
-	private static String AUTHPASSWORD_STATIC;
 
 	public static String getFromdestination() {
 		return FROMDESTINATION;
