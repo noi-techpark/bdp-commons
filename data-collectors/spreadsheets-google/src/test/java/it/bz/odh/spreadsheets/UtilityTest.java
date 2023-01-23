@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import it.bz.idm.bdp.dto.StationDto;
-import it.bz.odh.spreadsheets.util.DataMappingUtil;
+import it.bz.odh.spreadsheets.mapper.DynamicMapper;
 import it.bz.odh.spreadsheets.util.LangUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,7 +34,7 @@ public class UtilityTest{
 
     @Lazy
     @Autowired
-	private DataMappingUtil util;
+	private DynamicMapper util;
 
 	private List<Object> headerRow;
 	private List<Object> dataRow;

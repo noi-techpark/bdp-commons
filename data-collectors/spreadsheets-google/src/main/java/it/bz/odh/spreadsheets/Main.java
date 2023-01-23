@@ -23,13 +23,12 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
+import it.bz.odh.spreadsheets.mapper.ISheetMapper;
 import it.bz.odh.spreadsheets.services.GoogleSpreadSheetDataFetcher;
 import it.bz.odh.spreadsheets.services.ODHClient;
-import it.bz.odh.spreadsheets.util.DataMappingUtil;
 
 @Service
 public class Main {
-    
     private Logger logger = LoggerFactory.getLogger(Main.class);
 
     @Lazy
@@ -41,8 +40,21 @@ public class Main {
     private ODHClient odhClient;
 
     @Autowired
-    private DataMappingUtil mappingUtil;
-    
+    /**
+     * See application context config file for how this is injected.
+     * 
+     * There are multiple implementations, but the default one (if you don't set an
+     * env) is DynamicMapper,
+     * which used to be the single "old" implementation, and is now the default
+     * behavior for compatibility reasons.
+     * 
+     * If you need to implement a custom mapper,
+     * implement @it.bz.odh.spreadsheets.mapper.ISheetMapper
+     * and set it as primary implementation via env (again, see application context
+     * xml file)
+     */
+    private ISheetMapper mappingUtil;
+
     @Value("${spreadsheetId}")
     private String origin;
 
@@ -53,20 +65,22 @@ public class Main {
         logger.info("Start data syncronization");
         Spreadsheet fetchedSpreadSheet = (Spreadsheet) googleClient.fetchSheet();
         StationList dtos = new StationList();
-        List <DataTypeWrapperDto> types = new ArrayList<DataTypeWrapperDto>();
+        List<DataTypeWrapperDto> types = new ArrayList<DataTypeWrapperDto>();
         logger.debug("Start reading spreadsheet");
-        for (Sheet sheet : fetchedSpreadSheet.getSheets()){
+        for (Sheet sheet : fetchedSpreadSheet.getSheets()) {
             try {
                 List<List<Object>> values = googleClient.getWholeSheet(sheet.getProperties().getTitle()).getValues();
                 if (values.isEmpty() || values.get(0) == null)
-                    throw new IllegalStateException("Spreadsheet "+sheet.getProperties().getTitle()+" has no header row. Needs to start on top left.");
-                MappingResult result = mappingUtil.mapSheet(values,sheet);
+                    throw new IllegalStateException("Spreadsheet " + sheet.getProperties().getTitle()
+                            + " has no header row. Needs to start on top left.");
+                logger.debug("Starting to map sheet using mapper: " + mappingUtil.getClass().getCanonicalName());
+                MappingResult result = mappingUtil.mapSheet(values, sheet);
                 if (!result.getStationDtos().isEmpty())
                     dtos.addAll(result.getStationDtos());
                 if (result.getDataType() != null) {
                     types.add(result.getDataType());
                 }
-            }catch(Exception ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 logger.debug("Failed to read sheet(tab). Start reading next");
                 continue;
@@ -83,20 +97,20 @@ public class Main {
             odhClient.syncDataTypes(dTypes);
             logger.debug("Syncronize datatypes completed");
         }
-        if (!dtos.isEmpty() && !types.isEmpty()){
+        if (!dtos.isEmpty() && !types.isEmpty()) {
             DataMapDto<? extends RecordDtoImpl> dto = new DataMapDto<RecordDtoImpl>();
             logger.debug("Connect datatypes with stations through record");
-            for (DataTypeWrapperDto typeDto: types) {
-                SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(), typeDto.getSheetName(),0);
-                logger.trace("Connect"+dtos.get(0).getId()+"with"+typeDto.getType().getName());
+            for (DataTypeWrapperDto typeDto : types) {
+                SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(), typeDto.getSheetName(), 0);
+                logger.trace("Connect" + dtos.get(0).getId() + "with" + typeDto.getType().getName());
                 dto.addRecord(dtos.get(0).getId(), typeDto.getType().getName(), simpleRecordDto);
             }
             odhClient.pushData(dto);
         }
         logger.info("Data syncronization completed");
     }
-    Function<DataTypeWrapperDto,DataTypeDto> mapper = (dto) -> {
+
+    private Function<DataTypeWrapperDto, DataTypeDto> mapper = (dto) -> {
         return dto.getType();
     };
-
 }

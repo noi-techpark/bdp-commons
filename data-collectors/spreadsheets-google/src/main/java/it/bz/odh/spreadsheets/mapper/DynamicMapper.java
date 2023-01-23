@@ -1,4 +1,4 @@
-package it.bz.odh.spreadsheets.util;
+package it.bz.odh.spreadsheets.mapper;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -29,11 +29,13 @@ import it.bz.idm.bdp.dto.StationList;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
 import it.bz.odh.spreadsheets.services.GoogleSpreadSheetDataFetcher;
+import it.bz.odh.spreadsheets.util.LangUtil;
+import it.bz.odh.spreadsheets.util.LocationLookupUtil;
 
+@Lazy
 @Component
-public class DataMappingUtil {
-
-    private Logger logger = LoggerFactory.getLogger(DataMappingUtil.class);
+public class DynamicMapper implements ISheetMapper {
+    private Logger logger = LoggerFactory.getLogger(DynamicMapper.class);
 
     @Lazy
     @Autowired
@@ -125,7 +127,7 @@ public class DataMappingUtil {
      * @param list values
      * @return mapping element in list with it's position in list
      */
-    public Map<String, Short> listToMap(List<Object> list) {
+    public static Map<String, Short> listToMap(List<Object> list) {
         Map<String, Short> mapping = new HashMap<>();
         short count = 0;
         for (Object header : list) {
