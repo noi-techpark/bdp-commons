@@ -167,7 +167,7 @@ public class SyncScheduler {
 				Map<String, ODHFare> cachedFares = faresByFlightNumber.getOrDefault(flightNumber, null);
 
 				// check if not already fetched
-				if (cachedFares == null || !AereoCRSConstants.DATE_FORMAT
+				if (cachedFares == null || cachedFares.values().isEmpty() || !AereoCRSConstants.DATE_FORMAT
 						.parse(cachedFares.values().iterator().next().getFare().getToDate())
 						.after(flightToPeriodDate)) {
 					LOG.debug("Getting fares for: {}", flightNumber);
