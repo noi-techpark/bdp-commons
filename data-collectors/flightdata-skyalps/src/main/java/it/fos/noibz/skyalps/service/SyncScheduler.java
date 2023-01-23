@@ -91,11 +91,15 @@ public class SyncScheduler {
 		// Adding certain amount of days defined in the application.properties
 		// Synch stations in between the date
 
-		StationList odhStationlist = new StationList();
+		StationList stationList = new StationList();
+
+		// fares requests give fares for a time range, so we can reuse fares and don't
+		// have to request the same every time
+		Map<String, Map<String, ODHFare>> faresByFlightNumber = new HashMap<>();
 
 		LOG.info("Cron job started: Sync Stations with type {} and data types", odhclient.getIntegreenTypology());
 
-		LOG.info("Get schedules...");
+		LOG.info("Get schedules and fares...");
 		for (int i = 0 - days_before; i < days_after; i++) {
 
 			Calendar from = Calendar.getInstance();
@@ -143,48 +147,69 @@ public class SyncScheduler {
 				metaData.put("ssim", dto.getSsimMessage());
 				stationDto.setMetaData(metaData);
 
-				odhStationlist.add(stationDto);
+				stationList.add(stationDto);
 
 			}
-			LOG.info("Get schedules done.");
+			LOG.debug("Get schedules done.");
 
 			// FARES
-			LOG.info("Get fares...");
-			for (StationDto dto : odhStationlist) {
-				AeroCRSFaresSuccessResponse faresResponse = acrsclient.getFares(fltsFROMPeriod, fltsTOPeriod,
-						(String) dto.getMetaData().get(aeroconst.getFromdestination()),
-						(String) dto.getMetaData().get(aeroconst.getTodestination()));
+			LOG.debug("Get fares...");
+			for (StationDto stationDto : stationList) {
 
-				if (faresResponse != null && faresResponse.getAerocrs().isSuccess()
-						&& faresResponse.getAerocrs().getFares() != null) {
-					AeroCRSFares fares = faresResponse.getAerocrs().getFares();
+				// use flight number and to period as key for mapping
+				// because a flight with same number can be requested for 2 different fare
+				// periods
+				String flightNumber = String.valueOf(stationDto.getMetaData().get(aeroconst.getFltnumber()));
+				String toPeriod = String.valueOf(stationDto.getMetaData().get(aeroconst.getFltstoperiod()));
 
-					List<AeroCRSFare> decodeFare = fares.decodeFare();
+				Date flightToPeriodDate = AereoCRSConstants.DATE_FORMAT.parse(toPeriod);
 
-					// map fares by type like SKY LIGHT, SKY BASIC, SKY GO, SKY PLUS
-					Map<String, ODHFare> faresByType = new HashMap<>();
-					for (AeroCRSFare fare : decodeFare) {
-						String key = fare.getType().replace(" ", "_");
-						Date farePeriodToDate = AereoCRSConstants.DATE_FORMAT.parse(fare.getToDate());
-						if (!faresByType.containsKey(key) && !fltsTOPeriod.after(farePeriodToDate)) {
-							faresByType.put(key, new ODHFare(fare));
+				Map<String, ODHFare> cachedFares = faresByFlightNumber.getOrDefault(flightNumber, null);
+
+				// check if not already fetched
+				if (cachedFares == null || !AereoCRSConstants.DATE_FORMAT
+						.parse(cachedFares.values().iterator().next().getFare().getToDate())
+						.after(flightToPeriodDate)) {
+					LOG.debug("Getting fares for: {}", flightNumber);
+					AeroCRSFaresSuccessResponse faresResponse = acrsclient.getFares(fltsFROMPeriod, fltsTOPeriod,
+							(String) stationDto.getMetaData().get(aeroconst.getFromdestination()),
+							(String) stationDto.getMetaData().get(aeroconst.getTodestination()));
+
+					if (faresResponse != null && faresResponse.getAerocrs().isSuccess()
+							&& faresResponse.getAerocrs().getFares() != null) {
+						AeroCRSFares fares = faresResponse.getAerocrs().getFares();
+
+						List<AeroCRSFare> decodeFare = fares.decodeFare();
+
+						// map fares by type like SKY LIGHT, SKY BASIC, SKY GO, SKY PLUS
+						Map<String, ODHFare> faresByType = new HashMap<>();
+						for (AeroCRSFare fare : decodeFare) {
+							String key = fare.getType().replace(" ", "_");
+							Date farePeriodToDate = AereoCRSConstants.DATE_FORMAT.parse(fare.getToDate());
+							if (!faresByType.containsKey(key) && !fltsTOPeriod.after(farePeriodToDate)) {
+								faresByType.put(key, new ODHFare(fare));
+							}
 						}
+						faresByFlightNumber.put(flightNumber, faresByType);
+						LOG.debug("Getting fares for {} done.", flightNumber);
+
+					} else {
+						LOG.info("fares request not successful");
 					}
+				} else
+					LOG.debug("From cache getting for {}.", flightNumber);
 
-					dto.getMetaData().put("fares", faresByType);
-
-					LOG.debug("metadata {}", dto.getMetaData());
-				} else {
-					LOG.info("fares request not successful");
-				}
-
+				stationDto.getMetaData().put("fares", faresByFlightNumber.get(flightNumber));
 			}
+
+			LOG.debug("Get fares done.");
 		}
-		LOG.info("Get fares done.");
+
+		LOG.info("Get schedules and fares done.");
 
 		LOG.info("Trying to sync the stations...");
 
-		odhclient.syncStations(odhclient.getIntegreenTypology(), odhStationlist);
+		odhclient.syncStations(odhclient.getIntegreenTypology(), stationList);
 		LOG.info("Syncing stations done.");
 
 	}
