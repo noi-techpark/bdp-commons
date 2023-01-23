@@ -7,4 +7,8 @@
     <context:spring-configured/>
     <context:component-scan base-package="it.bz.odh.spreadsheets"/>
     <context:property-placeholder location="classpath:META-INF/spring/*.properties" />
+
+	<!-- Per default, the old spreadsheet mapper is used. 
+	Another mapper can be configured via env variables (for example sta echarging) -->
+	<bean id="sheetMapper" class="${sheetMapperClass:it.bz.odh.spreadsheets.mapper.DynamicMapper}" primary="true"/>
 </beans>
