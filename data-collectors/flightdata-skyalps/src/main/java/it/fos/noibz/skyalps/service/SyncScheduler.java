@@ -91,7 +91,7 @@ public class SyncScheduler {
 		// Adding certain amount of days defined in the application.properties
 		// Synch stations in between the date
 
-		StationList stationList = new StationList();
+		StationList allStationList = new StationList();
 
 		// fares requests give fares for a time range, so we can reuse fares and don't
 		// have to request the same every time
@@ -108,6 +108,8 @@ public class SyncScheduler {
 			Calendar to = Calendar.getInstance();
 			to.add(Calendar.DATE, i + 1);
 			Date fltsTOPeriod = to.getTime();
+
+			StationList stationList = new StationList();
 
 			// SCHEDULES
 
@@ -202,6 +204,8 @@ public class SyncScheduler {
 				stationDto.getMetaData().put("fares", faresByFlightNumber.get(flightNumber));
 			}
 
+			allStationList.addAll(stationList);
+
 			LOG.debug("Get fares done.");
 		}
 
@@ -209,7 +213,7 @@ public class SyncScheduler {
 
 		LOG.info("Trying to sync the stations...");
 
-		odhclient.syncStations(odhclient.getIntegreenTypology(), stationList);
+		odhclient.syncStations(odhclient.getIntegreenTypology(), allStationList);
 		LOG.info("Syncing stations done.");
 
 	}

@@ -140,7 +140,6 @@ public class AeroCRSRest {
 
 		if (response.getStatusCode() == HttpStatus.OK) {
 			LOG.debug("Fares Request Successful");
-			LOG.debug("" + response.getBody());
 			return response.getBody();
 
 		} else {
