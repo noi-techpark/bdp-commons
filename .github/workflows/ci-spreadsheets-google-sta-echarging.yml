@@ -55,15 +55,13 @@ jobs:
           X_spreadsheet_notificationUrl: https://spreadsheets.testingmachine.eu/sta-echarging/trigger
           X_origin: STA
 
-          # configure mapper class. Omitting this value defaults to DynamicMapper (legacy implementation)
-          X_sheetMapperClass: it.bz.odh.spreadsheets.mapper.StaEchargingMapper
+          # configure main collector class. Omitting this value defaults to DefaultCollector
+          X_collectorClass: it.bz.odh.spreadsheets.StaEchargingCollector
           X_suportedLanguages: en,it,de
           X_stationtype: EChargingStation
           X_headers_nameId: station_name
           X_headers_latitudeId: latitude
           X_spreadsheet_range: A1:Z
-          X_composite_unique_key: station_name
-          X_stationorigin: spreadsheet-sta-echarging
           X_uniqueIdPrefix: sta-echarging
 
           # General deployment options
