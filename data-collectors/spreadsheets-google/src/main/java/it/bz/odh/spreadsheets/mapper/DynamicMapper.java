@@ -217,6 +217,7 @@ public class DynamicMapper {
      * @return a {@link StationDto} containing all information of this row
      */
     public StationDto mapStation(Map<String, Short> headerMapping, List<Object> row) {
+        System.out.println("nameId: " + nameId);
         StationDto dto = new StationDto();
         Short nameIndex = headerMapping.get(nameId.toLowerCase());
         Short longIndex = headerMapping.get(longitudeId);

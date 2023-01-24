@@ -7,8 +7,4 @@
     <context:spring-configured/>
     <context:component-scan base-package="it.bz.odh.spreadsheets"/>
     <context:property-placeholder location="classpath:META-INF/spring/*.properties" />
-
-	<!-- Change which class is called by the trigger.  -->
-	<bean id="collector" class="${collectorClass:it.bz.odh.spreadsheets.DefaultCollector}" primary="true"/>
-	
 </beans>

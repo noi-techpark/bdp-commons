@@ -12,6 +12,9 @@ services:
       mvn
         -Duser.home=/var/maven
         -Djetty.http.port=9001
+        clean
+        compile
+        test
         jetty:run
     ports:
       - 9000:9000

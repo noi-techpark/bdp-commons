@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
@@ -36,7 +36,7 @@ import it.bz.odh.spreadsheets.services.ODHClient;
  * 
  * The available connectors are then mapped as metadata of the Plug
  */
-@Service
+@Component
 public class StaEchargingCollector implements ISpreadsheetCollector {
     private Logger logger = LoggerFactory.getLogger(StaEchargingCollector.class);
     private final static String nameId = "station_name";

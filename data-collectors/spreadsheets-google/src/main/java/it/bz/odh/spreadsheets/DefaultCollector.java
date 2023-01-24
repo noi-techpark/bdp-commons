@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
@@ -26,7 +26,7 @@ import it.bz.odh.spreadsheets.mapper.DynamicMapper;
 import it.bz.odh.spreadsheets.services.GoogleSpreadSheetDataFetcher;
 import it.bz.odh.spreadsheets.services.ODHClient;
 
-@Service
+@Component
 public class DefaultCollector {
     private Logger logger = LoggerFactory.getLogger(DefaultCollector.class);
 
