@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +22,13 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.odh.spreadsheets.dto.DataTypeWrapperDto;
 import it.bz.odh.spreadsheets.dto.MappingResult;
-import it.bz.odh.spreadsheets.mapper.ISheetMapper;
+import it.bz.odh.spreadsheets.mapper.DynamicMapper;
 import it.bz.odh.spreadsheets.services.GoogleSpreadSheetDataFetcher;
 import it.bz.odh.spreadsheets.services.ODHClient;
 
 @Service
-public class Main {
-    private Logger logger = LoggerFactory.getLogger(Main.class);
+public class DefaultCollector {
+    private Logger logger = LoggerFactory.getLogger(DefaultCollector.class);
 
     @Lazy
     @Autowired
@@ -40,23 +39,7 @@ public class Main {
     private ODHClient odhClient;
 
     @Autowired
-    /**
-     * See application context config file for how this is injected.
-     * 
-     * There are multiple implementations, but the default one (if you don't set an
-     * env) is DynamicMapper,
-     * which used to be the single "old" implementation, and is now the default
-     * behavior for compatibility reasons.
-     * 
-     * If you need to implement a custom mapper,
-     * implement @it.bz.odh.spreadsheets.mapper.ISheetMapper
-     * and set it as primary implementation via env (again, see application context
-     * xml file)
-     */
-    private ISheetMapper mappingUtil;
-
-    @Value("${spreadsheetId}")
-    private String origin;
+    private DynamicMapper mappingUtil;
 
     /**
      * scheduled job which syncs odh with the spreadsheet

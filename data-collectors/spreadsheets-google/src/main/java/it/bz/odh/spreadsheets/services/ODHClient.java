@@ -12,10 +12,8 @@ import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 @Lazy
 @Component
 public class ODHClient extends NonBlockingJSONPusher{
-
 	@Value(value="${stationtype}")
 	private String stationtype;
-
 
 	@Value("${provenance_name}")
 	private String provenanceName;

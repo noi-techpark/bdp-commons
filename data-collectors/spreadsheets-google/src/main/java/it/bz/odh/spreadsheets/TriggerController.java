@@ -27,7 +27,7 @@ public class TriggerController {
 	private static final int MINIMAL_SYNC_PAUSE_SECONDS = 60;
 
 	@Autowired
-	private Main main;
+	private ISpreadsheetCollector collector;
 
 	private static Long lastRequest;
 
@@ -50,7 +50,7 @@ public class TriggerController {
 				Long now = new Date().getTime();
 				if (lastRequest == null || lastRequest < now - (MINIMAL_SYNC_PAUSE_SECONDS * 1000)) {
 					lastRequest = now;
-					main.syncData();
+					collector.syncData();
 					logger.info("Synching executed at:" + lastRequest);
 				}
 			}

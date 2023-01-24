@@ -13,7 +13,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class SpreadsheetImportIT {
     
     @Autowired
-    private Main main;
+    private DefaultCollector main;
 
     @Test
     public void testSpreadsheetSync() {

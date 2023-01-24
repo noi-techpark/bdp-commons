@@ -34,7 +34,7 @@ import it.bz.odh.spreadsheets.util.LocationLookupUtil;
 
 @Lazy
 @Component
-public class DynamicMapper implements ISheetMapper {
+public class DynamicMapper {
     private Logger logger = LoggerFactory.getLogger(DynamicMapper.class);
 
     @Lazy
