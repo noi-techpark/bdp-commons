@@ -26,7 +26,6 @@ public class TriggerController {
 
 	private static final int MINIMAL_SYNC_PAUSE_SECONDS = 60;
 
-	@Lazy
 	@Autowired
 	private ISpreadsheetCollector collector;
 
