@@ -9,6 +9,6 @@
     <context:property-placeholder location="classpath:META-INF/spring/*.properties" />
 
 	<!-- Change which class is called by the trigger.  -->
-	<bean id="collector" class="${it.bz.odh.spreadsheets.DefaultCollector}" primary="true"/>
+	<bean id="collector" class="${collectorClass:it.bz.odh.spreadsheets.DefaultCollector}" primary="true"/>
 	
 </beans>
