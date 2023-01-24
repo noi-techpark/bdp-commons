@@ -36,6 +36,7 @@ import it.bz.odh.spreadsheets.services.ODHClient;
  * 
  * The available connectors are then mapped as metadata of the Plug
  */
+@Lazy
 @Component
 public class StaEchargingCollector implements ISpreadsheetCollector {
     private Logger logger = LoggerFactory.getLogger(StaEchargingCollector.class);

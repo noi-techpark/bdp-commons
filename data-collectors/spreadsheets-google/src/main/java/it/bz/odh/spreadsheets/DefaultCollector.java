@@ -26,6 +26,7 @@ import it.bz.odh.spreadsheets.mapper.DynamicMapper;
 import it.bz.odh.spreadsheets.services.GoogleSpreadSheetDataFetcher;
 import it.bz.odh.spreadsheets.services.ODHClient;
 
+@Lazy
 @Component
 public class DefaultCollector {
     private Logger logger = LoggerFactory.getLogger(DefaultCollector.class);
