@@ -14,7 +14,6 @@
     <context:component-scan base-package="it.bz.odh.spreadsheets,it.bz.idm.bdp"/>
     <context:property-placeholder location="classpath:META-INF/spring/*.properties" />
 	
-	<!-- Per default, the old spreadsheet mapper is used. 
-	Another mapper can be configured via env variables (for example sta echarging) -->
-	<bean id="sheetMapper" class="${sheetMapperClass:it.bz.odh.spreadsheets.mapper.DynamicMapper}" primary="true"/>
+	<!-- Change which class is called by the trigger.  -->
+	<bean id="collector" class="${it.bz.odh.spreadsheets.DefaultCollector}" primary="true"/>
 </beans>
