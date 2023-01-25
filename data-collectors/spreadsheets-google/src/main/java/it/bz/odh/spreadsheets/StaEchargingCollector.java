@@ -52,7 +52,8 @@ public class StaEchargingCollector implements ISpreadsheetCollector {
     private final static String stationType = "EChargingStation";
     private final static String plugStationType = "EChargingPlug";
 
-    // attention, this origin is monitored in ODHClient. If you change this here, you probably have to customize there
+    // attention, this origin is monitored in ODHClient. If you change this here,
+    // you probably have to customize there
     @Value("${spreadsheetId}")
     private String origin;
 
@@ -80,10 +81,8 @@ public class StaEchargingCollector implements ISpreadsheetCollector {
 
         if (!stationDtos.isEmpty()) {
             logger.debug("Syncronize stations if some where fetched and successfully parsed");
-
             odhClient.syncStations(stationType, stationDtos);
             odhClient.syncStations(plugStationType, plugDtos);
-
             logger.debug("Syncronize stations completed");
         }
         logger.info("Data syncronization completed");
@@ -97,12 +96,14 @@ public class StaEchargingCollector implements ISpreadsheetCollector {
                         .map(e -> StringUtils.lowerCase(Objects.toString(e, null)))
                         .collect(Collectors.toList()));
 
-        int i = 1;
+        int i = 0;
         for (final List<Object> row : spreadSheetRows) {
             try {
-                mapRow(rowToMap(colNames, row), stationDtos, plugDtos);
+                if (++i > 1) {
+                    mapRow(rowToMap(colNames, row), stationDtos, plugDtos);
+                }
             } catch (Exception ex) {
-                logger.error("Exception mapping station for row " + i++, ex);
+                logger.error("Exception mapping station for row " + i, ex);
                 continue;
             }
         }
