@@ -58,11 +58,7 @@ jobs:
           # configure main collector class. Omitting this value defaults to DefaultCollector
           X_collectorClass: it.bz.odh.spreadsheets.StaEchargingCollector
           X_suportedLanguages: en,it,de
-          X_stationtype: EChargingStation
-          X_headers_nameId: station_name
-          X_headers_latitudeId: latitude
           X_spreadsheet_range: A1:Z
-          X_uniqueIdPrefix: sta-echarging
 
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
