@@ -40,21 +40,21 @@ import it.bz.odh.spreadsheets.services.ODHClient;
 @Component
 public class StaEchargingCollector implements ISpreadsheetCollector {
     private Logger logger = LoggerFactory.getLogger(StaEchargingCollector.class);
-    private final static String nameId = "station_name";
-    private final static String plugId = "plug_name";
-    private final static String longitudeId = "longitude";
-    private final static String latitudeId = "latitude";
-    private final static String metadataStateId = "state";
-    private final static String metadataAccessTypeId = "access_type";
-    private final static String connectorTypesId = "connector_type";
+    private final static String headerNameId = "station_name";
+    private final static String headerPlugId = "point_name";
+    private final static String headerLongitudeId = "longitude";
+    private final static String headerLatitudeId = "latitude";
+    private final static String headerMetadataStateId = "state";
+    private final static String headerMetadataAccessTypeId = "access_type";
+    private final static String headerConnectorTypesId = "connector_type";
+    private final static String headerProviderId = "data_provider";
 
     private final static String stationType = "EChargingStation";
     private final static String plugStationType = "EChargingPlug";
 
+    // attention, this origin is monitored in ODHClient. If you change this here, you probably have to customize there
     @Value("${spreadsheetId}")
     private String origin;
-    @Value("${uniqueIdPrefix}")
-    private String idPrefix;
 
     @Lazy
     @Autowired
@@ -111,26 +111,20 @@ public class StaEchargingCollector implements ISpreadsheetCollector {
     private void mapRow(Map<String, Object> row, StationList stationDtos, StationList plugDtos) throws Exception {
         // Map the station parent
         StationDto station = new StationDto();
-
-        station.setName(getString(nameId, row));
-        station.setLatitude(getDouble(latitudeId, row));
-        station.setLongitude(getDouble(longitudeId, row));
-
-        Map<String, Object> meta = new HashMap<>();
-        meta.put("state", getString(metadataStateId, row));
-        meta.put("accessType", getString(metadataAccessTypeId, row));
-        station.setMetaData(meta);
-
+        String provider = getString(headerProviderId, row);
+        station.setName(getString(headerNameId, row));
+        station.setLatitude(getDouble(headerLatitudeId, row));
+        station.setLongitude(getDouble(headerLongitudeId, row));
         station.setOrigin(origin);
         station.setStationType(stationType);
-        station.setId(idPrefix + "*" + station.getName());
+        station.setId(String.format("%s:%s", provider, station.getName()));
         stationDtos.add(station);
 
         // Map the plug as a child station
         StationDto plug = new StationDto();
-        String plugName = getString(plugId, row);
-        plug.setName(String.format("%s - %s", station.getName(), plugName));
-        plug.setId(String.format("%s*%s", station.getId(), plugName));
+        String plugName = getString(headerPlugId, row);
+        plug.setName(plugName);
+        plug.setId(String.format("%s:%s", station.getId(), plugName));
         plug.setOrigin(station.getOrigin());
         plug.setStationType(plugStationType);
         plug.setLatitude(station.getLatitude());
@@ -138,7 +132,8 @@ public class StaEchargingCollector implements ISpreadsheetCollector {
         plug.setParentStation(station.getId());
 
         // Untangle available connectors and register them as plug metadata
-        String strPlugs = getString(connectorTypesId, row);
+        String strPlugs = getString(headerConnectorTypesId, row);
+        strPlugs = StringUtils.defaultString(strPlugs);
         List<String> outletTypes = Arrays.stream(strPlugs.split(","))
                 .filter(e -> !StringUtils.isBlank(e))
                 .map(String::trim)
@@ -149,13 +144,15 @@ public class StaEchargingCollector implements ISpreadsheetCollector {
         int i = 1;
         for (String outletType : outletTypes) {
             Map<String, Object> outlet = new HashMap<>();
-            outlet.put("id", plug.getId() + "*" + i++);
+            outlet.put("id", String.format("%s:%d", plug.getId(), i++));
             outlet.put("outletTypeCode", outletType);
             outlets.add(outlet);
         }
 
         Map<String, Object> plugMeta = new HashMap<>();
         plugMeta.put("outlets", outlets);
+        plugMeta.put("state", getString(headerMetadataStateId, row));
+        plugMeta.put("accessType", getString(headerMetadataAccessTypeId, row));
         plug.setMetaData(plugMeta);
         plugDtos.add(plug);
     }
