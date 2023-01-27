@@ -69,6 +69,16 @@ public class RealTimeClient {
             return null;
         }
 
+        if (realtimeString == null || realtimeString.isEmpty()) {
+            return null;
+        }
+
+        // destinations have scaped quotes: \" and start with "{ and ends with }"
+        // removing them to prevent parse exception
+        realtimeString = realtimeString.replace("\\\"", "\"");
+        realtimeString = realtimeString.replace("\"{", "{");
+        realtimeString = realtimeString.replace("}\"", "}");
+
         try {
             return mapper.readValue(realtimeString, RealtimeDto.class);
         } catch (JsonProcessingException e) {

@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RealtimeDto {
 
     @JsonProperty("DEP")
-    List<RealtimeDeparureDto> departures;
+    private List<RealtimeDeparureDto> departures;
     @JsonProperty("ARR")
-    List<RealtimeArrivalDto> arrivals;
+    private List<RealtimeArrivalDto> arrivals;
 
     public RealtimeDto() {
 

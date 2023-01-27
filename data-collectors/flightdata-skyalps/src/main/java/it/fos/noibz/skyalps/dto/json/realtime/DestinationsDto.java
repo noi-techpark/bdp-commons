@@ -7,19 +7,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DestinationsDto {
 
     @JsonProperty("dest")
-    String destination1;
+    private String destination1;
 
     @JsonProperty("dest2")
-    String destination2;
+    private String destination2;
 
     @JsonProperty("dest3")
-    String destination3;
+    private String destination3;
 
     @JsonProperty("dest4")
-    String destination4;
+    private String destination4;
 
     @JsonProperty("dest5")
-    String destination5;
+    private String destination5;
 
     public DestinationsDto() {
     }

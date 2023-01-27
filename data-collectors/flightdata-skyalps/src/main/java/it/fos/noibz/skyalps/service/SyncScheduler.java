@@ -88,12 +88,14 @@ public class SyncScheduler {
 
 	@PostConstruct
 	private void postConstruct() {
-		// initialize datatypes for real time data
+		// initDatatypes();
+	}
+
+	private void initDatatypes() {
 		List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
 		dataTypeDtoList.add(new DataTypeDto(ARRIVAL_DATA_TYPE, null, "Realtime data of flight arrivals", null));
 		dataTypeDtoList.add(new DataTypeDto(DEPARTURE_DATA_TYPE, null, "Realtime data of flight departures", null));
 		odhclient.syncDataTypes(dataTypeDtoList);
-
 	}
 
 	/**
@@ -248,6 +250,9 @@ public class SyncScheduler {
 		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
 
 		RealtimeDto realTimeData = realTimeClient.getRealTimeData();
+
+		if (realTimeData == null)
+			LOG.info("Problem with parsing. Skipping push");
 
 		Date date = new Date();
 		String dateString = AereoCRSConstants.DATE_FORMAT_EN.format(new Date()).toUpperCase();
