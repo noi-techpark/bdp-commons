@@ -13,20 +13,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFare;
 import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFares;
 import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFaresSuccessResponse;
 import it.fos.noibz.skyalps.dto.json.fares.ODHFare;
+import it.fos.noibz.skyalps.dto.json.realtime.RealtimeDto;
 import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSFlight;
 import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccessResponse;
 import it.fos.noibz.skyalps.dto.string.AereoCRSConstants;
 import it.fos.noibz.skyalps.rest.AeroCRSRest;
+import it.fos.noibz.skyalps.rest.RealTimeClient;
 
 //This class is responsible to schedule retrieve and push operations for Stations.
 //It has been structured in the same way the meteorology eurac data collector does. 
@@ -67,10 +71,12 @@ public class SyncScheduler {
 
 	@Lazy
 	@Autowired
+	private RealTimeClient realTimeClient;
+
+	@Lazy
+	@Autowired
 	private ODHClient odhclient;
 
-	@Autowired
-	Environment env;
 
 	/**
 	 * Scheduled job A: sync stations and data types
@@ -218,4 +224,19 @@ public class SyncScheduler {
 
 	}
 
+
+	@Scheduled(cron = "${scheduler.push_data}")
+	public void realtimeData() throws IOException, ParseException {
+        DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
+
+		realTimeClient.getRealTimeData();
+		// RealtimeDto realTimeData = realTimeClient.getRealTimeData();
+
+
+		// SimpleRecordDto dto = new SimpleRecordDto(recordTimeLong, "", 600);
+		// dataMap.addRecord(stationDto.getId(), datatypesConfiguration.getItineraryDetails().getKey())
+		// );
+
+		odhclient.pushData(dataMap);
+	}
 }
