@@ -3,14 +3,14 @@ package it.fos.noibz.skyalps.dto.json.realtime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RealtimeDto {
 
-    @JsonProperty("DEP")
+    @JsonAlias("DEP")
     private List<RealtimeDeparureDto> departures;
-    @JsonProperty("ARR")
+    @JsonAlias("ARR")
     private List<RealtimeArrivalDto> arrivals;
 
     public RealtimeDto() {

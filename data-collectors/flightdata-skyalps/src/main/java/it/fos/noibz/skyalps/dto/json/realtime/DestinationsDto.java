@@ -1,24 +1,24 @@
 package it.fos.noibz.skyalps.dto.json.realtime;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DestinationsDto {
 
-    @JsonProperty("dest")
+    @JsonAlias("dest")
     private String destination1;
 
-    @JsonProperty("dest2")
+    @JsonAlias("dest2")
     private String destination2;
 
-    @JsonProperty("dest3")
+    @JsonAlias("dest3")
     private String destination3;
 
-    @JsonProperty("dest4")
+    @JsonAlias("dest4")
     private String destination4;
 
-    @JsonProperty("dest5")
+    @JsonAlias("dest5")
     private String destination5;
 
     public DestinationsDto() {

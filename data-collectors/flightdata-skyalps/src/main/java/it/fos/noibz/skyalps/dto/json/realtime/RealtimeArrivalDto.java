@@ -2,23 +2,24 @@ package it.fos.noibz.skyalps.dto.json.realtime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RealtimeArrivalDto {
 
-    @JsonProperty("F")
+    @JsonProperty(value = "F", access = JsonProperty.Access.WRITE_ONLY)
     private String flightCode;
 
-    @JsonProperty("EX")
+    @JsonAlias("EX")
     private String expectedTime;
 
-    @JsonProperty("SC")
+    @JsonAlias("SC")
     private String scheduledTime;
 
-    @JsonProperty("D")
+    @JsonAlias("D")
     private DestinationsDto destinations;
 
-    @JsonProperty("A")
+    @JsonAlias("A")
     private String airlineCode;
 
     // Status Codes:
@@ -33,17 +34,17 @@ public class RealtimeArrivalDto {
     // X = Cancelled
     // R = Baggage claim
     // K = Check-In Closed
-    @JsonProperty("S")
+    @JsonAlias("S")
     private String statusCode;
 
-    @JsonProperty("B")
+    @JsonAlias("B")
     private String beltCode;
 
-    @JsonProperty("T")
+    @JsonAlias("T")
     private String terminal;
 
     // = Flag of delay. 0 = no flag. 1 = early flight, 2 = delayed flight
-    @JsonProperty("DC")
+    @JsonAlias("DC")
     private String delayFlag;
 
     public RealtimeArrivalDto() {
