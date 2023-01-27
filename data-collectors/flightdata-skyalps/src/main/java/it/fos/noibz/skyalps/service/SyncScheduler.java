@@ -2,11 +2,14 @@ package it.fos.noibz.skyalps.service;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +20,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
@@ -25,6 +29,8 @@ import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFare;
 import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFares;
 import it.fos.noibz.skyalps.dto.json.fares.AeroCRSFaresSuccessResponse;
 import it.fos.noibz.skyalps.dto.json.fares.ODHFare;
+import it.fos.noibz.skyalps.dto.json.realtime.RealtimeArrivalDto;
+import it.fos.noibz.skyalps.dto.json.realtime.RealtimeDeparureDto;
 import it.fos.noibz.skyalps.dto.json.realtime.RealtimeDto;
 import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSFlight;
 import it.fos.noibz.skyalps.dto.json.schedule.AeroCRSGetScheduleSuccessResponse;
@@ -77,6 +83,18 @@ public class SyncScheduler {
 	@Autowired
 	private ODHClient odhclient;
 
+	private final String ARRIVAL_DATA_TYPE = "arrival";
+	private final String DEPARTURE_DATA_TYPE = "departure";
+
+	@PostConstruct
+	private void postConstruct() {
+		// initialize datatypes for real time data
+		List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
+		dataTypeDtoList.add(new DataTypeDto(ARRIVAL_DATA_TYPE, null, "Realtime data of flight arrivals", null));
+		dataTypeDtoList.add(new DataTypeDto(DEPARTURE_DATA_TYPE, null, "Realtime data of flight departures", null));
+		odhclient.syncDataTypes(dataTypeDtoList);
+
+	}
 
 	/**
 	 * Scheduled job A: sync stations and data types
@@ -220,22 +238,38 @@ public class SyncScheduler {
 		LOG.info("Trying to sync the stations...");
 
 		odhclient.syncStations(odhclient.getIntegreenTypology(), allStationList);
-		LOG.info("Syncing stations done.");
+		LOG.info("Syncing stations done. Amount {}", allStationList.size());
 
 	}
 
-
 	@Scheduled(cron = "${scheduler.push_data}")
 	public void realtimeData() throws IOException, ParseException {
-        DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
+		LOG.info("Pushing real time data...");
+		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
 
 		RealtimeDto realTimeData = realTimeClient.getRealTimeData();
 
+		Date date = new Date();
+		String dateString = AereoCRSConstants.DATE_FORMAT_EN.format(new Date()).toUpperCase();
 
-		// SimpleRecordDto dto = new SimpleRecordDto(recordTimeLong, "", 600);
-		// dataMap.addRecord(stationDto.getId(), datatypesConfiguration.getItineraryDetails().getKey())
-		// );
+		for (RealtimeArrivalDto arrivalDto : realTimeData.getArrivals()) {
+			String stationId = arrivalDto.getFlightCode() + "_" + dateString;
+			SimpleRecordDto dto = new SimpleRecordDto(date.getTime(), arrivalDto, 600);
+			dataMap.addRecord(stationId, ARRIVAL_DATA_TYPE, dto);
+		}
+
+		for (RealtimeDeparureDto departureDto : realTimeData.getDepartures()) {
+			String stationId = departureDto.getFlightCode() + "_" + dateString;
+			SimpleRecordDto dto = new SimpleRecordDto(date.getTime(), departureDto, 600);
+			dataMap.addRecord(stationId, ARRIVAL_DATA_TYPE, dto);
+		}
+
+		if (dataMap.getBranch().size() == 0) {
+			LOG.info("Currently no data avaiable. Skipping push");
+			return;
+		}
 
 		odhclient.pushData(dataMap);
+		LOG.info("Pushing real time data done. Amount {}", dataMap.getBranch().size());
 	}
 }

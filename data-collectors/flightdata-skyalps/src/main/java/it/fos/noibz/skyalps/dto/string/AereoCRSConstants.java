@@ -9,9 +9,9 @@ import java.util.Locale;
  */
 public class AereoCRSConstants {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
+    public static final SimpleDateFormat DATE_FORMAT_EN = new SimpleDateFormat("ddMMMyy", Locale.ENGLISH);
     protected static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm");
     protected static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
-    protected static final SimpleDateFormat DATE_FORMAT_EN = new SimpleDateFormat("ddMMMyy", Locale.ENGLISH);
     protected static final DateTimeFormatter MONTH_FORMAT_EN = DateTimeFormatter.ofPattern("MMM")
             .withLocale(Locale.ENGLISH);
 
