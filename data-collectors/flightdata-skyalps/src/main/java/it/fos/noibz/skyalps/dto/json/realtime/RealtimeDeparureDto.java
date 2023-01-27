@@ -8,19 +8,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RealtimeDeparureDto {
 
-    @JsonProperty("f")
+    @JsonProperty("F")
     String flightCode;
 
-    @JsonProperty("ex")
+    @JsonProperty("EX")
     String expectedTime;
 
-    @JsonProperty("sc")
+    @JsonProperty("SC")
     String scheduledTime;
 
-    @JsonProperty("d")
-    List<String> destinationList;
+    @JsonProperty("D")
+    DestinationsDto destinations;
 
-    @JsonProperty("a")
+    @JsonProperty("A")
     String airlineCode;
 
     // Status Codes:
@@ -35,26 +35,25 @@ public class RealtimeDeparureDto {
     // X = Cancelled
     // R = Baggage claim
     // K = Check-In Closed
-    @JsonProperty("s")
+    @JsonProperty("S")
     String statusCode;
 
-    @JsonProperty("c")
+    @JsonProperty("C")
     String checkinCode;
 
-    @JsonProperty("g")
+    @JsonProperty("G")
     String gateCode;
 
-    @JsonProperty("gi")
+    @JsonProperty("GI")
     String gateInformationTime;
 
-    @JsonProperty("t")
+    @JsonProperty("T")
     String terminal;
 
     // = Flag of delay. 0 = no flag. 1 = early flight, 2 = delayed flight
-    @JsonProperty("dc")
+    @JsonProperty("DC")
     String delayFlag;
 
-    
     public RealtimeDeparureDto() {
     }
 
@@ -80,14 +79,6 @@ public class RealtimeDeparureDto {
 
     public void setScheduledTime(String scheduledTime) {
         this.scheduledTime = scheduledTime;
-    }
-
-    public List<String> getDestinationList() {
-        return destinationList;
-    }
-
-    public void setDestinationList(List<String> destinationList) {
-        this.destinationList = destinationList;
     }
 
     public String getAirlineCode() {
@@ -146,7 +137,12 @@ public class RealtimeDeparureDto {
         this.delayFlag = delayFlag;
     }
 
+    public DestinationsDto getDestinations() {
+        return destinations;
+    }
 
-    
+    public void setDestinations(DestinationsDto destinations) {
+        this.destinations = destinations;
+    }
 
 }

@@ -229,8 +229,7 @@ public class SyncScheduler {
 	public void realtimeData() throws IOException, ParseException {
         DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
 
-		realTimeClient.getRealTimeData();
-		// RealtimeDto realTimeData = realTimeClient.getRealTimeData();
+		RealtimeDto realTimeData = realTimeClient.getRealTimeData();
 
 
 		// SimpleRecordDto dto = new SimpleRecordDto(recordTimeLong, "", 600);

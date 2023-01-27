@@ -15,6 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.fos.noibz.skyalps.dto.json.realtime.RealtimeDto;
 
 @Lazy
@@ -29,30 +33,46 @@ public class RealTimeClient {
     private final String URL = "https://dataprovider.ifly.aero:8443/fidsdataproviderproxy/dataProvider.ashx";
     private RestTemplate restTemplate;
 
+    private ObjectMapper mapper;
+
     public RealTimeClient() {
         restTemplate = new RestTemplate();
+        mapper = new ObjectMapper();
     }
 
     public RealtimeDto getRealTimeData() {
         LOG.debug("Getting Realtime data...");
 
         HttpHeaders headers = new HttpHeaders();
+        headers.set("Token", token);
         headers.set("Accept", "application/json");
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
+        // API gives text/html as contenttype instead of application/json
+        // So reading String and then converting to RealtimeDto
+        // When api give correct content type the code below should work
+        // ResponseEntity<RealtimeDto> response = restTemplate
+        // .exchange(URL, HttpMethod.GET, new HttpEntity<Object>(headers),
+        // RealtimeDto.class);
 
+        ResponseEntity<String> response = restTemplate
+                .exchange(URL, HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
 
-        ResponseEntity<RealtimeDto> response = restTemplate
-                .exchange(URL, HttpMethod.GET, new HttpEntity<Object>(headers), RealtimeDto.class);
+        String realtimeString = null;
 
         if (response.getStatusCode() == HttpStatus.OK) {
             LOG.debug("Realtime Request Successful");
             LOG.debug("Response body: {}", response.getBody());
-            return response.getBody();
-
+            realtimeString = response.getBody();
         } else {
-            LOG.debug("Realtime Request Failed");
-            LOG.debug("" + response.getStatusCode());
+            LOG.error("Realtime request failed with status code: {}", response.getStatusCode());
+            return null;
+        }
+
+        try {
+            return mapper.readValue(realtimeString, RealtimeDto.class);
+        } catch (JsonProcessingException e) {
+            LOG.error("Error while parsing json with error: {}", e.getMessage());
         }
         return null;
     }
