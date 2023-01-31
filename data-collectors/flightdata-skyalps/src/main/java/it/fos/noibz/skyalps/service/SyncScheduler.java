@@ -129,9 +129,18 @@ public class SyncScheduler {
 		for (int i = 0 - days_before; i < days_after; i++) {
 
 			Calendar from = Calendar.getInstance();
+			from.set(Calendar.HOUR, 0);
+			from.set(Calendar.MINUTE, 0);
+			from.set(Calendar.SECOND, 0);
+			from.set(Calendar.MILLISECOND, 0);
 			from.add(Calendar.DATE, i);
+
 			Date fltsFROMPeriod = from.getTime();
 			Calendar to = Calendar.getInstance();
+			to.set(Calendar.HOUR, 0);
+			to.set(Calendar.MINUTE, 0);
+			to.set(Calendar.SECOND, 0);
+			to.set(Calendar.MILLISECOND, 0);
 			to.add(Calendar.DATE, i + 1);
 			Date fltsTOPeriod = to.getTime();
 
