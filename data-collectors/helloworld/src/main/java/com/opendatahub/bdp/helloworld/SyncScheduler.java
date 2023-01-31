@@ -1,4 +1,4 @@
-package it.bz.odh.helloworld;
+package com.opendatahub.bdp.helloworld;
 
 import org.slf4j.LoggerFactory;
 

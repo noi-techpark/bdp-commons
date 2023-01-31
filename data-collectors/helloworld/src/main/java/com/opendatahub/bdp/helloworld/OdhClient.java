@@ -1,4 +1,4 @@
-package it.bz.odh.helloworld;
+package com.opendatahub.bdp.helloworld;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.ProvenanceDto;
