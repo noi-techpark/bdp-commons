@@ -1,4 +1,4 @@
-package it.bz.odh.helloworld;
+package com.opendatahub.bdp.commons.dc.bikeboxes;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
