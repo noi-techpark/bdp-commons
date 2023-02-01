@@ -161,13 +161,11 @@ public class DynamicMapper {
         StationList dtos = new StationList();
         Set<Integer> missingPositions = new HashSet<>();
 
-        int i = -1;
+        int i = 0;
 
         for (final List<Object> row : spreadSheetValues) {
-            i++;
-
             // always skip header row
-            if (i == 0) {
+            if (i++ == 0) {
                 continue;
             }
 
@@ -217,7 +215,6 @@ public class DynamicMapper {
      * @return a {@link StationDto} containing all information of this row
      */
     public StationDto mapStation(Map<String, Short> headerMapping, List<Object> row) {
-        System.out.println("nameId: " + nameId);
         StationDto dto = new StationDto();
         Short nameIndex = headerMapping.get(nameId.toLowerCase());
         Short longIndex = headerMapping.get(longitudeId);
