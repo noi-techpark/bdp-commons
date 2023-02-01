@@ -88,7 +88,7 @@ public class SyncScheduler {
 
 	@PostConstruct
 	private void postConstruct() {
-		// initDatatypes();
+		initDatatypes();
 	}
 
 	private void initDatatypes() {
