@@ -28,7 +28,7 @@ import it.bz.odh.spreadsheets.services.ODHClient;
 
 @Lazy
 @Service
-public class DefaultCollector {
+public class DefaultCollector implements ISpreadsheetCollector {
     private Logger logger = LoggerFactory.getLogger(DefaultCollector.class);
 
     @Lazy
