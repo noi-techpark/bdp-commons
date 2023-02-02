@@ -53,13 +53,15 @@ jobs:
           X_VENDOR: ${{ env.VENDOR }}
           X_spreadsheetId: ${{ env.SPREADSHEET_ID }}
           X_suportedLanguages: en,de,it,lad
-          X_headers_nameId: it:name
-          X_headers_addressId: it:address
-          X_headers_metaDataId: event-id
+          X_headers_nameId: name
+          X_headers_addressId: address
+          X_headers_metaDataId: metadata-id
+          X_headers_latitudeId: latitude
+          X_headers_longitudeId: longitude
           X_spreadsheet_range: A1:Z
           X_spreadsheet_notificationUrl: https://spreadsheets.testingmachine.eu/creative-industries/trigger
-          X_stationtype: Culture
-          X_composite_unique_key: id
+          X_stationtype: CreativeIndustry
+          X_composite_unique_key: name,address
           X_origin: municipality bolzano
 
           # General deployment options
@@ -136,13 +138,15 @@ jobs:
           X_VENDOR: ${{ env.VENDOR }}
           X_spreadsheetId: ${{ env.SPREADSHEET_ID }}
           X_suportedLanguages: en,de,it,lad
-          X_headers_nameId: it:name
-          X_headers_addressId: it:address
-          X_headers_metaDataId: event-id
+          X_headers_nameId: name
+          X_headers_addressId: address
+          X_headers_metaDataId: metadata-id
+          X_headers_latitudeId: latitude
+          X_headers_longitudeId: longitude
           X_spreadsheet_range: A1:Z
           X_spreadsheet_notificationUrl: https://spreadsheets.opendatahub.bz.it/creative-industries/trigger
-          X_stationtype: Culture
-          X_composite_unique_key: id
+          X_stationtype: CreativeIndustry
+          X_composite_unique_key: name,address
           X_origin: municipality bolzano
 
           # General deployment options
