@@ -85,9 +85,10 @@ public class MainTrafficEventRoadworkBZ {
                 eventDto.getMetaData().put("messageStreetInternetDescIt", trafficEventRoadwork.getMessageStreetInternetDescIt());
                 eventDto.getMetaData().put("messageStreetNr", trafficEventRoadwork.getMessageStreetNr());
                 eventDto.getMetaData().put("messageStreetHierarchie", trafficEventRoadwork.getMessageStreetHierarchie());
-                eventDto.getMetaData().put("messageTypeId", trafficEventRoadwork.getMessageTypeId());
-                eventDto.getMetaData().put("messageTypeDescDe", trafficEventRoadwork.getMessageTypeDescDe());
-                eventDto.getMetaData().put("messageTypeDescIt", trafficEventRoadwork.getMessageTypeDescIt());
+                // Don't save message type, because it causes duplicate entries. More info here https://github.com/noi-techpark/bdp-commons/issues/599
+                // eventDto.getMetaData().put("messageTypeId", trafficEventRoadwork.getMessageTypeId());
+                // eventDto.getMetaData().put("messageTypeDescDe", trafficEventRoadwork.getMessageTypeDescDe());
+                // eventDto.getMetaData().put("messageTypeDescIt", trafficEventRoadwork.getMessageTypeDescIt());
 
                 eventDtoList.add(eventDto);
             }
@@ -103,7 +104,8 @@ public class MainTrafficEventRoadworkBZ {
         uuidMap.put("beginDate", trafficEventRoadwork.getBeginDate());
         uuidMap.put("endDate", trafficEventRoadwork.getEndDate());
         uuidMap.put("messageId", trafficEventRoadwork.getMessageId());
-        uuidMap.put("messageTypeId", trafficEventRoadwork.getMessageTypeId());
+        // Don't save message type, because it causes duplicate entries. More info here https://github.com/noi-techpark/bdp-commons/issues/599
+        // uuidMap.put("messageTypeId", trafficEventRoadwork.getMessageTypeId());
         uuidMap.put("X", trafficEventRoadwork.getX());
         uuidMap.put("Y", trafficEventRoadwork.getY());
 		return uuidMap;
