@@ -1,22 +1,20 @@
-# Helloworld Data Collector
+# Bike Boxes Data Collector
 
-> TODO: Replace all "helloworld" or TODO sections with your documenation.
-> Please, do not write general information that is already contained inside the
-> general [Open Data Hub Mobility - Data Collectors README](../../README.md)
+[![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bike-boxes.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bike-boxes.yml)
 
-[![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-helloworld.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-helloworld.yml)
+This data collector gathers data about bicincitta bike parking / sharing boxes.  
+The job runs as a scheduled cron job that periodically interrogates the bicincitta REST API.  
+Bike boxes are pushed to the Open Data Hub as stations, and their real time status as measurements
 
-> TODO: Describe this data collector shortly:  This **helloworld** project is a
-> showcase on how data collector development works.
+See the [requirements](./documentation/230214_SpecificheIntegrazione_NOI_v1.1.pdf) and [API specification](./documentation/API%20Parking.xlsx) for more details
 
-**Table of Contents**
-- [Helloworld Data Collector](#helloworld-data-collector)
-	- [Getting started](#getting-started)
-		- [Prerequisites](#prerequisites)
-		- [Configuration](#configuration)
-		- [Additional information](#additional-information)
+Relevant endpoints:
+- `/connect/token` for authentication
+- `/resources/services` to get all cities in which bike boxes exist
+- `/resources/stations` to get a list of parking stations
+- `/resources/station` to get details and real time data for a specific station
 
-> TODO: At the final end of this README update the Table Of Contents
+Authentication token is obtained via `client_credentials` flow and then passed as Bearer header
 
 ## Getting started
 
@@ -31,14 +29,13 @@ local machine for development and testing purposes.
 
 To build the project, the following prerequisites must be met:
 - Everything inside [Open Data Hub Mobility - Data Collectors README](../../README.md#prerequisites)
-- > **TODO** put your additional requisites here, do not add stuff that is already covered in the main README
 
 ### Configuration
 
-> TODO: Write your data collector configuration descriptions here
+Create a local .env file by copying the [example .env](.env.example)
 
-### Additional information
+Credentials both for ODH and BICINCITTA endpoints have to be obtained separately
 
-> TODO: Add some additinal information, like what this DC does, how it works
-> Talks also about the original data source and eventually provide links or
-> documentation that describes the data that we retrieve
+See .env and [application.properties](./src/main/resources/application.properties) for configuration options
+
+After plugging in the relevant credentials, docker-compose up should fire up a local instance.
