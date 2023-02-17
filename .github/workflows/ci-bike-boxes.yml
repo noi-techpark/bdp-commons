@@ -31,7 +31,7 @@ jobs:
   # Deploy Test
   deploy-test-bike-boxes:
     runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/bike-boxes'
     environment: test
     needs: test
     concurrency: deploy-test-bike-boxes
