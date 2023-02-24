@@ -1,9 +1,9 @@
 package com.opendatahub.bdp.commons.dc.bikeboxes.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
 public class ProvenanceConfig {
     @Value("${provenance.name}")
     public String name;

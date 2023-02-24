@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.opendatahub.bdp.commons.dc.bikeboxes.config.DataConfig;
 import com.opendatahub.bdp.commons.dc.bikeboxes.config.DataTypes;
 import com.opendatahub.bdp.commons.dc.bikeboxes.config.ProvenanceConfig;
+import com.opendatahub.bdp.commons.dc.bikeboxes.config.StationConfig;
 import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeService;
 import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeStation;
 import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeStation.Place;
@@ -43,6 +44,9 @@ public class BikeBoxJobScheduler {
 	private DataConfig dataC;
 
 	@Autowired
+	private StationConfig stationC;
+
+	@Autowired
 	private ProvenanceConfig provC;
 
 	@Scheduled(cron = "${scheduler.job}")
@@ -55,13 +59,14 @@ public class BikeBoxJobScheduler {
 			LOG.debug("Getting stations");
 			List<BikeStation> stations = getAllBikeStations(services);
 
-			if(LOG.isTraceEnabled()){
+			if (LOG.isTraceEnabled()) {
 				LOG.trace("Dumping retrieved stations list:");
 				stations.stream().forEach(s -> LOG.trace(s.toString()));
 			}
 
 			LOG.debug("Mapping to ODH objects");
 			StationList odhStations = new StationList();
+			StationList odhBays = new StationList();
 			DataMapDto<RecordDtoImpl> odhData = new DataMapDto<>();
 
 			for (BikeStation bs : stations) {
@@ -76,12 +81,18 @@ public class BikeBoxJobScheduler {
 						},
 						"urlGuide", bs.urlGuide,
 						"totalPlaces", bs.totalPlaces,
-						"stationPlaces", bs.stationPlaces,
+						"stationPlaces", Arrays.stream(bs.stationPlaces).map(p -> Map.of(
+								"position", p.position,
+								// purposely don't include state field
+								"bikeTag", p.bikeTag,
+								"bikeNum", p.bikeNum,
+								"isAssisted", p.isAssisted,
+								"type", p.type)),
 						"maxDistanceRent", bs.maxDistanceRent));
 				stationDto.setOrigin(provC.origin);
 				odhStations.add(stationDto);
 
-				// create station level measurements
+				// create station level measurements (as key value pairs)
 				var stationData = Map.of(
 						DataTypes.state.key, mapState(bs.state),
 						DataTypes.availableMuscularBikes.key, bs.countMuscularBikesAvailable,
@@ -101,13 +112,16 @@ public class BikeBoxJobScheduler {
 					// this parking bay is a child of the parking station
 					bayDto.setParentStation(stationDto.getId());
 
-					bayDto.setMetaData(Map.of("type", switch (bay.type) {
-						case 1 -> "Normal bay";
-						case 2 -> "Bike box";
-						default -> "Unknown type " + bay.type;
-						// default -> throw new Exception("Unknown mapping station.places.type: " + bay.type);
-					}));
-					odhStations.add(bayDto);
+					bayDto.setMetaData(Map.of(
+							"type", switch (bay.type) {
+								case 1 -> "Normal bay";
+								case 2 -> "Bike box";
+								default -> "Unknown type " + bay.type;
+								// default -> throw new Exception("Unknown mapping station.places.type: " +
+								// bay.type);
+							},
+							"isAssisted", bay.isAssisted));
+					odhBays.add(bayDto);
 
 					// add bay level measurement
 					odhData.addRecord(bayDto.getId(), DataTypes.usageState.key, mapSimple(mapState(bay.state)));
@@ -115,12 +129,13 @@ public class BikeBoxJobScheduler {
 			}
 
 			LOG.debug("Pushing data to ODH");
-			odhClient.syncStations(odhStations);
-			odhClient.syncDataTypes(
+			odhClient.syncStations(stationC.stationType, odhStations);
+			odhClient.syncStations(stationC.stationBayType, odhBays);
+			odhClient.syncDataTypes(stationC.stationBayType,
 					Arrays.stream(DataTypes.values())
 							.map(DataTypes::toDataTypeDto)
 							.toList());
-			odhClient.pushData(odhData);
+			odhClient.pushData(stationC.stationBayType, odhData);
 			LOG.info("Cron job successful");
 		} catch (Exception e) {
 			LOG.error("Cron job failed: exception: {}", e.getMessage(), e);
@@ -148,7 +163,8 @@ public class BikeBoxJobScheduler {
 			case 2 -> "OCCUPIED";
 			case 3 -> "OUT OF SERVICE";
 			default -> "UNKNOWN STATE " + state;
-			// default -> throw new Exception("Unable to map Station.place.state : " + state);
+			// default -> throw new Exception("Unable to map Station.place.state : " +
+			// state);
 		};
 	}
 

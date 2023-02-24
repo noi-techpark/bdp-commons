@@ -7,5 +7,4 @@ import org.springframework.stereotype.Component;
 public class DataConfig {
     @Value("${data.period}")
     public int period;
-    
 }
