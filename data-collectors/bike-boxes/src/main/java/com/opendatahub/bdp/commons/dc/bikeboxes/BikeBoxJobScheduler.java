@@ -74,7 +74,8 @@ public class BikeBoxJobScheduler {
 				StationDto stationDto = new StationDto(bs.idStation, bs.name, bs.latitude, bs.longitude);
 				stationDto.setMetaData(Map.of(
 						"type", switch (bs.type) {
-							case 1 -> "Sharing";
+							case 0 -> "Sharing with real stations";
+							case 1 -> "Sharing with virtual stations";
 							case 2 -> "Parking";
 							default -> "Unknown type " + bs.type;
 							// default -> throw new Exception("Unknown mapping station.type: " + bs.type);
