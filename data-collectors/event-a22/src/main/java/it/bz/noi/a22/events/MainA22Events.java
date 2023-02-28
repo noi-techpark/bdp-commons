@@ -60,8 +60,8 @@ public class MainA22Events {
     private static final String STATION_METADATA_IDDIREZIONE = "iddirezione";
     private static final String STATION_METADATA_IDTIPOEVENTO = "idtipoevento";
     private static final String STATION_METADATA_IDSOTTOTIPOEVENTO = "idsottotipoevento";
-    private static final String STATION_METADATA_METRO_INIZIO = "metro_fine";
-    private static final String STATION_METADATA_METRO_FINE = "metro_inizio";
+    private static final String STATION_METADATA_METRO_INIZIO = "metro_inizio";
+    private static final String STATION_METADATA_METRO_FINE = "metro_fine";
 
     private static final Logger LOG = LoggerFactory.getLogger(MainA22Events.class);
 
