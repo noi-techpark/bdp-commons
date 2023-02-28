@@ -70,6 +70,9 @@ jobs:
           X_A22_CONNECTOR_USR: BT5
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BT5_PWD }}
 
+          # Defines starting date from which events are fetched
+          X_LAST_TIMESTAMP: '2023-01-01 00:00:00'
+
           X_SCHEDULER_CRON: 0 */10 * * * ?
           X_SCHEDULER_POOL_SIZE: 10
 
@@ -138,6 +141,9 @@ jobs:
           X_A22_CONNECTOR_URL: http://webservices.cau-a22.org:8080/A22Data
           X_A22_CONNECTOR_USR: BN5
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BN5_PWD }}
+
+          # Defines starting date from which events are fetched
+          X_LAST_TIMESTAMP: '2023-01-01 00:00:00'
 
           X_SCHEDULER_CRON: 0 */10 * * * ?
           X_SCHEDULER_POOL_SIZE: 10
