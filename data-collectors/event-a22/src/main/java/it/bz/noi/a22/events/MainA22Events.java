@@ -30,6 +30,7 @@ import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,6 +52,11 @@ public class MainA22Events {
 
     @Value("${a22password}")
     private String a22ConnectorPwd;
+
+    @Value("${a22historyScanWindowInDays}")
+    private int historyScanWindowInDays;
+
+    private Long lastTimeStamp;
 
     private static final String METADTA_PREFIX = "a22_events.metadata.";
 
@@ -79,15 +85,15 @@ public class MainA22Events {
         this.uuidNamespace = UUID.fromString(a22EventsProperties.getProperty("uuidNamescpace"));
     }
 
-
     @PostConstruct
     public void init() {
         try (Reader reader = new InputStreamReader(getClass().getResourceAsStream("SottotipiEventi.csv"));
-            CSVParser parser = CSVFormat.Builder.create(CSVFormat.EXCEL).setHeader().build().parse(reader) ) {
+                CSVParser parser = CSVFormat.Builder.create(CSVFormat.EXCEL).setHeader().build().parse(reader)) {
             for (CSVRecord rec : parser) {
                 String idSottotipo = rec.get("IdSottotipo");
                 String descrizione = rec.get("Descrizione");
-                this.metadataMappingProperties.setProperty(METADTA_PREFIX + STATION_METADATA_IDSOTTOTIPOEVENTO + "." + idSottotipo, descrizione);
+                this.metadataMappingProperties.setProperty(
+                        METADTA_PREFIX + STATION_METADATA_IDSOTTOTIPOEVENTO + "." + idSottotipo, descrizione);
             }
         } catch (Exception e) {
             LOG.error("Unable to parse sottotipi eventi csv file");
@@ -97,14 +103,24 @@ public class MainA22Events {
 
     public void execute() {
         long startTime = System.currentTimeMillis();
+
+        // update default value to be lat X days instead of hardcoded date
+        // otherwise import in X years will need to import X years instead of only X
+        // last days
+        if (lastTimeStamp == null)
+            lastTimeStamp = Instant.now().minus(historyScanWindowInDays, ChronoUnit.DAYS).toEpochMilli();
+
         try {
             LOG.info("Start MainA22Events");
 
             // step 1
-            // create a Connector instance: this will perform authentication and store the session
+            // create a Connector instance: this will perform authentication and store the
+            // session
             //
-            // the session will last 24 hours unless de-authenticated before - however, if a user
-            // deauthenticates one session, all sessions of the same user will be de-authenticated;
+            // the session will last 24 hours unless de-authenticated before - however, if a
+            // user
+            // deauthenticates one session, all sessions of the same user will be
+            // de-authenticated;
             // this means each running application neeeds their own username
             A22EventConnector A22Service = setupA22ServiceConnector();
 
@@ -114,26 +130,26 @@ public class MainA22Events {
             HashMap<String, EventDto> inactiveStations = new HashMap<>();
             try {
                 long scanWindowSeconds = Long.parseLong(a22EventsProperties.getProperty("scanWindowSeconds"));
-                long lastTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22EventsProperties.getProperty("lastTimestamp")).getTime() / 1000;
 
                 do {
                     LOG.info("Get all events between {} and {}",
                             Instant.ofEpochSecond(lastTimeStamp).atZone(ZoneId.systemDefault()).toLocalDate(),
-                            Instant.ofEpochSecond(lastTimeStamp + scanWindowSeconds).atZone(ZoneId.systemDefault()).toLocalDate());
+                            Instant.ofEpochSecond(lastTimeStamp + scanWindowSeconds).atZone(ZoneId.systemDefault())
+                                    .toLocalDate());
                     List<A22Event> events = A22Service.getEvents(lastTimeStamp, lastTimeStamp + scanWindowSeconds);
                     LOG.info("got " + events.size() + " events");
                     List<EventDto> eventDtoList = new ArrayList<>();
                     for (A22Event event : events) {
                         EventDto eventDto = getEventDtoFromA22Event(event);
-						if (EventDto.isValid(eventDto, false)) {
-							if (!inactiveStations.containsKey(eventDto.getUuid())) {
-								inactiveStations.put(eventDto.getUuid(), eventDto);
-								eventDtoList.add(eventDto);
-							}
-						} else {
-							LOG.warn("The generated eventDto has missing required fields or an invalid interval range");
-							LOG.warn("EVENTDTO {}", eventDto);
-						}
+                        if (EventDto.isValid(eventDto, false)) {
+                            if (!inactiveStations.containsKey(eventDto.getUuid())) {
+                                inactiveStations.put(eventDto.getUuid(), eventDto);
+                                eventDtoList.add(eventDto);
+                            }
+                        } else {
+                            LOG.warn("The generated eventDto has missing required fields or an invalid interval range");
+                            LOG.warn("EVENTDTO {}", eventDto);
+                        }
                     }
                     pusher.addEvents(eventDtoList);
                     lastTimeStamp += scanWindowSeconds;
@@ -151,10 +167,10 @@ public class MainA22Events {
                 List<EventDto> eventDtoList = new ArrayList<>();
                 for (A22Event event : events) {
                     EventDto eventDto = getEventDtoFromA22Event(event);
-					if (EventDto.isValid(eventDto, false))
-						eventDtoList.add(eventDto);
-					else
-						LOG.warn("The generated eventDto has missing required fields.");
+                    if (EventDto.isValid(eventDto, false))
+                        eventDtoList.add(eventDto);
+                    else
+                        LOG.warn("The generated eventDto has missing required fields.");
                 }
                 pusher.addEvents(eventDtoList);
             } catch (Exception e) {
@@ -182,17 +198,17 @@ public class MainA22Events {
         eventDto.setUuid(generateEventUuid(event), uuidNamespace);
         eventDto.setOrigin(a22EventsProperties.getProperty("origin"));
         eventDto.setCategory(String.format("%s:%s_%s",
-			categoryPrefix,
-			getMappingStringByPropertyId(STATION_METADATA_IDTIPOEVENTO, event.getIdtipoevento()),
-			getMappingStringByPropertyId(STATION_METADATA_IDSOTTOTIPOEVENTO, event.getIdsottotipoevento()
-		)));
-		eventDto.setEventSeriesUuid(generateEventSeriesUuid(event), uuidNamespace);
-		eventDto.setName(Long.toString(event.getId()));
+                categoryPrefix,
+                getMappingStringByPropertyId(STATION_METADATA_IDTIPOEVENTO, event.getIdtipoevento()),
+                getMappingStringByPropertyId(STATION_METADATA_IDSOTTOTIPOEVENTO, event.getIdsottotipoevento())));
+        eventDto.setEventSeriesUuid(generateEventSeriesUuid(event), uuidNamespace);
+        eventDto.setName(Long.toString(event.getId()));
 
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
         Coordinate coordinateInizio = new Coordinate(event.getLon_inizio(), event.getLat_inizio());
         Coordinate coordinateFine = new Coordinate(event.getLon_fine(), event.getLat_fine());
-        Point[] points = new Point[]{geometryFactory.createPoint(coordinateInizio), geometryFactory.createPoint(coordinateFine)};
+        Point[] points = new Point[] { geometryFactory.createPoint(coordinateInizio),
+                geometryFactory.createPoint(coordinateFine) };
         MultiPoint multiPoint = new MultiPoint(points, geometryFactory);
         eventDto.setWktGeometry(multiPoint.toText());
 
@@ -201,14 +217,16 @@ public class MainA22Events {
 
         eventDto.getMetaData().put(STATION_METADATA_ID, event.getId());
         eventDto.getMetaData().put(STATION_METADATA_FASCIA_ORARIA, event.getFascia_oraria());
-        eventDto.getMetaData().put(STATION_METADATA_IDCORSIA, getMappingStringByPropertyId(STATION_METADATA_IDCORSIA, event.getIdcorsia()));
-        eventDto.getMetaData().put(STATION_METADATA_IDDIREZIONE, getMappingStringByPropertyId(STATION_METADATA_IDDIREZIONE, event.getIddirezione()));
+        eventDto.getMetaData().put(STATION_METADATA_IDCORSIA,
+                getMappingStringByPropertyId(STATION_METADATA_IDCORSIA, event.getIdcorsia()));
+        eventDto.getMetaData().put(STATION_METADATA_IDDIREZIONE,
+                getMappingStringByPropertyId(STATION_METADATA_IDDIREZIONE, event.getIddirezione()));
         eventDto.getMetaData().put(STATION_METADATA_METRO_INIZIO, event.getMetro_inizio());
         eventDto.getMetaData().put(STATION_METADATA_METRO_FINE, event.getMetro_fine());
         eventDto.getMetaData().put(STATION_METADATA_IDTIPOEVENTO, event.getIdtipoevento());
         eventDto.getMetaData().put(STATION_METADATA_IDSOTTOTIPOEVENTO, event.getIdsottotipoevento());
 
-		return eventDto;
+        return eventDto;
     }
 
     private Map<String, Object> generateEventUuid(A22Event event) {

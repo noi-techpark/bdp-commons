@@ -27,6 +27,7 @@ import java.util.List;
 /**
  *  encapsulates the communication with the A22 web service
  */
+@PropertySource("classpath:it/bz/noi/a22/events/a22events.properties")
 public class A22EventConnector {
 
 
