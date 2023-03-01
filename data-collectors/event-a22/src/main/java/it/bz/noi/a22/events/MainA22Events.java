@@ -107,8 +107,7 @@ public class MainA22Events {
         // update default value to be lat X days instead of hardcoded date
         // otherwise import in X years will need to import X years instead of only X
         // last days
-        if (lastTimeStamp == null)
-            lastTimeStamp = Instant.now().minus(historyScanWindowInDays, ChronoUnit.DAYS).toEpochMilli() / 1000;
+        lastTimeStamp = Instant.now().minus(historyScanWindowInDays, ChronoUnit.DAYS).toEpochMilli() / 1000;
 
         try {
             LOG.info("Start MainA22Events");
