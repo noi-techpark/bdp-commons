@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.PropertySource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,7 +28,6 @@ import java.util.List;
 /**
  *  encapsulates the communication with the A22 web service
  */
-@PropertySource("classpath:it/bz/noi/a22/events/a22events.properties")
 public class A22EventConnector {
 
 

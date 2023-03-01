@@ -108,7 +108,7 @@ public class MainA22Events {
         // otherwise import in X years will need to import X years instead of only X
         // last days
         if (lastTimeStamp == null)
-            lastTimeStamp = Instant.now().minus(historyScanWindowInDays, ChronoUnit.DAYS).toEpochMilli();
+            lastTimeStamp = Instant.now().minus(historyScanWindowInDays, ChronoUnit.DAYS).toEpochMilli() / 1000;
 
         try {
             LOG.info("Start MainA22Events");
