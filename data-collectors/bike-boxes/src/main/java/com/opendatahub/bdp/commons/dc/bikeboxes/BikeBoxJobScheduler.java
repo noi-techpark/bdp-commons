@@ -68,6 +68,7 @@ public class BikeBoxJobScheduler {
 			StationList odhStations = new StationList();
 			StationList odhBays = new StationList();
 			DataMapDto<RecordDtoImpl> odhData = new DataMapDto<>();
+			DataMapDto<RecordDtoImpl> odhBayData = new DataMapDto<>();
 
 			for (BikeStation bs : stations) {
 				// create station dto
@@ -125,7 +126,7 @@ public class BikeBoxJobScheduler {
 					odhBays.add(bayDto);
 
 					// add bay level measurement
-					odhData.addRecord(bayDto.getId(), DataTypes.usageState.key, mapSimple(mapState(bay.state)));
+					odhBayData.addRecord(bayDto.getId(), DataTypes.usageState.key, mapSimple(mapState(bay.state)));
 				}
 			}
 
@@ -136,7 +137,8 @@ public class BikeBoxJobScheduler {
 					Arrays.stream(DataTypes.values())
 							.map(DataTypes::toDataTypeDto)
 							.toList());
-			odhClient.pushData(stationC.stationBayType, odhData);
+			odhClient.pushData(stationC.stationType, odhData);
+			odhClient.pushData(stationC.stationBayType, odhBayData);
 			LOG.info("Cron job successful");
 		} catch (Exception e) {
 			LOG.error("Cron job failed: exception: {}", e.getMessage(), e);
