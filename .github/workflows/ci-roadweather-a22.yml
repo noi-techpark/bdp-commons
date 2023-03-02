@@ -57,7 +57,7 @@ jobs:
           X_scope: openid
           X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
-          X_A22_URL: ${{ secrets.ROADWEATHER_A22_URL }}
+          X_A22_URL: https://cau.autobrennero.it/Vega/A22DataIIS/A22DataIIS.svc
           X_A22_USER: BT3
           X_A22_PASSWORD: ${{ secrets.A22_BT3_PWD }}
 
@@ -128,7 +128,7 @@ jobs:
           X_scope: openid
           X_BASE_URI: https://mobility.share.opendatahub.com/json
 
-          X_A22_URL: ${{ secrets.ROADWEATHER_A22_URL }}
+          X_A22_URL: https://cau.autobrennero.it/Vega/A22DataIIS/A22DataIIS.svc
           X_A22_USER: BN3
           X_A22_PASSWORD: ${{ secrets.A22_BN3_PWD }}
 
