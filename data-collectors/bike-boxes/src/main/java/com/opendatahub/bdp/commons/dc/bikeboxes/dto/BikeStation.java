@@ -20,8 +20,8 @@ public class BikeStation {
     public int type;
     public String urlGuide;
     public int state;
-    public int countMuscularBikesAvailable;
-    public int countAssistedBikesAvailable;
+    public int countFreePlacesAvailable_MuscularBikes;
+    public int countFreePlacesAvailable_AssistedBikes;
     public int countFreePlacesAvailable;
     public int totalPlaces;
     public int maxDistanceRent;
