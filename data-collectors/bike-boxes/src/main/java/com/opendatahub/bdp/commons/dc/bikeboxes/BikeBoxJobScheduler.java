@@ -96,7 +96,7 @@ public class BikeBoxJobScheduler {
 
 				// create station level measurements (as key value pairs)
 				var stationData = Map.of(
-						DataTypes.state.key, mapState(bs.state),
+						DataTypes.usageState.key, mapState(bs.state),
 						DataTypes.availableMuscularBikes.key, bs.countFreePlacesAvailable_MuscularBikes,
 						DataTypes.availableAssistedBikes.key, bs.countFreePlacesAvailable_AssistedBikes,
 						DataTypes.availableVehicles.key, bs.countFreePlacesAvailable);
