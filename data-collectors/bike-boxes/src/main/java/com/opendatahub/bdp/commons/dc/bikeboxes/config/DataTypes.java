@@ -6,7 +6,6 @@ package com.opendatahub.bdp.commons.dc.bikeboxes.config;
 import it.bz.idm.bdp.dto.DataTypeDto;
 
 public enum DataTypes {
-    state("state", "state"),
     /** FREE, OCCUPIED, OUT OF SERVICE */
     usageState("usageState", "usageState"),
     availableMuscularBikes("availableMuscularBikes", "availableMuscularBikes"),
