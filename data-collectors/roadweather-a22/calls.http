@@ -1,0 +1,44 @@
+@host = {{$dotenv A22_URL}}
+
+### Authorize
+# @name login
+@token = {{login.response.body.SubscribeResult.sessionId}}
+POST {{host}}/token
+Content-Type: application/json
+User-Agent: NOI/A22RoadWeatherConnector
+Accept: */*
+
+{
+	"request": {
+		"username": "{{$dotenv A22_USERNAME}}",
+		"password": "{{$dotenv A22_PASSWORD}}"
+	}
+}
+
+### Get active events
+POST {{host}}/meteo/anagrafica
+Content-Type: application/json
+User-Agent: NOI/A22RoadWeatherConnector
+Accept: */*
+
+{
+	"request": {
+		"sessionId": "{{token}}"
+	}
+}
+
+### Get historical events
+POST {{host}}/meteo/misure
+Content-Type: application/json
+User-Agent: NOI/A22RoadWeatherConnector
+Accept: */*
+
+{
+	"request": {
+		"sessionId": "{{token}}",
+		"idcabina": "",
+		"fromData": "/Date(1643414400000)/",
+		"toData": "/Date(1643583600000)/"
+	}
+}
+
