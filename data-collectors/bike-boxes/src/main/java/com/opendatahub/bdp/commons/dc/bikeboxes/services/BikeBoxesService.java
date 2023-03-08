@@ -35,18 +35,24 @@ public class BikeBoxesService implements IBikeBoxesService {
                 .block();
     }
 
-    @Override
-    public List<BikeStation> getBikeStations(String cityId) {
+    private List<BikeStation> getBikeStationsByType(String cityId, String serviceType){
         return client.get()
                 .uri(u -> u
                     .path(ENDPOINT_STATIONS)
                     .queryParam("idCity", cityId)
+                    .queryParam("serviceType", serviceType)
                     .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(BikeStation.class)
                 .collectList()
                 .block();
+    }
+    @Override
+    public List<BikeStation> getBikeStations(String cityId) {
+        List<BikeStation> ret = getBikeStationsByType(cityId, "1");
+        ret.addAll(getBikeStationsByType(cityId, "2"));
+        return ret;
     }
 
     @Override
