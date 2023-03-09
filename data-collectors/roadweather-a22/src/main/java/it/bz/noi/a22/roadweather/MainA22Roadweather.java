@@ -24,7 +24,7 @@ import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
 @Component
-public class MainA22Roadweather {
+public class MainA22Roadweather{
 
     private static Logger log = LoggerFactory.getLogger(MainA22Roadweather.class);
 
@@ -36,14 +36,14 @@ public class MainA22Roadweather {
     private List<String> datatypeKeys;
     private StationList stationList;
 
-    @Value("${url}")
-    private String url;
+	@Value("${url}")
+	private String url;
 
-    @Value("${user}")
-    private String user;
+	@Value("${user}")
+	private String user;
 
-    @Value("${password}")
-    private String password;
+	@Value("${password}")
+	private String password;
 
     public MainA22Roadweather() {
         this.datatypesProperties = new A22Properties("a22roadweatherdatatypes.properties");
@@ -51,22 +51,21 @@ public class MainA22Roadweather {
 
     }
 
-    public void execute() {
+    public void execute(){
         long startTime = System.currentTimeMillis();
         try {
             log.info("Start MainA22Roadweather");
 
+
             setupDataType();
 
             // step 1
-            // create a Connector instance: this will perform authentication and store the
-            // session
+            // create a Connector instance: this will perform authentication and store the session
             //
-            // the session will last 24 hours unless de-authenticated before - however, if a
-            // user
-            // de-authenticates one session, all sessions of the same user will be
-            // de-authenticated
+            // the session will last 24 hours unless de-authenticated before - however, if a user
+            // de-authenticates one session, all sessions of the same user will be de-authenticated
             Connector a22Service = setupA22ServiceConnector();
+
 
             // step 2
             // get the list of weather stations
@@ -110,6 +109,8 @@ public class MainA22Roadweather {
                 log.error("step 2 failed, continuing anyway to de-auth...", e);
             }
 
+            stationIdLastTimestampMap = null;
+
             // step 3
             // get the list of weather data records
             try {
@@ -122,30 +123,20 @@ public class MainA22Roadweather {
 
                     do {
                         DataMapDto<RecordDtoImpl> stationMap = new DataMapDto<>();
-                        ArrayList<HashMap<String, String>> weatherdata_list = a22Service.getWeatherData(lastTimeStamp,
-                                lastTimeStamp + scanWindowSeconds, Long.valueOf(stationList.get(i).getId()));
+                        ArrayList<HashMap<String, String>> weatherdata_list = a22Service.getWeatherData(lastTimeStamp, lastTimeStamp + scanWindowSeconds, Long.valueOf(stationList.get(i).getId()));
 
-                        log.debug("got " + weatherdata_list.size() + " weather data records for "
-                                + simpleDateFormat.format(new Date(lastTimeStamp * 1000)) + ", "
-                                + simpleDateFormat.format(new Date((lastTimeStamp + scanWindowSeconds) * 1000)) + ", "
-                                + idCabina + ":");
+                        log.debug("got " + weatherdata_list.size() + " weather data records for " + simpleDateFormat.format(new Date(lastTimeStamp * 1000)) + ", " + simpleDateFormat.format(new Date((lastTimeStamp + scanWindowSeconds) * 1000)) + ", " + idCabina + ":");
                         if (weatherdata_list.size() > 0) {
                             log.debug("the first weather data record is: ");
                             log.debug(weatherdata_list.get(0).toString());
                             weatherdata_list.forEach(weatherdata -> {
                                 datatypeKeys.forEach(cname -> {
                                     if (!weatherdata.get(cname).equals("null")) {
-                                        stationMap.addRecord(idCabina, cname,
-                                                new SimpleRecordDto(Long.parseLong(weatherdata.get("data")) * 1000,
-                                                        Double.parseDouble(weatherdata.get(cname)), 1));
-                                        if (datatypesProperties
-                                                .getProperty("a22roadweather.datatype." + cname + ".mapping")
-                                                .equals("true")) {
-                                            stationMap.addRecord(idCabina, cname + "_desc",
-                                                    new SimpleRecordDto(Long.parseLong(weatherdata.get("data")) * 1000,
-                                                            datatypesProperties.getProperty("a22roadweather.datatype."
-                                                                    + cname + ".mapping." + weatherdata.get(cname)),
-                                                            1));
+                                    	stationMap.addRecord(idCabina, cname,
+                                    	new SimpleRecordDto(Long.parseLong(weatherdata.get("data")) * 1000, Double.parseDouble(weatherdata.get(cname)),1));
+                                        if (datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".mapping").equals("true")) {
+                                        	stationMap.addRecord(idCabina, cname + "_desc", new SimpleRecordDto(Long.parseLong(weatherdata.get("data")) * 1000,
+                                            datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".mapping." + weatherdata.get(cname)),1));
                                         }
                                     }
                                 });
@@ -153,13 +144,14 @@ public class MainA22Roadweather {
                         }
                         stationMap.clean();
                         if (!stationMap.getBranch().isEmpty())
-                            pusher.pushData(stationMap);
+                        	pusher.pushData(stationMap);
                         lastTimeStamp += scanWindowSeconds;
                     } while (lastTimeStamp < System.currentTimeMillis() / 1000);
                 }
             } catch (Exception e) {
                 log.error("step 3 failed, continuing anyway to read de-auth...", e);
             }
+
 
             // step 4
             // de-authentication
@@ -186,14 +178,16 @@ public class MainA22Roadweather {
                     new DataTypeDto(cname,
                             datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".unit"),
                             datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".description"),
-                            datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".rtype")));
+                            datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".rtype"))
+            );
 
             if (datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".mapping").equals("true")) {
                 dataTypeDtoList.add(
                         new DataTypeDto(cname + "_desc",
                                 datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".unit"),
                                 datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".description"),
-                                datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".rtype")));
+                                datatypesProperties.getProperty("a22roadweather.datatype." + cname + ".rtype"))
+                );
             }
         });
         pusher.syncDataTypes(dataTypeDtoList);
@@ -204,28 +198,26 @@ public class MainA22Roadweather {
             datatypeKeys = new ArrayList<>();
             datatypesProperties.keySet().stream().filter(o -> o.toString().matches("^a22roadweather\\..*\\.key$"))
                     .iterator().forEachRemaining(key -> {
-                        datatypeKeys.add(datatypesProperties.getProperty(key.toString()));
-                    });
+                datatypeKeys.add( datatypesProperties.getProperty(key.toString()));
+            });
         }
         return datatypeKeys;
     }
 
     private long getLastTimestampOfStationInSeconds(String idCabina) {
-        readLastTimestampsForAllStations();
-        
+        if (stationIdLastTimestampMap == null) {
+            readLastTimestampsForAllStations();
+        }
         try {
             long ret = stationIdLastTimestampMap.getOrDefault(idCabina,
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                            .parse(a22RoadweatherProperties.getProperty("lastTimestamp")).getTime());
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22RoadweatherProperties.getProperty("lastTimestamp")).getTime());
 
-            log.debug("getLastTimestampOfSignInSeconds(" + idCabina + "): "
-                    + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
+            log.debug("getLastTimestampOfSignInSeconds(" + idCabina + "): " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
 
             return ret / 1000;
         } catch (ParseException e) {
             log.error("Invalid lastTimestamp: " + a22RoadweatherProperties.getProperty("lastTimestamp"), e);
-            throw new RuntimeException(
-                    "Invalid lastTimestamp: " + a22RoadweatherProperties.getProperty("lastTimestamp"), e);
+            throw new RuntimeException("Invalid lastTimestamp: " + a22RoadweatherProperties.getProperty("lastTimestamp"), e);
         }
     }
 
@@ -235,8 +227,7 @@ public class MainA22Roadweather {
         for (StationDto stationDto : this.stationList) {
             String stationCode = stationDto.getId();
             long lastTimestamp = ((Date) pusher.getDateOfLastRecord(stationCode, null, null)).getTime();
-            log.debug("Station Code: " + stationCode + ", lastTimestamp: "
-                    + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
+            log.debug("Station Code: " + stationCode + ", lastTimestamp: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
             if (stationIdLastTimestampMap.getOrDefault(stationCode, 0L) < lastTimestamp) {
                 stationIdLastTimestampMap.put(stationCode, lastTimestamp);
             }
