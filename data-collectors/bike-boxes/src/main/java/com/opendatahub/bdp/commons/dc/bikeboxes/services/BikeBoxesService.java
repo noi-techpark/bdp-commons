@@ -50,9 +50,7 @@ public class BikeBoxesService implements IBikeBoxesService {
     }
     @Override
     public List<BikeStation> getBikeStations(String cityId) {
-        List<BikeStation> ret = getBikeStationsByType(cityId, "1");
-        ret.addAll(getBikeStationsByType(cityId, "2"));
-        return ret;
+        return getBikeStationsByType(cityId, "0");
     }
 
     @Override
