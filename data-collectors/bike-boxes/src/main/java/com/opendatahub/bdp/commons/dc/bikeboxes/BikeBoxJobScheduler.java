@@ -114,15 +114,18 @@ public class BikeBoxJobScheduler {
 					// this parking bay is a child of the parking station
 					bayDto.setParentStation(stationDto.getId());
 
-					bayDto.setMetaData(Map.of(
-							"type", switch (bay.type) {
-								case 1 -> "Normal bay";
-								case 2 -> "Bike box";
-								default -> "Unknown type " + bay.type;
-								// default -> throw new Exception("Unknown mapping station.places.type: " +
-								// bay.type);
-							},
-							"isAssisted", bay.isAssisted));
+					bayDto.setMetaData(Map.of("isAssisted", bay.isAssisted));
+					// type is always 0 for station types 0 and 1 (sharing stations)
+					if (bs.type != 0 && bs.type != 1) { 
+						bayDto.getMetaData().put(
+								"type", switch (bay.type) {
+									case 1 -> "Normal bay";
+									case 2 -> "Bike box";
+									default -> "Unknown type " + bay.type;
+									// default -> throw new Exception("Unknown mapping station.places.type: " +
+									// bay.type);
+								});
+					}
 					odhBays.add(bayDto);
 
 					// add bay level measurement

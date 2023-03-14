@@ -109,6 +109,8 @@ public class MainA22Roadweather{
                 log.error("step 2 failed, continuing anyway to de-auth...", e);
             }
 
+            stationIdLastTimestampMap = null;
+
             // step 3
             // get the list of weather data records
             try {
@@ -203,7 +205,6 @@ public class MainA22Roadweather{
     }
 
     private long getLastTimestampOfStationInSeconds(String idCabina) {
-
         if (stationIdLastTimestampMap == null) {
             readLastTimestampsForAllStations();
         }
