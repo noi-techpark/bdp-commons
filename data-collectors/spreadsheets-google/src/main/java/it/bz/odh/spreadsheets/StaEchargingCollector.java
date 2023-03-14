@@ -119,6 +119,12 @@ public class StaEchargingCollector implements ISpreadsheetCollector {
         station.setOrigin(origin);
         station.setStationType(stationType);
         station.setId(String.format("%s:%s", provider, station.getName()));
+
+        Map<String, Object> stationMeta = new HashMap<>();
+        stationMeta.put("state", getString(headerMetadataStateId, row));
+        stationMeta.put("accessType", getString(headerMetadataAccessTypeId, row));
+        station.setMetaData(stationMeta);
+
         stationDtos.add(station);
 
         // Map the plug as a child station
@@ -152,9 +158,8 @@ public class StaEchargingCollector implements ISpreadsheetCollector {
 
         Map<String, Object> plugMeta = new HashMap<>();
         plugMeta.put("outlets", outlets);
-        plugMeta.put("state", getString(headerMetadataStateId, row));
-        plugMeta.put("accessType", getString(headerMetadataAccessTypeId, row));
         plug.setMetaData(plugMeta);
+
         plugDtos.add(plug);
     }
 
