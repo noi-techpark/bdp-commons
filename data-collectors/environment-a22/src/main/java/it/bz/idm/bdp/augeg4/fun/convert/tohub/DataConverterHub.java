@@ -24,7 +24,6 @@ public class DataConverterHub implements DataConverterHubFace {
 
     private final MeasurementMappings measurementMappings = new MeasurementMappings();
 
-
     @Override
     public List<AugeG4ProcessedDataToHubDto> convert(List<AugeG4ProcessedData> data) {
         return data
@@ -36,16 +35,16 @@ public class DataConverterHub implements DataConverterHubFace {
     }
 
     private Optional<AugeG4ProcessedDataToHubDto> convertDto(AugeG4ProcessedData processedData) {
-       List<ProcessedMeasurementToHub> convertedMeasurements = convertMeasurements(processedData.getMeasurements());
+        List<ProcessedMeasurementToHub> convertedMeasurements = convertMeasurements(processedData.getMeasurements());
         if (convertedMeasurements.isEmpty()) {
-            LOG.warn("convertDto() convertedMeasurements.isEmpty(): check measurementMappings.csv for missing id");
+            LOG.warn("convertDto() convertedMeasurements.isEmpty(): check measurementMappings.csv for missing id",
+                    processedData.getControlUnitId());
             return Optional.empty();
         }
         return Optional.of(new AugeG4ProcessedDataToHubDto(
                 convertStationId(processedData.getControlUnitId()),
                 processedData.getDateTimeAcquisition(),
-                convertedMeasurements)
-        );
+                convertedMeasurements));
     }
 
     private StationId convertStationId(String controlUnitId) {
@@ -66,8 +65,7 @@ public class DataConverterHub implements DataConverterHubFace {
                 .map(dataType -> new ProcessedMeasurementToHub(
                         dataType,
                         measurement.getRawValue(),
-                        measurement.getProcessedValue()
-                ));
+                        measurement.getProcessedValue()));
     }
 
     private Optional<String> mapMeasurementIdToDataType(MeasurementId measurementId) {

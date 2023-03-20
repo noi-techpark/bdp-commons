@@ -34,15 +34,15 @@ public class DataConverterAuge implements DataConverterAugeFace {
     private Optional<AugeG4ProcessedDataToAugeDto> convertDto(AugeG4ProcessedData processedData) {
         List<ProcessedResValToAuge> convertedResVal = convertMeasurements(processedData.getMeasurements());
         if (convertedResVal.isEmpty()) {
-            LOG.warn("convertDto() convertedResVal.isEmpty(): check measurementMappings.csv for missing id");
+            LOG.warn("convertDto() convertedResVal.isEmpty(): check measurementMappings.csv for missing id: {}",
+                    processedData.getControlUnitId());
             return Optional.empty();
         }
         return Optional.of(new AugeG4ProcessedDataToAugeDto(
                 processedData.getDateTimeAcquisition(),
                 processedData.getDateTimeProcessing(),
                 processedData.getControlUnitId(),
-                convertedResVal
-        ));
+                convertedResVal));
     }
 
     private List<ProcessedResValToAuge> convertMeasurements(List<ProcessedMeasurement> measurements) {
@@ -58,14 +58,13 @@ public class DataConverterAuge implements DataConverterAugeFace {
         return mapMeasurementIdToLinearizedId(processedMeasurement.getId())
                 .map(linearizedId -> processedMeasurement.getProcessedValue() != null ? new ProcessedResValToAuge(
                         linearizedId,
-                        processedMeasurement.getProcessedValue()
-                ):null).filter(x -> x!=null);
+                        processedMeasurement.getProcessedValue()) : null)
+                .filter(x -> x != null);
     }
 
     private Optional<Integer> mapMeasurementIdToLinearizedId(MeasurementId measurementId) {
         return measurementMappings.getMapping(measurementId)
                 .map(MeasurementMapping::getProcessedId);
     }
-
 
 }
