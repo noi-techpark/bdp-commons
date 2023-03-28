@@ -122,6 +122,7 @@ public class StaEchargingCollector implements ISpreadsheetCollector {
 
         Map<String, Object> stationMeta = new HashMap<>();
         stationMeta.put("state", getString(headerMetadataStateId, row));
+        stationMeta.put("provider", provider);
         stationMeta.put("accessType", getString(headerMetadataAccessTypeId, row));
         station.setMetaData(stationMeta);
 
