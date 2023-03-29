@@ -52,7 +52,8 @@ public class MetadataEnrichment {
 		initializeMetadataColumnIndexes(headerRow);
 		initializeMapping(rows, headerRow);
 
-		removeStationsFromSheet(stations);
+		// disable stations deletion
+		// removeStationsFromSheet(stations);
 		insertStationsInSheet(stations);
 		enrichMetadata(stations);
 	}
