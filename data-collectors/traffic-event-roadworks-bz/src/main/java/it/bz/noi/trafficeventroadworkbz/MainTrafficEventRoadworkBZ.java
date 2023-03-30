@@ -103,8 +103,8 @@ public class MainTrafficEventRoadworkBZ {
         HashMap<String, Object> uuidMap = new HashMap<>();
         uuidMap.put("beginDate", trafficEventRoadwork.getBeginDate());
         uuidMap.put("endDate", trafficEventRoadwork.getEndDate());
-        uuidMap.put("messageId", trafficEventRoadwork.getMessageId());
         // Don't save message type, because it causes duplicate entries. More info here https://github.com/noi-techpark/bdp-commons/issues/599
+        // uuidMap.put("messageId", trafficEventRoadwork.getMessageId());
         // uuidMap.put("messageTypeId", trafficEventRoadwork.getMessageTypeId());
         uuidMap.put("X", trafficEventRoadwork.getX());
         uuidMap.put("Y", trafficEventRoadwork.getY());
