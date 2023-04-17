@@ -70,7 +70,7 @@ jobs:
 
           # Matomo API docs https://developer.matomo.org/api-reference/reporting-api
           X_MATOMO_URL: https://noi.matomo.cloud/?module=API&method=CustomReports.getCustomReport&idSite=1&idCustomReport=1&period=day&date=yesterday&format=JSON&flat=1&token_auth=
-          X_MATOMO_TOKEN: ${{ secrets.MATOMO_NOI_TOKEN }}
+          X_MATOMO_API_TOKEN: ${{ secrets.MATOMO_NOI_TOKEN }}
 
           # Logging
           X_LOG_LEVEL: info
@@ -138,7 +138,7 @@ jobs:
 #
 #          # Matomo API docs https://developer.matomo.org/api-reference/reporting-api
 #          X_MATOMO_URL: https://noi.matomo.cloud/?module=API&method=CustomReports.getCustomReport&idSite=1&idCustomReport=1&period=day&date=yesterday&format=JSON&flat=1&token_auth=
-#          X_MATOMO_TOKEN: ${{ secrets.MATOMO_NOI_TOKEN }}
+#          X_MATOMO_API_TOKEN: ${{ secrets.MATOMO_NOI_TOKEN }}
 #
 #          # Logging
 #          X_LOG_LEVEL: info
