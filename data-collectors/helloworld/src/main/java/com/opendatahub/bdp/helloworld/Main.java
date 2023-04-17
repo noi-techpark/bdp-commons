@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
-@ComponentScan({"com.opendatahub.bdp", "it.bz.idm.bdp.dto"})
+@ComponentScan({"com.opendatahub.bdp", "it.bz.idm.bdp"})
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {
