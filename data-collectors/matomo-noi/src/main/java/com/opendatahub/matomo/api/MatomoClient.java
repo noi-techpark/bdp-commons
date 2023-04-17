@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class MatomoAPIClient {
+public class MatomoClient {
 
     @Value("${matomo.api.token}")
     private String token;
@@ -15,12 +15,11 @@ public class MatomoAPIClient {
 
     private RestTemplate restTemplate;
 
-    public MatomoAPIClient() {
+    public MatomoClient() {
         restTemplate = new RestTemplate();
-
     }
 
     public CustomReportDto[] getReportData() {
-        return restTemplate.getForObject(url, CustomReportDto[].class);
+        return restTemplate.getForObject(url + token, CustomReportDto[].class);
     }
 }
