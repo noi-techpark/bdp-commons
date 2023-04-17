@@ -65,7 +65,6 @@ jobs:
           X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
           X_ODH_CLIENT_PROVENANCE_ORIGIN: ${{ env.ODH_ORIGIN }}
           X_ODH_CLIENT_STATIONTYPE: ${{ env.ODH_STATIONTYPE}}
-          X_ODH_CLIENT_STATIONBAYTYPE: ${{ env.ODH_STATIONBAYTYPE}}
           X_ODH_CLIENT_PERIOD: ${{ env.ODH_PERIOD }}
 
           # Matomo API docs https://developer.matomo.org/api-reference/reporting-api
