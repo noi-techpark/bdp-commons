@@ -140,6 +140,13 @@ public class MainA22Events {
                     List<EventDto> eventDtoList = new ArrayList<>();
                     for (A22Event event : events) {
                         EventDto eventDto = getEventDtoFromA22Event(event);
+
+                        // +1 if start == end
+                        if (eventDto.getEventStart() != null && eventDto.getEventEnd() != null
+                                && eventDto.getEventStart().equals(eventDto.getEventEnd())) {
+                            eventDto.setEventEnd(eventDto.getEventEnd() + 1);
+                        }
+
                         if (EventDto.isValid(eventDto, false)) {
                             if (!inactiveStations.containsKey(eventDto.getUuid())) {
                                 inactiveStations.put(eventDto.getUuid(), eventDto);
@@ -166,6 +173,13 @@ public class MainA22Events {
                 List<EventDto> eventDtoList = new ArrayList<>();
                 for (A22Event event : events) {
                     EventDto eventDto = getEventDtoFromA22Event(event);
+
+                    // +1 if start == end
+                    if (eventDto.getEventStart() != null && eventDto.getEventEnd() != null
+                            && eventDto.getEventStart().equals(eventDto.getEventEnd())) {
+                        eventDto.setEventEnd(eventDto.getEventEnd() + 1);
+                    }
+
                     if (EventDto.isValid(eventDto, false))
                         eventDtoList.add(eventDto);
                     else
