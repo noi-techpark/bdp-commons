@@ -19,7 +19,10 @@ public class MatomoClient {
         restTemplate = new RestTemplate();
     }
 
-    public CustomReportDto[] getReportData() {
-        return restTemplate.getForObject(url + token, CustomReportDto[].class);
+    public CustomReportDto[] getReportData(String period) {
+        String url = this.url;
+        url = url.replace("{period}", period);
+        url = url.replace("{token}", token);
+        return restTemplate.getForObject(url, CustomReportDto[].class);
     }
 }

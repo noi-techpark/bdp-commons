@@ -5,14 +5,18 @@ import org.slf4j.LoggerFactory;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.amqp.RabbitProperties.Stream;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -33,7 +37,10 @@ public class SyncScheduler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
 
-	private static final String DATATYPE_NAME = "dailyVisits";
+	private record Datatype(String odhType, String odhDescription, String matomoPeriod) {
+	};
+
+	private final Set<Datatype> types = new HashSet<>();
 
 	@Value("${odh_client.period}")
 	private Integer period;
@@ -47,15 +54,14 @@ public class SyncScheduler {
 
 	@PostConstruct
 	public void syncDataTypes() {
+		types.add(new Datatype("dailyVisity", "Daily visits on a website", "day"));
+		types.add(new Datatype("weeklyVisity", "Weekly visits on a website", "week"));
+		types.add(new Datatype("monthlyVisity", "Monthly visits on a website", "month"));
+		types.add(new Datatype("yearlyVisity", "Yearly visits on a website", "year"));
 
-		List<DataTypeDto> odhDataTypeList = new ArrayList<>();
-		odhDataTypeList.add(
-				new DataTypeDto(
-						DATATYPE_NAME,
-						"amount",
-						"Daily visits on a website",
-						null // explaining the metric type (min, max, mean, etc.)
-				));
+		List<DataTypeDto> odhDataTypeList = types.stream()
+				.map(e -> new DataTypeDto(e.odhType, "amount", e.odhDescription, null))
+				.toList();
 
 		odhClient.syncDataTypes(odhDataTypeList);
 	}
@@ -68,31 +74,32 @@ public class SyncScheduler {
 		StationList odhStationList = new StationList();
 		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
 
-		CustomReportDto[] reportData = matomoClient.getReportData();
+		for (Datatype type : types) {
+			CustomReportDto[] reportData = matomoClient.getReportData(type.matomoPeriod);
 
-		for (CustomReportDto report : reportData) {
+			for (CustomReportDto report : reportData) {
+				String stationId = report.getActionsPageUrl();
 
-			String stationId = report.getActionsPageUrl();
+				// Stations
+				StationDto station = new StationDto(
+						stationId,
+						report.getLabel(),
+						0d,
+						0d);
+				station.setOrigin(odhClient.getProvenance().getLineage());
+				odhStationList.add(station);
 
-			// Stations
-			StationDto station = new StationDto(
-					stationId,
-					report.getLabel(),
-					0d,
-					0d);
-			station.setOrigin(odhClient.getProvenance().getLineage());
-			odhStationList.add(station);
+				// Data
+				DataMapDto<RecordDtoImpl> stationMap = dataMap.upsertBranch(stationId);
+				DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch(type.odhType());
+				SimpleRecordDto measurement = new SimpleRecordDto(Instant.now().toEpochMilli(), report.getVisits(),
+						period);
 
-			// Data
-			DataMapDto<RecordDtoImpl> stationMap = dataMap.upsertBranch(stationId);
-			DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch(DATATYPE_NAME);
-			SimpleRecordDto measurement = new SimpleRecordDto(Instant.now().toEpochMilli(), report.getVisits(),
-					period);
+				LOG.info("{} visits {}", type.odhType, report.getVisits());
 
-			LOG.info("visits {}", report.getVisits());
-
-			List<RecordDtoImpl> values = metricMap.getData();
-			values.add(measurement);
+				List<RecordDtoImpl> values = metricMap.getData();
+				values.add(measurement);
+			}
 		}
 
 		// Sync stations
