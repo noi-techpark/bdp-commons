@@ -54,10 +54,10 @@ public class SyncScheduler {
 
 	@PostConstruct
 	public void syncDataTypes() {
-		types.add(new Datatype("dailyVisity", "Daily visits on a website", "day"));
-		types.add(new Datatype("weeklyVisity", "Weekly visits on a website", "week"));
-		types.add(new Datatype("monthlyVisity", "Monthly visits on a website", "month"));
-		types.add(new Datatype("yearlyVisity", "Yearly visits on a website", "year"));
+		types.add(new Datatype("dailyVisits", "Daily visits on a website", "day"));
+		types.add(new Datatype("weeklyVisits", "Weekly visits on a website", "week"));
+		types.add(new Datatype("monthlyVisits", "Monthly visits on a website", "month"));
+		types.add(new Datatype("yearlyVisits", "Yearly visits on a website", "year"));
 
 		List<DataTypeDto> odhDataTypeList = types.stream()
 				.map(e -> new DataTypeDto(e.odhType, "amount", e.odhDescription, null))
