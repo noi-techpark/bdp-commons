@@ -238,10 +238,16 @@ public class SyncScheduler {
 
 		LOG.info("Get schedules and fares done.");
 
-		LOG.info("Trying to sync the stations...");
+		if(allStationList.isEmpty()){
+			LOG.info("Skip stations sync: no stations to sync.");
+		} else {
+			LOG.info("Trying to sync the stations...");
 
-		odhclient.syncStations(odhclient.getIntegreenTypology(), allStationList);
-		LOG.info("Syncing stations done. Amount {}", allStationList.size());
+			odhclient.syncStations(odhclient.getIntegreenTypology(), allStationList);
+			LOG.info("Syncing stations done. Amount {}", allStationList.size());
+		}
+
+
 
 	}
 
