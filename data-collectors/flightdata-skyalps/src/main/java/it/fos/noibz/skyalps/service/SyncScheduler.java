@@ -92,10 +92,12 @@ public class SyncScheduler {
 	}
 
 	private void initDatatypes() {
-		List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
-		dataTypeDtoList.add(new DataTypeDto(ARRIVAL_DATA_TYPE, null, "Realtime data of flight arrivals", null));
-		dataTypeDtoList.add(new DataTypeDto(DEPARTURE_DATA_TYPE, null, "Realtime data of flight departures", null));
-		odhclient.syncDataTypes(dataTypeDtoList);
+		// List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
+		// dataTypeDtoList.add(new DataTypeDto(ARRIVAL_DATA_TYPE, null, "Realtime data
+		// of flight arrivals", null));
+		// dataTypeDtoList.add(new DataTypeDto(DEPARTURE_DATA_TYPE, null, "Realtime data
+		// of flight departures", null));
+		// odhclient.syncDataTypes(dataTypeDtoList);
 	}
 
 	/**
@@ -105,7 +107,6 @@ public class SyncScheduler {
 	 * @throws ParseException
 	 */
 
-	@SuppressWarnings("static-access")
 	@Scheduled(cron = "${scheduler.job_stations}")
 	public void syncJobStations() throws IOException, ParseException {
 
@@ -238,7 +239,7 @@ public class SyncScheduler {
 
 		LOG.info("Get schedules and fares done.");
 
-		if(allStationList.isEmpty()){
+		if (allStationList.isEmpty()) {
 			LOG.info("Skip stations sync: no stations to sync.");
 		} else {
 			LOG.info("Trying to sync the stations...");
@@ -246,9 +247,6 @@ public class SyncScheduler {
 			odhclient.syncStations(odhclient.getIntegreenTypology(), allStationList);
 			LOG.info("Syncing stations done. Amount {}", allStationList.size());
 		}
-
-
-
 	}
 
 	@Scheduled(cron = "${scheduler.push_data}")
@@ -276,7 +274,7 @@ public class SyncScheduler {
 			dataMap.addRecord(stationId, ARRIVAL_DATA_TYPE, dto);
 		}
 
-		if (dataMap.getBranch().size() == 0) {
+		if (dataMap.getBranch().isEmpty()) {
 			LOG.info("Currently no data avaiable. Skipping push");
 			return;
 		}

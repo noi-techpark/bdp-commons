@@ -8,10 +8,29 @@
 
 # other vars
 @endpoint-fares = https://api.aerocrs.com/v5/getFares
-@start=2022/12/09
-@end=2022/12/10
+@start=2023/05/08
+@end=2023/05/09
 @from=BZO
 @to=DUS
+
+### Classification 
+GET {{endpoint-fares}}
+?start={{start}}
+&end={{end}}
+&from={{from}}
+&to={{to}}
+Accept: application/json
+auth_password: {{auth_password_fares}}
+auth_id: {{auth_id_fares}}
+
+@auth_id = {{$dotenv AUTH_ID}}
+@auth_password = {{$dotenv AUTH_PASSWORD}}
+
+# other vars
+@endpoint-schedule = https://api.aerocrs.com/v5/getSchedule
+@start=2023/05/09
+@end=2023/05/10
+@from=BZO
 
 ### Classification 
 GET {{endpoint-fares}}
