@@ -23,7 +23,7 @@ public class AeroCRSConst {
 	private static final String WEEKDAYSAT = "weekdaysat";
 	private static final String WEEKDAYSUN = "weekdaysun";
 	private static final String IATACODE = "IATA";
-	private static final String COMPANYCODE = "BN";
+	private static final String COMPANYCODE = "BQ";
 	private static final String FROMTODESTINATION = "fromdestionation-todestination";
 	private static final String ENVPERIOD = "period";
 	private static final String FROMDESTINATION = "fromdestination";

@@ -25,7 +25,7 @@ import it.fos.noibz.skyalps.service.SyncScheduler;
 @Configuration
 public class SkyAlpsconf {
 	private static final String IATA = "IATA";
-	private static final String BN = "BQ";
+	private static final String BQ = "BQ";
 	private static final Logger LOG = LoggerFactory.getLogger(SpringBootApp.class);
 
 	@Autowired
