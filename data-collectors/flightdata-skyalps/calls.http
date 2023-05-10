@@ -2,6 +2,39 @@
 # Create a .env file and set the corresponding variables
 # See all $dotenv fields below
 
+################################
+### Schedule
+################################
+
+@auth_id = {{$dotenv AUTH_ID}}
+@auth_password = {{$dotenv AUTH_PASSWORD}}
+
+# other vars
+@endpoint-schedule = https://api.aerocrs.com/v5/getSchedule
+
+### Classification 
+POST {{endpoint-schedule}}
+Accept: application/json
+auth_password: {{auth_password}}
+auth_id: {{auth_id}}
+
+{
+  "aerocrs": {
+    "parms": {
+      "fltsFROMperiod": "2023/05/10",
+      "fltsTOperiod": "2023/05/13",
+      "codeformat": "IATA",
+      "companycode": "BN",
+      "ssim": false,
+      "soldonline": false
+    }
+  }
+}
+
+################################
+### Fares
+################################
+
 # .env vars
 @auth_id_fares = {{$dotenv AUTH_ID_FARES}}
 @auth_password_fares = {{$dotenv AUTH_PASSWORD_FARES}}
@@ -12,25 +45,6 @@
 @end=2023/05/09
 @from=BZO
 @to=DUS
-
-### Classification 
-GET {{endpoint-fares}}
-?start={{start}}
-&end={{end}}
-&from={{from}}
-&to={{to}}
-Accept: application/json
-auth_password: {{auth_password_fares}}
-auth_id: {{auth_id_fares}}
-
-@auth_id = {{$dotenv AUTH_ID}}
-@auth_password = {{$dotenv AUTH_PASSWORD}}
-
-# other vars
-@endpoint-schedule = https://api.aerocrs.com/v5/getSchedule
-@start=2023/05/09
-@end=2023/05/10
-@from=BZO
 
 ### Classification 
 GET {{endpoint-fares}}
