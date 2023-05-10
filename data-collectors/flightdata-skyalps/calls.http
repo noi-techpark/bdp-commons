@@ -21,10 +21,10 @@ auth_id: {{auth_id}}
 {
   "aerocrs": {
     "parms": {
-      "fltsFROMperiod": "2023/05/10",
-      "fltsTOperiod": "2023/05/13",
+      "fltsFROMperiod": "2023/05/12",
+      "fltsTOperiod": "2023/06/12",
       "codeformat": "IATA",
-      "companycode": "BN",
+      "companycode": "BQ",
       "ssim": false,
       "soldonline": false
     }
