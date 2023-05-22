@@ -1,0 +1,57 @@
+##### VSCODE / REST Client https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+# Create a .env file and set the corresponding variables
+# See all $dotenv fields below
+
+# .env vars
+@token={{$dotenv MATOMO_API_TOKEN}}
+
+# other vars
+@endpoint=https://noi.matomo.cloud/
+
+
+#########################
+# Custom reports
+#########################
+
+# specific vars
+@method=CustomReports.getCustomReport
+@siteId=1
+@period=day
+@date=2023-04-13
+
+### 
+GET {{endpoint}}
+?module=API
+&method={{method}}
+&idSite={{siteId}}
+&period={{period}}
+&date={{date}}
+&idCustomReport=1
+&format=JSON
+&flat=1
+&token_auth={{token}}
+Accept: application/json
+
+#########################
+# getPageUrl
+#########################
+
+# specific vars
+@method=Actions.getPageUrl
+@siteId=1
+@pageUrl=https://noi.bz.it/de/transparente-verwaltung
+@period=day
+@date=2023-04-13
+
+### 
+GET {{endpoint}}
+?module=API
+&method={{method}}
+&idSite={{siteId}}
+&period={{period}}
+&date={{date}}
+&pageUrl={{pageUrl}}
+&format=JSON
+&flat=1
+&token_auth={{token}}
+Accept: application/json
