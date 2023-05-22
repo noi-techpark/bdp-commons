@@ -68,8 +68,12 @@ jobs:
           X_ODH_CLIENT_PERIOD: ${{ env.ODH_PERIOD }}
 
           # Matomo API docs https://developer.matomo.org/api-reference/reporting-api
-          X_MATOMO_URL: https://noi.matomo.cloud/?module=API&method=CustomReports.getCustomReport&idSite=1&idCustomReport=1&period={period}&date=yesterday&format=JSON&flat=1&token_auth={token}
           X_MATOMO_API_TOKEN: ${{ secrets.MATOMO_NOI_TOKEN }}
+          X_MATOMO_BASE_URL: https://noi.matomo.cloud/
+          X_MATOMO_SITE_ID: 1
+          # put 0 to disable custom reports
+          X_MATOMO_REPORT_ID: 0
+          X_MATOMO_PAGES: https://noi.bz.it/de/transparente-verwaltung,https://noi.bz.it/it/societa-trasparente
 
           # Logging
           X_LOG_LEVEL: info
@@ -136,8 +140,12 @@ jobs:
           X_BASE_URI: https://mobility.share.opendatahub.bz.it/json
 
           # Matomo API docs https://developer.matomo.org/api-reference/reporting-api
-          X_MATOMO_URL: https://noi.matomo.cloud/?module=API&method=CustomReports.getCustomReport&idSite=1&idCustomReport=1&period={period}&date=yesterday&format=JSON&flat=1&token_auth={token}
           X_MATOMO_API_TOKEN: ${{ secrets.MATOMO_NOI_TOKEN }}
+          X_MATOMO_BASE_URL: https://noi.matomo.cloud/
+          X_MATOMO_SITE_ID: 1
+          # put 0 to disable custom reports
+          X_MATOMO_REPORT_ID: 0
+          X_MATOMO_PAGES: https://noi.bz.it/de/transparente-verwaltung,https://noi.bz.it/it/societa-trasparente
 
           # Logging
           X_LOG_LEVEL: info

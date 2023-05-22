@@ -1,22 +1,19 @@
 # Matomo Data Collector
 
-> TODO: Replace all "matomo" or TODO sections with your documenation.
-> Please, do not write general information that is already contained inside the
-> general [Open Data Hub Mobility - Data Collectors README](../../README.md)
-
 [![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-matomo.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-matomo.yml)
 
-> TODO: Describe this data collector shortly:  This **matomo** project is a
-> showcase on how data collector development works.
+Simple datacollector to get Data from Matomo using the Matomo Reporting API  
+https://developer.matomo.org/api-reference/reporting-api
+
+Currently supported API methods are:  
+- Actions.getPageUrl
+- CustomReports.getCustomReport
 
 **Table of Contents**
-- [matomo Data Collector](#matomo-data-collector)
+- [Matomo Data Collector](#matomo-data-collector)
 	- [Getting started](#getting-started)
 		- [Prerequisites](#prerequisites)
 		- [Configuration](#configuration)
-		- [Additional information](#additional-information)
-
-> TODO: At the final end of this README update the Table Of Contents
 
 ## Getting started
 
@@ -31,14 +28,12 @@ local machine for development and testing purposes.
 
 To build the project, the following prerequisites must be met:
 - Everything inside [Open Data Hub Mobility - Data Collectors README](../../README.md#prerequisites)
-- > **TODO** put your additional requisites here, do not add stuff that is already covered in the main README
+- Matomo API token https://matomo.org/faq/general/faq_114/
+
+You can try the Matomo API calls with [calls.http](calls.http) using the VSCodium/VSCode rest client 
 
 ### Configuration
 
-> TODO: Write your data collector configuration descriptions here
+Create a local .env file by copying the [example .env](.env.example)
+Insert your Matomo API token and base URL in your `.env` file.
 
-### Additional information
-
-> TODO: Add some additinal information, like what this DC does, how it works
-> Talks also about the original data source and eventually provide links or
-> documentation that describes the data that we retrieve

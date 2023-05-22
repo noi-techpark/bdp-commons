@@ -2,6 +2,10 @@
 # Create a .env file and set the corresponding variables
 # See all $dotenv fields below
 
+
+# Matomo Reporting API docs
+# https://developer.matomo.org/api-reference/reporting-api
+
 # .env vars
 @token={{$dotenv MATOMO_API_TOKEN}}
 
@@ -13,44 +17,48 @@
 # Custom reports
 #########################
 
-# specific vars
-@method=CustomReports.getCustomReport
-@siteId=1
-@period=day
-@date=2023-04-13
-
-### 
 GET {{endpoint}}
 ?module=API
-&method={{method}}
-&idSite={{siteId}}
-&period={{period}}
-&date={{date}}
+&method=CustomReports.getCustomReport
+&format=JSON
+&idSite=1
+&period=day
+&date=yesterday
 &idCustomReport=1
+&flat=1
+&token_auth={{token}}
+Accept: application/json
+
+#########################
+# getPageUrl /de/transparente-verwaltung
+#########################
+
+GET {{endpoint}}
+?module=API
+&method=Actions.getPageUrl
+&idSite=1
+&period=day
+&date=yesterday
+&pageUrl=https://noi.bz.it/de/transparente-verwaltung
+# &segment=pageUrl=@transparente-verwaltung
 &format=JSON
 &flat=1
 &token_auth={{token}}
 Accept: application/json
 
 #########################
-# getPageUrl
+# getPageUrl /it/societa-trasparente
 #########################
-
-# specific vars
-@method=Actions.getPageUrl
-@siteId=1
-@pageUrl=https://noi.bz.it/de/transparente-verwaltung
-@period=day
-@date=2023-04-13
 
 ### 
 GET {{endpoint}}
 ?module=API
-&method={{method}}
-&idSite={{siteId}}
-&period={{period}}
-&date={{date}}
-&pageUrl={{pageUrl}}
+&method=Actions.getPageUrl
+&idSite=1
+&period=day
+&date=yesterday
+&pageUrl=https://noi.bz.it/it/societa-trasparente
+# &segment=pageUrl=@societa-trasparente,pageUrl=@amministrazione-trasparente
 &format=JSON
 &flat=1
 &token_auth={{token}}
