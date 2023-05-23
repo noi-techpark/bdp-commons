@@ -93,10 +93,10 @@ public class SyncScheduler {
 				// Data
 				DataMapDto<RecordDtoImpl> stationMap = dataMap.upsertBranch(stationId);
 				DataMapDto<RecordDtoImpl> metricMap = stationMap.upsertBranch(type.odhType());
-				SimpleRecordDto measurement = new SimpleRecordDto(Instant.now().toEpochMilli(), data.getNbHits(),
+				SimpleRecordDto measurement = new SimpleRecordDto(Instant.now().toEpochMilli(), data.getNbVisits(),
 						period);
 
-				LOG.info("{} visits {}", type.odhType, data.getNbHits());
+				LOG.info("{} visits {}", type.odhType, data.getNbVisits());
 
 				List<RecordDtoImpl> values = metricMap.getData();
 				values.add(measurement);
