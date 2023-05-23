@@ -59,6 +59,11 @@ public class SyncScheduler {
 				.toList();
 
 		odhClient.syncDataTypes(odhDataTypeList);
+		
+
+		// runs sync once on startup
+		syncPageUrlData();
+		syncCustomReportData();
 	}
 
 	@Scheduled(cron = "${scheduler.data}")
