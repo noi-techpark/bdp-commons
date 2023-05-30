@@ -215,7 +215,7 @@ public class SyncScheduler {
     }
 
     private void addMeasurementToMap(DataMapDto<RecordDtoImpl> map, SimpleRecordDto measurement, int period) {
-        if (map != null) {
+        if (map != null && measurement.getValue() != null) {
             measurement.setPeriod(period);
             map.getData().add(measurement);
         }
