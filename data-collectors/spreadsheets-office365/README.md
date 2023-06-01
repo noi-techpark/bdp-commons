@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Office 365 Spreadsheets DataCollector
 
 A data collector to synchronize an Office 365 Worksheet hosted on a Microsoft Sharepoint site, with a Big Data Platform

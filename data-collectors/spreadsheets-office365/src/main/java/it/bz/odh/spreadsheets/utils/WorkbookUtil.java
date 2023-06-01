@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 package it.bz.odh.spreadsheets.utils;
 
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;

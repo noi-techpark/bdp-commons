@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Eurac meteorology Data Collector
 
 [![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-meteorology-eurac.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-meteorology-eurac.yml)

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Open Data Hub - Data collector for AugeG4
 
 [![CI environment-a22](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-a22.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-a22.yml)

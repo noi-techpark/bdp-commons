@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # APPATN Opendata Data Collector
 
 [![CI environment-appa-tn-opendata](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-tn-opendata.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-tn-opendata.yml)

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Bike Boxes Data Collector
 
 [![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bike-boxes.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-bike-boxes.yml)

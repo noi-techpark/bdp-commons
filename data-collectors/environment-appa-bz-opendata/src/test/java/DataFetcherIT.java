@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 import com.google.gson.JsonElement;
 import info.datatellers.appabz.DataFetcher;
 import org.junit.Assert;

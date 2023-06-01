@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 #
 # Will update all pom.xml dc-interface dependency of this folder, means upgrade the dc-interface dependency for all data-collectors
 # Do not forget to use quotes around arguments you pass to the script and you need still to escape parantheses when using  

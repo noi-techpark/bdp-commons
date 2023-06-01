@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # A22 Travel times
 
 Application which takes A22 travel time data from a web service parses it and sends it to the opendatahub.

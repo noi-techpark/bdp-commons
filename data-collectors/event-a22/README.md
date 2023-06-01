@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # A22 Events
 
 [![CI event-a22](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-event-a22.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-event-a22.yml)

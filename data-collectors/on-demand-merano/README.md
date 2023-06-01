@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # On-Demand Merano Data Collector
 
 Application which takes data of the MENTOR project from the platform cube4t8, parses it and sends it to the opendatahub.

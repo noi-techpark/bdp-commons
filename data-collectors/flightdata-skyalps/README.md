@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Sky Alps Data Collector 
 
 The following Data Collector is used to take data from the Sky Alps API and pushing them to the Open Data Hub.

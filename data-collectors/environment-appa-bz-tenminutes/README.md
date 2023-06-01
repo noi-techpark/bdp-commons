@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Open Data Hub - Data collector for Air Quality Data
 
 [![CI environment-appa-bz-tenminutes](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-bz-tenminutes.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-bz-tenminutes.yml)
