@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Data Collector: Parking Merano/Bolzano
 
 This data collector is a module of the [Open Data Hub](https://opendatahub.bz.it)

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Mapping files
 
 First, the data files should be inside the `uploads` folder of the FTP server. We will download and process all files,

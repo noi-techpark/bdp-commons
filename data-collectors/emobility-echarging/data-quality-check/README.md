@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # e-mobility e-charging data quality checks
 
 A simple python script to see if the data provided by the different e-charging stations data providers is saved correct in the Open Data Hub.

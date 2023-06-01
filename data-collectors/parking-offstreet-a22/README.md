@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # A22 Parking
 
 Application which takes A22 parking data from a web service parses it and sends it to the opendatahub.

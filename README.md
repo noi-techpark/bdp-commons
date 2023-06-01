@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Open Data Hub Mobility - Data Collectors
 
 The Open Data Hub Mobility Data Collectors, historically called also Big Data

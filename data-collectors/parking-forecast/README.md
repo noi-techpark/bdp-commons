@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Parking Forecast
 
 [//]: <> (\[\!\[CI parking-forecast\]\(https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-forecast.yml/badge.svg\)\]\(https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-forecast.yml\))

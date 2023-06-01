@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Generated from it/bz/idm/bdp/airquality/AirQuality.g4 by ANTLR 4.7.1
 package it.bz.idm.bdp.airquality.parser;
 import org.antlr.v4.runtime.Lexer;

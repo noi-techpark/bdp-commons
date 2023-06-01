@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 # Creates a valid key, certificate etc. for 10 years
 
 openssl genrsa -out private_key.pem 2048

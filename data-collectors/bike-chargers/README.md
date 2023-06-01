@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # E-bike / E-car chargers Ecospazio Data Collector
 
 Application which takes data of the MENTOR project from the API provided by "ecospazio", parses it and sends it to the opendatahub.

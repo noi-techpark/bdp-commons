@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Parking On-Street Merano
 
 [//]: # ([![CI on-street-parking]&#40;https://github.com/noi-techpark/bdp-commons/actions/workflows/on-street-parking.yml/badge.svg&#41;]&#40;https://github.com/noi-techpark/bdp-commons/actions/workflows/on-street-parking.yml&#41;)

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Vehicle Traffic Bluetooth
 
 This data collector is meant to be the endpoint for all bluetooth-boxes spread

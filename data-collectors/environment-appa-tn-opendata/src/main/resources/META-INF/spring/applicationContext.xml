@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"

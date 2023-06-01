@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # A22 Traffic elaborations
 
 [![CI traffic-a22-elaborations](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traffic-a22-elaborations.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-traffic-a22-elaborations.yml)

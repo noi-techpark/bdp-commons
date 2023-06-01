@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Helloworld Data Collector
 
 > TODO: Replace all "helloworld" or TODO sections with your documenation.

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # APPABZ Retecivica Medie Orarie Data Collector
 
 [![CI environment-appa-bz-opendata](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-bz-opendata.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-environment-appa-bz-opendata.yml)

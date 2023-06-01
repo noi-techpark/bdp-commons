@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # Car sharing data source
 
 [![CI carsharing-halapi](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-carsharing-halapi.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-carsharing-halapi.yml)

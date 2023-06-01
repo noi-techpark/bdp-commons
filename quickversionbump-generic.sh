@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 #
 # Will upgrade the given dependency for all data-collectors
 #

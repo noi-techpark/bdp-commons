@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # A22 Traffic elaborations
 
 Application which takes vehicular traffic data from the big data platform, collected by bluetoothboxes around the city of Bolzano, 
