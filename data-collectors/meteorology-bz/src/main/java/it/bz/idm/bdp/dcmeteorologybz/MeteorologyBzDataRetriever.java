@@ -243,6 +243,8 @@ public class MeteorologyBzDataRetriever {
             request = new HttpPost(url);
         }
 
+        request.setHeader("Host", "dati.retecivica.bz.it");
+
         URIBuilder uriBuilder = new URIBuilder(request.getURI());
         if ( endpointParams!=null && endpointParams.size()>0 ) {
             uriBuilder.addParameters(endpointParams);
