@@ -169,7 +169,7 @@ public class MainA22Events {
             }
 
             // save last time stamp and substract 30 seconds to be sure to not loose events
-            lastTimeStamp = System.currentTimeMillis() / 1000 - (30 * 1000);
+            lastTimeStamp = startTime - 30;
 
             // step 3
             // fetch and print all current events ("eventi/lista/attivi")
