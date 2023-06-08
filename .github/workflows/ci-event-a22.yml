@@ -73,7 +73,7 @@ jobs:
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BT5_PWD }}
 
           # Defines days in the past from which events are fetched on startup
-          X_A22_HISTORY_SCAN_WINDOW: 14
+          X_A22_HISTORY_SCAN_WINDOW_HOURS: 24
 
           X_SCHEDULER_CRON: 0 */10 * * * ?
           X_SCHEDULER_POOL_SIZE: 10
@@ -145,7 +145,7 @@ jobs:
   #         X_A22_CONNECTOR_PWD: ${{ secrets.A22_BN5_PWD }}
 
   #         # Defines days in the past from which events are fetched on startup
-  #         X_A22_HISTORY_SCAN_WINDOW: 14
+  #         X_A22_HISTORY_SCAN_WINDOW_HOURS: 24
 
   #         X_SCHEDULER_CRON: 0 */10 * * * ?
   #         X_SCHEDULER_POOL_SIZE: 10

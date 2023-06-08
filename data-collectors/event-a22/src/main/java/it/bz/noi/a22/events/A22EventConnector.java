@@ -18,7 +18,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.PropertySource;
 
 import java.io.BufferedReader;
 import java.io.IOException;

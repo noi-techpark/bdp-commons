@@ -31,7 +31,6 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -57,8 +56,8 @@ public class MainA22Events {
     @Value("${a22password}")
     private String a22ConnectorPwd;
 
-    @Value("${a22historyScanWindowInDays}")
-    private int historyScanWindowInDays;
+    @Value("${a22historyScanWindowInHours}")
+    private int historyScanWindowInHours;
 
     private Long lastTimeStamp;
 
@@ -111,7 +110,8 @@ public class MainA22Events {
         // update default value to be lat X days instead of hardcoded date
         // otherwise import in X years will need to import X years instead of only X
         // last days
-        lastTimeStamp = Instant.now().minus(historyScanWindowInDays, ChronoUnit.DAYS).toEpochMilli() / 1000;
+        if (lastTimeStamp == null)
+            lastTimeStamp = Instant.now().minus(historyScanWindowInHours, ChronoUnit.HOURS).toEpochMilli() / 1000;
 
         try {
             LOG.info("Start MainA22Events");
@@ -167,6 +167,9 @@ public class MainA22Events {
             } catch (Exception e) {
                 LOG.error("step 2 failed, continuing anyway to read de-auth...", e);
             }
+
+            // save last time stamp and substract 30 seconds to be sure to not loose events
+            lastTimeStamp = System.currentTimeMillis() / 1000 - (30 * 1000);
 
             // step 3
             // fetch and print all current events ("eventi/lista/attivi")
