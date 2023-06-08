@@ -136,9 +136,9 @@ public class MainA22Events {
 
                 do {
                     LOG.info("Get all events between {} and {}",
-                            Instant.ofEpochSecond(lastTimeStamp).atZone(ZoneId.systemDefault()).toLocalDate(),
+                            Instant.ofEpochSecond(lastTimeStamp).atZone(ZoneId.systemDefault()).toLocalDateTime(),
                             Instant.ofEpochSecond(lastTimeStamp + scanWindowSeconds).atZone(ZoneId.systemDefault())
-                                    .toLocalDate());
+                                    .toLocalDateTime());
                     List<A22Event> events = A22Service.getEvents(lastTimeStamp, lastTimeStamp + scanWindowSeconds);
                     LOG.info("got " + events.size() + " events");
                     List<EventDto> eventDtoList = new ArrayList<>();
@@ -169,7 +169,7 @@ public class MainA22Events {
             }
 
             // save last time stamp and substract 30 seconds to be sure to not loose events
-            lastTimeStamp = startTime - 30;
+            lastTimeStamp = (startTime / 1000) - 30;
 
             // step 3
             // fetch and print all current events ("eventi/lista/attivi")
