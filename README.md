@@ -6,6 +6,8 @@ SPDX-License-Identifier: CC0-1.0
 
 # Open Data Hub Mobility - Data Collectors
 
+![REUSE Compliance](https://github.com/noi-techpark/bdp-commons/actions/workflows/reuse.yml/badge.svg)
+
 The Open Data Hub Mobility Data Collectors, historically called also Big Data
 Platform data collectors, and also data providers where contained in this repo,
 therefore it is called common.
