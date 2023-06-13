@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.com>
 
 SPDX-License-Identifier: CC0-1.0
 -->
@@ -20,7 +20,7 @@ writer](https://github.com/noi-techpark/bdp-core), which stores it inside a
 Postgres DB.
 
 We use [Keycloak](https://www.keycloak.org/) for authentication against the
-[Open Data Hub](https://opendatahub.bz.it/) writer API.
+[Open Data Hub](https://opendatahub.com/) writer API.
 
 **Table of contents**
 - [Open Data Hub Mobility - Data Collectors](#open-data-hub-mobility---data-collectors)
@@ -104,7 +104,7 @@ mvn clean test
 - You can follow the output with `docker-compose logs -f`
 
 Please, refer to the `README.md` inside that folder for further details, and
-report any incidence to `help@opendatahub.bz.it`.
+report any incidence to `help@opendatahub.com`.
 
 #### VSCode: Start a debug session
 
@@ -220,7 +220,7 @@ Note: Read the comments in every script for further instructions
 
 ### Support
 
-For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
+For support, please contact [help@opendatahub.com](mailto:help@opendatahub.com).
 
 ### Contributing
 
@@ -242,7 +242,7 @@ If you want to write a new Data Collector:
 ### Documentation
 
 More documentation can be found at
-[https://docs.opendatahub.bz.it](https://docs.opendatahub.bz.it).
+[https://docs.opendatahub.com](https://docs.opendatahub.com).
 
 ### License
 
