@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.com>
 
 SPDX-License-Identifier: CC0-1.0
 -->
@@ -68,4 +68,4 @@ Once you finished the configuration steps the building should be handled by mave
 
 You will find your war artifact in the target director and you can deploy it to an application server of your choice.
 
-In case you run into trouble or you need further support, please contact info@opendatahub.bz.it
+In case you run into trouble or you need further support, please contact info@opendatahub.com

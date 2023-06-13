@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.com>
 
 SPDX-License-Identifier: CC0-1.0
 -->
@@ -117,11 +117,11 @@ PROCESSED (stato dei dati corretti)
 
 
 ## Information
-[Open Data Hub - Site](https://opendatahub.bz.it/)
+[Open Data Hub - Site](https://opendatahub.com/)
 
 ### Support
 
-For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
+For support, please contact [help@opendatahub.com](mailto:help@opendatahub.com).
 
 ### Contributing
 
@@ -132,7 +132,7 @@ instructions.
 ### Documentation
 
 More documentation can be found at
-[https://docs.opendatahub.bz.it](https://docs.opendatahub.bz.it).
+[https://docs.opendatahub.com](https://docs.opendatahub.com).
 
 
 ### License

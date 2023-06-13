@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.com>
 
 SPDX-License-Identifier: CC0-1.0
 -->
@@ -9,7 +9,7 @@ SPDX-License-Identifier: CC0-1.0
 [//]: # ([![CI on-street-parking]&#40;https://github.com/noi-techpark/bdp-commons/actions/workflows/on-street-parking.yml/badge.svg&#41;]&#40;https://github.com/noi-techpark/bdp-commons/actions/workflows/on-street-parking.yml&#41;)
 
 Application which connects to systems mqqt server to receive all parking sensor messages and sends them
-to the [Open Data Hub](https://opendatahub.bz.it).
+to the [Open Data Hub](https://opendatahub.com).
 
 **Table of contents**
 
@@ -171,7 +171,7 @@ mvn clean package
 
 ### Support
 
-For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
+For support, please contact [help@opendatahub.com](mailto:help@opendatahub.com).
 
 ### Contributing
 
@@ -182,7 +182,7 @@ instructions.
 ### Documentation
 
 More documentation can be found at
-[https://docs.opendatahub.bz.it](https://docs.opendatahub.bz.it).
+[https://docs.opendatahub.com](https://docs.opendatahub.com).
 
 ### License
 

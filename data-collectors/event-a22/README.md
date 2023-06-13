@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.com>
 
 SPDX-License-Identifier: CC0-1.0
 -->
@@ -9,7 +9,7 @@ SPDX-License-Identifier: CC0-1.0
 [![CI event-a22](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-event-a22.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-event-a22.yml)
 
 Application which takes A22 event data from a web service parses it and sends it
-to the [Open Data Hub](https://opendatahub.bz.it).
+to the [Open Data Hub](https://opendatahub.com).
 
 **Table of contents**
 - [A22 Events](#a22-events)
@@ -163,7 +163,7 @@ contain the headers `IdSottotipo` and `Descrizione`.
 
 ### Support
 
-For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
+For support, please contact [help@opendatahub.com](mailto:help@opendatahub.com).
 
 ### Contributing
 
@@ -174,7 +174,7 @@ instructions.
 ### Documentation
 
 More documentation can be found at
-[https://docs.opendatahub.bz.it](https://docs.opendatahub.bz.it).
+[https://docs.opendatahub.com](https://docs.opendatahub.com).
 
 ### License
 

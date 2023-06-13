@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.com>
 
 SPDX-License-Identifier: CC0-1.0
 -->
@@ -9,7 +9,7 @@ SPDX-License-Identifier: CC0-1.0
 [![CI](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-helloworld.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-helloworld.yml)
 
 Application which takes carpool data from the service provided [ummadum](car pooling), parses it and sends it to
-the [Open Data Hub](https://opendatahub.bz.it). The data is made available via a publicly accessible Google Drive file.
+the [Open Data Hub](https://opendatahub.com). The data is made available via a publicly accessible Google Drive file.
 
 **Table of Contents**
 
