@@ -4,6 +4,8 @@
 
 # other vars
 @url = http://localhost:9001/trigger 
+#@url = https://spreadsheets.testingmachine.eu/sta-echarging/trigger
+#@url = https://spreadsheets.opendatahub.com/sta-echarging/trigger
 
 
 ### Classification 

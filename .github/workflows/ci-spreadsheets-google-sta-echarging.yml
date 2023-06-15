@@ -135,7 +135,7 @@ jobs:
           X_SERVER_PORT: ${{ env.SERVER_PORT }}
           X_VENDOR: ${{ env.VENDOR }}
           X_spreadsheetId: ${{ env.SPREADSHEET_ID }}
-          X_spreadsheet_notificationUrl: https://spreadsheets.opendatahub.bz.it/sta-echarging/trigger
+          X_spreadsheet_notificationUrl: https://spreadsheets.opendatahub.com/sta-echarging/trigger
           X_origin: STA
 
           # configure main collector class. Omitting this value defaults to DefaultCollector
