@@ -50,6 +50,7 @@ jobs:
           X_MQTT_URI: ${{ secrets.ENVIRONMENT_A22_MQTT_URI }}
           X_MQTT_PORT: ${{ secrets.ENVIRONMENT_A22_MQTT_PORT }}
           X_MQTT_SUB_CLIENTID: airQuinoRawTest
+          X_MQTT_PUB_CLIENTID: airQuinoLinearizationTest
           X_MEASUREMENT_PERIOD: 60
 
           # General deployment options
