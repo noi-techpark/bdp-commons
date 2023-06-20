@@ -37,6 +37,7 @@ public class AugeCallback implements MqttCallback {
     public void connectionLost(Throwable cause) {
         LOG.debug("Connection to MQTT broker lost!");
         LOG.debug(cause.getMessage());
+        LOG.trace("Stack trace:", cause);
     }
 
     @Override
