@@ -382,6 +382,9 @@ public class OnDemandMeranoConnector {
     }
 
     public String extractString(JsonObject obj, String key) throws IllegalArgumentException {
+        if(obj == null || key == null){
+            return null;
+        }
         JsonElement prop = obj.get(key);
         if (prop == null || prop.isJsonNull()) {
             return null;
