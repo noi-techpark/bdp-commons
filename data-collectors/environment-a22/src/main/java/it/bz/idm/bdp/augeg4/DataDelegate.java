@@ -103,7 +103,7 @@ public class DataDelegate {
      */
     public void pushData() {
         fetchData();
-        pushDataToAuge();
+        //pushDataToAuge();
         pushDataToHub();
     }
 
