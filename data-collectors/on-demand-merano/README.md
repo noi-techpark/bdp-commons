@@ -9,6 +9,7 @@ SPDX-License-Identifier: CC0-1.0
 Application which takes data of the MENTOR project from the platform cube4t8, parses it and sends it to the opendatahub.
 
 [![CI on-demand-merano](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-on-demand-merano.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-on-demand-merano.yml)
+[![CI on-demand-badia](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-on-demand-badia.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-on-demand-badia.yml)
 
 ## Table of contents
 

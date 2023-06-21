@@ -50,6 +50,9 @@ jobs:
 ##         env:
 ##           X_USERNAME: ${{ env.USERNAME }}
 ##           X_PASSWORD: ${{ env.PASSWORD }}
+##           X_API_ENDPOINT: https://easymobil.backend.uft.lu/api/external
+##
+##           X_ODH_ORIGIN: ON_DEMAND_MERANO
 ## 
 ##           # General deployment options
 ##           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
@@ -121,6 +124,9 @@ jobs:
 ##         env:
 ##           X_USERNAME: ${{ env.USERNAME }}
 ##           X_PASSWORD: ${{ env.PASSWORD }}
+##           X_API_ENDPOINT: https://easymobil.backend.uft.lu/api/external
+##
+##           X_ODH_ORIGIN: ON_DEMAND_MERANO
 ## 
 ##           # General deployment options
 ##           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
