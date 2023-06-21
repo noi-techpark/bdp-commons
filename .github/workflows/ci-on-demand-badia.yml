@@ -7,8 +7,8 @@ on:
       - ".github/workflows/ci-on-demand-badia.yml"
 
 env:
-  WORKING_DIRECTORY: data-collectors/on-demand-badia
-  PROJECT_NAME: odh-mobility-dc-on-demand-merano
+  WORKING_DIRECTORY: data-collectors/on-demand-merano
+  PROJECT_NAME: odh-mobility-dc-on-demand-badia
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-on-demand-badia
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
