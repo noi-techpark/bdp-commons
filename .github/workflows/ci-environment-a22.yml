@@ -49,6 +49,8 @@ jobs:
           X_MQTT_PASSWORD: ${{ secrets.ENVIRONMENT_A22_MQTT_PASSWORD }}
           X_MQTT_URI: ${{ secrets.ENVIRONMENT_A22_MQTT_URI }}
           X_MQTT_PORT: ${{ secrets.ENVIRONMENT_A22_MQTT_PORT }}
+          X_MQTT_SUB_CLIENTID: airQuinoRawTest
+          X_MQTT_PUB_CLIENTID: airQuinoLinearizationTest
           X_MEASUREMENT_PERIOD: 60
 
           # General deployment options
@@ -74,9 +76,9 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Scheduler
-          X_SCHEDULER_CRON_DATA: 0 */5 * * * *
+          X_SCHEDULER_CRON_DATA: 0 */1 * * * *
           X_SCHEDULER_CRON_TYPES: 0 */5 * * * *
-          X_SCHEDULER_CRON_STATIONS: 0 */1 * * * *
+          X_SCHEDULER_CRON_STATIONS: 0 */5 * * * *
           X_SCHEDULER_POOL_SIZE: 10
 
       - name: Build project
@@ -152,9 +154,9 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Scheduler
-          X_SCHEDULER_CRON_DATA: 0 */5 * * * *
+          X_SCHEDULER_CRON_DATA: 0 */1 * * * *
           X_SCHEDULER_CRON_TYPES: 0 */5 * * * *
-          X_SCHEDULER_CRON_STATIONS: 0 */1 * * * *
+          X_SCHEDULER_CRON_STATIONS: 0 */5 * * * *
           X_SCHEDULER_POOL_SIZE: 10
 
       - name: Build project
