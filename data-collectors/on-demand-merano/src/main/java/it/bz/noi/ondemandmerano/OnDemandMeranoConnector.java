@@ -375,14 +375,17 @@ public class OnDemandMeranoConnector {
                 }.getType()));
 
         vehicle.setRecordTime(extractString(latestPosition, "recordTime"));
-        JsonObject position = extractJsonObject(latestPosition, "position");
-        vehicle.setPosition(new Gson().fromJson(position, OnDemandServicePositionPoint.class));
+        
+        if (latestPosition != null) {
+            JsonObject position = extractJsonObject(latestPosition, "position");
+            vehicle.setPosition(new Gson().fromJson(position, OnDemandServicePositionPoint.class));
+        }
 
         return vehicle;
     }
 
     public String extractString(JsonObject obj, String key) throws IllegalArgumentException {
-        if(obj == null || key == null){
+        if (obj == null || key == null) {
             return null;
         }
         JsonElement prop = obj.get(key);
