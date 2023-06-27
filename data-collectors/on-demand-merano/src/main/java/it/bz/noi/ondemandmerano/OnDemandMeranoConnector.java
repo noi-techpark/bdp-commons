@@ -286,9 +286,9 @@ public class OnDemandMeranoConnector {
                 // or has incompatible data types: log and skip the record
                 LOG.warn("---");
                 LOG.warn("getVehicles() ERROR: skipping unparsable record:");
-                LOG.warn("vvv");
-                LOG.warn(jsonArray.get(i).toString());
-                LOG.warn("^^^");
+                LOG.debug("vvv");
+                LOG.debug(jsonArray.get(i).toString());
+                LOG.debug("^^^");
                 LOG.debug(e.getMessage(), e);
                 LOG.warn("---");
                 skipped++;
