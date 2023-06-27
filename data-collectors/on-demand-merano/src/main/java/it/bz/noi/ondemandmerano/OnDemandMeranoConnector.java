@@ -289,7 +289,7 @@ public class OnDemandMeranoConnector {
                 LOG.warn("vvv");
                 LOG.warn(jsonArray.get(i).toString());
                 LOG.warn("^^^");
-                LOG.warn(e.getMessage(), e);
+                LOG.debug(e.getMessage(), e);
                 LOG.warn("---");
                 skipped++;
                 continue;
