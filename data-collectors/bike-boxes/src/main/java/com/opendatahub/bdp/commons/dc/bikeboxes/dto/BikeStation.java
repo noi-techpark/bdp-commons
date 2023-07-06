@@ -16,28 +16,28 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize
 public class BikeStation {
-    public String idStation;
+    public String stationID;
+    public String locationName;
+    public String locationID;
     public String name;
     public String address;
     public double latitude;
     public double longitude;
     public int type;
-    public String urlGuide;
     public int state;
     public int countFreePlacesAvailable_MuscularBikes;
     public int countFreePlacesAvailable_AssistedBikes;
     public int countFreePlacesAvailable;
     public int totalPlaces;
-    public int maxDistanceRent;
-    public Place[] stationPlaces; // only present in case of /station call
- 
+    
+    // only present in case of /station call
+    public Place[] places; 
+
     @ToString
     public static class Place {
         public int position;
         public int state;
-        public String bikeTag;
-        public String bikeNum;
-        public boolean isAssisted;
+        public int level;
         public int type;
     }
 }

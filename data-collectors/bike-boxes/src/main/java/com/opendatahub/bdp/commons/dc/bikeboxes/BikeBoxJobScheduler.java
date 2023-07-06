@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +19,9 @@ import com.opendatahub.bdp.commons.dc.bikeboxes.config.DataConfig;
 import com.opendatahub.bdp.commons.dc.bikeboxes.config.DataTypes;
 import com.opendatahub.bdp.commons.dc.bikeboxes.config.ProvenanceConfig;
 import com.opendatahub.bdp.commons.dc.bikeboxes.config.StationConfig;
-import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeService;
 import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeStation;
 import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeStation.Place;
-import com.opendatahub.bdp.commons.dc.bikeboxes.services.IBikeBoxesService;
+import com.opendatahub.bdp.commons.dc.bikeboxes.services.BikeBoxesService;
 import com.opendatahub.bdp.commons.dc.bikeboxes.services.OdhClient;
 
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -42,7 +40,7 @@ public class BikeBoxJobScheduler {
 
 	@Lazy
 	@Autowired
-	private IBikeBoxesService bikeBoxesService;
+	private BikeBoxesService bikeBoxesService;
 
 	@Autowired
 	private DataConfig dataC;
@@ -56,16 +54,14 @@ public class BikeBoxJobScheduler {
 	@Scheduled(cron = "${scheduler.job}")
 	public void collectBikeBoxData() {
 		LOG.info("Cron job started");
-		LOG.debug("Getting bike services");
-		List<BikeService> services = bikeBoxesService.getBikeServices();
 
 		try {
 			LOG.debug("Getting stations");
-			List<BikeStation> stations = getAllBikeStations(services);
+			List<BikeStation> bikeStations = bikeBoxesService.getBikeStations();
 
 			if (LOG.isTraceEnabled()) {
 				LOG.trace("Dumping retrieved stations list:");
-				stations.stream().forEach(s -> LOG.trace(s.toString()));
+				bikeStations.stream().forEach(s -> LOG.trace(s.toString()));
 			}
 
 			LOG.debug("Mapping to ODH objects");
@@ -74,9 +70,10 @@ public class BikeBoxJobScheduler {
 			DataMapDto<RecordDtoImpl> odhData = new DataMapDto<>();
 			DataMapDto<RecordDtoImpl> odhBayData = new DataMapDto<>();
 
-			for (BikeStation bs : stations) {
+			for (BikeStation bs : bikeStations) {
 				// create station dto
-				StationDto stationDto = new StationDto(bs.idStation, bs.name, bs.latitude, bs.longitude);
+				StationDto stationDto = new StationDto(bs.locationID, bs.locationName, bs.latitude, bs.longitude);
+
 				stationDto.setMetaData(Map.of(
 						"type", switch (bs.type) {
 							case 0 -> "Sharing with real stations";
@@ -85,16 +82,11 @@ public class BikeBoxJobScheduler {
 							default -> "Unknown type " + bs.type;
 							// default -> throw new Exception("Unknown mapping station.type: " + bs.type);
 						},
-						"urlGuide", bs.urlGuide,
 						"totalPlaces", bs.totalPlaces,
-						"stationPlaces", Arrays.stream(bs.stationPlaces).map(p -> Map.of(
+						"stationPlaces", Arrays.stream(bs.places).map(p -> Map.of(
 								"position", p.position,
 								// purposely don't include state field
-								"bikeTag", p.bikeTag,
-								"bikeNum", p.bikeNum,
-								"isAssisted", p.isAssisted,
-								"type", p.type)),
-						"maxDistanceRent", bs.maxDistanceRent));
+								"type", p.type))));
 				stationDto.setOrigin(provC.origin);
 				odhStations.add(stationDto);
 
@@ -108,7 +100,7 @@ public class BikeBoxJobScheduler {
 				stationData.forEach((t, v) -> odhData.addRecord(stationDto.getId(), t, mapSimple(v)));
 
 				// create station and measurement for sub stations (parking bays)
-				for (Place bay : bs.stationPlaces) {
+				for (Place bay : bs.places) {
 					StationDto bayDto = new StationDto(
 							stationDto.getId() + "/" + bay.position,
 							stationDto.getName() + "/" + bay.position,
@@ -118,9 +110,8 @@ public class BikeBoxJobScheduler {
 					// this parking bay is a child of the parking station
 					bayDto.setParentStation(stationDto.getId());
 
-					bayDto.setMetaData(Map.of("isAssisted", bay.isAssisted));
 					// type is always 0 for station types 0 and 1 (sharing stations)
-					if (bs.type != 0 && bs.type != 1) { 
+					if (bs.type != 0 && bs.type != 1) {
 						bayDto.getMetaData().put(
 								"type", switch (bay.type) {
 									case 1 -> "Normal bay";
@@ -150,21 +141,6 @@ public class BikeBoxJobScheduler {
 		} catch (Exception e) {
 			LOG.error("Cron job failed: exception: {}", e.getMessage(), e);
 		}
-	}
-
-	private List<BikeStation> getAllBikeStations(List<BikeService> services) {
-		List<BikeStation> stations = services.stream()
-				.flatMap(service -> Arrays.stream(service.cities))
-				.map(city -> city.idCity)
-				.distinct()
-				// now we have a unique list of city IDs where the service is available
-				// let's get the stations for all cities
-				.flatMap(city -> bikeBoxesService.getBikeStations(city).stream())
-				// The stationS service does not give us all the detail we need.
-				// let's get the detailed info with real time data
-				.map(station -> bikeBoxesService.getBikeStation(station.idStation))
-				.collect(Collectors.toList());
-		return stations;
 	}
 
 	private String mapState(int state) throws Exception {
