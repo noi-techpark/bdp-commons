@@ -16,7 +16,7 @@ See the [requirements](./documentation/230214_SpecificheIntegrazione_NOI_v1.1.pd
 
 Relevant endpoints:
 - `/connect/token` for authentication
-- `/resources/services` to get all cities in which bike boxes exist
+- `/resources/locations` to get all cities in which bike boxes exist
 - `/resources/stations` to get a list of parking stations
 - `/resources/station` to get details and real time data for a specific station
 

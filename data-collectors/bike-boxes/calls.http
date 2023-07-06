@@ -15,7 +15,24 @@ Content-Type: application/x-www-form-urlencoded
 ###
 @token = {{login.response.body.access_token}}
 
-### GET services
-GET {{$dotenv ENDPOINT_URI}}/resources/stations
+# en, it, de, lld
+@language = en
+
+### GET locations
+GET {{$dotenv ENDPOINT_URI}}/resources/locations
+    ?languageID={{language}}
 Authorization: Bearer {{token}}
+
 ###
+
+### GET stations
+GET {{$dotenv ENDPOINT_URI}}/resources/stations
+    ?languageID={{language}}
+    &locationId=288
+Authorization: Bearer {{token}}
+
+### GET stations
+GET {{$dotenv ENDPOINT_URI}}/resources/station
+    ?languageID={{language}}
+    &stationID=1890
+Authorization: Bearer {{token}}

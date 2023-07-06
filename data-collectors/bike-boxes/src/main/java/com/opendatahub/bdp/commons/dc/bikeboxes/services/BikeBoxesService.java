@@ -4,6 +4,7 @@
 
 package com.opendatahub.bdp.commons.dc.bikeboxes.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,56 +15,53 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeService;
 import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeStation;
 
 @Service
-public class BikeBoxesService implements IBikeBoxesService {
+public class BikeBoxesService {
     private final static Logger LOG = LoggerFactory.getLogger(BikeBoxesService.class);
+    // en, de, it, lld
+    private final static String LANGUAGE = "en";
     private final static String ENDPOINT_STATIONS = "/resources/stations";
     private final static String ENDPOINT_STATION = "/resources/station";
-    private final static String ENDPOINT_SERVICES = "/resources/services";
 
     @Autowired
     @Qualifier("bikeParkingWebClient") // avoid overlap with webClient in bdp-core
     private WebClient client;
 
-    @Override
-    public List<BikeService> getBikeServices() {
-        return client.get()
-                .uri(ENDPOINT_SERVICES)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux(BikeService.class)
-                .collectList()
-                .block();
+    public List<BikeStation> getBikeStations() {
+        List<BikeStation> bikeStationsWithPlace = new ArrayList<>();
+
+        List<BikeStation> bikeStations = fetchBikeStations();
+        for (BikeStation bikeStation : bikeStations) {
+            BikeStation fetchBikeStation = fetchBikeStationWithPlace(bikeStation.stationID);
+            bikeStationsWithPlace.add(fetchBikeStation);
+
+        }
+
+        return bikeStationsWithPlace;
     }
 
-    private List<BikeStation> getBikeStationsByType(String cityId, String serviceType){
+    private List<BikeStation> fetchBikeStations() {
         return client.get()
                 .uri(u -> u
-                    .path(ENDPOINT_STATIONS)
-                    .queryParam("idCity", cityId)
-                    .queryParam("serviceType", serviceType)
-                    .build())
+                        .path(ENDPOINT_STATIONS)
+                        .queryParam("languageId", LANGUAGE)
+                        .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(BikeStation.class)
                 .collectList()
                 .block();
     }
-    @Override
-    public List<BikeStation> getBikeStations(String cityId) {
-        return getBikeStationsByType(cityId, "0");
-    }
 
-    @Override
-    public BikeStation getBikeStation(String stationId) {
+    private BikeStation fetchBikeStationWithPlace(String stationId) {
         return client.get()
                 .uri(u -> u
-                    .path(ENDPOINT_STATION)
-                    .queryParam("idStation", stationId)
-                    .build())
+                        .path(ENDPOINT_STATION)
+                        .queryParam("languageId", LANGUAGE)
+                        .queryParam("stationId", stationId)
+                        .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .attribute("idStation", stationId)
                 .retrieve()
