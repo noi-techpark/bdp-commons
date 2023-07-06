@@ -129,12 +129,12 @@ public class BikeBoxJobScheduler {
 			}
 
 			LOG.debug("Pushing data to ODH");
-			odhClient.syncStations(stationC.stationType, odhStations);
-			odhClient.syncStations(stationC.stationBayType, odhBays);
 			odhClient.syncDataTypes(stationC.stationBayType,
 					Arrays.stream(DataTypes.values())
 							.map(DataTypes::toDataTypeDto)
 							.toList());
+			odhClient.syncStations(stationC.stationType, odhStations, 25);
+			odhClient.syncStations(stationC.stationBayType, odhBays, 25);
 			odhClient.pushData(stationC.stationType, odhData);
 			odhClient.pushData(stationC.stationBayType, odhBayData);
 			LOG.info("Cron job successful");
