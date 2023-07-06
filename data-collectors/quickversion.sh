@@ -23,7 +23,7 @@ test "$TYPE" = "release" -o "$TYPE" = "snapshot" || {
 # UPDATING pom.xml files...
 test "$TYPE" = "snapshot" && VERSION="$VERSION-SNAPSHOT"
 
-REP="maven-repo.opendatahub.bz.it"
+REP="maven-repo.opendatahub.bz.com"
 REP_ID="$REP"
 XMLNS=http://maven.apache.org/POM/4.0.0
 CMD="xmlstarlet ed -P -L -N pom=$XMLNS"

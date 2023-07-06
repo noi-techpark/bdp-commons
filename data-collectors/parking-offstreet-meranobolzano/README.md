@@ -6,7 +6,7 @@ SPDX-License-Identifier: CC0-1.0
 
 # Data Collector: Parking Merano/Bolzano
 
-This data collector is a module of the [Open Data Hub](https://opendatahub.bz.it)
+This data collector is a module of the [Open Data Hub](https://opendatahub.com)
 Mobility Project.
 
 It harvests the following data:

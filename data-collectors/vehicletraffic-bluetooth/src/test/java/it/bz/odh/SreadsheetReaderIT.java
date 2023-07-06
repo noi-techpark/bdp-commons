@@ -85,7 +85,7 @@ public class SreadsheetReaderIT {
 		Channel channel = new Channel();
 		channel.setId(UUID.randomUUID().toString());
 		channel.setType("web_hook");
-		channel.setAddress("https://boxes.opendatahub.bz.it/dc-vehicletraffic-bluetooth/trigger");
+		channel.setAddress("https://boxes.opendatahub.com/dc-vehicletraffic-bluetooth/trigger");
 		watcher.registerWatch(channel);
 	}
 }

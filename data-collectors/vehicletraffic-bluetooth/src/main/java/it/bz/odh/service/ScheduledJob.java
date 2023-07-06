@@ -27,7 +27,7 @@ public class ScheduledJob {
 		Channel channel = new Channel();
 		channel.setId(UUID.randomUUID().toString());
 		channel.setType("web_hook");
-		channel.setAddress("https://boxes.opendatahub.bz.it/trigger");
+		channel.setAddress("https://boxes.opendatahub.com/trigger");
 		watcher.registerWatch(channel);
 		logger.debug("Channel created and registered");
 	}

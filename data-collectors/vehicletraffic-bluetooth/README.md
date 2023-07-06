@@ -22,7 +22,7 @@ All mac addresses send to this data collector are getting hashed with MD5.
 
 ## Endpoints
 
-We have two paths currently, with a base at https://boxes.opendatahub.bz.it
+We have two paths currently, with a base at https://boxes.opendatahub.com
 
 ### /json
 Bluetooth boxes will connect to this endpoint, and push MAC addresses to it.
@@ -88,7 +88,7 @@ integration tests: `mvn verify`
 
 ### Support
 
-For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
+For support, please contact [help@opendatahub.com](mailto:help@opendatahub.com).
 
 ### Contributing
 
@@ -99,7 +99,7 @@ instructions.
 ### Documentation
 
 More documentation can be found at
-[https://docs.opendatahub.bz.it](https://docs.opendatahub.bz.it).
+[https://docs.opendatahub.com](https://docs.opendatahub.com).
 
 ### License
 

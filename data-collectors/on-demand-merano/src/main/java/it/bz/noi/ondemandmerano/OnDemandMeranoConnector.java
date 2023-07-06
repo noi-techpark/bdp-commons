@@ -45,7 +45,8 @@ public class OnDemandMeranoConnector {
 
     public List<OnDemandMeranoStop> getStops() throws IOException {
 
-        HttpURLConnection conn = (HttpURLConnection) (new URL(connectorConfiguration.getURL() + STOPS_PATH)).openConnection();
+        HttpURLConnection conn = (HttpURLConnection) (new URL(connectorConfiguration.getURL() + STOPS_PATH))
+                .openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
         conn.setRequestProperty("Authorization", getBasicAuthorizationHeader());
@@ -71,7 +72,8 @@ public class OnDemandMeranoConnector {
         try {
             jsonArray = new Gson().fromJson(response.toString(), JsonArray.class);
         } catch (Exception e) {
-            // throw an error in case not even the top level element cannot be extracted as expected
+            // throw an error in case not even the top level element cannot be extracted as
+            // expected
             LOG.warn("---");
             LOG.warn("getStops() ERROR: unparsable response:");
             LOG.warn("vvv");
@@ -110,7 +112,8 @@ public class OnDemandMeranoConnector {
                 output.add(stop);
             } catch (Exception e) {
 
-                // null pointer, cast or number format exception in case the json hasn't the expected form
+                // null pointer, cast or number format exception in case the json hasn't the
+                // expected form
                 // or has incompatible data types: log and skip the record
                 LOG.warn("---");
                 LOG.warn("getStops() ERROR: skipping unparsable record:");
@@ -132,7 +135,8 @@ public class OnDemandMeranoConnector {
 
     public List<OnDemandMeranoPolygon> getPolygons() throws IOException {
 
-        HttpURLConnection conn = (HttpURLConnection) (new URL(connectorConfiguration.getURL() + POLYGONS_PATH)).openConnection();
+        HttpURLConnection conn = (HttpURLConnection) (new URL(connectorConfiguration.getURL() + POLYGONS_PATH))
+                .openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
         conn.setRequestProperty("Authorization", getBasicAuthorizationHeader());
@@ -158,7 +162,8 @@ public class OnDemandMeranoConnector {
         try {
             jsonArray = new Gson().fromJson(response.toString(), JsonArray.class);
         } catch (Exception e) {
-            // throw an error in case not even the top level element cannot be extracted as expected
+            // throw an error in case not even the top level element cannot be extracted as
+            // expected
             LOG.warn("---");
             LOG.warn("getPolygons() ERROR: unparsable response:");
             LOG.warn("vvv");
@@ -191,7 +196,8 @@ public class OnDemandMeranoConnector {
                 output.add(polygon);
             } catch (Exception e) {
 
-                // null pointer, cast or number format exception in case the json hasn't the expected form
+                // null pointer, cast or number format exception in case the json hasn't the
+                // expected form
                 // or has incompatible data types: log and skip the record
                 LOG.warn("---");
                 LOG.warn("getPolygons() ERROR: skipping unparsable record:");
@@ -213,7 +219,8 @@ public class OnDemandMeranoConnector {
 
     public List<OnDemandMeranoActivity> getActivities() throws IOException {
 
-        HttpURLConnection conn = (HttpURLConnection) (new URL(connectorConfiguration.getURL() + ACTIVE_ACTIVITIES_PATH)).openConnection();
+        HttpURLConnection conn = (HttpURLConnection) (new URL(connectorConfiguration.getURL() + ACTIVE_ACTIVITIES_PATH))
+                .openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
         conn.setRequestProperty("Authorization", getBasicAuthorizationHeader());
@@ -239,7 +246,8 @@ public class OnDemandMeranoConnector {
         try {
             jsonArray = new Gson().fromJson(response.toString(), JsonArray.class);
         } catch (Exception e) {
-            // throw an error in case not even the top level element cannot be extracted as expected
+            // throw an error in case not even the top level element cannot be extracted as
+            // expected
             LOG.warn("---");
             LOG.warn("getActivities() ERROR: unparsable response:");
             LOG.warn("vvv");
@@ -260,7 +268,9 @@ public class OnDemandMeranoConnector {
                 OnDemandMeranoActivity record = new OnDemandMeranoActivity();
                 record.setId(extractLong(jsonRecord, "id"));
                 record.setState(extractString(jsonRecord, "state"));
-                record.setStartAt(ZonedDateTime.parse(extractString(jsonRecord, "startedAt")));
+                String startedAt = extractString(jsonRecord, "startedAt");
+                if (startedAt != null)
+                    record.setStartAt(ZonedDateTime.parse(startedAt));
                 record.setPlannedStartAt(ZonedDateTime.parse(extractString(jsonRecord, "plannedStartAt")));
                 record.setUpdatedAt(ZonedDateTime.parse(extractString(jsonRecord, "updatedAt")));
                 record.setItineraryDone(jsonToItineryList(jsonRecord.get("itineraryDone").getAsJsonArray()));
@@ -271,14 +281,15 @@ public class OnDemandMeranoConnector {
 
             } catch (Exception e) {
 
-                // null pointer, cast or number format exception in case the json hasn't the expected form
+                // null pointer, cast or number format exception in case the json hasn't the
+                // expected form
                 // or has incompatible data types: log and skip the record
                 LOG.warn("---");
                 LOG.warn("getVehicles() ERROR: skipping unparsable record:");
-                LOG.warn("vvv");
-                LOG.warn(jsonArray.get(i).toString());
-                LOG.warn("^^^");
-                LOG.warn(e.getMessage(), e);
+                LOG.debug("vvv");
+                LOG.debug(jsonArray.get(i).toString());
+                LOG.debug("^^^");
+                LOG.debug(e.getMessage(), e);
                 LOG.warn("---");
                 skipped++;
                 continue;
@@ -292,7 +303,9 @@ public class OnDemandMeranoConnector {
     }
 
     private String getBasicAuthorizationHeader() {
-        return "Basic " + Base64.getEncoder().encodeToString((connectorConfiguration.getUsername() + ":" + connectorConfiguration.getPassword()).getBytes(StandardCharsets.UTF_8));
+        return "Basic " + Base64.getEncoder()
+                .encodeToString((connectorConfiguration.getUsername() + ":" + connectorConfiguration.getPassword())
+                        .getBytes(StandardCharsets.UTF_8));
     }
 
     private List<OnDemandMeranoIternityStep> jsonToItineryList(JsonArray itineraryJsonArray) {
@@ -303,8 +316,7 @@ public class OnDemandMeranoConnector {
             if (itineraryType.equals("ACTIVITY_HALT_PRIVATE")) {
                 OnDemandMeranoActivityHaltPrivate onDemandMeranoActivityHaltPrivate = new OnDemandMeranoActivityHaltPrivate();
                 onDemandMeranoActivityHaltPrivate.setTime(
-                        new Gson().fromJson(extractJsonObject(itinerary, "time"), HashMap.class)
-                );
+                        new Gson().fromJson(extractJsonObject(itinerary, "time"), HashMap.class));
 
                 JsonObject stopJsonObject = extractJsonObject(itinerary, "stop");
                 OnDemandMeranoActivityHaltPrivate.Stop onDemandMeranoActivityHaltPrivateStop = new OnDemandMeranoActivityHaltPrivate.Stop();
@@ -312,21 +324,21 @@ public class OnDemandMeranoConnector {
                 onDemandMeranoActivityHaltPrivateStop.setType(extractString(stopJsonObject, "type"));
                 onDemandMeranoActivityHaltPrivateStop.setTitle(extractString(stopJsonObject, "title"));
                 onDemandMeranoActivityHaltPrivateStop.setPosition(
-                        new Gson().fromJson(extractJsonObject(stopJsonObject, "position"), OnDemandServicePositionPoint.class));
+                        new Gson().fromJson(extractJsonObject(stopJsonObject, "position"),
+                                OnDemandServicePositionPoint.class));
                 onDemandMeranoActivityHaltPrivateStop.setStreetAddress(
-                        new Gson().fromJson(extractJsonObject(stopJsonObject, "streetAddress"), OnDemandMeranoStopAddress.class));
+                        new Gson().fromJson(extractJsonObject(stopJsonObject, "streetAddress"),
+                                OnDemandMeranoStopAddress.class));
                 onDemandMeranoActivityHaltPrivate.setStop(onDemandMeranoActivityHaltPrivateStop);
 
                 onDemandMeranoActivityHaltPrivate.setDropOffCapacities(
                         new Gson().fromJson(extractJsonObject(itinerary, "dropOffCapacities"),
                                 new TypeToken<HashMap<String, Integer>>() {
-                                }.getType())
-                );
+                                }.getType()));
                 onDemandMeranoActivityHaltPrivate.setPickUpCapacities(
                         new Gson().fromJson(extractJsonObject(itinerary, "pickUpCapacities"),
                                 new TypeToken<HashMap<String, Integer>>() {
-                                }.getType())
-                );
+                                }.getType()));
                 iternityStepList.add(onDemandMeranoActivityHaltPrivate);
             } else if (itineraryType.equals("ROUTE")) {
                 OnDemandMeranoRoute onDemandMeranoRoute = new OnDemandMeranoRoute();
@@ -357,21 +369,25 @@ public class OnDemandMeranoConnector {
         vehicle.setOperator(new Gson().fromJson(operator, OnDemandMeranoOperator.class));
         vehicle.setCapacityMax(new Gson().fromJson(capacityMax,
                 new TypeToken<HashMap<String, Integer>>() {
-                }.getType())
-        );
+                }.getType()));
         vehicle.setCapacityUsed(new Gson().fromJson(capacityUsed,
                 new TypeToken<HashMap<String, Integer>>() {
-                }.getType())
-        );
+                }.getType()));
 
         vehicle.setRecordTime(extractString(latestPosition, "recordTime"));
-        JsonObject position = extractJsonObject(latestPosition, "position");
-        vehicle.setPosition(new Gson().fromJson(position, OnDemandServicePositionPoint.class));
+        
+        if (latestPosition != null) {
+            JsonObject position = extractJsonObject(latestPosition, "position");
+            vehicle.setPosition(new Gson().fromJson(position, OnDemandServicePositionPoint.class));
+        }
 
         return vehicle;
     }
 
     public String extractString(JsonObject obj, String key) throws IllegalArgumentException {
+        if (obj == null || key == null) {
+            return null;
+        }
         JsonElement prop = obj.get(key);
         if (prop == null || prop.isJsonNull()) {
             return null;

@@ -105,7 +105,7 @@ jobs:
     needs: test
     concurrency: deploy-prod-meteorology-eurac
     env:
-      KEYCLOAK_URL: https://auth.opendatahub.bz.it
+      KEYCLOAK_URL: https://auth.opendatahub.com
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
@@ -127,7 +127,7 @@ jobs:
           X_clientName: odh-mobility-datacollector
           X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
           X_scope: openid
-          X_BASE_URI: https://mobility.share.opendatahub.bz.it/json
+          X_BASE_URI: https://mobility.share.opendatahub.com/json
 
           # Logging
           X_LOG_LEVEL: "info"

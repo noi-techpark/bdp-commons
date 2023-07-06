@@ -9,7 +9,7 @@ SPDX-License-Identifier: CC0-1.0
 [//]: <> (\[\!\[CI parking-forecast\]\(https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-forecast.yml/badge.svg\)\]\(https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-parking-forecast.yml\))
 
 Application which takes [parking forecast data computed by STA](https://web01.sta.bz.it/parking-forecast/readme.md) from
-a web service parses it and sends it to the [Open Data Hub](https://opendatahub.bz.it). The computed forecasts of the
+a web service parses it and sends it to the [Open Data Hub](https://opendatahub.com). The computed forecasts of the
 API are based on the data of the ODH station of the types ParkingStation and ParkingSensor, the parking station spaces
 already available in the Open Data Hub.
 
@@ -153,7 +153,7 @@ mvn clean package
 
 ### Support
 
-For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
+For support, please contact [help@opendatahub.com](mailto:help@opendatahub.com).
 
 ### Contributing
 
@@ -164,7 +164,7 @@ instructions.
 ### Documentation
 
 More documentation can be found at
-[https://docs.opendatahub.bz.it](https://docs.opendatahub.bz.it).
+[https://docs.opendatahub.com](https://docs.opendatahub.com).
 
 ### License
 

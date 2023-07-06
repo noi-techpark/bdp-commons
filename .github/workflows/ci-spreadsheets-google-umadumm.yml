@@ -142,7 +142,7 @@ jobs:
           X_headers_addressId: it:address
           X_headers_metaDataId: event-id
           X_spreadsheet_range: A1:Z
-          X_spreadsheet_notificationUrl: https://spreadsheets.opendatahub.bz.it/umadumm/trigger
+          X_spreadsheet_notificationUrl: https://spreadsheets.opendatahub.com/umadumm/trigger
           X_stationtype: Culture
           X_composite_unique_key: id
           X_origin: municipality bolzano

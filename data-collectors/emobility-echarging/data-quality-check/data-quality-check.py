@@ -20,14 +20,14 @@ DRIWE = "https://www.driwe.club/api/stations/metadata?auth-token=" + DRIWE_TOKEN
 
 
 def get_odh_plugs(origin):
-    ODH_URL = "https://mobility.api.opendatahub.bz.it/v2/flat%2Cnode/EChargingPlug/%2A/latest?limit=0&offset=0&shownull=false&select=pcode,porigin,smetadata,mvalue&where=pactive.eq.true,porigin.eq." + origin + "&distinct=true&timezone=UTC"
+    ODH_URL = "https://mobility.api.opendatahub.com/v2/flat%2Cnode/EChargingPlug/%2A/latest?limit=0&offset=0&shownull=false&select=pcode,porigin,smetadata,mvalue&where=pactive.eq.true,porigin.eq." + origin + "&distinct=true&timezone=UTC"
     response = requests.get(ODH_URL)
 
     return response.json()["data"]
 
 
 def get_odh_stations(origin):
-    ODH_URL = "https://mobility.api.opendatahub.bz.it/v2/flat%2Cnode/EChargingStation/%2A/latest?limit=0&offset=0&shownull=false&where=sactive.eq.true,sorigin.eq." + \
+    ODH_URL = "https://mobility.api.opendatahub.com/v2/flat%2Cnode/EChargingStation/%2A/latest?limit=0&offset=0&shownull=false&where=sactive.eq.true,sorigin.eq." + \
         origin + "&distinct=true&timezone=UTC"
     response = requests.get(ODH_URL)
 

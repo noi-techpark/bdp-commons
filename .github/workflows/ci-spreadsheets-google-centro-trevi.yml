@@ -178,7 +178,7 @@ jobs:
         with:
           working-directory: ${{ env.WORKING_DIRECTORY }}
           java-version: ${{ env.JAVA_VERSION }}
-          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
+          build-command: 'mvn -T 2C -B -DskipTests -DfinalName=ROOT clean package'
 
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2

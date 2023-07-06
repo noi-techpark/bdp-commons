@@ -14,7 +14,7 @@ using Keycloak.
 For Authentication with Microsoft's Services msal4j with certificates is used.  
 All further actions are handled by the Sharepoint REST API.
 
-For Authentication with the [OpenDataHub](https://opendatahub.bz.it/) , [Keycloak](https://www.keycloak.org/) is used.  
+For Authentication with the [OpenDataHub](https://opendatahub.com/) , [Keycloak](https://www.keycloak.org/) is used.  
 Note: Any Big Data Platform can be used.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -325,13 +325,13 @@ Find [here](https://opendatahub.readthedocs.io/en/latest/guidelines.html) guidel
 
 ### Support
 
-For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
+For support, please contact [help@opendatahub.com](mailto:help@opendatahub.com).
 
 ### Contributing
 
 If you'd like to contribute, please follow the following instructions:
 
-https://docs.opendatahub.bz.it/en/latest/guidelines/contributors.html
+https://docs.opendatahub.com/en/latest/guidelines/contributors.html
 
 ### Documentation
 

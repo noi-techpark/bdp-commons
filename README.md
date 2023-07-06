@@ -6,6 +6,8 @@ SPDX-License-Identifier: CC0-1.0
 
 # Open Data Hub Mobility - Data Collectors
 
+![REUSE Compliance](https://github.com/noi-techpark/bdp-commons/actions/workflows/reuse.yml/badge.svg)
+
 The Open Data Hub Mobility Data Collectors, historically called also Big Data
 Platform data collectors, and also data providers where contained in this repo,
 therefore it is called common.
@@ -18,7 +20,7 @@ writer](https://github.com/noi-techpark/bdp-core), which stores it inside a
 Postgres DB.
 
 We use [Keycloak](https://www.keycloak.org/) for authentication against the
-[Open Data Hub](https://opendatahub.bz.it/) writer API.
+[Open Data Hub](https://opendatahub.com/) writer API.
 
 **Table of contents**
 - [Open Data Hub Mobility - Data Collectors](#open-data-hub-mobility---data-collectors)
@@ -102,7 +104,7 @@ mvn clean test
 - You can follow the output with `docker-compose logs -f`
 
 Please, refer to the `README.md` inside that folder for further details, and
-report any incidence to `help@opendatahub.bz.it`.
+report any incidence to `help@opendatahub.com`.
 
 #### VSCode: Start a debug session
 
@@ -218,7 +220,7 @@ Note: Read the comments in every script for further instructions
 
 ### Support
 
-For support, please contact [help@opendatahub.bz.it](mailto:help@opendatahub.bz.it).
+For support, please contact [help@opendatahub.com](mailto:help@opendatahub.com).
 
 ### Contributing
 
@@ -240,7 +242,7 @@ If you want to write a new Data Collector:
 ### Documentation
 
 More documentation can be found at
-[https://docs.opendatahub.bz.it](https://docs.opendatahub.bz.it).
+[https://docs.opendatahub.com](https://docs.opendatahub.com).
 
 ### License
 
@@ -248,3 +250,18 @@ The code in this project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3 license.
 
 See the [LICENSE](LICENSE) file for more information.
+
+### REUSE
+
+This project is [REUSE](https://reuse.software) compliant, more information about the usage of REUSE in NOI Techpark repositories can be found [here](https://github.com/noi-techpark/odh-docs/wiki/Guidelines-for-developers-and-licenses#guidelines-for-contributors-and-new-developers).
+
+Since the CI for this project checks for REUSE compliance you might find it useful to use a pre-commit hook checking for REUSE compliance locally. The [pre-commit-config](.pre-commit-config.yaml) file in the repository root is already configured to check for REUSE compliance with help of the [pre-commit](https://pre-commit.com) tool.
+
+Install the tool by running:
+```bash
+pip install pre-commit
+```
+Then install the pre-commit hook via the config file by running:
+```bash
+pre-commit install
+```
