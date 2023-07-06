@@ -30,15 +30,17 @@ public class BikeBoxesService {
     private WebClient client;
 
     public List<BikeStation> getBikeStations() {
+        LOG.info("Fetching data...");
+        int count = 0;
         List<BikeStation> bikeStationsWithPlace = new ArrayList<>();
 
         List<BikeStation> bikeStations = fetchBikeStations();
         for (BikeStation bikeStation : bikeStations) {
             BikeStation fetchBikeStation = fetchBikeStationWithPlace(bikeStation.stationID);
             bikeStationsWithPlace.add(fetchBikeStation);
-
+            count++;
         }
-
+        LOG.info("Fetching data done. {} stations found", count);
         return bikeStationsWithPlace;
     }
 
