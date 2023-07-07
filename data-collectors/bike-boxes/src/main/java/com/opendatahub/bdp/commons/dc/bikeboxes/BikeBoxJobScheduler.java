@@ -76,17 +76,25 @@ public class BikeBoxJobScheduler {
 
 				stationDto.setMetaData(Map.of(
 						"type", switch (bs.type) {
-							case 0 -> "Sharing with real stations";
-							case 1 -> "Sharing with virtual stations";
-							case 2 -> "Parking";
-							default -> "Unknown type " + bs.type;
-							// default -> throw new Exception("Unknown mapping station.type: " + bs.type);
+							case 4 -> "veloHub";
+							case 5 -> "bixeBoxGroup";
+							default -> "unknownType" + bs.type;
 						},
 						"totalPlaces", bs.totalPlaces,
 						"stationPlaces", Arrays.stream(bs.places).map(p -> Map.of(
 								"position", p.position,
 								// purposely don't include state field
-								"type", p.type))));
+								"type", switch (p.type) {
+									case 1 -> "withoutRefill";
+									case 2 -> "withRefill";
+									default -> "unknownType" + p.state;
+								},
+								"level", p.level,
+								"state", switch (p.state) {
+									case 1 -> "inService";
+									case 2 -> "outOfService";
+									default -> "unknownState" + p.state;
+								}))));
 				stationDto.setOrigin(provC.origin);
 				odhStations.add(stationDto);
 
@@ -111,16 +119,14 @@ public class BikeBoxJobScheduler {
 					bayDto.setParentStation(stationDto.getId());
 
 					// type is always 0 for station types 0 and 1 (sharing stations)
-					if (bs.type != 0 && bs.type != 1) {
-						bayDto.getMetaData().put(
-								"type", switch (bay.type) {
-									case 1 -> "Normal bay";
-									case 2 -> "Bike box";
-									default -> "Unknown type " + bay.type;
-									// default -> throw new Exception("Unknown mapping station.places.type: " +
-									// bay.type);
-								});
-					}
+					// if (bs.type != 0 && bs.type != 1) {
+					bayDto.getMetaData().put(
+							"type", switch (bay.type) {
+								case 1 -> "withoutRefill";
+								case 2 -> "withRefill";
+								default -> "unknownType" + bay.type;
+							});
+					// }
 					odhBays.add(bayDto);
 
 					// add bay level measurement
@@ -143,14 +149,12 @@ public class BikeBoxJobScheduler {
 		}
 	}
 
-	private String mapState(int state) throws Exception {
+	private String mapState(int state) {
 		return switch (state) {
-			case 1 -> "FREE";
-			case 2 -> "OCCUPIED";
-			case 3 -> "OUT OF SERVICE";
-			default -> "UNKNOWN STATE " + state;
-			// default -> throw new Exception("Unable to map Station.place.state : " +
-			// state);
+			case 1 -> "free";
+			case 2 -> "occupied";
+			case 3 -> "outOfService";
+			default -> "unknownState" + state;
 		};
 	}
 
