@@ -81,6 +81,7 @@ public class BikeBoxJobScheduler {
 							default -> "unknownType" + bs.type;
 						},
 						"totalPlaces", bs.totalPlaces,
+						"locationID", bs.locationID,
 						"stationPlaces", Arrays.stream(bs.places).map(p -> Map.of(
 								"position", p.position,
 								// purposely don't include state field
@@ -118,15 +119,20 @@ public class BikeBoxJobScheduler {
 					// this parking bay is a child of the parking station
 					bayDto.setParentStation(stationDto.getId());
 
-					// type is always 0 for station types 0 and 1 (sharing stations)
-					// if (bs.type != 0 && bs.type != 1) {
 					bayDto.getMetaData().put(
 							"type", switch (bay.type) {
 								case 1 -> "withoutRefill";
 								case 2 -> "withRefill";
 								default -> "unknownType" + bay.type;
 							});
-					// }
+					bayDto.getMetaData().put("position", bay.position);
+					bayDto.getMetaData().put("level", bay.level);
+					bayDto.getMetaData().put("state", switch (bay.state) {
+						case 1 -> "inService";
+						case 2 -> "outOfService";
+						default -> "unknownState" + bay.state;
+					});
+
 					odhBays.add(bayDto);
 
 					// add bay level measurement
