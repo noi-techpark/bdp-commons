@@ -69,31 +69,11 @@ public class BikeBoxesService {
     private BikeStation fetchBikeStationWithPlace(String stationId) {
 
         // get stations with default language
-        BikeStation station = client.get()
-                .uri(u -> u
-                        .path(ENDPOINT_STATION)
-                        .queryParam("languageId", DEFAULT_LANGUAGE)
-                        .queryParam("stationId", stationId)
-                        .build())
-                .accept(MediaType.APPLICATION_JSON)
-                .attribute("idStation", stationId)
-                .retrieve()
-                .bodyToMono(BikeStation.class)
-                .block();
+        BikeStation station = getStation(stationId, DEFAULT_LANGUAGE);
 
         // get stations with additional metadata language
         for (String language : METADATA_LANGUAGES) {
-            BikeStation languageStation = client.get()
-                    .uri(u -> u
-                            .path(ENDPOINT_STATION)
-                            .queryParam("languageId", DEFAULT_LANGUAGE)
-                            .queryParam("stationId", stationId)
-                            .build())
-                    .accept(MediaType.APPLICATION_JSON)
-                    .attribute("idStation", stationId)
-                    .retrieve()
-                    .bodyToMono(BikeStation.class)
-                    .block();
+            BikeStation languageStation = getStation(stationId, language);
 
             // assign metadata languages
             // are sorted, so direct assignment works
@@ -111,5 +91,19 @@ public class BikeBoxesService {
 
         }
         return station;
+    }
+
+    private BikeStation getStation(String stationId, String language) {
+        return client.get()
+                .uri(u -> u
+                        .path(ENDPOINT_STATION)
+                        .queryParam("languageId", language)
+                        .queryParam("stationId", stationId)
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .attribute("idStation", stationId)
+                .retrieve()
+                .bodyToMono(BikeStation.class)
+                .block();
     }
 }
