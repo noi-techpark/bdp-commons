@@ -4,6 +4,8 @@
 
 package com.opendatahub.bdp.commons.dc.bikeboxes.dto;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -17,10 +19,15 @@ import lombok.ToString;
 @JsonDeserialize
 public class BikeStation {
     public String stationID;
+    // main name used for station name
     public String locationName;
-    public String locationID;
+    // other languages saved in metadata
+    public Map<String, String> locationNames;
+    public int locationID;
     public String name;
     public String address;
+    // other languages saved in metadata
+    public Map<String, String> addresses;
     public double latitude;
     public double longitude;
     public int type;

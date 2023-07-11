@@ -72,30 +72,28 @@ public class BikeBoxJobScheduler {
 
 			for (BikeStation bs : bikeStations) {
 				// create station dto
-				StationDto stationDto = new StationDto(bs.locationID, bs.locationName, bs.latitude, bs.longitude);
+				StationDto stationDto = new StationDto(Integer.toString(bs.locationID), bs.locationName, bs.latitude,
+						bs.longitude);
 
 				stationDto.setMetaData(Map.of(
 						"type", switch (bs.type) {
 							case 4 -> "veloHub";
 							case 5 -> "bixeBoxGroup";
-							default -> "unknownType" + bs.type;
+							default -> "unknown";
 						},
 						"totalPlaces", bs.totalPlaces,
 						"locationID", bs.locationID,
+						"names", bs.locationNames,
+						"addresses", bs.addresses,
 						"stationPlaces", Arrays.stream(bs.places).map(p -> Map.of(
 								"position", p.position,
 								// purposely don't include state field
 								"type", switch (p.type) {
 									case 1 -> "withoutRefill";
 									case 2 -> "withRefill";
-									default -> "unknownType" + p.state;
+									default -> "unknown";
 								},
-								"level", p.level,
-								"state", switch (p.state) {
-									case 1 -> "inService";
-									case 2 -> "outOfService";
-									default -> "unknownState" + p.state;
-								}))));
+								"level", p.level))));
 				stationDto.setOrigin(provC.origin);
 				odhStations.add(stationDto);
 
@@ -123,15 +121,10 @@ public class BikeBoxJobScheduler {
 							"type", switch (bay.type) {
 								case 1 -> "withoutRefill";
 								case 2 -> "withRefill";
-								default -> "unknownType" + bay.type;
+								default -> "unknown";
 							});
 					bayDto.getMetaData().put("position", bay.position);
 					bayDto.getMetaData().put("level", bay.level);
-					bayDto.getMetaData().put("state", switch (bay.state) {
-						case 1 -> "inService";
-						case 2 -> "outOfService";
-						default -> "unknownState" + bay.state;
-					});
 
 					odhBays.add(bayDto);
 
@@ -160,7 +153,7 @@ public class BikeBoxJobScheduler {
 			case 1 -> "free";
 			case 2 -> "occupied";
 			case 3 -> "outOfService";
-			default -> "unknownState" + state;
+			default -> "unknown";
 		};
 	}
 
