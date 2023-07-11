@@ -5,6 +5,10 @@
 package com.opendatahub.bdp.commons.dc.bikeboxes.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,8 +24,12 @@ import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeStation;
 @Service
 public class BikeBoxesService {
     private final static Logger LOG = LoggerFactory.getLogger(BikeBoxesService.class);
-    // en, de, it, lld
-    private final static String LANGUAGE = "en";
+
+    // language used for station name
+    private final static String DEFAULT_LANGUAGE = "it";
+    // languages saved in metadata
+    private final static List<String> METADATA_LANGUAGES = new ArrayList<String>(
+            Arrays.asList("it", "en", "de", "lld"));
     private final static String ENDPOINT_STATIONS = "/resources/stations";
     private final static String ENDPOINT_STATION = "/resources/station";
 
@@ -45,10 +53,11 @@ public class BikeBoxesService {
     }
 
     private List<BikeStation> fetchBikeStations() {
+        // get stations with default language
         return client.get()
                 .uri(u -> u
                         .path(ENDPOINT_STATIONS)
-                        .queryParam("languageId", LANGUAGE)
+                        .queryParam("languageId", DEFAULT_LANGUAGE)
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -58,10 +67,12 @@ public class BikeBoxesService {
     }
 
     private BikeStation fetchBikeStationWithPlace(String stationId) {
-        return client.get()
+
+        // get stations with default language
+        BikeStation station = client.get()
                 .uri(u -> u
                         .path(ENDPOINT_STATION)
-                        .queryParam("languageId", LANGUAGE)
+                        .queryParam("languageId", DEFAULT_LANGUAGE)
                         .queryParam("stationId", stationId)
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
@@ -69,5 +80,36 @@ public class BikeBoxesService {
                 .retrieve()
                 .bodyToMono(BikeStation.class)
                 .block();
+
+        // get stations with additional metadata language
+        for (String language : METADATA_LANGUAGES) {
+            BikeStation languageStation = client.get()
+                    .uri(u -> u
+                            .path(ENDPOINT_STATION)
+                            .queryParam("languageId", DEFAULT_LANGUAGE)
+                            .queryParam("stationId", stationId)
+                            .build())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .attribute("idStation", stationId)
+                    .retrieve()
+                    .bodyToMono(BikeStation.class)
+                    .block();
+
+            // assign metadata languages
+            // are sorted, so direct assignment works
+            if (station.locationNames == null)
+                station.locationNames = new HashMap<String, String>();
+            station.locationNames.put(language, languageStation.locationName);
+
+            if (station.addresses == null)
+                station.addresses = new HashMap<String, String>();
+            station.addresses.put(language, languageStation.address);
+
+            // add default language to metadata languages too
+            station.locationNames.put(DEFAULT_LANGUAGE, station.locationName);
+            station.addresses.put(DEFAULT_LANGUAGE, station.address);
+
+        }
+        return station;
     }
 }
