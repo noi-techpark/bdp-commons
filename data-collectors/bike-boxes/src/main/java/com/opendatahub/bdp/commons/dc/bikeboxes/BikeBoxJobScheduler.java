@@ -76,11 +76,7 @@ public class BikeBoxJobScheduler {
 						bs.longitude);
 
 				stationDto.setMetaData(Map.of(
-						"type", switch (bs.type) {
-							case 4 -> "veloHub";
-							case 5 -> "bixeBoxGroup";
-							default -> "unknown";
-						},
+						"type", mapBikeStationType(bs.type),
 						"totalPlaces", bs.totalPlaces,
 						"locationID", bs.locationID,
 						"names", bs.locationNames,
@@ -88,18 +84,14 @@ public class BikeBoxJobScheduler {
 						"stationPlaces", Arrays.stream(bs.places).map(p -> Map.of(
 								"position", p.position,
 								// purposely don't include state field
-								"type", switch (p.type) {
-									case 1 -> "withoutRefill";
-									case 2 -> "withRefill";
-									default -> "unknown";
-								},
+								"type", mapBikeStationBayType(p.type),
 								"level", p.level))));
 				stationDto.setOrigin(provC.origin);
 				odhStations.add(stationDto);
 
 				// create station level measurements (as key value pairs)
 				var stationData = Map.of(
-						DataTypes.usageState.key, mapState(bs.state),
+						DataTypes.usageState.key, mapBikeStationBayState(bs.state),
 						DataTypes.availableMuscularBikes.key, bs.countFreePlacesAvailable_MuscularBikes,
 						DataTypes.availableAssistedBikes.key, bs.countFreePlacesAvailable_AssistedBikes,
 						DataTypes.availableVehicles.key, bs.countFreePlacesAvailable);
@@ -109,7 +101,7 @@ public class BikeBoxJobScheduler {
 				// create station and measurement for sub stations (parking bays)
 				for (Place bay : bs.places) {
 					StationDto bayDto = new StationDto(
-							stationDto.getId() + "/" + bay.position,
+							stationDto.getId() + "_" + bs.stationID + "/" + bay.position,
 							stationDto.getName() + "/" + bay.position,
 							stationDto.getLatitude(),
 							stationDto.getLongitude());
@@ -118,18 +110,14 @@ public class BikeBoxJobScheduler {
 					bayDto.setParentStation(stationDto.getId());
 
 					bayDto.getMetaData().put(
-							"type", switch (bay.type) {
-								case 1 -> "withoutRefill";
-								case 2 -> "withRefill";
-								default -> "unknown";
-							});
+							"type", mapBikeStationBayType(bay.type));
 					bayDto.getMetaData().put("position", bay.position);
 					bayDto.getMetaData().put("level", bay.level);
 
 					odhBays.add(bayDto);
 
 					// add bay level measurement
-					odhBayData.addRecord(bayDto.getId(), DataTypes.usageState.key, mapSimple(mapState(bay.state)));
+					odhBayData.addRecord(bayDto.getId(), DataTypes.usageState.key, mapSimple(mapUsageState(bay.state)));
 				}
 			}
 
@@ -148,11 +136,35 @@ public class BikeBoxJobScheduler {
 		}
 	}
 
-	private String mapState(int state) {
+	private String mapBikeStationType(int type) {
+		return switch (type) {
+			case 4 -> "veloHub";
+			case 5 -> "bixeBoxGroup";
+			default -> "unknown";
+		};
+	}
+
+	private String mapBikeStationBayType(int type) {
+		return switch (type) {
+			case 1 -> "withoutRefill";
+			case 2 -> "withRefill";
+			default -> "unknown";
+		};
+	}
+
+	private String mapBikeStationBayState(int type) {
+		return switch (type) {
+			case 1 -> "in service";
+			case 2 -> "out of service";
+			default -> "unknown";
+		};
+	}
+
+	private String mapUsageState(int state) {
 		return switch (state) {
-			case 1 -> "free";
-			case 2 -> "occupied";
-			case 3 -> "outOfService";
+			case 1 -> "in service";
+			case 2 -> "occupied - in service";
+			case 3 -> "out of service";
 			default -> "unknown";
 		};
 	}
