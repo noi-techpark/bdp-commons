@@ -32,13 +32,11 @@ import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
 @Component
-public class MainElaborations
-{
+public class MainElaborations {
 
 	private static final int NULL_VALUE = -999;
 
-	static class WindowStepLength
-	{
+	static class WindowStepLength {
 		int step;
 		int length;
 	}
@@ -66,10 +64,8 @@ public class MainElaborations
 		}
 	}
 
-	public void execute()
-	{
-		try
-		{
+	public void execute() {
+		try {
 			LOG.debug("Start MainElaborations");
 
 			LOG.debug("Sync datatypes");
@@ -80,15 +76,14 @@ public class MainElaborations
 
 			LOG.debug("Sync stations");
 			StationList stations = syncStation.saveStations(connection);
-			LOG.debug("Length stationList: "  + stations.size());
+			LOG.debug("Length stationList: " + stations.size());
 
 			LOG.debug("Read elaboration properties");
 			WindowStepLength winStepLength = readElaborationProperties();
 
 			long now = System.currentTimeMillis();
 
-			for (StationDto station : stations)
-			{
+			for (StationDto station : stations) {
 
 				String stationcode = station.getId();
 				LOG.debug("Stationcode: " + stationcode);
@@ -96,31 +91,34 @@ public class MainElaborations
 				// System.out.println(station.getName());
 
 				long lastTimestamp = ((java.util.Date) pusher.getDateOfLastRecord(stationcode, null, null)).getTime();
-				LOG.debug("Timestamp of last record: " +  lastTimestamp);
-				if (lastTimestamp <= 0)
-				{
+				LOG.debug("Timestamp of last record: " + lastTimestamp);
+				if (lastTimestamp <= 0) {
 					Calendar calendar = Calendar.getInstance();
-					calendar.set(2017, Calendar.JANUARY, 1, 0, 0, 0);
+					// calendar.set(2017, Calendar.JANUARY, 1, 0, 0, 0);
+					// minimum import date
+					calendar.set(2023, Calendar.JULY, 7, 0, 0, 0);
 					calendar.set(Calendar.MILLISECOND, 0);
 
 					lastTimestamp = calendar.getTimeInMillis();
-				}
-				else
-				{
-					// 2019-07-10 d@vide.bz: go back 1 hour from last time elaboration because data can't be in realtime
+				} else {
+					// 2019-07-10 d@vide.bz: go back 1 hour from last time elaboration because data
+					// can't be in realtime
 					lastTimestamp -= 3600L * 1000L;
 				}
-				
-				// 2022-07-05 d@vide.bz: temporary workaround that reduce the problem of pushData not updating values
-				//                       don't write data for windows near now because the probability that are incomplete is high
+
+				// 2022-07-05 d@vide.bz: temporary workaround that reduce the problem of
+				// pushData not updating values
+				// don't write data for windows near now because the probability that are
+				// incomplete is high
 				long horizon = now - 45L * 60L * 1000L;
 				LOG.debug("Horizon: " + horizon);
 
 				// loop over the windows
 				while (lastTimestamp + winStepLength.length < horizon) // loop until the window is entirely in the past
 				{
-					LOG.debug("elaborating station: " + station.getName() + " window from: " + new java.sql.Timestamp(lastTimestamp).toString()
-					+ " to: " + new java.sql.Timestamp(lastTimestamp + winStepLength.length).toString());
+					LOG.debug("elaborating station: " + station.getName() + " window from: "
+							+ new java.sql.Timestamp(lastTimestamp).toString()
+							+ " to: " + new java.sql.Timestamp(lastTimestamp + winStepLength.length).toString());
 					List<Vehicle> vehicles = readWindow(lastTimestamp, lastTimestamp + winStepLength.length,
 							stationcode, connection);
 
@@ -132,18 +130,14 @@ public class MainElaborations
 				}
 			}
 			connection.close();
-		}
-		catch (Exception exxx)
-		{
+		} catch (Exception exxx) {
 			throw new IllegalStateException(exxx);
 		}
 		LOG.debug("Finish writing.");
 	}
 
-	private WindowStepLength readElaborationProperties() throws IOException
-	{
-		try (InputStream in = getClass().getResourceAsStream("elaborations.properties"))
-		{
+	private WindowStepLength readElaborationProperties() throws IOException {
+		try (InputStream in = getClass().getResourceAsStream("elaborations.properties")) {
 			LOG.debug("Elaboration properties: ");
 			Properties prop = new Properties();
 			prop.load(in);
@@ -160,8 +154,8 @@ public class MainElaborations
 	 * saves all calculations in bdp-core
 	 *
 	 */
-	private void saveMeasurementAndCalculation(StationDto station, List<Vehicle> vehicles, long lastTimestamp, long windowLength)
-	{
+	private void saveMeasurementAndCalculation(StationDto station, List<Vehicle> vehicles, long lastTimestamp,
+			long windowLength) {
 		DataMapDto<RecordDtoImpl> dataMapDto = new DataMapDto<>();
 
 		LOG.debug("Create vehicle classes");
@@ -172,17 +166,13 @@ public class MainElaborations
 		double nrHeavyVehicles = 0;
 		double nrBuses = 0;
 
-		for (Map.Entry<String, Integer> classCount : classCounts.entrySet())
-		{
+		for (Map.Entry<String, Integer> classCount : classCounts.entrySet()) {
 
-			if (classCount.getKey().equals(SyncDatatype.NR_LIGHT_VEHICLES))
-			{
+			if (classCount.getKey().equals(SyncDatatype.NR_LIGHT_VEHICLES)) {
 				nrLightVehicles += classCount.getValue();
-			} else if (classCount.getKey().equals(SyncDatatype.NR_HEAVY_VEHICLES))
-			{
+			} else if (classCount.getKey().equals(SyncDatatype.NR_HEAVY_VEHICLES)) {
 				nrHeavyVehicles += classCount.getValue();
-			} else if (classCount.getKey().equals(SyncDatatype.NR_BUSES))
-			{
+			} else if (classCount.getKey().equals(SyncDatatype.NR_BUSES)) {
 				nrBuses += classCount.getValue();
 			}
 
@@ -190,7 +180,7 @@ public class MainElaborations
 			SimpleRecordDto rec = new SimpleRecordDto(timestamp.getTime(), classCount.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
 
-			LOG.debug("Save "+classCount.getKey()+" vehicles: " + classCount.getValue());
+			LOG.debug("Save " + classCount.getKey() + " vehicles: " + classCount.getValue());
 			dataMapDto.addRecord(station.getId(), classCount.getKey(), rec);
 
 		}
@@ -199,13 +189,12 @@ public class MainElaborations
 		Timestamp timestamp = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 		SimpleRecordDto rec = new SimpleRecordDto(timestamp.getTime(), equivalentVehicles,
 				(int) (windowLength / 1000), System.currentTimeMillis());
-		LOG.debug("Save "+SyncDatatype.NR_EQUIVALENT_VEHICLES+" vehicles: " + equivalentVehicles);
+		LOG.debug("Save " + SyncDatatype.NR_EQUIVALENT_VEHICLES + " vehicles: " + equivalentVehicles);
 		dataMapDto.addRecord(station.getId(), SyncDatatype.NR_EQUIVALENT_VEHICLES, rec);
 
 		Map<String, Double> classAvgSpeeds = createClassAvgSpeeds(vehicles);
 
-		for (Map.Entry<String, Double> classAvgSpeed : classAvgSpeeds.entrySet())
-		{
+		for (Map.Entry<String, Double> classAvgSpeed : classAvgSpeeds.entrySet()) {
 			Timestamp timestampAvgSpeed = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 			SimpleRecordDto recordAvgSpeed = new SimpleRecordDto(timestampAvgSpeed.getTime(), classAvgSpeed.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
@@ -215,23 +204,21 @@ public class MainElaborations
 
 		Map<String, Double> classVarSpeeds = createClassVarSpeeds(vehicles, classAvgSpeeds);
 
-		for (Map.Entry<String, Double> classVarSpeed : classVarSpeeds.entrySet())
-		{
+		for (Map.Entry<String, Double> classVarSpeed : classVarSpeeds.entrySet()) {
 			Timestamp timestampVarSpeed = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 			SimpleRecordDto recordVarSpeed = new SimpleRecordDto(timestampVarSpeed.getTime(), classVarSpeed.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
-			LOG.debug("Save speed variance "+classVarSpeed.getKey()+": " + classVarSpeed.getValue());
+			LOG.debug("Save speed variance " + classVarSpeed.getKey() + ": " + classVarSpeed.getValue());
 			dataMapDto.addRecord(station.getId(), classVarSpeed.getKey(), recordVarSpeed);
 		}
 
 		Map<String, Double> classAvgs = createClassAvgs(vehicles, equivalentVehicles, windowLength);
 
-		for (Map.Entry<String, Double> classAvg : classAvgs.entrySet())
-		{
+		for (Map.Entry<String, Double> classAvg : classAvgs.entrySet()) {
 			Timestamp timestampAvg = new Timestamp(lastTimestamp /* + windowLength / 2 */);
 			SimpleRecordDto recordAvg = new SimpleRecordDto(timestampAvg.getTime(), classAvg.getValue(),
 					(int) (windowLength / 1000), System.currentTimeMillis());
-			LOG.debug("Save "+classAvg.getKey()+": " + classAvg.getValue());
+			LOG.debug("Save " + classAvg.getKey() + ": " + classAvg.getValue());
 			dataMapDto.addRecord(station.getId(), classAvg.getKey(), recordAvg);
 
 		}
@@ -248,8 +235,7 @@ public class MainElaborations
 	 * @return map of average for each vehicle class
 	 */
 	private Map<String, Double> createClassAvgs(List<Vehicle> vehicles, double equivalentVehicles,
-			long windowLength)
-	{
+			long windowLength) {
 		Map<String, Double> classCounts = new HashMap<>();
 
 		double gapSum = 0;
@@ -257,8 +243,7 @@ public class MainElaborations
 		// double meanSpacing = 0;
 		double speedSum = 0;
 
-		for (Vehicle vehicle : vehicles)
-		{
+		for (Vehicle vehicle : vehicles) {
 			if (vehicle.getNr_classes_count() != 1)
 				throw new IllegalStateException("vehicle classification not unique");
 
@@ -273,8 +258,7 @@ public class MainElaborations
 		double averageFlow = equivalentVehicles * 3600 * 1000 / windowLength;
 		double averageGap = NULL_VALUE;
 
-		if (! vehicles.isEmpty())
-		{
+		if (!vehicles.isEmpty()) {
 			avgHeadway = headwaySum / vehicles.size();
 			// meanSpacing = meanSpacing / vehicles.size();
 			// averageDensity = 1/(meanSpacing/1000);
@@ -300,8 +284,7 @@ public class MainElaborations
 	 * @return map of each vehicles class with the speed variance
 	 */
 	private static Map<String, Double> createClassVarSpeeds(List<Vehicle> vehicles,
-			Map<String, Double> classAvgSpeeds)
-	{
+			Map<String, Double> classAvgSpeeds) {
 		Map<String, Double> classCounts = new HashMap<>();
 
 		double speedSumLight = 0.0;
@@ -310,25 +293,22 @@ public class MainElaborations
 		int countLight = 0;
 		int countHeavy = 0;
 		int countBuses = 0;
-		for (Vehicle vehicle : vehicles)
-		{
-			// 2019-06-21 d@vide.bz: if the classification is not unique then skip this vehicle
+		for (Vehicle vehicle : vehicles) {
+			// 2019-06-21 d@vide.bz: if the classification is not unique then skip this
+			// vehicle
 			if (vehicle.getNr_classes_avg() != 1)
 				continue;
 
-			if (vehicle.isClasse_1_avg() || vehicle.isClasse_2_avg() || vehicle.isClasse_4_avg())
-			{
+			if (vehicle.isClasse_1_avg() || vehicle.isClasse_2_avg() || vehicle.isClasse_4_avg()) {
 				speedSumLight += Math
 						.pow(vehicle.getSpeed() - classAvgSpeeds.get(SyncDatatype.AVERAGE_SPEED_LIGHT_VEHICLES), 2);
 				countLight++;
 			} else if (vehicle.isClasse_3_avg() || vehicle.isClasse_6_avg() || vehicle.isClasse_7_avg()
-					|| vehicle.isClasse_8_avg())
-			{
+					|| vehicle.isClasse_8_avg()) {
 				speedSumHeavy += Math
 						.pow(vehicle.getSpeed() - classAvgSpeeds.get(SyncDatatype.AVERAGE_SPEED_HEAVY_VEHICLES), 2);
 				countHeavy++;
-			} else if (vehicle.isClasse_5_avg() || vehicle.isClasse_9_avg())
-			{
+			} else if (vehicle.isClasse_5_avg() || vehicle.isClasse_9_avg()) {
 				speedSumBuses += Math.pow(vehicle.getSpeed() - classAvgSpeeds.get(SyncDatatype.AVERAGE_SPEED_BUSES), 2);
 				countBuses++;
 			}
@@ -338,16 +318,13 @@ public class MainElaborations
 		double speedVarHeavy = NULL_VALUE;
 		double speedVarBuses = NULL_VALUE;
 
-		if (countLight > 0)
-		{
+		if (countLight > 0) {
 			speedVarLight = speedSumLight / countLight;
 		}
-		if (countHeavy > 0)
-		{
+		if (countHeavy > 0) {
 			speedVarHeavy = speedSumHeavy / countHeavy;
 		}
-		if (countBuses > 0)
-		{
+		if (countBuses > 0) {
 			speedVarBuses = speedSumBuses / countBuses;
 		}
 
@@ -364,8 +341,7 @@ public class MainElaborations
 	 * @param vehicles
 	 * @return map of vehicle class with average speed
 	 */
-	private static Map<String, Double> createClassAvgSpeeds(List<Vehicle> vehicles)
-	{
+	private static Map<String, Double> createClassAvgSpeeds(List<Vehicle> vehicles) {
 		Map<String, Double> classCounts = new HashMap<>();
 
 		double speedSumLight = 0.0;
@@ -374,23 +350,20 @@ public class MainElaborations
 		int countLight = 0;
 		int countHeavy = 0;
 		int countBuses = 0;
-		for (Vehicle vehicle : vehicles)
-		{
-			// 2019-06-21 d@vide.bz: if the classification is not unique then skip this vehicle
+		for (Vehicle vehicle : vehicles) {
+			// 2019-06-21 d@vide.bz: if the classification is not unique then skip this
+			// vehicle
 			if (vehicle.getNr_classes_avg() != 1)
 				continue;
 
-			if (vehicle.isClasse_1_avg() || vehicle.isClasse_2_avg() || vehicle.isClasse_4_avg())
-			{
+			if (vehicle.isClasse_1_avg() || vehicle.isClasse_2_avg() || vehicle.isClasse_4_avg()) {
 				speedSumLight += vehicle.getSpeed();
 				countLight++;
 			} else if (vehicle.isClasse_3_avg() || vehicle.isClasse_6_avg() || vehicle.isClasse_7_avg()
-					|| vehicle.isClasse_8_avg())
-			{
+					|| vehicle.isClasse_8_avg()) {
 				speedSumHeavy += vehicle.getSpeed();
 				countHeavy++;
-			} else if (vehicle.isClasse_5_avg() || vehicle.isClasse_9_avg())
-			{
+			} else if (vehicle.isClasse_5_avg() || vehicle.isClasse_9_avg()) {
 				speedSumBuses += vehicle.getSpeed();
 				countBuses++;
 			}
@@ -400,16 +373,13 @@ public class MainElaborations
 		double speedAvgHeavy = NULL_VALUE;
 		double speedAvgBuses = NULL_VALUE;
 
-		if (countLight > 0)
-		{
+		if (countLight > 0) {
 			speedAvgLight = speedSumLight / countLight;
 		}
-		if (countHeavy > 0)
-		{
+		if (countHeavy > 0) {
 			speedAvgHeavy = speedSumHeavy / countHeavy;
 		}
-		if (countBuses > 0)
-		{
+		if (countBuses > 0) {
 			speedAvgBuses = speedSumBuses / countBuses;
 		}
 
@@ -430,8 +400,7 @@ public class MainElaborations
 	 * @throws IOException
 	 */
 	public List<Vehicle> readWindow(long from_ts, long to_ts, String stationcode, Connection connection)
-			throws SQLException, IOException
-	{
+			throws SQLException, IOException {
 		ArrayList<Vehicle> vehicles = new ArrayList<>();
 
 		String query = Utility.readResourceText(MainElaborations.class, "read-window.sql");
@@ -439,15 +408,13 @@ public class MainElaborations
 		String anomalies = Utility.readResourceText(MainElaborations.class, "save-anomalies.sql");
 
 		try (
-			PreparedStatement ps_anomalies = connection.prepareStatement(anomalies);
-			PreparedStatement ps = connection.prepareStatement(query);
-		) {
+				PreparedStatement ps_anomalies = connection.prepareStatement(anomalies);
+				PreparedStatement ps = connection.prepareStatement(query);) {
 			ps.setLong(1, from_ts / 1000);
 			ps.setLong(2, to_ts / 1000);
 			ps.setString(3, stationcode);
 			ResultSet resultSet = ps.executeQuery();
-			while (resultSet.next())
-			{
+			while (resultSet.next()) {
 				Vehicle vehicle = new Vehicle(resultSet.getString("stationCode"), resultSet.getLong("timestamp"),
 						resultSet.getDouble("distance"), resultSet.getDouble("headway"), resultSet.getDouble("length"),
 						resultSet.getInt("axles"), resultSet.getBoolean("against_traffic"), resultSet.getInt("class"),
@@ -463,8 +430,7 @@ public class MainElaborations
 						resultSet.getBoolean("classe_9_avg"), resultSet.getBoolean("classe_9_count"),
 						resultSet.getInt("nr_classes_count"), resultSet.getInt("nr_classes_avg"));
 
-				if (vehicle.getNr_classes_count() != 1 || vehicle.getNr_classes_avg() != 1)
-				{
+				if (vehicle.getNr_classes_count() != 1 || vehicle.getNr_classes_avg() != 1) {
 					// save into anomalies
 					ps_anomalies.setString(1, vehicle.getStationcode());
 					ps_anomalies.setLong(2, vehicle.getTimestamp());
@@ -480,13 +446,13 @@ public class MainElaborations
 					ps_anomalies.executeUpdate();
 				}
 
-				// 2019-07-24 d@vide.bz: this case is happen. check the anomalies table to understand why.
+				// 2019-07-24 d@vide.bz: this case is happen. check the anomalies table to
+				// understand why.
 				// if (vehicle.getNr_classes_avg() == 1 && vehicle.getNr_classes_count() != 1)
-				//    throw new IllegalStateException("Illegal condition?");
+				// throw new IllegalStateException("Illegal condition?");
 
 				// if this vehicle can at least be used for count then add it for processing!
-				if (vehicle.getNr_classes_count() == 1)
-				{
+				if (vehicle.getNr_classes_count() == 1) {
 					vehicles.add(vehicle);
 				}
 			}
@@ -501,26 +467,21 @@ public class MainElaborations
 	 * @param vehicles
 	 * @return map of vehicles classes and count
 	 */
-	public static Map<String, Integer> createVehicleCounts(List<Vehicle> vehicles)
-	{
+	public static Map<String, Integer> createVehicleCounts(List<Vehicle> vehicles) {
 		Map<String, Integer> classCounts = new HashMap<>();
 		classCounts.put(SyncDatatype.NR_LIGHT_VEHICLES, 0);
 		classCounts.put(SyncDatatype.NR_HEAVY_VEHICLES, 0);
 		classCounts.put(SyncDatatype.NR_BUSES, 0);
-		for (Vehicle vehicle : vehicles)
-		{
+		for (Vehicle vehicle : vehicles) {
 			if (vehicle.getNr_classes_count() != 1)
 				throw new IllegalStateException("Illegal condition"); // 2019-06-21 d@vide.bz: or continue
 
-			if (vehicle.isClasse_1_count() || vehicle.isClasse_2_count() || vehicle.isClasse_4_count())
-			{
+			if (vehicle.isClasse_1_count() || vehicle.isClasse_2_count() || vehicle.isClasse_4_count()) {
 				classCounts.put(SyncDatatype.NR_LIGHT_VEHICLES, classCounts.get(SyncDatatype.NR_LIGHT_VEHICLES) + 1);
 			} else if (vehicle.isClasse_3_count() || vehicle.isClasse_6_count() || vehicle.isClasse_7_count()
-					|| vehicle.isClasse_8_count())
-			{
+					|| vehicle.isClasse_8_count()) {
 				classCounts.put(SyncDatatype.NR_HEAVY_VEHICLES, classCounts.get(SyncDatatype.NR_HEAVY_VEHICLES) + 1);
-			} else if (vehicle.isClasse_5_count() || vehicle.isClasse_9_count())
-			{
+			} else if (vehicle.isClasse_5_count() || vehicle.isClasse_9_count()) {
 				classCounts.put(SyncDatatype.NR_BUSES, classCounts.get(SyncDatatype.NR_BUSES) + 1);
 			}
 		}
@@ -531,8 +492,7 @@ public class MainElaborations
 	/*
 	 * Method used only for development/debugging
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		new MainElaborations().execute();
 	}
 
