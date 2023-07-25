@@ -90,23 +90,22 @@ public class MainElaborations {
 				// System.out.println(stationcode);
 				// System.out.println(station.getName());
 
-				// long lastTimestamp = ((java.util.Date)
-				// pusher.getDateOfLastRecord(stationcode, null, null)).getTime();
+				long lastTimestamp = ((java.util.Date) pusher.getDateOfLastRecord(stationcode, null, null)).getTime();
 				// LOG.debug("Timestamp of last record: " + lastTimestamp);
-				// if (lastTimestamp <= 0) {
-				Calendar calendar = Calendar.getInstance();
-				// calendar.set(2017, Calendar.JANUARY, 1, 0, 0, 0);
-				// minimum import date
-				calendar.set(2023, Calendar.JULY, 7, 0, 0, 0);
-				calendar.set(Calendar.MILLISECOND, 0);
+				if (lastTimestamp <= 0) {
+					Calendar calendar = Calendar.getInstance();
+					// calendar.set(2017, Calendar.JANUARY, 1, 0, 0, 0);
+					// minimum import date
+					calendar.set(2023, Calendar.JULY, 7, 0, 0, 0);
+					calendar.set(Calendar.MILLISECOND, 0);
 
-				long lastTimestamp = calendar.getTimeInMillis();
-				// } else {
-				// // 2019-07-10 d@vide.bz: go back 1 hour from last time elaboration because
-				// data
-				// // can't be in realtime
-				// lastTimestamp -= 3600L * 1000L;
-				// }
+					lastTimestamp = calendar.getTimeInMillis();
+				} else {
+					// // 2019-07-10 d@vide.bz: go back 1 hour from last time elaboration because
+					// data
+					// // can't be in realtime
+					lastTimestamp -= 3600L * 1000L;
+				}
 
 				// 2022-07-05 d@vide.bz: temporary workaround that reduce the problem of
 				// pushData not updating values
