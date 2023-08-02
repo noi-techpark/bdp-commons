@@ -13,6 +13,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -79,13 +80,18 @@ public class DZTClient {
         String queryStr = mapper.writeValueAsString(query);
         String respStr = WebClient.create(baseUrl)
             .post()
-            .uri("/api/ts/v2/kg/things?filterDsList=https%3A%2F%2Fsemantify.it%2Fds%2FE85TgOxMg")
+            .uri(uriBuilder -> uriBuilder
+                .path("/api/ts/v2/kg/things")
+                .queryParam("filterDsList","https://semantify.it/ds/E85TgOxMg") 
+                .build())
             .header(HttpHeaders.CONTENT_TYPE, "application/ld+json")
             .header("x-api-key", apiKey)
             .header("page", Integer.toString(paging.currentPage))
             .header("page-size", Integer.toString(paging.pageSize))
             .bodyValue(queryStr)
             .retrieve()
+            .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals, 
+                response -> response.bodyToMono(String.class).map(Exception::new))
             .bodyToMono(String.class)
             .block();
 
