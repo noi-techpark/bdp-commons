@@ -8,10 +8,10 @@ SPDX-License-Identifier: CC0-1.0
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.opendatahub.bdp</groupId>
-    <artifactId>helloworld</artifactId>
+    <groupId>com.opendatahub</groupId>
+    <artifactId>dc-emobility-echarging-dzt</artifactId>
     <version>0.0.0-local-dev</version>
-    <name>Helloworld data collector</name>
+    <name>DZT echarging stations data collector</name>
 
     <properties>
         <java.version>17</java.version>

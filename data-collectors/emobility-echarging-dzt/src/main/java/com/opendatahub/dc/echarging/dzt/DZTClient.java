@@ -56,9 +56,12 @@ public class DZTClient {
         var stationIds = getStationsPage(query, paging);
 
         stationIds.stream().forEach(s -> System.out.println(s));
+
+        String detailJson = getStationDetail("100001001");
+        Station s = parseJsonToStation(detailJson);
     }
 
-    public Map<String, Object> buildStationQuery(TemporalAccessor laterThan){
+    public Map<String, Object> buildStationQuery(TemporalAccessor modifiedAfter){
         return Map.of(
             "@context", Map.of(
                 "ometa", "http://onlim.com/meta/", 
@@ -68,7 +71,7 @@ public class DZTClient {
             "sq:query", new Object[] {
                 Map.of(
                     "ometa:dateModified", Map.of(
-                        "sq:value", DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(laterThan),
+                        "sq:value", DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(modifiedAfter),
                         "sq:op", ">",
                         "sq:datatype", "dateTime")
                 )
@@ -107,5 +110,69 @@ public class DZTClient {
         var stationIds = stationUrls.stream().map(s -> s.replaceAll(".*/(\\w+)$", "$1")).toList();
 
         return stationIds; 
+    }
+
+    public static final class Plug {
+        public String socket;
+        public String name;
+        public String powerUnitCode;
+        public String powerUnitText;
+        public String powerValue;
+    }
+
+    public static final class Station {
+        public String id;
+        public String name;
+        public Double latitude;
+        public Double longitude;
+        public String addressStreet;
+        public String addressPostalCode;
+        public String addressLocality;
+        public String addressCountry;
+        public Plug plug;
+    }
+
+    private static Double parseDoubleOrNull(String s) {
+        if (!s.isEmpty()) {
+            return Double.parseDouble(s);
+        } else {
+            return null;
+        }
+    }
+
+    public static Station parseJsonToStation(String json) throws Exception {
+        Station s = new Station();
+        s.plug = new Plug();
+
+        var jsonPath = JsonPath.parse(json);
+        
+        s.id = jsonPath.read("$.[0][\"https://schema.org/identifier\"][\"https://schema.org/value\"][\"@value\"]");
+        s.name = jsonPath.read("$.[0][\"https://schema.org/name\"]");
+        s.latitude = parseDoubleOrNull(jsonPath.read("$.[0][\"https://schema.org/geo\"][\"https://schema.org/latitude\"][\"@value\"]"));
+        s.longitude = parseDoubleOrNull(jsonPath.read("$.[0][\"https://schema.org/geo\"][\"https://schema.org/longitude\"][\"@value\"]"));
+        s.addressCountry = jsonPath.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/addressCountry\"]");
+        s.addressLocality = jsonPath.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/addressLocality\"]");
+        s.addressPostalCode = jsonPath.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/postalCode\"]");
+        s.addressStreet = jsonPath.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/streetAddress\"]");
+
+        return s;
+    }
+
+    private String getStationDetail(String stationId) throws Exception {
+        String json = WebClient.create(baseUrl)
+            .get()
+            .uri(uriBuilder -> uriBuilder
+                    .path("/api/ts/v2/kg/things")
+                    .pathSegment(stationId)
+                    .queryParam("ns", "http://onlim.com/entity/Ladestationen-Api-Bund/ECarChargingStation/")
+                    .build())
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("x-api-key", apiKey)
+            .retrieve()
+            .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals,
+                    response -> response.bodyToMono(String.class).map(Exception::new))
+            .bodyToMono(String.class)
+            .block();
+        return json;
     }
 }
