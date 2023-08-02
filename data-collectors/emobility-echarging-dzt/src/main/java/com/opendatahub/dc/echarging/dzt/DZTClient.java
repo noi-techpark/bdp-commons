@@ -7,6 +7,7 @@ package com.opendatahub.dc.echarging.dzt;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -129,7 +130,7 @@ public class DZTClient {
         public String addressPostalCode;
         public String addressLocality;
         public String addressCountry;
-        public Plug plug;
+        public List<Plug> plugs = new ArrayList<>();
     }
 
     private static Double parseDoubleOrNull(String s) {
@@ -142,18 +143,30 @@ public class DZTClient {
 
     public static Station parseJsonToStation(String json) throws Exception {
         Station s = new Station();
-        s.plug = new Plug();
 
-        var jsonPath = JsonPath.parse(json);
+        var jp = JsonPath.parse(json);
         
-        s.id = jsonPath.read("$.[0][\"https://schema.org/identifier\"][\"https://schema.org/value\"][\"@value\"]");
-        s.name = jsonPath.read("$.[0][\"https://schema.org/name\"]");
-        s.latitude = parseDoubleOrNull(jsonPath.read("$.[0][\"https://schema.org/geo\"][\"https://schema.org/latitude\"][\"@value\"]"));
-        s.longitude = parseDoubleOrNull(jsonPath.read("$.[0][\"https://schema.org/geo\"][\"https://schema.org/longitude\"][\"@value\"]"));
-        s.addressCountry = jsonPath.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/addressCountry\"]");
-        s.addressLocality = jsonPath.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/addressLocality\"]");
-        s.addressPostalCode = jsonPath.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/postalCode\"]");
-        s.addressStreet = jsonPath.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/streetAddress\"]");
+        s.id = jp.read("$.[0][\"https://schema.org/identifier\"][\"https://schema.org/value\"][\"@value\"]");
+        s.name = jp.read("$.[0][\"https://schema.org/name\"]");
+        s.latitude = parseDoubleOrNull(jp.read("$.[0][\"https://schema.org/geo\"][\"https://schema.org/latitude\"][\"@value\"]"));
+        s.longitude = parseDoubleOrNull(jp.read("$.[0][\"https://schema.org/geo\"][\"https://schema.org/longitude\"][\"@value\"]"));
+        s.addressCountry = jp.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/addressCountry\"]");
+        s.addressLocality = jp.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/addressLocality\"]");
+        s.addressPostalCode = jp.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/postalCode\"]");
+        s.addressStreet = jp.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/streetAddress\"]");
+
+        var plugs = jp.read("$.[0][\"https://odta.io/voc/hasCharger\"]");
+
+        // check if single or list
+        if (plugs instanceof List) {
+            for (var plug : (List) plugs) {
+                var jpp = JsonPath.parse(plug);
+
+            }
+
+        } else if (plugs != null) {
+
+        }
 
         return s;
     }
