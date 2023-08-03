@@ -5,7 +5,9 @@
 package com.opendatahub.dc.echarging.dzt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
@@ -28,6 +30,8 @@ public class DZTParser {
         s.addressLocality = jp.read("$.[0]['https://schema.org/address']['https://schema.org/addressLocality']");
         s.addressPostalCode = jp.read("$.[0]['https://schema.org/address']['https://schema.org/postalCode']");
         s.addressStreet = jp.read("$.[0]['https://schema.org/address']['https://schema.org/streetAddress']");
+        s.publisher = jp.read("$.[0]['https://schema.org/sdPublisher']['https://schema.org/name']");
+        s.publisherUrl = jp.read("$.[0]['https://schema.org/sdPublisher']['https://schema.org/url']['@value']");
 
         var dztPlugs = jp.read("$.[0]['https://odta.io/voc/hasCharger']");
 
@@ -52,5 +56,13 @@ public class DZTParser {
         }
 
         return s;
+    }
+
+    private static final Map<String, String> sockets = Map.of(
+        "AC Steckdose Typ 2", "Type2Mennekes"
+    );
+
+    public String mapSocketToOdh(String socket){
+        return sockets.containsKey(socket) ? sockets.get(socket) : socket;
     }
 }

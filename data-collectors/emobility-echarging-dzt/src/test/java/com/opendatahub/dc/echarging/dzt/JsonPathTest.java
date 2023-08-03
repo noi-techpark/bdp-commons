@@ -27,6 +27,8 @@ public class JsonPathTest {
         assertEquals("Hattingen", station.addressLocality);
         assertEquals("45525", station.addressPostalCode);
         assertEquals("Weg zum Wasserwerk 23", station.addressStreet);
+        assertEquals("Bundesnetzagentur", station.publisher);
+        assertEquals("https://www.bundesnetzagentur.de/", station.publisherUrl);
 
         assertEquals("AC Steckdose Typ 2", station.plugs.get(0).name);
         assertEquals("AC Steckdose Typ 2", station.plugs.get(0).socket);
@@ -53,6 +55,8 @@ public class JsonPathTest {
         assertEquals(null, station.addressLocality);
         assertEquals(null, station.addressPostalCode);
         assertEquals(null, station.addressStreet);
+        assertEquals(null, station.publisher);
+        assertEquals(null, station.publisherUrl);
 
         assertEquals(null, station.plugs.get(0).name);
         assertEquals(null, station.plugs.get(0).socket);

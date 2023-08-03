@@ -68,6 +68,8 @@ public class DZTClient {
         public String addressPostalCode;
         public String addressLocality;
         public String addressCountry;
+        public String publisher;
+        public String publisherUrl;
         public List<Plug> plugs = new ArrayList<>();
     }
 
