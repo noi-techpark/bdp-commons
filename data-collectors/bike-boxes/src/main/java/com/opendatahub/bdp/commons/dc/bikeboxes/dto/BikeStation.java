@@ -18,7 +18,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize
 public class BikeStation {
-    public String stationID;
+    public int stationID;
     // main name used for station name
     public String locationName;
     // other languages saved in metadata
