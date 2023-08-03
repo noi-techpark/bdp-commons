@@ -87,7 +87,7 @@ public class DZTClient {
     }
 
     public List<Station> getAllStations() throws Exception {
-        LocalDateTime from = LocalDateTime.parse("2023-01-01T00:00:00");
+        LocalDateTime from = LocalDateTime.parse("2023-02-01T00:00:00");
         var query = buildStationQuery(from);
         PagingContext paging = new PagingContext();
 
@@ -95,7 +95,7 @@ public class DZTClient {
         do {
             stations.addAll(getStationsPage(query, paging));
             paging = paging.nextPage();
-        } while (paging.currentPage < paging.totalPages); // current page is 0-based
+        } while (paging.currentPage < 4 /*paging.totalPages*/); // current page is 0-based
 
         return stations;
     }
@@ -137,6 +137,7 @@ public class DZTClient {
             .bodyToMono(String.class)
             .block();
 
+        //Configuration conf = Configuration.defaultConfiguration().addOptions( Option.SUPPRESS_EXCEPTIONS);
         var jsonPath = JsonPath.parse(respStr);
 
         paging.seed = jsonPath.read("$.metaData.sortSeed");

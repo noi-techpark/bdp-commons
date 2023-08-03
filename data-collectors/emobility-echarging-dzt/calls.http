@@ -22,7 +22,7 @@ x-api-key: {{apikey}}
     "sq:query":[
         {
           "ometa:dateModified":{
-            "sq:value":"2023-02-23T19:00:00",
+            "sq:value":"2023-02-01T19:00:00",
             "sq:op":">",
             "sq:datatype":"dateTime"
           }
