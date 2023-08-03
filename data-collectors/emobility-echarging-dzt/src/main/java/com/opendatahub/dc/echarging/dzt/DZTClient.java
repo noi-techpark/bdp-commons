@@ -41,6 +41,7 @@ public class DZTClient {
         public int currentPage = 0;
         public String seed;
         public int totalCount;
+        public int totalPages;
         public final int pageSize = PAGESIZE;
 
         public PagingContext nextPage() throws Exception{
@@ -50,16 +51,51 @@ public class DZTClient {
         }
     }
 
-    public void getTheThings() throws Exception {
+    public static final class Plug {
+        public String socket;
+        public String name;
+        public String powerUnitCode;
+        public String powerUnitText;
+        public Double powerValue;
+    }
+
+    public static final class Station {
+        public String id;
+        public String name;
+        public Double latitude;
+        public Double longitude;
+        public String addressStreet;
+        public String addressPostalCode;
+        public String addressLocality;
+        public String addressCountry;
+        public List<Plug> plugs = new ArrayList<>();
+    }
+
+    public List<Station> getStationsPage(Map<String, Object> query, PagingContext paging) throws Exception {
+        var sids = getStationsPageIds(query, paging);
+        List<Station> stationPage = new ArrayList<>();
+        for (String id : sids){
+            Station station = DZTParser.parseJsonToStation(getStationDetail(id));
+            // filter stations without ID already, they are usually all null fields
+            if (station.id != null) {
+                stationPage.add(station);
+            }
+        }
+        return stationPage;
+    }
+
+    public List<Station> getAllStations() throws Exception {
         LocalDateTime from = LocalDateTime.parse("2023-01-01T00:00:00");
         var query = buildStationQuery(from);
         PagingContext paging = new PagingContext();
-        var stationIds = getStationsPage(query, paging);
 
-        stationIds.stream().forEach(s -> System.out.println(s));
+        List<Station> stations = new ArrayList<>();
+        do {
+            stations.addAll(getStationsPage(query, paging));
+            paging = paging.nextPage();
+        } while (paging.currentPage < paging.totalPages); // current page is 0-based
 
-        String detailJson = getStationDetail("100001001");
-        Station s = parseJsonToStation(detailJson);
+        return stations;
     }
 
     public Map<String, Object> buildStationQuery(TemporalAccessor modifiedAfter){
@@ -80,7 +116,7 @@ public class DZTClient {
         );
     }
 
-    private List<String> getStationsPage(Map<String, Object> query, PagingContext paging) throws Exception {
+    private List<String> getStationsPageIds(Map<String, Object> query, PagingContext paging) throws Exception {
         String queryStr = mapper.writeValueAsString(query);
         String respStr = WebClient.create(baseUrl)
             .post()
@@ -104,6 +140,10 @@ public class DZTClient {
         paging.seed = jsonPath.read("$.metaData.sortSeed");
         paging.totalCount = jsonPath.read("$.metaData.total");
 
+        if (paging.totalPages == 0) {
+            paging.totalPages = (int) Math.ceil(paging.totalCount / paging.pageSize);
+        }
+
         // find the list of station URLs
         List<String> stationUrls = jsonPath.read("$.data[*].['@id']");
 
@@ -113,63 +153,6 @@ public class DZTClient {
         return stationIds; 
     }
 
-    public static final class Plug {
-        public String socket;
-        public String name;
-        public String powerUnitCode;
-        public String powerUnitText;
-        public String powerValue;
-    }
-
-    public static final class Station {
-        public String id;
-        public String name;
-        public Double latitude;
-        public Double longitude;
-        public String addressStreet;
-        public String addressPostalCode;
-        public String addressLocality;
-        public String addressCountry;
-        public List<Plug> plugs = new ArrayList<>();
-    }
-
-    private static Double parseDoubleOrNull(String s) {
-        if (!s.isEmpty()) {
-            return Double.parseDouble(s);
-        } else {
-            return null;
-        }
-    }
-
-    public static Station parseJsonToStation(String json) throws Exception {
-        Station s = new Station();
-
-        var jp = JsonPath.parse(json);
-        
-        s.id = jp.read("$.[0][\"https://schema.org/identifier\"][\"https://schema.org/value\"][\"@value\"]");
-        s.name = jp.read("$.[0][\"https://schema.org/name\"]");
-        s.latitude = parseDoubleOrNull(jp.read("$.[0][\"https://schema.org/geo\"][\"https://schema.org/latitude\"][\"@value\"]"));
-        s.longitude = parseDoubleOrNull(jp.read("$.[0][\"https://schema.org/geo\"][\"https://schema.org/longitude\"][\"@value\"]"));
-        s.addressCountry = jp.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/addressCountry\"]");
-        s.addressLocality = jp.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/addressLocality\"]");
-        s.addressPostalCode = jp.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/postalCode\"]");
-        s.addressStreet = jp.read("$.[0][\"https://schema.org/address\"][\"https://schema.org/streetAddress\"]");
-
-        var plugs = jp.read("$.[0][\"https://odta.io/voc/hasCharger\"]");
-
-        // check if single or list
-        if (plugs instanceof List) {
-            for (var plug : (List) plugs) {
-                var jpp = JsonPath.parse(plug);
-
-            }
-
-        } else if (plugs != null) {
-
-        }
-
-        return s;
-    }
 
     private String getStationDetail(String stationId) throws Exception {
         String json = WebClient.create(baseUrl)

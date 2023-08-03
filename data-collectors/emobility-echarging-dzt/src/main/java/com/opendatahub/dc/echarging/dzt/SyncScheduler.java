@@ -6,12 +6,16 @@ package com.opendatahub.dc.echarging.dzt;
 
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
+
+import com.opendatahub.dc.echarging.dzt.DZTClient.Station;
 
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
@@ -34,30 +38,22 @@ public class SyncScheduler {
     public void job() throws Exception {
         LOG.info("Job started. Syncing {} and {} stations", ECHARGING_STATION, ECHARGING_STATION);
 
-		StationList stationList = new StationList();
-		StationList plugList = new StationList();
+		StationList odhStations = new StationList();
+		StationList odhPlugs = new StationList();
 
-		dztClient.getTheThings();
+		List<Station> dztStations = dztClient.getAllStations();
 
-		// get most recent station update
-		// get all stations newer than timestamp
-		// for each station in list
-		// get station detail
-		// populate station object
-		// populate plug objects
-
-		StationDto station = new StationDto();
-
-		station.setMetaData(null);	
-
-		station.setOrigin(odhClient.getProvenance().getLineage());
-
-		stationList.add(station);
+		for (Station dztStation : dztStations){
+			StationDto station = new StationDto();
+			station.setMetaData(null);	
+			station.setOrigin(odhClient.getProvenance().getLineage());
+			odhStations.add(station);
+		}
 
 		// 3) Send it to the Open Data Hub INBOUND API (writer)
 		try {
-			odhClient.syncStations(ECHARGING_STATION, stationList);
-			odhClient.syncStations(ECHARGING_PLUG, plugList);
+			odhClient.syncStations(ECHARGING_STATION, odhStations);
+			odhClient.syncStations(ECHARGING_PLUG, odhPlugs);
 			LOG.info("Cron job A successful");
 		} catch (WebClientRequestException e) {
 			LOG.error("Cron job A failed: Request exception: {}", e.getMessage());
