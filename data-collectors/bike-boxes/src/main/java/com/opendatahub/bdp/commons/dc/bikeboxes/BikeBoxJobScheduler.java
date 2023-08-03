@@ -72,7 +72,7 @@ public class BikeBoxJobScheduler {
 
 			for (BikeStation bs : bikeStations) {
 				// create station dto
-				StationDto stationDto = new StationDto(Integer.toString(bs.locationID), bs.locationName, bs.latitude,
+				StationDto stationDto = new StationDto(Integer.toString(bs.stationID), bs.locationName, bs.latitude,
 						bs.longitude);
 
 				stationDto.setMetaData(Map.of(
