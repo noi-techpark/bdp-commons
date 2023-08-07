@@ -4,14 +4,17 @@
 
 package com.opendatahub.dc.echarging.dzt;
 
-import org.slf4j.LoggerFactory;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
@@ -24,26 +27,31 @@ import it.bz.idm.bdp.dto.StationList;
 
 @Service
 public class SyncScheduler {
-	private static final String ECHARGING_STATION = "EchargingStation";
-	private static final String ECHARGING_PLUG = "EChargingPlug";
+	public static final String ECHARGING_STATION = "EchargingStation";
+	public static final String ECHARGING_PLUG = "EChargingPlug";
 
-	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
+	private static final Logger log = LoggerFactory.getLogger(SyncScheduler.class);
 
     @Lazy
     @Autowired
-    public OdhClient odhClient;
+    public OdhWriterClient odhClient;
 
 	@Autowired
 	public DZTClient dztClient;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@Value("${startDate}")
+	public LocalDateTime lastSync;
+
     @Scheduled(cron = "${scheduler.job}")
     public void job() throws Exception {
-        LOG.info("Job started. Syncing {} and {} stations", ECHARGING_STATION, ECHARGING_PLUG);
+        log.info("Job started. Syncing {} and {} stations", ECHARGING_STATION, ECHARGING_PLUG);
 
 		StationList odhStations = new StationList();
 		StationList odhPlugs = new StationList();
-
-		List<Station> dztStations = dztClient.getAllStations();
+		
+		log.info("DZT starting date: {}", lastSync.toString());
+		List<Station> dztStations = dztClient.getAllStations(lastSync);
 
 		for (Station dztStation : dztStations){
 			StationDto station = new StationDto();
@@ -84,7 +92,6 @@ public class SyncScheduler {
 						"outletType", dztPlug.socket,
 						"name", dztPlug.name
 					)
-
 				);
 				plug.setMetaData(plugMeta);
 				plug.setOrigin(station.getOrigin());
@@ -97,9 +104,9 @@ public class SyncScheduler {
 		try {
 			odhClient.syncStations(ECHARGING_STATION, odhStations);
 			odhClient.syncStations(ECHARGING_PLUG, odhPlugs);
-			LOG.info("Cron job A successful");
+			log.info("Cron job successful");
 		} catch (WebClientRequestException e) {
-			LOG.error("Cron job A failed: Request exception: {}", e.getMessage());
+			log.error("Cron job failed: Request exception: {}", e.getMessage());
 		}
     }
 }

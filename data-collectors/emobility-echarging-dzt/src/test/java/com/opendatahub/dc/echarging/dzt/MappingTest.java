@@ -12,7 +12,7 @@ import java.nio.charset.Charset;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.StreamUtils;
 
-public class JsonPathTest {
+public class MappingTest {
     private final static String examplePath = "src/test/resources/example_stations";
     @Test
     void parseCompleteJson() throws Exception {

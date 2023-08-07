@@ -1,7 +1,3 @@
-# SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
-#
-# SPDX-License-Identifier: CC0-1.0
-
 name: CI/CD emobility-echarging-dzt
 
 on:
@@ -50,7 +46,7 @@ jobs:
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-          X_JAVA_OPTIONS: -Xms128m -Xmx1024m
+          X_JAVA_OPTIONS: -Xms128m -Xmx1536m
 
           # Open Data Hub Writer Connectivity
           X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
@@ -68,10 +64,12 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # TODO: Add your env vars here, prefixed with X_
-          X_SCHEDULER_CRON_A: "* * * */10 * *"
-          X_SCHEDULER_CRON_B: "* * * */10 * *"
-          X_SCHEDULER_POOL_SIZE: 10
-
+          X_SCHEDULER_CRON: "0 0 14 */3 * *"
+          X_SCHEDULER_POOL_SIZE: 1
+          X_DZT_BASE_URL: https://proxy.opendatagermany.io
+          X_DZT_API_KEY: b375e0ff5afd9b812b03ba3df41f64ec
+          X_DZT_WORKER_THREADS: 30
+          X_START_DATE: "2023-01-01 00:00:00"
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2

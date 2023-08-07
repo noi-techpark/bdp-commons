@@ -10,7 +10,10 @@ import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ForkJoinPool;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +36,8 @@ public class DZTClient {
     public String apiKey;
 
     private final static int PAGESIZE = 50;
+    
+    private final static Logger log = LoggerFactory.getLogger(DZTClient.class);
 
     @Autowired
     public ObjectMapper mapper;
@@ -72,30 +77,43 @@ public class DZTClient {
         public String publisherUrl;
         public List<Plug> plugs = new ArrayList<>();
     }
+    
+    @Value("${dztWorkerThreads}")
+    public int threadPoolSize;
 
     public List<Station> getStationsPage(Map<String, Object> query, PagingContext paging) throws Exception {
-        var sids = getStationsPageIds(query, paging);
-        List<Station> stationPage = new ArrayList<>();
-        for (String id : sids){
-            Station station = DZTParser.parseJsonToStation(getStationDetail(id));
-            // filter stations without ID already, they are usually all null fields
-            if (station.id != null) {
-                stationPage.add(station);
-            }
-        }
+        log.debug("Getting station ID list of page {} of {}", paging.currentPage + 1, paging.totalPages);
+        List<String> sids = getStationsPageIds(query, paging);
+        
+        // Run the single detail requests in parallel in a separate thread pool. 
+        // Querying all stations in sequence would be too slow
+        ForkJoinPool pool = new ForkJoinPool(threadPoolSize);
+        List<Station> stationPage = pool.submit(
+            () -> sids.parallelStream()
+                .map(id -> {
+                    try {
+                        log.debug("Requesting detail for station.id = {} ", id);
+                        return DZTParser.parseJsonToStation(getStationDetail(id));
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }})
+                .filter(station -> station.id != null) // filter stations without ID already, they are usually all null fields
+                .toList()
+        ).get();
+        pool.shutdown();
+        log.debug("Page details have been fully retrieved");
         return stationPage;
     }
 
-    public List<Station> getAllStations() throws Exception {
-        LocalDateTime from = LocalDateTime.parse("2023-02-01T00:00:00");
-        var query = buildStationQuery(from);
+    public List<Station> getAllStations(LocalDateTime modifiedSince) throws Exception {
+        var query = buildStationQuery(modifiedSince);
         PagingContext paging = new PagingContext();
 
         List<Station> stations = new ArrayList<>();
         do {
             stations.addAll(getStationsPage(query, paging));
             paging = paging.nextPage();
-        } while (paging.currentPage < 4 /*paging.totalPages*/); // current page is 0-based
+        } while (paging.currentPage < paging.totalPages); // current page is 0-based
 
         return stations;
     }
@@ -145,6 +163,7 @@ public class DZTClient {
 
         if (paging.totalPages == 0) {
             paging.totalPages = (int) Math.ceil(paging.totalCount / paging.pageSize);
+            log.debug("Total station count is {}, which is {} pages", paging.totalCount, paging.totalPages);
         }
 
         // find the list of station URLs
