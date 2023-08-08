@@ -4,8 +4,9 @@
 
 package com.opendatahub.dc.echarging.dzt;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -49,6 +51,9 @@ public class SyncScheduler {
 
 		StationList odhStations = new StationList();
 		StationList odhPlugs = new StationList();
+
+		// TODO: request max metadata.syncDate from ninja API to determine last good sync date, use that as starting point
+		LocalDateTime currentSyncStart = LocalDateTime.now();
 		
 		log.info("DZT starting date: {}", lastSync.toString());
 		List<Station> dztStations = dztClient.getAllStations(lastSync);
@@ -59,17 +64,19 @@ public class SyncScheduler {
 			station.setName(dztStation.name);
 			station.setLatitude(dztStation.latitude);
 			station.setLongitude(dztStation.longitude);
-			Map<String, Object> stationMeta = Map.of(
-				"addressCountry", dztStation.addressCountry,
-				"addressLocality", dztStation.addressLocality,
-				"postalCode", dztStation.addressPostalCode,
-				"streetAddress", dztStation.addressStreet,
-				"state", "ACTIVE",
-				"accessType", "UNKNOWN",
-				"capacity", dztStation.plugs.size(),
-				"provider", dztStation.publisher,
-				"providerUrl", dztStation.publisherUrl
-			);
+			
+			Map<String, Object> stationMeta = new HashMap<>();
+			stationMeta.put("addressCountry", dztStation.addressCountry);
+			stationMeta.put("addressLocality", dztStation.addressLocality);
+			stationMeta.put("postalCode", dztStation.addressPostalCode);
+			stationMeta.put("streetAddress", dztStation.addressStreet);
+			stationMeta.put("state", "ACTIVE");
+			stationMeta.put("accessType", "UNKNOWN");
+			stationMeta.put("capacity", dztStation.plugs.size());
+			stationMeta.put("provider", dztStation.publisher);
+			stationMeta.put("providerUrl", dztStation.publisherUrl);
+			stationMeta.put("syncDate", currentSyncStart);
+
 			station.setMetaData(stationMeta);	
 			station.setOrigin(odhClient.getProvenance().getLineage());
 			station.setStationType(ECHARGING_STATION);
@@ -83,17 +90,16 @@ public class SyncScheduler {
 				plug.setName(Integer.toString(plugId));
 				plug.setLatitude(station.getLatitude());
 				plug.setLongitude(station.getLongitude());
-				Map<String, Object> plugMeta = Map.of(
-					"outlet", Map.of(
-						"id", String.format("%s:1", plug.getId()),
-						"outletTypeCode", dztPlug.socket, // TODO: map this to ODH type
-						"maxPower", dztPlug.powerValue,
-						"powerUnit", dztPlug.powerUnitCode,
-						"outletType", dztPlug.socket,
-						"name", dztPlug.name
-					)
-				);
-				plug.setMetaData(plugMeta);
+				
+				Map<String, Object> outlet = new HashMap<>();
+				outlet.put("id", String.format("%s:1", plug.getId()));
+				outlet.put("outletTypeCode", dztPlug.socket); //TODO: map this to odh socket type
+				outlet.put("maxPower", dztPlug.powerValue);
+				outlet.put("powerUnit", dztPlug.powerUnitCode);
+				outlet.put("outletType", dztPlug.socket);
+				outlet.put("name", dztPlug.name);
+
+				plug.setMetaData(Map.of("outlet", outlet));
 				plug.setOrigin(station.getOrigin());
 				plug.setStationType(ECHARGING_PLUG);
 				odhPlugs.add(plug);
@@ -101,10 +107,12 @@ public class SyncScheduler {
 		}
 
 		// 3) Send it to the Open Data Hub INBOUND API (writer)
+		// Don't deactivated stations not synced, we only ever get the last modified ones
 		try {
-			odhClient.syncStations(ECHARGING_STATION, odhStations);
-			odhClient.syncStations(ECHARGING_PLUG, odhPlugs);
+			odhClient.syncStations(ECHARGING_STATION, odhStations, true, true);
+			odhClient.syncStations(ECHARGING_PLUG, odhPlugs, true, true);
 			log.info("Cron job successful");
+			lastSync = currentSyncStart;
 		} catch (WebClientRequestException e) {
 			log.error("Cron job failed: Request exception: {}", e.getMessage());
 		}

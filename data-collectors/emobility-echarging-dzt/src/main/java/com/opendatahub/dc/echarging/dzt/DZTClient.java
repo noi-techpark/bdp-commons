@@ -10,6 +10,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ForkJoinPool;
 
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ public class DZTClient {
     public ObjectMapper mapper;
 
     public static final class PagingContext implements Cloneable {
-        public int currentPage = 0;
+        public int currentPage = 1;
         public String seed;
         public int totalCount;
         public int totalPages;
@@ -113,7 +114,7 @@ public class DZTClient {
         do {
             stations.addAll(getStationsPage(query, paging));
             paging = paging.nextPage();
-        } while (paging.currentPage < paging.totalPages); // current page is 0-based
+        } while (paging.currentPage <= paging.totalPages);
 
         return stations;
     }
@@ -143,6 +144,7 @@ public class DZTClient {
             .uri(uriBuilder -> uriBuilder
                 .path("/api/ts/v2/kg/things")
                 .queryParam("filterDsList","https://semantify.it/ds/E85TgOxMg") 
+                .queryParamIfPresent("sortSeed", Optional.ofNullable(paging.seed)) // Not present yet on first call
                 .build())
             .header(HttpHeaders.CONTENT_TYPE, "application/ld+json")
             .header("x-api-key", apiKey)

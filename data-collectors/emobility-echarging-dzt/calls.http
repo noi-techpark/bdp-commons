@@ -6,10 +6,11 @@
 @apikey = {{$dotenv DZT_API_KEY}}
 
 ###
-# Get a list of available EChargingStations, paging is available. Max page size is 15
-POST {{host}}/api/ts/v2/kg/things?filterDsList=https%3A%2F%2Fsemantify.it%2Fds%2FE85TgOxMg
-page: 0
-page-size: 5
+# Get a list of available EChargingStations, paging is available. Max page size is 50
+# sortSeed is returned in the metadata after first call and has to be passed for successive paged calls
+POST {{host}}/api/ts/v2/kg/things?filterDsList=https%3A%2F%2Fsemantify.it%2Fds%2FE85TgOxMg&sortSeed=d71c8051-b00a-4fb5-b889-32d8a7a362b2
+page: 1
+page-size: 10
 Content-Type: application/ld+json
 x-api-key: {{apikey}}
 
@@ -32,7 +33,7 @@ x-api-key: {{apikey}}
 
 ###
 # get details of single Station with ID 100001001
-GET {{host}}/api/ts/v1/kg/things/66511419
+GET {{host}}/api/ts/v1/kg/things/98531007
 ?ns=http%3A%2F%2Fonlim.com%2Fentity%2FLadestationen-Api-Bund%2FECarChargingStation%2F
 Content-Type: application/json
 x-api-key: {{apikey}}
