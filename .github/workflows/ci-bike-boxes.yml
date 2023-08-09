@@ -72,7 +72,6 @@ jobs:
           X_ODH_CLIENT_PERIOD: ${{ env.ODH_PERIOD }}
 
           # Bike boxes api endpoint configuration
-          X_ENDPOINT_OAUTH_URI: ${{ secrets.BIKE_BOXES_OAUTH_URI }} 
           X_ENDPOINT_OAUTH_CLIENT_ID: ${{ secrets.BIKE_BOXES_OAUTH_CLIENT_ID }}
           X_ENDPOINT_OAUTH_CLIENT_SECRET: ${{ secrets.BIKE_BOXES_OAUTH_CLIENT_SECRET }} 
           X_ENDPOINT_URI: ${{ vars.BIKE_BOXES_ENDPOINT_URI }}
@@ -114,6 +113,7 @@ jobs:
   deploy-prod-bike-boxes:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/prod'
+    environment: prod
     needs: test
     concurrency: deploy-prod-bike-boxes
     env:
@@ -149,7 +149,6 @@ jobs:
           X_ODH_CLIENT_PERIOD: ${{ env.ODH_PERIOD }}
 
           # Bike boxes api endpoint configuration
-          X_ENDPOINT_OAUTH_URI: ${{ secrets.BIKE_BOXES_OAUTH_URI }} 
           X_ENDPOINT_OAUTH_CLIENT_ID: ${{ secrets.BIKE_BOXES_OAUTH_CLIENT_ID }}
           X_ENDPOINT_OAUTH_CLIENT_SECRET: ${{ secrets.BIKE_BOXES_OAUTH_CLIENT_SECRET }} 
           X_ENDPOINT_URI: ${{ vars.BIKE_BOXES_ENDPOINT_URI }}
