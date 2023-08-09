@@ -23,9 +23,6 @@ public class OAuthWebClient {
     private static final Logger LOG = LoggerFactory.getLogger(OAuthWebClient.class);
 
     @Value("${endpoint.uri}")
-    private String endpointBaseUri;
-
-    @Value("${endpoint.oauth.uri}")
     private String uri;
     @Value("${endpoint.oauth.clientId}")
     private String clientId;
@@ -36,7 +33,7 @@ public class OAuthWebClient {
     WebClient webClient() {
         ClientRegistration registration = ClientRegistration
                 .withRegistrationId(REGISTRATION_ID)
-                .tokenUri(uri)
+                .tokenUri(uri+"/connect/token")
                 .clientId(clientId)
                 .clientSecret(clientSecret)
                 .authorizationGrantType(new AuthorizationGrantType("client_credentials"))
@@ -56,7 +53,7 @@ public class OAuthWebClient {
 
         return WebClient.builder()
                 .filter(oauth)
-                .baseUrl(endpointBaseUri)
+                .baseUrl(uri)
                 .build();
     }
 }

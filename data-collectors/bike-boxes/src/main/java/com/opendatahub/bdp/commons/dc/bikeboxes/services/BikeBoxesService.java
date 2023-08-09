@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeLocation;
 import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeStation;
 
 @Service
@@ -28,6 +29,7 @@ public class BikeBoxesService {
     // languages saved in metadata
     private final static List<String> METADATA_LANGUAGES = new ArrayList<String>(
             Arrays.asList("it", "en", "de", "lld"));
+    private final static String ENDPOINT_LOCATIONS = "/resources/locations";
     private final static String ENDPOINT_STATIONS = "/resources/stations";
     private final static String ENDPOINT_STATION = "/resources/station";
 
@@ -40,14 +42,30 @@ public class BikeBoxesService {
         int count = 0;
         List<BikeStation> bikeStationsWithPlace = new ArrayList<>();
 
-        List<BikeStation> bikeStations = fetchBikeStations();
-        for (BikeStation bikeStation : bikeStations) {
-            BikeStation fetchBikeStation = fetchBikeStationWithPlace(bikeStation.stationID);
-            bikeStationsWithPlace.add(fetchBikeStation);
-            count++;
+        List<BikeLocation> bikeLocations = getBikeLocations();
+        for (BikeLocation bikeLocation : bikeLocations) {
+            for (BikeLocation.LocationStation bikeLocationStation : bikeLocation.stations) {
+                BikeStation fetchBikeStation = fetchBikeStationWithPlace(bikeLocationStation.stationID);
+                bikeStationsWithPlace.add(fetchBikeStation);
+                count++;
+            }
         }
+        
         LOG.info("Fetching data done. {} stations found", count);
         return bikeStationsWithPlace;
+    }
+
+    private List<BikeLocation> getBikeLocations() {
+        return client.get()
+                .uri(u -> u
+                        .path(ENDPOINT_LOCATIONS)
+                        .queryParam("languageID", DEFAULT_LANGUAGE)
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(BikeLocation.class)
+                .collectList()
+                .block();
     }
 
     private List<BikeStation> fetchBikeStations() {
@@ -55,7 +73,7 @@ public class BikeBoxesService {
         return client.get()
                 .uri(u -> u
                         .path(ENDPOINT_STATIONS)
-                        .queryParam("languageId", DEFAULT_LANGUAGE)
+                        .queryParam("languageID", DEFAULT_LANGUAGE)
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -64,7 +82,7 @@ public class BikeBoxesService {
                 .block();
     }
 
-    private BikeStation fetchBikeStationWithPlace(String stationId) {
+    private BikeStation fetchBikeStationWithPlace(int stationId) {
 
         // get stations with default language
         BikeStation station = getStation(stationId, DEFAULT_LANGUAGE);
@@ -90,12 +108,12 @@ public class BikeBoxesService {
         return station;
     }
 
-    private BikeStation getStation(String stationId, String language) {
+    private BikeStation getStation(int stationId, String language) {
         return client.get()
                 .uri(u -> u
                         .path(ENDPOINT_STATION)
-                        .queryParam("languageId", language)
-                        .queryParam("stationId", stationId)
+                        .queryParam("languageID", language)
+                        .queryParam("stationID", stationId)
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .attribute("idStation", stationId)

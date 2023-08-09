@@ -5,7 +5,7 @@
 @host={{$dotenv ENDPOINT_URI}}
 ### GET BICINCITTA ACCESS TOKEN
 # @name login
-POST {{$dotenv ENDPOINT_OAUTH_URI}}
+POST {{host}}/connect/token
 Content-Type: application/x-www-form-urlencoded
 
 &grant_type=client_credentials
@@ -19,20 +19,20 @@ Content-Type: application/x-www-form-urlencoded
 @language = en
 
 ### GET locations
-GET {{$dotenv ENDPOINT_URI}}/resources/locations
+GET {{host}}/resources/locations
     ?languageID={{language}}
 Authorization: Bearer {{token}}
 
 ###
 
 ### GET stations
-GET {{$dotenv ENDPOINT_URI}}/resources/stations
+GET {{host}}/resources/stations
     ?languageID={{language}}
-    &locationId=288
+    &locationId=290
 Authorization: Bearer {{token}}
 
 ### GET stations
-GET {{$dotenv ENDPOINT_URI}}/resources/station
+GET {{host}}/resources/station
     ?languageID={{language}}
-    &stationID=1890
+    &stationID=1892
 Authorization: Bearer {{token}}

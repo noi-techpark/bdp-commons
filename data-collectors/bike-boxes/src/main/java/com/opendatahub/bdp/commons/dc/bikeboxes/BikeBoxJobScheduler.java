@@ -72,7 +72,7 @@ public class BikeBoxJobScheduler {
 
 			for (BikeStation bs : bikeStations) {
 				// create station dto
-				StationDto stationDto = new StationDto(Integer.toString(bs.locationID), bs.locationName, bs.latitude,
+				StationDto stationDto = new StationDto(Integer.toString(bs.stationID), bs.locationName, bs.latitude,
 						bs.longitude);
 
 				stationDto.setMetaData(Map.of(
@@ -92,9 +92,9 @@ public class BikeBoxJobScheduler {
 				// create station level measurements (as key value pairs)
 				var stationData = Map.of(
 						DataTypes.usageState.key, mapBikeStationBayState(bs.state),
-						DataTypes.availableMuscularBikes.key, bs.countFreePlacesAvailable_MuscularBikes,
-						DataTypes.availableAssistedBikes.key, bs.countFreePlacesAvailable_AssistedBikes,
-						DataTypes.availableVehicles.key, bs.countFreePlacesAvailable);
+						DataTypes.freeSpotsRegularBikes.key, bs.countFreePlacesAvailable_MuscularBikes,
+						DataTypes.freeSpotsElectricBikes.key, bs.countFreePlacesAvailable_AssistedBikes,
+						DataTypes.free.key, bs.countFreePlacesAvailable);
 				// add the created measurements to odh data list
 				stationData.forEach((t, v) -> odhData.addRecord(stationDto.getId(), t, mapSimple(v)));
 
@@ -124,6 +124,7 @@ public class BikeBoxJobScheduler {
 			LOG.debug("Pushing data to ODH");
 			odhClient.syncDataTypes(stationC.stationBayType,
 					Arrays.stream(DataTypes.values())
+							.filter(d -> d.syncToOdh)
 							.map(DataTypes::toDataTypeDto)
 							.toList());
 			odhClient.syncStations(stationC.stationType, odhStations, 25);
