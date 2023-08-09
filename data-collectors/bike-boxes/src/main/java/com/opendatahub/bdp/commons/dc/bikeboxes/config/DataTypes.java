@@ -11,20 +11,21 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 
 public enum DataTypes {
     /** FREE, OCCUPIED, OUT OF SERVICE */
-    usageState("usageState", true, "Usage state"),
-    freeSpotsRegularBikes("freeSpotsRegularBike", true, "Free parking spots (regular bikes)"),
-    freeSpotsElectricBikes("freeSpotsElectricBike", true, "Free parking spots (electric bikes)"),
-    free("free", false, "Free parking spots");
+    usageState("usageState", "Usage state", true, "state"),
+    freeSpotsRegularBikes("freeSpotsRegularBike", "Free parking spots (regular bikes)", true, "count"),
+    freeSpotsElectricBikes("freeSpotsElectricBike", "Free parking spots (electric bikes)", true, "count"),
+    free("free", "Free parking spots", false, "count");
 
-    private DataTypes(String key, boolean sync, String description) {
+    private DataTypes(String key, String description, boolean sync, String unit) {
         this.key = key;
         this.description = description;
         this.syncToOdh = sync;
+        this.unit = unit;
     }
 
     public final boolean syncToOdh;
     public final String key;
-    public final String unit = "count";
+    public final String unit;
     public final String description;
     public final String rtype = "Instantaneous";
 
