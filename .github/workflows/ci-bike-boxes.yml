@@ -133,13 +133,12 @@ jobs:
           X_JAVA_OPTIONS: -Xms128m -Xmx512m
 
           # Open Data Hub Writer Connectivity
-          X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
-          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
-          X_clientId: odh-mobility-datacollector
-          X_clientName: odh-mobility-datacollector
-          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
-          X_scope: openid
-          X_BASE_URI: https://mobility.share.opendatahub.com/json
+          X_OAUTH_AUTH_URI: ${{ env.KEYCLOAK_URL }}/auth
+          X_OAUTH_TOKEN_URI: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+          X_OAUTH_CLIENT_ID: odh-mobility-datacollector
+          X_OAUTH_CLIENT_NAME: odh-mobility-datacollector
+          X_OAUTH_CLIENT_SECRET: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
+          X_OAUTH_BASE_URI: https://mobility.share.opendatahub.com/json
 
           # Data writer settings
           X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
