@@ -28,11 +28,11 @@ Authorization: Bearer {{token}}
 ### GET stations
 GET {{host}}/resources/stations
     ?languageID={{language}}
-    &locationId=288
+    &locationId=290
 Authorization: Bearer {{token}}
 
 ### GET stations
 GET {{host}}/resources/station
     ?languageID={{language}}
-    &stationID=1890
+    &stationID=1892
 Authorization: Bearer {{token}}

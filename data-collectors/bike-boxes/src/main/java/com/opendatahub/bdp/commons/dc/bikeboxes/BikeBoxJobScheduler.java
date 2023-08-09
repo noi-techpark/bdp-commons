@@ -92,8 +92,8 @@ public class BikeBoxJobScheduler {
 				// create station level measurements (as key value pairs)
 				var stationData = Map.of(
 						DataTypes.usageState.key, mapBikeStationBayState(bs.state),
-						DataTypes.freeSpotsNonEbikes.key, bs.countFreePlacesAvailable_MuscularBikes,
-						DataTypes.freeSpotsEbikes.key, bs.countFreePlacesAvailable_AssistedBikes,
+						DataTypes.freeSpotsRegularBikes.key, bs.countFreePlacesAvailable_MuscularBikes,
+						DataTypes.freeSpotsElectricBikes.key, bs.countFreePlacesAvailable_AssistedBikes,
 						DataTypes.free.key, bs.countFreePlacesAvailable);
 				// add the created measurements to odh data list
 				stationData.forEach((t, v) -> odhData.addRecord(stationDto.getId(), t, mapSimple(v)));
