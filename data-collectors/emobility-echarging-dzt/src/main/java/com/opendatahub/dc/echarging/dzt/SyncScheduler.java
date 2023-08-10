@@ -5,6 +5,7 @@
 package com.opendatahub.dc.echarging.dzt;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +76,7 @@ public class SyncScheduler {
 			stationMeta.put("capacity", dztStation.plugs.size());
 			stationMeta.put("provider", dztStation.publisher);
 			stationMeta.put("providerUrl", dztStation.publisherUrl);
-			stationMeta.put("syncDate", currentSyncStart);
+			stationMeta.put("syncDate", currentSyncStart.format(DateTimeFormatter.ISO_DATE_TIME));
 
 			station.setMetaData(stationMeta);	
 			station.setOrigin(odhClient.getProvenance().getLineage());
