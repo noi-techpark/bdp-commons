@@ -4,6 +4,9 @@
 
 package com.opendatahub.bdp.commons.dc.bikeboxes.dto;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -19,6 +22,8 @@ public class BikeLocation {
     public String locationName;
     public int locationID;
     public LocationStation[] stations;
+    // other languages saved in Metadata
+    public Map<String, String> translatedLocationNames = new HashMap<>();
 
     @ToString
     public static class LocationStation {

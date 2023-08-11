@@ -23,16 +23,14 @@ GET {{host}}/resources/locations
     ?languageID={{language}}
 Authorization: Bearer {{token}}
 
-###
-
 ### GET stations
 GET {{host}}/resources/stations
     ?languageID={{language}}
-    &locationId=290
+    &locationId=307
 Authorization: Bearer {{token}}
 
 ### GET stations
 GET {{host}}/resources/station
     ?languageID={{language}}
-    &stationID=1892
+    &stationID=1930
 Authorization: Bearer {{token}}

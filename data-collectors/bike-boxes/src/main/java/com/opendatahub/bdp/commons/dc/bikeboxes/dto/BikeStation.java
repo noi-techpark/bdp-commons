@@ -4,6 +4,7 @@
 
 package com.opendatahub.bdp.commons.dc.bikeboxes.dto;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,12 +23,12 @@ public class BikeStation {
     // main name used for station name
     public String locationName;
     // other languages saved in metadata
-    public Map<String, String> locationNames;
+    public Map<String, String> translatedNames = new HashMap<>();
     public int locationID;
     public String name;
     public String address;
     // other languages saved in metadata
-    public Map<String, String> addresses;
+    public Map<String, String> addresses = new HashMap<>();
     public double latitude;
     public double longitude;
     public int type;

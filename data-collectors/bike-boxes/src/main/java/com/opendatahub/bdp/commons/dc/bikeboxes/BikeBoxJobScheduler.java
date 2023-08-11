@@ -19,6 +19,7 @@ import com.opendatahub.bdp.commons.dc.bikeboxes.config.DataConfig;
 import com.opendatahub.bdp.commons.dc.bikeboxes.config.DataTypes;
 import com.opendatahub.bdp.commons.dc.bikeboxes.config.ProvenanceConfig;
 import com.opendatahub.bdp.commons.dc.bikeboxes.config.StationConfig;
+import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeLocation;
 import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeStation;
 import com.opendatahub.bdp.commons.dc.bikeboxes.dto.BikeStation.Place;
 import com.opendatahub.bdp.commons.dc.bikeboxes.services.BikeBoxesService;
@@ -56,70 +57,105 @@ public class BikeBoxJobScheduler {
 		LOG.info("Cron job started");
 
 		try {
-			LOG.debug("Getting stations");
-			List<BikeStation> bikeStations = bikeBoxesService.getBikeStations();
-
-			if (LOG.isTraceEnabled()) {
-				LOG.trace("Dumping retrieved stations list:");
-				bikeStations.stream().forEach(s -> LOG.trace(s.toString()));
-			}
-
-			LOG.debug("Mapping to ODH objects");
+			StationList odhLocations = new StationList();
 			StationList odhStations = new StationList();
 			StationList odhBays = new StationList();
+			DataMapDto<RecordDtoImpl> odhLocationData = new DataMapDto<>();
 			DataMapDto<RecordDtoImpl> odhData = new DataMapDto<>();
 			DataMapDto<RecordDtoImpl> odhBayData = new DataMapDto<>();
 
-			for (BikeStation bs : bikeStations) {
-				// create station dto
-				StationDto stationDto = new StationDto(Integer.toString(bs.stationID), bs.locationName, bs.latitude,
-						bs.longitude);
+			LOG.debug("Getting locations");
+			List<BikeLocation> bikeLocations = bikeBoxesService.getBikeLocations();
+			for (BikeLocation bikeLocation : bikeLocations) {
+				// construct location station object
+				StationDto locationDto = new StationDto();
+				locationDto.setId(Integer.toString(bikeLocation.locationID));
+				locationDto.setName(bikeLocation.locationName);
+				locationDto.setMetaData(Map.of(
+					"names", bikeLocation.translatedLocationNames
+				));
 
-				stationDto.setMetaData(Map.of(
-						"type", mapBikeStationType(bs.type),
-						"totalPlaces", bs.totalPlaces,
-						"locationID", bs.locationID,
-						"names", bs.locationNames,
-						"addresses", bs.addresses,
-						"stationPlaces", Arrays.stream(bs.places).map(p -> Map.of(
-								"position", p.position,
-								// purposely don't include state field
-								"type", mapBikeStationBayType(p.type),
-								"level", p.level))));
-				stationDto.setOrigin(provC.origin);
-				odhStations.add(stationDto);
+				List<BikeStation> bikeStations = bikeBoxesService.getBikeStations(bikeLocation);
+				int freeLocation = 0;
+				int count = 0;
+				double latitudeSum = 0;	
+				double longitudeSum = 0;	
 
-				// create station level measurements (as key value pairs)
-				var stationData = Map.of(
-						DataTypes.usageState.key, mapBikeStationBayState(bs.state),
-						DataTypes.freeSpotsRegularBikes.key, bs.countFreePlacesAvailable_MuscularBikes,
-						DataTypes.freeSpotsElectricBikes.key, bs.countFreePlacesAvailable_AssistedBikes,
-						DataTypes.free.key, bs.countFreePlacesAvailable);
-				// add the created measurements to odh data list
-				stationData.forEach((t, v) -> odhData.addRecord(stationDto.getId(), t, mapSimple(v)));
-
-				// create station and measurement for sub stations (parking bays)
-				for (Place bay : bs.places) {
-					StationDto bayDto = new StationDto(
-							stationDto.getId() + "_" + bs.stationID + "/" + bay.position,
-							stationDto.getName() + "/" + bay.position,
-							stationDto.getLatitude(),
-							stationDto.getLongitude());
-					bayDto.setOrigin(stationDto.getOrigin());
-					// this parking bay is a child of the parking station
-					bayDto.setParentStation(stationDto.getId());
-
-					bayDto.getMetaData().put(
-							"type", mapBikeStationBayType(bay.type));
-					bayDto.getMetaData().put("position", bay.position);
-					bayDto.getMetaData().put("level", bay.level);
-
-					odhBays.add(bayDto);
-
-					// add bay level measurement
-					odhBayData.addRecord(bayDto.getId(), DataTypes.usageState.key, mapSimple(mapUsageState(bay.state)));
+				if (LOG.isTraceEnabled()) {
+					LOG.trace("Dumping retrieved stations list:");
+					bikeStations.stream().forEach(s -> LOG.trace(s.toString()));
 				}
+				for (BikeStation bs : bikeStations) {
+					// create station dto
+					StationDto stationDto = new StationDto(Integer.toString(bs.stationID), bs.locationName, bs.latitude,
+							bs.longitude);
+					stationDto.setParentStation(locationDto.getId());
+
+					stationDto.setMetaData(Map.of(
+							"type", mapBikeStationType(bs.type),
+							"totalPlaces", bs.totalPlaces,
+							"locationID", bs.locationID,
+							"names", bs.translatedNames,
+							"addresses", bs.addresses,
+							"stationPlaces", Arrays.stream(bs.places).map(p -> Map.of(
+									"position", p.position,
+									// purposely don't include state field
+									"type", mapBikeStationBayType(p.type),
+									"level", p.level))));
+					stationDto.setOrigin(provC.origin);
+					odhStations.add(stationDto);
+
+					// create station level measurements (as key value pairs)
+					var stationData = Map.of(
+							DataTypes.usageState.key, mapBikeStationBayState(bs.state),
+							DataTypes.freeSpotsRegularBikes.key, bs.countFreePlacesAvailable_MuscularBikes,
+							DataTypes.freeSpotsElectricBikes.key, bs.countFreePlacesAvailable_AssistedBikes,
+							DataTypes.free.key, bs.countFreePlacesAvailable);
+					// add the created measurements to odh data list
+					stationData.forEach((t, v) -> odhData.addRecord(stationDto.getId(), t, mapSimple(v)));
+
+					// do the sums for parent station
+					freeLocation += bs.countFreePlacesAvailable;
+					latitudeSum += bs.latitude;
+					longitudeSum += bs.longitude;
+					count++;
+
+					// create station and measurement for sub stations (parking bays)
+					for (Place bay : bs.places) {
+						StationDto bayDto = new StationDto(
+								stationDto.getId() + "_" + bs.stationID + "/" + bay.position,
+								stationDto.getName() + "/" + bay.position,
+								stationDto.getLatitude(),
+								stationDto.getLongitude());
+						bayDto.setOrigin(stationDto.getOrigin());
+						// this parking bay is a child of the parking station
+						bayDto.setParentStation(stationDto.getId());
+
+						bayDto.getMetaData().put(
+								"type", mapBikeStationBayType(bay.type));
+						bayDto.getMetaData().put("position", bay.position);
+						bayDto.getMetaData().put("level", bay.level);
+
+						odhBays.add(bayDto);
+
+						// add bay level measurement
+						odhBayData.addRecord(bayDto.getId(), DataTypes.usageState.key,
+								mapSimple(mapUsageState(bay.state)));
+					}
+				}
+
+				// add location level measurement
+				odhLocationData.addRecord(locationDto.getId(), DataTypes.free.key, mapSimple(freeLocation));
+
+				// WARNING: just taking the averages is a cheap approximation. 
+				// It will only work as long as we're getting local data, 
+				// don't cross the 0 latitude or longitude 
+				// and all points are fairly close to each other
+				locationDto.setLatitude(latitudeSum / (double) count);
+				locationDto.setLongitude(longitudeSum / (double) count);
+				odhLocations.add(locationDto);
 			}
+
 
 			LOG.debug("Pushing data to ODH");
 			odhClient.syncDataTypes(stationC.stationBayType,

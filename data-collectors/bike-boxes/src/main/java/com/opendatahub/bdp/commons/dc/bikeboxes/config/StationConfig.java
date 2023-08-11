@@ -14,4 +14,7 @@ public class StationConfig {
 
     @Value("${station.stationBayType}")
     public String stationBayType;
+
+    @Value("${station.stationLocationType}")
+    public String stationLocationType;
 }
