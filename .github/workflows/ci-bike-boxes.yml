@@ -16,6 +16,7 @@ env:
   ODH_PERIOD: 600
   ODH_STATIONTYPE: BikeParking
   ODH_STATIONBAYTYPE: BikeParkingBay
+  ODH_STATIONLOCATIONTYPE: BikeParkingLocation
 
 jobs:
   test:
@@ -69,6 +70,7 @@ jobs:
           X_ODH_CLIENT_PROVENANCE_ORIGIN: ${{ env.ODH_ORIGIN }}
           X_ODH_CLIENT_STATIONTYPE: ${{ env.ODH_STATIONTYPE}}
           X_ODH_CLIENT_STATIONBAYTYPE: ${{ env.ODH_STATIONBAYTYPE}}
+          X_ODH_CLIENT_STATIONLOCATIONTYPE: ${{ env.ODH_STATIONLOCATIONTYPE}}
           X_ODH_CLIENT_PERIOD: ${{ env.ODH_PERIOD }}
 
           # Bike boxes api endpoint configuration
@@ -146,6 +148,7 @@ jobs:
           X_ODH_CLIENT_PROVENANCE_ORIGIN: ${{ env.ODH_ORIGIN }}
           X_ODH_CLIENT_STATIONTYPE: ${{ env.ODH_STATIONTYPE}}
           X_ODH_CLIENT_STATIONBAYTYPE: ${{ env.ODH_STATIONBAYTYPE}}
+          X_ODH_CLIENT_STATIONLOCATIONTYPE: ${{ env.ODH_STATIONLOCATIONTYPE}}
           X_ODH_CLIENT_PERIOD: ${{ env.ODH_PERIOD }}
 
           # Bike boxes api endpoint configuration

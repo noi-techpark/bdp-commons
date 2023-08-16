@@ -26,3 +26,4 @@ services:
       - ./:/code
     working_dir: /code
     tty: true
+    network_mode: host

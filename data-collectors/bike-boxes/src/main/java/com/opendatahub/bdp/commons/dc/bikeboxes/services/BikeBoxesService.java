@@ -6,10 +6,8 @@ package com.opendatahub.bdp.commons.dc.bikeboxes.services;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -40,7 +38,7 @@ public class BikeBoxesService {
     private WebClient client;
 
     public List<BikeStation> getBikeStations(BikeLocation bikeLocation) {
-        LOG.info("Fetching data for location id = {}, {}", bikeLocation.locationID, bikeLocation.locationName);
+        LOG.info("Fetching data for location id = {}, {}", bikeLocation.locationID, bikeLocation.name);
         int count = 0;
         List<BikeStation> bikeStationsWithPlace = new ArrayList<>();
 
@@ -59,7 +57,7 @@ public class BikeBoxesService {
 
         // default language metadata translation
         for (BikeLocation location : locations) {
-            location.translatedLocationNames.put(DEFAULT_LANGUAGE, location.locationName);
+            location.translatedLocationNames.put(DEFAULT_LANGUAGE, location.name);
         }
     
         Map<Integer, BikeLocation> locationById = locations.stream().collect(Collectors.toMap(l -> l.locationID, l -> l));
@@ -69,7 +67,7 @@ public class BikeBoxesService {
             List<BikeLocation> translatedLocations = getBikeLocations(language);
             for (BikeLocation translatedLocation : translatedLocations) {
                 BikeLocation location = locationById.get(translatedLocation.locationID);
-                location.translatedLocationNames.put(language, location.locationName);
+                location.translatedLocationNames.put(language, translatedLocation.name);
             }
         }
         return locations;
@@ -79,7 +77,7 @@ public class BikeBoxesService {
         return client.get()
                 .uri(u -> u
                         .path(ENDPOINT_LOCATIONS)
-                        .queryParam("languageID", DEFAULT_LANGUAGE)
+                        .queryParam("languageID", language)
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()

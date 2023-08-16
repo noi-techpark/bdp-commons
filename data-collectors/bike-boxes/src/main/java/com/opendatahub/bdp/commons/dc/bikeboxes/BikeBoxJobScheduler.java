@@ -70,7 +70,8 @@ public class BikeBoxJobScheduler {
 				// construct location station object
 				StationDto locationDto = new StationDto();
 				locationDto.setId(Integer.toString(bikeLocation.locationID));
-				locationDto.setName(bikeLocation.locationName);
+				locationDto.setName(bikeLocation.name);
+				locationDto.setOrigin(provC.origin);
 				locationDto.setMetaData(Map.of(
 					"names", bikeLocation.translatedLocationNames
 				));
@@ -87,8 +88,11 @@ public class BikeBoxJobScheduler {
 				}
 				for (BikeStation bs : bikeStations) {
 					// create station dto
-					StationDto stationDto = new StationDto(Integer.toString(bs.stationID), bs.locationName, bs.latitude,
-							bs.longitude);
+					StationDto stationDto = new StationDto(
+						Integer.toString(bs.stationID), 
+						locationDto.getName() + " / " + bs.name, 
+						bs.latitude,
+						bs.longitude);
 					stationDto.setParentStation(locationDto.getId());
 
 					stationDto.setMetaData(Map.of(
@@ -102,7 +106,7 @@ public class BikeBoxJobScheduler {
 									// purposely don't include state field
 									"type", mapBikeStationBayType(p.type),
 									"level", p.level))));
-					stationDto.setOrigin(provC.origin);
+					stationDto.setOrigin(locationDto.getOrigin());
 					odhStations.add(stationDto);
 
 					// create station level measurements (as key value pairs)
@@ -124,7 +128,7 @@ public class BikeBoxJobScheduler {
 					for (Place bay : bs.places) {
 						StationDto bayDto = new StationDto(
 								stationDto.getId() + "_" + bs.stationID + "/" + bay.position,
-								stationDto.getName() + "/" + bay.position,
+								stationDto.getName() + " / " + bay.position,
 								stationDto.getLatitude(),
 								stationDto.getLongitude());
 						bayDto.setOrigin(stationDto.getOrigin());
@@ -144,9 +148,6 @@ public class BikeBoxJobScheduler {
 					}
 				}
 
-				// add location level measurement
-				odhLocationData.addRecord(locationDto.getId(), DataTypes.free.key, mapSimple(freeLocation));
-
 				// WARNING: just taking the averages is a cheap approximation. 
 				// It will only work as long as we're getting local data, 
 				// don't cross the 0 latitude or longitude 
@@ -154,6 +155,9 @@ public class BikeBoxJobScheduler {
 				locationDto.setLatitude(latitudeSum / (double) count);
 				locationDto.setLongitude(longitudeSum / (double) count);
 				odhLocations.add(locationDto);
+				// add location level measurement
+				odhLocationData.addRecord(locationDto.getId(), DataTypes.free.key, mapSimple(freeLocation));
+
 			}
 
 
@@ -163,8 +167,10 @@ public class BikeBoxJobScheduler {
 							.filter(d -> d.syncToOdh)
 							.map(DataTypes::toDataTypeDto)
 							.toList());
+			odhClient.syncStations(stationC.stationLocationType, odhLocations, 25);
 			odhClient.syncStations(stationC.stationType, odhStations, 25);
 			odhClient.syncStations(stationC.stationBayType, odhBays, 25);
+			odhClient.pushData(stationC.stationLocationType, odhLocationData);
 			odhClient.pushData(stationC.stationType, odhData);
 			odhClient.pushData(stationC.stationBayType, odhBayData);
 			LOG.info("Cron job successful");

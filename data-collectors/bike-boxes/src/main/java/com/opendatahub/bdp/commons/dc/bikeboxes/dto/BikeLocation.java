@@ -19,7 +19,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize
 public class BikeLocation {
-    public String locationName;
+    public String name;
     public int locationID;
     public LocationStation[] stations;
     // other languages saved in Metadata
