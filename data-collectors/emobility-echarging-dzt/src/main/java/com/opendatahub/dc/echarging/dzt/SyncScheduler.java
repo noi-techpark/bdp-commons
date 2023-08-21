@@ -109,8 +109,8 @@ public class SyncScheduler {
 		// Don't deactivated stations not synced, we only ever get the last modified ones
 		try {
 			final int chunksize = 1000;
-			odhClient.syncStations(ECHARGING_STATION, odhStations, chunksize, true, true);
-			odhClient.syncStations(ECHARGING_PLUG, odhPlugs, chunksize, true, true);
+			odhClient.syncStations(ECHARGING_STATION, odhStations, chunksize, false, true);
+			odhClient.syncStations(ECHARGING_PLUG, odhPlugs, chunksize, false, true);
 			log.info("Cron job successful");
 			lastSync = currentSyncStart;
 		} catch (WebClientRequestException e) {
