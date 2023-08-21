@@ -6,7 +6,6 @@ package com.opendatahub.dc.echarging.dzt;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -110,8 +108,9 @@ public class SyncScheduler {
 		// 3) Send it to the Open Data Hub INBOUND API (writer)
 		// Don't deactivated stations not synced, we only ever get the last modified ones
 		try {
-			odhClient.syncStations(ECHARGING_STATION, odhStations, true, true);
-			odhClient.syncStations(ECHARGING_PLUG, odhPlugs, true, true);
+			final int chunksize = 1000;
+			odhClient.syncStations(ECHARGING_STATION, odhStations, chunksize, true, true);
+			odhClient.syncStations(ECHARGING_PLUG, odhPlugs, chunksize, true, true);
 			log.info("Cron job successful");
 			lastSync = currentSyncStart;
 		} catch (WebClientRequestException e) {

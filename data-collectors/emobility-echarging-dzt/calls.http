@@ -28,7 +28,7 @@ x-api-key: {{apikey}}
             "sq:datatype":"dateTime"
           }
         }
-    ]    
+    ]
 }
 
 ###
