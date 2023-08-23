@@ -75,7 +75,7 @@ jobs:
           X_MATOMO_SITE_ID: 1
           # put 0 to disable custom reports
           X_MATOMO_REPORT_ID: 0
-          X_MATOMO_PAGES: https://noi.bz.it/de/transparente-verwaltung,https://noi.bz.it/it/societa-trasparente,https://noi.bz.it/it/amministrazione-trasparente
+          X_MATOMO_PAGES: https://noi.bz.it/de/ueber-uns/transparente-verwaltung,https://noi.bz.it/it/chi-siamo/societa-trasparente,https://noi.bz.it/de/transparente-verwaltung,https://noi.bz.it/it/societa-trasparente,https://noi.bz.it/it/amministrazione-trasparente
 
 
           # Logging
@@ -148,7 +148,7 @@ jobs:
           X_MATOMO_SITE_ID: 1
           # put 0 to disable custom reports
           X_MATOMO_REPORT_ID: 0
-          X_MATOMO_PAGES: https://noi.bz.it/de/transparente-verwaltung,https://noi.bz.it/it/societa-trasparente,https://noi.bz.it/it/amministrazione-trasparente
+          X_MATOMO_PAGES: https://noi.bz.it/de/ueber-uns/transparente-verwaltung,https://noi.bz.it/it/chi-siamo/societa-trasparente,https://noi.bz.it/de/transparente-verwaltung,https://noi.bz.it/it/societa-trasparente,https://noi.bz.it/it/amministrazione-trasparente
 
           # Logging
           X_LOG_LEVEL: info
