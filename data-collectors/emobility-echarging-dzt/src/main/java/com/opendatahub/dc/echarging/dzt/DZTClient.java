@@ -94,10 +94,26 @@ public class DZTClient {
             stationPage = pool.submit(
                 () -> sids.parallelStream()
                     .map(id -> {
+                        log.debug("Requesting detail for station.id = {} ", id);
                         String json = null;
+                        int errorCount = 0;
+                        final int maxTries = 3;
                         try {
-                            log.debug("Requesting detail for station.id = {} ", id);
-                            json = getStationDetail(id);
+                            while (true) {
+                                try {
+                                    json = getStationDetail(id);
+                                    break;
+                                } catch (Exception e){
+                                    // random errors are crashing the 1h elaboration, so we retry a few times before giving up
+                                    if (++errorCount < maxTries) {
+                                        log.warn("Exception while requesting station detail id = " + id + ". will retry... ", e);
+                                        continue;
+                                    } else {
+                                        log.error("Exception while requesting station detail id = " + id + ". panic! ", e);
+                                        throw e;
+                                    }
+                                }
+                            } 
                             return DZTParser.parseJsonToStation(json);
                         } catch (Exception e) {
                             log.error("Exception encountered while getting details for station id = " + id, e);

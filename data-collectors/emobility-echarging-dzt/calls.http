@@ -33,7 +33,7 @@ x-api-key: {{apikey}}
 
 ###
 # get details of single Station with ID 100001001
-GET {{host}}/api/ts/v1/kg/things/98531007
+GET {{host}}/api/ts/v1/kg/things/60831050
 ?ns=http%3A%2F%2Fonlim.com%2Fentity%2FLadestationen-Api-Bund%2FECarChargingStation%2F
 Content-Type: application/json
 x-api-key: {{apikey}}
