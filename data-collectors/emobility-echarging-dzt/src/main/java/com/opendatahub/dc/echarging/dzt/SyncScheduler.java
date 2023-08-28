@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -114,7 +115,7 @@ public class SyncScheduler {
 			log.info("Cron job successful");
 			lastSync = currentSyncStart;
 		} catch (WebClientRequestException e) {
-			log.error("Cron job failed: Request exception: {}", e.getMessage());
+			log.error(MessageFormatter.format("Cron job failed: Request exception: {}", e.getMessage()).getMessage(), e);
 		}
     }
 }

@@ -89,19 +89,28 @@ public class DZTClient {
         // Run the single detail requests in parallel in a separate thread pool. 
         // Querying all stations in sequence would be too slow
         ForkJoinPool pool = new ForkJoinPool(threadPoolSize);
-        List<Station> stationPage = pool.submit(
-            () -> sids.parallelStream()
-                .map(id -> {
-                    try {
-                        log.debug("Requesting detail for station.id = {} ", id);
-                        return DZTParser.parseJsonToStation(getStationDetail(id));
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }})
-                .filter(station -> station.id != null) // filter stations without ID already, they are usually all null fields
-                .toList()
-        ).get();
-        pool.shutdown();
+        List<Station> stationPage;
+        try{
+            stationPage = pool.submit(
+                () -> sids.parallelStream()
+                    .map(id -> {
+                        String json = null;
+                        try {
+                            log.debug("Requesting detail for station.id = {} ", id);
+                            json = getStationDetail(id);
+                            return DZTParser.parseJsonToStation(json);
+                        } catch (Exception e) {
+                            log.error("Exception encountered while getting details for station id = " + id, e);
+                            log.error("Dumping json: {}", json);
+                            throw new RuntimeException(e);
+                        }})
+                    .filter(station -> station.id != null) // filter stations without ID already, they are usually all null fields
+                    .toList()
+            ).get();
+        } finally {
+            // always properly shutdown pool to prevent memory leaks
+            pool.shutdown();
+        }
         log.debug("Page details have been fully retrieved");
         return stationPage;
     }
@@ -157,24 +166,31 @@ public class DZTClient {
             .bodyToMono(String.class)
             .block();
 
-        //Configuration conf = Configuration.defaultConfiguration().addOptions( Option.SUPPRESS_EXCEPTIONS);
-        var jsonPath = JsonPath.parse(respStr);
+        try {
+            //Configuration conf = Configuration.defaultConfiguration().addOptions( Option.SUPPRESS_EXCEPTIONS);
+            var jsonPath = JsonPath.parse(respStr);
 
-        paging.seed = jsonPath.read("$.metaData.sortSeed");
-        paging.totalCount = jsonPath.read("$.metaData.total");
+            paging.seed = jsonPath.read("$.metaData.sortSeed");
+            paging.totalCount = jsonPath.read("$.metaData.total");
 
-        if (paging.totalPages == 0) {
-            paging.totalPages = (int) Math.ceil(paging.totalCount / paging.pageSize);
-            log.debug("Total station count is {}, which is {} pages", paging.totalCount, paging.totalPages);
+            if (paging.totalPages == 0) {
+                paging.totalPages = (int) Math.ceil(paging.totalCount / paging.pageSize);
+                log.debug("Total station count is {}, which is {} pages", paging.totalCount, paging.totalPages);
+            }
+
+            // find the list of station URLs
+            List<String> stationUrls = jsonPath.read("$.data[*].['@id']");
+
+            // extract IDs from URLs (it's the last part)
+            var stationIds = stationUrls.stream().map(s -> s.replaceAll(".*/(\\w+)$", "$1")).toList();
+
+            return stationIds; 
+        } catch (Exception e) {
+            log.error("Error encountered parsing stations page {} seed {} ", paging.currentPage, paging.seed);
+            log.error("Dumping response json: {}", respStr);
+            log.error("Propagating original Exception", e);
+            throw e;
         }
-
-        // find the list of station URLs
-        List<String> stationUrls = jsonPath.read("$.data[*].['@id']");
-
-        // extract IDs from URLs (it's the last part)
-        var stationIds = stationUrls.stream().map(s -> s.replaceAll(".*/(\\w+)$", "$1")).toList();
-
-        return stationIds; 
     }
 
 
