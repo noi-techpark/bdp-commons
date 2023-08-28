@@ -64,7 +64,7 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # TODO: Add your env vars here, prefixed with X_
-          X_SCHEDULER_CRON: "0 0 14 */3 * *"
+          X_SCHEDULER_CRON: "0 0 7,14 * * *"
           X_SCHEDULER_POOL_SIZE: 1
           X_DZT_BASE_URL: https://proxy.opendatagermany.io
           X_DZT_API_KEY: b375e0ff5afd9b812b03ba3df41f64ec
