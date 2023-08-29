@@ -29,7 +29,7 @@ import it.bz.idm.bdp.dto.StationList;
 
 @Service
 public class SyncScheduler {
-	public static final String ECHARGING_STATION = "EchargingStation";
+	public static final String ECHARGING_STATION = "EChargingStation";
 	public static final String ECHARGING_PLUG = "EChargingPlug";
 
 	private static final Logger log = LoggerFactory.getLogger(SyncScheduler.class);
