@@ -34,8 +34,8 @@ public class CsvFileUtilities {
 			LOG.info("parse par pooling trips csv file from url");
 			BOMInputStream bomInputStream = new BOMInputStream(inputStream);
 			CSVParser csvParser = CSVParser.parse(bomInputStream,
-				Charset.forName(bomInputStream.hasBOM()? bomInputStream.getBOMCharsetName(): "UTF-8"),
-				CSVFormat.RFC4180.withFirstRecordAsHeader());
+					Charset.forName(bomInputStream.hasBOM() ? bomInputStream.getBOMCharsetName() : "UTF-8"),
+					CSVFormat.RFC4180.withFirstRecordAsHeader());
 			int parseSuccess = 0;
 			int parseFailed = 0;
 			for (CSVRecord csvRecord : csvParser) {
@@ -57,14 +57,15 @@ public class CsvFileUtilities {
 					carPoolingTrip.setEndPostCode(csvRecord.get("end_post_code"));
 
 					tripsList.add(carPoolingTrip);
-					System.out.println(carPoolingTrip.toJson());
+					LOG.debug("trip as JSON : {}", carPoolingTrip.toJson());
 					parseSuccess++;
 				} catch (Exception e) {
 					LOG.warn("parsing csv record to car pooling trip failed: " + e.getMessage(), e);
 					parseFailed++;
 				}
 			}
-			LOG.info("got {} csv records, {} successfully parsed, {} failed to parse", parseSuccess + parseFailed, parseSuccess, parseFailed);
+			LOG.info("got {} csv records, {} successfully parsed, {} failed to parse", parseSuccess + parseFailed,
+					parseSuccess, parseFailed);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -74,31 +75,34 @@ public class CsvFileUtilities {
 
 	private static ZonedDateTime extractZonedDateTime(CSVRecord csvRecord, String csvFieldName) {
 		String csvFieldValue = csvRecord.get(csvFieldName);
-		if(csvFieldValue == null || csvFieldValue.isEmpty())
+		if (csvFieldValue == null || csvFieldValue.isEmpty())
 			return null;
-		return LocalDateTime.parse(csvRecord.get(csvFieldName), DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a")).atZone(ZoneOffset.UTC);
+		return LocalDateTime.parse(csvRecord.get(csvFieldName), DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a"))
+				.atZone(ZoneOffset.UTC);
 	}
 
 	private static Integer extractInteger(CSVRecord csvRecord, String csvFieldName) {
 		String csvFieldValue = csvRecord.get(csvFieldName);
-		if(csvFieldValue == null || csvFieldValue.isEmpty())
+		if (csvFieldValue == null || csvFieldValue.isEmpty())
 			return null;
 		try {
 			return Integer.parseInt(csvFieldValue);
 		} catch (NumberFormatException e) {
-			LOG.error("Unable to parse the following value of the csv field '{}' to integer: {}", csvFieldName, csvFieldValue);
+			LOG.error("Unable to parse the following value of the csv field '{}' to integer: {}", csvFieldName,
+					csvFieldValue);
 			throw new RuntimeException(e);
 		}
 	}
 
 	private static Double extractDouble(CSVRecord csvRecord, String csvFieldName) {
 		String csvFieldValue = csvRecord.get(csvFieldName);
-		if(csvFieldValue == null || csvFieldValue.isEmpty())
+		if (csvFieldValue == null || csvFieldValue.isEmpty())
 			return null;
 		try {
 			return Double.parseDouble(csvFieldValue);
 		} catch (NumberFormatException e) {
-			LOG.error("Unable to parse the following value of the csv field '{}' to double: {}", csvFieldName, csvFieldValue);
+			LOG.error("Unable to parse the following value of the csv field '{}' to double: {}", csvFieldName,
+					csvFieldValue);
 			throw new RuntimeException(e);
 		}
 	}

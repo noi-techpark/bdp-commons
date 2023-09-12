@@ -72,12 +72,6 @@ public class SyncScheduler {
 				new SimpleRecordDto(currentTimeInMillis, carPoolingTrip.toJson(), period));
 		}
 
-
-		Map<String, String> externalStation = new HashMap<>();
-		externalStation.put("name", "Cool Measurement Station 1");
-		externalStation.put("lat", "46.4861067");
-		externalStation.put("lon", "11.3275207");
-
 		LOG.info("sync {} car pooling stations", stationList.size());
 		try {
 			odhClient.syncStations(stationList);
