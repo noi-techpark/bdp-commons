@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import com.opendatahub.traffic.a22.forecast.config.DataConfig;
 import com.opendatahub.traffic.a22.forecast.config.StationConfig;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto;
-import com.opendatahub.traffic.a22.forecast.services.A22Client;
+import com.opendatahub.traffic.a22.forecast.services.A22Service;
 import com.opendatahub.traffic.a22.forecast.services.OdhClient;
 import com.opendatahub.traffic.a22.forecast.config.ProvenanceConfig;
 
@@ -33,7 +33,7 @@ public class JobScheduler {
 
     @Lazy
     @Autowired
-    private A22Client a22Client;
+    private A22Service a22Service;
 
     @Autowired
     private DataConfig dataC;
@@ -48,7 +48,7 @@ public class JobScheduler {
     public void collectBikeBoxData() {
         LOG.info("Cron job started");
 
-        ForecastDto forecasts = a22Client.getForecasts("2023", "9");
+        ForecastDto forecasts = a22Service.getForecasts("2023", "9");
         LOG.info("DONE");
 
     }
