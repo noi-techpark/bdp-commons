@@ -1,0 +1,12 @@
+@host = {{$dotenv A22_URL}}
+@user = {{$dotenv A22_USER}}
+@password = {{$dotenv A22_PASSWORD}}
+
+
+### GetPrevisioniTrafficoComplete
+POST {{host}}/GetPrevisioniTrafficoComplete
+User-Agent: NOI/A22TrafficForecastConnector
+Content-Type: application/json
+Authorization: Basic {{user}}:{{password}}
+Month: 10
+Year: 2023
