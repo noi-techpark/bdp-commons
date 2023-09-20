@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class A22ClientConfig {
+
         @Value("${a22.url}")
         private String url;
 

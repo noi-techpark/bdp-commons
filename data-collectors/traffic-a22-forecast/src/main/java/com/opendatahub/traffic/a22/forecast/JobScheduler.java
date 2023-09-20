@@ -6,12 +6,18 @@ package com.opendatahub.traffic.a22.forecast;
 
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
+
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,10 +28,18 @@ import com.opendatahub.traffic.a22.forecast.services.A22Service;
 import com.opendatahub.traffic.a22.forecast.services.OdhClient;
 import com.opendatahub.traffic.a22.forecast.config.ProvenanceConfig;
 
-
 @Service
 public class JobScheduler {
     private static final Logger LOG = LoggerFactory.getLogger(JobScheduler.class);
+
+    @Value("${historyimport.enabled}")
+    private boolean historyEnabled;
+
+    @Value("#{new java.text.SimpleDateFormat('${historyimport.dateformat}').parse('${historyimport.startdate}')}")
+    private YearMonth historyStartDate;
+
+    @Value("${forecast.months}")
+    private int forecastMonths;
 
     @Lazy
     @Autowired
@@ -44,12 +58,36 @@ public class JobScheduler {
     @Autowired
     private ProvenanceConfig provC;
 
+    @PostConstruct
+    public void postConstruct() {
+        if (historyEnabled) {
+            LOG.info("Historical import job started...");
+            syncData(historyStartDate, YearMonth.now());
+            LOG.info("Historical import job successful.");
+        }
+    }
+
     @Scheduled(cron = "${scheduler.job}")
-    public void collectBikeBoxData() {
-        LOG.info("Cron job started");
+    public void forecastImport() {
+        LOG.info("Cron job stations started...");
+        YearMonth currentDate = YearMonth.now();
+        syncData(currentDate, currentDate.plusMonths(forecastMonths));
+        LOG.info("Cron job successful.");
 
-        ForecastDto forecasts = a22Service.getForecasts("2023", "9");
-        LOG.info("DONE");
+    }
 
+    public void syncData(YearMonth from, YearMonth to) {
+        LOG.info("Sync started from {}...", historyStartDate.toString());
+
+        List<ForecastDto> forecasts = new ArrayList<>();
+
+        while (historyStartDate.isBefore(to)) {
+            forecasts.add(a22Service.getForecasts(from));
+            from = from.plusMonths(1);
+        }
+
+        // sync with Open Data Hub
+
+        LOG.info("Sync done. Imported {} months.", forecasts.size());
     }
 }

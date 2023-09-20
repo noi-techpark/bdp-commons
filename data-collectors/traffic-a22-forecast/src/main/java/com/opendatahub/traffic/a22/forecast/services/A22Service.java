@@ -4,6 +4,8 @@
 
 package com.opendatahub.traffic.a22.forecast.services;
 
+import java.time.YearMonth;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +25,13 @@ public class A22Service {
     @Qualifier("a22Client") // avoid overlap with webClient in bdp-core
     private WebClient client;
 
-    public ForecastDto getForecasts(String year, String month) {
+    public ForecastDto getForecasts(YearMonth date) {
         return client.post()
                 .uri(u -> u.path(ENDPOINT_FORECAST).build())
                 .accept(MediaType.ALL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("month", month)
-                .header("year", year)
+                .header("month", String.valueOf(date.getMonthValue()))
+                .header("year", String.valueOf(date.getYear()))
                 .header("User-Agent", "NOI/A22TrafficForecastConnector")
                 .retrieve()
                 .bodyToMono(ForecastDto.class)
