@@ -6,6 +6,7 @@ package com.opendatahub.traffic.a22.forecast;
 
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,7 +27,7 @@ import com.opendatahub.traffic.a22.forecast.config.StationConfig;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto;
 import com.opendatahub.traffic.a22.forecast.services.A22Service;
 import com.opendatahub.traffic.a22.forecast.services.OdhClient;
-import com.opendatahub.traffic.a22.forecast.config.ProvenanceConfig;
+import com.opendatahub.traffic.a22.forecast.config.ProvenanceConfig;;
 
 @Service
 public class JobScheduler {
@@ -34,9 +35,12 @@ public class JobScheduler {
 
     @Value("${historyimport.enabled}")
     private boolean historyEnabled;
+    
+    @Value("${historyimport.year}")
+    private int historyYear;
 
-    @Value("#{new java.text.SimpleDateFormat('${historyimport.dateformat}').parse('${historyimport.startdate}')}")
-    private YearMonth historyStartDate;
+    @Value("${historyimport.month}")
+    private int historyMonth;
 
     @Value("${forecast.months}")
     private int forecastMonths;
@@ -62,7 +66,7 @@ public class JobScheduler {
     public void postConstruct() {
         if (historyEnabled) {
             LOG.info("Historical import job started...");
-            syncData(historyStartDate, YearMonth.now());
+            syncData(YearMonth.of(historyYear, historyMonth), YearMonth.now());
             LOG.info("Historical import job successful.");
         }
     }
@@ -73,15 +77,14 @@ public class JobScheduler {
         YearMonth currentDate = YearMonth.now();
         syncData(currentDate, currentDate.plusMonths(forecastMonths));
         LOG.info("Cron job successful.");
-
     }
 
     public void syncData(YearMonth from, YearMonth to) {
-        LOG.info("Sync started from {}...", historyStartDate.toString());
+        LOG.info("Sync started from {} to {}...", from.toString(), to.toString());
 
         List<ForecastDto> forecasts = new ArrayList<>();
 
-        while (historyStartDate.isBefore(to)) {
+        while (from.isBefore(to)) {
             forecasts.add(a22Service.getForecasts(from));
             from = from.plusMonths(1);
         }
