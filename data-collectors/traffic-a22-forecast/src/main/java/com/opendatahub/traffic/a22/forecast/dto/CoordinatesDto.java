@@ -16,7 +16,7 @@ import lombok.ToString;
 public class CoordinatesDto {
 
     @JsonProperty("d")
-    public Data data;
+    public List<Data> data;
 
     @ToString
     public static class Data {

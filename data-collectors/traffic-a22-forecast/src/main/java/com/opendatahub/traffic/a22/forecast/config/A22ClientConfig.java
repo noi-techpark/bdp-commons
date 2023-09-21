@@ -7,6 +7,7 @@ package com.opendatahub.traffic.a22.forecast.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -26,6 +27,12 @@ public class A22ClientConfig {
                 return WebClient.builder()
                                 .defaultHeaders(header -> header.setBasicAuth(userName, password))
                                 .baseUrl(url)
+                                // increase max memory size for a response because /GetCoordinate is too big for
+                                // default max buffer size of 262144 bytes
+                                .exchangeStrategies(ExchangeStrategies.builder().codecs(
+                                                clientCodecConfigurer -> clientCodecConfigurer.defaultCodecs()
+                                                                .maxInMemorySize(500000))
+                                                .build())
                                 .build();
         }
 }

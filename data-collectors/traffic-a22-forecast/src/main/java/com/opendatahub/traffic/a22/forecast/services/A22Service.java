@@ -43,7 +43,6 @@ public class A22Service {
     public TollBoothDto getTollBooths() {
         return client.post()
                 .uri(u -> u.path(ENDPOINT_TOLL_BOOTH).build())
-                .accept(MediaType.ALL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("User-Agent", "NOI/A22TrafficForecastConnector")
                 .retrieve()
@@ -54,7 +53,6 @@ public class A22Service {
     public CoordinatesDto getCoordinates() {
         return client.post()
                 .uri(u -> u.path(ENDPOINT_COORDINATES).build())
-                .accept(MediaType.ALL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("User-Agent", "NOI/A22TrafficForecastConnector")
                 .retrieve()

@@ -6,12 +6,8 @@ package com.opendatahub.traffic.a22.forecast;
 
 import org.slf4j.LoggerFactory;
 
-import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -22,9 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import com.opendatahub.traffic.a22.forecast.config.DataConfig;
-import com.opendatahub.traffic.a22.forecast.config.StationConfig;
+import com.opendatahub.traffic.a22.forecast.dto.CoordinatesDto;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto;
+import com.opendatahub.traffic.a22.forecast.dto.TollBoothDto;
 import com.opendatahub.traffic.a22.forecast.services.A22Service;
 import com.opendatahub.traffic.a22.forecast.services.OdhClient;
 import com.opendatahub.traffic.a22.forecast.config.ProvenanceConfig;;
@@ -84,13 +80,16 @@ public class JobScheduler {
 
         List<ForecastDto> forecasts = new ArrayList<>();
 
-        while (from.isBefore(to)) {
-            forecasts.add(a22Service.getForecasts(from));
-            from = from.plusMonths(1);
-        }
+        // while (from.isBefore(to)) {
+        //     forecasts.add(a22Service.getForecasts(from));
+        //     from = from.plusMonths(1);
+        // }
+
+        TollBoothDto tollBooths = a22Service.getTollBooths();
+
+        CoordinatesDto coordinates = a22Service.getCoordinates();
 
         // sync with Open Data Hub
-        
 
         LOG.info("Sync done. Imported {} months.", forecasts.size());
     }
