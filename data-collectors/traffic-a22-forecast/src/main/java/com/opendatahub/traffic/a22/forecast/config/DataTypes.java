@@ -10,11 +10,7 @@ package com.opendatahub.traffic.a22.forecast.config;
 import it.bz.idm.bdp.dto.DataTypeDto;
 
 public enum DataTypes {
-    /** FREE, OCCUPIED, OUT OF SERVICE */
-    usageState("usageState", "Usage state", true, "state"),
-    freeSpotsRegularBikes("freeSpotsRegularBike", "Free parking spots (regular bikes)", true, "count"),
-    freeSpotsElectricBikes("freeSpotsElectricBike", "Free parking spots (electric bikes)", true, "count"),
-    free("free", "Free parking spots", false, "count");
+    forecast("forecast", "Traffic forecast", true, "");
 
     private DataTypes(String key, String description, boolean sync, String unit) {
         this.key = key;

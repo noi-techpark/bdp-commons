@@ -10,3 +10,15 @@ Content-Type: application/json
 Authorization: Basic {{user}}:{{password}}
 Month: 10
 Year: 2023
+
+### GetCaselli
+POST  {{host}}/GetCaselli
+User-Agent: NOI/A22TrafficForecastConnector
+Content-Type: application/json
+Authorization: Basic {{user}}:{{password}}
+
+### GetCoordinate
+POST  {{host}}/GetCoordinate
+User-Agent: NOI/A22TrafficForecastConnector
+Content-Type: application/json
+Authorization: Basic {{user}}:{{password}}

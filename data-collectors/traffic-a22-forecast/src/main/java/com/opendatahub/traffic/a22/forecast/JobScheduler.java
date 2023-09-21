@@ -35,7 +35,7 @@ public class JobScheduler {
 
     @Value("${historyimport.enabled}")
     private boolean historyEnabled;
-    
+
     @Value("${historyimport.year}")
     private int historyYear;
 
@@ -53,14 +53,14 @@ public class JobScheduler {
     @Autowired
     private A22Service a22Service;
 
-    @Autowired
-    private DataConfig dataC;
+    @Value("${data.period}")
+    public int period;
+
+    @Value("${station.stationType}")
+    public String stationType;
 
     @Autowired
-    private StationConfig stationC;
-
-    @Autowired
-    private ProvenanceConfig provC;
+    private ProvenanceConfig provenanceConfig;
 
     @PostConstruct
     public void postConstruct() {
@@ -80,7 +80,7 @@ public class JobScheduler {
     }
 
     public void syncData(YearMonth from, YearMonth to) {
-        LOG.info("Sync started from {} to {}...", from.toString(), to.toString());
+        LOG.info("Sync started from {} to {}...", from, to);
 
         List<ForecastDto> forecasts = new ArrayList<>();
 
@@ -90,6 +90,7 @@ public class JobScheduler {
         }
 
         // sync with Open Data Hub
+        
 
         LOG.info("Sync done. Imported {} months.", forecasts.size());
     }
