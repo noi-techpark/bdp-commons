@@ -18,11 +18,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import com.opendatahub.traffic.a22.forecast.dto.CoordinatesDto;
+import com.opendatahub.traffic.a22.forecast.mapping.TollBothCoordinatesMap;
+import com.opendatahub.traffic.a22.forecast.mapping.TollBothMap;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto;
-import com.opendatahub.traffic.a22.forecast.dto.TollBoothDto;
+import com.opendatahub.traffic.a22.forecast.dto.ForecastDto.TrafficData;
 import com.opendatahub.traffic.a22.forecast.services.A22Service;
 import com.opendatahub.traffic.a22.forecast.services.OdhClient;
+
+import it.bz.idm.bdp.dto.StationDto;
+import it.bz.idm.bdp.dto.StationList;
+
 import com.opendatahub.traffic.a22.forecast.config.ProvenanceConfig;;
 
 @Service
@@ -78,19 +83,29 @@ public class JobScheduler {
     public void syncData(YearMonth from, YearMonth to) {
         LOG.info("Sync started from {} to {}...", from, to);
 
-        List<ForecastDto> forecasts = new ArrayList<>();
+        StationList stations = new StationList();
 
-        // while (from.isBefore(to)) {
-        //     forecasts.add(a22Service.getForecasts(from));
-        //     from = from.plusMonths(1);
-        // }
+        List<ForecastDto> forecastDtos = new ArrayList<>();
 
-        TollBoothDto tollBooths = a22Service.getTollBooths();
+        TollBothMap tollBothMap = new TollBothMap(a22Service.getTollBooths());
+        TollBothCoordinatesMap coordinateMap = new TollBothCoordinatesMap(a22Service.getCoordinates());
 
-        CoordinatesDto coordinates = a22Service.getCoordinates();
+        while (from.isBefore(to)) {
+            forecastDtos.add(a22Service.getForecasts(from));
+            from = from.plusMonths(1);
+        }
+
+        for (ForecastDto forecastDto : forecastDtos) {
+            StationDto stationDto = new StationDto();
+            stationDto.setId(stationType);
+
+            // for(TrafficData trafficData: forecastDto.data.trafficDataLines){
+            //     // measuremnts
+            // }
+        }
 
         // sync with Open Data Hub
 
-        LOG.info("Sync done. Imported {} months.", forecasts.size());
+        LOG.info("Sync done. Imported {} months.", forecastDtos.size());
     }
 }

@@ -5,6 +5,8 @@
 package com.opendatahub.traffic.a22.forecast.dto;
 
 import java.util.List;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -17,10 +19,10 @@ import lombok.ToString;
 public class ForecastDto {
 
     @JsonProperty("d")
-    public Data data;
+    public ForecastData data;
 
     @ToString
-    public static class Data {
+    public static class ForecastData {
         @JsonProperty("__type")
         public String type;
 
@@ -37,7 +39,13 @@ public class ForecastDto {
         public boolean hasPrevMonth;
 
         @JsonProperty("RighePrevisioniTraffico")
-        public List<TrafficData> trafficData;
+        public List<TrafficDataLine> trafficDataLines;
+    }
+
+    @ToString
+    public static class TrafficDataLine {
+        @JsonProperty("PrevisioniTraffico")
+        public List<TrafficData> data;
     }
 
     @ToString
@@ -58,27 +66,12 @@ public class ForecastDto {
         public int year;
 
         @JsonProperty("Nord")
-        public Direction north;
+        @JsonIgnoreProperties("Tipo")
+        public Map<String, Values> north;
 
         @JsonProperty("Sud")
-        public Direction south;
-    }
-
-    @ToString
-    public static class Direction {
-
-        @JsonProperty("Tipo")
-        public int type;
-
-        @JsonProperty("Brennero")
-        public Values brennero;
-
-        @JsonProperty("Bolzano")
-        public Values bolzano;
-
-        @JsonProperty("Verona")
-        public Values verona;
-
+        @JsonIgnoreProperties("Tipo")
+        public Map<String, Values> south;
     }
 
     @ToString

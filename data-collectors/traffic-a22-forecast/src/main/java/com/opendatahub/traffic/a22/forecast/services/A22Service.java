@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.opendatahub.traffic.a22.forecast.dto.CoordinatesDto;
+import com.opendatahub.traffic.a22.forecast.dto.TollBothCoordinatesDto;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto;
 import com.opendatahub.traffic.a22.forecast.dto.TollBoothDto;
 
@@ -50,13 +50,13 @@ public class A22Service {
                 .block();
     }
 
-    public CoordinatesDto getCoordinates() {
+    public TollBothCoordinatesDto getCoordinates() {
         return client.post()
                 .uri(u -> u.path(ENDPOINT_COORDINATES).build())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("User-Agent", "NOI/A22TrafficForecastConnector")
                 .retrieve()
-                .bodyToMono(CoordinatesDto.class)
+                .bodyToMono(TollBothCoordinatesDto.class)
                 .block();
     }
 

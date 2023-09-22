@@ -27,8 +27,8 @@ public class A22ClientConfig {
                 return WebClient.builder()
                                 .defaultHeaders(header -> header.setBasicAuth(userName, password))
                                 .baseUrl(url)
-                                // increase max memory size for a response because /GetCoordinate is too big for
-                                // default max buffer size of 262144 bytes
+                                // increase max buffer memory size because /GetCoordinate response is too big
+                                // for default max buffer size of 262144 bytes
                                 .exchangeStrategies(ExchangeStrategies.builder().codecs(
                                                 clientCodecConfigurer -> clientCodecConfigurer.defaultCodecs()
                                                                 .maxInMemorySize(500000))

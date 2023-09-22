@@ -13,19 +13,19 @@ import lombok.ToString;
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize
-public class CoordinatesDto {
+public class TollBothCoordinatesDto {
 
     @JsonProperty("d")
-    public List<Data> data;
+    public List<TollBothCoordinates> data;
 
     @ToString
-    public static class Data {
+    public static class TollBothCoordinates {
 
         @JsonProperty("__type")
         public String type;
 
         @JsonProperty("KM")
-        public int km;
+        public String km;
 
         @JsonProperty("Lat")
         public double latitude;

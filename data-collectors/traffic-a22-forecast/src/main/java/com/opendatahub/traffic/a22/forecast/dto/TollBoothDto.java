@@ -16,10 +16,10 @@ import lombok.ToString;
 public class TollBoothDto {
 
     @JsonProperty("d")
-    public List<Data> data;
+    public List<TollBoothData> data;
 
     @ToString
-    public static class Data {
+    public static class TollBoothData {
 
         @JsonProperty("__type")
         public String type;
@@ -63,7 +63,7 @@ public class TollBoothDto {
         public int exitWide;
 
         @JsonProperty("KM")
-        public int km;
+        public String km;
 
         @JsonProperty("ItinerariSUD_IT")
         public List<String> itinerarySouthIT;
