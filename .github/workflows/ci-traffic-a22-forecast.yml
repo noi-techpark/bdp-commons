@@ -32,166 +32,166 @@ jobs:
           test-command: 'mvn -B -U clean compile test'
 
   # Deploy Test
-  deploy-test-traffic-a22-forecast:
-    runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/main'
-    environment: test
-    needs: test
-    concurrency: deploy-test-traffic-a22-forecast
-    env:
-      KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v2
-      - name: Create .env file
-        uses: noi-techpark/github-actions/env-file@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
-        env:
-          # General deployment options
-          X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
-          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
-          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-          X_JAVA_OPTIONS: -Xms128m -Xmx512m
+#   deploy-test-traffic-a22-forecast:
+#     runs-on: ubuntu-22.04
+#     if: github.ref == 'refs/heads/main'
+#     environment: test
+#     needs: test
+#     concurrency: deploy-test-traffic-a22-forecast
+#     env:
+#       KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
+#     steps:
+#       - name: Checkout source code
+#         uses: actions/checkout@v2
+#       - name: Create .env file
+#         uses: noi-techpark/github-actions/env-file@v2
+#         with:
+#           working-directory: ${{ env.WORKING_DIRECTORY }}
+#         env:
+#           # General deployment options
+#           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
+#           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+#           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
+#           X_JAVA_OPTIONS: -Xms128m -Xmx512m
 
-          # Open Data Hub Writer Connectivity
-          X_OAUTH_AUTH_URI: ${{ env.KEYCLOAK_URL }}/auth
-          X_OAUTH_TOKEN_URI: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
-          X_OAUTH_CLIENT_ID: odh-mobility-datacollector
-          X_OAUTH_CLIENT_NAME: odh-mobility-datacollector
-          X_OAUTH_CLIENT_SECRET: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
-          X_OAUTH_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
+#           # Open Data Hub Writer Connectivity
+#           X_OAUTH_AUTH_URI: ${{ env.KEYCLOAK_URL }}/auth
+#           X_OAUTH_TOKEN_URI: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+#           X_OAUTH_CLIENT_ID: odh-mobility-datacollector
+#           X_OAUTH_CLIENT_NAME: odh-mobility-datacollector
+#           X_OAUTH_CLIENT_SECRET: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
+#           X_OAUTH_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
-          # Data writer settings
-          X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
-          X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
-          X_ODH_CLIENT_PROVENANCE_ORIGIN: ${{ env.ODH_ORIGIN }}
-          X_ODH_CLIENT_STATIONTYPE: ${{ env.ODH_STATIONTYPE}}
-          X_ODH_CLIENT_PERIOD: ${{ env.ODH_PERIOD }}
+#           # Data writer settings
+#           X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
+#           X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
+#           X_ODH_CLIENT_PROVENANCE_ORIGIN: ${{ env.ODH_ORIGIN }}
+#           X_ODH_CLIENT_STATIONTYPE: ${{ env.ODH_STATIONTYPE}}
+#           X_ODH_CLIENT_PERIOD: ${{ env.ODH_PERIOD }}
 
-          # A22 api endpoint configuration
-          X_A22_URL: ${{ secrets.A22_TARFFIC_FORECAST_URL_TEST }}
-          X_A22_USER: ${{ secrets.A22_TARFFIC_FORECAST_USER_TEST }} 
-          X_A22_PASSWORD: ${{ vars.A22_TARFFIC_FORECAST_PASSWORD_TEST }}
+#           # A22 api endpoint configuration
+#           X_A22_URL: ${{ secrets.A22_TARFFIC_FORECAST_URL_TEST }}
+#           X_A22_USER: ${{ secrets.A22_TARFFIC_FORECAST_USER_TEST }} 
+#           X_A22_PASSWORD: ${{ vars.A22_TARFFIC_FORECAST_PASSWORD_TEST }}
 
-          # Import config
-          X_FORECAST_MONTHS: 3
-          X_HISTORY_IMPORT: true
-          X_HISTORY_START_MONTH: 1
-          X_HISTORY_START_YEAR: 2023
+#           # Import config
+#           X_FORECAST_MONTHS: 3
+#           X_HISTORY_IMPORT: true
+#           X_HISTORY_START_MONTH: 1
+#           X_HISTORY_START_YEAR: 2023
 
-          # Logging
-          X_LOG_LEVEL: info
-          X_LOG_STYLE: json
+#           # Logging
+#           X_LOG_LEVEL: info
+#           X_LOG_STYLE: json
 
-          # Task scheduler
-          X_SCHEDULER_CRON: "0 */10 * * * *"
-          X_SCHEDULER_POOL_SIZE: 1
+#           # Task scheduler
+#           X_SCHEDULER_CRON: "0 */10 * * * *"
+#           X_SCHEDULER_POOL_SIZE: 1
 
-      - name: Build project
-        uses: noi-techpark/github-actions/maven-build@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
-          java-version: ${{ env.JAVA_VERSION }}
-          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
+#       - name: Build project
+#         uses: noi-techpark/github-actions/maven-build@v2
+#         with:
+#           working-directory: ${{ env.WORKING_DIRECTORY }}
+#           java-version: ${{ env.JAVA_VERSION }}
+#           build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
 
-      - name: Build and push images
-        uses: noi-techpark/github-actions/docker-build-and-push@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
-          docker-username: ${{ github.actor }}
-          docker-password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Deploy application
-        uses: noi-techpark/github-actions/docker-deploy@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
-          hosts: 'test'
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          docker-username: 'noi-techpark-bot'
-          docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          project-name: ${{ env.PROJECT_NAME }}
-
-# Deploy Production
-  deploy-prod-traffic-a22-forecast:
-    runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/prod'
-    environment: prod
-    needs: test
-    concurrency: deploy-prod-traffic-a22-forecast
-    env:
-      KEYCLOAK_URL: https://auth.opendatahub.com
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v2
-      - name: Create .env file
-        uses: noi-techpark/github-actions/env-file@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
-        env:
-          # General deployment options
-          X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
-          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
-          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-          X_JAVA_OPTIONS: -Xms128m -Xmx512m
-
-          # Open Data Hub Writer Connectivity
-          X_OAUTH_AUTH_URI: ${{ env.KEYCLOAK_URL }}/auth
-          X_OAUTH_TOKEN_URI: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
-          X_OAUTH_CLIENT_ID: odh-mobility-datacollector
-          X_OAUTH_CLIENT_NAME: odh-mobility-datacollector
-          X_OAUTH_CLIENT_SECRET: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
-          X_OAUTH_BASE_URI: https://mobility.share.opendatahub.com/json
-
-          # Data writer settings
-          X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
-          X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
-          X_ODH_CLIENT_PROVENANCE_ORIGIN: ${{ env.ODH_ORIGIN }}
-          X_ODH_CLIENT_STATIONTYPE: ${{ env.ODH_STATIONTYPE}}
-          X_ODH_CLIENT_PERIOD: ${{ env.ODH_PERIOD }}
-
-          # A22 api endpoint configuration
-          X_A22_URL: ${{ secrets.A22_TARFFIC_FORECAST_URL_PROD }}
-          X_A22_USER: ${{ secrets.A22_TARFFIC_FORECAST_USER_PROD }} 
-          X_A22_PASSWORD: ${{ vars.A22_TARFFIC_FORECAST_PASSWORD_PROD }}
-
-          # Import config
-          X_FORECAST_MONTHS: 3
-          X_HISTORY_IMPORT: true
-          X_HISTORY_START_MONTH: 1
-          X_HISTORY_START_YEAR: 2023
-
-          # Logging
-          X_LOG_LEVEL: info
-          X_LOG_STYLE: json
-
-          # Task scheduler
-          X_SCHEDULER_CRON: "0 */10 * * * *"
-          X_SCHEDULER_POOL_SIZE: 1
-
-      - name: Build project
-        uses: noi-techpark/github-actions/maven-build@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
-          java-version: ${{ env.JAVA_VERSION }}
-          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
-
-      - name: Build and push images
-        uses: noi-techpark/github-actions/docker-build-and-push@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
-          docker-username: ${{ github.actor }}
-          docker-password: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Build and push images
+#         uses: noi-techpark/github-actions/docker-build-and-push@v2
+#         with:
+#           working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
+#           docker-username: ${{ github.actor }}
+#           docker-password: ${{ secrets.GITHUB_TOKEN }}
 
 
-      - name: Deploy application
-        uses: noi-techpark/github-actions/docker-deploy@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
-          hosts: 'prod'
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          docker-username: 'noi-techpark-bot'
-          docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          project-name: ${{ env.PROJECT_NAME }}
+#       - name: Deploy application
+#         uses: noi-techpark/github-actions/docker-deploy@v2
+#         with:
+#           working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
+#           hosts: 'test'
+#           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           docker-username: 'noi-techpark-bot'
+#           docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+#           project-name: ${{ env.PROJECT_NAME }}
+
+# # Deploy Production
+#   deploy-prod-traffic-a22-forecast:
+#     runs-on: ubuntu-22.04
+#     if: github.ref == 'refs/heads/prod'
+#     environment: prod
+#     needs: test
+#     concurrency: deploy-prod-traffic-a22-forecast
+#     env:
+#       KEYCLOAK_URL: https://auth.opendatahub.com
+#     steps:
+#       - name: Checkout source code
+#         uses: actions/checkout@v2
+#       - name: Create .env file
+#         uses: noi-techpark/github-actions/env-file@v2
+#         with:
+#           working-directory: ${{ env.WORKING_DIRECTORY }}
+#         env:
+#           # General deployment options
+#           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
+#           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+#           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
+#           X_JAVA_OPTIONS: -Xms128m -Xmx512m
+
+#           # Open Data Hub Writer Connectivity
+#           X_OAUTH_AUTH_URI: ${{ env.KEYCLOAK_URL }}/auth
+#           X_OAUTH_TOKEN_URI: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+#           X_OAUTH_CLIENT_ID: odh-mobility-datacollector
+#           X_OAUTH_CLIENT_NAME: odh-mobility-datacollector
+#           X_OAUTH_CLIENT_SECRET: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
+#           X_OAUTH_BASE_URI: https://mobility.share.opendatahub.com/json
+
+#           # Data writer settings
+#           X_ODH_CLIENT_PROVENANCE_NAME: ${{ env.PROJECT_NAME }}
+#           X_ODH_CLIENT_PROVENANCE_VERSION: ${{ github.sha }}
+#           X_ODH_CLIENT_PROVENANCE_ORIGIN: ${{ env.ODH_ORIGIN }}
+#           X_ODH_CLIENT_STATIONTYPE: ${{ env.ODH_STATIONTYPE}}
+#           X_ODH_CLIENT_PERIOD: ${{ env.ODH_PERIOD }}
+
+#           # A22 api endpoint configuration
+#           X_A22_URL: ${{ secrets.A22_TARFFIC_FORECAST_URL_PROD }}
+#           X_A22_USER: ${{ secrets.A22_TARFFIC_FORECAST_USER_PROD }} 
+#           X_A22_PASSWORD: ${{ vars.A22_TARFFIC_FORECAST_PASSWORD_PROD }}
+
+#           # Import config
+#           X_FORECAST_MONTHS: 3
+#           X_HISTORY_IMPORT: true
+#           X_HISTORY_START_MONTH: 1
+#           X_HISTORY_START_YEAR: 2023
+
+#           # Logging
+#           X_LOG_LEVEL: info
+#           X_LOG_STYLE: json
+
+#           # Task scheduler
+#           X_SCHEDULER_CRON: "0 */10 * * * *"
+#           X_SCHEDULER_POOL_SIZE: 1
+
+#       - name: Build project
+#         uses: noi-techpark/github-actions/maven-build@v2
+#         with:
+#           working-directory: ${{ env.WORKING_DIRECTORY }}
+#           java-version: ${{ env.JAVA_VERSION }}
+#           build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
+
+#       - name: Build and push images
+#         uses: noi-techpark/github-actions/docker-build-and-push@v2
+#         with:
+#           working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
+#           docker-username: ${{ github.actor }}
+#           docker-password: ${{ secrets.GITHUB_TOKEN }}
+
+
+#       - name: Deploy application
+#         uses: noi-techpark/github-actions/docker-deploy@v2
+#         with:
+#           working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
+#           hosts: 'prod'
+#           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           docker-username: 'noi-techpark-bot'
+#           docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+#           project-name: ${{ env.PROJECT_NAME }}
 
