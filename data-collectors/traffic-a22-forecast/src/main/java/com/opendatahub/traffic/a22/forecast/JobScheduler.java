@@ -18,10 +18,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import com.opendatahub.traffic.a22.forecast.mapping.ForecastMap;
 import com.opendatahub.traffic.a22.forecast.mapping.TollBothCoordinatesMap;
 import com.opendatahub.traffic.a22.forecast.mapping.TollBothMap;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto.TrafficData;
+import com.opendatahub.traffic.a22.forecast.dto.ForecastDto.TrafficDataLine;
 import com.opendatahub.traffic.a22.forecast.services.A22Service;
 import com.opendatahub.traffic.a22.forecast.services.OdhClient;
 
@@ -85,27 +88,18 @@ public class JobScheduler {
 
         StationList stations = new StationList();
 
-        List<ForecastDto> forecastDtos = new ArrayList<>();
+        List<ForecastMap> forecastMaps = new ArrayList<>();
 
         TollBothMap tollBothMap = new TollBothMap(a22Service.getTollBooths());
         TollBothCoordinatesMap coordinateMap = new TollBothCoordinatesMap(a22Service.getCoordinates());
 
         while (from.isBefore(to)) {
-            forecastDtos.add(a22Service.getForecasts(from));
+            forecastMaps.add(new ForecastMap(a22Service.getForecasts(from)));
             from = from.plusMonths(1);
-        }
-
-        for (ForecastDto forecastDto : forecastDtos) {
-            StationDto stationDto = new StationDto();
-            stationDto.setId(stationType);
-
-            // for(TrafficData trafficData: forecastDto.data.trafficDataLines){
-            //     // measuremnts
-            // }
         }
 
         // sync with Open Data Hub
 
-        LOG.info("Sync done. Imported {} months.", forecastDtos.size());
+        LOG.info("Sync done. Imported {} months.", forecastMaps.size());
     }
 }
