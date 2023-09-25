@@ -72,7 +72,7 @@ jobs:
           # A22 api endpoint configuration
           X_A22_URL: ${{ secrets.A22_TARFFIC_FORECAST_URL_TEST }}
           X_A22_USER: ${{ secrets.A22_TARFFIC_FORECAST_USER_TEST }} 
-          X_A22_PASSWORD: ${{ vars.A22_TARFFIC_FORECAST_PASSWORD_TEST }}
+          X_A22_PASSWORD: ${{ secrets.A22_TARFFIC_FORECAST_PASSWORD_TEST }}
 
           # Import config
           X_FORECAST_MONTHS: 3
@@ -154,7 +154,7 @@ jobs:
 #           # A22 api endpoint configuration
 #           X_A22_URL: ${{ secrets.A22_TARFFIC_FORECAST_URL_PROD }}
 #           X_A22_USER: ${{ secrets.A22_TARFFIC_FORECAST_USER_PROD }} 
-#           X_A22_PASSWORD: ${{ vars.A22_TARFFIC_FORECAST_PASSWORD_PROD }}
+#           X_A22_PASSWORD: ${{ secrets.A22_TARFFIC_FORECAST_PASSWORD_PROD }}
 
 #           # Import config
 #           X_FORECAST_MONTHS: 3
