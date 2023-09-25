@@ -7,7 +7,6 @@ package com.opendatahub.traffic.a22.forecast.mapping;
 import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto.TrafficData;
