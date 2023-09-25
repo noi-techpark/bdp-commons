@@ -67,34 +67,34 @@ public class ForecastDto {
 
         @JsonProperty("Nord")
         @JsonIgnoreProperties("Tipo")
-        public Map<String, Values> north;
+        public Map<String, TrafficValues> north;
 
         @JsonProperty("Sud")
         @JsonIgnoreProperties("Tipo")
-        public Map<String, Values> south;
+        public Map<String, TrafficValues> south;
     }
 
     @ToString
-    public static class Values {
+    public static class TrafficValues {
         @JsonProperty("Max")
         public int max;
 
         @JsonProperty("_0_6")
-        public Value value0to6;
+        public TrafficValue value0to6;
 
         @JsonProperty("_6_12")
-        public Value value6to12;
+        public TrafficValue value6to12;
 
         @JsonProperty("_12_18")
-        public Value value12to18;
+        public TrafficValue value12to18;
 
         @JsonProperty("_18_24")
-        public Value value18to24;
+        public TrafficValue value18to24;
 
     }
 
     @ToString
-    public static class Value {
+    public static class TrafficValue {
         @JsonProperty("Tipo")
         public int type;
 

@@ -5,19 +5,17 @@
 package com.opendatahub.traffic.a22.forecast.mapping;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import com.opendatahub.traffic.a22.forecast.dto.TollBoothDto;
 import com.opendatahub.traffic.a22.forecast.dto.TollBoothDto.TollBoothData;
 
-public class TollBothMap {
-
-    Map<String, String> map;
+// Maps the toll booth name to the corresponding km
+// example 'Bolzano Sud' -> '123'
+public class TollBothMap extends HashMap<String, String> {
 
     public TollBothMap(TollBoothDto dto) {
-        map = new HashMap<>();
         for (TollBoothData data : dto.data) {
-            map.put(data.nameIT, data.km);
+            put(data.nameIT, data.km);
         }
     }
 }

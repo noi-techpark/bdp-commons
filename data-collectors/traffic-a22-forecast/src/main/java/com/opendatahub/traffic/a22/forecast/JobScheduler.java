@@ -19,12 +19,14 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.opendatahub.traffic.a22.forecast.mapping.Coordinate;
 import com.opendatahub.traffic.a22.forecast.mapping.ForecastMap;
 import com.opendatahub.traffic.a22.forecast.mapping.TollBothCoordinatesMap;
 import com.opendatahub.traffic.a22.forecast.mapping.TollBothMap;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto.TrafficData;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto.TrafficDataLine;
+import com.opendatahub.traffic.a22.forecast.dto.ForecastDto.TrafficValue;
 import com.opendatahub.traffic.a22.forecast.services.A22Service;
 import com.opendatahub.traffic.a22.forecast.services.OdhClient;
 
@@ -88,18 +90,39 @@ public class JobScheduler {
 
         StationList stations = new StationList();
 
-        List<ForecastMap> forecastMaps = new ArrayList<>();
+        ForecastMap forecastMap = new ForecastMap();
 
         TollBothMap tollBothMap = new TollBothMap(a22Service.getTollBooths());
         TollBothCoordinatesMap coordinateMap = new TollBothCoordinatesMap(a22Service.getCoordinates());
 
-        while (from.isBefore(to)) {
-            forecastMaps.add(new ForecastMap(a22Service.getForecasts(from)));
-            from = from.plusMonths(1);
-        }
+        // get forecast data
+        for (YearMonth i = from; i.isBefore(to); i = i.plusMonths(1))
+            forecastMap.add(a22Service.getForecasts(i), i);
 
         // sync with Open Data Hub
+        for (String toolBoothName : forecastMap.keySet()) {
+            Coordinate coordinate = coordinateMap.get("10");
 
-        LOG.info("Sync done. Imported {} months.", forecastMaps.size());
+            StationDto stationDto = new StationDto(toolBoothName, toolBoothName, coordinate.latitude,
+                    coordinate.latitude);
+            stations.add(stationDto);
+        }
+
+        LOG.info("Sync done. Imported {} months.", forecastMap.size());
+    }
+
+    private String mapTrafficValue(TrafficValue value) {
+        switch (value.type) {
+            case 0:
+                return "regular";
+            case 1:
+                return "heavy";
+            case 2:
+                return "severe";
+            case 3:
+                return "critical";
+            default:
+                return "not defined";
+        }
     }
 }
