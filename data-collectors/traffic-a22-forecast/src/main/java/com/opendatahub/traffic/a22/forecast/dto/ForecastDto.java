@@ -97,6 +97,5 @@ public class ForecastDto {
     public static class TrafficValue {
         @JsonProperty("Tipo")
         public int type;
-
     }
 }

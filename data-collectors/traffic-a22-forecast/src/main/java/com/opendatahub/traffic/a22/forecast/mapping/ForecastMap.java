@@ -15,25 +15,31 @@ import com.opendatahub.traffic.a22.forecast.dto.ForecastDto.TrafficValues;
 
 // Maps the toll booth name to its direction and its values by date
 // example 'Bolzano Sud' -> '09-2023' -> 0,1,0,3
-public class ForecastMap extends HashMap<String, Map<String, TrafficValues>> {
+public class ForecastMap extends HashMap<String, Map<Long, TrafficValues>> {
 
-    public void add(ForecastDto dto, YearMonth date) {
+    public void add(ForecastDto dto) {
         for (TrafficDataLine line : dto.data.trafficDataLines) {
             for (TrafficData data : line.data) {
-                putValues(date, data.south, "Sud");
-                putValues(date, data.north, "Nord");
+                putValues(data.south, data.date, "Sud");
+                putValues(data.north, data.date, "Nord");
             }
         }
     }
 
-    private void putValues(YearMonth date, Map<String, TrafficValues> data, String direction) {
-        data.entrySet().forEach((entry) -> {
+    private void putValues(Map<String, TrafficValues> data, String date, String direction) {
+        data.entrySet().forEach(entry -> {
             String key = entry.getKey() + " " + direction;
-            Map<String, TrafficValues> map = get(key);
+            Map<Long, TrafficValues> map = get(key);
             if (map == null)
                 map = new HashMap<>();
-            map.put(date.toString(), data.get(entry.getKey()));
+            Long timestamp = a22DateToMillis(date);
+            map.put(timestamp, entry.getValue());
             put(key, map);
         });
+    }
+
+    // extracts value from a22 date string "\/Date(1696197600000)\/"
+    private Long a22DateToMillis(String date) {
+        return Long.valueOf(date.substring(6, 19));
     }
 }
