@@ -36,7 +36,8 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
-import com.opendatahub.traffic.a22.forecast.config.DataTypes;;
+import com.opendatahub.traffic.a22.forecast.config.DataTypes;
+import com.opendatahub.traffic.a22.forecast.config.ProvenanceConfig;;
 
 @Service
 public class JobScheduler {
@@ -68,17 +69,17 @@ public class JobScheduler {
     @Value("${station.stationType}")
     public String stationType;
 
-    // @Autowired
-    // private ProvenanceConfig provenanceConfig;
+    @Autowired
+    private ProvenanceConfig provenanceConfig;
 
     @PostConstruct
     public void postConstruct() {
         // sync data types
-        // odhClient.syncDataTypes(stationType,
-        // Arrays.stream(DataTypes.values())
-        // .filter(d -> d.syncToOdh)
-        // .map(DataTypes::toDataTypeDto)
-        // .toList());
+        odhClient.syncDataTypes(stationType,
+                Arrays.stream(DataTypes.values())
+                        .filter(d -> d.syncToOdh)
+                        .map(DataTypes::toDataTypeDto)
+                        .toList());
 
         // historical import
         if (historyEnabled) {
@@ -120,7 +121,7 @@ public class JobScheduler {
                 Coordinate coordinate = coordinateMap.get(km);
                 StationDto stationDto = new StationDto(tollBoothName, tollBoothName, coordinate.latitude,
                         coordinate.longitude);
-                // stationDto.setOrigin(provenanceConfig.origin);
+                stationDto.setOrigin(provenanceConfig.origin);
                 stations.add(stationDto);
 
                 // create measurements
