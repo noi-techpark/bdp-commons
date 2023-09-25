@@ -23,7 +23,7 @@ public enum DataTypes {
     public final String key;
     public final String unit;
     public final String description;
-    public final String rtype = "Instantaneous";
+    public final String rtype = "Forecast";
 
     public DataTypeDto toDataTypeDto() {
         return new DataTypeDto(key, unit, description, rtype);
