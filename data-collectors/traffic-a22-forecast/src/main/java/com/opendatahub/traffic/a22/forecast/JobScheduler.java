@@ -131,8 +131,8 @@ public class JobScheduler {
                     Long timestamp = value.getKey();
 
                     // convert from Europe/Rome to UTC timestamp
-                    Instant instant = Instant.ofEpochMilli(timestamp).atZone(ZoneId.of("Europe/Rome")).toInstant();
-                    timestamp = instant.toEpochMilli();
+                    // Instant instant = Instant.ofEpochMilli(timestamp).atZone(ZoneId.of("Europe/Rome")).toInstant();
+                    // timestamp = instant.toEpochMilli();
 
                     timestamp += threeHours;
                     SimpleRecordDto record0to6 = new SimpleRecordDto(timestamp,

@@ -85,7 +85,7 @@ jobs:
           X_LOG_STYLE: json
 
           # Task scheduler
-          X_SCHEDULER_CRON: "0 0 */1 * * *"
+          X_SCHEDULER_CRON: "0 0 0 * * *"
           X_SCHEDULER_POOL_SIZE: 1
 
       - name: Build project
@@ -167,7 +167,7 @@ jobs:
 #           X_LOG_STYLE: json
 
 #           # Task scheduler
-#           X_SCHEDULER_CRON: "0 0 */1 * * *"
+#           X_SCHEDULER_CRON: "0 0 0 * * *"
 #           X_SCHEDULER_POOL_SIZE: 1
 
 #       - name: Build project
