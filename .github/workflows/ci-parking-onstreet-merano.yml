@@ -65,7 +65,7 @@ jobs:
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
-          X_MQTT_CLIENT_SERVER_URI: ssl://mqtt.kamote.io:8883
+          X_MQTT_CLIENT_SERVER_URI: ssl://prod-mqtt.systems.bz:8883
           X_MQTT_CLIENT_USERNAME: ${{ secrets.PARKING_ONSTREET_MERANO_MQTT_USR }}
           X_MQTT_CLIENT_PASSWORD: ${{ secrets.PARKING_ONSTREET_MERANO_MQTT_PWD }}
           X_MQTT_CLIENT_ID: NOI-TECHPARK-TEST
@@ -138,7 +138,7 @@ jobs:
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
-          X_MQTT_CLIENT_SERVER_URI: ssl://mqtt.kamote.io:8883
+          X_MQTT_CLIENT_SERVER_URI: ssl://prod-mqtt.systems.bz:8883
           X_MQTT_CLIENT_USERNAME: ${{ secrets.PARKING_ONSTREET_MERANO_MQTT_USR }}
           X_MQTT_CLIENT_PASSWORD: ${{ secrets.PARKING_ONSTREET_MERANO_MQTT_PWD }}
           X_MQTT_CLIENT_ID: NOI-TECHPARK
