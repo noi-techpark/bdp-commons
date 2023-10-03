@@ -4,14 +4,12 @@
 
 package com.opendatahub.traffic.a22.forecast.mapping;
 
-import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.opendatahub.traffic.a22.forecast.JobScheduler;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto.TrafficData;
 import com.opendatahub.traffic.a22.forecast.dto.ForecastDto.TrafficDataLine;
@@ -24,20 +22,23 @@ public class ForecastMap extends HashMap<String, Map<Long, TrafficValues>> {
     private static final Logger LOG = LoggerFactory.getLogger(ForecastMap.class);
 
     public void add(ForecastDto dto) {
-        for (TrafficDataLine line : dto.data.trafficDataLines) {
-            if (line.isValid())
+        if (dto.data.isValid()) {
+            for (TrafficDataLine line : dto.data.trafficDataLines) {
                 for (TrafficData data : line.data) {
                     putValues(data.south, data.date, "Sud");
                     putValues(data.north, data.date, "Nord");
                 }
-            else {
-                if (line.data.isEmpty())
-                    LOG.info("Data is empty. Skipping...");
-                else
-                    LOG.info("Not valid data for date {}/{}. Skipping...", line.data.get(0).month,
-                            line.data.get(0).year);
-
             }
+        } else {
+            if (dto.data.trafficDataLines.isEmpty()) {
+                LOG.info("Data is empty. Skipping...");
+
+            } else {
+                TrafficDataLine line = dto.data.trafficDataLines.get(0);
+                LOG.info("Not valid data for date {}/{}. Skipping...", line.data.get(0).month,
+                        line.data.get(0).year);
+            }
+
         }
     }
 
@@ -55,6 +56,7 @@ public class ForecastMap extends HashMap<String, Map<Long, TrafficValues>> {
 
     // extracts value from a22 date string "\/Date(1696197600000)\/"
     private Long a22DateToMillis(String date) {
-        return Long.valueOf(date.substring(6, 19));
+        // regex to extract digits of String
+        return Long.valueOf(date.replaceAll("\\D", ""));
     }
 }

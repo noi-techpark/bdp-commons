@@ -40,6 +40,14 @@ public class ForecastDto {
 
         @JsonProperty("RighePrevisioniTraffico")
         public List<TrafficDataLine> trafficDataLines;
+
+                // if every day of whole month has value = 0; forecast is not valid
+        public boolean isValid() {
+            for (TrafficDataLine trafficDataLine : trafficDataLines)
+                if (trafficDataLine.isValid())
+                    return true;
+            return false;
+        }
     }
 
     @ToString
