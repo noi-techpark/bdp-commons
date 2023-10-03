@@ -46,6 +46,14 @@ public class ForecastDto {
     public static class TrafficDataLine {
         @JsonProperty("PrevisioniTraffico")
         public List<TrafficData> data;
+
+        // if every day of whole month has value = 0; forecast is not valid
+        public boolean isValid() {
+            for (TrafficData trafficData : data)
+                if (trafficData.isValid())s
+                    return true;
+            return false;
+        }
     }
 
     @ToString
@@ -72,6 +80,14 @@ public class ForecastDto {
         @JsonProperty("Sud")
         @JsonIgnoreProperties("Tipo")
         public Map<String, TrafficValues> south;
+        
+        public boolean isValid() {
+            for (TrafficValues values : south.values())
+                if ((values.value0to6.type + values.value6to12.type + values.value12to18.type
+                        + values.value18to24.type) == 0)
+                    return false;
+            return true;
+        }
     }
 
     @ToString

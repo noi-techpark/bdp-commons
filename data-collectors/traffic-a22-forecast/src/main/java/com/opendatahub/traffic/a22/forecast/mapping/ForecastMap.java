@@ -19,10 +19,11 @@ public class ForecastMap extends HashMap<String, Map<Long, TrafficValues>> {
 
     public void add(ForecastDto dto) {
         for (TrafficDataLine line : dto.data.trafficDataLines) {
-            for (TrafficData data : line.data) {
-                putValues(data.south, data.date, "Sud");
-                putValues(data.north, data.date, "Nord");
-            }
+            if (line.isValid())
+                for (TrafficData data : line.data) {
+                    putValues(data.south, data.date, "Sud");
+                    putValues(data.north, data.date, "Nord");
+                }
         }
     }
 
