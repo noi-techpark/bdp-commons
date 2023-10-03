@@ -50,7 +50,7 @@ public class ForecastDto {
         // if every day of whole month has value = 0; forecast is not valid
         public boolean isValid() {
             for (TrafficData trafficData : data)
-                if (trafficData.isValid())s
+                if (trafficData.isValid())
                     return true;
             return false;
         }
