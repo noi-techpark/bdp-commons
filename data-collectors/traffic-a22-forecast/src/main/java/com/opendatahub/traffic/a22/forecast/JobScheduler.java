@@ -72,7 +72,7 @@ public class JobScheduler {
     @Autowired
     private ProvenanceConfig provenanceConfig;
 
-    // @PostConstruct
+    @PostConstruct
     public void postConstruct() {
         // sync data types
         odhClient.syncDataTypes(stationType,
