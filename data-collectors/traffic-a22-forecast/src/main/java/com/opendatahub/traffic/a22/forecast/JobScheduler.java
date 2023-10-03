@@ -72,7 +72,7 @@ public class JobScheduler {
     @Autowired
     private ProvenanceConfig provenanceConfig;
 
-    @PostConstruct
+    // @PostConstruct
     public void postConstruct() {
         // sync data types
         odhClient.syncDataTypes(stationType,
@@ -129,10 +129,6 @@ public class JobScheduler {
                     // time windows are always 6 hours, so use middle of 3 hours
                     Long threeHours = 10800000L;
                     Long timestamp = value.getKey();
-
-                    // convert from Europe/Rome to UTC timestamp
-                    // Instant instant = Instant.ofEpochMilli(timestamp).atZone(ZoneId.of("Europe/Rome")).toInstant();
-                    // timestamp = instant.toEpochMilli();
 
                     timestamp += threeHours;
                     SimpleRecordDto record0to6 = new SimpleRecordDto(timestamp,
