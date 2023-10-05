@@ -48,7 +48,7 @@ public class MainTrafficEventRoadworkBZ {
                 Map<String, Object> uuidFields = getUuidFields(trafficEventRoadwork);
                 eventDto.setUuid(uuidFields);
                 eventDto.setEventSeriesUuid(uuidFields);
-                eventDto.setCategory(String.format("%s - %s  | %s - %s", trafficEventRoadwork.getTycodeIt(),
+                eventDto.setCategory(String.format("%s_%s  | %s_%s", trafficEventRoadwork.getTycodeIt(),
                         trafficEventRoadwork.getSubTycodeIt(), trafficEventRoadwork.getTycodeDe(),
                         trafficEventRoadwork.getSubTycodeDe()));
                 eventDto.setOrigin(configuration.getOrigin());
