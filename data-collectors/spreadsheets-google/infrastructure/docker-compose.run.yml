@@ -10,3 +10,5 @@ services:
       - .env
     ports:
       - ${SERVER_PORT}:8080
+    volumes:
+      - ./credentials:/credentials
