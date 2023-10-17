@@ -17,5 +17,5 @@
             remote: docker-compose.yml
           - local: ../../.env
             remote: .env
-          - local: ../../credentials
+          - local: ../../credentials/
             remote: credentials
