@@ -114,7 +114,7 @@ public class MainOnDemandMerano {
     }
 
     public void executeActivities() {
-        LOG.info("MainOnDemandService executeActivities");
+        LOG.debug("MainOnDemandService executeActivities");
         try {
             setupDataType();
 
@@ -139,7 +139,7 @@ public class MainOnDemandMerano {
     }
 
     private void elaborateVehicles(List<OnDemandMeranoVehicle> vehicles) throws Exception {
-        LOG.info("MainOnDemandService elaborateVehicles");
+        LOG.debug("MainOnDemandService elaborateVehicles");
         List<StationDto> preStations = vehicleJSONPusher.fetchStations(onDemandMeranoConfiguration.getVehiclesStationtype(),
                 onDemandMeranoConfiguration.getOrigin());
         StationList stopsStationList = new StationList();
@@ -194,7 +194,7 @@ public class MainOnDemandMerano {
     }
 
     private void elaborateIternaties(List<OnDemandMeranoActivity> activites) throws Exception {
-        LOG.info("MainOnDemandService elaborateIternaties");
+        LOG.debug("MainOnDemandService elaborateIternaties");
 
         StationList itineraryStationList = new StationList();
         DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
