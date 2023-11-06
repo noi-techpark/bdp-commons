@@ -17,7 +17,7 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
         uses: noi-techpark/github-actions/checkout@v2
@@ -32,8 +32,8 @@ jobs:
 
 # Deploy Test
   deploy-test-parking-offstreet-meranobolzano:
-    runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-22.04
+    if: github.ref == 'spring-boot/parking-offstreet-meranobolzano'
     needs: test
     concurrency: deploy-test-parking-offstreet-meranobolzano
     env:
@@ -122,7 +122,7 @@ jobs:
 
   # Deploy Production
   deploy-prod-parking-offstreet-meranobolzano:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/prod'
     needs: test
     concurrency: deploy-prod-parking-offstreet-meranobolzano
