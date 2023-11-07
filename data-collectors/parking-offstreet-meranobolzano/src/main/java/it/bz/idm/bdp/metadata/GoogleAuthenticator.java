@@ -34,7 +34,7 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 @Service
 public abstract class GoogleAuthenticator {
 
-    @Value("classpath:/spring/client_secret.json")
+    @Value("classpath:/credentials/client_secret.json")
     private Resource clientSecret;
     private NetHttpTransport HTTP_TRANSPORT;
     private JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
