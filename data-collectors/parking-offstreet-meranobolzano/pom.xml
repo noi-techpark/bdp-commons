@@ -10,7 +10,7 @@ SPDX-License-Identifier: CC0-1.0
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>dc-parking-MeBo</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<version>3.0.0</version>
 	<name>Parking datacollector</name>
 
