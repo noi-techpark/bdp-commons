@@ -33,7 +33,7 @@ jobs:
 # Deploy Test
   deploy-test-parking-offstreet-meranobolzano:
     runs-on: ubuntu-22.04
-    if: github.ref == 'main'
+    if: github.ref == 'refs/heads/main'
     needs: test
     concurrency: deploy-test-parking-offstreet-meranobolzano
     env:
