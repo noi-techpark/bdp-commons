@@ -40,7 +40,7 @@ public class MeteoTnJobScheduler {
     @Autowired
     private MeteoTnDataConverter converter;
 
-    // @PostConstruct
+    @PostConstruct
     public void pushDataTypes() throws Exception {
         LOG.info("START.pushDataTypes");
 
