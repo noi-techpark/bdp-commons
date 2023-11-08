@@ -17,15 +17,18 @@ import it.bz.noi.bikechargers.pusher.BikeChargerJSONPusher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class MainBikeCharger {
+import javax.annotation.PostConstruct;
 
-    private static final Logger LOG = LoggerFactory.getLogger(MainBikeCharger.class);
+@Component
+public class JobScheduler {
+
+    private static final Logger LOG = LoggerFactory.getLogger(JobScheduler.class);
 
     @Autowired
     private BikeChargerConnector bikeChargerConnector;
@@ -39,11 +42,16 @@ public class MainBikeCharger {
     @Autowired
     private BikeChargerBayJSONPusher bikeChargerBayJSONPusher;
 
+    @PostConstruct
+    private void syncDataTypes() {
+        setupDataType(bikeChargerJSONPusher, datatypesConfiguration.getAllBikeChargerDataTypes());
+        setupDataType(bikeChargerBayJSONPusher, datatypesConfiguration.getAllBikeChargerBayDataTypes());
+    }
+
+    @Scheduled(cron = "${scheduler.cron}")
     public void execute() {
         LOG.info("MainBikeCharger execute");
         try {
-            setupDataType(bikeChargerJSONPusher, datatypesConfiguration.getAllBikeChargerDataTypes());
-            setupDataType(bikeChargerBayJSONPusher, datatypesConfiguration.getAllBikeChargerBayDataTypes());
 
             List<BikeChargerStation> stations = bikeChargerConnector.getStations();
             LOG.debug("got {} stations", stations.size());
@@ -66,16 +74,21 @@ public class MainBikeCharger {
                 stationDto.getMetaData().put("totalBays", bikeChargerStationDetails.getTotalBays());
 
                 bikeChargerDataMap.addRecord(station.getId(), datatypesConfiguration.getState().getKey(),
-                        new SimpleRecordDto(System.currentTimeMillis(), station.getState(), bikeChargerConfiguration.getPeriod()));
+                        new SimpleRecordDto(System.currentTimeMillis(), station.getState(),
+                                bikeChargerConfiguration.getPeriod()));
                 bikeChargerDataMap.addRecord(station.getId(), datatypesConfiguration.getFreebay().getKey(),
-                        new SimpleRecordDto(System.currentTimeMillis(), bikeChargerStationDetails.getFreeBay(), bikeChargerConfiguration.getPeriod()));
+                        new SimpleRecordDto(System.currentTimeMillis(), bikeChargerStationDetails.getFreeBay(),
+                                bikeChargerConfiguration.getPeriod()));
                 bikeChargerDataMap.addRecord(station.getId(), datatypesConfiguration.getAvailableVehicles().getKey(),
-                        new SimpleRecordDto(System.currentTimeMillis(), bikeChargerStationDetails.getAvailableVehicles(), bikeChargerConfiguration.getPeriod()));
+                        new SimpleRecordDto(System.currentTimeMillis(),
+                                bikeChargerStationDetails.getAvailableVehicles(),
+                                bikeChargerConfiguration.getPeriod()));
 
                 LOG.debug("got {} bays", bikeChargerStationDetails.getBayStations().size());
 
-                for(BikeChargerBayStation bayStation: bikeChargerStationDetails.getBayStations()) {
-                    StationDto bayStationDto = new StationDto(bikeChargerConfiguration.getOrigin() + ":" + bayStation.getLabel(),
+                for (BikeChargerBayStation bayStation : bikeChargerStationDetails.getBayStations()) {
+                    StationDto bayStationDto = new StationDto(
+                            bikeChargerConfiguration.getOrigin() + ":" + bayStation.getLabel(),
                             bayStation.getLabel(),
                             station.getLat(),
                             station.getLng());
@@ -86,9 +99,12 @@ public class MainBikeCharger {
                     bayStationDto.getMetaData().put("use", bayStation.getUse());
 
                     bikeChargerBayDataMap.addRecord(bayStationDto.getId(), datatypesConfiguration.getState().getKey(),
-                            new SimpleRecordDto(System.currentTimeMillis(), bayStation.getState(), bikeChargerConfiguration.getPeriod()));
-                    bikeChargerBayDataMap.addRecord(bayStationDto.getId(), datatypesConfiguration.getUsageState().getKey(),
-                            new SimpleRecordDto(System.currentTimeMillis(), bayStation.getUsageState(), bikeChargerConfiguration.getPeriod()));
+                            new SimpleRecordDto(System.currentTimeMillis(), bayStation.getState(),
+                                    bikeChargerConfiguration.getPeriod()));
+                    bikeChargerBayDataMap.addRecord(bayStationDto.getId(),
+                            datatypesConfiguration.getUsageState().getKey(),
+                            new SimpleRecordDto(System.currentTimeMillis(), bayStation.getUsageState(),
+                                    bikeChargerConfiguration.getPeriod()));
 
                     bikeChargerBayStationList.add(bayStationDto);
                 }
@@ -104,15 +120,15 @@ public class MainBikeCharger {
         }
     }
 
-    private static void setupDataType(AbstractBikeChargerJSONPusher jsonPusher, List<DatatypeConfiguration> datatypeConfigurations) {
+    private static void setupDataType(AbstractBikeChargerJSONPusher jsonPusher,
+            List<DatatypeConfiguration> datatypeConfigurations) {
         List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
         for (DatatypeConfiguration datatypeConfiguration : datatypeConfigurations) {
             dataTypeDtoList.add(
                     new DataTypeDto(datatypeConfiguration.getKey(),
                             datatypeConfiguration.getUnit(),
                             datatypeConfiguration.getDescription(),
-                            datatypeConfiguration.getRtype())
-            );
+                            datatypeConfiguration.getRtype()));
         }
         jsonPusher.syncDataTypes(dataTypeDtoList);
     }
