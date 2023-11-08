@@ -221,7 +221,7 @@ public class DCUtils {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     retval = sdf.parse(inval);
                 } catch (Exception e3) {
-                    LOG.error("Exception parsing date "+inval+": "+e3);
+                    LOG.debug("Exception parsing date "+inval+": "+e3);
                 }
             }
         }
