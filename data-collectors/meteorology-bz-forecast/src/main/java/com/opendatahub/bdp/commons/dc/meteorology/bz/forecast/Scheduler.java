@@ -6,11 +6,16 @@ package com.opendatahub.bdp.commons.dc.meteorology.bz.forecast;
 
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.config.DataConfig;
 import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.config.ProvenanceConfig;
 import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.config.StationConfig;
@@ -38,10 +43,23 @@ public class Scheduler {
     @Autowired
     private ProvenanceConfig provC;
 
-    @Scheduled(cron = "${scheduler.job}")
-    public void collectForecastData() {
-        LOG.info("Cron job started");
+    @Autowired
+    private S3Service s3;
 
+    // @PostConstruct
+    // private void postConstruct(){
+    //     try {
+    //         collectForecastData();
+    //     } catch (InterruptedException e) {
+    //         // TODO Auto-generated catch block
+    //         e.printStackTrace();
+    //     }
+    // }
+
+    @Scheduled(cron = "${scheduler.job}")
+    public void collectForecastData() throws InterruptedException, JsonMappingException, JsonProcessingException {
+        LOG.info("Cron job started");
+        s3.downloadFile();
     }
 
 }

@@ -11,10 +11,4 @@ import org.springframework.context.annotation.Configuration;
 public class StationConfig {
     @Value("${station.stationType}")
     public String stationType;
-
-    @Value("${station.stationBayType}")
-    public String stationBayType;
-
-    @Value("${station.stationLocationType}")
-    public String stationLocationType;
 }

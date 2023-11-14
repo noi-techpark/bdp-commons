@@ -4,26 +4,76 @@
 
 package com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.services;
 
-import java.util.List;
-import org.slf4j.Logger;
+import javax.annotation.PostConstruct;
+
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.ResponseBytes;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-@Service
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.dto.ForecastDto;
+
+@Component
 public class S3Service {
-    private final static Logger LOG = LoggerFactory.getLogger(S3Service.class);
 
-    @Autowired
-    @Qualifier("dataWebClient") // avoid overlap with webClient in bdp-core
-    private WebClient client;
+    private Logger logger = LoggerFactory.getLogger(S3Service.class);
 
-    public List<Object> getForecastData() {
-        LOG.info("Getting forecast data...");
+    @Value("${aws.bucketName}")
+    private String bucketName;
 
-        LOG.info("Getting forecast data DONE.");
-        return null;
+    @Value("${aws.accessKeyId}")
+    private String accessKey;
+
+    @Value("${aws.aws.secretAccessKey}")
+    private String secretKey;
+
+    @Value("${aws.fileName}")
+    private String fileName;
+
+    @Value("${aws.region}")
+    private String region;
+
+    private ObjectMapper mapper;
+
+    private S3Client s3;
+
+    @PostConstruct
+    public void postConstruct() {
+        AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
+
+        s3 = S3Client.builder()
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(credentials))
+                .build();
+
+        mapper = new ObjectMapper();
     }
+
+    public void downloadFile() throws InterruptedException, JsonMappingException, JsonProcessingException {
+        logger.info("download of file: {} from S3", fileName);
+        GetObjectRequest objectRequest = GetObjectRequest
+                .builder()
+                .key(fileName)
+                .bucket(bucketName)
+                .build();
+
+        ResponseBytes<GetObjectResponse> objectBytes = s3.getObjectAsBytes(objectRequest);
+        String string = objectBytes.asUtf8String();
+        ForecastDto dto = mapper.readValue(string, ForecastDto.class);
+
+        logger.info("Successfully obtained bytes from an S3 object {}", string.length());
+        logger.info("upload of file: {} to S3 done", fileName);
+    }
+
 }
