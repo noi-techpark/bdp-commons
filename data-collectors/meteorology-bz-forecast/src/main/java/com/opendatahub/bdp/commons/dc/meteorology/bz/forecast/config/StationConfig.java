@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class StationConfig {
-    @Value("${station.stationType}")
-    public String stationType;
+    @Value("${station.modelStationType}")
+    public String modelStationType;
+
+    @Value("${station.dataStationType}")
+    public String dataStationType;
 }

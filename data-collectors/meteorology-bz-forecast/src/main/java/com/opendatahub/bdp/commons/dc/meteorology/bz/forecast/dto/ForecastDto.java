@@ -14,7 +14,23 @@ import lombok.ToString;
 @JsonDeserialize
 public class ForecastDto {
 
+    public Info info;
     public List<Municipality> municipalities;
+
+    @ToString
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Info {
+        public String model;
+        public String currentModelRun;
+        public String nextModelRun;
+        public String fileName;
+        public String fileCreationDate;
+
+        public int absTempMin;
+        public int absTempMax;
+        public int absPrecMin;
+        public int absPrecMax;
+    }
 
     @ToString
     @JsonIgnoreProperties(ignoreUnknown = true)

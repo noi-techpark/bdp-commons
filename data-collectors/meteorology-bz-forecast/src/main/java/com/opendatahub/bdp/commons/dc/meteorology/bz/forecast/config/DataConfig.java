@@ -12,6 +12,9 @@ public class DataConfig {
     @Value("${data.period.3h}")
     public int period3h;
 
+    @Value("${data.period.12h}")
+    public int period12h;
+
     @Value("${data.period.24h}")
     public int period24h;
 }

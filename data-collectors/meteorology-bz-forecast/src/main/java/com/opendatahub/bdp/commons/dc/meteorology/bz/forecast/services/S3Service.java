@@ -60,7 +60,7 @@ public class S3Service {
         mapper = new ObjectMapper();
     }
 
-    public void downloadFile() throws InterruptedException, JsonMappingException, JsonProcessingException {
+    public ForecastDto getForecastDto() throws InterruptedException, JsonMappingException, JsonProcessingException {
         logger.info("download of file: {} from S3", fileName);
         GetObjectRequest objectRequest = GetObjectRequest
                 .builder()
@@ -72,8 +72,8 @@ public class S3Service {
         String string = objectBytes.asUtf8String();
         ForecastDto dto = mapper.readValue(string, ForecastDto.class);
 
-        logger.info("Successfully obtained bytes from an S3 object {}", string.length());
-        logger.info("upload of file: {} to S3 done", fileName);
+        logger.info("download of file: {} to S3 done", fileName);
+        return dto;
     }
 
 }
