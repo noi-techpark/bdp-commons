@@ -25,36 +25,55 @@ public class ForecastDto {
         public String nameEn;
         public String nameRm;
 
-        public ForecastDataSet tempMin24;
-        public ForecastDataSet tempMax24;
-        public ForecastDataSet temp3;
-        public ForecastDataSet ssd24;
-        public ForecastDataSet precProb3;
-        public ForecastDataSet precProb24;
-        public ForecastDataSet precSum3;
-        public ForecastDataSet precSum24;
-        // public ForecastDataSet symbols3;
-        // public ForecastDataSet symbols24;
-        public ForecastDataSet windDir3;
-        public ForecastDataSet windSpd3;
+        public ForecastDoubleSet tempMin24;
+        public ForecastDoubleSet tempMax24;
+        public ForecastDoubleSet temp3;
+        public ForecastDoubleSet ssd24;
+        public ForecastDoubleSet precProb3;
+        public ForecastDoubleSet precProb24;
+        public ForecastDoubleSet precSum3;
+        public ForecastDoubleSet precSum24;
+        public ForecastStringSet symbols3;
+        public ForecastStringSet symbols24;
+        public ForecastDoubleSet windDir3;
+        public ForecastDoubleSet windSpd3;
     }
 
     @ToString
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class ForecastDataSet {
+    public static class ForecastDoubleSet {
         public String nameDe;
         public String nameIt;
         public String nameEn;
         public String nameRm;
         public String unit;
 
-        public List<ForecastData> data;
+        public List<ForecastDouble> data;
     }
 
     @ToString
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class ForecastData {
+    public static class ForecastStringSet {
+        public String nameDe;
+        public String nameIt;
+        public String nameEn;
+        public String nameRm;
+        public String unit;
+
+        public List<ForecastString> data;
+    }
+
+    @ToString
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class ForecastDouble {
         public String date;
         public Double value;
+    }
+
+    @ToString
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class ForecastString {
+        public String date;
+        public String value;
     }
 }
