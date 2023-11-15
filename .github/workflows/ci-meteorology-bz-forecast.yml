@@ -49,11 +49,11 @@ jobs:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
           # AWS config
-          AWS_REGION: eu-west-1
-          AWS_S3_FILE_NAME: SMOS_MCPL-WX_EXP_SIAG.JSON
-          AWS_S3_BUCKET_NAME: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_BUCKET_NAME_TEST }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_ACCESS_KEY_ID_TEST }}
-          AWS_S3_ACCESS_SECRET_KEY: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_S3_ACCESS_SECRET_KEY_TEST }}
+          X_AWS_REGION: eu-west-1
+          X_AWS_S3_FILE_NAME: SMOS_MCPL-WX_EXP_SIAG.JSON
+          X_AWS_S3_BUCKET_NAME: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_BUCKET_NAME_TEST }}
+          X_AWS_ACCESS_KEY_ID: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_ACCESS_KEY_ID_TEST }}
+          X_AWS_S3_ACCESS_SECRET_KEY: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_S3_ACCESS_SECRET_KEY_TEST }}
 
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
@@ -126,11 +126,11 @@ jobs:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
           # AWS config
-          AWS_REGION: eu-west-1
-          AWS_S3_FILE_NAME: SMOS_MCPL-WX_EXP_SIAG.JSON
-          AWS_S3_BUCKET_NAME: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_BUCKET_NAME_PROD }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_ACCESS_KEY_ID_PROD }}
-          AWS_S3_ACCESS_SECRET_KEY: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_S3_ACCESS_SECRET_KEY_PROD }}
+          X_AWS_REGION: eu-west-1
+          X_AWS_S3_FILE_NAME: SMOS_MCPL-WX_EXP_SIAG.JSON
+          X_AWS_S3_BUCKET_NAME: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_BUCKET_NAME_PROD }}
+          X_AWS_ACCESS_KEY_ID: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_ACCESS_KEY_ID_PROD }}
+          X_AWS_S3_ACCESS_SECRET_KEY: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_S3_ACCESS_SECRET_KEY_PROD }}
           
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
