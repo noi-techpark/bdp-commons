@@ -10,10 +10,14 @@ package com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.config;
 import it.bz.idm.bdp.dto.DataTypeDto;
 
 public enum DataTypes {
-    airTemperatureMax("air-temperature-max", "Max air temperature", true, "Celcius"),
-    airTemperatureMin("air-temperature-min", "Min air temperature", true, "Celcius"),
-    precipitationMax("precipitation-max", "Max precipitation", false, "mm"),
-    precipitationMin("precipitation-min", "Min precipitation", false, "mm");
+    airTemperatureMax("forecast-air-temperature-max", "Forecast of max air temperature during a day", true, "Celcius"),
+    airTemperatureMin("forecast-air-temperature-min", "Forecast of min air temperature during a day", true, "Celcius"),
+    airTemperature("forecast-air-temperature", "Forecast of air temperature at a specific timestamp", true, "Celcius"),
+    windDirection("forecast-wind-direction", "Forecast of wind direction", true, "\\u00b0"),
+    windSpeed("forecast-wind-speed", "Forecast of wind speed", true, "m/s"),
+    sunshineDuration("forecast-sunshine-duration", "Forecast of sun shine duration", true, "h"),
+    precipitationProbability("forecast-precipitation-probability", "Forecast of precipitation probability", false, "%"),
+    precipitationSum("forecast-precipitation-sum", "Forecast of cumulated precipitation", false, "mm");
 
     private DataTypes(String key, String description, boolean sync, String unit) {
         this.key = key;
