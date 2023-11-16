@@ -78,7 +78,7 @@ public class Scheduler {
     @Autowired
     private MunicipalityLocationMap municipalityLocationMap;
 
-    // @PostConstruct
+    @PostConstruct
     private void postConstruct() {
         odhClient.syncDataTypes(stationC.modelStationType,
                 Arrays.stream(ModelDataTypes.values())
