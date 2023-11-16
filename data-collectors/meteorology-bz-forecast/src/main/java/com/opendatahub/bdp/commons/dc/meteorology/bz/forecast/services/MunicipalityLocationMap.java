@@ -15,6 +15,7 @@ import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.dto.LocationDto;
 import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.dto.MunicipalityDto;
 
 // taken from https://tourism.opendatahub.com/v1/Municipality?fields=Detail.de.Title,Latitude,Longitude
+// some names have been changed to fit the names from the forecast data
 @Service
 public class MunicipalityLocationMap extends HashMap<String, LocationDto> {
 
