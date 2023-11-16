@@ -148,7 +148,7 @@ public class Scheduler {
             // TODO should be a measurement?
             metadata.put("nameEn", municipality.nameEn);
             metadata.put("nameRm", municipality.nameRm);
-            modelStation.setMetaData(metadata);
+            station.setMetaData(metadata);
             stationList.add(station);
 
             // temperature min 24 hours
