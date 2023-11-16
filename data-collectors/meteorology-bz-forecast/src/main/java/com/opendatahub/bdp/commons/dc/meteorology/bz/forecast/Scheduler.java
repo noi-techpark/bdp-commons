@@ -6,6 +6,7 @@ package com.opendatahub.bdp.commons.dc.meteorology.bz.forecast;
 
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.Arrays;
@@ -34,6 +35,7 @@ import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.dto.ForecastDto.Fo
 import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.dto.ForecastDto.ForecastDoubleSet;
 import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.dto.ForecastDto.ForecastStringSet;
 import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.dto.ForecastDto.Municipality;
+import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.dto.LocationDto;
 import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.services.S3Service;
 
 import it.bz.idm.bdp.dto.DataMapDto;
@@ -42,6 +44,7 @@ import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
+import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.services.MunicipalityLocationMap;
 import com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.services.OdhClient;
 
 @Service
@@ -72,7 +75,10 @@ public class Scheduler {
     @Autowired
     private S3Service s3;
 
-    @PostConstruct
+    @Autowired
+    private MunicipalityLocationMap municipalityLocationMap;
+
+    // @PostConstruct
     private void postConstruct() {
         odhClient.syncDataTypes(stationC.modelStationType,
                 Arrays.stream(ModelDataTypes.values())
@@ -89,7 +95,7 @@ public class Scheduler {
 
     @Scheduled(cron = "${scheduler.job}")
     public void collectForecastData()
-            throws InterruptedException, JsonMappingException, JsonProcessingException, ParseException {
+            throws InterruptedException, ParseException, IOException {
         LOG.info("Cron job started");
         ForecastDto dto = s3.getForecastDto();
 
@@ -125,9 +131,19 @@ public class Scheduler {
         StationList stationList = new StationList();
 
         for (Municipality municipality : dto.municipalities) {
-            // TODO replace BZ_LAT and BZ_LON with correct position from tousrism API
+            LocationDto location = municipalityLocationMap.get(municipality.nameDe);
+
+            if (location == null) {
+                LOG.error("Location not found: {}. Setting to default BZ location.", municipality.nameDe);
+                location = new LocationDto(BZ_LAT, BZ_LON);
+            }
+
             StationDto station = new StationDto(municipality.code, municipality.nameDe + "_" + municipality.nameIt,
-                    BZ_LAT, BZ_LON);
+                    location.lat, location.lon);
+
+            // set model as parent station
+            station.setParentStation(modelStation.getId());
+
             Map<String, Object> metadata = new HashMap<>();
             // TODO should be a measurement?
             metadata.put("nameEn", municipality.nameEn);
