@@ -5,24 +5,20 @@
 
 package it.bz.tis.integreen.carsharingbzit;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Properties;
-
 import javax.annotation.PostConstruct;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.IntegreenPushable;
 import it.bz.tis.integreen.carsharingbzit.api.ApiClient;
@@ -31,10 +27,10 @@ import it.bz.tis.integreen.carsharingbzit.api.ApiClient;
  * 
  * @author Davide Montesin <d@vide.bz>
  */
-@Component
-public class ConnectorServlet
+@Service
+public class JobScheduler
 {
-	static final Logger logger = LoggerFactory.getLogger(ConnectorServlet.class);
+	static final Logger logger = LoggerFactory.getLogger(JobScheduler.class);
 
 	boolean destroy;
 
@@ -77,6 +73,7 @@ public class ConnectorServlet
 		logger.debug("init(ServletConfig): end");
 	}
 
+	@Scheduled(cron = "${scheduler.cron}")
 	public void run()
 	{
 		logger.info("run(): begin");
