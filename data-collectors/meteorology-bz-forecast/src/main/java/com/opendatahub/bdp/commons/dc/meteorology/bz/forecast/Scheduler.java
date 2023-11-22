@@ -99,6 +99,7 @@ public class Scheduler {
         // Model
         ////////////////////
         StationDto modelStation = new StationDto(dto.info.model, dto.info.model, BZ_LAT, BZ_LON);
+        modelStation.setOrigin(provC.origin);
         // and its metadata
         Map<String, Object> modelMetadata = new HashMap<>();
         // TODO should be a measurement?
@@ -136,7 +137,7 @@ public class Scheduler {
 
             StationDto station = new StationDto(municipality.code, municipality.nameDe + "_" + municipality.nameIt,
                     location.lat, location.lon);
-
+            station.setOrigin(provC.origin);
             // set model as parent station
             station.setParentStation(modelStation.getId());
 
