@@ -79,7 +79,7 @@ public class Scheduler {
     @Autowired
     private MunicipalityLocationMap municipalityLocationMap;
 
-    @PostConstruct
+    // @PostConstruct
     private void postCoinstruct() {
         odhClient.syncDataTypes(stationC.modelStationType,
                 Arrays.stream(ModelDataTypes.values())
@@ -151,67 +151,67 @@ public class Scheduler {
             stationList.add(station);
 
             // temperature min 24 hours
-            addDoubleDataType(dataTypes, municipality.tempMin24);
+            addDoubleDataType(dataTypes, DataTypes.airTemperatureMin, municipality.tempMin24);
             for (ForecastDouble data : municipality.tempMin24.data) {
                 addDoubleRecord(measurements, municipality.code, data, DataTypes.airTemperatureMin.key,
                         dataC.period24h);
             }
             // temperature max 24 hours
-            addDoubleDataType(dataTypes, municipality.tempMax24);
+            addDoubleDataType(dataTypes, DataTypes.airTemperatureMax, municipality.tempMax24);
             for (ForecastDouble data : municipality.tempMax24.data) {
                 addDoubleRecord(measurements, municipality.code, data, DataTypes.airTemperatureMax.key,
                         dataC.period24h);
             }
             // temperature every 3 hours
-            addDoubleDataType(dataTypes, municipality.temp3);
+            addDoubleDataType(dataTypes, DataTypes.airTemperature, municipality.temp3);
             for (ForecastDouble data : municipality.temp3.data) {
                 addDoubleRecord(measurements, municipality.code, data, DataTypes.airTemperature.key, dataC.period3h);
             }
             // sunshine duration 24 hours
-            addDoubleDataType(dataTypes, municipality.ssd24);
+            addDoubleDataType(dataTypes, DataTypes.sunshineDuration, municipality.ssd24);
             for (ForecastDouble data : municipality.ssd24.data) {
                 addDoubleRecord(measurements, municipality.code, data, DataTypes.sunshineDuration.key, dataC.period24h);
             }
             // precipitation probability 3 hours
-            addDoubleDataType(dataTypes, municipality.precProb3);
+            addDoubleDataType(dataTypes, DataTypes.precipitationProbability, municipality.precProb3);
             for (ForecastDouble data : municipality.precProb3.data) {
                 addDoubleRecord(measurements, municipality.code, data, DataTypes.precipitationProbability.key,
                         dataC.period3h);
             }
             // probably precipitation 24 hours
-            addDoubleDataType(dataTypes, municipality.precProb24);
+            addDoubleDataType(dataTypes, DataTypes.precipitationProbability, municipality.precProb24);
             for (ForecastDouble data : municipality.precProb24.data) {
                 addDoubleRecord(measurements, municipality.code, data, DataTypes.precipitationProbability.key,
                         dataC.period24h);
             }
             // probably precipitation sum 3 hours
-            addDoubleDataType(dataTypes, municipality.precSum3);
+            addDoubleDataType(dataTypes, DataTypes.precipitationSum, municipality.precSum3);
             for (ForecastDouble data : municipality.precSum3.data) {
                 addDoubleRecord(measurements, municipality.code, data, DataTypes.precipitationSum.key, dataC.period3h);
             }
             // probably precipitation sum 24 hours
-            addDoubleDataType(dataTypes, municipality.precSum24);
+            addDoubleDataType(dataTypes, DataTypes.precipitationSum, municipality.precSum24);
             for (ForecastDouble data : municipality.precSum24.data) {
                 addDoubleRecord(measurements, municipality.code, data, DataTypes.precipitationSum.key, dataC.period24h);
             }
             // wind direction 3 hours
-            addDoubleDataType(dataTypes, municipality.windDir3);
+            addDoubleDataType(dataTypes, DataTypes.windDirection, municipality.windDir3);
             for (ForecastDouble data : municipality.windDir3.data) {
                 addDoubleRecord(measurements, municipality.code, data, DataTypes.windDirection.key, dataC.period3h);
             }
             // wind speed 3 hours
-            addDoubleDataType(dataTypes, municipality.windSpd3);
+            addDoubleDataType(dataTypes, DataTypes.windSpeed, municipality.windSpd3);
             for (ForecastDouble data : municipality.windSpd3.data) {
                 addDoubleRecord(measurements, municipality.code, data, DataTypes.windSpeed.key, dataC.period3h);
             }
             // weather status symbols 3 hours
-            addStringDataType(dataTypes, municipality.symbols3);
+            addStringDataType(dataTypes, DataTypes.qualitativeForecast, municipality.symbols3);
             for (ForecastString data : municipality.symbols3.data) {
                 addStringRecord(measurements, municipality.code, data, DataTypes.qualitativeForecast.key,
                         dataC.period3h);
             }
             // weather status symbols 24 hours
-            addStringDataType(dataTypes, municipality.symbols24);
+            addStringDataType(dataTypes, DataTypes.qualitativeForecast, municipality.symbols24);
             for (ForecastString data : municipality.symbols24.data) {
                 addStringRecord(measurements, municipality.code, data, DataTypes.qualitativeForecast.key,
                         dataC.period24h);
@@ -229,24 +229,28 @@ public class Scheduler {
         odhClient.pushData(stationC.dataStationType, measurements);
     }
 
-    private void addDoubleDataType(List<DataTypeDto >dataTypes, ForecastDoubleSet data) {
-        DataTypeDto dataTypeDto = ModelDataTypes.airTemperatureMax.toDataTypeDto();
+    private void addDoubleDataType(List<DataTypeDto> dataTypes, DataTypes dataType, ForecastDoubleSet data) {
+        DataTypeDto dataTypeDto = dataType.toDataTypeDto();
         Map<String, Object> typeMetadata = new HashMap<>();
         typeMetadata.put("nameEn", data.nameEn);
         typeMetadata.put("nameDe", data.nameDe);
         typeMetadata.put("nameIt", data.nameIt);
         dataTypeDto.setMetaData(typeMetadata);
-        dataTypes.add(dataTypeDto);
+
+        if (!dataTypes.contains(dataTypeDto))
+            dataTypes.add(dataTypeDto);
     }
 
-    private void addStringDataType(List<DataTypeDto >dataTypes, ForecastStringSet data) {
-        DataTypeDto dataTypeDto = ModelDataTypes.airTemperatureMax.toDataTypeDto();
+    private void addStringDataType(List<DataTypeDto> dataTypes, DataTypes dataType, ForecastStringSet data) {
+        DataTypeDto dataTypeDto = dataType.toDataTypeDto();
         Map<String, Object> typeMetadata = new HashMap<>();
         typeMetadata.put("nameEn", data.nameEn);
         typeMetadata.put("nameDe", data.nameDe);
         typeMetadata.put("nameIt", data.nameIt);
         dataTypeDto.setMetaData(typeMetadata);
-        dataTypes.add(dataTypeDto);
+        
+        if (!dataTypes.contains(dataTypeDto))
+            dataTypes.add(dataTypeDto);
     }
 
     private void addDoubleRecord(DataMapDto<RecordDtoImpl> measurements, String stationCode, ForecastDouble data,
