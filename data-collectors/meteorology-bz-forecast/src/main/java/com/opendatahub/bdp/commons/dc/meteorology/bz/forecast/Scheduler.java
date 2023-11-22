@@ -117,9 +117,9 @@ public class Scheduler {
         SimpleRecordDto absPrecMin = new SimpleRecordDto(modelTimestamp, dto.info.absPrecMin, dataC.period12h);
 
         modelMeasurements.addRecord(dto.info.model, ModelDataTypes.airTemperatureMax.key, absTempMax);
-        modelMeasurements.addRecord(dto.info.model, ModelDataTypes.airTemperatureMax.key, absTempMin);
-        modelMeasurements.addRecord(dto.info.model, ModelDataTypes.airTemperatureMax.key, absPrecMax);
-        modelMeasurements.addRecord(dto.info.model, ModelDataTypes.airTemperatureMax.key, absPrecMin);
+        modelMeasurements.addRecord(dto.info.model, ModelDataTypes.airTemperatureMin.key, absTempMin);
+        modelMeasurements.addRecord(dto.info.model, ModelDataTypes.precipitationMax.key, absPrecMax);
+        modelMeasurements.addRecord(dto.info.model, ModelDataTypes.precipitationMin.key, absPrecMin);
 
         ////////////////////
         // Forecast Data
@@ -150,7 +150,7 @@ public class Scheduler {
 
             // temperature min 24 hours
             for (ForecastDouble data : municipality.tempMin24.data) {
-                addDoubleRecord(measurements, municipality.code, data, DataTypes.airTemperatureMax.key,
+                addDoubleRecord(measurements, municipality.code, data, DataTypes.airTemperatureMin.key,
                         dataC.period24h);
             }
             // temperature max 24 hours
