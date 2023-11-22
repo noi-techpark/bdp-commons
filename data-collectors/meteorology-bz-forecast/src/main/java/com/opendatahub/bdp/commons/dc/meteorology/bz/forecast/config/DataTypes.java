@@ -17,6 +17,7 @@ public enum DataTypes {
     windSpeed("forecast-wind-speed", "Forecast of wind speed", true, "m/s"),
     sunshineDuration("forecast-sunshine-duration", "Forecast of sun shine duration", true, "h"),
     precipitationProbability("forecast-precipitation-probability", "Forecast of precipitation probability", false, "%"),
+    qualitativeForecast("qualitative-forecast", "Forecast of overall weather condition. Example: sunny", false, ""),
     precipitationSum("forecast-precipitation-sum", "Forecast of cumulated precipitation", false, "mm");
 
     private DataTypes(String key, String description, boolean sync, String unit) {
