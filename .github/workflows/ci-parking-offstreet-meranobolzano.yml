@@ -91,8 +91,8 @@ jobs:
 
       - name: Retrieve secret files and decode it to a file
         run: |
-          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/credentials/client_secret.json
-          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/credentials/StoredCredential
+          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/client_secret.json
+          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/StoredCredential
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -181,8 +181,8 @@ jobs:
 
       - name: Retrieve secret files and decode it to a file
         run: |
-          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/credentials/client_secret.json
-          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/credentials/StoredCredential
+          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/client_secret.json
+          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/StoredCredential
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
