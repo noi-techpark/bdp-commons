@@ -12,8 +12,8 @@ env:
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-vehicletraffic-bluetooth
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
-  STORED_CREDENTIALS_BASE64: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_STORED_CREDENTIAL_B64 }}
   CLIENT_SECRET_BASE64: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_GOOGLE_SECRET_B64 }}
+  STORED_CREDENTIAL_BASE64: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_STORED_CREDENTIAL_B64 }}
 
 jobs:
   test:
