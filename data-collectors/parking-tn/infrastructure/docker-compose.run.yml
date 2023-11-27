@@ -8,3 +8,5 @@ services:
       _JAVA_OPTIONS: ${JAVA_OPTIONS}
     env_file:
       - .env
+    volumes:
+      - ./credentials:/credentials
