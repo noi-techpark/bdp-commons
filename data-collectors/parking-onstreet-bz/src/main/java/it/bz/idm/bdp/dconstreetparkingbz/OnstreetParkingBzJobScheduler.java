@@ -6,10 +6,13 @@ package it.bz.idm.bdp.dconstreetparkingbz;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -17,7 +20,8 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.StationList;
 
 /**
- * Cronjob configuration can be found under src/main/resources/META-INF/spring/applicationContext.xml
+ * Cronjob configuration can be found under
+ * src/main/resources/META-INF/spring/applicationContext.xml
  * XXX Do not forget to configure it!
  */
 @Component
@@ -32,14 +36,14 @@ public class OnstreetParkingBzJobScheduler {
     @Autowired
     private OnstreetParkingBzDataRetriever retriever;
 
-    /** JOB 1 */
+    @PostConstruct
     public void pushDataTypes() throws Exception {
         LOG.info("START.pushDataTypes");
 
         try {
             List<DataTypeDto> dataTypes = pusher.mapDataTypes2Bdp();
 
-            if (dataTypes != null){
+            if (dataTypes != null) {
                 pusher.syncDataTypes(dataTypes);
             }
 
@@ -53,7 +57,7 @@ public class OnstreetParkingBzJobScheduler {
         LOG.info("END.pushDataTypes");
     }
 
-    /** JOB 2 */
+    @Scheduled(cron = "${scheduler.job}")
     public void pushStations() throws Exception {
         LOG.info("START.pushStations");
 
@@ -74,12 +78,12 @@ public class OnstreetParkingBzJobScheduler {
         LOG.info("END.pushStations");
     }
 
-//    /** JOB 3 */
-//    public void pushData() throws Exception {
-//        LOG.info("START.pushData");
-//
-//
-//        LOG.info("END.pushData");
-//    }
+    // /** JOB 3 */
+    // public void pushData() throws Exception {
+    // LOG.info("START.pushData");
+    //
+    //
+    // LOG.info("END.pushData");
+    // }
 
 }

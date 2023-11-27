@@ -16,31 +16,28 @@ import java.util.Date;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.junit.Test;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import it.bz.idm.bdp.dconstreetparkingbz.DCUtils;
 import it.bz.idm.bdp.dconstreetparkingbz.OnstreetParkingBzDataConverter;
 
-@ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class OnstreetParkingBzDataConverterTestIT extends AbstractJUnit4SpringContextTests {
+public class OnstreetParkingBzDataConverterTestIT {
 
     private static final Logger LOG = LoggerFactory.getLogger(OnstreetParkingBzDataConverterTestIT.class.getName());
 
-//    @Autowired
-//    private OnstreetParkingBzDataPusher pusher;
+    // @Autowired
+    // private OnstreetParkingBzDataPusher pusher;
 
-//    @Autowired
-//    private OnstreetParkingBzDataConverter converter;
+    // @Autowired
+    // private OnstreetParkingBzDataConverter converter;
 
-//    @Autowired
-//    private BikesharingMoqoDataRetriever reader;
+    // @Autowired
+    // private BikesharingMoqoDataRetriever reader;
 
-    private static final String TEST_FILE_PUSH_MEASUREMENTS_1  = "/test_data/test_data_onstreet-parking_1.json";
-    private static final String TEST_FILE_PUSH_MEASUREMENTS_2  = "/test_data/test_data_onstreet-parking_2.json";
+    private static final String TEST_FILE_PUSH_MEASUREMENTS_1 = "/test_data/test_data_onstreet-parking_1.json";
+    private static final String TEST_FILE_PUSH_MEASUREMENTS_2 = "/test_data/test_data_onstreet-parking_2.json";
 
-    public static final String DATA_PUSH_MEASUREMENTS_2  = "PUSH_MEASUREMENTS_1";
-    public static final String DATA_PUSH_MEASUREMENTS_1  = "PUSH_MEASUREMENTS_2";
+    public static final String DATA_PUSH_MEASUREMENTS_2 = "PUSH_MEASUREMENTS_1";
+    public static final String DATA_PUSH_MEASUREMENTS_1 = "PUSH_MEASUREMENTS_2";
 
     public static final String CONTROLLER_URL = "http://localhost:8080/osp/json/pushRecords";
 
@@ -50,7 +47,8 @@ public class OnstreetParkingBzDataConverterTestIT extends AbstractJUnit4SpringCo
 
     @Test
     public void testConvertDate() {
-        // Configurator.setLevel(OnstreetParkingBzDataConverterTestIT.class.getName(), Level.DEBUG);
+        // Configurator.setLevel(OnstreetParkingBzDataConverterTestIT.class.getName(),
+        // Level.DEBUG);
         String str1 = "2020-02-24T13:37:00.436096605Z";
         String str2 = "2019-06-01T13:20:00CEST";
         String str3 = "2019-01-12T20:50:00CET";
@@ -59,10 +57,10 @@ public class OnstreetParkingBzDataConverterTestIT extends AbstractJUnit4SpringCo
         Date d2 = DCUtils.convertStringTimezoneToDate(str2);
         Date d3 = DCUtils.convertStringTimezoneToDate(str3);
         Date d4 = DCUtils.convertStringTimezoneToDate(str4);
-        LOG.debug(str1+" ==> "+d1);
-        LOG.debug(str2+" ==> "+d2);
-        LOG.debug(str3+" ==> "+d3);
-        LOG.debug(str4+" ==> "+d4);
+        LOG.debug(str1 + " ==> " + d1);
+        LOG.debug(str2 + " ==> " + d2);
+        LOG.debug(str3 + " ==> " + d3);
+        LOG.debug(str4 + " ==> " + d4);
 
         String format = "yyyy-MM-dd'T'HH:mm:ss";
         try {
@@ -70,24 +68,24 @@ public class OnstreetParkingBzDataConverterTestIT extends AbstractJUnit4SpringCo
             Date dt = sdf.parse(str1);
             LOG.debug(str1 + " ==> " + dt);
         } catch (Exception e) {
-            LOG.debug("Unable to parse date '"+str1+"'  with format '"+format+"': "+e);
+            LOG.debug("Unable to parse date '" + str1 + "'  with format '" + format + "': " + e);
         }
 
         Date d5 = new Date(1582552162);
         String str5_1 = DCUtils.convertDateToString(d5, "yyyy-MM-dd'T'HH:mm:ssX");
         String str5_2 = DCUtils.convertDateToString(d5, "yyyy-MM-dd'T'HH:mm:ssZ");
         String str5_3 = DCUtils.convertDateToString(d5, "yyyy-MM-dd'T'HH:mm:ss:SSSSSSSSS");
-        LOG.debug("str9_1="+str5_1);
-        LOG.debug("str9_2="+str5_2);
-        LOG.debug("str9_3="+str5_3);
+        LOG.debug("str9_1=" + str5_1);
+        LOG.debug("str9_2=" + str5_2);
+        LOG.debug("str9_3=" + str5_3);
 
         Date d9 = new Date();
         String str9_1 = DCUtils.convertDateToString(d9, "yyyy-MM-dd'T'HH:mm:ssX");
         String str9_2 = DCUtils.convertDateToString(d9, "yyyy-MM-dd'T'HH:mm:ssZ");
         String str9_3 = DCUtils.convertDateToString(d9, "yyyy-MM-dd'T'HH:mm:ss:SSSSSSSSS");
-        LOG.debug("str9_1="+str9_1);
-        LOG.debug("str9_2="+str9_2);
-        LOG.debug("str9_3="+str9_3);
+        LOG.debug("str9_1=" + str9_1);
+        LOG.debug("str9_2=" + str9_2);
+        LOG.debug("str9_3=" + str9_3);
 
     }
 
@@ -99,15 +97,14 @@ public class OnstreetParkingBzDataConverterTestIT extends AbstractJUnit4SpringCo
 
         try {
             LOG.debug("START read test data");
-            String fileName =
-                    DATA_PUSH_MEASUREMENTS_1.equals(dataType)  ? TEST_FILE_PUSH_MEASUREMENTS_1 :
-                    DATA_PUSH_MEASUREMENTS_2.equals(dataType)  ? TEST_FILE_PUSH_MEASUREMENTS_2 :
-                    DATA_PUSH_MEASUREMENTS_1;
-            if ( DCUtils.paramNotNull(paramName) && paramValue != null ) {
+            String fileName = DATA_PUSH_MEASUREMENTS_1.equals(dataType) ? TEST_FILE_PUSH_MEASUREMENTS_1
+                    : DATA_PUSH_MEASUREMENTS_2.equals(dataType) ? TEST_FILE_PUSH_MEASUREMENTS_2
+                            : DATA_PUSH_MEASUREMENTS_1;
+            if (DCUtils.paramNotNull(paramName) && paramValue != null) {
                 fileName = fileName.replace(paramName, paramValue);
             }
             URL url = OnstreetParkingBzDataConverterTestIT.class.getResource(fileName);
-            if ( url == null ) {
+            if (url == null) {
                 return null;
             }
             String filePath = url.getFile();
@@ -116,12 +113,12 @@ public class OnstreetParkingBzDataConverterTestIT extends AbstractJUnit4SpringCo
             rr = new FileReader(testFilePath);
             br = new BufferedReader(rr);
             String line = br.readLine();
-            while ( line != null ) {
+            while (line != null) {
                 retval.append(line);
                 line = br.readLine();
             }
         } catch (Exception ex) {
-            LOG.error("EXCEPTION in getTestData: "+ex);
+            LOG.error("EXCEPTION in getTestData: " + ex);
         } finally {
             close(br);
             close(rr);
@@ -133,13 +130,13 @@ public class OnstreetParkingBzDataConverterTestIT extends AbstractJUnit4SpringCo
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void close(Object obj) {
-        if ( obj != null ) {
+        if (obj != null) {
             try {
                 Class clazz = obj.getClass();
-                Method m = clazz.getMethod("close", (Class[])null);
-                m.invoke(obj, (Object[])null);
+                Method m = clazz.getMethod("close", (Class[]) null);
+                m.invoke(obj, (Object[]) null);
             } catch (Exception ex) {
-                LOG.error("EXCEPTION during close: "+ex);
+                LOG.error("EXCEPTION during close: " + ex);
             }
         }
     }

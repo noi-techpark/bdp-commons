@@ -13,8 +13,6 @@ import org.slf4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import it.bz.idm.bdp.dconstreetparkingbz.DCUtils;
 import it.bz.idm.bdp.dconstreetparkingbz.OnstreetParkingBzDataPusher;
@@ -23,8 +21,7 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
-@ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
-public class OnstreetParkingBzDataRetrieverIT extends AbstractJUnit4SpringContextTests {
+public class OnstreetParkingBzDataRetrieverIT  {
 
     private static final Logger LOG = LoggerFactory.getLogger(OnstreetParkingBzDataRetrieverIT.class.getName());
 
