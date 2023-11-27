@@ -153,8 +153,8 @@ jobs:
           STORED_CREDENTIALS_BASE64: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_STORED_CREDENTIAL_B64 }}
           GOOGLE_SECRET_BASE64: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_GOOGLE_SECRET_B64 }}
         run: |
-          echo $VEHICLETRAFFIC_BLUETOOTH_GOOGLE_SECRET_B64 | base64 --decode > data-collectors/spreadsheets-google/credentials/client_secret.json
-          echo $VEHICLETRAFFIC_BLUETOOTH_STORED_CREDENTIAL_B64 | base64 --decode > data-collectors/spreadsheets-google/credentials/StoredCredential
+          echo $GOOGLE_SECRET_BASE64 | base64 --decode > data-collectors/spreadsheets-google/credentials/client_secret.json
+          echo $STORED_CREDENTIALS_BASE64 | base64 --decode > data-collectors/spreadsheets-google/credentials/StoredCredential
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
