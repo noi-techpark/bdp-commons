@@ -24,6 +24,7 @@ services:
     volumes:
       - ~/.m2/:/var/maven/.m2
       - ./:/code
+      - ./credentials:/credentials
     working_dir: /code
     tty: true
     network_mode: host
