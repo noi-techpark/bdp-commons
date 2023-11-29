@@ -1,0 +1,8 @@
+
+### station list
+GET http://dati.meteotrentino.it/service.asmx/getListOfMeteoStations
+
+### station code examples T0356, T0437
+@stationcode=T0437
+### get station data
+GET http://dati.meteotrentino.it/service.asmx/getLastDataOfMeteoStation?codice={{stationcode}}

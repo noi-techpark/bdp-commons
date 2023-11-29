@@ -6,14 +6,18 @@ version: "3.4"
 
 services:
   app:
-    image: maven:3-jdk-8-alpine
-    network_mode: host
+    image: maven:3-openjdk-17-slim
     env_file:
       - .env
     environment:
       MAVEN_CONFIG: /var/maven/.m2
-      MAVEN_OPTS: -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9000
-    entrypoint: mvn -Duser.home=/var/maven -Dmaven.tomcat.port=9001 tomcat:run
+      MAVEN_OPTS: -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9000"
+    command: >
+      mvn
+      -Duser.home=/var/maven
+      clean
+      compile
+      spring-boot:run
     ports:
       - 9000:9000
       - 9001:9001
@@ -22,3 +26,4 @@ services:
       - ./:/code
     working_dir: /code
     tty: true
+    network_mode: host

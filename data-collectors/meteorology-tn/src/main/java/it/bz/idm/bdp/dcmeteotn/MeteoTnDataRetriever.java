@@ -9,10 +9,8 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -33,8 +31,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -52,13 +50,30 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.StationDto;
 
 @Component
-@PropertySource({ "classpath:/META-INF/spring/application.properties" })
 public class MeteoTnDataRetriever {
 
     private static final Logger LOG = LoggerFactory.getLogger(MeteoTnDataRetriever.class.getName());
 
-    @Autowired
-    private Environment env;
+    @Value("${endpoint.stations.method}")
+    private String strEndpointMethod;
+
+    @Value("${endpoint.stations.protocol}")
+    private String strEndpointProtocol;
+
+    @Value("${endpoint.stations.host}")
+    private String strEndpointHost;
+
+    @Value("${endpoint.stations.port}")
+    private String strEndpointPort;
+
+    @Value("${endpoint.stations.path}")
+    private String strEndpointPath;
+
+    @Value("${endpoint.measurements.param.param_name}")
+    private String paramName;
+
+    @Value("${endpoint.measurements.param.station_attr_name}")
+    private String attrName;
 
     @Autowired
     private MeteoTnDataConverter converter;
@@ -74,36 +89,30 @@ public class MeteoTnDataRetriever {
 
     private String endpointMethodMeasurements;
     private String serviceUrlMeasurements;
-    private Map<String, String> measurementsParams;
 
     public MeteoTnDataRetriever() {
         LOG.debug("Create instance");
     }
 
     @PostConstruct
-    private void initClient(){
+    private void initClient() {
         LOG.debug("Init");
-        if (clientStations==null) {
-            //Read config data from external bundle
-            String strEndpointMethod   = env.getProperty("endpoint.stations.method");
-            String strEndpointProtocol = env.getProperty("endpoint.stations.protocol");
-            String strEndpointHost     = env.getProperty("endpoint.stations.host");
-            String strEndpointPort     = env.getProperty("endpoint.stations.port");
-            String strEndpointPath     = env.getProperty("endpoint.stations.path");
+        if (clientStations == null) {
 
-            LOG.debug("Read config:"+
-                    "  endpoint.stations.protocol='"+strEndpointProtocol+"'"+
-                    "  endpoint.stations.method='"+strEndpointMethod+"'"+
-                    "  endpoint.stations.host='"+strEndpointHost+"'"+
-                    "  endpoint.stations.port='"+strEndpointPort+"'"+
-                    "  endpoint.stations.path='"+strEndpointPath+"'");
+            LOG.debug("Read config:" +
+                    "  endpoint.stations.protocol='" + strEndpointProtocol + "'" +
+                    "  endpoint.stations.method='" + strEndpointMethod + "'" +
+                    "  endpoint.stations.host='" + strEndpointHost + "'" +
+                    "  endpoint.stations.port='" + strEndpointPort + "'" +
+                    "  endpoint.stations.path='" + strEndpointPath + "'");
 
-            //Create HTTP Client
-            endpointMethodStations   = DCUtils.allowNulls(strEndpointMethod).trim();
-            String  endpointProtocol = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "http" : "https";
-            String  defaultPort      = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "80" : "443";
-            String  endpointHost = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointHost).trim());
-            String  endpointPath = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointPath).trim());
+            // Create HTTP Client
+            endpointMethodStations = DCUtils.allowNulls(strEndpointMethod).trim();
+            String endpointProtocol = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "http"
+                    : "https";
+            String defaultPort = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "80" : "443";
+            String endpointHost = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointHost).trim());
+            String endpointPath = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointPath).trim());
             Integer endpointPort = DCUtils.convertStringToInteger(DCUtils.defaultNulls(strEndpointPort, defaultPort));
             serviceUrlStations = endpointProtocol + "://" + endpointHost + ":" + endpointPort + "/" + endpointPath;
 
@@ -111,81 +120,60 @@ public class MeteoTnDataRetriever {
 
             LOG.debug("Http Client Stations created");
         }
-        if (clientMeasurements==null) {
-            //Read config data from external bundle
-            String strEndpointMethod   = env.getProperty("endpoint.measurements.method");
-            String strEndpointProtocol = env.getProperty("endpoint.measurements.protocol");
-            String strEndpointHost     = env.getProperty("endpoint.measurements.host");
-            String strEndpointPort     = env.getProperty("endpoint.measurements.port");
-            String strEndpointPath     = env.getProperty("endpoint.measurements.path");
+        if (clientMeasurements == null) {
+            LOG.debug("Read config:" +
+                    "  endpoint.measurements.protocol='" + strEndpointProtocol + "'" +
+                    "  endpoint.measurements.method='" + strEndpointMethod + "'" +
+                    "  endpoint.measurements.host='" + strEndpointHost + "'" +
+                    "  endpoint.measurements.port='" + strEndpointPort + "'" +
+                    "  endpoint.measurements.path='" + strEndpointPath + "'");
 
-            LOG.debug("Read config:"+
-                    "  endpoint.measurements.protocol='"+strEndpointProtocol+"'"+
-                    "  endpoint.measurements.method='"+strEndpointMethod+"'"+
-                    "  endpoint.measurements.host='"+strEndpointHost+"'"+
-                    "  endpoint.measurements.port='"+strEndpointPort+"'"+
-                    "  endpoint.measurements.path='"+strEndpointPath+"'");
-
-            //Create HTTP Client
+            // Create HTTP Client
             endpointMethodMeasurements = DCUtils.allowNulls(strEndpointMethod).trim();
-            String  endpointProtocol = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "http" : "https";
-            String  defaultPort      = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "80" : "443";
-            String  endpointHost = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointHost).trim());
-            String  endpointPath = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointPath).trim());
+            String endpointProtocol = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "http"
+                    : "https";
+            String defaultPort = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "80" : "443";
+            String endpointHost = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointHost).trim());
+            String endpointPath = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointPath).trim());
             Integer endpointPort = DCUtils.convertStringToInteger(DCUtils.defaultNulls(strEndpointPort, defaultPort));
             serviceUrlMeasurements = endpointProtocol + "://" + endpointHost + ":" + endpointPort + "/" + endpointPath;
 
             clientMeasurements = builderMeasurements.build();
-
-            measurementsParams = new HashMap<String, String>();
-            boolean hasNext = true;
-            int i=0;
-            while ( hasNext ) {
-                //Example of parameters to add
-                //endpoint.measurements.param.0.param_name
-                //endpoint.measurements.param.0.station_attr_name
-                String paramName = DCUtils.allowNulls(env.getProperty("endpoint.measurements.param."+i+".param_name")).trim();
-                String stationAttrName = DCUtils.allowNulls(env.getProperty("endpoint.measurements.param."+i+".station_attr_name")).trim();
-                if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(stationAttrName) ) {
-                    measurementsParams.put(paramName, stationAttrName);
-                    i++;
-                } else {
-                    hasNext = false;
-                }
-            }
 
             LOG.debug("Http Client Measurements created");
         }
     }
 
     /**
-     * Performs the call to Meteo service and returns exactly the response String without particular processing or formatting
+     * Performs the call to Meteo service and returns exactly the response String
+     * without particular processing or formatting
      * 
      * @return
      * @throws Exception
      */
-    private String callRemoteService(CloseableHttpClient client, String serviceUrl, String endpointMethod, List<NameValuePair> endpointParams) throws Exception {
+    private String callRemoteService(CloseableHttpClient client, String serviceUrl, String endpointMethod,
+            List<NameValuePair> endpointParams) throws Exception {
         String url = serviceUrl;
         LOG.debug("Start call to service: " + url);
 
         // In our case it is not necessary to set particular headers
-//        String xcallerHeader = env.getProperty("app.callerId");
-//        String apikey = env.getProperty("app.apikey");
-//        if (xcallerHeader != null)
-//            get.setHeader("X-Caller-ID",xcallerHeader);
-//        if (apikey != null)
-//            get.setHeader("apikey",apikey);
-//        get.setHeader("Accept","application/json");
+        // String xcallerHeader = env.getProperty("app.callerId");
+        // String apikey = env.getProperty("app.apikey");
+        // if (xcallerHeader != null)
+        // get.setHeader("X-Caller-ID",xcallerHeader);
+        // if (apikey != null)
+        // get.setHeader("apikey",apikey);
+        // get.setHeader("Accept","application/json");
 
         HttpRequestBase request = null;
-        if ( "GET".equalsIgnoreCase(endpointMethod) ) {
+        if ("GET".equalsIgnoreCase(endpointMethod)) {
             request = new HttpGet(url);
         } else {
             request = new HttpPost(url);
         }
 
         URIBuilder uriBuilder = new URIBuilder(request.getURI());
-        if ( endpointParams!=null && endpointParams.size()>0 ) {
+        if (endpointParams != null && endpointParams.size() > 0) {
             uriBuilder.addParameters(endpointParams);
         }
         URI uri = uriBuilder.build();
@@ -207,7 +195,8 @@ public class MeteoTnDataRetriever {
     }
 
     /**
-     * Converts the string returned by the Meteo service in a more useful internal representation
+     * Converts the string returned by the Meteo service in a more useful internal
+     * representation
      * 
      * @param responseString
      * @return
@@ -217,9 +206,11 @@ public class MeteoTnDataRetriever {
 
         List<MeteoTnDto> dtoList = new ArrayList<MeteoTnDto>();
 
-        List<Map<String, String>> dataMap = mapper.readValue(responseString, new TypeReference<List<Map<String, String>>>() {});
+        List<Map<String, String>> dataMap = mapper.readValue(responseString,
+                new TypeReference<List<Map<String, String>>>() {
+                });
 
-        //Convert in internal DTO without calling measurement service
+        // Convert in internal DTO without calling measurement service
         for (Map<String, String> station : dataMap) {
             StationDto stationDto = converter.convertExternalStationDtoToStationDto(station);
             MeteoTnDto dataByCity = new MeteoTnDto(stationDto, station);
@@ -227,58 +218,62 @@ public class MeteoTnDataRetriever {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("dtoList: "+dtoList); 
+            LOG.debug("dtoList: " + dtoList);
         }
         return dtoList;
     }
 
     /**
-     * Converts the string returned by the Meteo service in a more useful internal representation
+     * Converts the string returned by the Meteo service in a more useful internal
+     * representation
      * 
      * @param responseString
      * @return
      * @throws Exception
      */
-    public MeteoTnDto convertMeasurementsResponseToInternalDTO(String responseString, Map<String, String> station) throws Exception {
+    public MeteoTnDto convertMeasurementsResponseToInternalDTO(String responseString, Map<String, String> station)
+            throws Exception {
         MeteoTnDto extDto = null;
 
         /*
          * Example of XML retrieved for measures of one station
          * 
-<lastData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.meteotrentino.it/">
-  <temperature_list>
-    <air_temperature UM="°C">
-      <date>2018-12-17T00:00:00+01</date>
-      <value>-6.8</value>
-    </air_temperature>
-  </temperature_list>
-  <precipitation_list>
-    <precipitation UM="mm">
-      <date>2018-12-17T00:00:00+01</date>
-      <value>0</value>
-    </precipitation>
-  </precipitation_list>
-  <wind_list>
-    <wind10m UM_speed="m/s" UM_direction="gN">
-      <date>2018-12-18T02:00:00+01</date>
-      <speed_value>1.9</speed_value>
-      <direction_value>113</direction_value>
-    </wind10m>
-  </wind_list>
-  <global_radiation_list>
-    <global_radiation UM="W/mq">
-      <date>2018-12-17T00:00:00+01</date>
-      <value>0</value>
-    </global_radiation>
-  </global_radiation_list>
-  <relative_humidity_list>
-    <relative_humidity UM="%">
-      <date>2018-12-17T00:00:00+01</date>
-      <value>78</value>
-    </relative_humidity>
-  </relative_humidity_list>
-  <snow_depth_list/>
-</lastData>
+         * <lastData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         * xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         * xmlns="http://www.meteotrentino.it/">
+         * <temperature_list>
+         * <air_temperature UM="°C">
+         * <date>2018-12-17T00:00:00+01</date>
+         * <value>-6.8</value>
+         * </air_temperature>
+         * </temperature_list>
+         * <precipitation_list>
+         * <precipitation UM="mm">
+         * <date>2018-12-17T00:00:00+01</date>
+         * <value>0</value>
+         * </precipitation>
+         * </precipitation_list>
+         * <wind_list>
+         * <wind10m UM_speed="m/s" UM_direction="gN">
+         * <date>2018-12-18T02:00:00+01</date>
+         * <speed_value>1.9</speed_value>
+         * <direction_value>113</direction_value>
+         * </wind10m>
+         * </wind_list>
+         * <global_radiation_list>
+         * <global_radiation UM="W/mq">
+         * <date>2018-12-17T00:00:00+01</date>
+         * <value>0</value>
+         * </global_radiation>
+         * </global_radiation_list>
+         * <relative_humidity_list>
+         * <relative_humidity UM="%">
+         * <date>2018-12-17T00:00:00+01</date>
+         * <value>78</value>
+         * </relative_humidity>
+         * </relative_humidity_list>
+         * <snow_depth_list/>
+         * </lastData>
          */
 
         InputStream in = org.apache.commons.io.IOUtils.toInputStream(responseString, "UTF-8");
@@ -288,7 +283,7 @@ public class MeteoTnDataRetriever {
         Document docXml = db.parse(in);
         Element root = docXml.getDocumentElement();
 
-        if ( LOG.isDebugEnabled() ) {
+        if (LOG.isDebugEnabled()) {
             Node node = root.getFirstChild();
             analyzeNode(node, "");
         }
@@ -299,15 +294,15 @@ public class MeteoTnDataRetriever {
         Map<String, DataTypeDto> dataTypes = extDto.getDataTypes();
 
         // Analyze XML in a dynamic and configurable way
-        //Three levels: measurement_list, measurement_type, data
+        // Three levels: measurement_list, measurement_type, data
         Node node1 = root.getFirstChild();
-        while ( node1 != null ) {
+        while (node1 != null) {
             String node1Name = node1.getNodeName();
 
-            //First level
-            if ( node1.getNodeType() == Node.ELEMENT_NODE ) {
+            // First level
+            if (node1.getNodeType() == Node.ELEMENT_NODE) {
                 String type1Name = node1Name;
-                if ( type1Name.endsWith("_list") ) {
+                if (type1Name.endsWith("_list")) {
                     type1Name = type1Name.substring(0, type1Name.length() - "_list".length());
                 }
                 MeteoTnMeasurementListDto measurementListDto = new MeteoTnMeasurementListDto(type1Name);
@@ -315,11 +310,11 @@ public class MeteoTnDataRetriever {
                 List<MeteoTnMeasurementDto> measurements = measurementListDto.getMeasurements();
 
                 Node node2 = node1.getFirstChild();
-                while ( node2 != null ) {
+                while (node2 != null) {
                     String node2Name = node2.getNodeName();
 
-                    //Second level
-                    if ( node2.getNodeType() == Node.ELEMENT_NODE ) {
+                    // Second level
+                    if (node2.getNodeType() == Node.ELEMENT_NODE) {
                         String node2Content = node2.getTextContent();
                         String xml = DCUtils.allowNulls(node2Content).trim();
                         NamedNodeMap attributes = node2.getAttributes();
@@ -327,48 +322,51 @@ public class MeteoTnDataRetriever {
 
                         Element elem2 = (Element) node2;
 
-                        //The date is specified as tag "date"
+                        // The date is specified as tag "date"
                         String strDate = DCUtils.getElementTagValue(elem2, "date");
                         Date date = DCUtils.convertStringTimezoneToDate(strDate);
 
-                        //The UM is specified as attribute, values in tags
+                        // The UM is specified as attribute, values in tags
                         Set<String> umKeySet = node2Attrs.keySet();
                         for (String umKey : umKeySet) {
                             String strUmName = node2Attrs.get(umKey);
                             String strValue = null;
                             String strTypeName = null;
-                            //if attribute is "UM" then the value is in the tag "value", for example "air_temperature":
-                            //<air_temperature UM="°C">
-                            //  <date>2018-12-17T00:00:00+01</date>
-                            //  <value>-6.8</value>
-                            //</air_temperature>
-                            if ( "UM".equals(umKey) ) {
+                            // if attribute is "UM" then the value is in the tag "value", for example
+                            // "air_temperature":
+                            // <air_temperature UM="°C">
+                            // <date>2018-12-17T00:00:00+01</date>
+                            // <value>-6.8</value>
+                            // </air_temperature>
+                            if ("UM".equals(umKey)) {
                                 strTypeName = node2Name;
                                 strValue = DCUtils.getElementTagValue(elem2, "value");
                             } else {
-                                //if attribute is "UM_xxx" then the value is in the tag "xxx_value", the name becomes "attr_xxx", for example "wind10m_speed":
-                                //<wind10m UM_speed="m/s" UM_direction="gN">
-                                //  <date>2018-12-18T02:00:00+01</date>
-                                //  <speed_value>1.9</speed_value>
-                                //  <direction_value>113</direction_value>
-                                //</wind10m>
-                                if ( umKey.startsWith("UM_") ) {
+                                // if attribute is "UM_xxx" then the value is in the tag "xxx_value", the name
+                                // becomes "attr_xxx", for example "wind10m_speed":
+                                // <wind10m UM_speed="m/s" UM_direction="gN">
+                                // <date>2018-12-18T02:00:00+01</date>
+                                // <speed_value>1.9</speed_value>
+                                // <direction_value>113</direction_value>
+                                // </wind10m>
+                                if (umKey.startsWith("UM_")) {
                                     String tmpTypeName = umKey.substring(3);
-                                    strValue = DCUtils.getElementTagValue(elem2, tmpTypeName+"_value");
+                                    strValue = DCUtils.getElementTagValue(elem2, tmpTypeName + "_value");
                                     strTypeName = node2Name + "_" + tmpTypeName;
                                 } else {
-                                    LOG.debug("How to deal with this attribute??? attr='"+umKey+"'  xml="+xml);
+                                    LOG.debug("How to deal with this attribute??? attr='" + umKey + "'  xml=" + xml);
                                 }
                             }
                             Object value = DCUtils.convertStringToDouble(strValue);
-                            if ( value == null ) {
+                            if (value == null) {
                                 value = strValue;
                             }
-                            MeteoTnMeasurementDto measurementDto = new MeteoTnMeasurementDto(xml, date, strTypeName, strUmName, value);
+                            MeteoTnMeasurementDto measurementDto = new MeteoTnMeasurementDto(xml, date, strTypeName,
+                                    strUmName, value);
                             measurements.add(measurementDto);
 
-                            //First time we find this data type, collect it
-                            if ( !dataTypes.containsKey(strTypeName) ) {
+                            // First time we find this data type, collect it
+                            if (!dataTypes.containsKey(strTypeName)) {
                                 DataTypeDto dataTypeDto = new DataTypeDto();
                                 dataTypeDto.setName(strTypeName);
                                 dataTypeDto.setUnit(strUmName);
@@ -386,49 +384,52 @@ public class MeteoTnDataRetriever {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("extDto: "+extDto); 
+            LOG.debug("extDto: " + extDto);
         }
         return extDto;
     }
 
     /**
      * Convenient method only for logging pourpose
+     * 
      * @param node
      * @param indentation
      */
     private void analyzeNode(Node node, String indentation) {
-        while ( node != null ) {
+        while (node != null) {
             String nodeName = node.getNodeName();
-            if ( node.getNodeType() == Node.ELEMENT_NODE ) {
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
                 NamedNodeMap attributes = node.getAttributes();
                 Map<String, String> nodeAttrs = DCUtils.getNodeAttributes(attributes);
                 String nodeValue = node.getNodeValue();
                 String nodeContent = node.getTextContent();
                 String text = null;
 
-                if ( nodeAttrs!=null && nodeAttrs.size()>1 ) {
-                    LOG.debug("***************"+indentation+"nodeName="+nodeName+"  text="+text+"  nodeAttrs="+nodeAttrs+"  nodeValue="+nodeValue);
+                if (nodeAttrs != null && nodeAttrs.size() > 1) {
+                    LOG.debug("***************" + indentation + "nodeName=" + nodeName + "  text=" + text
+                            + "  nodeAttrs=" + nodeAttrs + "  nodeValue=" + nodeValue);
                 }
 
                 boolean hasChildren = false;
                 node.normalize();
                 NodeList childNodes = node.getChildNodes();
-                for (int i=0 ; childNodes!=null && i<childNodes.getLength() ; i++) {
+                for (int i = 0; childNodes != null && i < childNodes.getLength(); i++) {
                     Node childNode = childNodes.item(i);
-                    if ( childNode.getNodeType() == Node.ELEMENT_NODE ) {
+                    if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                         hasChildren = true;
                     }
                 }
-                if ( !hasChildren ) {
+                if (!hasChildren) {
                     text = nodeContent;
                 }
 
                 Node childNode = node.getFirstChild();
 
-                LOG.debug(indentation+"nodeName="+nodeName+"  text="+text+"  nodeAttrs="+nodeAttrs+"  nodeValue="+nodeValue);
+                LOG.debug(indentation + "nodeName=" + nodeName + "  text=" + text + "  nodeAttrs=" + nodeAttrs
+                        + "  nodeValue=" + nodeValue);
 
-                //Go down recursively, if child is null exit
-                analyzeNode(childNode, indentation+" ");
+                // Go down recursively, if child is null exit
+                analyzeNode(childNode, indentation + " ");
 
             }
             node = node.getNextSibling();
@@ -438,12 +439,12 @@ public class MeteoTnDataRetriever {
     /**
      * Fetch data from Meteo service, to be integrated into the Open Data Hub.
      * A loop on all provided stations is performed:
-     *    for every station a call to the meteo service is done and at the end 
-     *    all data is collected in a single list.
+     * for every station a call to the meteo service is done and at the end
+     * all data is collected in a single list.
      * Do not prevent exceptions from being thrown to not hide any malfunctioning.
      *
      * @throws Exception
-     *             on error propagate exception to caller
+     *                   on error propagate exception to caller
      */
     public List<MeteoTnDto> fetchData() throws Exception {
         LOG.debug("START.fetchData");
@@ -451,33 +452,34 @@ public class MeteoTnDataRetriever {
         try {
             StringBuffer err = new StringBuffer();
 
-            //Call service that retrieves the list of stations
+            // Call service that retrieves the list of stations
             String responseString = callRemoteService(clientStations, serviceUrlStations, endpointMethodStations, null);
             List<MeteoTnDto> stations = convertStationsResponseToInternalDTO(responseString);
 
-            //Call service that retrieves the measurements for each station
+            // Call service that retrieves the measurements for each station
             for (MeteoTnDto station : stations) {
                 Map<String, String> stationAttrs = station.getStationAttributes();
-                //We do not stop execution if one call goes in exception.
-                //All exceptions are collected in a StringBuffer 
+                // We do not stop execution if one call goes in exception.
+                // All exceptions are collected in a StringBuffer
                 String key = stationAttrs.get("code");
                 try {
-                    //Exclude invalid stations
+                    // Exclude invalid stations
                     boolean valid = station.isValid();
-                    if ( valid ) {
+                    if (valid) {
                         MeteoTnDto dataByCity = fetchDataByStation(stationAttrs);
                         dtoList.add(dataByCity);
                     } else {
-                        LOG.debug("EXCLUDE INVALID STATION: station_id="+key+"  enddate="+stationAttrs.get("enddate"));
+                        LOG.debug("EXCLUDE INVALID STATION: station_id=" + key + "  enddate="
+                                + stationAttrs.get("enddate"));
                     }
                 } catch (Exception ex) {
                     LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
                     String stackTrace = DCUtils.extractStackTrace(ex, -1);
-                    err.append("\n***** EXCEPTION RETRIEVING DATA FOR STATION: '"+key+"' ******" + stackTrace);
+                    err.append("\n***** EXCEPTION RETRIEVING DATA FOR STATION: '" + key + "' ******" + stackTrace);
                 }
             }
-            if ( dtoList.size()==0 && err.length()>0 ) {
-                throw new RuntimeException("NO DATA FETCHED: "+err);
+            if (dtoList.size() == 0 && err.length() > 0) {
+                throw new RuntimeException("NO DATA FETCHED: " + err);
             }
         } catch (Exception ex) {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
@@ -499,13 +501,13 @@ public class MeteoTnDataRetriever {
         try {
             StringBuffer err = new StringBuffer();
 
-            //Call service that retrieves the list of stations
+            // Call service that retrieves the list of stations
             String responseString = callRemoteService(clientStations, serviceUrlStations, endpointMethodStations, null);
 
-            //Convert to internal representation
+            // Convert to internal representation
             dtoList = convertStationsResponseToInternalDTO(responseString);
-            if ( dtoList.size()==0 && err.length()>0 ) {
-                throw new RuntimeException("NO DATA FETCHED: "+err);
+            if (dtoList.size() == 0 && err.length() > 0) {
+                throw new RuntimeException("NO DATA FETCHED: " + err);
             }
         } catch (Exception ex) {
             LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
@@ -523,30 +525,18 @@ public class MeteoTnDataRetriever {
      * @throws Exception
      */
     public MeteoTnDto fetchDataByStation(Map<String, String> station) throws Exception {
-        LOG.debug("START.fetchDataByStation("+station+")");
+        LOG.debug("START.fetchDataByStation(" + station + ")");
         MeteoTnDto extDto = null;
-        try {
-            List<NameValuePair> endpointParams = new ArrayList<NameValuePair>();
-            if ( measurementsParams!=null && measurementsParams.size()>0 ) {
-                Set<Entry<String, String>> entrySet = measurementsParams.entrySet();
-                for (Entry<String, String> entry : entrySet) {
-                    String paramName = entry.getKey();
-                    String attrName = entry.getValue();
-                    String paramValue = station.get(attrName);
-                    if ( DCUtils.paramNotNull(paramName) && DCUtils.paramNotNull(paramValue) ) {
-                        endpointParams.add(new BasicNameValuePair(paramName, paramValue));
-                    }
-                }
-            }
-            String responseString = callRemoteService(clientMeasurements, serviceUrlMeasurements, endpointMethodMeasurements, endpointParams);
-            extDto = convertMeasurementsResponseToInternalDTO(responseString, station);
-            int size = extDto!=null && extDto.getMeasurementsByType()!=null ? extDto.getMeasurementsByType().size() : -1;
-            LOG.debug("Data fetched for station "+station+": "+size);
-        } catch (Exception ex) {
-            LOG.error("ERROR in fetchData: " + ex.getMessage(), ex);
-            throw ex;
-        }
-        LOG.debug("END.fetchDataByStation("+station+")");
+        List<NameValuePair> endpointParams = new ArrayList<NameValuePair>();
+        endpointParams.add(new BasicNameValuePair(paramName, station.get(attrName)));
+
+        String responseString = callRemoteService(clientMeasurements, serviceUrlMeasurements,
+                endpointMethodMeasurements, endpointParams);
+        extDto = convertMeasurementsResponseToInternalDTO(responseString, station);
+        int size = extDto != null && extDto.getMeasurementsByType() != null ? extDto.getMeasurementsByType().size()
+                : -1;
+        LOG.debug("Data fetched for station " + station + ": " + size);
+        LOG.debug("END.fetchDataByStation(" + station + ")");
         return extDto;
     }
 

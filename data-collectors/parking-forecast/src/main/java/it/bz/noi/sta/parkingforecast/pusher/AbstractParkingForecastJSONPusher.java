@@ -21,12 +21,11 @@ import it.bz.noi.sta.parkingforecast.configuration.ParkingForecstConfiguration;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
 
-@PropertySource("classpath:odh-writer.properties")
 public abstract class AbstractParkingForecastJSONPusher extends NonBlockingJSONPusher {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractParkingForecastJSONPusher.class);
@@ -34,9 +33,13 @@ public abstract class AbstractParkingForecastJSONPusher extends NonBlockingJSONP
     protected String origin;
 
     @Autowired
-    protected Environment env;
-    @Autowired
     protected ParkingForecstConfiguration connectorConfiguration;
+
+    @Value("${provenance.name}")
+    private String provenanceName;
+
+    @Value("${provenance.version}")
+    private String provenanceVersion;
 
     public <T> DataMapDto<RecordDtoImpl> mapData(T arg0) {
         throw new IllegalStateException("it is used by who?");
@@ -52,6 +55,6 @@ public abstract class AbstractParkingForecastJSONPusher extends NonBlockingJSONP
 
     @Override
     public ProvenanceDto defineProvenance() {
-        return new ProvenanceDto(null, env.getProperty("provenance_name"), env.getProperty("provenance_version"), origin);
+        return new ProvenanceDto(null, provenanceName, provenanceVersion, origin);
     }
 }

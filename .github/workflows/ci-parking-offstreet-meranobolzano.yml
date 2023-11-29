@@ -11,13 +11,13 @@ env:
   PROJECT_NAME: odh-mobility-dc-parking-offstreet-meranobolzano
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-parking-offstreet-meranobolzano
   DOCKER_TAG: ${{ github.sha }}
-  JAVA_VERSION: '8'
+  JAVA_VERSION: '17'
   CLIENT_SECRET_BASE64: ${{ secrets.SPREADSHEETS_GOOGLE_CLIENT_SECRET_BASE64 }}
   STORED_CREDENTIAL_BASE64: ${{ secrets.SPREADSHEETS_GOOGLE_STORED_CREDENTIAL_BASE64 }}
 
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
         uses: noi-techpark/github-actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
 
 # Deploy Test
   deploy-test-parking-offstreet-meranobolzano:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/main'
     needs: test
     concurrency: deploy-test-parking-offstreet-meranobolzano
@@ -91,8 +91,8 @@ jobs:
 
       - name: Retrieve secret files and decode it to a file
         run: |
-          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/META-INF/spring/client_secret.json
-          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/META-INF/credentials/StoredCredential
+          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/client_secret.json
+          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/StoredCredential
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -122,7 +122,7 @@ jobs:
 
   # Deploy Production
   deploy-prod-parking-offstreet-meranobolzano:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/prod'
     needs: test
     concurrency: deploy-prod-parking-offstreet-meranobolzano
@@ -181,8 +181,8 @@ jobs:
 
       - name: Retrieve secret files and decode it to a file
         run: |
-          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/META-INF/spring/client_secret.json
-          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/META-INF/credentials/StoredCredential
+          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/client_secret.json
+          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/StoredCredential
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2

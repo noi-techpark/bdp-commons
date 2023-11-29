@@ -12,6 +12,8 @@ env:
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-vehicletraffic-bluetooth
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '8'
+  CLIENT_SECRET_BASE64: ${{ secrets.SPREADSHEETS_GOOGLE_CLIENT_SECRET_BASE64 }}
+  STORED_CREDENTIAL_BASE64: ${{ secrets.SPREADSHEETS_GOOGLE_STORED_CREDENTIAL_BASE64 }}
 
 jobs:
   test:
@@ -72,13 +74,9 @@ jobs:
           X_encryption_key: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_ENCRYPTION_KEY }}
 
       - name: Retrieve secret files and decode it to a file
-        env:
-          STORED_CREDENTIALS_BASE64: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_STORED_CREDENTIAL_B64 }}
-          GOOGLE_SECRET_BASE64: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_GOOGLE_SECRET_B64 }}
         run: |
-          echo $STORED_CREDENTIALS_BASE64 | base64 -i --decode > data-collectors/vehicletraffic-bluetooth/src/main/resources/META-INF/credentials/StoredCredential
-          echo $GOOGLE_SECRET_BASE64 | base64 -i --decode > data-collectors/vehicletraffic-bluetooth/src/main/resources/META-INF/spring/client_secret.json
-          echo $GOOGLE_SECRET_BASE64 | base64 -i --decode > data-collectors/vehicletraffic-bluetooth/src/test/resources/META-INF/spring/client_secret.json
+          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/client_secret.json
+          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/StoredCredential
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -150,13 +148,9 @@ jobs:
           X_encryption_key: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_ENCRYPTION_KEY }}
 
       - name: Retrieve secret files and decode it to a file
-        env:
-          STORED_CREDENTIALS_BASE64: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_STORED_CREDENTIAL_B64 }}
-          GOOGLE_SECRET_BASE64: ${{ secrets.VEHICLETRAFFIC_BLUETOOTH_GOOGLE_SECRET_B64 }}
         run: |
-          echo $STORED_CREDENTIALS_BASE64 | base64 -i --decode > data-collectors/vehicletraffic-bluetooth/src/main/resources/META-INF/credentials/StoredCredential
-          echo $GOOGLE_SECRET_BASE64 | base64 -i --decode > data-collectors/vehicletraffic-bluetooth/src/main/resources/META-INF/spring/client_secret.json
-          echo $GOOGLE_SECRET_BASE64 | base64 -i --decode > data-collectors/vehicletraffic-bluetooth/src/test/resources/META-INF/spring/client_secret.json
+          echo $CLIENT_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/client_secret.json
+          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > $WORKING_DIRECTORY/credentials/StoredCredential
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2

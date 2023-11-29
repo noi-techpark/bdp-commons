@@ -3,3 +3,4 @@
 .springBeans
 bin/
 client_secret.json
+StoredCredential

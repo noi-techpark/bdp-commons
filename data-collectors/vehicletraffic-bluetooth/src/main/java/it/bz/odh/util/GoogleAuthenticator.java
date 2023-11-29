@@ -34,11 +34,11 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 @Service
 public abstract class GoogleAuthenticator {
 
-    @Value("classpath:/META-INF/spring/client_secret.json")
+    @Value("${google.auth.secret_location}")
     private Resource clientSecret;
     private NetHttpTransport HTTP_TRANSPORT;
     private JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    @Value("classpath:/META-INF/credentials")
+    @Value("${google.auth.credentials_folder}")
     private Resource CREDENTIALS_FOLDER;
 
     protected Credential getCredentials() throws IOException {

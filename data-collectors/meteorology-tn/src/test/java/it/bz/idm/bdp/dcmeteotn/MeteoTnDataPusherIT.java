@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import it.bz.idm.bdp.dcmeteotn.dto.MeteoTnDto;
@@ -22,7 +22,7 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationList;
 
-@ContextConfiguration(locations = { "classpath:/META-INF/spring/applicationContext.xml" })
+@Component
 public class MeteoTnDataPusherIT extends AbstractJUnit4SpringContextTests {
 
     private static final Logger LOG = LoggerFactory.getLogger(MeteoTnDataPusherIT.class.getName());

@@ -7,19 +7,31 @@ package it.bz.idm.bdp;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import it.bz.idm.bdp.dto.DataTypeDto;
 
-
-@Component
+@Service
 public class JobScheduler {
 
 	@Autowired
 	private ParkingPusher pusher;
 
+	@PostConstruct
+	public void syncDataTypes() {
+		try {
+			List<DataTypeDto> dataTypeList = ParkingPusher.getDataTypeList();
+			pusher.syncDataTypes(dataTypeList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Scheduled(cron = "${scheduler.slots}")
 	public void currentSlots() {
 		try {
 			pusher.pushData();
@@ -28,6 +40,7 @@ public class JobScheduler {
 		}
 	}
 
+	@Scheduled(cron = "${scheduler.stations}")
 	public void parkingStations() throws IOException {
 		try {
 			pusher.pushParkingMetaData();
@@ -35,20 +48,14 @@ public class JobScheduler {
 			e.printStackTrace();
 		}
 	}
-	public void pushPredictions(){
-		try {
-			pusher.pushPredictionData();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	public void syncDataTypes(){
-		try {
-			List<DataTypeDto> dataTypeList = ParkingPusher.getDataTypeList();
-			pusher.syncDataTypes(dataTypeList);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
+	// @Scheduled(cron = "${scheduler.job}")
+	// public void pushPredictions(){
+	// try {
+	// pusher.pushPredictionData();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 }

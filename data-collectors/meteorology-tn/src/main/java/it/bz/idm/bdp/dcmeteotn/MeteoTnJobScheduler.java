@@ -7,9 +7,12 @@ package it.bz.idm.bdp.dcmeteotn;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -37,28 +40,7 @@ public class MeteoTnJobScheduler {
     @Autowired
     private MeteoTnDataConverter converter;
 
-    /** JOB 1 */
-    public void pushStations() throws Exception {
-        LOG.info("START.pushStations");
-
-        try {
-            List<MeteoTnDto> data = retriever.fetchStations();
-
-            StationList stations = pusher.mapStations2Bdp(data);
-            if (stations != null) {
-                pusher.syncStations(stations);
-            }
-        } catch (HttpClientErrorException e) {
-            LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
-            throw e;
-        } catch (Exception e) {
-            LOG.error(pusher + " - " + e, e);
-            throw e;
-        }
-        LOG.info("END.pushStations");
-    }
-
-    /** JOB 2 */
+    @PostConstruct
     public void pushDataTypes() throws Exception {
         LOG.info("START.pushDataTypes");
 
@@ -81,7 +63,30 @@ public class MeteoTnJobScheduler {
         LOG.info("END.pushDataTypes");
     }
 
-    /** JOB 3 */
+
+    @Scheduled(cron = "${scheduler.stations}")
+    public void pushStations() throws Exception {
+        LOG.info("START.pushStations");
+
+        try {
+            List<MeteoTnDto> data = retriever.fetchStations();
+
+            StationList stations = pusher.mapStations2Bdp(data);
+            if (stations != null) {
+                pusher.syncStations(stations);
+            }
+        } catch (HttpClientErrorException e) {
+            LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
+            throw e;
+        } catch (Exception e) {
+            LOG.error(pusher + " - " + e, e);
+            throw e;
+        }
+        LOG.info("END.pushStations");
+    }
+
+
+    @Scheduled(cron = "${scheduler.data}")
     public void pushData() throws Exception {
         LOG.info("START.pushData");
 
