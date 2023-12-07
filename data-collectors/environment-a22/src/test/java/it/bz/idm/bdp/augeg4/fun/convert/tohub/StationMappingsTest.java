@@ -26,7 +26,7 @@ public class StationMappingsTest {
         assertTrue(mappingContainer.isPresent());
 
         StationMapping mapping = mappingContainer.get();
-        assertEquals(mapping.getName(), "103.700_APPA BZ");
+        assertEquals(mapping.getName(), "AIRQ01_Intercalibrazione");
     }
 
     @Test
