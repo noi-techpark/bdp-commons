@@ -10,9 +10,9 @@ package com.opendatahub.bdp.commons.dc.meteorology.bz.forecast.config;
 import it.bz.idm.bdp.dto.DataTypeDto;
 
 public enum DataTypes {
-    airTemperatureMax("forecast-air-temperature-max", "Forecast of max air temperature during a day", true, "Celcius"),
-    airTemperatureMin("forecast-air-temperature-min", "Forecast of min air temperature during a day", true, "Celcius"),
-    airTemperature("forecast-air-temperature", "Forecast of air temperature at a specific timestamp", true, "Celcius"),
+    airTemperatureMax("forecast-air-temperature-max", "Forecast of max air temperature", true, "Celcius"),
+    airTemperatureMin("forecast-air-temperature-min", "Forecast of min air temperature", true, "Celcius"),
+    airTemperature("forecast-air-temperature", "Forecast of air temperature", true, "Celcius"),
     windDirection("forecast-wind-direction", "Forecast of wind direction", true, "\\u00b0"),
     windSpeed("forecast-wind-speed", "Forecast of wind speed", true, "m/s"),
     sunshineDuration("forecast-sunshine-duration", "Forecast of sun shine duration", true, "h"),
