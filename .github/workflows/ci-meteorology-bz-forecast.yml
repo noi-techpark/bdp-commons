@@ -128,9 +128,10 @@ jobs:
           # AWS config
           X_AWS_REGION: eu-west-1
           X_AWS_S3_FILE_NAME: SMOS_MCPL-WX_EXP_SIAG.JSON
-          X_AWS_S3_BUCKET_NAME: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_BUCKET_NAME_PROD }}
-          X_AWS_ACCESS_KEY_ID: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_ACCESS_KEY_ID_PROD }}
-          X_AWS_S3_ACCESS_SECRET_KEY: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_S3_ACCESS_SECRET_KEY_PROD }}
+          # uses test bucket, since province BZ will push only to one bucket
+          X_AWS_S3_BUCKET_NAME: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_BUCKET_NAME_TEST }}
+          X_AWS_ACCESS_KEY_ID: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_ACCESS_KEY_ID_TEST }}
+          X_AWS_S3_ACCESS_SECRET_KEY: ${{ secrets.METEOROLOGY_BZ_FORECAST_AWS_S3_ACCESS_SECRET_KEY_TEST }}
           
           # General deployment options
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
