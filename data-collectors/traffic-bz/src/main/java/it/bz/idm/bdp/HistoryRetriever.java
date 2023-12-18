@@ -58,12 +58,10 @@ public class HistoryRetriever {
 	/*
 	 * retrieve all history data from a given point in time and push it to the bdp
 	 */
-	public void getHistory(LocalDateTime newestDateMidnight){
+	public void getHistory(){
 
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		LocalDateTime manualDate = LocalDate.parse(startDate,format).atStartOfDay();
-		if (manualDate.isAfter(newestDateMidnight))
-			newestDateMidnight= manualDate;
+		LocalDateTime newestDateMidnight = LocalDate.parse(startDate,format).atStartOfDay();
 		try {
 			XMLGregorianCalendar from = null,to = null;
 			GregorianCalendar cal = new GregorianCalendar();

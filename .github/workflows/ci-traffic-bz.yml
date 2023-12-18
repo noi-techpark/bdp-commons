@@ -75,9 +75,9 @@ jobs:
           X_SCHEDULER_POOL_SIZE: 10
 
           # historical import start date
-          X_HISTORY_START_DATE: "26/06/2018"
+          X_HISTORY_START_DATE: "01/01/2023"
           # request time windos in seconds (86400 is 1 day)
-          X_TIME_INTERVAL: 864000
+          X_TIME_INTERVAL: 86400
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -152,9 +152,9 @@ jobs:
           X_SCHEDULER_POOL_SIZE: 10
 
           # historical import start date
-          X_HISTORY_START_DATE: "26/06/2018"
+          X_HISTORY_START_DATE: "01/01/2023"
           # request time windos in seconds (86400 is 1 day)
-          X_TIME_INTERVAL: 864000
+          X_TIME_INTERVAL: 86400
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
