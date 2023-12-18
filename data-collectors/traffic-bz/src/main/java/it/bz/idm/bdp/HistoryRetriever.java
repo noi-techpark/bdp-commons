@@ -25,6 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -37,7 +38,12 @@ import it.bz.idm.bdp.dto.StationDto;
 @PropertySource("classpath:/META-INF/spring/application.properties")
 public class HistoryRetriever {
 
-	private static final int TIME_INTERVAL = 1000 * 60 * 60 * 24;
+	@Value("${timeInterval}")
+	private int timeInterval;
+
+	@Value("${history.startDate}")
+	private String startDate;
+
 
 	@Autowired
 	public DataParser parser;
@@ -55,14 +61,13 @@ public class HistoryRetriever {
 	public void getHistory(LocalDateTime newestDateMidnight){
 
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		String startDate = environment.getProperty("history.startDate");
 		LocalDateTime manualDate = LocalDate.parse(startDate,format).atStartOfDay();
 		if (manualDate.isAfter(newestDateMidnight))
 			newestDateMidnight= manualDate;
 		try {
 			XMLGregorianCalendar from = null,to = null;
 			GregorianCalendar cal = new GregorianCalendar();
-			Duration duration = DatatypeFactory.newInstance().newDuration(TIME_INTERVAL);
+			Duration duration = DatatypeFactory.newInstance().newDuration(timeInterval);
 			while (newestDateMidnight.isBefore(LocalDateTime.now())){
 				cal.setTimeInMillis(newestDateMidnight.toInstant(ZoneOffset.UTC).toEpochMilli());
 				from = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
