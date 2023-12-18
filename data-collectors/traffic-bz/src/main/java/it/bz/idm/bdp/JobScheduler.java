@@ -45,7 +45,7 @@ public class JobScheduler {
 	}
 
 	public void getHistory(){
-		historyRetriever.getHistory();
+		historyRetriever.getHistory(null);
 	}
 	public void getLatestHistory() {
 		historyRetriever.getLatestHistory();
