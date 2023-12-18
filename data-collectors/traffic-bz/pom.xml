@@ -6,7 +6,9 @@ SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
 SPDX-License-Identifier: CC0-1.0
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.bz.idm.bdp</groupId>
 	<artifactId>dc-traffic-bz</artifactId>
@@ -50,6 +52,13 @@ SPDX-License-Identifier: CC0-1.0
 			<artifactId>flexjson</artifactId>
 			<version>2.1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -168,7 +177,7 @@ SPDX-License-Identifier: CC0-1.0
 				<version>2.21.0</version>
 				<configuration>
 					<useSystemClassLoader>false</useSystemClassLoader>
-		                </configuration>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -194,7 +203,8 @@ SPDX-License-Identifier: CC0-1.0
 						<configuration>
 							<wsdlOptions>
 								<wsdlOption>
-									<wsdl>${basedir}/src/main/resources/DataDispatcherWebServices.wsdl</wsdl>
+									<wsdl>
+										${basedir}/src/main/resources/DataDispatcherWebServices.wsdl</wsdl>
 								</wsdlOption>
 							</wsdlOptions>
 						</configuration>
