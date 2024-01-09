@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  app:
+    image: golang:1.21.4-alpine
+    env_file:
+      - .env
+    entrypoint: >
+      go run main.go
+    volumes:
+      - ./src:/code
+      - ~/.go/pkg/mod:/go/pkg/mod
+    working_dir: /code
