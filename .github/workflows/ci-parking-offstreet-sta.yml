@@ -63,9 +63,10 @@ jobs:
           
 
       - name: Build go application
-        run: go build -o main
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}/src
+        run: |
+          pushd ${{ env.WORKING_DIRECTORY }}/src
+          go build -o main
+          popd
 
       - name: Build and push 
         uses: noi-techpark/github-actions/docker-build-and-push@v2
