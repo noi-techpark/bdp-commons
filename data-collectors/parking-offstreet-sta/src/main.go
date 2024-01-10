@@ -5,7 +5,6 @@
 package main
 
 import (
-	"fmt"
 	"log/slog"
 	"os"
 	"time"
@@ -19,14 +18,8 @@ import (
 func main() {
 	log.InitLogger()
 
-	// dc.DataTypes()
+	dc.SyncDataTypes()
 	// dc.DataTypesModel()
-
-	data := dc.GetFacilityData()
-	fmt.Printf("%+v\n", data)
-
-	data2 := dc.GetFreePlacesData(608612)
-	fmt.Printf("%+v\n", data2)
 
 	cron := os.Getenv("SCHEDULER_CRON")
 	slog.Debug("Cron defined as: " + cron)
