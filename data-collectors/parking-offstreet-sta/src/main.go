@@ -22,8 +22,11 @@ func main() {
 	// dc.DataTypes()
 	// dc.DataTypesModel()
 
-	data := dc.GetData()
+	data := dc.GetFacilityData()
 	fmt.Printf("%+v\n", data)
+
+	data2 := dc.GetFreePlacesData(608612)
+	fmt.Printf("%+v\n", data2)
 
 	cron := os.Getenv("SCHEDULER_CRON")
 	slog.Debug("Cron defined as: " + cron)

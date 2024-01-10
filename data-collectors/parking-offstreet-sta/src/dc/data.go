@@ -12,11 +12,11 @@ import (
 	"strconv"
 )
 
-type ApiResponse struct {
-	Data Data
+type FacilityResponse struct {
+	Data FacilityData
 }
 
-type Data struct {
+type FacilityData struct {
 	Status     string
 	Facilities []Facility
 }
@@ -35,16 +35,49 @@ type Facility struct {
 	Web             string
 }
 
-const apiUrl = "https://www.onecenter.info/api/DAZ/GetFacilities"
+type FreePlaceResponse struct {
+	Data FreePlaceData
+}
 
-func GetData() ApiResponse {
+type FreePlaceData struct {
+	Status     string
+	FreePlaces []FreePlace
+}
 
-	var apiResponse ApiResponse
+type FreePlace struct {
+	FacilityId          int
+	FacilityDescription string
+	ParkNo              int
+	CountingCategoryNo  int
+	CountingCategory    string
+	FreeLimit           int
+	OccupancyLimit      int
+	CurrentLevel        int
+	Reservation         int
+	Capacity            int
+	FreePlaces          int
+}
 
-	req, err := http.NewRequest("GET", apiUrl, nil)
+const facilityUrl = "https://www.onecenter.info/api/DAZ/GetFacilities"
+const freePlacesUrl = "https://www.onecenter.info/api/DAZ/FacilityFreePlaces?FacilityID="
+
+func GetFacilityData() FacilityResponse {
+	var response FacilityResponse
+	getData(facilityUrl, &response)
+	return response
+}
+
+func GetFreePlacesData(facilityId int) FreePlaceResponse {
+	var response FreePlaceResponse
+	getData(freePlacesUrl+strconv.Itoa(facilityId), &response)
+	return response
+}
+
+func getData(url string, response interface{}) {
+
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		slog.Error("error", err)
-		return apiResponse
 	}
 	req.Header = http.Header{
 		"Content-Type":  {"application/json"},
@@ -54,7 +87,6 @@ func GetData() ApiResponse {
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		slog.Error("error", err)
-		return apiResponse
 	}
 	defer resp.Body.Close()
 
@@ -63,14 +95,11 @@ func GetData() ApiResponse {
 		bodyBytes, err := io.ReadAll(resp.Body)
 		if err != nil {
 			slog.Error("error", err)
-			return apiResponse
 		}
 
-		err = json.Unmarshal(bodyBytes, &apiResponse)
+		err = json.Unmarshal(bodyBytes, &response)
 		if err != nil {
 			slog.Error("error", err)
-			return apiResponse
 		}
 	}
-	return apiResponse
 }
