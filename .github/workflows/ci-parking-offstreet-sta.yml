@@ -9,7 +9,7 @@ on:
 env:
   WORKING_DIRECTORY: data-collectors/parking-offstreet-sta
   PROJECT_NAME: odh-mobility-dc-parking-offstreet-sta
-  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-parking-offstreet-sta
   DOCKER_TAG: ${{ github.sha }}
   GO_VERSION: ^1.21.4
 
@@ -44,8 +44,6 @@ jobs:
           X_API_OAUTH_CLIENT_SECRET: ${{ secrets.PARKING_STA_API_OAUTH_CLIENT_SECRET }}
           X_API_OAUTH_CLIENT_ID: ${{ secrets.PARKING_STA_API_OAUTH_CLIENT_ID }}
 
-          X_ORIGIN: skidata
-
           X_BASE_URI: ${{ env.KEYCLOAK_URL }}/json
           X_OAUTH_AUTH_URI: ${{ env.KEYCLOAK_URL }}/auth
           X_OAUTH_TOKEN_URI: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
@@ -56,6 +54,7 @@ jobs:
           
           X_PROVENANCE_VERSION: ${{ github.sha }}
           X_PROVENANCE_NAME: odh-mobility-dc-parking-offstreet-sta
+          X_ORIGIN: skidata
           
           X_LOG_LEVEL: INFO
 
