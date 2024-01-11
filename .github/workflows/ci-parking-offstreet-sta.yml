@@ -11,7 +11,7 @@ env:
   PROJECT_NAME: odh-mobility-dc-parking-offstreet-sta
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-parking-offstreet-sta
   DOCKER_TAG: ${{ github.sha }}
-  GO_VERSION: ^1.21.4
+  GO_VERSION: ^1.21.5
 
 jobs:
   deploy-test:

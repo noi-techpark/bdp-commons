@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 module parking-offstreet-sta
 
-go 1.21.4
+go 1.21.5
 
 require github.com/go-co-op/gocron v1.37.0
 
