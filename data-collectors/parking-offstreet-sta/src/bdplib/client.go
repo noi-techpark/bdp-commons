@@ -150,7 +150,7 @@ func createDataMap() DataMap {
 	return dataMap
 }
 
-func AssignRecords(stationCode string, datatType string, records []Record, dataMap *DataMap) {
+func AddRecords(stationCode string, dataType string, records []Record, dataMap *DataMap) {
 
 	if dataMap.Name == "" {
 		*dataMap = createDataMap()
@@ -164,11 +164,16 @@ func AssignRecords(stationCode string, datatType string, records []Record, dataM
 		slog.Debug("new station in branch " + stationCode)
 	}
 
-	if dataMap.Branch[stationCode].Branch[datatType].Name == "" {
-		dataMap.Branch[stationCode].Branch[datatType] = DataMap{
+	if dataMap.Branch[stationCode].Branch[dataType].Name == "" {
+		dataMap.Branch[stationCode].Branch[dataType] = DataMap{
 			Name: "(default)",
 			Data: records,
 		}
+		// to assign a value to a struct in a map, this code part is needed
+		// https://stackoverflow.com/a/69006398/8794667
+	} else if entry, ok := dataMap.Branch[stationCode].Branch[dataType]; ok {
+		entry.Data = append(entry.Data, records...)
+		dataMap.Branch[stationCode].Branch[dataType] = entry
 	}
 }
 
