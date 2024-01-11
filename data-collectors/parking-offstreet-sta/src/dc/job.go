@@ -7,7 +7,7 @@ package dc
 import (
 	"log/slog"
 	"os"
-	"parking-offstreet-sta/lib"
+	"parking-offstreet-sta/bdplib"
 	"strconv"
 	"time"
 )
@@ -24,14 +24,14 @@ const bzLon float64 = 11.33982
 const identifier string = "STA – Strutture Trasporto Alto Adige SpA Via dei Conciapelli, 60 39100  Bolzano UID: 00586190217"
 
 func Job() {
-	// var parentStations []lib.Station
-	var stations []lib.Station
+	// var parentStations []bdplib.Station
+	var stations []bdplib.Station
 
-	var dataMap lib.DataMap
-	var records []lib.Record
+	var dataMap bdplib.DataMap
+	var records []bdplib.Record
 
-	// var parentDataMap lib.DataMap
-	// var childDataMap lib.DataMap
+	// var parentDataMap bdplib.DataMap
+	// var childDataMap bdplib.DataMap
 
 	// get data
 	facilities := GetFacilityData()
@@ -43,7 +43,7 @@ func Job() {
 
 		if facility.ReceiptMerchant == identifier {
 			stationCode := strconv.Itoa(facility.FacilityId)
-			station := lib.CreateStation(stationCode, facility.Description, stationType, bzLat, bzLon, origin)
+			station := bdplib.CreateStation(stationCode, facility.Description, stationType, bzLat, bzLon, origin)
 			stations = append(stations, station)
 			// fmt.Printf("%+v\n", facility)
 			freePlaces := GetFreePlacesData(facility.FacilityId)
@@ -53,29 +53,29 @@ func Job() {
 			for _, freePlace := range freePlaces.Data.FreePlaces {
 				// category 3 is total
 				if freePlace.CountingCategoryNo == 3 {
-					records = append(records, lib.CreateRecord(ts, freePlace.FreePlaces, 600))
+					records = append(records, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
 				}
 			}
-			lib.AssignRecords(stationCode, "free", records, &dataMap)
+			bdplib.AssignRecords(stationCode, "free", records, &dataMap)
 		}
 	}
 
 	// sync stations
 	slog.Info("Sync stations amount: " + strconv.Itoa(len(stations)))
-	lib.SyncStations(stationType, stations)
+	bdplib.SyncStations(stationType, stations)
 	slog.Info("Sync stations done.")
 
 	// push data
 	slog.Info("Sync records...")
-	lib.PushData(stationType, dataMap)
+	bdplib.PushData(stationType, dataMap)
 	slog.Info("Sync records done.")
 }
 
 func SyncDataTypes() {
-	var dataTypes []lib.DataType
+	var dataTypes []bdplib.DataType
 
-	dataTypes = append(dataTypes, lib.CreateDataType("free", "", "Free parking slots", "Instantaneous"))
-	dataTypes = append(dataTypes, lib.CreateDataType("occupied", "", "Occupied parking slots", "Instantaneous"))
+	dataTypes = append(dataTypes, bdplib.CreateDataType("free", "", "Free parking slots", "Instantaneous"))
+	dataTypes = append(dataTypes, bdplib.CreateDataType("occupied", "", "Occupied parking slots", "Instantaneous"))
 
-	lib.SyncDataTypes(stationType, dataTypes)
+	bdplib.SyncDataTypes(stationType, dataTypes)
 }
