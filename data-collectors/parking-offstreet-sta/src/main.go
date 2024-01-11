@@ -28,6 +28,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	// call job once at startup
+	dc.Job()
+
 	// start cron job
 	s := gocron.NewScheduler(time.UTC)
 	s.CronWithSeconds(cron).Do(dc.Job)

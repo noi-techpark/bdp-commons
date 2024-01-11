@@ -27,7 +27,6 @@ const bzLon float64 = 11.33982
 const identifier string = "STA – Strutture Trasporto Alto Adige SpA Via dei Conciapelli, 60 39100  Bolzano UID: 00586190217"
 
 func Job() {
-	var parentStations []bdplib.Station
 	var stations []bdplib.Station
 
 	var dataMap bdplib.DataMap
@@ -48,7 +47,7 @@ func Job() {
 			parentStationCode := strconv.Itoa(facility.FacilityId)
 
 			parentStation := bdplib.CreateStation(parentStationCode, facility.Description, stationTypeParent, bzLat, bzLon, origin)
-			parentStations = append(parentStations, parentStation)
+			stations = append(stations, parentStation)
 
 			freePlaces := GetFreePlacesData(facility.FacilityId)
 			// fmt.Printf("%+v\n", freePlace)
@@ -76,10 +75,7 @@ func Job() {
 		}
 	}
 
-	bdplib.SyncStations(stationTypeParent, parentStations)
-	bdplib.SyncStations(stationType, stations)
-
-	// push station data
+	bdplib.SyncStations(stations)
 	bdplib.PushData(stationType, dataMap)
 }
 

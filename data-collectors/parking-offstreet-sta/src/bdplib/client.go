@@ -82,16 +82,22 @@ func SyncDataTypes(stationType string, dataTypes []DataType) {
 	slog.Debug("Syncing data types done.")
 }
 
-func SyncStations(stationType string, stations []Station) {
+func SyncStations(stations []Station) {
 	pushProvenance()
 
-	slog.Info("Syncing " + strconv.Itoa(len(stations)) + " " + stationType + " stations...")
+	// iterate over stations and map every station to its type
+	var stationMap = make(map[string][]Station)
 
-	url := baseUri + syncStationsPath + "/" + stationType + "?prn=" + prn + "&prv=" + prv
+	for _, station := range stations {
+		stationMap[station.StationType] = append(stationMap[station.StationType], station)
+	}
 
-	postToWriter(stations, url)
-
-	slog.Info("Syncing stations done.")
+	for stationType, stations := range stationMap {
+		slog.Info("Syncing " + strconv.Itoa(len(stations)) + " " + stationType + " stations...")
+		url := baseUri + syncStationsPath + "/" + stationType + "?prn=" + prn + "&prv=" + prv
+		postToWriter(stations, url)
+		slog.Info("Syncing stations done.")
+	}
 }
 
 func PushData(stationType string, dataMap DataMap) {
