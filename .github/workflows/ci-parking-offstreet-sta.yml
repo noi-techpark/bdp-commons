@@ -60,12 +60,9 @@ jobs:
 
           X_SCHEDULER_CRON: "0 */5 * * * *"
           
-
       - name: Build go application
-        run: |
-          pushd ${{ env.WORKING_DIRECTORY }}/src
-          go build -o main
-          popd
+        run: go build -o main
+        working-directory:  ${{ env.WORKING_DIRECTORY }}/src
 
       - name: Build and push 
         uses: noi-techpark/github-actions/docker-build-and-push@v2
