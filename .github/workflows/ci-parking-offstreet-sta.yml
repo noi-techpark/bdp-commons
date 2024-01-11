@@ -61,7 +61,7 @@ jobs:
           X_SCHEDULER_CRON: "0 */5 * * * *"
           
       - name: Build go application
-        run: go build parking-offstreet-sta
+        run: go build -o main main.go
         working-directory: ${{ env.WORKING_DIRECTORY }}/src
 
       - name: Build and push 
