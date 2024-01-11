@@ -19,7 +19,6 @@ func main() {
 	log.InitLogger()
 
 	dc.SyncDataTypes()
-	// dc.DataTypesModel()
 
 	cron := os.Getenv("SCHEDULER_CRON")
 	slog.Debug("Cron defined as: " + cron)
@@ -28,9 +27,6 @@ func main() {
 		slog.Error("Cron job definition in env missing")
 		os.Exit(1)
 	}
-
-	// slog.Info("Start job for first time on startup now.")
-	// test.TestJob()
 
 	// start cron job
 	s := gocron.NewScheduler(time.UTC)
