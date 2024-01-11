@@ -47,7 +47,7 @@ func Job() {
 		if facility.ReceiptMerchant == identifier {
 			parentStationCode := strconv.Itoa(facility.FacilityId)
 
-			parentStation := bdplib.CreateStation(parentStationCode, facility.Description, stationType, bzLat, bzLon, origin)
+			parentStation := bdplib.CreateStation(parentStationCode, facility.Description, stationTypeParent, bzLat, bzLon, origin)
 			parentStations = append(parentStations, parentStation)
 
 			freePlaces := GetFreePlacesData(facility.FacilityId)

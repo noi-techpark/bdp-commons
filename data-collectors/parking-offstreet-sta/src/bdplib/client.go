@@ -125,8 +125,6 @@ func CreateStation(id string, name string, stationType string, lat float64, lon 
 		Longitude:   lon,
 		Origin:      origin,
 		Id:          id,
-		// Metadata:      metaData,
-		// ParentStation: parentStation,
 	}
 	return station
 }
