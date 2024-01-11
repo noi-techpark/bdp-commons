@@ -5,6 +5,6 @@ RUN apt-get update && apt-get install -y libc6
 
 WORKDIR app
 
-COPY src/main main
+COPY src/parking-offstreet-sta main
 
 CMD [ "./main"]
