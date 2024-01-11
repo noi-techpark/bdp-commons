@@ -11,6 +11,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 type Provenance struct {
@@ -84,7 +85,7 @@ func SyncDataTypes(stationType string, dataTypes []DataType) {
 func SyncStations(stationType string, stations []Station) {
 	pushProvenance()
 
-	slog.Info("Syncing stations...")
+	slog.Info("Syncing " + strconv.Itoa(len(stations)) + " " + stationType + " stations...")
 
 	url := baseUri + syncStationsPath + "/" + stationType + "?prn=" + prn + "&prv=" + prv
 

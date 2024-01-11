@@ -5,7 +5,6 @@
 package dc
 
 import (
-	"log/slog"
 	"os"
 	"parking-offstreet-sta/bdplib"
 	"strconv"
@@ -77,19 +76,11 @@ func Job() {
 		}
 	}
 
-	// sync parent stations
-	slog.Info("Sync parent stations amount: " + strconv.Itoa(len(parentStations)))
 	bdplib.SyncStations(stationTypeParent, parentStations)
-	slog.Info("Sync parent stations done.")
-	// sync stations
-	slog.Info("Sync stations amount: " + strconv.Itoa(len(stations)))
 	bdplib.SyncStations(stationType, stations)
-	slog.Info("Sync stations done.")
 
 	// push station data
-	slog.Info("Sync records...")
 	bdplib.PushData(stationType, dataMap)
-	slog.Info("Sync records done.")
 }
 
 func SyncDataTypes() {
