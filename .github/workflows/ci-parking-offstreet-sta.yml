@@ -43,7 +43,7 @@ jobs:
           X_API_OAUTH_CLIENT_SECRET: ${{ secrets.PARKING_STA_API_OAUTH_CLIENT_SECRET }}
           X_API_OAUTH_CLIENT_ID: ${{ secrets.PARKING_STA_API_OAUTH_CLIENT_ID }}
 
-          X_BASE_URI: ${{ env.KEYCLOAK_URL }}/json
+          X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
           X_OAUTH_AUTH_URI: ${{ env.KEYCLOAK_URL }}/auth
           X_OAUTH_TOKEN_URI: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
           X_OAUTH_CLIENT_ID: odh-mobility-datacollector
