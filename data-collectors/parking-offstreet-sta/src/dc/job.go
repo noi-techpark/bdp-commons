@@ -14,8 +14,11 @@ import (
 const stationTypeParent string = "ParkingFacility"
 const stationType string = "ParkingStation"
 
-const dataTypeShort string = "free_short_stay"
-const dataTypeSubs string = "free_subscribers"
+const shortStay string = "ShortStay"
+const Subscribers string = "Subscribers"
+
+const dataTypeShort string = "free_" + shortStay
+const dataTypeSubs string = "free_" + Subscribers
 const dataTypeTotal string = "free"
 
 var origin string = os.Getenv("ORIGIN")
@@ -27,7 +30,8 @@ const bzLon float64 = 11.33982
 const identifier string = "STA – Strutture Trasporto Alto Adige SpA Via dei Conciapelli, 60 39100  Bolzano UID: 00586190217"
 
 func Job() {
-	var stations []bdplib.Station
+	// save stations by stationCode
+	stations := make(map[string]bdplib.Station)
 
 	var dataMap bdplib.DataMap
 
@@ -47,27 +51,54 @@ func Job() {
 			parentStationCode := strconv.Itoa(facility.FacilityId)
 
 			parentStation := bdplib.CreateStation(parentStationCode, facility.Description, stationTypeParent, bzLat, bzLon, origin)
-			stations = append(stations, parentStation)
+			parentStation.Metadata = map[string]interface{}{
+				"IdCompany":  facility.FacilityId,
+				"City":       facility.City,
+				"Address":    facility.Address,
+				"ZIPCode":    facility.ZIPCode,
+				"Telephone1": facility.Telephone1,
+				"Telephone2": facility.Telephone2,
+			}
+			stations[parentStationCode] = parentStation
 
 			freePlaces := GetFreePlacesData(facility.FacilityId)
-			// fmt.Printf("%+v\n", freePlace)
-			// fmt.Println(strconv.Itoa(freePlace.Data.FreePlaces[0].FacilityId))
 
+			// freeplaces is array of a single categories data
+			// if multiple parkNo exist, multiple entries for every parkNo and its categories exist
+			// so iterating over freeplaces and checking if the station with the parkNo has already been created is needed
 			for _, freePlace := range freePlaces.Data.FreePlaces {
-				parkNo := strconv.Itoa(freePlace.ParkNo)
-				stationCode := parentStationCode + "_" + parkNo
-				station := bdplib.CreateStation(stationCode, facility.Description, stationType, bzLat, bzLon, origin)
-				station.ParentStation = parentStation.Id
-				stations = append(stations, station)
+				stationCode := parentStationCode + "_" + strconv.Itoa(freePlace.ParkNo)
 
+				station, ok := stations[stationCode]
+				if !ok {
+					station = bdplib.CreateStation(stationCode, facility.Description, stationType, bzLat, bzLon, origin)
+					station.ParentStation = parentStation.Id
+					station.Metadata = make(map[string]interface{})
+					stations[stationCode] = station
+				}
+
+				// map metadata and create records
 				switch freePlace.CountingCategoryNo {
+				// Short Stay
 				case 1:
+					station.Metadata["FreeLimit_"+shortStay] = freePlace.FreeLimit
+					station.Metadata["OccupancyLimit_"+shortStay] = freePlace.OccupancyLimit
+					station.Metadata["Capacity_"+shortStay] = freePlace.Capacity
 					recordsShort = append(recordsShort, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
+				// Subscribed
 				case 2:
+					station.Metadata["FreeLimit_"+Subscribers] = freePlace.FreeLimit
+					station.Metadata["OccupancyLimit_"+Subscribers] = freePlace.OccupancyLimit
+					station.Metadata["Capacity_"+Subscribers] = freePlace.Capacity
 					recordsSubs = append(recordsSubs, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
+				// Total
 				default:
+					station.Metadata["FreeLimit"] = freePlace.FreeLimit
+					station.Metadata["OccupancyLimit"] = freePlace.OccupancyLimit
+					station.Metadata["Capacity"] = freePlace.Capacity
 					recordsTotal = append(recordsTotal, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
 				}
+
 				bdplib.AddRecords(stationCode, dataTypeShort, recordsShort, &dataMap)
 				bdplib.AddRecords(stationCode, dataTypeSubs, recordsSubs, &dataMap)
 				bdplib.AddRecords(stationCode, dataTypeTotal, recordsTotal, &dataMap)
@@ -75,7 +106,7 @@ func Job() {
 		}
 	}
 
-	bdplib.SyncStations(stations)
+	bdplib.SyncStations(values(stations))
 	bdplib.PushData(stationType, dataMap)
 }
 
@@ -87,4 +118,14 @@ func SyncDataTypes() {
 	dataTypes = append(dataTypes, bdplib.CreateDataType(dataTypeTotal, "", "Amount of free parking slots", "Instantaneous"))
 
 	bdplib.SyncDataTypes(stationType, dataTypes)
+}
+
+// to extract values array from map, without external dependency
+// https://stackoverflow.com/questions/13422578/in-go-how-to-get-a-slice-of-values-from-a-map
+func values[M ~map[K]V, K comparable, V any](m M) []V {
+	r := make([]V, 0, len(m))
+	for _, v := range m {
+		r = append(r, v)
+	}
+	return r
 }

@@ -30,14 +30,14 @@ type DataType struct {
 }
 
 type Station struct {
-	Id            string            `json:"id"`
-	Name          string            `json:"name"`
-	StationType   string            `json:"stationType"`
-	Latitude      float64           `json:"latitude"`
-	Longitude     float64           `json:"longitude"`
-	Origin        string            `json:"origin"`
-	ParentStation string            `json:"parentStation"`
-	Metadata      map[string]string `json:"metadata"`
+	Id            string                 `json:"id"`
+	Name          string                 `json:"name"`
+	StationType   string                 `json:"stationType"`
+	Latitude      float64                `json:"latitude"`
+	Longitude     float64                `json:"longitude"`
+	Origin        string                 `json:"origin"`
+	ParentStation string                 `json:"parentStation"`
+	Metadata      map[string]interface{} `json:"metadata"`
 }
 
 type DataMap struct {
