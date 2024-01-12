@@ -26,7 +26,7 @@ type DataType struct {
 	Description string            `json:"description"`
 	Rtype       string            `json:"rType"`
 	Period      uint32            `json:"period"`
-	Metadata    map[string]string `json:"metaData"`
+	MetaData    map[string]string `json:"metaData"`
 }
 
 type Station struct {
@@ -37,7 +37,7 @@ type Station struct {
 	Longitude     float64                `json:"longitude"`
 	Origin        string                 `json:"origin"`
 	ParentStation string                 `json:"parentStation"`
-	Metadata      map[string]interface{} `json:"metaData"`
+	MetaData      map[string]interface{} `json:"metaData"`
 }
 
 type DataMap struct {

@@ -50,7 +50,7 @@ func Job() {
 			parentStationCode := strconv.Itoa(facility.FacilityId)
 
 			parentStation := bdplib.CreateStation(parentStationCode, facility.Description, stationTypeParent, bzLat, bzLon, origin)
-			parentStation.Metadata = map[string]interface{}{
+			parentStation.MetaData = map[string]interface{}{
 				"IdCompany":  facility.FacilityId,
 				"City":       facility.City,
 				"Address":    facility.Address,
@@ -72,7 +72,7 @@ func Job() {
 				if !ok {
 					station = bdplib.CreateStation(stationCode, facility.Description, stationType, bzLat, bzLon, origin)
 					station.ParentStation = parentStation.Id
-					station.Metadata = make(map[string]interface{})
+					station.MetaData = make(map[string]interface{})
 					stations[stationCode] = station
 					slog.Debug("Create station " + stationCode)
 				}
@@ -85,22 +85,22 @@ func Job() {
 				switch freePlace.CountingCategoryNo {
 				// Short Stay
 				case 1:
-					station.Metadata["FreeLimit_"+shortStay] = freePlace.FreeLimit
-					station.Metadata["OccupancyLimit_"+shortStay] = freePlace.OccupancyLimit
-					station.Metadata["Capacity_"+shortStay] = freePlace.Capacity
+					station.MetaData["FreeLimit_"+shortStay] = freePlace.FreeLimit
+					station.MetaData["OccupancyLimit_"+shortStay] = freePlace.OccupancyLimit
+					station.MetaData["Capacity_"+shortStay] = freePlace.Capacity
 					fmt.Printf("%v\n", station)
 					recordsShort = append(recordsShort, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
 				// Subscribed
 				case 2:
-					station.Metadata["FreeLimit_"+Subscribers] = freePlace.FreeLimit
-					station.Metadata["OccupancyLimit_"+Subscribers] = freePlace.OccupancyLimit
-					station.Metadata["Capacity_"+Subscribers] = freePlace.Capacity
+					station.MetaData["FreeLimit_"+Subscribers] = freePlace.FreeLimit
+					station.MetaData["OccupancyLimit_"+Subscribers] = freePlace.OccupancyLimit
+					station.MetaData["Capacity_"+Subscribers] = freePlace.Capacity
 					recordsSubs = append(recordsSubs, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
 				// Total
 				default:
-					station.Metadata["FreeLimit"] = freePlace.FreeLimit
-					station.Metadata["OccupancyLimit"] = freePlace.OccupancyLimit
-					station.Metadata["Capacity"] = freePlace.Capacity
+					station.MetaData["FreeLimit"] = freePlace.FreeLimit
+					station.MetaData["OccupancyLimit"] = freePlace.OccupancyLimit
+					station.MetaData["Capacity"] = freePlace.Capacity
 					recordsTotal = append(recordsTotal, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
 				}
 
