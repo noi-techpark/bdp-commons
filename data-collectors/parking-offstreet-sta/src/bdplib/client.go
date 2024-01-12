@@ -26,7 +26,7 @@ type DataType struct {
 	Description string            `json:"description"`
 	Rtype       string            `json:"rType"`
 	Period      uint32            `json:"period"`
-	Metadata    map[string]string `json:"metadata"`
+	Metadata    map[string]string `json:"metaData"`
 }
 
 type Station struct {
@@ -37,7 +37,7 @@ type Station struct {
 	Longitude     float64                `json:"longitude"`
 	Origin        string                 `json:"origin"`
 	ParentStation string                 `json:"parentStation"`
-	Metadata      map[string]interface{} `json:"metadata"`
+	Metadata      map[string]interface{} `json:"metaData"`
 }
 
 type DataMap struct {
@@ -82,33 +82,21 @@ func SyncDataTypes(stationType string, dataTypes []DataType) {
 	slog.Debug("Syncing data types done.")
 }
 
-func SyncStations(stations []Station) {
+func SyncStations(stationType string, stations []Station) {
 	pushProvenance()
 
-	// iterate over stations and map every station to its type
-	var stationMap = make(map[string][]Station)
-
-	for _, station := range stations {
-		stationMap[station.StationType] = append(stationMap[station.StationType], station)
-	}
-
-	for stationType, stations := range stationMap {
-		slog.Info("Syncing " + strconv.Itoa(len(stations)) + " " + stationType + " stations...")
-		url := baseUri + syncStationsPath + "/" + stationType + "?prn=" + prn + "&prv=" + prv
-		postToWriter(stations, url)
-		slog.Info("Syncing stations done.")
-	}
+	slog.Info("Syncing " + strconv.Itoa(len(stations)) + " " + stationType + " stations...")
+	url := baseUri + syncStationsPath + "/" + stationType + "?prn=" + prn + "&prv=" + prv
+	postToWriter(stations, url)
+	slog.Info("Syncing stations done.")
 }
 
 func PushData(stationType string, dataMap DataMap) {
 	pushProvenance()
 
 	slog.Info("Pushing records...")
-
 	url := baseUri + pushRecordsPath + "/" + stationType + "?prn=" + prn + "&prv=" + prv
-
 	postToWriter(dataMap, url)
-
 	slog.Info("Pushing records done.")
 }
 
@@ -156,6 +144,10 @@ func createDataMap() DataMap {
 }
 
 func AddRecords(stationCode string, dataType string, records []Record, dataMap *DataMap) {
+
+	if len(records) == 0 {
+		return
+	}
 
 	if dataMap.Name == "" {
 		*dataMap = createDataMap()

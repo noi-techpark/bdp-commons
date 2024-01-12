@@ -5,6 +5,8 @@
 package dc
 
 import (
+	"fmt"
+	"log/slog"
 	"os"
 	"parking-offstreet-sta/bdplib"
 	"strconv"
@@ -30,14 +32,11 @@ const bzLon float64 = 11.33982
 const identifier string = "STA – Strutture Trasporto Alto Adige SpA Via dei Conciapelli, 60 39100  Bolzano UID: 00586190217"
 
 func Job() {
+	var parentStations []bdplib.Station
 	// save stations by stationCode
 	stations := make(map[string]bdplib.Station)
 
 	var dataMap bdplib.DataMap
-
-	var recordsShort []bdplib.Record
-	var recordsSubs []bdplib.Record
-	var recordsTotal []bdplib.Record
 
 	// get data
 	facilities := GetFacilityData()
@@ -59,7 +58,7 @@ func Job() {
 				"Telephone1": facility.Telephone1,
 				"Telephone2": facility.Telephone2,
 			}
-			stations[parentStationCode] = parentStation
+			parentStations = append(parentStations, parentStation)
 
 			freePlaces := GetFreePlacesData(facility.FacilityId)
 
@@ -75,15 +74,21 @@ func Job() {
 					station.ParentStation = parentStation.Id
 					station.Metadata = make(map[string]interface{})
 					stations[stationCode] = station
+					slog.Debug("Create station " + stationCode)
 				}
 
 				// map metadata and create records
+				var recordsShort []bdplib.Record
+				var recordsSubs []bdplib.Record
+				var recordsTotal []bdplib.Record
+
 				switch freePlace.CountingCategoryNo {
 				// Short Stay
 				case 1:
 					station.Metadata["FreeLimit_"+shortStay] = freePlace.FreeLimit
 					station.Metadata["OccupancyLimit_"+shortStay] = freePlace.OccupancyLimit
 					station.Metadata["Capacity_"+shortStay] = freePlace.Capacity
+					fmt.Printf("%v\n", station)
 					recordsShort = append(recordsShort, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
 				// Subscribed
 				case 2:
@@ -106,7 +111,8 @@ func Job() {
 		}
 	}
 
-	bdplib.SyncStations(values(stations))
+	bdplib.SyncStations(stationTypeParent, parentStations)
+	bdplib.SyncStations(stationType, values(stations))
 	bdplib.PushData(stationType, dataMap)
 }
 
