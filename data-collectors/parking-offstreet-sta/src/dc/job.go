@@ -5,7 +5,6 @@
 package dc
 
 import (
-	"fmt"
 	"log/slog"
 	"os"
 	"parking-offstreet-sta/bdplib"
@@ -40,7 +39,6 @@ func Job() {
 
 	// get data
 	facilities := GetFacilityData()
-	// fmt.Printf("%+v\n", facilities)
 
 	ts := time.Now().UnixMilli()
 
@@ -88,7 +86,6 @@ func Job() {
 					station.MetaData["FreeLimit_"+shortStay] = freePlace.FreeLimit
 					station.MetaData["OccupancyLimit_"+shortStay] = freePlace.OccupancyLimit
 					station.MetaData["Capacity_"+shortStay] = freePlace.Capacity
-					fmt.Printf("%v\n", station)
 					recordsShort = append(recordsShort, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
 				// Subscribed
 				case 2:
