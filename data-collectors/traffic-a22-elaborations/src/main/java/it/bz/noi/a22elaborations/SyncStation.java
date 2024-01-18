@@ -55,6 +55,7 @@ public class SyncStation {
 
 	@PostConstruct
 	private void postConstruct() throws IOException {
+		// read sensor type <--> station code mapping from csv
 		sensorTypeByStation = new HashMap<>();
 
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
