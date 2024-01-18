@@ -5,8 +5,6 @@
 package it.bz.noi.a22elaborations;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,13 +13,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
-
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
@@ -60,7 +54,7 @@ public class SyncStation {
 	}
 
 	@PostConstruct
-	private void postConstruct() throws FileNotFoundException, IOException {
+	private void postConstruct() throws IOException {
 		sensorTypeByStation = new HashMap<>();
 
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -73,8 +67,6 @@ public class SyncStation {
 			String[] values = line.split(",");
 			String code = values[0];
 			String sensorType = values[1];
-
-			LOG.info("code: " + code + " type: " + stationtype);
 			sensorTypeByStation.put(code, sensorType);
 		}
 	}
