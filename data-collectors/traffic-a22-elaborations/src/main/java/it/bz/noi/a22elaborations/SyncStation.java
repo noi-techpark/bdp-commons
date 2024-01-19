@@ -142,7 +142,8 @@ public class SyncStation {
 
 				// add sensor type metadata field, that will be used for simplification of
 				// further elaborations
-				String sensorType = sensorTypeByStation.getOrDefault(code, null);
+				String stationId = code.split(":")[1];
+				String sensorType = sensorTypeByStation.getOrDefault(stationId, null);
 				if (sensorType != null && !sensorType.isEmpty()) {
 					metadataMap.put("sensor_type", sensorType);
 				}
