@@ -142,10 +142,15 @@ public class SyncStation {
 
 				// add sensor type metadata field, that will be used for simplification of
 				// further elaborations
-				String stationId = code.split(":")[1];
-				String sensorType = sensorTypeByStation.getOrDefault(stationId, null);
-				if (sensorType != null && !sensorType.isEmpty()) {
-					metadataMap.put("sensor_type", sensorType);
+				String[] codes = code.split(":");
+				if (codes.length > 1) {
+					String stationId = codes[1].trim();
+					String sensorType = sensorTypeByStation.getOrDefault(stationId, null);
+					if (sensorType != null && !sensorType.isEmpty()) {
+						metadataMap.put("sensor_type", sensorType.trim());
+					}
+				} else {
+					LOG.info("Station with code {} has not correct format A22:station_id:sensor_id", code);
 				}
 
 				station.setMetaData(metadataMap);
