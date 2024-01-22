@@ -15,8 +15,8 @@ import (
 const stationTypeParent string = "ParkingFacility"
 const stationType string = "ParkingStation"
 
-const shortStay string = "ShortStay"
-const Subscribers string = "Subscribers"
+const shortStay string = "short_stay"
+const Subscribers string = "subscribers"
 
 const dataTypeFreeShort string = "free_" + shortStay
 const dataTypeFreeSubs string = "free_" + Subscribers
@@ -86,22 +86,22 @@ func Job() {
 				switch freePlace.CountingCategoryNo {
 				// Short Stay
 				case 1:
-					station.MetaData["FreeLimit_"+shortStay] = freePlace.FreeLimit
-					station.MetaData["OccupancyLimit_"+shortStay] = freePlace.OccupancyLimit
-					station.MetaData["Capacity_"+shortStay] = freePlace.Capacity
+					station.MetaData["free_limit_"+shortStay] = freePlace.FreeLimit
+					station.MetaData["occupancy_limit_"+shortStay] = freePlace.OccupancyLimit
+					station.MetaData["capacity_"+shortStay] = freePlace.Capacity
 					bdplib.AddRecord(stationCode, dataTypeFreeShort, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600), &dataMap)
 					bdplib.AddRecord(stationCode, dataTypeOccupiedShort, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600), &dataMap)
 				// Subscribed
 				case 2:
-					station.MetaData["FreeLimit_"+Subscribers] = freePlace.FreeLimit
-					station.MetaData["OccupancyLimit_"+Subscribers] = freePlace.OccupancyLimit
-					station.MetaData["Capacity_"+Subscribers] = freePlace.Capacity
+					station.MetaData["free_limit_"+Subscribers] = freePlace.FreeLimit
+					station.MetaData["occupancy_limit_"+Subscribers] = freePlace.OccupancyLimit
+					station.MetaData["capacity_"+Subscribers] = freePlace.Capacity
 					bdplib.AddRecord(stationCode, dataTypeFreeSubs, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600), &dataMap)
 					bdplib.AddRecord(stationCode, dataTypeOccupiedSubs, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600), &dataMap)
 				// Total
 				default:
-					station.MetaData["FreeLimit"] = freePlace.FreeLimit
-					station.MetaData["OccupancyLimit"] = freePlace.OccupancyLimit
+					station.MetaData["free_limit"] = freePlace.FreeLimit
+					station.MetaData["occupancy_limit"] = freePlace.OccupancyLimit
 					station.MetaData["Capacity"] = freePlace.Capacity
 					bdplib.AddRecord(stationCode, dataTypeFreeTotal, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600), &dataMap)
 					bdplib.AddRecord(stationCode, dataTypeOccupiedTotal, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600), &dataMap)
