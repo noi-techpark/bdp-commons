@@ -41,7 +41,6 @@ func Job() {
 	var dataMapParent bdplib.DataMap
 	var dataMap bdplib.DataMap
 
-	// get data
 	facilities := GetFacilityData()
 
 	ts := time.Now().UnixMilli()
@@ -73,8 +72,8 @@ func Job() {
 			// if multiple parkNo exist, multiple entries for every parkNo and its categories exist
 			// so iterating over freeplaces and checking if the station with the parkNo has already been created is needed
 			for _, freePlace := range freePlaces.Data.FreePlaces {
+				// create ParkingStation
 				stationCode := parentStationCode + "_" + strconv.Itoa(freePlace.ParkNo)
-
 				station, ok := stations[stationCode]
 				if !ok {
 					station = bdplib.CreateStation(stationCode, facility.Description, stationType, bzLat, bzLon, origin)
@@ -84,59 +83,40 @@ func Job() {
 					slog.Debug("Create station " + stationCode)
 				}
 
-				// free
-				var recordsFreeShort []bdplib.Record
-				var recordsFreeSubs []bdplib.Record
-				var recordsFreeTotal []bdplib.Record
-				// occupied
-				var recordsOccupiedShort []bdplib.Record
-				var recordsOccupiedSubs []bdplib.Record
-				var recordsOccupiedTotal []bdplib.Record
-
 				switch freePlace.CountingCategoryNo {
 				// Short Stay
 				case 1:
 					station.MetaData["FreeLimit_"+shortStay] = freePlace.FreeLimit
 					station.MetaData["OccupancyLimit_"+shortStay] = freePlace.OccupancyLimit
 					station.MetaData["Capacity_"+shortStay] = freePlace.Capacity
-					recordsFreeShort = append(recordsFreeShort, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
-					recordsOccupiedShort = append(recordsOccupiedShort, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600))
+					bdplib.AddRecord(stationCode, dataTypeFreeShort, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600), &dataMap)
+					bdplib.AddRecord(stationCode, dataTypeOccupiedShort, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600), &dataMap)
 				// Subscribed
 				case 2:
 					station.MetaData["FreeLimit_"+Subscribers] = freePlace.FreeLimit
 					station.MetaData["OccupancyLimit_"+Subscribers] = freePlace.OccupancyLimit
 					station.MetaData["Capacity_"+Subscribers] = freePlace.Capacity
-					recordsFreeSubs = append(recordsFreeSubs, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
-					recordsOccupiedSubs = append(recordsOccupiedSubs, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600))
+					bdplib.AddRecord(stationCode, dataTypeFreeSubs, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600), &dataMap)
+					bdplib.AddRecord(stationCode, dataTypeOccupiedSubs, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600), &dataMap)
 				// Total
 				default:
 					station.MetaData["FreeLimit"] = freePlace.FreeLimit
 					station.MetaData["OccupancyLimit"] = freePlace.OccupancyLimit
 					station.MetaData["Capacity"] = freePlace.Capacity
-					recordsFreeTotal = append(recordsFreeTotal, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
-					recordsOccupiedTotal = append(recordsOccupiedTotal, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600))
-
-					// facility data
+					bdplib.AddRecord(stationCode, dataTypeFreeTotal, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600), &dataMap)
+					bdplib.AddRecord(stationCode, dataTypeOccupiedTotal, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600), &dataMap)
+					// total facility data
 					freeTotalSum += freePlace.FreePlaces
 					occupiedTotalSum += freePlace.CurrentLevel
 					capacityTotal += freePlace.Capacity
 				}
-				// free
-				bdplib.AddRecords(stationCode, dataTypeFreeShort, recordsFreeShort, &dataMap)
-				bdplib.AddRecords(stationCode, dataTypeFreeSubs, recordsFreeSubs, &dataMap)
-				bdplib.AddRecords(stationCode, dataTypeFreeTotal, recordsFreeTotal, &dataMap)
-				// occupied
-				bdplib.AddRecords(stationCode, dataTypeOccupiedShort, recordsOccupiedShort, &dataMap)
-				bdplib.AddRecords(stationCode, dataTypeOccupiedSubs, recordsOccupiedSubs, &dataMap)
-				bdplib.AddRecords(stationCode, dataTypeOccupiedTotal, recordsOccupiedTotal, &dataMap)
-
 			}
 			// assign total facility data, if data is not 0
 			if freeTotalSum > 0 {
-				bdplib.AddRecords(parentStationCode, dataTypeFreeTotal, []bdplib.Record{bdplib.CreateRecord(ts, freeTotalSum, 600)}, &dataMapParent)
+				bdplib.AddRecord(parentStationCode, dataTypeFreeTotal, bdplib.CreateRecord(ts, freeTotalSum, 600), &dataMapParent)
 			}
 			if occupiedTotalSum > 0 {
-				bdplib.AddRecords(parentStationCode, dataTypeOccupiedTotal, []bdplib.Record{bdplib.CreateRecord(ts, occupiedTotalSum, 600)}, &dataMapParent)
+				bdplib.AddRecord(parentStationCode, dataTypeOccupiedTotal, bdplib.CreateRecord(ts, occupiedTotalSum, 600), &dataMapParent)
 			}
 			if capacityTotal > 0 {
 				parentStation.MetaData["Capacity"] = capacityTotal
