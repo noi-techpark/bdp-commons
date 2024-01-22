@@ -51,7 +51,6 @@ type Record struct {
 	Value     interface{} `json:"value"`
 	Period    uint64      `json:"period"`
 	Timestamp int64       `json:"timestamp"`
-	Type      string      `json:"_t"`
 }
 
 const syncDataTypesPath string = "/syncDataTypes"
@@ -129,7 +128,6 @@ func CreateRecord(ts int64, value interface{}, period uint64) Record {
 		Value:     value,
 		Timestamp: ts,
 		Period:    period,
-		Type:      "it.bz.idm.bdp.dto.SimpleRecordDto",
 	}
 	return record
 }
