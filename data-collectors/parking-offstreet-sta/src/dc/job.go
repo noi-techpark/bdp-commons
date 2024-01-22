@@ -18,9 +18,12 @@ const stationType string = "ParkingStation"
 const shortStay string = "ShortStay"
 const Subscribers string = "Subscribers"
 
-const dataTypeShort string = "free_" + shortStay
-const dataTypeSubs string = "free_" + Subscribers
-const dataTypeTotal string = "free"
+const dataTypeFreeShort string = "free_" + shortStay
+const dataTypeFreeSubs string = "free_" + Subscribers
+const dataTypeFreeTotal string = "free"
+const dataTypeOccupiedShort string = "occupied_" + shortStay
+const dataTypeOccupiedSubs string = "occupied_" + Subscribers
+const dataTypeOccupiedTotal string = "occupied"
 
 var origin string = os.Getenv("ORIGIN")
 
@@ -35,6 +38,7 @@ func Job() {
 	// save stations by stationCode
 	stations := make(map[string]bdplib.Station)
 
+	var dataMapParent bdplib.DataMap
 	var dataMap bdplib.DataMap
 
 	// get data
@@ -60,6 +64,11 @@ func Job() {
 
 			freePlaces := GetFreePlacesData(facility.FacilityId)
 
+			// total facility measurements
+			freeTotalSum := 0
+			occupiedTotalSum := 0
+			capacityTotal := 0
+
 			// freeplaces is array of a single categories data
 			// if multiple parkNo exist, multiple entries for every parkNo and its categories exist
 			// so iterating over freeplaces and checking if the station with the parkNo has already been created is needed
@@ -75,10 +84,14 @@ func Job() {
 					slog.Debug("Create station " + stationCode)
 				}
 
-				// map metadata and create records
-				var recordsShort []bdplib.Record
-				var recordsSubs []bdplib.Record
-				var recordsTotal []bdplib.Record
+				// free
+				var recordsFreeShort []bdplib.Record
+				var recordsFreeSubs []bdplib.Record
+				var recordsFreeTotal []bdplib.Record
+				// occupied
+				var recordsOccupiedShort []bdplib.Record
+				var recordsOccupiedSubs []bdplib.Record
+				var recordsOccupiedTotal []bdplib.Record
 
 				switch freePlace.CountingCategoryNo {
 				// Short Stay
@@ -86,39 +99,66 @@ func Job() {
 					station.MetaData["FreeLimit_"+shortStay] = freePlace.FreeLimit
 					station.MetaData["OccupancyLimit_"+shortStay] = freePlace.OccupancyLimit
 					station.MetaData["Capacity_"+shortStay] = freePlace.Capacity
-					recordsShort = append(recordsShort, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
+					recordsFreeShort = append(recordsFreeShort, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
+					recordsOccupiedShort = append(recordsOccupiedShort, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600))
 				// Subscribed
 				case 2:
 					station.MetaData["FreeLimit_"+Subscribers] = freePlace.FreeLimit
 					station.MetaData["OccupancyLimit_"+Subscribers] = freePlace.OccupancyLimit
 					station.MetaData["Capacity_"+Subscribers] = freePlace.Capacity
-					recordsSubs = append(recordsSubs, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
+					recordsFreeSubs = append(recordsFreeSubs, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
+					recordsOccupiedSubs = append(recordsOccupiedSubs, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600))
 				// Total
 				default:
 					station.MetaData["FreeLimit"] = freePlace.FreeLimit
 					station.MetaData["OccupancyLimit"] = freePlace.OccupancyLimit
 					station.MetaData["Capacity"] = freePlace.Capacity
-					recordsTotal = append(recordsTotal, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
-				}
+					recordsFreeTotal = append(recordsFreeTotal, bdplib.CreateRecord(ts, freePlace.FreePlaces, 600))
+					recordsOccupiedTotal = append(recordsOccupiedTotal, bdplib.CreateRecord(ts, freePlace.CurrentLevel, 600))
 
-				bdplib.AddRecords(stationCode, dataTypeShort, recordsShort, &dataMap)
-				bdplib.AddRecords(stationCode, dataTypeSubs, recordsSubs, &dataMap)
-				bdplib.AddRecords(stationCode, dataTypeTotal, recordsTotal, &dataMap)
+					// facility data
+					freeTotalSum += freePlace.FreePlaces
+					occupiedTotalSum += freePlace.CurrentLevel
+					capacityTotal += freePlace.Capacity
+				}
+				// free
+				bdplib.AddRecords(stationCode, dataTypeFreeShort, recordsFreeShort, &dataMap)
+				bdplib.AddRecords(stationCode, dataTypeFreeSubs, recordsFreeSubs, &dataMap)
+				bdplib.AddRecords(stationCode, dataTypeFreeTotal, recordsFreeTotal, &dataMap)
+				// occupied
+				bdplib.AddRecords(stationCode, dataTypeOccupiedShort, recordsOccupiedShort, &dataMap)
+				bdplib.AddRecords(stationCode, dataTypeOccupiedSubs, recordsOccupiedSubs, &dataMap)
+				bdplib.AddRecords(stationCode, dataTypeOccupiedTotal, recordsOccupiedTotal, &dataMap)
+
+			}
+			// assign total facility data, if data is not 0
+			if freeTotalSum > 0 {
+				bdplib.AddRecords(parentStationCode, dataTypeFreeTotal, []bdplib.Record{bdplib.CreateRecord(ts, freeTotalSum, 600)}, &dataMapParent)
+			}
+			if occupiedTotalSum > 0 {
+				bdplib.AddRecords(parentStationCode, dataTypeOccupiedTotal, []bdplib.Record{bdplib.CreateRecord(ts, occupiedTotalSum, 600)}, &dataMapParent)
+			}
+			if capacityTotal > 0 {
+				parentStation.MetaData["Capacity"] = capacityTotal
 			}
 		}
 	}
-
 	bdplib.SyncStations(stationTypeParent, parentStations)
 	bdplib.SyncStations(stationType, values(stations))
+	bdplib.PushData(stationTypeParent, dataMapParent)
 	bdplib.PushData(stationType, dataMap)
 }
 
 func SyncDataTypes() {
 	var dataTypes []bdplib.DataType
-
-	dataTypes = append(dataTypes, bdplib.CreateDataType(dataTypeShort, "", "Amount of free 'short stay' parking slots", "Instantaneous"))
-	dataTypes = append(dataTypes, bdplib.CreateDataType(dataTypeSubs, "", "Amount of 'subscribed' parking slots", "Instantaneous"))
-	dataTypes = append(dataTypes, bdplib.CreateDataType(dataTypeTotal, "", "Amount of free parking slots", "Instantaneous"))
+	// free
+	dataTypes = append(dataTypes, bdplib.CreateDataType(dataTypeFreeShort, "", "Amount of free 'short stay' parking slots", "Instantaneous"))
+	dataTypes = append(dataTypes, bdplib.CreateDataType(dataTypeFreeSubs, "", "Amount of free 'subscribed' parking slots", "Instantaneous"))
+	dataTypes = append(dataTypes, bdplib.CreateDataType(dataTypeFreeTotal, "", "Amount of free parking slots", "Instantaneous"))
+	// occupied
+	dataTypes = append(dataTypes, bdplib.CreateDataType(dataTypeOccupiedShort, "", "Amount of occupied 'short stay' parking slots", "Instantaneous"))
+	dataTypes = append(dataTypes, bdplib.CreateDataType(dataTypeOccupiedSubs, "", "Amount of occupied 'subscribed' parking slots", "Instantaneous"))
+	dataTypes = append(dataTypes, bdplib.CreateDataType(dataTypeOccupiedTotal, "", "Amount of occupied parking slots", "Instantaneous"))
 
 	bdplib.SyncDataTypes(stationType, dataTypes)
 }
