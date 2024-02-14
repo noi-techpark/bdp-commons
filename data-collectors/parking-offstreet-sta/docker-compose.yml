@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+#
+# SPDX-License-Identifier: CC0-1.0
+
+version: "3.9"
+
+services:
+  app:
+    image: golang:1.21.5-alpine
+    env_file:
+      - .env
+    entrypoint: >
+      go run main.go
+    volumes:
+      - ./src:/code
+      - ~/.go/pkg/mod:/go/pkg/mod
+    working_dir: /code
