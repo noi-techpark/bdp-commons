@@ -77,8 +77,8 @@ jobs:
           STORED_CREDENTIALS_BASE64: ${{ secrets.PARKING_ONSTREET_BZ_STORED_CREDENTIAL_B64 }}
           GOOGLE_SECRET_BASE64: ${{ secrets.PARKING_ONSTREET_BZ_GOOGLE_SECRET_B64 }}
         run: |
-          echo $STORED_CREDENTIALS_BASE64 | base64 --decode > $WORKING_DIRECTORY/META-INF/spring/credentials/StoredCredential
-          echo $GOOGLE_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/META-INF/spring/credentials/client_secret.json
+          echo $STORED_CREDENTIALS_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/META-INF/spring/credentials/StoredCredential
+          echo $GOOGLE_SECRET_BASE64 | base64 --decode > $WORKING_DIRECTORY/src/main/resources/META-INF/spring/credentials/client_secret.json
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
