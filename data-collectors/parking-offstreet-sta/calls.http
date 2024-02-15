@@ -28,7 +28,9 @@ grant_type=password
 GET https://www.onecenter.info/api/DAZ/GetFacilities
 Authorization: Bearer {{token}}
 
-### FacilityID
+### FacilityID 
+# 607440 Bressanone
+# 608612 Bolzano
 GET https://www.onecenter.info/api/DAZ/FacilityFreePlaces
-?FacilityID=608612
+?FacilityID=607440
 Authorization: Bearer {{login.response.body.access_token}}
