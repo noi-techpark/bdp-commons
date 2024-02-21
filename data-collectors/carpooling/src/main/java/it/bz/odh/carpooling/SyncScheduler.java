@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,15 +26,18 @@ public class SyncScheduler {
 	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
 	private static final String DATATYPE_ITINERARY_ID = "itinerary_details";
 
+	@Value("${odh_client.stationtype}")
+	private String stationtype;
+
 	@Value("${odh_client.period}")
-    private Integer period;
+	private Integer period;
 
 	@Value("${odh_client.stationNamePrefix}")
-    private String stationNamePrefix;
+	private String stationNamePrefix;
 
-    @Lazy
-    @Autowired
-    private OdhClient odhClient;
+	@Lazy
+	@Autowired
+	private OdhClient odhClient;
 
 	@Autowired
 	private GoogleDriveConnector googleDriveConnector;
@@ -45,19 +49,20 @@ public class SyncScheduler {
 
 		long currentTimeInMillis = System.currentTimeMillis();
 
-		List<CarPoolingTripDto> carPoolingTripList = CsvFileUtilities.parseCarPoolingCsvData(googleDriveConnector.readRidesCsvContent());
+		List<CarPoolingTripDto> carPoolingTripList = CsvFileUtilities
+				.parseCarPoolingCsvData(googleDriveConnector.readRidesCsvContent());
 
 		StationList stationList = new StationList();
 		DataMapDto<RecordDtoImpl> dataMap = new DataMapDto<>();
 
 		LOG.info("got {} car pooling trips", carPoolingTripList.size());
 
-		for(int i = 0; i < carPoolingTripList.size(); i++) {
+		for (int i = 0; i < carPoolingTripList.size(); i++) {
 			CarPoolingTripDto carPoolingTrip = carPoolingTripList.get(i);
 			StationDto stationDto = new StationDto(carPoolingTrip.getHashedId(),
-				stationNamePrefix + i,
-				carPoolingTrip.getStartLatApprox(),
-				carPoolingTrip.getStartLonApprox());
+					stationNamePrefix + i,
+					carPoolingTrip.getStartLatApprox(),
+					carPoolingTrip.getStartLonApprox());
 
 			stationDto.setOrigin(odhClient.getProvenance().getLineage());
 
@@ -69,12 +74,19 @@ public class SyncScheduler {
 			stationList.add(stationDto);
 
 			dataMap.addRecord(stationDto.getId(), DATATYPE_ITINERARY_ID,
-				new SimpleRecordDto(currentTimeInMillis, carPoolingTrip.toJson(), period));
+					new SimpleRecordDto(currentTimeInMillis, carPoolingTrip.toJson(), period));
 		}
 
 		LOG.info("sync {} car pooling stations", stationList.size());
 		try {
-			odhClient.syncStations(stationList);
+			if (stationList.isEmpty()) {
+				// deactivate all active stations, if none are present
+				LOG.info("Deactivating all active stations");
+				odhClient.syncStationStates(stationtype, odhClient.getProvenance().getLineage(),
+						Arrays.asList("deactivate"), false);
+			} else {
+				odhClient.syncStations(stationList);
+			}
 		} catch (WebClientRequestException e) {
 			LOG.error("Sync stations failed: Request exception: {}", e.getMessage());
 		}
@@ -95,13 +107,11 @@ public class SyncScheduler {
 
 		List<DataTypeDto> odhDataTypeList = new ArrayList<>();
 		odhDataTypeList.add(
-			new DataTypeDto(
-				externalDataType.get("name"),
-				externalDataType.get("unit"),
-				externalDataType.get("name"),
-				"Instantaneous"
-			)
-		);
+				new DataTypeDto(
+						externalDataType.get("name"),
+						externalDataType.get("unit"),
+						externalDataType.get("name"),
+						"Instantaneous"));
 
 		try {
 			odhClient.syncDataTypes(odhDataTypeList);
