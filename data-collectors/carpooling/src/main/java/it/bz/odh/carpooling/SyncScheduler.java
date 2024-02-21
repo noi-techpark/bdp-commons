@@ -78,6 +78,7 @@ public class SyncScheduler {
 		try {
 			if (stationList.isEmpty()) {
 				// deactivate all active stations, if none are present
+				LOG.info("Deactivating all active stations");
 				odhClient.syncStationStates(stationNamePrefix, odhClient.getProvenance().getLineage(),
 						Arrays.asList("deactivate"), false);
 			} else {
