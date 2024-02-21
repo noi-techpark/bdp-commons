@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,8 @@ public class SyncScheduler {
 		try {
 			if (stationList.isEmpty()) {
 				// deactivate all active stations, if none are present
-				odhClient.syncStationStates(stationNamePrefix, odhClient.getProvenance().getLineage(), null, false);
+				odhClient.syncStationStates(stationNamePrefix, odhClient.getProvenance().getLineage(),
+						Arrays.asList("deactivate"), false);
 			} else {
 				odhClient.syncStations(stationList);
 			}
