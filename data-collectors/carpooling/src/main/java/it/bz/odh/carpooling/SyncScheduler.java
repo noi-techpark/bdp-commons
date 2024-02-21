@@ -26,6 +26,9 @@ public class SyncScheduler {
 	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
 	private static final String DATATYPE_ITINERARY_ID = "itinerary_details";
 
+	@Value("${odh_client.stationtype}")
+	private String stationtype;
+
 	@Value("${odh_client.period}")
 	private Integer period;
 
@@ -79,7 +82,7 @@ public class SyncScheduler {
 			if (stationList.isEmpty()) {
 				// deactivate all active stations, if none are present
 				LOG.info("Deactivating all active stations");
-				odhClient.syncStationStates(stationNamePrefix, odhClient.getProvenance().getLineage(),
+				odhClient.syncStationStates(stationtype, odhClient.getProvenance().getLineage(),
 						Arrays.asList("deactivate"), false);
 			} else {
 				odhClient.syncStations(stationList);
