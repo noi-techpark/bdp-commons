@@ -84,7 +84,13 @@ func Job() {
 				stationCode := parentStationCode + "_" + strconv.Itoa(freePlace.ParkNo)
 				station, ok := stations[stationCode]
 				if !ok {
-					station = bdplib.CreateStation(stationCode, facility.Description, stationType, bzLat, bzLon, origin)
+					lat := bzLat
+					lon := bzLon
+					if freePlace.Latitude != 0.0 && freePlace.Longitude != 0.0 {
+						lat = freePlace.Latitude
+						lon = freePlace.Longitude
+					}
+					station = bdplib.CreateStation(stationCode, facility.Description, stationType, lat, lon, origin)
 					station.ParentStation = parentStation.Id
 					station.MetaData = make(map[string]interface{})
 					stations[stationCode] = station
