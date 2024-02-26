@@ -13,10 +13,6 @@ import (
 )
 
 type FacilityResponse struct {
-	Data FacilityData
-}
-
-type FacilityData struct {
 	Status     string
 	Facilities []Facility
 }
@@ -33,13 +29,11 @@ type Facility struct {
 	PostNumber      int
 	ReceiptMerchant string
 	Web             string
+	Latitude        float64
+	Longitude       float64
 }
 
 type FreePlaceResponse struct {
-	Data FreePlaceData
-}
-
-type FreePlaceData struct {
 	Status     string
 	FreePlaces []FreePlace
 }
@@ -92,7 +86,7 @@ func getData(url string, response interface{}) {
 	}
 	defer resp.Body.Close()
 
-	slog.Info("Auth response code is: " + strconv.Itoa(resp.StatusCode))
+	slog.Info("API Auth response code is: " + strconv.Itoa(resp.StatusCode))
 	if resp.StatusCode == http.StatusOK {
 		bodyBytes, err := io.ReadAll(resp.Body)
 		if err != nil {
