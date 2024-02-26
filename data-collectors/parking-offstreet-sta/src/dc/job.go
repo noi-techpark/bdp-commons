@@ -45,12 +45,12 @@ func Job() {
 
 	ts := time.Now().UnixMilli()
 
-	for _, facility := range facilities.Data.Facilities {
+	for _, facility := range facilities.Facilities {
 
 		if facility.ReceiptMerchant == identifier {
 			parentStationCode := strconv.Itoa(facility.FacilityId)
-
-			parentStation := bdplib.CreateStation(parentStationCode, facility.Description, stationTypeParent, bzLat, bzLon, origin)
+			lat, lon := getLocationOrDefault(facility.Latitude, facility.Longitude)
+			parentStation := bdplib.CreateStation(parentStationCode, facility.Description, stationTypeParent, lat, lon, origin)
 			parentStation.MetaData = map[string]interface{}{
 				"IdCompany":  facility.FacilityId,
 				"City":       facility.City,
@@ -79,17 +79,12 @@ func Job() {
 			// freeplaces is array of a single categories data
 			// if multiple parkNo exist, multiple entries for every parkNo and its categories exist
 			// so iterating over freeplaces and checking if the station with the parkNo has already been created is needed
-			for _, freePlace := range freePlaces.Data.FreePlaces {
+			for _, freePlace := range freePlaces.FreePlaces {
 				// create ParkingStation
 				stationCode := parentStationCode + "_" + strconv.Itoa(freePlace.ParkNo)
 				station, ok := stations[stationCode]
 				if !ok {
-					lat := bzLat
-					lon := bzLon
-					if freePlace.Latitude != 0.0 && freePlace.Longitude != 0.0 {
-						lat = freePlace.Latitude
-						lon = freePlace.Longitude
-					}
+					lat, lon := getLocationOrDefault(freePlace.Latitude, freePlace.Longitude)
 					station = bdplib.CreateStation(stationCode, facility.Description, stationType, lat, lon, origin)
 					station.ParentStation = parentStation.Id
 					station.MetaData = make(map[string]interface{})
@@ -172,6 +167,13 @@ func Job() {
 	bdplib.SyncStations(stationType, values(stations))
 	bdplib.PushData(stationTypeParent, dataMapParent)
 	bdplib.PushData(stationType, dataMap)
+}
+
+func getLocationOrDefault(lat float64, lon float64) (float64, float64) {
+	if lat != 0 && lon != 0 {
+		return lat, lon
+	}
+	return bzLat, bzLon
 }
 
 func SyncDataTypes() {
