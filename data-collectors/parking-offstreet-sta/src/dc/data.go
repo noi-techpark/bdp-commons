@@ -56,6 +56,8 @@ type FreePlace struct {
 	Reservation         int
 	Capacity            int
 	FreePlaces          int
+	Latitude            float64
+	Longitude           float64
 }
 
 const facilityUrl = "https://www.onecenter.info/api/DAZ/GetFacilities"
