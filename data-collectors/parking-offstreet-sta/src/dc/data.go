@@ -60,8 +60,8 @@ type FreePlace struct {
 	Longitude           float64
 }
 
-const facilityUrl = "https://www.onecenter.info/api/DAZ/GetFacilities"
-const freePlacesUrl = "https://www.onecenter.info/api/DAZ/FacilityFreePlaces?FacilityID="
+const facilityUrl = "https://online.onecenter.info/api/Facility/GetFacilities"
+const freePlacesUrl = "https://online.onecenter.info/api/Facility/GetFreePlaces?FacilityID="
 
 func GetFacilityData() FacilityResponse {
 	var response FacilityResponse
