@@ -27,13 +27,13 @@ const dataTypeOccupiedTotal string = "occupied"
 
 var origin string = os.Getenv("ORIGIN")
 
-// use hardcoded
-// 607440 Bressanone  46.713708199562525, 11.650497804658093
+// use hardcoded default lat/lon locations, if API gives 0,0
 // 608612 Brunico 46.792815456220296, 11.927622005916659
 const brunicoId int = 608612
 const brunicoLat float64 = 46.792815456220296
 const brunicoLon float64 = 11.927622005916659
 
+// 607440 Bressanone  46.713708199562525, 11.650497804658093
 const bressanoneId int = 607440
 const bressanoneLat float64 = 46.713708199562525
 const bressanoneLon float64 = 11.650497804658093
@@ -60,7 +60,7 @@ func Job() {
 			lat, lon := getLocationOrDefault(facility.FacilityId, facility.Latitude, facility.Longitude)
 			parentStation := bdplib.CreateStation(parentStationCode, facility.Description, stationTypeParent, lat, lon, origin)
 			parentStation.MetaData = map[string]interface{}{
-				"IdCompany":  facility.FacilityId,
+				"IdCompany":  facility.IdCompany,
 				"City":       facility.City,
 				"Address":    facility.Address,
 				"ZIPCode":    facility.ZIPCode,
@@ -95,7 +95,10 @@ func Job() {
 					lat, lon := getLocationOrDefault(freePlace.FacilityId, freePlace.Latitude, freePlace.Longitude)
 					station = bdplib.CreateStation(stationCode, facility.Description, stationType, lat, lon, origin)
 					station.ParentStation = parentStation.Id
+
 					station.MetaData = make(map[string]interface{})
+					station.MetaData["FacilityDescription"] = freePlace.FacilityDescription
+
 					stations[stationCode] = station
 					slog.Debug("Create station " + stationCode)
 				}
