@@ -27,8 +27,16 @@ const dataTypeOccupiedTotal string = "occupied"
 
 var origin string = os.Getenv("ORIGIN")
 
-const bzLat float64 = 46.49067
-const bzLon float64 = 11.33982
+// use hardcoded
+// 607440 Bressanone  46.713708199562525, 11.650497804658093
+// 608612 Bolzano 46.792815456220296, 11.927622005916659
+const bolzanoId int = 608612
+const bolzanoLat float64 = 46.792815456220296
+const bolzanoLon float64 = 11.927622005916659
+
+const bressanoneId int = 607440
+const bressanoneLat float64 = 46.792815456220296
+const bressanoneLon float64 = 11.927622005916659
 
 // GetFacilityData returns data for multiple companies; this identifier filters out STA
 const identifier string = "STA – Strutture Trasporto Alto Adige SpA Via dei Conciapelli, 60 39100  Bolzano UID: 00586190217"
@@ -49,7 +57,7 @@ func Job() {
 
 		if facility.ReceiptMerchant == identifier {
 			parentStationCode := strconv.Itoa(facility.FacilityId)
-			lat, lon := getLocationOrDefault(facility.Latitude, facility.Longitude)
+			lat, lon := getLocationOrDefault(facility.FacilityId, facility.Latitude, facility.Longitude)
 			parentStation := bdplib.CreateStation(parentStationCode, facility.Description, stationTypeParent, lat, lon, origin)
 			parentStation.MetaData = map[string]interface{}{
 				"IdCompany":  facility.FacilityId,
@@ -84,7 +92,7 @@ func Job() {
 				stationCode := parentStationCode + "_" + strconv.Itoa(freePlace.ParkNo)
 				station, ok := stations[stationCode]
 				if !ok {
-					lat, lon := getLocationOrDefault(freePlace.Latitude, freePlace.Longitude)
+					lat, lon := getLocationOrDefault(freePlace.FacilityId, freePlace.Latitude, freePlace.Longitude)
 					station = bdplib.CreateStation(stationCode, facility.Description, stationType, lat, lon, origin)
 					station.ParentStation = parentStation.Id
 					station.MetaData = make(map[string]interface{})
@@ -169,11 +177,18 @@ func Job() {
 	bdplib.PushData(stationType, dataMap)
 }
 
-func getLocationOrDefault(lat float64, lon float64) (float64, float64) {
+func getLocationOrDefault(facilityId int, lat float64, lon float64) (float64, float64) {
 	if lat != 0 && lon != 0 {
 		return lat, lon
 	}
-	return bzLat, bzLon
+	if facilityId == bolzanoId {
+		return bolzanoLat, bolzanoLon
+	}
+	if facilityId == bressanoneId {
+		return bressanoneLat, bressanoneLon
+	}
+	// no default found
+	return lat, lon
 }
 
 func SyncDataTypes() {
