@@ -35,8 +35,8 @@ const brunicoLat float64 = 46.792815456220296
 const brunicoLon float64 = 11.927622005916659
 
 const bressanoneId int = 607440
-const bressanoneLat float64 = 46.792815456220296
-const bressanoneLon float64 = 11.927622005916659
+const bressanoneLat float64 = 46.713708199562525
+const bressanoneLon float64 = 11.650497804658093
 
 // GetFacilityData returns data for multiple companies; this identifier filters out STA
 const identifier string = "STA – Strutture Trasporto Alto Adige SpA Via dei Conciapelli, 60 39100  Bolzano UID: 00586190217"
