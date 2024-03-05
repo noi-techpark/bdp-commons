@@ -29,10 +29,10 @@ var origin string = os.Getenv("ORIGIN")
 
 // use hardcoded
 // 607440 Bressanone  46.713708199562525, 11.650497804658093
-// 608612 Bolzano 46.792815456220296, 11.927622005916659
-const bolzanoId int = 608612
-const bolzanoLat float64 = 46.792815456220296
-const bolzanoLon float64 = 11.927622005916659
+// 608612 Brunico 46.792815456220296, 11.927622005916659
+const brunicoId int = 608612
+const brunicoLat float64 = 46.792815456220296
+const brunicoLon float64 = 11.927622005916659
 
 const bressanoneId int = 607440
 const bressanoneLat float64 = 46.792815456220296
@@ -181,13 +181,13 @@ func getLocationOrDefault(facilityId int, lat float64, lon float64) (float64, fl
 	if lat != 0 && lon != 0 {
 		return lat, lon
 	}
-	if facilityId == bolzanoId {
-		return bolzanoLat, bolzanoLon
+	if facilityId == brunicoId {
+		return brunicoLat, brunicoLon
 	}
 	if facilityId == bressanoneId {
 		return bressanoneLat, bressanoneLon
 	}
-	// no default found
+	slog.Info("No default location found for facilityID" + strconv.Itoa(facilityId))
 	return lat, lon
 }
 
