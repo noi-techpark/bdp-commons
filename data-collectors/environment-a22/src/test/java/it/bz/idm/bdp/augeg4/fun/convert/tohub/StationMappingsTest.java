@@ -26,7 +26,7 @@ public class StationMappingsTest {
         assertTrue(mappingContainer.isPresent());
 
         StationMapping mapping = mappingContainer.get();
-        assertEquals(mapping.getName(), "Stazione_KM105-150-central");
+        assertEquals(mapping.getName(), "Stazione_KM105-150-centrale");
     }
 
     @Test
