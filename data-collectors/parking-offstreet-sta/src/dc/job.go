@@ -5,6 +5,7 @@
 package dc
 
 import (
+	"fmt"
 	"log/slog"
 	"os"
 	"parking-offstreet-sta/bdplib"
@@ -93,7 +94,7 @@ func Job() {
 				station, ok := stations[stationCode]
 				if !ok {
 					lat, lon := getLocationOrDefault(freePlace.FacilityId, freePlace.Latitude, freePlace.Longitude)
-					station = bdplib.CreateStation(stationCode, facility.Description, stationType, lat, lon, origin)
+					station = bdplib.CreateStation(stationCode, fmt.Sprintf("%s %s", facility.Description, freePlace.FacilityDescription), stationType, lat, lon, origin)
 					station.ParentStation = parentStation.Id
 
 					station.MetaData = make(map[string]interface{})
