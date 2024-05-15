@@ -9,8 +9,8 @@ import java.util.List;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 
 import it.bz.idm.bdp.dcparkingtn.dto.ParkingTnDto;
 import it.bz.idm.bdp.dcparkingtn.metadata.MetadataEnrichment;
@@ -35,10 +35,13 @@ public class ParkingTnJobScheduler {
     @Autowired
     private ParkingTnDataRetriever retrieval;
 
-	@Autowired
-	private MetadataEnrichment metadataEnrichment;
+    @Autowired
+    private MetadataEnrichment metadataEnrichment;
+    
+    @Autowired
+    private ParkingTnDataConverter converter;
 
-	private NominatimLocationLookupUtil lookupUtil = new NominatimLocationLookupUtil();
+    private NominatimLocationLookupUtil lookupUtil = new NominatimLocationLookupUtil();
 
     /** JOB 1 */
     public void pushStations() throws Exception {
@@ -46,34 +49,37 @@ public class ParkingTnJobScheduler {
 
         // to log how many stations have been pushed
         int stationCounter = -1;
+        StationList stations;
         try {
             List<ParkingTnDto> data = retrieval.fetchData();
             patchMunicipality(data);
-            StationList stations = pusher.mapStations2Bdp(data);
+            stations = pusher.mapStations2Bdp(data);
+        } catch (Exception e) {
+            LOG.error("Error getting stations from endpoint. Continuing by updating existing stations");
+            stations = new StationList(
+                    pusher.fetchStations(converter.getStationType(), converter.getOrigin()));
+        }
 
-			metadataEnrichment.mapData(stations);
+        metadataEnrichment.mapData(stations);
 
-            if (stations != null) {
-                stationCounter = stations.size();
-                pusher.syncStations(stations);
-            }
-        } catch (HttpClientErrorException e) {
-            LOG.error(pusher + " - " + e + " - " + e.getResponseBodyAsString(), e);
+        if (stations != null) {
+            stationCounter = stations.size();
+            pusher.syncStations(stations);
         }
         LOG.info("END.pushStations amount: " + stationCounter);
     }
 
     private void patchMunicipality(List<ParkingTnDto> data) throws NominatimException {
-		for (ParkingTnDto dto : data) {
-			if (dto.getParkingArea() != null && dto.getParkingArea().getPosition() != null && dto.getParkingArea().getPosition().size() == 2) {
-				String lookupLocation = lookupUtil.lookupLocation(dto.getParkingArea().getPosition().get(1),dto.getParkingArea().getPosition().get(0));
-				dto.getStation().getMetaData().put("municipality", lookupLocation);
-			}
-		}
+        for (ParkingTnDto dto : data) {
+            if (dto.getParkingArea() != null && dto.getParkingArea().getPosition() != null && dto.getParkingArea().getPosition().size() == 2) {
+                String lookupLocation = lookupUtil.lookupLocation(dto.getParkingArea().getPosition().get(1),dto.getParkingArea().getPosition().get(0));
+                dto.getStation().getMetaData().put("municipality", lookupLocation);
+            }
+        }
 
-	}
+    }
 
-	/** JOB 2 */
+    /** JOB 2 */
     public void pushData() throws Exception {
         LOG.info("START.pushData");
 
