@@ -20,6 +20,9 @@
 # Go workspace file
 go.work
 
+# Go debug files
+__debug_bin*
+
 .env
 
 main

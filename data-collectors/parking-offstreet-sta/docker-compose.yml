@@ -2,15 +2,19 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
-version: "3.9"
-
 services:
   app:
-    image: golang:1.21.5-alpine
+    build:
+      dockerfile_inline: |
+        FROM golang:1.21.5-alpine
+        WORKDIR /code
+        RUN go install github.com/go-delve/delve/cmd/dlv@latest
     env_file:
       - .env
     entrypoint: >
-      go run main.go
+      dlv --listen=:4000 --accept-multiclient --continue --headless=true --api-version 2 debug main.go
+    ports:
+      - 4000:4000
     volumes:
       - ./src:/code
       - ~/.go/pkg/mod:/go/pkg/mod
