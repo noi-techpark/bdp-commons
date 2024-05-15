@@ -92,6 +92,7 @@ func SyncStations(stationType string, stations []Station) {
 
 func PushData(stationType string, dataMap DataMap) {
 	pushProvenance()
+	dataMap.Provenance = provenanceUuid
 
 	slog.Info("Pushing records...")
 	url := baseUri + pushRecordsPath + "/" + stationType + "?prn=" + prn + "&prv=" + prv
