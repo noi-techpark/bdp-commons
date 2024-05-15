@@ -157,7 +157,7 @@ public class MetadataEnrichment {
 
 		Object value = stringValue;
 		if ("true".equalsIgnoreCase(stringValue) || "false".equals(stringValue)) {
-			value = Boolean.getBoolean(stringValue);
+			value = Boolean.parseBoolean(stringValue);
 		}
 		netexParking.put(fieldName.split("netex_")[1], value);
 		return netexParking;
