@@ -4,20 +4,14 @@
 
 package it.bz.noi.a22elaborations;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +27,11 @@ public class SyncStation {
 	private static String origin;
 	private static String stationtype;
 
-	private Map<String, String> sensorTypeByStation;
-
 	@Autowired
 	private A22TrafficJSONPusher pusher;
+
+	@Autowired
+	private SensorTypeUtil sensorTypeUtil;
 
 	// Development / Testing only
 	public static void main(String[] args) throws IOException, SQLException {
@@ -53,24 +48,6 @@ public class SyncStation {
 		}
 	}
 
-	@PostConstruct
-	private void postConstruct() throws IOException {
-		// read sensor type <--> station code mapping from csv
-		sensorTypeByStation = new HashMap<>();
-
-		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-		InputStream inputStream = classloader.getResourceAsStream("sensor-type-mapping.csv");
-		InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-
-		BufferedReader br = new BufferedReader(streamReader);
-		String line;
-		while ((line = br.readLine()) != null) {
-			String[] values = line.split(",");
-			String code = values[0];
-			String sensorType = values[1];
-			sensorTypeByStation.put(code, sensorType);
-		}
-	}
 
 	/**
 	 * Saves all stations and data types to the bdp-core
@@ -84,7 +61,8 @@ public class SyncStation {
 		LOG.debug("Read stations");
 		StationList stationList = readStationList(connection);
 		LOG.debug("Size stationlist: " + stationList.size());
-
+		// add sensor_type metadata
+		sensorTypeUtil.addSensorTypeMetadata(stationList);
 		LOG.debug("Push stations");
 		pusher.syncStations(stationList);
 
@@ -139,20 +117,6 @@ public class SyncStation {
 				HashMap<String, Object> metadataMap = new HashMap<String, Object>();
 				String metadata = resultSet.getString("metadata");
 				metadataMap.put("a22_metadata", metadata);
-
-				// add sensor type metadata field, that will be used for simplification of
-				// further elaborations
-				String[] codes = code.split(":");
-				if (codes.length > 1) {
-					String stationId = codes[1].trim();
-					String sensorType = sensorTypeByStation.getOrDefault(stationId, null);
-					if (sensorType != null && !sensorType.isEmpty()) {
-						metadataMap.put("sensor_type", sensorType.trim());
-					}
-				} else {
-					LOG.info("Station with code {} has not correct format A22:station_id:sensor_id", code);
-				}
-
 				station.setMetaData(metadataMap);
 				LOG.debug("Add stationDto to stationList");
 				stationList.add(station);
@@ -160,7 +124,6 @@ public class SyncStation {
 		}
 		LOG.debug("Return stationlist");
 		return stationList;
-
 	}
 
 }
