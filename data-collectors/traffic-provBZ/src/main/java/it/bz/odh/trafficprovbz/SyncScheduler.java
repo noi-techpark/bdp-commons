@@ -13,6 +13,7 @@ import it.bz.odh.trafficprovbz.dto.PassagesDataDto;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -52,6 +53,9 @@ public class SyncScheduler {
 	private final int TIME_FRAME = 39600 * 1000;
 
 	private final int MAX_PUSH_RETRIES = 3;
+
+	@Autowired
+	private SensorTypeUtil sensorTypeUtil;
 
 	@Value("${historyimport.enabled}")
 	private Boolean historyEnabled;
@@ -182,6 +186,10 @@ public class SyncScheduler {
 				odhTrafficStationList.add(station);
 			}
 		}
+
+		// add sensor type metadata
+		sensorTypeUtil.addSensorTypeMetadata(odhTrafficStationList);
+
 		odhClientTrafficSensor.syncStations(odhTrafficStationList);
 		LOG.info("Cron job traffic stations successful");
 	}
