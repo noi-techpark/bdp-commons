@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
 @Component
@@ -27,27 +28,39 @@ public class JobScheduler {
 	@Autowired
 	private TrafficPusher pusher;
 
-	public void syncStations(){
+	@Autowired
+	private SensorTypeUtil sensorTypeUtil;
+
+	public void syncStations() {
 		Map<String, StationList> stations = parser.retrieveStations();
-		pusher.syncStations("Meteostation",stations.get("meteo"));
-		pusher.syncStations(stations.get("traffic"));
-		pusher.syncStations("EnvironmentStation",stations.get("environment"));
+		
+		StationList trafficStations = stations.get("traffic");
+		sensorTypeUtil.addSensorTypeMetadata(trafficStations);
+		
+		pusher.syncStations(trafficStations);
+		pusher.syncStations("Meteostation", stations.get("meteo"));
+		pusher.syncStations("EnvironmentStation", stations.get("environment"));
 	}
-	public void syncDataTypes(){
+
+	public void syncDataTypes() {
 		List<DataTypeDto> types = parser.retrieveDataTypes();
 		pusher.syncDataTypes(types);
 	}
-	public void pushRecords(){
+
+	public void pushRecords() {
 		Map<String, DataMapDto<RecordDtoImpl>> liveData = parser.retrieveLiveData();
 		pusher.pushData(liveData.get(TrafficPusher.TRAFFIC_SENSOR_IDENTIFIER));
-		pusher.pushData(TrafficPusher.METEOSTATION_IDENTIFIER,liveData.get(TrafficPusher.METEOSTATION_IDENTIFIER));
-		pusher.pushData(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER,liveData.get(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER));
+		pusher.pushData(TrafficPusher.METEOSTATION_IDENTIFIER, liveData.get(TrafficPusher.METEOSTATION_IDENTIFIER));
+		pusher.pushData(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER,
+				liveData.get(TrafficPusher.ENVIRONMENTSTATION_IDENTIFIER));
 	}
 
-	public void getHistory(){
+	public void getHistory() {
 		historyRetriever.getHistory(null);
 	}
+
 	public void getLatestHistory() {
 		historyRetriever.getLatestHistory();
 	}
+
 }
