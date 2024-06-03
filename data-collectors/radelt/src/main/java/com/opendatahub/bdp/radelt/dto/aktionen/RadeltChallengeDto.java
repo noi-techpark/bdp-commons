@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.radelt.dto.aktionen;
+package com.opendatahub.bdp.radelt.dto.aktionen;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;

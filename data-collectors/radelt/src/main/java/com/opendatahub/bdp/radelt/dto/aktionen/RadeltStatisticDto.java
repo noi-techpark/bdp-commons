@@ -1,6 +1,4 @@
-package it.bz.idm.bdp.radelt.dto.aktionen;
-
-import it.bz.idm.bdp.radelt.dto.aktionen.RadeltChallengeMetric;
+package com.opendatahub.bdp.radelt.dto.aktionen;
 
 public class RadeltStatisticDto {
 	private RadeltChallengeMetric challenge;

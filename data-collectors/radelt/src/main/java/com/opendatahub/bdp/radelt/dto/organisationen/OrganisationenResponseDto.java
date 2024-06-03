@@ -1,6 +1,4 @@
-package it.bz.idm.bdp.radelt.dto.organisationen;
-
-import java.util.List;
+package com.opendatahub.bdp.radelt.dto.organisationen;
 
 public class OrganisationenResponseDto {
 	private boolean success;

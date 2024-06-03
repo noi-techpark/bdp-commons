@@ -2,40 +2,23 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-package it.bz.idm.bdp.radelt;
+package com.opendatahub.bdp.radelt;
 
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClientRequestException;
-
-import it.bz.idm.bdp.dto.DataMapDto;
-import it.bz.idm.bdp.dto.DataTypeDto;
-import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.dto.SimpleRecordDto;
-import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.dto.StationList;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.bz.idm.bdp.radelt.OdhClient;
-import it.bz.idm.bdp.radelt.dto.aktionen.AktionenResponseDto;
-import it.bz.idm.bdp.radelt.dto.organisationen.OrganisationenResponseDto;
-import it.bz.idm.bdp.dto.StationList;
-import it.bz.idm.bdp.dto.StationDto;
-import it.bz.idm.bdp.radelt.dto.utils.MappingUtilsAktionen;
-import it.bz.idm.bdp.radelt.dto.utils.MappingUtilsOrganisationen;
-import it.bz.idm.bdp.radelt.dto.utils.DataTypeUtils;
+import com.opendatahub.bdp.radelt.dto.aktionen.AktionenResponseDto;
+import com.opendatahub.bdp.radelt.dto.organisationen.OrganisationenResponseDto;
+import com.opendatahub.bdp.radelt.dto.utils.MappingUtilsAktionen;
+import com.opendatahub.bdp.radelt.dto.utils.MappingUtilsOrganisationen;
+import com.opendatahub.bdp.radelt.dto.utils.DataTypeUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;

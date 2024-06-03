@@ -1,9 +1,6 @@
-package it.bz.idm.bdp.radelt.dto.utils;
+package com.opendatahub.bdp.radelt.dto.utils;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import java.util.ArrayList;
 import java.time.ZoneOffset;
@@ -11,18 +8,16 @@ import java.time.ZoneOffset;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 
 
-import it.bz.idm.bdp.radelt.dto.aktionen.AktionenResponseDto;
-import it.bz.idm.bdp.radelt.dto.aktionen.RadeltChallengeDto;
-import it.bz.idm.bdp.radelt.dto.aktionen.RadeltStatisticDto;
-import it.bz.idm.bdp.radelt.dto.aktionen.RadeltChallengeMetric;
+import com.opendatahub.bdp.radelt.dto.aktionen.AktionenResponseDto;
+import com.opendatahub.bdp.radelt.dto.aktionen.RadeltChallengeDto;
+import com.opendatahub.bdp.radelt.dto.aktionen.RadeltStatisticDto;
+import com.opendatahub.bdp.radelt.dto.aktionen.RadeltChallengeMetric;
 
-import it.bz.idm.bdp.radelt.dto.utils.DataTypeUtils;
-import it.bz.idm.bdp.radelt.OdhClient;
+import com.opendatahub.bdp.radelt.OdhClient;
 import org.slf4j.Logger;
 
 public class MappingUtilsAktionen {

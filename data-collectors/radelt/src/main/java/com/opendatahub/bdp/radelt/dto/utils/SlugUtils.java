@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.radelt.dto.utils;
+package com.opendatahub.bdp.radelt.dto.utils;
 
 public class SlugUtils {
 

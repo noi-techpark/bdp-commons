@@ -1,25 +1,18 @@
-package it.bz.idm.bdp.radelt.dto.utils;
+package com.opendatahub.bdp.radelt.dto.utils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
-import java.util.ArrayList;
 import java.time.ZoneOffset;
 
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.radelt.dto.organisationen.RadeltChallengeStatisticDto;
-import it.bz.idm.bdp.radelt.dto.organisationen.RadeltOrganisationenDto;
-import it.bz.idm.bdp.radelt.dto.organisationen.OrganisationenResponseDto;
-import it.bz.idm.bdp.radelt.dto.organisationen.RadeltStatisticsDto;
-import it.bz.idm.bdp.radelt.OdhClient;
+import com.opendatahub.bdp.radelt.dto.organisationen.RadeltChallengeStatisticDto;
+import com.opendatahub.bdp.radelt.dto.organisationen.RadeltOrganisationenDto;
+import com.opendatahub.bdp.radelt.dto.organisationen.OrganisationenResponseDto;
+import com.opendatahub.bdp.radelt.dto.organisationen.RadeltStatisticsDto;
+import com.opendatahub.bdp.radelt.OdhClient;
 import org.slf4j.Logger;
-
-import it.bz.idm.bdp.radelt.dto.utils.DataTypeUtils;
 
 public class MappingUtilsOrganisationen {
 

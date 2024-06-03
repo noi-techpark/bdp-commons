@@ -1,15 +1,14 @@
-package it.bz.idm.bdp.radelt.dto.utils;
+package com.opendatahub.bdp.radelt.dto.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 
-import it.bz.idm.bdp.radelt.OdhClient;
+import com.opendatahub.bdp.radelt.OdhClient;
 import it.bz.idm.bdp.dto.DataTypeDto;
 
 import it.bz.idm.bdp.dto.DataMapDto;
-import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 

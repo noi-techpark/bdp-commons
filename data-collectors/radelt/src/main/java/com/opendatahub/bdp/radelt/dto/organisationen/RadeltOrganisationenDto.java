@@ -1,6 +1,5 @@
-package it.bz.idm.bdp.radelt.dto.organisationen;
+package com.opendatahub.bdp.radelt.dto.organisationen;
 
-import java.util.List;
 
 public class RadeltOrganisationenDto {
 	private int id;

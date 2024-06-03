@@ -1,4 +1,4 @@
-package it.bz.idm.bdp.radelt;
+package com.opendatahub.bdp.radelt;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
