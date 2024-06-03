@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 public class MappingUtilsOrganisationen {
 
 	public static final String DATA_ORIGIN = "SuedtirolRadelt_AltoAdigePedala";
-	public static final String DATA_TYPE = "CompanyGamificationAction”";
+	public static final String DATA_TYPE = "CompanyGamificationAction";
 
 	public static StationDto mapToStationDto(RadeltOrganisationenDto organisation) {
 		StationDto stationDto = new StationDto();
