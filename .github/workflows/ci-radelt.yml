@@ -15,7 +15,7 @@ env:
   PROJECT_NAME: radelt
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/radelt
   DOCKER_TAG: ${{ github.sha }}
-  JAVA_VERSION: '8'
+  JAVA_VERSION: '17'
 
 jobs:
   test:
