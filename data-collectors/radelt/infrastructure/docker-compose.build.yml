@@ -2,5 +2,5 @@ services:
   app:
     image: ${DOCKER_IMAGE}:${DOCKER_TAG}
     build:
-      context: ..
-      dockerfile: docker/Dockerfile
+      context: ../
+      dockerfile: infrastructure/docker/Dockerfile
