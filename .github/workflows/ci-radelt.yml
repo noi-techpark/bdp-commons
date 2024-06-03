@@ -12,8 +12,8 @@ on:
 
 env:
   WORKING_DIRECTORY: data-collectors/radelt
-  PROJECT_NAME: radelt
-  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/radelt
+  PROJECT_NAME: odh-mobility-dc-radelt
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/odh-mobility-dc-radelt
   DOCKER_TAG: ${{ github.sha }}
   JAVA_VERSION: '17'
 
