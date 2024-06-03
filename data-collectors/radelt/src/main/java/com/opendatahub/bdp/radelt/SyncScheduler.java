@@ -45,7 +45,7 @@ public class SyncScheduler {
 	/**
 	 * Scheduled job Aktionen
 	 */
-	@Scheduled(cron = "${scheduler.syncJobAktionen}")
+	@Scheduled(cron = "${scheduler.actions}")
 	public void syncJobAktionen() {
 		LOG.info("Cron job syncJobAktionen started: Sync Stations with type {} and data types",
 				odhClient.getIntegreenTypology());
@@ -68,7 +68,7 @@ public class SyncScheduler {
 	/**
 	 * Scheduled job Organisationen
 	 */
-	@Scheduled(cron = "${scheduler.syncJobOrganisationen}")
+	@Scheduled(cron = "${scheduler.organization}")
 	public void syncJobOrganisationen() {
 		LOG.info("Cron job syncJobOrganisationen started: Pushing measurements for {}",
 				odhClient.getIntegreenTypology());

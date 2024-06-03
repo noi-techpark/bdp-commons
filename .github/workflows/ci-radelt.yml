@@ -67,8 +67,8 @@ jobs:
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
-          X_SCHEDULER_CRON_A: "0 */10 * * * *"
-          X_SCHEDULER_CRON_B: "0 */10 * * * *"
+          X_SCHEDULER_CRON_ACTIONS: "0 */10 * * * *"
+          X_SCHEDULER_CRON_ORGANIZATION: "0 */10 * * * *"
           X_SCHEDULER_POOL_SIZE: 1
 
 
@@ -135,8 +135,8 @@ jobs:
   #         X_provenance_name: ${{ env.PROJECT_NAME }}
   #         X_provenance_version: ${{ github.sha }}
 
-  #         X_SCHEDULER_CRON_A: "0 */10 * * * *"
-  #         X_SCHEDULER_CRON_B: "0 */10 * * * *"
+  #        X_SCHEDULER_CRON_ACTIONS: "0 */10 * * * *"
+  #        X_SCHEDULER_CRON_ORGANIZATION: "0 */10 * * * *"
   #         X_SCHEDULER_POOL_SIZE: 1
 
 
