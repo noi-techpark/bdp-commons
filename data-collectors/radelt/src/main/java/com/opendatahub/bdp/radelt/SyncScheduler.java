@@ -33,9 +33,9 @@ public class SyncScheduler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
 
-    @Lazy
-    @Autowired
-    private OdhClient odhClient;
+	@Lazy
+	@Autowired
+	private OdhClient odhClient;
 
 	@PostConstruct
 	private void syncDataTypes() {
@@ -43,11 +43,12 @@ public class SyncScheduler {
 	}
 
 	/**
-     * Scheduled job Aktionen
-     */
-    @Scheduled(cron = "${scheduler.syncJobAktionen}")
+	 * Scheduled job Aktionen
+	 */
+	@Scheduled(cron = "${scheduler.syncJobAktionen}")
 	public void syncJobAktionen() {
-		LOG.info("Cron job syncJobAktionen started: Sync Stations with type {} and data types", odhClient.getIntegreenTypology());
+		LOG.info("Cron job syncJobAktionen started: Sync Stations with type {} and data types",
+				odhClient.getIntegreenTypology());
 		// Define base URL for challenges
 		String baseUrlChallenges = "https://www.altoadigepedala.bz.it/dashboard/api/opendata/challenges";
 		// Fetch and process challenges
@@ -63,12 +64,14 @@ public class SyncScheduler {
 
 		LOG.info("Cron job syncJobAktionen completed successfully");
 	}
+
 	/**
-     * Scheduled job Organisationen
-     */
-    @Scheduled(cron = "${scheduler.syncJobOrganisationen}")
+	 * Scheduled job Organisationen
+	 */
+	@Scheduled(cron = "${scheduler.syncJobOrganisationen}")
 	public void syncJobOrganisationen() {
-		LOG.info("Cron job syncJobOrganisationen started: Pushing measurements for {}", odhClient.getIntegreenTypology());
+		LOG.info("Cron job syncJobOrganisationen started: Pushing measurements for {}",
+				odhClient.getIntegreenTypology());
 
 		// Define base URL for organizations
 		String baseUrlOrganizations = "https://www.suedtirolradelt.bz.it/dashboard/api/opendata/organisations";
@@ -86,7 +89,8 @@ public class SyncScheduler {
 		LOG.info("Cron job Organisationen completed successfully");
 	}
 
-	public static AktionenResponseDto fetchChallenges(String baseUrl, String active, String limit, String offset, String type) throws Exception {
+	public static AktionenResponseDto fetchChallenges(String baseUrl, String active, String limit, String offset,
+			String type) throws Exception {
 		URIBuilder uriBuilder = new URIBuilder(baseUrl);
 		uriBuilder.setParameter("active", active);
 		uriBuilder.setParameter("limit", limit);
@@ -102,18 +106,19 @@ public class SyncScheduler {
 				HttpEntity entity = response.getEntity();
 				if (entity != null) {
 					String result = EntityUtils.toString(entity);
-					System.out.println(result);
+					LOG.debug(result);
 					ObjectMapper mapper = new ObjectMapper();
 					return mapper.readValue(result, AktionenResponseDto.class);
 				}
 			} else {
-				System.out.println("HTTP Request failed with status code: " + response.getStatusLine().getStatusCode());
+				LOG.error("HTTP Request failed with status code: {}", response.getStatusLine().getStatusCode());
 			}
 		}
 		return null;
 	}
 
-	public static OrganisationenResponseDto fetchOrganizations(String baseUrl, String challengeId, String type, String query, String limit, String offset) throws Exception {
+	public static OrganisationenResponseDto fetchOrganizations(String baseUrl, String challengeId, String type,
+			String query, String limit, String offset) throws Exception {
 		URIBuilder uriBuilder = new URIBuilder(baseUrl);
 		uriBuilder.setParameter("challengeId", String.valueOf(challengeId));
 		uriBuilder.setParameter("type", type);
@@ -130,12 +135,11 @@ public class SyncScheduler {
 				HttpEntity entity = response.getEntity();
 				if (entity != null) {
 					String result = EntityUtils.toString(entity);
-					//System.out.println(result);
 					ObjectMapper mapper = new ObjectMapper();
 					return mapper.readValue(result, OrganisationenResponseDto.class);
 				}
 			} else {
-				System.out.println("HTTP Request failed with status code: " + response.getStatusLine().getStatusCode());
+				LOG.error("HTTP Request failed with status code: {}", response.getStatusLine().getStatusCode());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -144,4 +148,3 @@ public class SyncScheduler {
 		return null;
 	}
 }
-
