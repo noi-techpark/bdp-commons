@@ -95,7 +95,7 @@ public class BikeBoxJobScheduler {
                         bs.longitude);
                     stationDto.setParentStation(locationDto.getId());
 
-                    stationDto.setMetaData(Map.of(
+                    stationDto.setMetaData(new HashMap<>(Map.of(
                             "type", mapBikeStationType(bs.type),
                             "totalPlaces", bs.totalPlaces,
                             "locationID", bs.locationID,
@@ -105,7 +105,10 @@ public class BikeBoxJobScheduler {
                                     "position", p.position,
                                     // purposely don't include state field
                                     "type", mapBikeStationBayType(p.type),
-                                    "level", p.level))));
+                                    "level", p.level)))));
+
+                    enrichNetexParking(stationDto);
+
                     stationDto.setOrigin(locationDto.getOrigin());
                     odhStations.add(stationDto);
 
@@ -149,12 +152,10 @@ public class BikeBoxJobScheduler {
                     }
                 }
                 
-                locationDto.setMetaData(new HashMap<>(Map.of(
+                locationDto.setMetaData(Map.of(
                     "names", bikeLocation.translatedLocationNames,
                     "totalPlaces", totalLocation
-                )));
-
-                enrichNetexParking(locationDto);
+                ));
 
                 // WARNING: just taking the averages is a cheap approximation.
                 // It will only work as long as we're getting local data,
