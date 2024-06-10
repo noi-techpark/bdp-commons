@@ -286,6 +286,15 @@ public class BikesharingMoqoDataConverter {
                 stationDto.setLongitude(locationDto.getLongitude());
                 stationDto.setLatitude( locationDto.getLatitude() );
             }
+            
+            // Add bicycle model data (for Netex export)
+            // https://github.com/noi-techpark/sta-nap-export/issues/1
+            stationMetaData.put("model", bikeDto.getName());
+            stationMetaData.put("electric", false);
+            stationMetaData.put("lamp", true);
+            stationMetaData.put("basket", true);
+            stationMetaData.put("lock", true);
+            
 
             //Call to setMetaData must be done when the Map is completely filled
             stationDto.setMetaData(stationMetaData);
