@@ -55,6 +55,8 @@ public class ConnectorLogic
 
 	static final SimpleDateFormat SIMPLE_DATE_FORMAT           = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX"); // 2014-09-15T12:00:00
 
+	private static CarModels carModels = new CarModels();
+
 	static HashMap<String, String[]> process(ApiClient apiClient,
 			String[] cityUIDs,
 			IntegreenPushable xmlrpcPusher,
@@ -234,6 +236,7 @@ public class ConnectorLogic
 			castedDto.getMetaData().put("licensePlate",dto.getLicensePlate());
 			castedDto.getMetaData().put("model",dto.getModel());
 			castedDto.getMetaData().put("showType",dto.getShowType());
+			castedDto.getMetaData().put("features", carModels.getFeatures(dto.getName()));
 			castedDto.setParentStation(dto.getStationId());
 			castedDto.setStationType("CarsharingCar");
 			dtos.add(castedDto);
