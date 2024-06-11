@@ -25,7 +25,7 @@ public class CarModels {
         ret.put("usbpowersockets", usbpowersockets);
         ret.put("wintertyres", wintertyres);
         ret.put("chains", chains);
-        ret.put("trailserhitch", trailserhitch);
+        ret.put("trailerhitch", trailserhitch);
         ret.put("roofrack", roofrack);
         ret.put("cyclerack", cyclerack);
         ret.put("skirack", skirack);
