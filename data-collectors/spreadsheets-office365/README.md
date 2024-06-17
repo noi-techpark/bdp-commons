@@ -11,10 +11,10 @@ using Keycloak.
 
 [![CI spreadsheets-office365](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-spreadsheets-office365.yml/badge.svg)](https://github.com/noi-techpark/bdp-commons/actions/workflows/ci-spreadsheets-office365.yml)
 
-For Authentication with Microsoft's Services msal4j with certificates is used.  
+For Authentication with Microsoft's Services msal4j with certificates is used.
 All further actions are handled by the Sharepoint REST API.
 
-For Authentication with the [OpenDataHub](https://opendatahub.com/) , [Keycloak](https://www.keycloak.org/) is used.  
+For Authentication with the [OpenDataHub](https://opendatahub.com/) , [Keycloak](https://www.keycloak.org/) is used.
 Note: Any Big Data Platform can be used.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -86,20 +86,20 @@ cd bdp-commons/data-collectors/spreadsheets-office365
 
 #### Without Docker
 
-Copy the file `src/main/resources/application.properties` to `src/main/resources/application-local.properties`.  
-This file will be your environment variables file.  
-Note: The environment variables in application.properties are in lower case, but in further set up instructions  
+Copy the file `src/main/resources/application.properties` to `src/main/resources/application-local.properties`.
+This file will be your environment variables file.
+Note: The environment variables in application.properties are in lower case, but in further set up instructions
 They are UPPER case. _Just leave them lower case_
 
 #### With Docker
 
-Copy the file `.env.example` to `.env`.  
+Copy the file `.env.example` to `.env`.
 This file will be your environment variables file.
 
 #### Create a Microsoft Sharepoint site
 
-Create a Sharepoint site collection with a Shared Document library.  
-In the most cases you need to contact the Microsoft Administrator of your organization.  
+Create a Sharepoint site collection with a Shared Document library.
+In the most cases you need to contact the Microsoft Administrator of your organization.
 Your created site then has a full URL. For example `https://your-organization.sharepoint.com/sites/your-site-id`
 
 Now you can fill the environment variables file:
@@ -111,11 +111,11 @@ SHAREPOINT_SITE_ID=your-site-id
 
 #### Create the Excel spreadsheet
 
-Create a Excel spreadsheet in the previous step created Sharepoint sites "Shared Documents" folder.  
+Create a Excel spreadsheet in the previous step created Sharepoint sites "Shared Documents" folder.
 The spreadsheet can also be inside a folder of the "Shared Documents" folder.
 
 Write into environment variables file the full path starting from the "Shared Documents" folder.
-For example if you have the path `Shared Documents/Example/Example.xlsx` you put only `Example/Example.xlsx`  
+For example if you have the path `Shared Documents/Example/Example.xlsx` you put only `Example/Example.xlsx`
 into environment variables file:
 
 ```
@@ -124,10 +124,10 @@ SHAREPOINT_PATH_TO_DOC=Example/Example.xlsx
 
 #### Fetch files from Sharepoint
 
-If you also need to fetch files like images from Sharepoint, please set the following environment variables.  
-The header in the spreadsheet for the column with the filenames needs to have `file` in it.  
-`ex. file logo`  
-Note: The syncing of the files from Sharepoint with S3 gets only triggered, if the spreadsheet had changes too.  
+If you also need to fetch files like images from Sharepoint, please set the following environment variables.
+The header in the spreadsheet for the column with the filenames needs to have `file` in it.
+`ex. file logo`
+Note: The syncing of the files from Sharepoint with S3 gets only triggered, if the spreadsheet had changes too.
 So only changing files in Sharepoint folder doesn't upload them to S3.
 
 ```
@@ -170,7 +170,7 @@ A new Application needs to be created in Azure Active Directories:
 5. Create a certificate to be able to call the Graph API Generate the private key in PEM format and create a PKCS8
    version
 
-    **Last certificate cerated on 23.12.2022 and valid until 23.12.2032**
+    **Last certificate created on 23.12.2022 and valid until 23.12.2032**
 
     You can simply execute the script and copy the generated files into the `src/main/resources/auth` directory.
 
@@ -201,9 +201,9 @@ A new Application needs to be created in Azure Active Directories:
     Finally, go back to the Azure portalIn the Application menu blade, click on the **Certificates & secrets**, in the
     Certificates section, **upload the certificate (cert.crt file) you created.**
 
-6. Take note of ClientID, TenantID you find in Overview in Active Directory and put it into environment variables file.  
+6. Take note of ClientID, TenantID you find in Overview in Active Directory and put it into environment variables file.
    Put also the path to the generated certificate and public key there.
-   Note: You can put the certificates in /resources/auth but also wherever you want,  
+   Note: You can put the certificates in /resources/auth but also wherever you want,
    just use an **absolute path** in environment variables files.
     ```
     TENANT_ID=your_tenant_id
@@ -213,8 +213,8 @@ A new Application needs to be created in Azure Active Directories:
     #put cert.crt certiticate here
     CERT_PATH=auth/cert.crt
     ```
-7. Config the cron annotation to change the Scheduler as you desire.  
-   When executed, the last edit timestamp gets compared and if the workbook changed, the workbook gets fetched  
+7. Config the cron annotation to change the Scheduler as you desire.
+   When executed, the last edit timestamp gets compared and if the workbook changed, the workbook gets fetched
    and synced with the BDP.
 
     ```
@@ -302,7 +302,7 @@ The Microsoft graphs offers a [change notification system](https://docs.microsof
 an application over webhooks, when changes (for example on a document) where made.
 
 In this application a cron job scheduler is used to see if changes where made on the Excel Document,
-but it could be replaced by Microsoft's change notifications.  
+but it could be replaced by Microsoft's change notifications.
 The cron job is used at the moment, because its simpler and more secure:
 
 -   Microsoft's Webhooks don't have any Authentication. So anybody knowing the link could trigger the Webhooks with a
@@ -316,7 +316,7 @@ StackExchange [discussion](https://sharepoint.stackexchange.com/questions/264609
 about change notifications with Sharepoint.
 
 The best case solution would be having the change notifications with Microsoft's IP Addresses whitelisted,
-and a low frequency cron job, that checks if the change notification service missed some changes.  
+and a low frequency cron job, that checks if the change notification service missed some changes.
 So in that case the developer/administrator of the application gets notified, that the change notifications are not working anymore.
 
 ### Guidelines
