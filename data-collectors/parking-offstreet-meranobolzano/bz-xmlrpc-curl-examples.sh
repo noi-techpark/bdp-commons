@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # get list - pGuide.getElencoIdentificativiParcheggi
+echo "pGuide.getElencoIdentificativiParcheggi"
+
 curl -H "Content-Type: text/xml" --data '<?xml version="1.0"?>
 <methodCall>
     <methodName>pGuide.getElencoIdentificativiParcheggi</methodName>
@@ -8,9 +10,12 @@ curl -H "Content-Type: text/xml" --data '<?xml version="1.0"?>
 </methodCall>
 ' http://109.117.22.203:7075/RPC2
 
+echo "###################"
 
 # get single stations metadata - pGuide.getCaratteristicheParcheggio
 # param = station id
+echo "pGuide.getElencoIdentificativiParcheggi"
+
 curl -H "Content-Type: text/xml" --data '<?xml version="1.0"?>
 <methodCall>
     <methodName>pGuide.getCaratteristicheParcheggio</methodName>
@@ -24,7 +29,10 @@ curl -H "Content-Type: text/xml" --data '<?xml version="1.0"?>
 </methodCall>
 ' http://109.117.22.203:7075/RPC2
 
+echo "###################"
+
 # get single stations metadata - pGuide.getCaratteristicheParcheggio
+echo "pGuide.getCaratteristicheParcheggio"
 curl -H "Content-Type: text/xml" --data '<?xml version="1.0"?>
 <methodCall>
     <methodName>pGuide.getCaratteristicheParcheggio</methodName>
@@ -38,8 +46,11 @@ curl -H "Content-Type: text/xml" --data '<?xml version="1.0"?>
 </methodCall>
 ' http://109.117.22.203:7075/RPC2
 
+echo "###################"
+
 # get single stations data - pGuide.getPostiLiberiParcheggio
 # param = station id
+echo "pGuide.getPostiLiberiParcheggio"
 curl -H "Content-Type: text/xml" --data '<?xml version="1.0"?>
 <methodCall>
     <methodName>pGuide.getPostiLiberiParcheggio</methodName>
@@ -53,9 +64,11 @@ curl -H "Content-Type: text/xml" --data '<?xml version="1.0"?>
 </methodCall>
 ' http://109.117.22.203:7075/RPC2
 
+echo "###################"
 
 # get single stations data ext(?) - pGuide.getPostiLiberiParcheggioExt
 # param = station id
+echo "pGuide.getPostiLiberiParcheggioExt"
 curl -H "Content-Type: text/xml" --data '<?xml version="1.0"?>
 <methodCall>
     <methodName>pGuide.getPostiLiberiParcheggioExt</methodName>
@@ -68,3 +81,5 @@ curl -H "Content-Type: text/xml" --data '<?xml version="1.0"?>
     </params>
 </methodCall>
 ' http://109.117.22.203:7075/RPC2
+
+echo "###################"
