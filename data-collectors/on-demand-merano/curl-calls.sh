@@ -1,8 +1,15 @@
 #!/bin/bash
 
-# load USERNAME/PASSWORD from .env first
-
-API_ENDPOINT=https://badiabus.app.savvy.mobi/api/external
+# load .env
+if [ -f .env ]; then
+	set -a
+	source .env
+	set +a
+else
+	printf "create .env first and fill needed vars\n"
+	printf "cp .env.example .env\n"
+	exit 1
+fi
 
 STOPS_PATH=/v2.0/stops
 ACTIVE_ACTIVITIES_PATH=/v1.0/activities/active
