@@ -21,8 +21,8 @@ auth_id: {{auth_id}}
 {
   "aerocrs": {
     "parms": {
-      "fltsFROMperiod": "2023/05/12",
-      "fltsTOperiod": "2023/06/12",
+      "fltsFROMperiod": "2024/06/20",
+      "fltsTOperiod": "2024/06/21",
       "codeformat": "IATA",
       "companycode": "BQ",
       "ssim": false,
@@ -55,3 +55,10 @@ GET {{endpoint-fares}}
 Accept: application/json
 auth_password: {{auth_password_fares}}
 auth_id: {{auth_id_fares}}
+
+################################
+### Realtime (API has IP filter, try with curl on docker hosts)
+################################
+GET https://dataprovider.ifly.aero:8443/fidsdataproviderproxy/dataProvider.ashx
+Accept: application/json
+Token: {{$dotenv AUTH_TOKEN_REAL_TIME}}
