@@ -29,7 +29,6 @@ public class DateHelper {
 			LOG.debug("date: {}", input);
 			LOG.debug("instant: {}", dateFormat.parse(input).getTime());
 			return dateFormat.parse(input).getTime();
-			//return instant.toEpochMilli();
         } catch (ParseException e)
         {
             LOG.error("Impossible to parse time and set timestamp.");

@@ -177,6 +177,9 @@ public class DataPusher extends NonBlockingJSONPusher {
                             recordDtoList.add(record);
                             LOG.debug("Record set.");
                         }
+                        else {
+                            LOG.info("Station {} has invalid value -1", stationID);
+                        }
                     }
                     Collections.sort(recordDtoList);
                     rootMap.getBranch().get(stationID).getBranch().get(polluterName).setData(recordDtoList);
