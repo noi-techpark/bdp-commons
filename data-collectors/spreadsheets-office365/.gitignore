@@ -7,3 +7,5 @@
 
 infrastructure/utils/*
 !infrastructure/utils/*.sh
+
+src/main/resources/NOI-Techpark-MapsBackend.xlsx
