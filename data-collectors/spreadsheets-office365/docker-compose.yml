@@ -13,8 +13,9 @@ services:
     entrypoint: >
       mvn
         -Duser.home=/var/maven
-        -Dmaven.tomcat.port=9001
-        clean spring-boot:run
+        clean
+        compile
+        spring-boot:run
     ports:
       - 9000:9000
       - 9001:9001

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 # add calls that the data collector makes to an external API here
 # this makes maintenance easier
 
