@@ -178,7 +178,7 @@ public class DataPusher extends NonBlockingJSONPusher {
                             LOG.debug("Record set.");
                         }
                         else {
-                            LOG.info("Station {} has invalid value -1", stationID);
+                            LOG.info("Station {} has invalid value -1 for polluter name {}", stationID, polluterName);
                         }
                     }
                     Collections.sort(recordDtoList);
