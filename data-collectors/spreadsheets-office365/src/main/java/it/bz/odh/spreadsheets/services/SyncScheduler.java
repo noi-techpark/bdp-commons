@@ -183,6 +183,13 @@ public class SyncScheduler {
 		// sync with ODH
 		if (!dtos.isEmpty()) {
 			logger.info("Synchronize stations if some where fetched and successfully parsed");
+			for (StationDto dto : dtos) {
+				if (dto.getId().contains("A1-1.03")) {
+					logger.info("found - {}", dto.toString());
+					logger.info("found id - {}", dto.getId());
+					logger.info("found metadata- {}", dto.getMetaData().toString());
+				}
+			}
 			odhClient.syncStations(dtos);
 			logger.info("Synchronize stations completed");
 		}
