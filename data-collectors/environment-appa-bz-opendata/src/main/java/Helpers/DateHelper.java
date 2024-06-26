@@ -9,10 +9,13 @@ import org.slf4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+
+
 public class DateHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(DateHelper.class.getName());
-
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
     /**
      * This method, given the input parameters, produces a timeStamp used
      * for the measurements mapping.
@@ -20,11 +23,12 @@ public class DateHelper {
      */
     public Long getTimeStamp(String input)
     {
-        String acquisitionTime = input.split("[T]")[0].replace("\"", "") + "T" +
-                input.split("[T]")[1].replace("\"", "") + "+01:00";
         LOG.debug("Producing timestamp...");
         try {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").parse(acquisitionTime).getTime();
+			input = input.replace("\"", "");
+			LOG.debug("date: {}", input);
+			LOG.debug("instant: {}", dateFormat.parse(input).getTime());
+			return dateFormat.parse(input).getTime();
         } catch (ParseException e)
         {
             LOG.error("Impossible to parse time and set timestamp.");

@@ -29,7 +29,7 @@ public class ODHClient extends NonBlockingJSONPusher {
     @Value("${provenance.version}")
     private String provenanceVersion;
 
-    @Value("${spreadsheetId}")
+    @Value("${origin}")
     private String origin;
 
     @Override

@@ -7,8 +7,10 @@ package com.opendatahub.bdp.commons.dc.bikeboxes;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +95,7 @@ public class BikeBoxJobScheduler {
                         bs.longitude);
                     stationDto.setParentStation(locationDto.getId());
 
-                    stationDto.setMetaData(Map.of(
+                    stationDto.setMetaData(new HashMap<>(Map.of(
                             "type", mapBikeStationType(bs.type),
                             "totalPlaces", bs.totalPlaces,
                             "locationID", bs.locationID,
@@ -103,7 +105,10 @@ public class BikeBoxJobScheduler {
                                     "position", p.position,
                                     // purposely don't include state field
                                     "type", mapBikeStationBayType(p.type),
-                                    "level", p.level))));
+                                    "level", p.level)))));
+
+                    enrichNetexParking(stationDto);
+
                     stationDto.setOrigin(locationDto.getOrigin());
                     odhStations.add(stationDto);
 
@@ -146,11 +151,12 @@ public class BikeBoxJobScheduler {
                                 mapSimple(mapUsageState(bay.state)));
                     }
                 }
-
+                
                 locationDto.setMetaData(Map.of(
                     "names", bikeLocation.translatedLocationNames,
                     "totalPlaces", totalLocation
                 ));
+
                 // WARNING: just taking the averages is a cheap approximation.
                 // It will only work as long as we're getting local data,
                 // don't cross the 0 latitude or longitude
@@ -178,6 +184,22 @@ public class BikeBoxJobScheduler {
             LOG.info("Cron job successful");
         } catch (Exception e) {
             LOG.error("Cron job failed: exception: {}", e.getMessage(), e);
+        }
+    }
+    
+    private void enrichNetexParking(StationDto dto) {
+        // Part of the MaaS4Italy project.
+        // https://github.com/noi-techpark/sta-nap-export/issues/1
+        // These 4 stations are the initial ones where we have hardcoded values, if there are new ones added it's probably good that something breaks
+        if (Set.of("1930", "1931", "1932", "1933").contains(dto.getId())) {
+            dto.getMetaData().put("netex_parking", Map.of(
+                    "type", "other",
+                    "layout", "covered",
+                    "charging", false,
+                    "reservation", "reservationRequired",
+                    "surveillance", true,
+                    "vehicletypes", "cycle",
+                    "hazard_prohibited", true));
         }
     }
 

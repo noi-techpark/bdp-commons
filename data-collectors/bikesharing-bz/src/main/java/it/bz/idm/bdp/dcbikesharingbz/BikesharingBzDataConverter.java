@@ -44,9 +44,14 @@ public class BikesharingBzDataConverter {
     public static final String STATION_METADATA_BAY_CHARGER          = "charger";
     public static final String STATION_METADATA_BAY_USE              = "use";
 
-    public static final String STATION_METADATA_BICYCLE_ELECTRIC     = "electric";
     public static final String STATION_METADATA_BICYCLE_LAT          = "lat";
     public static final String STATION_METADATA_BICYCLE_LNG          = "lng";
+
+    public static final String STATION_METADATA_BICYCLE_ELECTRIC     = "electric";
+    public static final String STATION_METADATA_BICYCLE_LAMP         = "lamp";
+    public static final String STATION_METADATA_BICYCLE_BASKET       = "basket";
+    public static final String STATION_METADATA_BICYCLE_LOCK         = "lock";
+    public static final String STATION_METADATA_BICYCLE_MODELNAME    = "model";
 
     public static final String STATION_STATE_OUT_OF_SERVICE  = "OUT_OF_SERVICE";
     public static final String STATION_STATE_READY           = "READY";
@@ -366,12 +371,25 @@ public class BikesharingBzDataConverter {
                 stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_LAT   , bikesharingBayDto.getParentStation().getLatitude() );
                 stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_LNG   , bikesharingBayDto.getParentStation().getLongitude() );
             }
-
-            stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_ELECTRIC  , bikesharingBayDto.getVehicleElectric() );
+            
+            // Add bicycle model data (for Netex export)
+            // https://github.com/noi-techpark/sta-nap-export/issues/1
+            if (bikesharingBayDto.getVehicleElectric()) {
+                stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_MODELNAME, "pedal_assistance" );
+                stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_ELECTRIC, true);
+                stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_LAMP, true );
+                stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_BASKET, false );
+                //stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_LOCK, false);
+            } else {
+                stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_MODELNAME, "muscular" );
+                stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_ELECTRIC, false);
+                stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_LAMP, true );
+                stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_BASKET, true );
+                //stationMetaData.put(BikesharingBzDataConverter.STATION_METADATA_BICYCLE_LOCK, false);
+            }
 
             //Call to setMetaData must be done when the Map is completely filled
             stationDto.setMetaData(stationMetaData);
-
         }
         return stationDto;
     }
@@ -399,14 +417,6 @@ public class BikesharingBzDataConverter {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("Time to parse with org.json: " + (jsonEnd-jsonStart));
         }
-
-        //How much does it take to parse the JSON String with Jackson (5-10 times slower than org.json)?
-//        long jacksonStart = System.currentTimeMillis();
-//        CarsList cars = mapper.readValue(responseString, new TypeReference<CarsList>() {});
-//        long jacksonEnd = System.currentTimeMillis();
-//        if ( LOG.isDebugEnabled() ) {
-//            LOG.info("Time to parse with jackson: " + (jacksonEnd-jacksonStart));
-//        }
 
         //Get information to store as StationDto
         int stationsLength = stationsArray!=null ? stationsArray.length() : 0;

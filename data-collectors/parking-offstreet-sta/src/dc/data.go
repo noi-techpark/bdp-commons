@@ -95,7 +95,8 @@ func getData(url string, response interface{}) {
 
 		err = json.Unmarshal(bodyBytes, &response)
 		if err != nil {
-			slog.Error("error", err)
+			slog.Error("Could not unmarshal JSON", "err", err)
+			slog.Debug("Dumping JSON content", "json", string(bodyBytes))
 		}
 	}
 }

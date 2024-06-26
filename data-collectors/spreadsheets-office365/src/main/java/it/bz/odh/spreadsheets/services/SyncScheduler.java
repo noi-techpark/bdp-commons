@@ -30,6 +30,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
@@ -80,8 +81,23 @@ public class SyncScheduler {
 	@Value("${sharepoint.fetch-files}")
 	private boolean fetchFiles;
 
+	@Value("${uselocalfile}")
+	private boolean useLocalFile;
+
 	@Value("${aws.bucket-url}")
 	private String bucketUrl;
+
+	@PostConstruct
+    private void postConstruct() {
+		if(useLocalFile) {
+			Workbook localWorkbook = workbookUtil.getLocalWorkbook("NOI-Techpark-MapsBackend.xlsx");
+			try {
+				syncDataWithBdp(localWorkbook);
+			} catch (Exception e) {
+				logger.error("Error while syncing local file with BDP");
+			}
+		}
+	}
 
 	/**
 	 * Cron job to check changes of the Spreadsheet in Sharepoint
@@ -166,19 +182,26 @@ public class SyncScheduler {
 
 		// sync with ODH
 		if (!dtos.isEmpty()) {
-			logger.debug("Synchronize stations if some where fetched and successfully parsed");
+			logger.info("Synchronize stations if some where fetched and successfully parsed");
+			for (StationDto dto : dtos) {
+				if (dto.getId().contains("A1-1.03")) {
+					logger.info("found - {}", dto.toString());
+					logger.info("found id - {}", dto.getId());
+					logger.info("found metadata- {}", dto.getMetaData().toString());
+				}
+			}
 			odhClient.syncStations(dtos);
-			logger.debug("Synchronize stations completed");
+			logger.info("Synchronize stations completed");
 		}
 		if (!types.isEmpty()) {
-			logger.debug("Synchronize data types/type-metadata if some where fetched and successfully parsed");
+			logger.info("Synchronize data types/type-metadata if some where fetched and successfully parsed");
 			List<DataTypeDto> dTypes = types.stream().map(mapper).collect(Collectors.toList());
 			odhClient.syncDataTypes(dTypes);
-			logger.debug("Synchronize datatypes completed");
+			logger.info("Synchronize datatypes completed");
 		}
 		if (!dtos.isEmpty() && !types.isEmpty()) {
 			DataMapDto<? extends RecordDtoImpl> dto = new DataMapDto<RecordDtoImpl>();
-			logger.debug("Connect datatypes with stations through record");
+			logger.info("Connect datatypes with stations through record");
 			for (DataTypeWrapperDto typeDto : types) {
 				SimpleRecordDto simpleRecordDto = new SimpleRecordDto(new Date().getTime(),
 						typeDto.getSheetName(), 0);

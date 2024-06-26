@@ -68,8 +68,17 @@ public class ParkingPusher extends NonBlockingJSONPusher{
 
 	public void pushParkingMetaData() throws IOException {
 		StationList stations = new StationList();
+		connectToParkingServer();
 		parkingClient.insertParkingMetaDataInto(stations);
-		parkingMeranoClient.insertParkingMetaDataInto(stations);
+
+		StationList meStations = new StationList();
+		parkingMeranoClient.insertParkingMetaDataInto(meStations);
+		// Workaround to maintain metadata syncing while endpoint is not reachable
+		// In that case just use the stations as they are in the Open Data Hub
+		if (meStations.isEmpty()) {
+			meStations.addAll(fetchStations(this.integreenTypology, parkingMeranoClient.getOrigin()));
+		}
+		stations.addAll(meStations);
 
 		// metadata enrichment
 		metadataEnrichment.mapData(stations);
@@ -107,8 +116,6 @@ public class ParkingPusher extends NonBlockingJSONPusher{
 		parkingMeranoClient.insertDataInto(meranoDataMap);
 		pushData(meranoDataMap);
 	}
-
-
 
 
 	@Override

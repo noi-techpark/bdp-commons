@@ -244,7 +244,6 @@ public class DataMappingUtil {
 
 	private String generateUniqueId(StationDto dto) {
 		StringBuffer uniqueId = new StringBuffer();
-		uniqueId.append(dto.getOrigin()).append(":");
 		for (String idField : uniqueIdFields) {
 			if (dto.getMetaData().get(idField) == null)
 				throw new IllegalStateException(

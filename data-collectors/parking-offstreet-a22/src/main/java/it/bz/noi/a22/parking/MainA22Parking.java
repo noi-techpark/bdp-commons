@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -30,6 +31,7 @@ import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
+import it.bz.idm.bdp.util.Utils;
 
 @Component
 public class MainA22Parking {
@@ -109,6 +111,18 @@ public class MainA22Parking {
 					stationDto.getMetaData().put(STATION_METADATA_IDDIREZIONE, idDirezione);
 					stationDto.getMetaData().put(STATION_METADATA_METRO, parkInfo.getMetro());
 					stationDto.getMetaData().put(STATION_METADATA_AUTOSTRADA, parkInfo.getAutostrada());
+					
+					Map<String, Object> netexParking = Utils.mapOf(
+						"type", "motorwayParking",
+						"vehicletypes", "heavyGoodsVehicle",
+						"layout", "openSpace",
+						"hazard_prohibited", true,
+						"charging", false,
+						"surveillance",false,
+						"reservation", "noReservations"
+					);
+					
+					stationDto.getMetaData().put("netex_parking", netexParking);
 
 					stationDtoMap.put(IDENTIFIER_NAMESPACE + ":" + parkInfo.getId().toString(), stationDto);
 				}

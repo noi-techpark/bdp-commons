@@ -91,6 +91,9 @@ public class ParkingMeranoClient {
 					sMap.getBranch().put(stationKey, tMap);
 			}
 	}
+	public String getOrigin(){
+		return "Municipality Merano";
+	}
 
 	public void insertParkingMetaDataInto(List<StationDto> stations) {
 		ParkingMeranoStationDto[] stationDtos = getParkingStations();
@@ -101,7 +104,7 @@ public class ParkingMeranoClient {
 				stationDto.setName(dto.getAreaName());
 				stationDto.getMetaData().put("capacity", dto.getTotalParkingSpaces());
 				stationDto.getMetaData().put("municipality", "Meran - Merano");
-				stationDto.setOrigin("Municipality Merano");
+				stationDto.setOrigin(getOrigin());
 				stations.add(stationDto);
 			}
 	}

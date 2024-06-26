@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -93,6 +94,20 @@ public class WorkbookUtil {
         return null;
     }
 
+    public Workbook getLocalWorkbook(String path) {
+        logger.info("Reading local workbook at path {}...", path);
+
+		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream inputStream = classloader.getResourceAsStream("NOI-Techpark-MapsBackend.xlsx");
+		try {
+			Workbook workbook = WorkbookFactory.create(inputStream);
+			logger.info("Reading local workbook done");
+			return workbook;
+		} catch (IOException e) {
+			logger.error("Error while reading file at path {}", path);
+		}
+		return null;
+    }
 
     private Workbook getWorkbook(String token) throws IOException {
         logger.info("Fetching workbook...");

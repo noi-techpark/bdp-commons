@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -138,10 +139,28 @@ public class MetadataEnrichment {
 			for (String enrichedField : enrichedFields) {
 				if (mapping.get(station.getId()) != null && mapping.get(station.getId()).get(enrichedField) != null) {
 					String newMetadata = mapping.get(station.getId()).get(enrichedField);
-					station.getMetaData().put(enrichedField, newMetadata);
+					// For the netex parking metadata do some custom work. Make a separate object and cast strings to boolean where needed
+					if(enrichedField.startsWith("netex_")){
+						station.getMetaData().remove(enrichedField);
+						station.getMetaData().put("netex_parking", updateNetexParking(station.getMetaData().get("netex_parking"), enrichedField, newMetadata));
+					} else {
+						station.getMetaData().put(enrichedField, newMetadata);
+					}
 				}
 			}
 		}
+	}
+
+	private Map<String, Object> updateNetexParking(Object old, String fieldName, String stringValue) {
+		@SuppressWarnings("unchecked")
+		Map<String, Object> netexParking = old == null ?new HashMap<>() : (Map<String, Object>) old;
+
+		Object value = stringValue;
+		if ("true".equalsIgnoreCase(stringValue) || "false".equals(stringValue)) {
+			value = Boolean.parseBoolean(stringValue);
+		}
+		netexParking.put(fieldName.split("netex_")[1], value);
+		return netexParking;
 	}
 
 	private void resetValues() {

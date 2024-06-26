@@ -5,9 +5,10 @@
 package bdplib
 
 import (
-	"bufio"
 	"bytes"
 	"encoding/json"
+	"errors"
+	"io"
 	"log/slog"
 	"net/http"
 	"os"
@@ -92,6 +93,7 @@ func SyncStations(stationType string, stations []Station) {
 
 func PushData(stationType string, dataMap DataMap) {
 	pushProvenance()
+	dataMap.Provenance = provenanceUuid
 
 	slog.Info("Pushing records...")
 	url := baseUri + pushRecordsPath + "/" + stationType + "?prn=" + prn + "&prv=" + prv
@@ -178,13 +180,15 @@ func AddRecord(stationCode string, dataType string, record Record, dataMap *Data
 func postToWriter(data interface{}, fullUrl string) (string, error) {
 	json, err := json.Marshal(data)
 	if err != nil {
-		slog.Error("error", err)
+		slog.Error("Error unmarshalling JSON POST data")
+		return "", err
 	}
 
 	client := http.Client{}
 	req, err := http.NewRequest("POST", fullUrl, bytes.NewBuffer(json))
 	if err != nil {
-		slog.Error("error", err)
+		slog.Error("Error creating http POST request")
+		return "", err
 	}
 
 	req.Header = http.Header{
@@ -194,21 +198,24 @@ func postToWriter(data interface{}, fullUrl string) (string, error) {
 
 	res, err := client.Do(req)
 	if err != nil {
-		slog.Error("error", err)
+		slog.Error("Error performing POST")
+		return "", err
 	}
 
-	slog.Info("Writer post response code: " + res.Status)
-
-	scanner := bufio.NewScanner(res.Body)
-	for i := 0; scanner.Scan() && i < 5; i++ {
-		return scanner.Text(), nil
-	}
-
-	err = scanner.Err()
+	resb, err := io.ReadAll(res.Body)
 	if err != nil {
-		slog.Error("error", err)
+		slog.Error("Error reading from Response body")
+		return "", err
 	}
-	return "", err
+	ress := string(resb)
+
+	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated {
+		slog.Error("bdp POST returned with error", "statusCode", strconv.Itoa(res.StatusCode), "body", ress)
+		slog.Debug("Dumping request body", "data", data)
+		return "", errors.New("bdp POST returned non-OK status: " + strconv.Itoa(res.StatusCode))
+	}
+
+	return ress, nil
 }
 
 func pushProvenance() {

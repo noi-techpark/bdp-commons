@@ -119,89 +119,89 @@ jobs:
 
 
   # Deploy Production
-  deploy-prod-spreadsheets-office365:
-    runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/prod'
-    needs: test
-    concurrency: deploy-prod-spreadsheets-office365
-    env:
-      KEYCLOAK_URL: https://auth.opendatahub.com
-    steps:
-      - name: Checkout source code
-        uses: noi-techpark/github-actions/checkout@v2
-      - name: Create .env file
-        uses: noi-techpark/github-actions/env-file@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
-        env:
-          # Data Collector config
-          X_KEY_PATH: "classpath:auth/pkcs8_key"
-          X_CERT_PATH: "classpath:auth/cert.crt"
-          X_TENANT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_TENANT_ID }}
-          X_CLIENT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_CLIENT_ID }}
-          X_origin: NOI Techpark
-          X_SHAREPOINT_HOST: noibz.sharepoint.com
-          X_SHAREPOINT_SITE_ID: UNITshrdTech-TransferDigital
-          X_SHAREPOINT_PATH_TO_DOC: General/NOI-Techpark-MapsBackend.xlsx
-          X_SHAREPOINT_FETCH_FILES: false
-          X_SHAREPOINT_PATH_TO_FILES: YOUR_PATH_TO_FILES
-          X_AWS_BUCKET_NAME: YOUR_AWS_BUCKET_NAME
-          X_AWS_BUCKET_URL: YOUR_AWS_BUCKET_URL
-          X_AWS_ACCESS_KEY: YOUR_AWS_ACCESS_KEY
-          X_AWS_ACCESS_SECRET_KEY: YOUR_AWS_ACCESS_SECRET_KEY
-
-          # General deployment options
-          X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
-          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
-          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-          X_JAVA_OPTIONS: -Xms128m -Xmx2048m
-
-          # Open Data Hub Writer Connectivity
-          X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
-          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
-          X_clientId: odh-mobility-datacollector
-          X_clientName: odh-mobility-datacollector
-          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
-          X_scope: openid
-          X_BASE_URI: https://mobility.share.opendatahub.com/json
-
-          # Logging
-          X_LOG_LEVEL: "info"
-          X_LOG_STYLE: json
-          X_provenance_name: ${{ env.PROJECT_NAME }}
-          X_provenance_version: ${{ github.sha }}
-
-          # Scheduler
-          X_SCHEDULER_CRON: ${{ env.SCHEDULER_CRON }}
-
-      - name: Retrieve secret files and decode it to a file
-        run: |
-          echo $CERT_BASE64 | base64 --decode > data-collectors/spreadsheets-office365/src/main/resources/auth/cert.crt
-          echo $PKCS8_KEY_BASE64 | base64 --decode > data-collectors/spreadsheets-office365/src/main/resources/auth/pkcs8_key
-
-      - name: Build project
-        uses: noi-techpark/github-actions/maven-build@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
-          java-version: ${{ env.JAVA_VERSION }}
-          build-command: 'mvn -DskipTests clean package spring-boot:repackage'
-
-      - name: Build and push images
-        uses: noi-techpark/github-actions/docker-build-and-push@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
-          docker-username: ${{ github.actor }}
-          docker-password: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - name: Deploy application
-        uses: noi-techpark/github-actions/docker-deploy@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
-          hosts: 'prod'
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          docker-username: 'noi-techpark-bot'
-          docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          project-name: ${{ env.PROJECT_NAME }}
-
-
+  # deploy-prod-spreadsheets-office365:
+  #   runs-on: ubuntu-20.04
+  #   if: github.ref == 'refs/heads/prod'
+  #   needs: test
+  #   concurrency: deploy-prod-spreadsheets-office365
+  #   env:
+  #     KEYCLOAK_URL: https://auth.opendatahub.com
+  #   steps:
+  #     - name: Checkout source code
+  #       uses: noi-techpark/github-actions/checkout@v2
+  #     - name: Create .env file
+  #       uses: noi-techpark/github-actions/env-file@v2
+  #       with:
+  #         working-directory: ${{ env.WORKING_DIRECTORY }}
+  #       env:
+  #         # Data Collector config
+  #         X_KEY_PATH: "classpath:auth/pkcs8_key"
+  #         X_CERT_PATH: "classpath:auth/cert.crt"
+  #         X_TENANT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_TENANT_ID }}
+  #         X_CLIENT_ID: ${{ secrets.SPREADSHEETS_OFFICE365_CLIENT_ID }}
+  #         X_origin: NOI Techpark
+  #         X_SHAREPOINT_HOST: noibz.sharepoint.com
+  #         X_SHAREPOINT_SITE_ID: UNITshrdTech-TransferDigital
+  #         X_SHAREPOINT_PATH_TO_DOC: General/NOI-Techpark-MapsBackend.xlsx
+  #         X_SHAREPOINT_FETCH_FILES: false
+  #         X_SHAREPOINT_PATH_TO_FILES: YOUR_PATH_TO_FILES
+  #         X_AWS_BUCKET_NAME: YOUR_AWS_BUCKET_NAME
+  #         X_AWS_BUCKET_URL: YOUR_AWS_BUCKET_URL
+  #         X_AWS_ACCESS_KEY: YOUR_AWS_ACCESS_KEY
+  #         X_AWS_ACCESS_SECRET_KEY: YOUR_AWS_ACCESS_SECRET_KEY
+  #
+  #         # General deployment options
+  #         X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
+  #         X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+  #         X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
+  #         X_JAVA_OPTIONS: -Xms128m -Xmx2048m
+  #
+  #         # Open Data Hub Writer Connectivity
+  #         X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
+  #         X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+  #         X_clientId: odh-mobility-datacollector
+  #         X_clientName: odh-mobility-datacollector
+  #         X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_PROD }}
+  #         X_scope: openid
+  #         X_BASE_URI: https://mobility.share.opendatahub.com/json
+  #
+  #         # Logging
+  #         X_LOG_LEVEL: "info"
+  #         X_LOG_STYLE: json
+  #         X_provenance_name: ${{ env.PROJECT_NAME }}
+  #         X_provenance_version: ${{ github.sha }}
+  #
+  #         # Scheduler
+  #         X_SCHEDULER_CRON: ${{ env.SCHEDULER_CRON }}
+  #
+  #     - name: Retrieve secret files and decode it to a file
+  #       run: |
+  #         echo $CERT_BASE64 | base64 --decode > data-collectors/spreadsheets-office365/src/main/resources/auth/cert.crt
+  #         echo $PKCS8_KEY_BASE64 | base64 --decode > data-collectors/spreadsheets-office365/src/main/resources/auth/pkcs8_key
+  #
+  #     - name: Build project
+  #       uses: noi-techpark/github-actions/maven-build@v2
+  #       with:
+  #         working-directory: ${{ env.WORKING_DIRECTORY }}
+  #         java-version: ${{ env.JAVA_VERSION }}
+  #         build-command: 'mvn -DskipTests clean package spring-boot:repackage'
+  #
+  #     - name: Build and push images
+  #       uses: noi-techpark/github-actions/docker-build-and-push@v2
+  #       with:
+  #         working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
+  #         docker-username: ${{ github.actor }}
+  #         docker-password: ${{ secrets.GITHUB_TOKEN }}
+  #
+  #
+  #     - name: Deploy application
+  #       uses: noi-techpark/github-actions/docker-deploy@v2
+  #       with:
+  #         working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
+  #         hosts: 'prod'
+  #         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #         docker-username: 'noi-techpark-bot'
+  #         docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+  #         project-name: ${{ env.PROJECT_NAME }}
+  #
+  #
