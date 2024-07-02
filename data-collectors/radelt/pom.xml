@@ -61,6 +61,11 @@ SPDX-License-Identifier: CC0-1.0
 			<artifactId>httpclient</artifactId>
 			<version>4.5.13</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.9.0</version>
+		</dependency>
     </dependencies>
     <build>
         <plugins>
