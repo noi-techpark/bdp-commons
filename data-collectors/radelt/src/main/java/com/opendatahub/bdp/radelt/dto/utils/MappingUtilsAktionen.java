@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import java.util.ArrayList;
 import java.time.ZoneOffset;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.DataTypeDto;
@@ -75,8 +77,8 @@ public class MappingUtilsAktionen {
 
 			if(statistics != null && statistics.getChallenge() != null){
 				RadeltChallengeMetric challenge = statistics.getChallenge();
-				long timestamp = challenge.getCreated_at().toInstant(ZoneOffset.UTC).toEpochMilli();
-
+				long timestamp = challenge.getCreated_at();
+				LOG.info("add measurement with ts: " + timestamp);
 				DataTypeUtils.addMeasurement(stationMap, "km_total", timestamp, challenge.getKm_total());
 				DataTypeUtils.addMeasurement(stationMap, "height_meters_total", timestamp, challenge.getHeight_meters_total());
 				DataTypeUtils.addMeasurement(stationMap, "km_average", timestamp, challenge.getKm_average());

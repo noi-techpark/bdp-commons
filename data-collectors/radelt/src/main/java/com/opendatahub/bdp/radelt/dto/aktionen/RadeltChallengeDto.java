@@ -4,18 +4,23 @@
 
 package com.opendatahub.bdp.radelt.dto.aktionen;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class RadeltChallengeDto {
     private int id;
     private String name;
     private String shortName;
     private String headerImage;
-    private Date start;
-    private Date end;
-    private Date registrationStart;
-    private Date registrationEnd;
+    private long start;
+    private long end;
+    private long registrationStart;
+    private long entryStart;
+    private long registrationEnd;
+    private long entryEnd;
     private String type;
 	@JsonProperty("isExternal")
     private boolean isExternal;
@@ -57,36 +62,100 @@ public class RadeltChallengeDto {
         this.headerImage = headerImage;
     }
 
-    public Date getStart() {
+    public long getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
-        this.start = start;
+    public void setStart(String start) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			// Parse the date string to a Date object
+			Date date = sdf.parse(start);
+			this.start = date.getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
     }
 
-    public Date getEnd() {
+	public long getEntryStart() {
+		return entryStart;
+	}
+
+	public void setEntryStart(String entryStart) {
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			// Parse the date string to a Date object
+			Date date = sdf.parse(entryStart);
+			this.entryStart = date.getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+
+    public long getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setEnd(String end) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			// Parse the date string to a Date object
+			Date date = sdf.parse(end);
+			this.end = date.getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
     }
 
-    public Date getRegistrationStart() {
+	public long getEntryEnd() {
+		return entryEnd;
+	}
+
+	public void setEntryEnd(String entryEnd) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			// Parse the date string to a Date object
+			Date date = sdf.parse(entryEnd);
+			this.registrationStart = date.getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+
+    public long getRegistrationStart() {
         return registrationStart;
     }
 
-    public void setRegistrationStart(Date registrationStart) {
-        this.registrationStart = registrationStart;
+    public void setRegistrationStart(String registrationStart) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			// Parse the date string to a Date object
+			Date date = sdf.parse(registrationStart);
+			this.registrationStart = date.getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
     }
 
-    public Date getRegistrationEnd() {
+    public long getRegistrationEnd() {
         return registrationEnd;
     }
 
-    public void setRegistrationEnd(Date registrationEnd) {
-        this.registrationEnd = registrationEnd;
+    public void setRegistrationEnd(String registrationEnd) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			// Parse the date string to a Date object
+			Date date = sdf.parse(registrationEnd);
+			this.registrationEnd = date.getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
     }
 
     public String getType() {

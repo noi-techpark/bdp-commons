@@ -12,6 +12,7 @@ public class RadeltOrganisationenDto {
 	private String logo;
 	private String website;
 	private int peopleTotal;
+	private Object children;
 	private RadeltStatisticsDto statistics;
 
 	// Getters and Setters
@@ -61,6 +62,14 @@ public class RadeltOrganisationenDto {
 
 	public void setPeopleTotal(int peopleTotal) {
 		this.peopleTotal = peopleTotal;
+	}
+
+	public Object getChildren() {
+		return children;
+	}
+
+	public void setChildren(Object children) {
+		this.children = children;
 	}
 
 	public RadeltStatisticsDto getStatistics() {

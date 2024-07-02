@@ -4,8 +4,10 @@
 
 package com.opendatahub.bdp.radelt.dto.aktionen;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class RadeltChallengeMetric {
 	private long id;
@@ -20,7 +22,7 @@ public class RadeltChallengeMetric {
 	private double money_saved;
 	private Double physical_activity_percentage;
 	private int number_of_people;
-	private LocalDateTime created_at;
+	private long created_at;
 	private int organisation_count;
 	private int workplace_count;
 	private int school_count;
@@ -127,14 +129,20 @@ public class RadeltChallengeMetric {
 		this.number_of_people = number_of_people;
 	}
 
-	public LocalDateTime getCreated_at() {
+	public long getCreated_at() {
 		return created_at;
 	}
 
 	public void setCreated_at(String created_at) {
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSX");
-		LocalDateTime formattedDate = LocalDateTime.parse(created_at, format);
-		this.created_at = formattedDate;
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			// Parse the date string to a Date object
+			Date date = sdf.parse(created_at);
+			this.created_at = date.getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public int getOrganisation_count() {

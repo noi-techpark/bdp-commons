@@ -23,7 +23,7 @@ public class MappingUtilsOrganisationen {
 	public static final String DATA_ORIGIN = "SuedtirolRadelt_AltoAdigePedala";
 	public static final String DATA_TYPE = "CompanyGamificationAction";
 
-	public static StationDto mapToStationDto(RadeltOrganisationenDto organisation) {
+	public static StationDto mapToStationDto(RadeltOrganisationenDto organisation, Logger LOG) {
 		StationDto stationDto = new StationDto();
 
 		RadeltStatisticsDto statisticsDto = organisation.getStatistics();
@@ -31,8 +31,8 @@ public class MappingUtilsOrganisationen {
 		if(statisticsDto != null) {
 			RadeltChallengeStatisticDto challengeStatistics = statisticsDto.getChallengeStatistics().get(0);
 			if (challengeStatistics.getChallenge_id()  != null) {
-				stationDto.setId(String.valueOf(challengeStatistics.getChallenge_id()));
-				stationDto.setName(challengeStatistics.getChallenge_name());
+				stationDto.setId(String.valueOf(challengeStatistics.getId()) + "-" + String.valueOf(challengeStatistics.getChallenge_id()));
+				stationDto.setName(challengeStatistics.getName() + '-' + challengeStatistics.getChallenge_name());
 				stationDto.setStationType(DATA_TYPE);
 
 				//METADATA
@@ -40,7 +40,7 @@ public class MappingUtilsOrganisationen {
 				stationDto.getMetaData().put("logo", organisation.getLogo());
 				stationDto.getMetaData().put("website", organisation.getWebsite());
 				stationDto.getMetaData().put("peopleTotal", organisation.getPeopleTotal());
-				//stationDto.getMetaData().put("challenge_type", organisation.getChallenge_type()); //TODO: missing field on response
+				stationDto.getMetaData().put("challenge_type", challengeStatistics.getChallenge_type());
 
 				//Additional
 				stationDto.setOrigin(DATA_ORIGIN);
@@ -53,15 +53,19 @@ public class MappingUtilsOrganisationen {
 	}
 
 	public static void mapToStationList(OrganisationenResponseDto responseDto, OdhClient odhClient, Logger LOG) {
+		LOG.info("Start mapping challenge");
 		StationList stationListOrganisationen = new StationList();
 
 		for (RadeltOrganisationenDto organisationenDto : responseDto.getData().getOrganisations()) {
-			StationDto stationDto = mapToStationDto(organisationenDto);
+			StationDto stationDto = mapToStationDto(organisationenDto, LOG);
 
-			if (stationDto.getId() != null) {//TODO: handle duplicated entries?
-				stationListOrganisationen.add(stationDto);
-				LOG.info("Add station with id #" + stationDto.getId());
+			if (stationDto.getId() == null) {//TODO: handle duplicated entries?
+				LOG.error("Skipping station with empty statistics");
+				return;
 			}
+
+			stationListOrganisationen.add(stationDto);
+			LOG.info("Add station (organizazion) with id #" + stationDto.getId());
 
 			// Create measurement records
 			DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
@@ -70,8 +74,9 @@ public class MappingUtilsOrganisationen {
 
 
 			for (RadeltChallengeStatisticDto challengeStatisticDto : organisationenDto.getStatistics().getChallengeStatistics()){
-				long timestamp = challengeStatisticDto.getCreated_at().toInstant(ZoneOffset.UTC).toEpochMilli();
+				long timestamp = challengeStatisticDto.getCreated_at();
 
+				LOG.info("add measurement with ts: " + timestamp);
 				DataTypeUtils.addMeasurement(stationMap, "km_total", timestamp, challengeStatisticDto.getKm_total());
 				DataTypeUtils.addMeasurement(stationMap, "height_meters_total", timestamp, challengeStatisticDto.getHeight_meters_total());
 				DataTypeUtils.addMeasurement(stationMap, "km_average", timestamp, challengeStatisticDto.getKm_average());
@@ -87,7 +92,7 @@ public class MappingUtilsOrganisationen {
 				odhClient.pushData(stationMap);
 				LOG.info("Pushing data successful");
 			} catch (WebClientRequestException e) {
-				LOG.error("Pushing data failed: Request exception: {}", e.getMessage());
+				LOG.error("Pushing data failed: Request exception:", e.getMessage());
 			}
 		}
 
