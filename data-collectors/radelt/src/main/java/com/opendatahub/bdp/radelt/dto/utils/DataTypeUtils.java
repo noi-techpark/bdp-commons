@@ -15,6 +15,7 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 
 public class DataTypeUtils {
@@ -102,8 +103,13 @@ public class DataTypeUtils {
 				"total"
 			)
 		);
-		odhClient.syncDataTypes(odhDataTypeList);
-		LOG.info("Cron job syncJobAktionen completed successfully");
+
+		try {
+			odhClient.syncDataTypes(odhDataTypeList);
+			LOG.info("Sync data type completed successfully");
+		} catch (WebClientRequestException e) {
+			LOG.error("Sync data types failed: Request exception: {}", e.getMessage());
+		}
 	}
 
 	public static void addMeasurement(DataMapDto<RecordDtoImpl> map, String dataType, long timestamp, double value) {
