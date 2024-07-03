@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-package com.opendatahub.bdp.radelt.dto.utils;
+package com.opendatahub.bdp.radelt.utils;
 
 public class SlugUtils {
 

@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-package com.opendatahub.bdp.radelt.dto.utils;
+package com.opendatahub.bdp.radelt.utils;
 
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import java.time.ZoneOffset;
