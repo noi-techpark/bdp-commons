@@ -25,12 +25,12 @@ public class RadeltAPIClient {
     private final String URL_CHALLENGES = "https://www.altoadigepedala.bz.it/dashboard/api/opendata/challenges";
     private final String URL_ORGANIZATIONS = "https://www.suedtirolradelt.bz.it/dashboard/api/opendata/organisations";
 
-    public AktionenResponseDto fetchChallenges(String active, String limit, String offset, String type)
+    public AktionenResponseDto fetchChallenges(String active, String type)
             throws Exception {
         URIBuilder uriBuilder = new URIBuilder(URL_CHALLENGES);
         uriBuilder.setParameter("active", active);
-        uriBuilder.setParameter("limit", limit);
-        uriBuilder.setParameter("offset", offset);
+        // uriBuilder.setParameter("limit", limit);
+        // uriBuilder.setParameter("offset", offset);
         uriBuilder.setParameter("type", type);
 
         URI uri = uriBuilder.build();
@@ -57,13 +57,13 @@ public class RadeltAPIClient {
     }
 
     public OrganisationenResponseDto fetchOrganizations(String challengeId, String type,
-            String query, String limit, String offset) throws Exception {
+            String query) throws Exception {
         URIBuilder uriBuilder = new URIBuilder(URL_ORGANIZATIONS);
         uriBuilder.setParameter("challengeId", String.valueOf(challengeId));
         uriBuilder.setParameter("type", type);
         uriBuilder.setParameter("query", query);
-        uriBuilder.setParameter("limit", String.valueOf(limit));
-        uriBuilder.setParameter("offset", String.valueOf(offset));
+        // uriBuilder.setParameter("limit", String.valueOf(limit));
+        // uriBuilder.setParameter("offset", String.valueOf(offset));
 
         URI uri = uriBuilder.build();
         CloseableHttpClient httpClient = HttpClients.createDefault();

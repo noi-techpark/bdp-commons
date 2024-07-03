@@ -85,56 +85,39 @@ public class SyncScheduler {
 		StationList stationsChallenges = new StationList();
 		DataMapDto<RecordDtoImpl> dataChallenges = new DataMapDto<>();
 
-		// Define base URL for challenges
-		int limitChallenges = 5;
-		int offsetChallenges = 0;
-
 		AktionenResponseDto challengeResponseDto;
-		do {
-			try {
-				challengeResponseDto = radelClient.fetchChallenges("true", String.valueOf(limitChallenges),
-						String.valueOf(offsetChallenges), "DISTANCE");
 
-				mappingUtilsAktionen.mapData(challengeResponseDto, this.actionCoordinates, stationsChallenges,
-						dataChallenges);
-				offsetChallenges += limitChallenges; // Increment offset for next page
+		try {
+			challengeResponseDto = radelClient.fetchChallenges("true", "DISTANCE");
 
-				for (RadeltChallengeDto challengeDto : challengeResponseDto.getData().getChallenges()) {
-					// Define base URL for organizations
-					// Initialize pagination variables
-					int limitOrganizations = 5; // Number of records per page
-					int offsetOrganizations = 0; // Starting offset
+			mappingUtilsAktionen.mapData(challengeResponseDto, this.actionCoordinates, stationsChallenges,
+					dataChallenges);
 
-					// Fetch and process organizations
-					OrganisationenResponseDto organizationResponseDto;
-					do {
-						try {
-							organizationResponseDto = radelClient.fetchOrganizations(
-									String.valueOf(challengeDto.getId()),
-									"", "", String.valueOf(limitOrganizations), String.valueOf(offsetOrganizations));
+			for (RadeltChallengeDto challengeDto : challengeResponseDto.getData().getChallenges()) {
+				// Define base URL for organizations
+				// Initialize pagination variables
+				// Fetch and process organizations
+				OrganisationenResponseDto organizationResponseDto;
+				try {
+					organizationResponseDto = radelClient.fetchOrganizations(
+							String.valueOf(challengeDto.getId()),
+							"", "");
 
-							mappingUtilsOrganisationen.mapData(organizationResponseDto,
-									this.organizationCoordinates, stationsOrganisationen, dataOrganisationen);
+					mappingUtilsOrganisationen.mapData(organizationResponseDto,
+							this.organizationCoordinates, stationsOrganisationen, dataOrganisationen);
 
-							// Update offset for next page
-							offsetOrganizations = offsetOrganizations + limitOrganizations;
-
-						} catch (Exception e) {
-							e.printStackTrace();
-							LOG.error("Error fetching organizations with challenge id {}. Error message: {}",
-									challengeDto.getId(),
-									e.getMessage());
-							return; // Exit the method if fetching organizations fails
-						}
-					} while (organizationResponseDto == null
-							|| organizationResponseDto.getData().getOrganisations().isEmpty());
+				} catch (Exception e) {
+					e.printStackTrace();
+					LOG.error("Error fetching organizations with challenge id {}. Error message: {}",
+							challengeDto.getId(),
+							e.getMessage());
+					return; // Exit the method if fetching organizations fails
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				LOG.error("Error fetching challenges:", e.getMessage());
-				break; // Exit the loop if fetching challenges fails
 			}
-		} while (challengeResponseDto == null || challengeResponseDto.getData().getChallenges().isEmpty());
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Error fetching challenges:", e.getMessage());
+		}
 
 		// Sync with Open Data Hub
 		try {
