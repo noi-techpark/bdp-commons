@@ -19,12 +19,12 @@ import java.util.Map;
 public class CsvImporter {
 
 	public static Map<String, RadeltGeoDto> syncCsvActions() {
-		String filePath = "/radelt-actions.csv";
+		String filePath = "radelt-actions.csv";
 		return readCsv(filePath);
 	}
 
 	public static Map<String, RadeltGeoDto> syncCsvOrganizations() {
-		String filePath = "/radelt-organizations.csv";
+		String filePath = "radelt-organizations.csv";
 		return readCsv(filePath);
 	}
 
