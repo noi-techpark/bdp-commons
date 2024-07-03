@@ -74,7 +74,7 @@ public class SyncScheduler {
 		while (true) {
 			try {
 				challengeResponseDto = fetchChallenges(baseUrlChallenges, "true", String.valueOf(limit), String.valueOf(offset), "DISTANCE");
-				if (challengeResponseDto == null) {
+				if (challengeResponseDto == null || challengeResponseDto.getData().getChallenges().size() == 0) {
 					break; // No more data to fetch
 				}
 				MappingUtilsAktionen.mapToStationList(challengeResponseDto, odhClient, this.actionCoordinates, LOG);
@@ -110,7 +110,7 @@ public class SyncScheduler {
 		while (true) {
 			try {
 				organizationResponseDto = fetchOrganizations(baseUrlOrganizations, String.valueOf(challengeDto.getId()), "", "", limit, offset);
-				if (organizationResponseDto == null) {
+				if (organizationResponseDto == null || organizationResponseDto.getData().getOrganisations().size() == 0) {
 					break; // Exit the loop if no more data
 				}
 
