@@ -22,16 +22,19 @@ import com.opendatahub.bdp.radelt.dto.aktionen.AktionenResponseDto;
 import com.opendatahub.bdp.radelt.dto.aktionen.RadeltChallengeDto;
 import com.opendatahub.bdp.radelt.dto.aktionen.RadeltStatisticDto;
 import com.opendatahub.bdp.radelt.dto.aktionen.RadeltChallengeMetric;
+import com.opendatahub.bdp.radelt.dto.common.RadeltGeoDto;
 
 import com.opendatahub.bdp.radelt.OdhClient;
 import org.slf4j.Logger;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MappingUtilsAktionen {
 
 	public static final String DATA_ORIGIN = "SuedtirolRadelt_AltoAdigePedala";
 	public static final String DATA_TYPE = "GamificationAction";
 
-	public static StationDto mapToStationDto(RadeltChallengeDto challengeDto) {
+	public static StationDto mapToStationDto(RadeltChallengeDto challengeDto, Map<String, RadeltGeoDto> actionCoordinates, Logger LOG) {
 		StationDto stationDto = new StationDto();
 		stationDto.setId(String.valueOf(challengeDto.getId()));
 		stationDto.setName(challengeDto.getName());
@@ -50,19 +53,29 @@ public class MappingUtilsAktionen {
 
 		//Additional
 		stationDto.setOrigin(DATA_ORIGIN);
-		//TODO: set pointprojection from csv, latitude and longitude? Prepare an example id, latitude, longitude
+		//Geo info from csv
+		RadeltGeoDto actionGeoDto = actionCoordinates.get(stationDto.getId());
+		if (actionGeoDto != null) {
+			stationDto.setLongitude(actionGeoDto.getLongitude());
+			stationDto.setLatitude(actionGeoDto.getLatitude());
+			LOG.info("Coordinates saved for station: #" + stationDto.getId());
+			LOG.info("Longitude " + actionGeoDto.getLongitude());
+			LOG.info("Latitude " + actionGeoDto.getLatitude());
+		}else{
+			LOG.info("No coordinates found on csv for station with id: #" + stationDto.getId());
+		}
 		stationDto.setStationType(DATA_TYPE);
 
 		return stationDto;
 	}
 
-	public static void mapToStationList(AktionenResponseDto responseDto, OdhClient odhClient, Logger LOG) {
+	public static void mapToStationList(AktionenResponseDto responseDto, OdhClient odhClient, Map<String, RadeltGeoDto> actionCoordinates, Logger LOG) {
 		StationList stationListAktionen = new StationList();
 		List<DataTypeDto> odhDataTypeList = new ArrayList<>();
 
 		for (RadeltChallengeDto challengeDto : responseDto.getData().getChallenges()) {
 			//Create Station
-			StationDto stationDto = mapToStationDto(challengeDto);
+			StationDto stationDto = mapToStationDto(challengeDto, actionCoordinates, LOG);
 
 			if(stationDto.getId() != null){//TODO: handle duplicated entries?
 				stationListAktionen.add(stationDto);

@@ -15,15 +15,19 @@ import com.opendatahub.bdp.radelt.dto.organisationen.RadeltChallengeStatisticDto
 import com.opendatahub.bdp.radelt.dto.organisationen.RadeltOrganisationenDto;
 import com.opendatahub.bdp.radelt.dto.organisationen.OrganisationenResponseDto;
 import com.opendatahub.bdp.radelt.dto.organisationen.RadeltStatisticsDto;
+import com.opendatahub.bdp.radelt.dto.common.RadeltGeoDto;
 import com.opendatahub.bdp.radelt.OdhClient;
 import org.slf4j.Logger;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MappingUtilsOrganisationen {
 
 	public static final String DATA_ORIGIN = "SuedtirolRadelt_AltoAdigePedala";
 	public static final String DATA_TYPE = "CompanyGamificationAction";
 
-	public static StationDto mapToStationDto(RadeltOrganisationenDto organisation, Logger LOG) {
+	public static StationDto mapToStationDto(RadeltOrganisationenDto organisation, Map<String, RadeltGeoDto> organizationCoordinates, Logger LOG) {
 		StationDto stationDto = new StationDto();
 
 		RadeltStatisticsDto statisticsDto = organisation.getStatistics();
@@ -44,7 +48,19 @@ public class MappingUtilsOrganisationen {
 
 				//Additional
 				stationDto.setOrigin(DATA_ORIGIN);
-				//TODO: set pointprojection from csv, latitude and longitude? Prepare an example id, latitude, logitude
+
+				//Geo info from csv
+				RadeltGeoDto organizationGeoDto = organizationCoordinates.get(stationDto.getId());
+				if (organizationGeoDto != null) {
+					stationDto.setLongitude(organizationGeoDto.getLongitude());
+					stationDto.setLatitude(organizationGeoDto.getLatitude());
+					LOG.info("Coordinates saved for station: #" + stationDto.getId());
+					LOG.info("Longitude: " + organizationGeoDto.getLongitude());
+					LOG.info("Latitude: " + organizationGeoDto.getLatitude());
+				}else{
+					LOG.info("No coordinates found on csv for station with id: #" + stationDto.getId());
+				}
+
 				stationDto.setStationType(DATA_TYPE);
 			}
 		}
@@ -52,12 +68,12 @@ public class MappingUtilsOrganisationen {
 		return stationDto;
 	}
 
-	public static void mapToStationList(OrganisationenResponseDto responseDto, OdhClient odhClient, Logger LOG) {
+	public static void mapToStationList(OrganisationenResponseDto responseDto, OdhClient odhClient, Map<String, RadeltGeoDto> organizationCoordinates, Logger LOG) {
 		LOG.info("Start mapping challenge");
 		StationList stationListOrganisationen = new StationList();
 
 		for (RadeltOrganisationenDto organisationenDto : responseDto.getData().getOrganisations()) {
-			StationDto stationDto = mapToStationDto(organisationenDto, LOG);
+			StationDto stationDto = mapToStationDto(organisationenDto, organizationCoordinates, LOG);
 
 			if (stationDto.getId() == null) {//TODO: handle duplicated entries?
 				LOG.error("Skipping station with empty statistics");

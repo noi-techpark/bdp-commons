@@ -20,6 +20,8 @@ import com.opendatahub.bdp.radelt.dto.organisationen.OrganisationenResponseDto;
 import com.opendatahub.bdp.radelt.dto.utils.MappingUtilsAktionen;
 import com.opendatahub.bdp.radelt.dto.utils.MappingUtilsOrganisationen;
 import com.opendatahub.bdp.radelt.dto.utils.DataTypeUtils;
+import com.opendatahub.bdp.radelt.dto.utils.CsvImporter;
+import com.opendatahub.bdp.radelt.dto.common.RadeltGeoDto;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -28,6 +30,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.client.utils.URIBuilder;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class SyncScheduler {
@@ -38,9 +42,19 @@ public class SyncScheduler {
 	@Autowired
 	private OdhClient odhClient;
 
+	private Map<String, RadeltGeoDto> actionCoordinates;
+	private Map<String, RadeltGeoDto> organizationCoordinates;
+
 	@PostConstruct
 	private void syncDataTypes() {
 		DataTypeUtils.setupDataType(odhClient, LOG);
+	}
+
+	@PostConstruct
+	private void syncCsvInfo() {
+
+		this.actionCoordinates = CsvImporter.syncCsvActions();
+		this.organizationCoordinates = CsvImporter.syncCsvOrganizations();
 	}
 
 	/**
@@ -63,7 +77,7 @@ public class SyncScheduler {
 				if (challengeResponseDto == null) {
 					break; // No more data to fetch
 				}
-				MappingUtilsAktionen.mapToStationList(challengeResponseDto, odhClient, LOG);
+				MappingUtilsAktionen.mapToStationList(challengeResponseDto, odhClient, this.actionCoordinates, LOG);
 				offset += limit; // Increment offset for next page
 
 				for (RadeltChallengeDto challengeDto : challengeResponseDto.getData().getChallenges())
@@ -100,7 +114,7 @@ public class SyncScheduler {
 					break; // Exit the loop if no more data
 				}
 
-				MappingUtilsOrganisationen.mapToStationList(organizationResponseDto, odhClient, LOG);
+				MappingUtilsOrganisationen.mapToStationList(organizationResponseDto, odhClient, this.organizationCoordinates , LOG);
 
 				// Update offset for next page
 				offset = String.valueOf(Integer.parseInt(offset) + Integer.parseInt(limit));
