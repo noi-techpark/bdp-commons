@@ -13,12 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opendatahub.bdp.radelt.dto.aktionen.AktionenResponseDto;
 import com.opendatahub.bdp.radelt.dto.aktionen.RadeltChallengeDto;
 import com.opendatahub.bdp.radelt.dto.organisationen.OrganisationenResponseDto;
 import com.opendatahub.bdp.radelt.utils.MappingUtilsAktionen;
 import com.opendatahub.bdp.radelt.utils.MappingUtilsOrganisationen;
+
+import it.bz.idm.bdp.dto.DataMapDto;
+import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.StationList;
+
 import com.opendatahub.bdp.radelt.utils.DataTypeUtils;
 import com.opendatahub.bdp.radelt.utils.CsvImporter;
 import com.opendatahub.bdp.radelt.dto.common.RadeltGeoDto;
@@ -30,7 +37,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.client.utils.URIBuilder;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -42,6 +48,15 @@ public class SyncScheduler {
 	@Autowired
 	private OdhClient odhClient;
 
+	@Autowired
+	private RadeltAPIClient radelClient;
+
+	@Autowired
+	private MappingUtilsOrganisationen mappingUtilsOrganisationen;
+
+	@Autowired
+	private MappingUtilsAktionen mappingUtilsAktionen;
+
 	private Map<String, RadeltGeoDto> actionCoordinates;
 	private Map<String, RadeltGeoDto> organizationCoordinates;
 
@@ -52,7 +67,6 @@ public class SyncScheduler {
 
 	@PostConstruct
 	private void syncCsvInfo() {
-
 		this.actionCoordinates = CsvImporter.syncCsvActions();
 		this.organizationCoordinates = CsvImporter.syncCsvOrganizations();
 	}
@@ -60,146 +74,80 @@ public class SyncScheduler {
 	/**
 	 * Scheduled job Aktionen
 	 */
-	@Scheduled(cron = "${scheduler.actions_and_organization}")
-	public void syncJobAktionen() {
+	@Scheduled(cron = "${scheduler.cron}")
+	public void syncJob() {
 		LOG.info("Cron job syncJobAktionen started: Sync Stations with type {} and data types",
 				odhClient.getIntegreenTypology());
+
+		StationList stationsOrganisationen = new StationList();
+		DataMapDto<RecordDtoImpl> dataOrganisationen = new DataMapDto<>();
+
+		StationList stationsChallenges = new StationList();
+		DataMapDto<RecordDtoImpl> dataChallenges = new DataMapDto<>();
+
 		// Define base URL for challenges
-		String baseUrlChallenges = "https://www.altoadigepedala.bz.it/dashboard/api/opendata/challenges";
-		int limit = 5;
-		int offset = 0;
+		int limitChallenges = 5;
+		int offsetChallenges = 0;
 
 		AktionenResponseDto challengeResponseDto;
-
-		while (true) {
+		do {
 			try {
-				challengeResponseDto = fetchChallenges(baseUrlChallenges, "true", String.valueOf(limit), String.valueOf(offset), "DISTANCE");
-				if (challengeResponseDto == null || challengeResponseDto.getData().getChallenges().size() == 0) {
-					break; // No more data to fetch
-				}
-				MappingUtilsAktionen.mapToStationList(challengeResponseDto, odhClient, this.actionCoordinates, LOG);
-				offset += limit; // Increment offset for next page
+				challengeResponseDto = radelClient.fetchChallenges("true", String.valueOf(limitChallenges),
+						String.valueOf(offsetChallenges), "DISTANCE");
 
-				for (RadeltChallengeDto challengeDto : challengeResponseDto.getData().getChallenges())
-				{
-					syncJobOrganisationen(challengeDto);
+				mappingUtilsAktionen.mapData(challengeResponseDto, this.actionCoordinates, stationsChallenges,
+						dataChallenges);
+				offsetChallenges += limitChallenges; // Increment offset for next page
+
+				for (RadeltChallengeDto challengeDto : challengeResponseDto.getData().getChallenges()) {
+					// Define base URL for organizations
+					// Initialize pagination variables
+					int limitOrganizations = 5; // Number of records per page
+					int offsetOrganizations = 0; // Starting offset
+
+					// Fetch and process organizations
+					OrganisationenResponseDto organizationResponseDto;
+					do {
+						try {
+							organizationResponseDto = radelClient.fetchOrganizations(
+									String.valueOf(challengeDto.getId()),
+									"", "", String.valueOf(limitOrganizations), String.valueOf(offsetOrganizations));
+
+							mappingUtilsOrganisationen.mapData(organizationResponseDto,
+									this.organizationCoordinates, stationsOrganisationen, dataOrganisationen);
+
+							// Update offset for next page
+							offsetOrganizations = offsetOrganizations + limitOrganizations;
+
+						} catch (Exception e) {
+							e.printStackTrace();
+							LOG.error("Error fetching organizations with challenge id {}. Error message: {}",
+									challengeDto.getId(),
+									e.getMessage());
+							return; // Exit the method if fetching organizations fails
+						}
+					} while (organizationResponseDto == null
+							|| organizationResponseDto.getData().getOrganisations().isEmpty());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				LOG.error("Error fetching challenges:", e.getMessage());
 				break; // Exit the loop if fetching challenges fails
 			}
+		} while (challengeResponseDto == null || challengeResponseDto.getData().getChallenges().isEmpty());
+
+		// Sync with Open Data Hub
+		try {
+			odhClient.syncStations(stationsOrganisationen);
+			odhClient.syncStations(stationsChallenges);
+			LOG.info("Syncing stations successful");
+			odhClient.pushData(dataOrganisationen);
+			odhClient.pushData(dataChallenges);
+			LOG.info("Pushing data successful");
+		} catch (WebClientRequestException e) {
+			LOG.error("Syncing stations failed: Request exception: {}", e.getMessage());
 		}
 
-		LOG.info("Cron job syncJobAktionen completed successfully");
-	}
-
-	private void syncJobOrganisationen(RadeltChallengeDto challengeDto) {
-
-		LOG.info("Cron job syncJobOrganisationen started: Pushing challenge with id: #" + challengeDto.getId(),
-			odhClient.getIntegreenTypology());
-
-		// Define base URL for organizations
-		String baseUrlOrganizations = "https://www.suedtirolradelt.bz.it/dashboard/api/opendata/organisations";
-		// Initialize pagination variables
-		String limit = "5"; // Number of records per page
-		String offset = "0"; // Starting offset
-
-		// Fetch and process organizations
-		OrganisationenResponseDto organizationResponseDto;
-		while (true) {
-			try {
-				organizationResponseDto = fetchOrganizations(baseUrlOrganizations, String.valueOf(challengeDto.getId()), "", "", limit, offset);
-				if (organizationResponseDto == null || organizationResponseDto.getData().getOrganisations().size() == 0) {
-					break; // Exit the loop if no more data
-				}
-
-				MappingUtilsOrganisationen.mapToStationList(organizationResponseDto, odhClient, this.organizationCoordinates , LOG);
-
-				// Update offset for next page
-				offset = String.valueOf(Integer.parseInt(offset) + Integer.parseInt(limit));
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				LOG.error("Error fetching organizations with challenge id #" + + challengeDto.getId() + " : ", e.getMessage());
-				return; // Exit the method if fetching organizations fails
-			}
-		}
-
-		LOG.info("Cron job Organisationen completed successfully");
-	}
-
-	public static AktionenResponseDto fetchChallenges(
-		String baseUrl,
-		String active,
-		String limit,
-		String offset,
-		String type
-	) throws Exception {
-		URIBuilder uriBuilder = new URIBuilder(baseUrl);
-		uriBuilder.setParameter("active", active);
-		uriBuilder.setParameter("limit", limit);
-		uriBuilder.setParameter("offset", offset);
-		uriBuilder.setParameter("type", type);
-
-		URI uri = uriBuilder.build();
-		CloseableHttpClient httpClient = HttpClients.createDefault();
-		HttpGet request = new HttpGet(uri);
-
-		try (CloseableHttpResponse response = httpClient.execute(request)) {
-			if (response.getStatusLine().getStatusCode() == 200) {
-				HttpEntity entity = response.getEntity();
-				if (entity != null) {
-					String result = EntityUtils.toString(entity);
-					LOG.debug(result);
-					ObjectMapper mapper = new ObjectMapper();
-					return mapper.readValue(result, AktionenResponseDto.class);
-				}
-			} else {
-				LOG.error("HTTP Request failed with status code: {}", response.getStatusLine().getStatusCode());
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception("Error fetching actions", e);
-		}
-		return null;
-	}
-
-	public static OrganisationenResponseDto fetchOrganizations(
-		String baseUrl,
-		String challengeId,
-		String type,
-		String query,
-		String limit,
-		String offset
-	) throws Exception {
-		URIBuilder uriBuilder = new URIBuilder(baseUrl);
-		uriBuilder.setParameter("challengeId", String.valueOf(challengeId));
-		uriBuilder.setParameter("type", type);
-		uriBuilder.setParameter("query", query);
-		uriBuilder.setParameter("limit", String.valueOf(limit));
-		uriBuilder.setParameter("offset", String.valueOf(offset));
-
-		URI uri = uriBuilder.build();
-		CloseableHttpClient httpClient = HttpClients.createDefault();
-		HttpGet request = new HttpGet(uri);
-		LOG.info(uri.toString());
-
-		try (CloseableHttpResponse response = httpClient.execute(request)) {
-			if (response.getStatusLine().getStatusCode() == 200) {
-				HttpEntity entity = response.getEntity();
-				if (entity != null) {
-					String result = EntityUtils.toString(entity);
-					ObjectMapper mapper = new ObjectMapper();
-					return mapper.readValue(result, OrganisationenResponseDto.class);
-				}
-			} else {
-				LOG.error("HTTP Request failed with status code: {}", response.getStatusLine().getStatusCode());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception("Error fetching organizations", e);
-		}
-		return null;
+		LOG.info("Cron job completed successfully");
 	}
 }
