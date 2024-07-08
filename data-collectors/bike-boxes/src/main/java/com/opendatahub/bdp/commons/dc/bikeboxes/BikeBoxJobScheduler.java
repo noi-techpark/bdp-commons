@@ -190,17 +190,14 @@ public class BikeBoxJobScheduler {
     private void enrichNetexParking(StationDto dto) {
         // Part of the MaaS4Italy project.
         // https://github.com/noi-techpark/sta-nap-export/issues/1
-        // These 4 stations are the initial ones where we have hardcoded values, if there are new ones added it's probably good that something breaks
-        if (Set.of("1930", "1931", "1932", "1933").contains(dto.getId())) {
-            dto.getMetaData().put("netex_parking", Map.of(
-                    "type", "other",
-                    "layout", "covered",
-                    "charging", false,
-                    "reservation", "reservationRequired",
-                    "surveillance", true,
-                    "vehicletypes", "cycle",
-                    "hazard_prohibited", true));
-        }
+        dto.getMetaData().put("netex_parking", Map.of(
+                "type", "other",
+                "layout", "covered",
+                "charging", false,
+                "reservation", "reservationRequired",
+                "surveillance", true,
+                "vehicletypes", "cycle",
+                "hazard_prohibited", true));
     }
 
     private String mapBikeStationType(int type) {
