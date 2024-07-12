@@ -44,9 +44,11 @@ public class SyncScheduler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
 
-	@Lazy
 	@Autowired
-	private OdhClient odhClient;
+	private OdhClientOrganisations odhClientOrganisations;
+
+	@Autowired
+	private OdhClientChallenges odhClientChallenges;
 
 	@Autowired
 	private RadeltAPIClient radelClient;
@@ -61,8 +63,8 @@ public class SyncScheduler {
 	private Map<String, RadeltGeoDto> organizationCoordinates;
 
 	@PostConstruct
-	private void syncDataTypes() {
-		DataTypeUtils.setupDataType(odhClient, LOG);
+	private void postConstruct() {
+		DataTypeUtils.setupDataType(odhClientChallenges, LOG);
 	}
 
 	@PostConstruct
@@ -77,7 +79,7 @@ public class SyncScheduler {
 	@Scheduled(cron = "${scheduler.cron}")
 	public void syncJob() {
 		LOG.info("Cron job syncJobAktionen started: Sync Stations with type {} and data types",
-				odhClient.getIntegreenTypology());
+				odhClientChallenges.getIntegreenTypology());
 
 		StationList stationsOrganisationen = new StationList();
 		DataMapDto<RecordDtoImpl> dataOrganisationen = new DataMapDto<>();
@@ -121,11 +123,11 @@ public class SyncScheduler {
 
 		// Sync with Open Data Hub
 		try {
-			odhClient.syncStations(stationsOrganisationen);
-			odhClient.syncStations(stationsChallenges);
+			odhClientOrganisations.syncStations(stationsOrganisationen);
+			odhClientChallenges.syncStations(stationsChallenges);
 			LOG.info("Syncing stations successful");
-			odhClient.pushData(dataOrganisationen);
-			odhClient.pushData(dataChallenges);
+			odhClientOrganisations.pushData(dataOrganisationen);
+			odhClientChallenges.pushData(dataChallenges);
 			LOG.info("Pushing data successful");
 		} catch (WebClientRequestException e) {
 			LOG.error("Syncing stations failed: Request exception: {}", e.getMessage());

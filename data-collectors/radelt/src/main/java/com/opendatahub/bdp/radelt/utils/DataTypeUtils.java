@@ -9,14 +9,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.opendatahub.bdp.radelt.OdhClient;
 import it.bz.idm.bdp.dto.DataTypeDto;
+import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
-
 
 public class DataTypeUtils {
 
@@ -28,7 +27,7 @@ public class DataTypeUtils {
 		DataTypeUtils.period = period;
 	}
 
-	public static void setupDataType(OdhClient odhClient, Logger LOG) {
+	public static void setupDataType(NonBlockingJSONPusher odhClient, Logger LOG) {
 
 		List<DataTypeDto> odhDataTypeList = new ArrayList<>();
 

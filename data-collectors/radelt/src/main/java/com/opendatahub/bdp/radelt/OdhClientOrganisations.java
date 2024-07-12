@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 
 @Lazy
 @Service
-public class OdhClient extends NonBlockingJSONPusher {
+public class OdhClientOrganisations extends NonBlockingJSONPusher {
 
-    @Value("${odh_client.stationtype}")
+    @Value("${odh_client.stationtype_organisations}")
     private String stationtype;
 
     @Value("${odh_client.provenance.name}")
