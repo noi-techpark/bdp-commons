@@ -4,11 +4,14 @@
 
 package com.opendatahub.bdp.radelt.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import it.bz.idm.bdp.dto.StationDto;
 import it.bz.idm.bdp.dto.StationList;
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
+import it.bz.idm.bdp.dto.SimpleRecordDto;
+
 import com.opendatahub.bdp.radelt.dto.organisationen.RadeltChallengeStatisticDto;
 import com.opendatahub.bdp.radelt.dto.organisationen.RadeltOrganisationenDto;
 import com.opendatahub.bdp.radelt.dto.organisationen.OrganisationenResponseDto;
@@ -22,6 +25,9 @@ import java.util.Map;
 public class MappingUtilsOrganisationen {
 
 	private final Logger LOG = LoggerFactory.getLogger(MappingUtilsOrganisationen.class);
+
+	@Value("${odh_client.period}")
+	private Integer period;
 
 	public final String DATA_ORIGIN = "SuedtirolRadelt_AltoAdigePedala";
 	public final String DATA_TYPE = "CompanyGamificationAction";
@@ -38,25 +44,26 @@ public class MappingUtilsOrganisationen {
 			}
 			stationList.add(stationDto);
 
-			// Create measurement records
-			DataMapDto<RecordDtoImpl> stationMap = rootMap.upsertBranch(stationDto.getId());
-
 			for (RadeltChallengeStatisticDto challengeStatisticDto : organisationenDto.getStatistics()
 					.getChallengeStatistics()) {
 				long timestamp = challengeStatisticDto.getCreated_at();
 
-				DataTypeUtils.addMeasurement(stationMap, "km_total", timestamp, challengeStatisticDto.getKm_total());
-				DataTypeUtils.addMeasurement(stationMap, "height_meters_total", timestamp,
-						challengeStatisticDto.getHeight_meters_total());
-				DataTypeUtils.addMeasurement(stationMap, "km_average", timestamp,
-						challengeStatisticDto.getKm_average());
-				DataTypeUtils.addMeasurement(stationMap, "kcal", timestamp, challengeStatisticDto.getKcal());
-				DataTypeUtils.addMeasurement(stationMap, "co2", timestamp, challengeStatisticDto.getCo2());
-				DataTypeUtils.addMeasurement(stationMap, "m2_trees", timestamp, challengeStatisticDto.getM2_trees());
-				DataTypeUtils.addMeasurement(stationMap, "money_saved", timestamp,
-						challengeStatisticDto.getMoney_saved());
-				DataTypeUtils.addMeasurement(stationMap, "number_of_people", timestamp,
-						challengeStatisticDto.getNumber_of_people());
+				rootMap.addRecord(stationDto.getId(), "km_total",
+						new SimpleRecordDto(timestamp, challengeStatisticDto.getKm_total(), period));
+				rootMap.addRecord(stationDto.getId(), "height_meters_total",
+						new SimpleRecordDto(timestamp, challengeStatisticDto.getHeight_meters_total(), period));
+				rootMap.addRecord(stationDto.getId(), "km_average",
+						new SimpleRecordDto(timestamp, challengeStatisticDto.getKm_average(), period));
+				rootMap.addRecord(stationDto.getId(), "kcal",
+						new SimpleRecordDto(timestamp, challengeStatisticDto.getKcal(), period));
+				rootMap.addRecord(stationDto.getId(), "co2",
+						new SimpleRecordDto(timestamp, challengeStatisticDto.getCo2(), period));
+				rootMap.addRecord(stationDto.getId(), "m2_trees",
+						new SimpleRecordDto(timestamp, challengeStatisticDto.getM2_trees(), period));
+				rootMap.addRecord(stationDto.getId(), "money_saved",
+						new SimpleRecordDto(timestamp, challengeStatisticDto.getMoney_saved(), period));
+				rootMap.addRecord(stationDto.getId(), "number_of_people",
+						new SimpleRecordDto(timestamp, challengeStatisticDto.getNumber_of_people(), period));
 			}
 
 		}

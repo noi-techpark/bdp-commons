@@ -10,12 +10,10 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opendatahub.bdp.radelt.dto.aktionen.AktionenResponseDto;
 import com.opendatahub.bdp.radelt.dto.aktionen.RadeltChallengeDto;
 import com.opendatahub.bdp.radelt.dto.organisationen.OrganisationenResponseDto;
@@ -29,14 +27,6 @@ import it.bz.idm.bdp.dto.StationList;
 import com.opendatahub.bdp.radelt.utils.DataTypeUtils;
 import com.opendatahub.bdp.radelt.utils.CsvImporter;
 import com.opendatahub.bdp.radelt.dto.common.RadeltGeoDto;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.apache.http.client.utils.URIBuilder;
-import java.net.URI;
 import java.util.Map;
 
 @Service
@@ -64,11 +54,7 @@ public class SyncScheduler {
 
 	@PostConstruct
 	private void postConstruct() {
-		DataTypeUtils.setupDataType(odhClientChallenges, LOG);
-	}
-
-	@PostConstruct
-	private void syncCsvInfo() {
+		DataTypeUtils.setupDataType(odhClientChallenges);
 		this.actionCoordinates = CsvImporter.syncCsvActions();
 		this.organizationCoordinates = CsvImporter.syncCsvOrganizations();
 	}
@@ -118,20 +104,16 @@ public class SyncScheduler {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOG.error("Error fetching challenges:", e.getMessage());
+			LOG.error("Error fetching challenges: {}", e.getMessage());
 		}
 
 		// Sync with Open Data Hub
-		try {
-			odhClientOrganisations.syncStations(stationsOrganisationen);
-			odhClientChallenges.syncStations(stationsChallenges);
-			LOG.info("Syncing stations successful");
-			odhClientOrganisations.pushData(dataOrganisationen);
-			odhClientChallenges.pushData(dataChallenges);
-			LOG.info("Pushing data successful");
-		} catch (WebClientRequestException e) {
-			LOG.error("Syncing stations failed: Request exception: {}", e.getMessage());
-		}
+		odhClientOrganisations.syncStations(stationsOrganisationen);
+		odhClientChallenges.syncStations(stationsChallenges);
+		LOG.info("Syncing stations successful");
+		odhClientOrganisations.pushData(dataOrganisationen);
+		odhClientChallenges.pushData(dataChallenges);
+		LOG.info("Pushing data successful");
 
 		LOG.info("Cron job completed successfully");
 	}

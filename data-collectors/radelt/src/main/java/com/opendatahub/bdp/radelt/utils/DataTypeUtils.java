@@ -7,114 +7,106 @@ package com.opendatahub.bdp.radelt.utils;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.json.NonBlockingJSONPusher;
 
-import it.bz.idm.bdp.dto.DataMapDto;
-import it.bz.idm.bdp.dto.RecordDtoImpl;
-import it.bz.idm.bdp.dto.SimpleRecordDto;
-import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 public class DataTypeUtils {
 
-	@Value("${odh_client.period}")
-	private static Integer period;
+	private static final Logger LOG = LoggerFactory.getLogger(DataTypeUtils.class);
 
-	@Value("${odh_client.period}")
-	public void setPeriod(Integer period) {
-		DataTypeUtils.period = period;
-	}
-
-	public static void setupDataType(NonBlockingJSONPusher odhClient, Logger LOG) {
+	public static void setupDataType(NonBlockingJSONPusher odhClient) {
 
 		List<DataTypeDto> odhDataTypeList = new ArrayList<>();
 
 		odhDataTypeList.add(
-			new DataTypeDto(
-				"km_total",
-				"km",
-				"Total amount of kilometers registered",
-				"total"
-			)
-		);
+				new DataTypeDto(
+						"km_total",
+						"km",
+						"Total amount of kilometers registered",
+						"total"));
 
 		odhDataTypeList.add(
-			new DataTypeDto(
-				"height_meters_total",
-				"meters",
-				"Total amount of height meters registered",
-				"total"
-			)
-		);
+				new DataTypeDto(
+						"height_meters_total",
+						"meters",
+						"Total amount of height meters registered",
+						"total"));
 
 		odhDataTypeList.add(
-			new DataTypeDto(
-				"km_average",
-				"km",
-				"Average number of kilometers registered",
-				"average"
-			)
-		);
+				new DataTypeDto(
+						"km_average",
+						"km",
+						"Average number of kilometers registered",
+						"average"));
 
 		odhDataTypeList.add(
-			new DataTypeDto(
-				"kcal",
-				"kcal",
-				"Total amount of kilocalories registered",
-				"total"
-			)
-		);
+				new DataTypeDto(
+						"kcal",
+						"kcal",
+						"Total amount of kilocalories registered",
+						"total"));
 
 		odhDataTypeList.add(
-			new DataTypeDto(
-				"co2",
-				"kg",
-				"Total amount of CO2 emissions savings",
-				"total"
-			)
-		);
+				new DataTypeDto(
+						"co2",
+						"kg",
+						"Total amount of CO2 emissions savings",
+						"total"));
 
 		odhDataTypeList.add(
-			new DataTypeDto(
-				"m2_trees",
-				"m2",
-				"Total equivalent tree area created with CO2 savings",
-				"total"
-			)
-		);
+				new DataTypeDto(
+						"m2_trees",
+						"m2",
+						"Total equivalent tree area created with CO2 savings",
+						"total"));
 
 		odhDataTypeList.add(
-			new DataTypeDto(
-				"money_saved",
-				"EUR",
-				"Total amount of money saved",
-				"total"
-			)
-		);
+				new DataTypeDto(
+						"money_saved",
+						"EUR",
+						"Total amount of money saved",
+						"total"));
 
 		odhDataTypeList.add(
-			new DataTypeDto(
-				"number_of_people",
-				"count",
-				"Total number of registered users",
-				"total"
-			)
-		);
+				new DataTypeDto(
+						"number_of_people",
+						"count",
+						"Total number of registered users",
+						"total"));
 
-		try {
-			odhClient.syncDataTypes(odhDataTypeList);
-			LOG.info("Sync data type completed successfully");
-		} catch (WebClientRequestException e) {
-			LOG.error("Sync data types failed: Request exception: {}", e.getMessage());
-		}
-	}
+		odhDataTypeList.add(
+				new DataTypeDto(
+						"workplace_count",
+						"count",
+						"Total number of people at workplace",
+						"total"));
 
-	public static void addMeasurement(DataMapDto<RecordDtoImpl> map, String dataType, long timestamp, double value) {
-		DataMapDto<RecordDtoImpl> metricMap = map.upsertBranch(dataType);
-		SimpleRecordDto measurement = new SimpleRecordDto(timestamp, value, period);
-		List<RecordDtoImpl> values = metricMap.getData();
-		values.add(measurement);
+		odhDataTypeList.add(
+				new DataTypeDto(
+						"university_count",
+						"count",
+						"Total number of people at University",
+						"total"));
+
+		odhDataTypeList.add(
+				new DataTypeDto(
+						"school_count",
+						"count",
+						"Total number of people at school",
+						"total"));
+
+		odhDataTypeList.add(
+				new DataTypeDto(
+						"organisation_count",
+						"count",
+						"Total number of people at organisation",
+						"total"));
+
+		odhClient.syncDataTypes(odhDataTypeList);
+		LOG.info("Sync data type completed successfully");
 	}
 }
