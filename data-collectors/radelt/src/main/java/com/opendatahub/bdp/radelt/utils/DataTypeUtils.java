@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.json.NonBlockingJSONPusher;
-
 
 public class DataTypeUtils {
 
@@ -104,6 +102,13 @@ public class DataTypeUtils {
 						"organisation_count",
 						"count",
 						"Total number of people at organisation",
+						"total"));
+
+		odhDataTypeList.add(
+				new DataTypeDto(
+						"municipality_count",
+						"count",
+						"Total number of municipalities",
 						"total"));
 
 		odhClient.syncDataTypes(odhDataTypeList);
