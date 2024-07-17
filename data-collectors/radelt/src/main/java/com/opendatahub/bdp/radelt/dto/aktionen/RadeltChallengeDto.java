@@ -15,12 +15,12 @@ public class RadeltChallengeDto {
     private String name;
     private String shortName;
     private String headerImage;
-    private long start;
-    private long end;
-    private long registrationStart;
-    private long entryStart;
-    private long registrationEnd;
-    private long entryEnd;
+    private String start;
+    private String end;
+    private String registrationStart;
+    private String entryStart;
+    private String registrationEnd;
+    private String entryEnd;
     private String type;
 	@JsonProperty("isExternal")
     private boolean isExternal;
@@ -62,100 +62,52 @@ public class RadeltChallengeDto {
         this.headerImage = headerImage;
     }
 
-    public long getStart() {
+    public String getStart() {
         return start;
     }
 
     public void setStart(String start) {
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-			// Parse the date string to a Date object
-			Date date = sdf.parse(start);
-			this.start = date.getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		this.start = start;
     }
 
-	public long getEntryStart() {
+	public String getEntryStart() {
 		return entryStart;
 	}
 
 	public void setEntryStart(String entryStart) {
-		try{
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-			// Parse the date string to a Date object
-			Date date = sdf.parse(entryStart);
-			this.entryStart = date.getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		this.entryStart = entryStart;
 	}
 
-    public long getEnd() {
+    public String getEnd() {
         return end;
     }
 
     public void setEnd(String end) {
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-			// Parse the date string to a Date object
-			Date date = sdf.parse(end);
-			this.end = date.getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		this.end = end;
     }
 
-	public long getEntryEnd() {
+	public String getEntryEnd() {
 		return entryEnd;
 	}
 
 	public void setEntryEnd(String entryEnd) {
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-			// Parse the date string to a Date object
-			Date date = sdf.parse(entryEnd);
-			this.registrationStart = date.getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		this.registrationStart = registrationStart;
 	}
 
-    public long getRegistrationStart() {
+    public String getRegistrationStart() {
         return registrationStart;
     }
 
     public void setRegistrationStart(String registrationStart) {
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-			// Parse the date string to a Date object
-			Date date = sdf.parse(registrationStart);
-			this.registrationStart = date.getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		this.registrationStart = registrationStart;
     }
 
-    public long getRegistrationEnd() {
+    public String getRegistrationEnd() {
         return registrationEnd;
     }
 
     public void setRegistrationEnd(String registrationEnd) {
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");
-			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-			// Parse the date string to a Date object
-			Date date = sdf.parse(registrationEnd);
-			this.registrationEnd = date.getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		this.registrationEnd = registrationEnd;
     }
 
     public String getType() {

@@ -81,7 +81,7 @@ public class MappingUtilsOrganisationen {
 			if (challengeStatistics.getChallenge_id() != null) {
 				stationDto.setId(String.valueOf(challengeStatistics.getId()) + "-"
 						+ String.valueOf(challengeStatistics.getChallenge_id()));
-				stationDto.setName(challengeStatistics.getName() + '-' + challengeStatistics.getChallenge_name());
+				stationDto.setName(organisation.getName() + '-' + challengeStatistics.getChallenge_name());
 				stationDto.setStationType(DATA_TYPE);
 
 				// METADATA
