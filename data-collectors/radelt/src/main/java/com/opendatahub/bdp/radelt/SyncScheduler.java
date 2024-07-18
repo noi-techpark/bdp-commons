@@ -89,17 +89,12 @@ public class SyncScheduler {
 				// Initialize pagination variables
 				// Fetch and process organizations
 				OrganisationenResponseDto organizationResponseDtoGer;
-				OrganisationenResponseDto organizationResponseDtoIta;
 
 				try {
 					organizationResponseDtoGer = radeltClient.fetchOrganizations(
 							String.valueOf(challengeDto.getId()),
 							"", "", Language.GER);
-					organizationResponseDtoIta = radeltClient.fetchOrganizations(
-							String.valueOf(challengeDto.getId()),
-							"", "", Language.ITA);
-
-					mappingUtilsOrganisationen.mapData(organizationResponseDtoGer, organizationResponseDtoIta,
+					mappingUtilsOrganisationen.mapData(organizationResponseDtoGer,
 							this.organizationCoordinates, stationsOrganisationen, dataOrganisationen);
 
 				} catch (Exception e) {
