@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClientRequestException;
 
+import com.opendatahub.bdp.radelt.RadeltAPIClient.Language;
 import com.opendatahub.bdp.radelt.dto.aktionen.AktionenResponseDto;
 import com.opendatahub.bdp.radelt.dto.aktionen.RadeltChallengeDto;
 import com.opendatahub.bdp.radelt.dto.organisationen.OrganisationenResponseDto;
@@ -41,7 +41,7 @@ public class SyncScheduler {
 	private OdhClientChallenges odhClientChallenges;
 
 	@Autowired
-	private RadeltAPIClient radelClient;
+	private RadeltAPIClient radeltClient;
 
 	@Autowired
 	private MappingUtilsOrganisationen mappingUtilsOrganisationen;
@@ -73,25 +73,33 @@ public class SyncScheduler {
 		StationList stationsChallenges = new StationList();
 		DataMapDto<RecordDtoImpl> dataChallenges = new DataMapDto<>();
 
-		AktionenResponseDto challengeResponseDto;
+		AktionenResponseDto challengeResponseDtoGer;
+		AktionenResponseDto challengeResponseDtoIta;
 
 		try {
-			challengeResponseDto = radelClient.fetchChallenges("true", "DISTANCE");
+			challengeResponseDtoGer = radeltClient.fetchChallenges("true", "DISTANCE", Language.GER);
+			challengeResponseDtoIta = radeltClient.fetchChallenges("true", "DISTANCE", Language.ITA);
 
-			mappingUtilsAktionen.mapData(challengeResponseDto, this.actionCoordinates, stationsChallenges,
+			mappingUtilsAktionen.mapData(challengeResponseDtoGer, challengeResponseDtoIta, this.actionCoordinates,
+					stationsChallenges,
 					dataChallenges);
 
-			for (RadeltChallengeDto challengeDto : challengeResponseDto.getData().getChallenges()) {
+			for (RadeltChallengeDto challengeDto : challengeResponseDtoGer.getData().getChallenges()) {
 				// Define base URL for organizations
 				// Initialize pagination variables
 				// Fetch and process organizations
-				OrganisationenResponseDto organizationResponseDto;
-				try {
-					organizationResponseDto = radelClient.fetchOrganizations(
-							String.valueOf(challengeDto.getId()),
-							"", "");
+				OrganisationenResponseDto organizationResponseDtoGer;
+				OrganisationenResponseDto organizationResponseDtoIta;
 
-					mappingUtilsOrganisationen.mapData(organizationResponseDto,
+				try {
+					organizationResponseDtoGer = radeltClient.fetchOrganizations(
+							String.valueOf(challengeDto.getId()),
+							"", "", Language.GER);
+					organizationResponseDtoIta = radeltClient.fetchOrganizations(
+							String.valueOf(challengeDto.getId()),
+							"", "", Language.ITA);
+
+					mappingUtilsOrganisationen.mapData(organizationResponseDtoGer, organizationResponseDtoIta,
 							this.organizationCoordinates, stationsOrganisationen, dataOrganisationen);
 
 				} catch (Exception e) {

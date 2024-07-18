@@ -19,6 +19,8 @@ import com.opendatahub.bdp.radelt.dto.organisationen.RadeltStatisticsDto;
 import com.opendatahub.bdp.radelt.dto.common.RadeltGeoDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -32,19 +34,24 @@ public class MappingUtilsOrganisationen {
 	public final String DATA_ORIGIN = "SuedtirolRadelt_AltoAdigePedala";
 	public final String DATA_TYPE = "CompanyGamificationAction";
 
-	public void mapData(OrganisationenResponseDto responseDto,
+	public void mapData(OrganisationenResponseDto responseDtoGer, OrganisationenResponseDto responseDtoIta,
 			Map<String, RadeltGeoDto> organizationCoordinates, StationList stationList,
 			DataMapDto<RecordDtoImpl> rootMap) {
 
-		for (RadeltOrganisationenDto organisationenDto : responseDto.getData().getOrganisations()) {
-			StationDto stationDto = mapToStationDto(organisationenDto, organizationCoordinates);
+		List<RadeltOrganisationenDto> organisationsGer = responseDtoGer.getData().getOrganisations();
+		List<RadeltOrganisationenDto> organisationsIta = responseDtoIta.getData().getOrganisations();
+
+		for (int i = 0; i < organisationsGer.size(); i++) {
+
+			StationDto stationDto = mapToStationDto(organisationsGer.get(i), organisationsIta.get(i),
+					organizationCoordinates);
 			if (stationDto.getId() == null) {// TODO: handle duplicated entries?
 				LOG.debug("Skipping station with empty statistics");
 				continue;
 			}
 			stationList.add(stationDto);
 
-			for (RadeltChallengeStatisticDto challengeStatisticDto : organisationenDto.getStatistics()
+			for (RadeltChallengeStatisticDto challengeStatisticDto : organisationsGer.get(i).getStatistics()
 					.getChallengeStatistics()) {
 				long timestamp = challengeStatisticDto.getCreated_at();
 
@@ -70,25 +77,26 @@ public class MappingUtilsOrganisationen {
 
 	}
 
-	private StationDto mapToStationDto(RadeltOrganisationenDto organisation,
+	private StationDto mapToStationDto(RadeltOrganisationenDto organisationGer, RadeltOrganisationenDto organisationIta,
 			Map<String, RadeltGeoDto> organizationCoordinates) {
 		StationDto stationDto = new StationDto();
 
-		RadeltStatisticsDto statisticsDto = organisation.getStatistics();
+		RadeltStatisticsDto statisticsDto = organisationGer.getStatistics();
 
 		if (statisticsDto != null) {
 			RadeltChallengeStatisticDto challengeStatistics = statisticsDto.getChallengeStatistics().get(0);
 			if (challengeStatistics.getChallenge_id() != null) {
 				stationDto.setId(String.valueOf(challengeStatistics.getId()) + "-"
 						+ String.valueOf(challengeStatistics.getChallenge_id()));
-				stationDto.setName(organisation.getName() + '-' + challengeStatistics.getChallenge_name());
+				stationDto.setName(organisationGer.getName() + "_"
+						+ organisationIta.getName() + '-' + challengeStatistics.getChallenge_name());
 				stationDto.setStationType(DATA_TYPE);
 
 				// METADATA
-				stationDto.getMetaData().put("type", organisation.getType());
-				stationDto.getMetaData().put("logo", organisation.getLogo());
-				stationDto.getMetaData().put("website", organisation.getWebsite());
-				stationDto.getMetaData().put("peopleTotal", organisation.getPeopleTotal());
+				stationDto.getMetaData().put("type", organisationGer.getType());
+				stationDto.getMetaData().put("logo", organisationGer.getLogo());
+				stationDto.getMetaData().put("website", organisationGer.getWebsite());
+				stationDto.getMetaData().put("peopleTotal", organisationGer.getPeopleTotal());
 				stationDto.getMetaData().put("challenge_type", challengeStatistics.getChallenge_type());
 
 				// Additional

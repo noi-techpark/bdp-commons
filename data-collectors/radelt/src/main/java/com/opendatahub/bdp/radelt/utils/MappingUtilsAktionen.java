@@ -4,14 +4,9 @@
 
 package com.opendatahub.bdp.radelt.utils;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClientRequestException;
-import java.util.ArrayList;
 import it.bz.idm.bdp.dto.DataMapDto;
-import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.SimpleRecordDto;
 import it.bz.idm.bdp.dto.StationDto;
@@ -26,6 +21,7 @@ import com.opendatahub.bdp.radelt.dto.common.RadeltGeoDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -39,13 +35,17 @@ public class MappingUtilsAktionen {
 	@Value("${odh_client.period}")
 	private Integer period;
 
-	public void mapData(AktionenResponseDto responseDto, Map<String, RadeltGeoDto> actionCoordinates,
+	public void mapData(AktionenResponseDto responseDtoGer, AktionenResponseDto responseDtoIta,
+			Map<String, RadeltGeoDto> actionCoordinates,
 			StationList stationList,
 			DataMapDto<RecordDtoImpl> rootMap) {
 
-		for (RadeltChallengeDto challengeDto : responseDto.getData().getChallenges()) {
+		List<RadeltChallengeDto> challengesGer = responseDtoGer.getData().getChallenges();
+		List<RadeltChallengeDto> challengesIta = responseDtoIta.getData().getChallenges();
+
+		for (int i = 0; i < challengesGer.size(); i++) {
 			// Create Station
-			StationDto stationDto = mapToStationDto(challengeDto, actionCoordinates);
+			StationDto stationDto = mapToStationDto(challengesGer.get(i), challengesIta.get(i), actionCoordinates);
 
 			if (stationDto.getId() == null) {// TODO: handle duplicated entries?
 				LOG.debug("Skipping station with empty id");
@@ -54,7 +54,7 @@ public class MappingUtilsAktionen {
 
 			stationList.add(stationDto);
 
-			RadeltStatisticDto statistics = challengeDto.getStatistics();
+			RadeltStatisticDto statistics = challengesGer.get(i).getStatistics();
 
 			if (statistics != null && statistics.getChallenge() != null) {
 				RadeltChallengeMetric challenge = statistics.getChallenge();
@@ -93,22 +93,24 @@ public class MappingUtilsAktionen {
 
 	}
 
-	private StationDto mapToStationDto(RadeltChallengeDto challengeDto, Map<String, RadeltGeoDto> actionCoordinates) {
+	private StationDto mapToStationDto(RadeltChallengeDto challengeDtoGer, RadeltChallengeDto challengeDtoIta,
+			Map<String, RadeltGeoDto> actionCoordinates) {
 		StationDto stationDto = new StationDto();
-		stationDto.setId(String.valueOf(challengeDto.getId()));
-		stationDto.setName(challengeDto.getName());
+		stationDto.setId(String.valueOf(challengeDtoGer.getId()));
+		// use both languages for name field
+		stationDto.setName(challengeDtoGer.getName() + "_" + challengeDtoIta.getName());
 
 		// METADATA
-		stationDto.getMetaData().put("shortName", challengeDto.getShortName());
-		stationDto.getMetaData().put("Slug", SlugUtils.getSlug(challengeDto.getShortName()));
-		stationDto.getMetaData().put("headerImage", challengeDto.getHeaderImage());
-		stationDto.getMetaData().put("Start", challengeDto.getStart());
-		stationDto.getMetaData().put("End", challengeDto.getEnd());
-		stationDto.getMetaData().put("registrationStart", challengeDto.getRegistrationStart());
-		stationDto.getMetaData().put("registrationEnd", challengeDto.getRegistrationEnd());
-		stationDto.getMetaData().put("type", challengeDto.getType());
-		stationDto.getMetaData().put("isExternal", challengeDto.isExternal());
-		stationDto.getMetaData().put("canOrganisationsSignup", challengeDto.isCanOrganisationsSignup());
+		stationDto.getMetaData().put("shortName", challengeDtoGer.getShortName());
+		stationDto.getMetaData().put("Slug", SlugUtils.getSlug(challengeDtoGer.getShortName()));
+		stationDto.getMetaData().put("headerImage", challengeDtoGer.getHeaderImage());
+		stationDto.getMetaData().put("Start", challengeDtoGer.getStart());
+		stationDto.getMetaData().put("End", challengeDtoGer.getEnd());
+		stationDto.getMetaData().put("registrationStart", challengeDtoGer.getRegistrationStart());
+		stationDto.getMetaData().put("registrationEnd", challengeDtoGer.getRegistrationEnd());
+		stationDto.getMetaData().put("type", challengeDtoGer.getType());
+		stationDto.getMetaData().put("isExternal", challengeDtoGer.isExternal());
+		stationDto.getMetaData().put("canOrganisationsSignup", challengeDtoGer.isCanOrganisationsSignup());
 
 		// Additional
 		stationDto.setOrigin(DATA_ORIGIN);

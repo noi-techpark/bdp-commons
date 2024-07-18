@@ -26,12 +26,21 @@ public class RadeltAPIClient {
 
     private final Logger LOG = LoggerFactory.getLogger(RadeltAPIClient.class);
 
-    private final String URL_CHALLENGES = "https://www.altoadigepedala.bz.it/dashboard/api/opendata/challenges";
-    private final String URL_ORGANIZATIONS = "https://www.suedtirolradelt.bz.it/dashboard/api/opendata/organisations";
+    public enum Language {
+        ITA, GER
+    }
 
-    public AktionenResponseDto fetchChallenges(String active, String type)
+    private final String BASE_URL_ITA = "https://www.altoadigepedala.bz.it";
+    private final String BASE_URL_GER = "https://www.suedtirolradelt.bz.it";
+    private final String PATH_CHALLENGES = "/dashboard/api/opendata/challenges";
+    private final String PATH_ORGANIZATIONS = "/dashboard/api/opendata/organisations";
+
+    public AktionenResponseDto fetchChallenges(String active, String type, Language lang)
             throws Exception {
-        URIBuilder uriBuilder = new URIBuilder(URL_CHALLENGES);
+        String url = lang == Language.GER ? BASE_URL_GER : BASE_URL_ITA;
+        url += PATH_CHALLENGES;
+
+        URIBuilder uriBuilder = new URIBuilder(url);
         uriBuilder.setParameter("active", active);
         // uriBuilder.setParameter("limit", limit);
         // uriBuilder.setParameter("offset", offset);
@@ -61,8 +70,11 @@ public class RadeltAPIClient {
     }
 
     public OrganisationenResponseDto fetchOrganizations(String challengeId, String type,
-            String query) throws Exception {
-        URIBuilder uriBuilder = new URIBuilder(URL_ORGANIZATIONS);
+            String query, Language lang) throws Exception {
+        String url = lang == Language.GER ? BASE_URL_GER : BASE_URL_ITA;
+        url += PATH_ORGANIZATIONS;
+
+        URIBuilder uriBuilder = new URIBuilder(url);
         uriBuilder.setParameter("challengeId", String.valueOf(challengeId));
         uriBuilder.setParameter("type", type);
         uriBuilder.setParameter("query", query);
