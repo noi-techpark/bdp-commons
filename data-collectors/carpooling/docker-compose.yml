@@ -2,11 +2,9 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
-version: "3.4"
-
 services:
   app:
-    image: maven:3-jdk-8-alpine
+    image: maven:3-openjdk-17-slim
     network_mode: host
     env_file:
       - .env
