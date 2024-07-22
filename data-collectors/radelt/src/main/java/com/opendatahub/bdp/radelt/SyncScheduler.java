@@ -19,6 +19,7 @@ import com.opendatahub.bdp.radelt.dto.aktionen.RadeltChallengeDto;
 import com.opendatahub.bdp.radelt.dto.organisationen.OrganisationenResponseDto;
 import com.opendatahub.bdp.radelt.utils.MappingUtilsAktionen;
 import com.opendatahub.bdp.radelt.utils.MappingUtilsOrganisationen;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import it.bz.idm.bdp.dto.DataMapDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
@@ -110,13 +111,17 @@ public class SyncScheduler {
 			LOG.error("Error fetching challenges: {}", e.getMessage());
 		}
 
-		// Sync with Open Data Hub
-		odhClientOrganisations.syncStations(stationsOrganisationen);
-		odhClientChallenges.syncStations(stationsChallenges);
-		LOG.info("Syncing stations successful");
-		odhClientOrganisations.pushData(dataOrganisationen);
-		odhClientChallenges.pushData(dataChallenges);
-		LOG.info("Pushing data successful");
+		try {
+			// Sync with Open Data Hub
+			odhClientOrganisations.syncStations(stationsOrganisationen);
+			odhClientChallenges.syncStations(stationsChallenges);
+			LOG.info("Syncing stations successful");
+			odhClientOrganisations.pushData(dataOrganisationen);
+			odhClientChallenges.pushData(dataChallenges);
+			LOG.info("Pushing data successful");
+		} catch (WebClientRequestException e) {
+			LOG.error("Syncing stations failed: Request exception: {}", e.getMessage());
+		}
 
 		LOG.info("Cron job completed successfully");
 	}
