@@ -23,8 +23,12 @@ FREE_PLACES_PATH=/api/Facility/GetFreePlaces
 
 # auth
 printf "\nauth\n"
-curl -H 'Content-Type:application/x-www-form-urlencoded' \
-	"$API_OAUTH_TOKEN_URI?grant_type=password&username=$API_OAUTH_USERNAME&client_id=STA&client_secret=$API_OAUTH_PASSWORD&password=$API_OAUTH_PASSWORD"
+
+CURL="curl -H  'Content-Type:application/x-www-form-urlencoded'"
+URL="$API_OAUTH_TOKEN_URI?grant_type=password&username=$API_OAUTH_USERNAME&client_id=STA&client_secret=$API_OAUTH_PASSWORD&password=$API_OAUTH_PASSWORD"
+
+printf "$CURL $URL \n"
+$CURL "$URL"
 printf "\n###############\n"
 
 
