@@ -54,7 +54,7 @@ func Job() {
 
 	ts := time.Now().UnixMilli()
 
-	for _, facility := range facilities.Facilities {
+	for _, facility := range facilities.Data.Facilities {
 
 		if facility.ReceiptMerchant == identifier {
 			parentStationCode := strconv.Itoa(facility.FacilityId)

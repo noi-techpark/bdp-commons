@@ -13,6 +13,10 @@ import (
 )
 
 type FacilityResponse struct {
+	Data FacilityData
+}
+
+type FacilityData struct {
 	Status     string
 	Facilities []Facility
 }
@@ -56,6 +60,7 @@ type FreePlace struct {
 
 // const facilityUrl = "https://online.onecenter.info/api/Facility/GetFacilities"
 // const freePlacesUrl = "https://online.onecenter.info/api/Facility/GetFreePlaces?FacilityID="
+
 const facilityUrl = "https://www.onecenter.info/api/DAZ/GetFacilities"
 const freePlacesUrl = "https://www.onecenter.info/api/DAZ/FacilityFreePlaces?FacilityID="
 
@@ -77,8 +82,8 @@ func getData(url string, response interface{}) {
 	if err != nil {
 		slog.Error("error", err)
 	}
+
 	req.Header = http.Header{
-		"Content-Type":  {"application/json"},
 		"Authorization": {"Bearer " + GetToken()},
 	}
 
@@ -94,6 +99,9 @@ func getData(url string, response interface{}) {
 		if err != nil {
 			slog.Error("error", err)
 		}
+
+		// bodyString := string(bodyBytes)
+		// slog.Info(bodyString)
 
 		err = json.Unmarshal(bodyBytes, &response)
 		if err != nil {
