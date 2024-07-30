@@ -27,12 +27,14 @@ grant_type=password
 @token = {{login.response.body.access_token}}
 
 ### GetFacilities
-GET https://online.onecenter.info/api/Facility/GetFacilities
+# GET https://online.onecenter.info/api/Facility/GetFacilities
+GET https://www.onecenter.info/api/DAZ/GetFacilities
 Authorization: Bearer {{token}}
 
 ### FacilityID
 # 607440 Bressanone
 # 608612 Brunico
-GET https://online.onecenter.info/api/Facility/GetFreePlaces
+# GET https://online.onecenter.info/api/Facility/GetFreePlaces
+GET https://www.onecenter.info/api/DAZ/FacilityFreePlaces
 ?FacilityID=607440
 Authorization: Bearer {{login.response.body.access_token}}
