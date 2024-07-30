@@ -38,6 +38,10 @@ type Facility struct {
 }
 
 type FreePlaceResponse struct {
+	Data FreePlaceData
+}
+
+type FreePlaceData struct {
 	Status     string
 	FreePlaces []FreePlace
 }

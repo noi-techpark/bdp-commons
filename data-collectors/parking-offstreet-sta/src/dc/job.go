@@ -88,7 +88,7 @@ func Job() {
 			// freeplaces is array of a single categories data
 			// if multiple parkNo exist, multiple entries for every parkNo and its categories exist
 			// so iterating over freeplaces and checking if the station with the parkNo has already been created is needed
-			for _, freePlace := range freePlaces.FreePlaces {
+			for _, freePlace := range freePlaces.Data.FreePlaces {
 				// create ParkingStation
 				stationCode := parentStationCode + "_" + strconv.Itoa(freePlace.ParkNo)
 				station, ok := stations[stationCode]
