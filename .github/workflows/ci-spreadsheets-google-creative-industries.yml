@@ -34,90 +34,90 @@ jobs:
           test-command: 'mvn -B -U clean compile test'
 
 # Deploy Test
-  deploy-test-spreadsheets-google:
-    runs-on: ubuntu-20.04
-    if: github.ref == 'refs/heads/main'
-    needs: test
-    concurrency: deploy-test-spreadsheets-google-creative-industries
-    env:
-      KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
-    steps:
-      - name: Checkout source code
-        uses: noi-techpark/github-actions/checkout@v2
-      - name: Create .env file
-        uses: noi-techpark/github-actions/env-file@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
-        env:
-          # Data Collector config
-          X_SERVER_PORT: ${{ env.SERVER_PORT }}
-          X_VENDOR: ${{ env.VENDOR }}
-          X_spreadsheetId: ${{ env.SPREADSHEET_ID }}
-          X_suportedLanguages: en,de,it,lad
-          X_headers_nameId: name
-          X_headers_addressId: address
-          X_headers_metaDataId: metadata-id
-          X_headers_latitudeId: latitude
-          X_headers_longitudeId: longitude
-          X_spreadsheet_range: A1:Z
-          X_spreadsheet_notificationUrl: https://spreadsheets.testingmachine.eu/creative-industries/trigger
-          X_stationtype: CreativeIndustry
-          X_composite_unique_key: name,address
-          X_origin: municipality bolzano
-          X_googleAuthClient_secret_location: file:/credentials/client_secret.json
-          X_googleAuthCredentials_folder: file:/credentials
+  # deploy-test-spreadsheets-google:
+  #   runs-on: ubuntu-20.04
+  #   if: github.ref == 'refs/heads/main'
+  #   needs: test
+  #   concurrency: deploy-test-spreadsheets-google-creative-industries
+  #   env:
+  #     KEYCLOAK_URL: https://auth.opendatahub.testingmachine.eu
+  #   steps:
+  #     - name: Checkout source code
+  #       uses: noi-techpark/github-actions/checkout@v2
+  #     - name: Create .env file
+  #       uses: noi-techpark/github-actions/env-file@v2
+  #       with:
+  #         working-directory: ${{ env.WORKING_DIRECTORY }}
+  #       env:
+  #         # Data Collector config
+  #         X_SERVER_PORT: ${{ env.SERVER_PORT }}
+  #         X_VENDOR: ${{ env.VENDOR }}
+  #         X_spreadsheetId: ${{ env.SPREADSHEET_ID }}
+  #         X_suportedLanguages: en,de,it,lad
+  #         X_headers_nameId: name
+  #         X_headers_addressId: address
+  #         X_headers_metaDataId: metadata-id
+  #         X_headers_latitudeId: latitude
+  #         X_headers_longitudeId: longitude
+  #         X_spreadsheet_range: A1:Z
+  #         X_spreadsheet_notificationUrl: https://spreadsheets.testingmachine.eu/creative-industries/trigger
+  #         X_stationtype: CreativeIndustry
+  #         X_composite_unique_key: name,address
+  #         X_origin: municipality bolzano
+  #         X_googleAuthClient_secret_location: file:/credentials/client_secret.json
+  #         X_googleAuthCredentials_folder: file:/credentials
 
-          # General deployment options
-          X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
-          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
-          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-          X_JAVA_OPTIONS: -Xms128m -Xmx512m
+  #         # General deployment options
+  #         X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
+  #         X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+  #         X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
+  #         X_JAVA_OPTIONS: -Xms128m -Xmx512m
 
-          # Open Data Hub Writer Connectivity
-          X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
-          X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
-          X_clientId: odh-mobility-datacollector
-          X_clientName: odh-mobility-datacollector
-          X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
-          X_scope: openid
-          X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
+  #         # Open Data Hub Writer Connectivity
+  #         X_authorizationUri: ${{ env.KEYCLOAK_URL }}/auth
+  #         X_tokenUri: ${{ env.KEYCLOAK_URL }}/auth/realms/noi/protocol/openid-connect/token
+  #         X_clientId: odh-mobility-datacollector
+  #         X_clientName: odh-mobility-datacollector
+  #         X_clientSecret: ${{ secrets.DATACOLLECTORS_CLIENT_SECRET_TEST }}
+  #         X_scope: openid
+  #         X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
-          # Logging
-          X_LOG_LEVEL: info
-          X_LOG_STYLE: json
-          X_LOG_FOLDER: data-collectors/${{ env.PROJECT_NAME }}
-          X_provenance_name: ${{ env.PROJECT_NAME }}
-          X_provenance_version: ${{ github.sha }}
+  #         # Logging
+  #         X_LOG_LEVEL: info
+  #         X_LOG_STYLE: json
+  #         X_LOG_FOLDER: data-collectors/${{ env.PROJECT_NAME }}
+  #         X_provenance_name: ${{ env.PROJECT_NAME }}
+  #         X_provenance_version: ${{ github.sha }}
 
-      - name: Retrieve secret files and decode it to a file
-        run: |
-          echo $CLIENT_SECRET_BASE64 | base64 --decode > data-collectors/spreadsheets-google/credentials/client_secret.json
-          echo $STORED_CREDENTIAL_BASE64 | base64 --decode > data-collectors/spreadsheets-google/credentials/StoredCredential
+  #     - name: Retrieve secret files and decode it to a file
+  #       run: |
+  #         echo $CLIENT_SECRET_BASE64 | base64 --decode > data-collectors/spreadsheets-google/credentials/client_secret.json
+  #         echo $STORED_CREDENTIAL_BASE64 | base64 --decode > data-collectors/spreadsheets-google/credentials/StoredCredential
 
-      - name: Build project
-        uses: noi-techpark/github-actions/maven-build@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
-          java-version: ${{ env.JAVA_VERSION }}
-          build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
+  #     - name: Build project
+  #       uses: noi-techpark/github-actions/maven-build@v2
+  #       with:
+  #         working-directory: ${{ env.WORKING_DIRECTORY }}
+  #         java-version: ${{ env.JAVA_VERSION }}
+  #         build-command: 'mvn -B -DskipTests -DfinalName=ROOT clean package'
 
-      - name: Build and push images
-        uses: noi-techpark/github-actions/docker-build-and-push@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
-          docker-username: ${{ github.actor }}
-          docker-password: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Build and push images
+  #       uses: noi-techpark/github-actions/docker-build-and-push@v2
+  #       with:
+  #         working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure
+  #         docker-username: ${{ github.actor }}
+  #         docker-password: ${{ secrets.GITHUB_TOKEN }}
 
 
-      - name: Deploy application
-        uses: noi-techpark/github-actions/docker-deploy@v2
-        with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
-          hosts: 'test'
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          docker-username: 'noi-techpark-bot'
-          docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          project-name: ${{ env.PROJECT_NAME }}
+  #     - name: Deploy application
+  #       uses: noi-techpark/github-actions/docker-deploy@v2
+  #       with:
+  #         working-directory: ${{ env.WORKING_DIRECTORY }}/infrastructure/ansible
+  #         hosts: 'test'
+  #         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #         docker-username: 'noi-techpark-bot'
+  #         docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+  #         project-name: ${{ env.PROJECT_NAME }}
 
 
   # Deploy Production

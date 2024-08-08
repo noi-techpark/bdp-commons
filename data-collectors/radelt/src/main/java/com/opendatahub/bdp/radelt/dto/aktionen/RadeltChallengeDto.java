@@ -4,18 +4,23 @@
 
 package com.opendatahub.bdp.radelt.dto.aktionen;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class RadeltChallengeDto {
     private int id;
     private String name;
     private String shortName;
     private String headerImage;
-    private Date start;
-    private Date end;
-    private Date registrationStart;
-    private Date registrationEnd;
+    private String start;
+    private String end;
+    private String registrationStart;
+    private String entryStart;
+    private String registrationEnd;
+    private String entryEnd;
     private String type;
 	@JsonProperty("isExternal")
     private boolean isExternal;
@@ -57,36 +62,52 @@ public class RadeltChallengeDto {
         this.headerImage = headerImage;
     }
 
-    public Date getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
-        this.start = start;
+    public void setStart(String start) {
+		this.start = start;
     }
 
-    public Date getEnd() {
+	public String getEntryStart() {
+		return entryStart;
+	}
+
+	public void setEntryStart(String entryStart) {
+		this.entryStart = entryStart;
+	}
+
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setEnd(String end) {
+		this.end = end;
     }
 
-    public Date getRegistrationStart() {
+	public String getEntryEnd() {
+		return entryEnd;
+	}
+
+	public void setEntryEnd(String entryEnd) {
+		this.registrationStart = registrationStart;
+	}
+
+    public String getRegistrationStart() {
         return registrationStart;
     }
 
-    public void setRegistrationStart(Date registrationStart) {
-        this.registrationStart = registrationStart;
+    public void setRegistrationStart(String registrationStart) {
+		this.registrationStart = registrationStart;
     }
 
-    public Date getRegistrationEnd() {
+    public String getRegistrationEnd() {
         return registrationEnd;
     }
 
-    public void setRegistrationEnd(Date registrationEnd) {
-        this.registrationEnd = registrationEnd;
+    public void setRegistrationEnd(String registrationEnd) {
+		this.registrationEnd = registrationEnd;
     }
 
     public String getType() {

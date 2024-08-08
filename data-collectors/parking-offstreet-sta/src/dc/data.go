@@ -13,6 +13,10 @@ import (
 )
 
 type FacilityResponse struct {
+	Data FacilityData
+}
+
+type FacilityData struct {
 	Status     string
 	Facilities []Facility
 }
@@ -34,6 +38,10 @@ type Facility struct {
 }
 
 type FreePlaceResponse struct {
+	Data FreePlaceData
+}
+
+type FreePlaceData struct {
 	Status     string
 	FreePlaces []FreePlace
 }
@@ -54,8 +62,11 @@ type FreePlace struct {
 	Longitude           float64
 }
 
-const facilityUrl = "https://online.onecenter.info/api/Facility/GetFacilities"
-const freePlacesUrl = "https://online.onecenter.info/api/Facility/GetFreePlaces?FacilityID="
+// const facilityUrl = "https://online.onecenter.info/api/Facility/GetFacilities"
+// const freePlacesUrl = "https://online.onecenter.info/api/Facility/GetFreePlaces?FacilityID="
+
+const facilityUrl = "https://www.onecenter.info/api/DAZ/GetFacilities"
+const freePlacesUrl = "https://www.onecenter.info/api/DAZ/FacilityFreePlaces?FacilityID="
 
 func GetFacilityData() FacilityResponse {
 	var response FacilityResponse
@@ -75,8 +86,8 @@ func getData(url string, response interface{}) {
 	if err != nil {
 		slog.Error("error", err)
 	}
+
 	req.Header = http.Header{
-		"Content-Type":  {"application/json"},
 		"Authorization": {"Bearer " + GetToken()},
 	}
 
@@ -92,6 +103,9 @@ func getData(url string, response interface{}) {
 		if err != nil {
 			slog.Error("error", err)
 		}
+
+		// bodyString := string(bodyBytes)
+		// slog.Info(bodyString)
 
 		err = json.Unmarshal(bodyBytes, &response)
 		if err != nil {

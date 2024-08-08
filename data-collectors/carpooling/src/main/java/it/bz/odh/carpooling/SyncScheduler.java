@@ -35,6 +35,9 @@ public class SyncScheduler {
 	@Value("${odh_client.stationNamePrefix}")
 	private String stationNamePrefix;
 
+	@Autowired
+	private OTPAmarilloSync amarilloSync;
+
 	@Lazy
 	@Autowired
 	private OdhClient odhClient;
@@ -97,6 +100,9 @@ public class SyncScheduler {
 		} catch (WebClientRequestException e) {
 			LOG.error("Sync stations failed: Request exception: {}", e.getMessage());
 		}
+
+		LOG.info("triggering otp amarillo sync");
+		amarilloSync.triggerSync();
 	}
 
 	private void initDataTypes() {
