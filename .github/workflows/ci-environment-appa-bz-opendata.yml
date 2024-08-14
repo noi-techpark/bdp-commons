@@ -15,7 +15,7 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout source code
         uses: noi-techpark/github-actions/checkout@v2
@@ -30,7 +30,7 @@ jobs:
 
 # Deploy Test
   deploy-test-environment-appa-bz-opendata:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     if: github.ref == 'refs/heads/main'
     needs: test
     concurrency: deploy-test-environment-appa-bz-opendata
@@ -69,7 +69,7 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Scheduler: every day at 10:00
-          X_SCHEDULER_CRON_DATA: 0 30 10 * * *
+          X_SCHEDULER_CRON_DATA: 0 */10 * * * *
           X_SCHEDULER_POOL_SIZE: 10
 
       - name: Build project
@@ -100,7 +100,7 @@ jobs:
 
   # Deploy Production
   deploy-prod-environment-appa-bz-opendata:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     if: github.ref == 'refs/heads/prod'
     needs: test
     concurrency: deploy-prod-environment-appa-bz-opendata
