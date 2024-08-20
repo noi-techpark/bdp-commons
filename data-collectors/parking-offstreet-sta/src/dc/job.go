@@ -69,6 +69,14 @@ func Job() {
 				"Telephone2":   facility.Telephone2,
 				"municipality": facility.City,
 			}
+
+			// set City=Brunico for parking lot "Parcheggio Stazione Brunico Mobilitätszentrum"
+			// old api gives wrongly Bolzano
+			if parentStationCode == 608612 {
+				parentStation.MetaData["City"] = "Brunico"
+				parentStation.MetaData["municipality"] = "Brunico"
+			}
+
 			parentStations = append(parentStations, parentStation)
 
 			freePlaces := GetFreePlacesData(facility.FacilityId)
@@ -101,6 +109,13 @@ func Job() {
 					station.MetaData = make(map[string]interface{})
 					station.MetaData["FacilityDescription"] = freePlace.FacilityDescription
 					station.MetaData["municipality"] = facility.City
+
+					// set City=Brunico for parking lot "Parcheggio Stazione Brunico Mobilitätszentrum"
+					// old api gives wrongly Bolzano
+					if parentStationCode == 608612 {
+						station.MetaData["municipality"] = "Brunico"
+					}
+
 
 					stations[stationCode] = station
 					slog.Debug("Create station " + stationCode)
