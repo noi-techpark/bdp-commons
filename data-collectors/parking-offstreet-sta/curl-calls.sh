@@ -23,9 +23,16 @@ fi
 # define variables
 ######################
 
-BASE_URL=https://online.onecenter.info
-FACILITY_PATH=/api/Facility/GetFacilities
-FREE_PLACES_PATH=/api/Facility/GetFreePlaces
+# old api
+BASE_URL=https://www.onecenter.info
+FACILITY_PATH=/api/DAZ/GetFacilities
+FREE_PLACES_PATH=/api/DAZ/FacilityFreePlaces
+
+
+# new api (not working at the time of writing)
+# BASE_URL=https://online.onecenter.info
+# FACILITY_PATH=/api/Facility/GetFacilities
+# FREE_PLACES_PATH=/api/Facility/GetFreePlaces
 
 ######################
 # auth
