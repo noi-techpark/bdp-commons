@@ -61,12 +61,13 @@ func Job() {
 			lat, lon := getLocationOrDefault(facility.FacilityId, facility.Latitude, facility.Longitude)
 			parentStation := bdplib.CreateStation(parentStationCode, facility.Description, stationTypeParent, lat, lon, origin)
 			parentStation.MetaData = map[string]interface{}{
-				"IdCompany":  facility.IdCompany,
-				"City":       facility.City,
-				"Address":    facility.Address,
-				"ZIPCode":    facility.ZIPCode,
-				"Telephone1": facility.Telephone1,
-				"Telephone2": facility.Telephone2,
+				"IdCompany":    facility.IdCompany,
+				"City":         facility.City,
+				"Address":      facility.Address,
+				"ZIPCode":      facility.ZIPCode,
+				"Telephone1":   facility.Telephone1,
+				"Telephone2":   facility.Telephone2,
+				"municipality": facility.City,
 			}
 			parentStations = append(parentStations, parentStation)
 
@@ -99,6 +100,7 @@ func Job() {
 
 					station.MetaData = make(map[string]interface{})
 					station.MetaData["FacilityDescription"] = freePlace.FacilityDescription
+					station.MetaData["municipality"] = facility.City
 
 					stations[stationCode] = station
 					slog.Debug("Create station " + stationCode)
