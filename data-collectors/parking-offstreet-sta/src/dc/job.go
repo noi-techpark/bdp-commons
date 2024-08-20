@@ -72,7 +72,7 @@ func Job() {
 
 			// set City=Brunico for parking lot "Parcheggio Stazione Brunico Mobilitätszentrum"
 			// old api gives wrongly Bolzano
-			if parentStationCode == 608612 {
+			if parentStationCode == "608612" {
 				parentStation.MetaData["City"] = "Brunico"
 				parentStation.MetaData["municipality"] = "Brunico"
 			}
@@ -112,7 +112,7 @@ func Job() {
 
 					// set City=Brunico for parking lot "Parcheggio Stazione Brunico Mobilitätszentrum"
 					// old api gives wrongly Bolzano
-					if parentStationCode == 608612 {
+					if parentStationCode == "608612" {
 						station.MetaData["municipality"] = "Brunico"
 					}
 
