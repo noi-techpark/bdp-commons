@@ -43,7 +43,7 @@ public class RadeltAPIClient {
     
 
     @Bean
-    public CloseableHttpClient httpClient(){
+    public static CloseableHttpClient httpClient(){
         int timeout = 30 * 1000;
         RequestConfig rc =  RequestConfig.custom()
             .setConnectTimeout(timeout)
