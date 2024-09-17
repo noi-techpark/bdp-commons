@@ -5,16 +5,22 @@
 package com.opendatahub.bdp.radelt;
 
 import java.net.URI;
+import java.util.Date;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +40,21 @@ public class RadeltAPIClient {
     private final String BASE_URL_GER = "https://www.suedtirolradelt.bz.it";
     private final String PATH_CHALLENGES = "/dashboard/api/opendata/challenges";
     private final String PATH_ORGANIZATIONS = "/dashboard/api/opendata/organisations";
+    
+
+    @Bean
+    public CloseableHttpClient httpClient(){
+        int timeout = 30 * 1000;
+        RequestConfig rc =  RequestConfig.custom()
+            .setConnectTimeout(timeout)
+            .setSocketTimeout(timeout)
+            .setConnectionRequestTimeout(timeout)
+            .build();
+        return HttpClientBuilder.create().setDefaultRequestConfig(rc).build();
+    }
+    
+    @Autowired
+    CloseableHttpClient httpClient;
 
     public AktionenResponseDto fetchChallenges(String active, String type, Language lang)
             throws Exception {
@@ -47,7 +68,6 @@ public class RadeltAPIClient {
         uriBuilder.setParameter("type", type);
 
         URI uri = uriBuilder.build();
-        CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(uri);
 
         try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -82,7 +102,6 @@ public class RadeltAPIClient {
         // uriBuilder.setParameter("offset", String.valueOf(offset));
 
         URI uri = uriBuilder.build();
-        CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(uri);
         LOG.info(uri.toString());
 
