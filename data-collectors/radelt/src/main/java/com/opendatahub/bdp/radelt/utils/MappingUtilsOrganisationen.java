@@ -79,7 +79,7 @@ public class MappingUtilsOrganisationen {
 		if (statisticsDto != null) {
 			RadeltChallengeStatisticDto challengeStatistics = statisticsDto.getChallengeStatistics().get(0);
 			if (challengeStatistics.getChallenge_id() != null) {
-				stationDto.setId(String.valueOf(challengeStatistics.getId()) + "-"
+				stationDto.setId(String.valueOf(organisation.getId()) + "-"
 						+ String.valueOf(challengeStatistics.getChallenge_id()));
 				stationDto.setName(organisation.getName() + '-' + challengeStatistics.getChallenge_name());
 				stationDto.setStationType(DATA_TYPE);
