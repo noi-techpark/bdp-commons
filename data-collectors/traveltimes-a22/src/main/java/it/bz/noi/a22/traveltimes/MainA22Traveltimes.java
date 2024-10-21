@@ -145,6 +145,7 @@ public class MainA22Traveltimes
 						if (!traveltimes.isEmpty()) {
 							LOG.debug("the first travel time is: {}", traveltimes.get(0));
 							traveltimes.forEach(traveltime -> {
+								try{
 								String stationId = traveltime.get("idtratto");
 								long ts = Long.parseLong(traveltime.get("data")) * 1000;
 								
@@ -155,7 +156,7 @@ public class MainA22Traveltimes
 								recs.addRecord(stationId, ldsLightKey, new SimpleRecordDto(ts, ldsLightRaw, 1));
 								String ldsLightDesc = datatypesProperties.getProperty("a22traveltimes.datatype.lds_leggeri.mapping." + ldsLightRaw + ".desc");
 								recs.addRecord(stationId, ldsLightKey + "_desc", new SimpleRecordDto(ts, ldsLightDesc, 1));
-								double ldsLightVal = Double.parseDouble(datatypesProperties.getProperty("a22traveltimes.datatype.lds_leggeri.mapping." + ldsLightRaw + ".val"));
+								Double ldsLightVal = Double.parseDouble(datatypesProperties.getProperty("a22traveltimes.datatype.lds_leggeri.mapping." + ldsLightRaw + ".val"));
 								recs.addRecord(stationId, ldsLightKey + "_val",new SimpleRecordDto(ts, ldsLightVal, 1));
 
 								// tempo
@@ -172,7 +173,7 @@ public class MainA22Traveltimes
 								recs.addRecord(stationId, ldsHeavyKey, new SimpleRecordDto(ts, ldsHeavyRaw, 1));
 								String ldsHeavyDesc = datatypesProperties.getProperty("a22traveltimes.datatype.lds_pesanti.mapping." + ldsHeavyRaw + ".desc");
 								recs.addRecord(stationId, ldsHeavyKey + "_desc", new SimpleRecordDto(ts, ldsHeavyDesc, 1));
-								double ldsHeavyVal = Double.parseDouble(datatypesProperties.getProperty("a22traveltimes.datatype.lds_pesanti.mapping." + ldsHeavyRaw + ".val"));
+								Double ldsHeavyVal = Double.parseDouble(datatypesProperties.getProperty("a22traveltimes.datatype.lds_pesanti.mapping." + ldsHeavyRaw + ".val"));
 								recs.addRecord(stationId, ldsHeavyKey + "_val",new SimpleRecordDto(ts, ldsHeavyVal, 1));
 
 								// tempo
@@ -181,6 +182,11 @@ public class MainA22Traveltimes
 								// velocita
 								String velocitaHeavyKey = datatypesProperties.getProperty("a22traveltimes.datatype.velocita_pesanti.key");
 								recs.addRecord(stationId, velocitaHeavyKey,new SimpleRecordDto(ts, Double.parseDouble(traveltime.get("pesanti_velocita")), 1));
+								} catch (Exception e) {
+									LOG.error("Error during traveltime elaboration. Dumping current traveltime data structure:");
+									LOG.error(traveltime.toString());
+									throw e;
+								}
 							});
 
 							LOG.debug("pushing all data: " + stationList.size() + " records");
