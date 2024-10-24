@@ -329,10 +329,16 @@ public class Connector {
                 // convert from format used by A22
                 // (see the comment "Reverse engineering the A22 time stamp format" at the end of the file)
                 h.put("data", String.valueOf(Long.valueOf(((String)traveltime.get("data")).substring(6, 16))));
+
                 h.put("lds", (String)traveltime.get("lds"));
                 h.put("tempo", String.valueOf(traveltime.get("tempo")));
                 // "velocita" can come as Long or Double from the JSON API, we parse it as Double
                 h.put("velocita", String.valueOf(Double.valueOf(String.valueOf(traveltime.get("velocita")))));
+
+                h.put("pesanti_lds", (String)traveltime.get("lds"));
+                h.put("pesanti_tempo", String.valueOf(traveltime.get("tempo")));
+                // "velocita" can come as Long or Double from the JSON API, we parse it as Double
+                h.put("pesanti_velocita", String.valueOf(Double.valueOf(String.valueOf(traveltime.get("velocita")))));
                 output.add(h);
             }
         } catch (Exception e) {

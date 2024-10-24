@@ -54,7 +54,6 @@ public class MainA22Traveltimes
 	public MainA22Traveltimes() {
 		this.datatypesProperties = new A22Properties("a22traveltimesdatatypes.properties");
 		this.a22TraveltimesProperties = new A22Properties("a22traveltimes.properties");
-
 	}
 
 	public void execute()
@@ -72,7 +71,6 @@ public class MainA22Traveltimes
 			Connector a22Service = setupA22ServiceConnector();
 
 			setupDataType();
-
 
 			// step 2
 			// get the list of segments
@@ -226,7 +224,6 @@ public class MainA22Traveltimes
 				datatypesProperties.getProperty("a22traveltimes.datatype."+id+".unit"),
 				datatypesProperties.getProperty("a22traveltimes.datatype."+id+".description"),
 				datatypesProperties.getProperty("a22traveltimes.datatype."+id+".rtype"));
-		
 	}
 
 	private void setupDataType() {
