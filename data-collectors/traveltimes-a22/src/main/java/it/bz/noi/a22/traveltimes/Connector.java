@@ -20,6 +20,7 @@
  */
 package it.bz.noi.a22.traveltimes;
 
+import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -30,6 +31,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +44,7 @@ public class Connector {
     private static final String USER_AGENT = "NOI/A22TravelTimesConnector";
     private static final int WS_CONN_TIMEOUT_MSEC = 30000;
     private static final int WS_READ_TIMEOUT_MSEC = 1800000;
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     private String token = null;
     private String url = null;
@@ -188,7 +190,7 @@ public class Connector {
         }
 
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/percorrenze/anagrafica")).openConnection();
-        conn.setRequestMethod("GET");
+        conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
@@ -286,7 +288,7 @@ public class Connector {
 
         // retrieve events
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/percorrenze/tempi")).openConnection();
-        conn.setRequestMethod("GET");
+        conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setRequestProperty("User-Agent", USER_AGENT);
         conn.setRequestProperty("Accept", "*/*");
@@ -294,7 +296,8 @@ public class Connector {
         conn.setReadTimeout(WS_READ_TIMEOUT_MSEC);
         conn.setDoOutput(true);
         OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
-        os.write("{\"request\":{\"sessionId\":\"" + token + "\",\"idtratto\":\"" + id + "\",\"fromData\":\"/Date(" + frTS + ")/\",\"toData\":\"/Date(" + toTS + ")/\"}}\n");
+        String reqBody = "{\"request\":{\"sessionId\":\"" + token + "\",\"idtratto\":\"" + id + "\",\"fromData\":\"/Date(" + frTS + ")/\",\"toData\":\"/Date(" + toTS + ")/\"}}\n";
+        os.write(reqBody);
         os.flush();
         int status = conn.getResponseCode();
         if (http_codes.containsKey(status)) {
@@ -303,6 +306,9 @@ public class Connector {
             http_codes.put(status, 1);
         }
         if (status != 200) {
+            try{
+                System.err.println("Request body: " + reqBody);
+            } catch (Exception e) {} //don't care
             throw new RuntimeException("could not get travel times (response code was " + status + ")");
         }
 

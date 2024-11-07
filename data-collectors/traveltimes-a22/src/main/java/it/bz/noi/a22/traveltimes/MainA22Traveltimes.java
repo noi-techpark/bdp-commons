@@ -245,13 +245,17 @@ public class MainA22Traveltimes
 	}
 
 	private long getLastTimestampOfStationInSeconds(String stationId) {
-
 		if(stationIdLastTimestampMap == null) {
 			readLastTimestampsForAllStations();
 		}
 		try {
-			long ret = stationIdLastTimestampMap.getOrDefault(stationId,
-					new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22TraveltimesProperties.getProperty("lastTimestamp")).getTime());
+			long defaultTs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+					.parse(a22TraveltimesProperties.getProperty("lastTimestamp")).getTime();
+
+			long ret = stationIdLastTimestampMap.getOrDefault(stationId, defaultTs);
+
+			// Use default time as latest starting point. Remote API might not have data before that time
+			ret = Math.max(ret, defaultTs);
 
 			LOG.debug("getLastTimestampOfStationInSeconds(" + stationId + "): " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
 
