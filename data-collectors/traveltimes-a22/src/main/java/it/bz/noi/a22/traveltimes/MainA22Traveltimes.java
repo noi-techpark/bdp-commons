@@ -136,7 +136,7 @@ public class MainA22Traveltimes
 
 					do {
 						DataMapDto<RecordDtoImpl> recs = new DataMapDto<>();
-
+						
 						List<HashMap<String, String>> traveltimes = a22Service.getTravelTimes(lastTimeStamp, lastTimeStamp + scanWindowSeconds, id);
 
 						LOG.debug("got " + traveltimes.size() + " traveltime data records for " + simpleDateFormat.format(new Date(lastTimeStamp * 1000)) + ", " + simpleDateFormat.format(new Date((lastTimeStamp + scanWindowSeconds) * 1000)) + ", " + id + ":");
@@ -193,7 +193,6 @@ public class MainA22Traveltimes
 						lastTimeStamp += scanWindowSeconds;
 					} while (lastTimeStamp < System.currentTimeMillis() / 1000);
 				}
-
 
 			} catch (Exception e) {
 				LOG.error("step 3 failed, continuing anyway to read de-auth...", e);

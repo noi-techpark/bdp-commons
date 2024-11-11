@@ -35,6 +35,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 
 /**
  * encapsulates the A22 API to query travel times
@@ -249,9 +250,8 @@ public class Connector {
         LOG.debug("getTravelTimeSegments() OK: got " + output.size() + " segments");
 
         return output;
-
     }
-
+    
     /**
      * get the travel times for the given segment ID ("idtratto") within the given time interval
      *
@@ -280,7 +280,7 @@ public class Connector {
         String frTS = fr + "000+0000";
         String toTS = to + "999+0000";
         
-        LOG.debug("Retrieving traveltimes for station %s with timestamps %s - %s", id, frTS, toTS);
+        LOG.debug("Retrieving traveltimes for station {} with timestamps {} - {}", id, frTS, toTS);
 
         // retrieve events
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/percorrenze/tempi")).openConnection();
@@ -303,8 +303,17 @@ public class Connector {
         }
         if (status != 200) {
             try{
-                System.err.println("Request body: " + reqBody);
+                LOG.error("Request body: " + reqBody);
             } catch (Exception e) {} //don't care
+                            
+            // The API returns HTTP 500 if the timeframe requested is too old.
+            // For initial imports set this env variable true and HTTP 500s are ignored. This should enable the data collector to catch up
+            // Once caught up, disable it again, to properly fail on actual server errors
+            if (status == 500 && "true".equalsIgnoreCase(System.getenv("IGNORE_500"))){
+                LOG.warn("Got HTTP 500, but ignoring it...");
+                return output;
+            }
+
             throw new RuntimeException("could not get travel times (response code was " + status + ")");
         }
 
