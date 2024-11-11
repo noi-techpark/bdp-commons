@@ -20,21 +20,21 @@
  */
 package it.bz.noi.a22.traveltimes;
 
-import org.apache.commons.io.IOUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * encapsulates the A22 API to query travel times
@@ -44,7 +44,7 @@ public class Connector {
     private static final String USER_AGENT = "NOI/A22TravelTimesConnector";
     private static final int WS_CONN_TIMEOUT_MSEC = 30000;
     private static final int WS_READ_TIMEOUT_MSEC = 1800000;
-    private static final boolean DEBUG = true;
+	private static final Logger LOG = LoggerFactory.getLogger(MainA22Traveltimes.class);
 
     private String token = null;
     private String url = null;
@@ -109,9 +109,7 @@ public class Connector {
         this.url = url;
         this.token = session_id;
 
-        if (DEBUG) {
-            System.err.println("authentication    OK new token = " + token);
-        }
+        LOG.debug("authentication    OK new token = " + token);
 
     }
 
@@ -167,9 +165,7 @@ public class Connector {
             throw new RuntimeException("de-authentication failure (de-authentication was not confirmed)");
         }
 
-        if (DEBUG) {
-            System.err.println("de-authentication OK old token = " + token);
-        }
+        LOG.debug("de-authentication OK old token = " + token);
 
         this.url = null;
         this.token = null;
@@ -250,9 +246,7 @@ public class Connector {
             throw new RuntimeException("could not parse list of segments");
         }
 
-        if (DEBUG) {
-            System.err.println("getTravelTimeSegments() OK: got " + output.size() + " segments");
-        }
+        LOG.debug("getTravelTimeSegments() OK: got " + output.size() + " segments");
 
         return output;
 
@@ -285,6 +279,8 @@ public class Connector {
         // (see the comment "Reverse engineering the A22 time stamp format" at the end of the file)
         String frTS = fr + "000+0000";
         String toTS = to + "999+0000";
+        
+        LOG.debug("Retrieving traveltimes for station %s with timestamps %s - %s", id, frTS, toTS);
 
         // retrieve events
         HttpURLConnection conn = (HttpURLConnection) (new URL(url + "/percorrenze/tempi")).openConnection();
@@ -353,9 +349,7 @@ public class Connector {
             throw new RuntimeException("could not parse list of travel times");
         }
 
-        if (DEBUG) {
-            System.err.println("getTravelTimes() OK: got " + output.size() + " travel times");
-        }
+        LOG.debug("getTravelTimes() OK: got " + output.size() + " travel times");
 
         return output;
 

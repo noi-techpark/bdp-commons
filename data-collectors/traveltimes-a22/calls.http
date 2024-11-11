@@ -5,7 +5,7 @@
 @token = {{login.response.body.SubscribeResult.sessionId}}
 POST {{host}}/token
 Content-Type: application/json
-User-Agent: NOI/A22TraveltimesConnector
+User-Agent: NOI/A22TravelTimesConnector
 Accept: */*
 
 {
@@ -14,8 +14,6 @@ Accept: */*
 		"password": "{{$dotenv A22_CONNECTOR_PWD}}"
 	}
 }
-
-
 ### De-authorize
 DELETE {{host}}/token/{{token}}
 User-Agent: NOI/A22TraveltimesConnector
@@ -45,7 +43,7 @@ Accept: */*
 {
 	"request": {
         "sessionId": "{{token}}",
-        "idtratto": "1840-1841",
+        "idtratto": "1867-1865",
         "fromData": "/Date({{fromTs}}000+0000)/",
         "toData": "/Date({{toTs}}999+0000)/"
     }
