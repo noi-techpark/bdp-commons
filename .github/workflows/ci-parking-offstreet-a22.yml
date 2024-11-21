@@ -45,7 +45,7 @@ jobs:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
           # Data Collector config
-          X_A22_URL: https://cau.autobrennero.it/Vega/A22DataIIS/A22DataIIS.svc
+          X_A22_URL: https://cau.autobrennero.it/Vega/A22DataBrennerlec/A22DataIIS.svc
           X_A22_USER: BT4
           X_A22_PASSWORD: ${{ secrets.A22_BT4_PWD }}
 
@@ -117,7 +117,7 @@ jobs:
           working-directory: ${{ env.WORKING_DIRECTORY }}
         env:
           # Data Collector config
-          X_A22_URL:  https://cau.autobrennero.it/Vega/A22DataIIS/A22DataIIS.svc
+          X_A22_URL:  https://cau.autobrennero.it/Vega/A22DataBrennerlec/A22DataIIS.svc
           X_A22_USER: BN4
           X_A22_PASSWORD: ${{ secrets.A22_BN4_PWD }}
 

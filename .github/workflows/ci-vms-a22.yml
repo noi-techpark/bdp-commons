@@ -68,7 +68,7 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Data Origin Configuration
-          X_A22_CONNECTOR_URL: https://cau.autobrennero.it/Vega/A22DataIIS/A22DataIIS.svc
+          X_A22_CONNECTOR_URL: https://cau.autobrennero.it/Vega/A22DataBrennerlec/A22DataIIS.svc
           X_A22_CONNECTOR_USR: BT2
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BT2_PWD }}
 
@@ -143,7 +143,7 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Data Origin Configuration
-          X_A22_CONNECTOR_URL: https://cau.autobrennero.it/Vega/A22DataIIS/A22DataIIS.svc
+          X_A22_CONNECTOR_URL: https://cau.autobrennero.it/Vega/A22DataBrennerlec/A22DataIIS.svc
           X_A22_CONNECTOR_USR: BN2
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BN2_PWD }}
 
