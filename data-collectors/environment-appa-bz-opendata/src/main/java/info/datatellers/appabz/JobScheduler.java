@@ -24,7 +24,7 @@ import it.bz.idm.bdp.dto.StationList;
 @Component("jobScheduler")
 public class JobScheduler {
     // don't push data to remote if true
-    private final static boolean debugMode = true;
+    private final static boolean debugMode = false;
 
     private static final Logger LOG = LoggerFactory.getLogger(JobScheduler.class.getName());
     
