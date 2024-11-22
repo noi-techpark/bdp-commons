@@ -270,7 +270,8 @@ public class MainA22Traveltimes
 
 		for(StationDto stationDto: this.stationList) {
 			String stationCode = stationDto.getId();
-			long lastTimestamp = ((Date) pusher.getDateOfLastRecord(stationCode, null, null)).getTime();
+			String dataType = datatypesProperties.getProperty("a22traveltimes.datatype.lds_leggeri.key");
+			long lastTimestamp = ((Date) pusher.getDateOfLastRecord(stationCode, dataType, null)).getTime();
 			LOG.debug("Station Code: " + stationCode + ", lastTimestamp: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
 			if(stationIdLastTimestampMap.getOrDefault(stationCode, 0L) < lastTimestamp) {
 				stationIdLastTimestampMap.put(stationCode, lastTimestamp);

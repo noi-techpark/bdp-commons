@@ -74,6 +74,7 @@ jobs:
 
           X_SCHEDULER_CRON: 0 */10 * * * *
           X_SCHEDULER_POOL_SIZE: 10
+          X_IGNORE_500: "true"
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
