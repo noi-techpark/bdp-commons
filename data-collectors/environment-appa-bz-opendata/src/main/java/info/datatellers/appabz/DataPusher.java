@@ -9,7 +9,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -167,18 +169,16 @@ public class DataPusher extends NonBlockingJSONPusher {
             for (int looper = 0; looper < pollutersNames.length; looper++) {
                 List<RecordDtoImpl> recordDtoList = new ArrayList<>();
                 String polluterName = pollutersNames[looper];
-                TreeMap<String, ArrayList<String>> dataMap = fetcher.interrogateEndpoint(rawIDs.get(looper), stationID);
+                Map<String, String> dataMap = fetcher.interrogateEndpoint(rawIDs.get(looper), stationID);
                 try {
-                    String[] dates = dataMap.keySet().toArray(new String[0]);
-                    for (String date : dates) {
-                        if (!dataMap.get(date).get(1).equals(String.valueOf(-1))){
-                            SimpleRecordDto record = new SimpleRecordDto(dateHelper.getTimeStamp(dataMap.get(date).get(0)), Double.valueOf(dataMap.get(date).get(1)), 3600);
+                    for(Entry<String, String> e : dataMap.entrySet()){
+                        if ("-1".equals(e.getValue())){
+                            LOG.info("Station {} has invalid value -1 for polluter name {} at timestamp {}", stationID, polluterName, e.getKey());
+                        } else {
+                            SimpleRecordDto record = new SimpleRecordDto(dateHelper.getTimeStamp(e.getKey()), Double.valueOf(e.getValue()), 3600);
                             stationMeasurements++;
                             recordDtoList.add(record);
                             LOG.debug("Record set.");
-                        }
-                        else {
-                            LOG.info("Station {} has invalid value -1 for polluter name {}", stationID, polluterName);
                         }
                     }
                     Collections.sort(recordDtoList);

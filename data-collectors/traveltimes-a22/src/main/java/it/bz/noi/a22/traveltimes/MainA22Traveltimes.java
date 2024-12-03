@@ -54,7 +54,6 @@ public class MainA22Traveltimes
 	public MainA22Traveltimes() {
 		this.datatypesProperties = new A22Properties("a22traveltimesdatatypes.properties");
 		this.a22TraveltimesProperties = new A22Properties("a22traveltimes.properties");
-
 	}
 
 	public void execute()
@@ -72,7 +71,6 @@ public class MainA22Traveltimes
 			Connector a22Service = setupA22ServiceConnector();
 
 			setupDataType();
-
 
 			// step 2
 			// get the list of segments
@@ -128,7 +126,6 @@ public class MainA22Traveltimes
 			// step 3
 			// get the list of travel times
 			try {
-
 				long scanWindowSeconds = Long.parseLong(a22TraveltimesProperties.getProperty("scanWindowSeconds"));
 				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -138,74 +135,64 @@ public class MainA22Traveltimes
 					long lastTimeStamp = getLastTimestampOfStationInSeconds(id);
 
 					do {
-						DataMapDto<RecordDtoImpl> ldsDataMapDto = new DataMapDto<>();
-						DataMapDto<RecordDtoImpl> ldsDescDataMapDto = new DataMapDto<>();
-						DataMapDto<RecordDtoImpl> ldsValDataMapDto = new DataMapDto<>();
-						DataMapDto<RecordDtoImpl> tempoDataMapDto = new DataMapDto<>();
-						DataMapDto<RecordDtoImpl> velocitaDataMapDto = new DataMapDto<>();
-
-
+						DataMapDto<RecordDtoImpl> recs = new DataMapDto<>();
+						
 						List<HashMap<String, String>> traveltimes = a22Service.getTravelTimes(lastTimeStamp, lastTimeStamp + scanWindowSeconds, id);
 
 						LOG.debug("got " + traveltimes.size() + " traveltime data records for " + simpleDateFormat.format(new Date(lastTimeStamp * 1000)) + ", " + simpleDateFormat.format(new Date((lastTimeStamp + scanWindowSeconds) * 1000)) + ", " + id + ":");
 						if (!traveltimes.isEmpty()) {
 							LOG.debug("the first travel time is: {}", traveltimes.get(0));
 							traveltimes.forEach(traveltime -> {
+								try{
+									String stationId = traveltime.get("idtratto");
+									long ts = Long.parseLong(traveltime.get("data")) * 1000;
+									
+									// ########## LIGHT VEHICLES ##########
+									// lds
+									String ldsLightKey = datatypesProperties.getProperty("a22traveltimes.datatype.lds_leggeri.key");
+									String ldsLightRaw = traveltime.get("lds");
+									recs.addRecord(stationId, ldsLightKey, new SimpleRecordDto(ts, ldsLightRaw, 1));
+									String ldsLightDesc = datatypesProperties.getProperty("a22traveltimes.datatype.lds_leggeri.mapping." + ldsLightRaw + ".desc");
+									recs.addRecord(stationId, ldsLightKey + "_desc", new SimpleRecordDto(ts, ldsLightDesc, 1));
+									Double ldsLightVal = Double.parseDouble(datatypesProperties.getProperty("a22traveltimes.datatype.lds_leggeri.mapping." + ldsLightRaw + ".val"));
+									recs.addRecord(stationId, ldsLightKey + "_val",new SimpleRecordDto(ts, ldsLightVal, 1));
 
-								// lds
-								String ldsKey = datatypesProperties.getProperty("a22traveltimes.datatype.lds.key");
-								String ldsRaw = traveltime.get("lds");
-								SimpleRecordDto lds = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000,
-										ldsRaw,
-										1);
-								ldsDataMapDto.addRecord(traveltime.get("idtratto"),
-										ldsKey,
-										lds);
-								SimpleRecordDto ldsDesc = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000,
-										datatypesProperties.getProperty("a22traveltimes.datatype.lds.mapping." + ldsRaw + ".desc"),
-										1);
-								ldsDescDataMapDto.addRecord(traveltime.get("idtratto"),
-										ldsKey + "_desc",
-										ldsDesc);
-								SimpleRecordDto ldsVal = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000,
-										Double.parseDouble(datatypesProperties.getProperty("a22traveltimes.datatype.lds.mapping." + ldsRaw + ".val")),
-										1);
-								ldsValDataMapDto.addRecord(traveltime.get("idtratto"),
-										ldsKey + "_val",
-										ldsVal);
+									// tempo
+									String tempoLightKey = datatypesProperties.getProperty("a22traveltimes.datatype.tempo_leggeri.key");
+									recs.addRecord(stationId, tempoLightKey, new SimpleRecordDto(ts, Double.parseDouble(traveltime.get("tempo")), 1));
+									// velocita
+									String velocitaLightKey = datatypesProperties.getProperty("a22traveltimes.datatype.velocita_leggeri.key");
+									recs.addRecord(stationId, velocitaLightKey,new SimpleRecordDto(ts, Double.parseDouble(traveltime.get("velocita")), 1));
 
-								// tempo
-								SimpleRecordDto tempo = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000L,
-										Double.parseDouble(traveltime.get("tempo")),
-										1);
-								tempoDataMapDto.addRecord(traveltime.get("idtratto"),
-										datatypesProperties.getProperty("a22traveltimes.datatype.tempo.key"),
-										tempo);
+									// ########## HEAVY VEHICLES ##########
+									// lds
+									String ldsHeavyKey = datatypesProperties.getProperty("a22traveltimes.datatype.lds_pesanti.key");
+									String ldsHeavyRaw = traveltime.get("pesanti_lds");
+									recs.addRecord(stationId, ldsHeavyKey, new SimpleRecordDto(ts, ldsHeavyRaw, 1));
+									String ldsHeavyDesc = datatypesProperties.getProperty("a22traveltimes.datatype.lds_pesanti.mapping." + ldsHeavyRaw + ".desc");
+									recs.addRecord(stationId, ldsHeavyKey + "_desc", new SimpleRecordDto(ts, ldsHeavyDesc, 1));
+									Double ldsHeavyVal = Double.parseDouble(datatypesProperties.getProperty("a22traveltimes.datatype.lds_pesanti.mapping." + ldsHeavyRaw + ".val"));
+									recs.addRecord(stationId, ldsHeavyKey + "_val",new SimpleRecordDto(ts, ldsHeavyVal, 1));
 
-								// velocita
-								SimpleRecordDto velocita = new SimpleRecordDto(Long.parseLong(traveltime.get("data")) * 1000L,
-										Double.parseDouble(traveltime.get("velocita")),
-										1);
-								velocitaDataMapDto.addRecord(traveltime.get("idtratto"),
-										datatypesProperties.getProperty("a22traveltimes.datatype.velocita.key"),
-										velocita);
+									// tempo
+									String tempoHeavyKey = datatypesProperties.getProperty("a22traveltimes.datatype.tempo_pesanti.key");
+									recs.addRecord(stationId, tempoHeavyKey, new SimpleRecordDto(ts, Double.parseDouble(traveltime.get("pesanti_tempo")), 1));
+									// velocita
+									String velocitaHeavyKey = datatypesProperties.getProperty("a22traveltimes.datatype.velocita_pesanti.key");
+									recs.addRecord(stationId, velocitaHeavyKey,new SimpleRecordDto(ts, Double.parseDouble(traveltime.get("pesanti_velocita")), 1));
+								} catch (Exception e) {
+									LOG.error("Error during traveltime elaboration. Dumping current traveltime data structure:", e);
+									LOG.error(traveltime.toString());
+									throw e;
+								}
 							});
 
-							LOG.debug("pushing all ldsDataMapDto data: " + stationList.size() + " records");
-							pusher.pushData(ldsDataMapDto);
-							LOG.debug("pushing all ldsDescDataMapDto data: " + stationList.size() + " records");
-							pusher.pushData(ldsDescDataMapDto);
-							LOG.debug("pushing all ldsValDataMapDto data: " + stationList.size() + " records");
-							pusher.pushData(ldsValDataMapDto);
-							LOG.debug("pushing all tempoDataMapDto data: " + stationList.size() + " records");
-							pusher.pushData(tempoDataMapDto);
-							LOG.debug("pushing all velocitaDataMapDto data: " + stationList.size() + " records");
-							pusher.pushData(velocitaDataMapDto);
+							LOG.debug("pushing all data: " + stationList.size() + " records");
+							pusher.pushData(recs);
 						}
 						lastTimeStamp += scanWindowSeconds;
 					} while (lastTimeStamp < System.currentTimeMillis() / 1000);
 				}
-
 
 			} catch (Exception e) {
 				LOG.error("step 3 failed, continuing anyway to read de-auth...", e);
@@ -230,46 +217,44 @@ public class MainA22Traveltimes
 	{
 		return new Connector(a22ConnectorURL, a22ConnectorUsr, a22ConnectorPwd);
 	}
+	
+	private DataTypeDto mkDt(String id, String postix) {
+		return new DataTypeDto(datatypesProperties.getProperty("a22traveltimes.datatype."+id+".key") + postix,
+				datatypesProperties.getProperty("a22traveltimes.datatype."+id+".unit"),
+				datatypesProperties.getProperty("a22traveltimes.datatype."+id+".description"),
+				datatypesProperties.getProperty("a22traveltimes.datatype."+id+".rtype"));
+	}
 
-	private void setupDataType()
-	{
+	private void setupDataType() {
 		List<DataTypeDto> dataTypeDtoList = new ArrayList<>();
-		DataTypeDto lds = new DataTypeDto(datatypesProperties.getProperty("a22traveltimes.datatype.lds.key"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.lds.unit"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.lds.description"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.lds.rtype"));
-		DataTypeDto ldsDesc = new DataTypeDto(datatypesProperties.getProperty("a22traveltimes.datatype.lds.key") + "_desc",
-				datatypesProperties.getProperty("a22traveltimes.datatype.lds.unit"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.lds.description"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.lds.rtype"));
-		DataTypeDto ldsVal = new DataTypeDto(datatypesProperties.getProperty("a22traveltimes.datatype.lds.key") + "_val",
-				datatypesProperties.getProperty("a22traveltimes.datatype.lds.unit"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.lds.description"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.lds.rtype"));
-		DataTypeDto tempo = new DataTypeDto(datatypesProperties.getProperty("a22traveltimes.datatype.tempo.key"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.tempo.unit"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.tempo.description"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.tempo.rtype"));
-		DataTypeDto velocita = new DataTypeDto(datatypesProperties.getProperty("a22traveltimes.datatype.velocita.key"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.velocita.unit"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.velocita.description"),
-				datatypesProperties.getProperty("a22traveltimes.datatype.velocita.rtype"));
-		dataTypeDtoList.add(lds);
-		dataTypeDtoList.add(ldsDesc);
-		dataTypeDtoList.add(ldsVal);
-		dataTypeDtoList.add(tempo);
-		dataTypeDtoList.add(velocita);
+
+		dataTypeDtoList.add(mkDt("lds_leggeri", ""));
+		dataTypeDtoList.add(mkDt("lds_leggeri", "_desc"));
+		dataTypeDtoList.add(mkDt("lds_leggeri", "_val"));
+		dataTypeDtoList.add(mkDt("velocita_leggeri", ""));
+		dataTypeDtoList.add(mkDt("tempo_leggeri", ""));
+
+		dataTypeDtoList.add(mkDt("lds_pesanti", ""));
+		dataTypeDtoList.add(mkDt("lds_pesanti", "_desc"));
+		dataTypeDtoList.add(mkDt("lds_pesanti", "_val"));
+		dataTypeDtoList.add(mkDt("velocita_pesanti", ""));
+		dataTypeDtoList.add(mkDt("tempo_pesanti", ""));
+
 		pusher.syncDataTypes(dataTypeDtoList);
 	}
 
 	private long getLastTimestampOfStationInSeconds(String stationId) {
-
 		if(stationIdLastTimestampMap == null) {
 			readLastTimestampsForAllStations();
 		}
 		try {
-			long ret = stationIdLastTimestampMap.getOrDefault(stationId,
-					new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(a22TraveltimesProperties.getProperty("lastTimestamp")).getTime());
+			long defaultTs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+					.parse(a22TraveltimesProperties.getProperty("lastTimestamp")).getTime();
+
+			long ret = stationIdLastTimestampMap.getOrDefault(stationId, defaultTs);
+
+			// Use default time as latest starting point. Remote API might not have data before that time
+			ret = Math.max(ret, defaultTs);
 
 			LOG.debug("getLastTimestampOfStationInSeconds(" + stationId + "): " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(ret));
 
@@ -285,7 +270,8 @@ public class MainA22Traveltimes
 
 		for(StationDto stationDto: this.stationList) {
 			String stationCode = stationDto.getId();
-			long lastTimestamp = ((Date) pusher.getDateOfLastRecord(stationCode, null, null)).getTime();
+			String dataType = datatypesProperties.getProperty("a22traveltimes.datatype.lds_leggeri.key");
+			long lastTimestamp = ((Date) pusher.getDateOfLastRecord(stationCode, dataType, null)).getTime();
 			LOG.debug("Station Code: " + stationCode + ", lastTimestamp: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
 			if(stationIdLastTimestampMap.getOrDefault(stationCode, 0L) < lastTimestamp) {
 				stationIdLastTimestampMap.put(stationCode, lastTimestamp);

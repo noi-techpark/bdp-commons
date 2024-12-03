@@ -1,0 +1,49 @@
+@host={{$dotenv A22_CONNECTOR_URL}}
+
+### Authorize
+# @name login
+@token = {{login.response.body.SubscribeResult.sessionId}}
+POST {{host}}/token
+Content-Type: application/json
+User-Agent: NOI/A22TravelTimesConnector
+Accept: */*
+
+{
+	"request": {
+		"username": "{{$dotenv A22_CONNECTOR_USR}}",
+		"password": "{{$dotenv A22_CONNECTOR_PWD}}"
+	}
+}
+### De-authorize
+DELETE {{host}}/token/{{token}}
+User-Agent: NOI/A22TraveltimesConnector
+Accept: */*
+
+### Get segments (stations)
+POST {{host}}/percorrenze/anagrafica
+Content-Type: application/json
+User-Agent: NOI/A22TraveltimesConnector
+Accept: */*
+
+{
+	"sessionId": "{{token}}"
+}
+
+### unix timestamps
+@fromTs={{$timestamp -1 h}}
+@toTs={{$timestamp}}
+
+### Get travel times (measurements)
+POST {{host}}/percorrenze/tempi
+Content-Type: application/json
+User-Agent: NOI/A22TraveltimesConnector
+Accept: */*
+
+{
+	"request": {
+        "sessionId": "{{token}}",
+        "idtratto": "1873-1872",
+        "fromData": "/Date({{fromTs}}000+0000)/",
+        "toData": "/Date({{toTs}}999+0000)/"
+    }
+}

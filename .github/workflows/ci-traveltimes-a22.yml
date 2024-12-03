@@ -62,18 +62,19 @@ jobs:
           X_BASE_URI: https://mobility.share.opendatahub.testingmachine.eu/json
 
           # Logging
-          X_LOG_LEVEL: "info"
+          X_LOG_LEVEL: "debug"
           X_LOG_STYLE: json
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
           # Data Origin Configuration
-          X_A22_CONNECTOR_URL: https://cau.autobrennero.it/Vega/A22DataIIS/A22DataIIS.svc
+          X_A22_CONNECTOR_URL: https://cau.autobrennero.it/Vega/A22DataBrennerlec/A22DataIIS.svc
           X_A22_CONNECTOR_USR: BT1
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BT1_PWD }}
 
           X_SCHEDULER_CRON: 0 */10 * * * *
           X_SCHEDULER_POOL_SIZE: 10
+          X_IGNORE_500: "true"
 
       - name: Build project
         uses: noi-techpark/github-actions/maven-build@v2
@@ -137,7 +138,7 @@ jobs:
           X_provenance_version: ${{ github.sha }}
 
           # Data Origin Configuration
-          X_A22_CONNECTOR_URL: https://cau.autobrennero.it/Vega/A22DataIIS/A22DataIIS.svc
+          X_A22_CONNECTOR_URL: https://cau.autobrennero.it/Vega/A22DataBrennerlec/A22DataIIS.svc
           X_A22_CONNECTOR_USR: BN1
           X_A22_CONNECTOR_PWD: ${{ secrets.A22_BN1_PWD }}
 

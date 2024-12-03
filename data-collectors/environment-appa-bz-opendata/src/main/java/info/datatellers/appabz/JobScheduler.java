@@ -23,6 +23,8 @@ import it.bz.idm.bdp.dto.StationList;
 
 @Component("jobScheduler")
 public class JobScheduler {
+    // don't push data to remote if true
+    private final static boolean debugMode = false;
 
     private static final Logger LOG = LoggerFactory.getLogger(JobScheduler.class.getName());
     
@@ -33,15 +35,15 @@ public class JobScheduler {
     {
         LOG.info("Data Collector execution started.");
         DataMapDto<RecordDtoImpl> rootMap = constructRootMap();
-		dataPusher.mapData(rootMap, false);
+		dataPusher.mapData(rootMap, debugMode);
         LOG.info("Data Collector execution terminated.");
     }
 
     private DataMapDto<RecordDtoImpl> constructRootMap()
     {
         LOG.info("Starting to construct rootMap.");
-        StationList stationList = dataPusher.mapStations(false);
-        String[] pollutersName = dataPusher.mapTypes(false).keySet().toArray(new String[0]);
+        StationList stationList = dataPusher.mapStations(debugMode);
+        String[] pollutersName = dataPusher.mapTypes(debugMode).keySet().toArray(new String[0]);
 
         DataMapDto<RecordDtoImpl> map = new DataMapDto<>();
         for (StationDto station : stationList)
