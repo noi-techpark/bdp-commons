@@ -39,7 +39,7 @@ GET {{endpoint}}
 &idSite=1
 &period=day
 &date=yesterday
-&pageUrl=https://noi.bz.it/de/transparente-verwaltung
+&pageUrl=https://noi.bz.it/de/ueber-uns/transparente-verwaltung/allgemeine-bestimmungen
 # &segment=pageUrl=@transparente-verwaltung
 &format=JSON
 &flat=1
@@ -57,7 +57,7 @@ GET {{endpoint}}
 &idSite=1
 &period=day
 &date=yesterday
-&pageUrl=https://noi.bz.it/it/societa-trasparente
+&pageUrl=https://noi.bz.it/it/chi-siamo/societa-trasparente/disposizioni-generali
 # &segment=pageUrl=@societa-trasparente,pageUrl=@amministrazione-trasparente
 &format=JSON
 &flat=1
