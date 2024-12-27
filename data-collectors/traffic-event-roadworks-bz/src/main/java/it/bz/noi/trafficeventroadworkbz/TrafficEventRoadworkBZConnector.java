@@ -27,7 +27,7 @@ public class TrafficEventRoadworkBZConnector {
 
     private static final Logger LOG = LoggerFactory.getLogger(TrafficEventRoadworkBZConnector.class);
 
-    private static final String END_POINT_URL = "http://www.provinz.bz.it/vmz/traffic.json";
+    private static final String END_POINT_URL = "https://www.provinz.bz.it/vmz/traffic.json";
 
     public List<TrafficEventRoadworkBZModel> getTrafficEventRoadworksModelList() throws IOException {
 

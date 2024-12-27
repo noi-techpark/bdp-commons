@@ -4,6 +4,8 @@
 
 package it.bz.noi.trafficeventroadworkbz;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.uuid.Generators;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
@@ -46,6 +48,18 @@ public class MainTrafficEventRoadworkBZ {
                 EventDto eventDto = new EventDto();
 
                 Map<String, Object> uuidFields = getUuidFields(trafficEventRoadwork);
+
+                if (LOG.isDebugEnabled()) {
+                    // This happens inside the bdp client library when setting UUID
+                    ObjectMapper mapper = new ObjectMapper();
+                    String uuidNameJson = mapper.writer().writeValueAsString(uuidFields);
+                    String uuid = Generators.nameBasedGenerator(null).generate(uuidNameJson).toString();
+                    LOG.debug("Dumping UUID generation:");
+                    LOG.debug("fields: {}", uuidFields);
+                    LOG.debug("json: {}", uuidNameJson);
+                    LOG.debug("uuid: {}", uuid);
+                }
+
                 eventDto.setUuid(uuidFields);
                 eventDto.setEventSeriesUuid(uuidFields);
                 eventDto.setCategory(String.format("%s_%s | %s_%s", trafficEventRoadwork.getTycodeIt(),
