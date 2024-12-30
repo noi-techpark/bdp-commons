@@ -34,7 +34,6 @@ public class SyncScheduler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SyncScheduler.class);
 
-    private static final String STATION_ID = "airline-";
 	private static final String DATATYPE_ID = "scheduled-flight-adjustment";
 
 	@Value("${odh_client.period}")
@@ -66,9 +65,8 @@ public class SyncScheduler {
 
 			corrections.addAll(realtime_arrivals);
 			corrections.addAll(realtime_departures);
-
 		} catch(Exception e) {
-			LOG.error("Error fetching data: {}", e.getMessage());
+			LOG.error("Error fetching flight data: {}", e.getMessage());
 		}
 
 		StationList odhStationList = new StationList();
@@ -117,12 +115,6 @@ public class SyncScheduler {
 	
 			List<RecordDtoImpl> values = typedStationMeasurements.getData();
 
-			// generic json measurment
-			/* 
-				SimpleRecordDto measurement = new SimpleRecordDto(timestamp, externalStation, period);
-				values.add(measurement);
-			*/
-
 			// specific eta measurment
 			if(externalStation.containsKey("eta-local")) {
 				SimpleRecordDto etaMeasurement = new SimpleRecordDto(timestamp, externalStation.get("eta-local"), period);
@@ -141,16 +133,6 @@ public class SyncScheduler {
 		// datatype
 		List<DataTypeDto> odhDataTypeList = new ArrayList<>();
 
-		/* 
-			odhDataTypeList.add(
-				new DataTypeDto(
-					DATATYPE_ID,
-					"n.a.",
-					"estimated real local arrival/departure times",
-					"deviation" 
-				)
-			);
-		*/
 		odhDataTypeList.add(
 			new DataTypeDto(
 				"estimated-time-arrival",
