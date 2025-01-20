@@ -244,14 +244,12 @@ public class MainA22Traveltimes
 	}
 
 	private long getLastTimestampOfStationInSeconds(String stationId) {
-		if(stationIdLastTimestampMap == null) {
-			readLastTimestampsForAllStations();
-		}
 		try {
 			long defaultTs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 					.parse(a22TraveltimesProperties.getProperty("lastTimestamp")).getTime();
 
-			long ret = stationIdLastTimestampMap.getOrDefault(stationId, defaultTs);
+			String dataType = datatypesProperties.getProperty("a22traveltimes.datatype.lds_leggeri.key");
+			long ret = ((Date) pusher.getDateOfLastRecord(stationId, dataType, null)).getTime();
 
 			// Use default time as latest starting point. Remote API might not have data before that time
 			ret = Math.max(ret, defaultTs);
@@ -261,21 +259,6 @@ public class MainA22Traveltimes
 			return ret / 1000;
 		} catch (ParseException e) {
 			throw new RuntimeException("Invalid lastTimestamp: " + a22TraveltimesProperties.getProperty("lastTimestamp"), e);
-		}
-	}
-
-	private void readLastTimestampsForAllStations()
-	{
-		stationIdLastTimestampMap = new HashMap<>();
-
-		for(StationDto stationDto: this.stationList) {
-			String stationCode = stationDto.getId();
-			String dataType = datatypesProperties.getProperty("a22traveltimes.datatype.lds_leggeri.key");
-			long lastTimestamp = ((Date) pusher.getDateOfLastRecord(stationCode, dataType, null)).getTime();
-			LOG.debug("Station Code: " + stationCode + ", lastTimestamp: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastTimestamp));
-			if(stationIdLastTimestampMap.getOrDefault(stationCode, 0L) < lastTimestamp) {
-				stationIdLastTimestampMap.put(stationCode, lastTimestamp);
-			}
 		}
 	}
 
