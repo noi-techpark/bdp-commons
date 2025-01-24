@@ -101,6 +101,7 @@ public class FamasClient {
 		HttpResponse response = client.execute(new HttpGet(stationsDataUrl));
 		HttpEntity entity = response.getEntity();
 		String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
+		LOG.debug("Dumping stations json: " + responseString);
 		return objectMapper.readValue(responseString, MetadataDto[].class);
 	}
 
