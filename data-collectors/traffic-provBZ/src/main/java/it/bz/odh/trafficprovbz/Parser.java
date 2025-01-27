@@ -21,7 +21,7 @@ import java.util.*;
 
 public class Parser {
 
-	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 	/**
 	 * This is a function to create a station, either of type traffic or bluetooth
