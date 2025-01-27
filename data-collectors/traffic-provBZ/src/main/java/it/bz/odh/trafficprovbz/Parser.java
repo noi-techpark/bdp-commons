@@ -21,7 +21,11 @@ import java.util.*;
 
 public class Parser {
 
-	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	static{
+		// The API provides inconsistent date patterns. Sometimes they have the Z at the end, sometimes not, but we assume that they are always in UTC
+		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+	}
 
 	/**
 	 * This is a function to create a station, either of type traffic or bluetooth
