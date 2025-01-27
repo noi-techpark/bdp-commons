@@ -28,10 +28,10 @@ class ParserTest {
 	void checkIfCreationOfStationWorks() throws JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		String metadata = "[{ \"id\": 1, \"nome\": \"4\",\"GeoInfo\": {\"latitudine\": 46.4497009548582, \"longitudine\":11.3448734664564, \"regione\":\"Trentino-Alto Adige\", \"provincia\":\"Bolzano\", \"comune\":\"Laives\"},\"stradaInfo\": {\"nome\": \"SS 12 dell'Abetone e del Brennero\", \"chilometrica\": 432.69},\"direzioni\": [{\"tipo\": \"ascendente\",\"descrizione\": \"Verso Bolzano\"},{\"tipo\": \"discendente\", \"descrizione\": \"Verso Trento\"}], \"schemaDiClassificazione\": 1,\"numeroCorsie\": 2,\"corsieInfo\": [{\"id\": 1,\"descrizione\": \"verso Bolzano\", \"sensoDiMarcia\": \"ascendente\"},{\"id\": 2,\"descrizione\": \"verso Trento\",\"sensoDiMarcia\": \"discendente\"}]}]";
+		String metadata = "[{ \"id\": 1, \"nome\": \"4\",\"geoInfo\": {\"latitudine\": 46.4497009548582, \"longitudine\":11.3448734664564, \"regione\":\"Trentino-Alto Adige\", \"provincia\":\"Bolzano\", \"comune\":\"Laives\"},\"stradaInfo\": {\"nome\": \"SS 12 dell'Abetone e del Brennero\", \"chilometrica\": 432.69},\"direzioni\": [{\"tipo\": \"ascendente\",\"descrizione\": \"Verso Bolzano\"},{\"tipo\": \"discendente\", \"descrizione\": \"Verso Trento\"}], \"schemaDiClassificazione\": 1,\"numeroCorsie\": 2,\"corsieInfo\": [{\"id\": 1,\"descrizione\": \"verso Bolzano\", \"sensoDiMarcia\": \"ascendente\"},{\"id\": 2,\"descrizione\": \"verso Trento\",\"sensoDiMarcia\": \"discendente\"}]}]";
 		MetadataDto[] stationsUnderTest = objectMapper.readValue(metadata, MetadataDto[].class);
 		JSONObject otherFields = new JSONObject(stationsUnderTest[0].getOtherFields());
-		ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.CorsieInfo");
+		ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.corsieInfo");
 
 		for (LinkedHashMap<String, String> lane : lanes) {
 			StationDto stationUnderTest = Parser.createStation(stationsUnderTest[0], otherFields, lane,
