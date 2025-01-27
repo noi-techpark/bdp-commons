@@ -48,7 +48,7 @@ class ParserTest {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Integer period = 300;
 
-		String aggregatedData = "[{\"idPostazione\": 3, \"data\": \"2021-12-02T11:10:00\", \"corsia\": 0, \"direzione\": \"ascendente\", \"totaleVeicoli\": 64, \"totaliPerClasseVeicolare\": { \"2\": 59, \"4\": 5 }, \"mediaArmonicaVelocita\": 79.3, \"headwayMedioSecondi\": 4.68, \"varianzaHeadwayMedioSecondi\": 26.01, \"gapMedioSecondi\": 4.42, \"varianzaGapMedioSecondi\": 26.12}]";
+		String aggregatedData = "[{\"idPostazione\": 3, \"data\": \"2021-12-02T11:10:00Z\", \"corsia\": 0, \"direzione\": \"ascendente\", \"totaleVeicoli\": 64, \"totaliPerClasseVeicolare\": { \"2\": 59, \"4\": 5 }, \"mediaArmonicaVelocita\": 79.3, \"headwayMedioSecondi\": 4.68, \"varianzaHeadwayMedioSecondi\": 26.01, \"gapMedioSecondi\": 4.42, \"varianzaGapMedioSecondi\": 26.12}]";
 		AggregatedDataDto[] aggregatedDataDtos = objectMapper.readValue(aggregatedData, AggregatedDataDto[].class);
 
 		DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();
