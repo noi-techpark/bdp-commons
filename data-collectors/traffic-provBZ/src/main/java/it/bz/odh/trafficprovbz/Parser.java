@@ -21,7 +21,7 @@ import java.util.*;
 
 public class Parser {
 
-	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	static {
 		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
