@@ -14,10 +14,10 @@ import java.util.Map;
 public class ClassificationSchemaDto {
 
 
-	@JsonProperty("Id")
+	@JsonProperty("id")
 	private int id;
 
-	@JsonProperty("Nome")
+	@JsonProperty("nome")
 	private String name;
 
 	private final Map<String, Object> otherFields = new HashMap<>();

@@ -13,13 +13,13 @@ import java.util.Map;
 
 public class MetadataDto {
 
-	@JsonProperty("Id")
+	@JsonProperty("id")
 	private String id;
 
-	@JsonProperty("Nome")
+	@JsonProperty("nome")
 	private String name;
 
-	@JsonProperty("SchemiDiClassificazione")
+	@JsonProperty("schemiDiClassificazione")
 	private int classificationSchema;
 
 	private final Map<String, Object> otherFields = new HashMap<>();

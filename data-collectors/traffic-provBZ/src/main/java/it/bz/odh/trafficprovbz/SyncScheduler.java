@@ -178,7 +178,7 @@ public class SyncScheduler {
 		// Insert traffic sensors in station list to insert them in ODH
 		for (MetadataDto metadataDto : metadataDtos) {
 			JSONObject otherFields = new JSONObject(metadataDto.getOtherFields());
-			ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.CorsieInfo");
+			ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.corsieInfo");
 			for (LinkedHashMap<String, String> lane : lanes) {
 				StationDto station = Parser.createStation(metadataDto, otherFields, lane,
 						STATION_TYPE_TRAFFIC_SENSOR);
