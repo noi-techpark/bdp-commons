@@ -87,6 +87,7 @@ public class FamasClient {
 		HttpResponse response = client.execute(new HttpGet(classificationSchemasUrl));
 		HttpEntity entity = response.getEntity();
 		String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
+		LOG.debug("Dumping json for getClassificationSchemas: " +responseString);
 		return objectMapper.readValue(responseString, ClassificationSchemaDto[].class);
 	}
 
@@ -101,7 +102,7 @@ public class FamasClient {
 		HttpResponse response = client.execute(new HttpGet(stationsDataUrl));
 		HttpEntity entity = response.getEntity();
 		String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
-		LOG.debug("Dumping stations json: " + responseString);
+		LOG.debug("Dumping json for getStationsDate: " +responseString);
 		return objectMapper.readValue(responseString, MetadataDto[].class);
 	}
 
@@ -129,6 +130,7 @@ public class FamasClient {
 		try {
 			HttpEntity entity = client.execute(request).getEntity();
 			String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
+			LOG.debug("Dumping json for getAggregatedDataOnStations: " +responseString);
 			return objectMapper.readValue(responseString, AggregatedDataDto[].class);
 		} catch (Exception e) {
 			LOG.error("Dumping request object: " + payloadString);
@@ -158,6 +160,7 @@ public class FamasClient {
 		request.setEntity(stringEntity);
 		HttpEntity entity = client.execute(request).getEntity();
 		String responseString = EntityUtils.toString(entity, RESPONSE_CHARSET);
+		LOG.debug("Dumping json for getPassagesDataOnStations: " +responseString);
 		return objectMapper.readValue(responseString, PassagesDataDto[].class);
 	}
 }
