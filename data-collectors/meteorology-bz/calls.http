@@ -2,11 +2,11 @@
 
 @endpoint = https://dati.retecivica.bz.it
 
-# STATIONS
+### STATIONS
 GET {{endpoint}}/services/meteo/v1/stations
 
-# SENSORS
+### SENSORS
 GET {{endpoint}}/services/meteo/v1/sensors
 
-# TIME SERIES
+### TIME SERIES
 GET {{endpoint}}/services/meteo/v1/timeseries

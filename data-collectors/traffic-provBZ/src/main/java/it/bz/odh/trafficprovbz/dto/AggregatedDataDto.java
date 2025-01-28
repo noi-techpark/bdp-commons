@@ -13,34 +13,34 @@ import java.util.Map;
 
 public class AggregatedDataDto {
 
-	@JsonProperty("IdPostazione")
+	@JsonProperty("idPostazione")
 	private String id;
 
-	@JsonProperty("Data")
+	@JsonProperty("data")
 	private String date;
 
-	@JsonProperty("Corsia")
+	@JsonProperty("corsia")
 	private String lane;
 
-	@JsonProperty("Direzione")
+	@JsonProperty("direzione")
 	private String direction;
 
-	@JsonProperty("TotaleVeicoli")
+	@JsonProperty("totaleVeicoli")
 	private Double totalTransits;
 
-	@JsonProperty("MediaArmonicaVelocita")
+	@JsonProperty("mediaArmonicaVelocita")
 	private Double averageVehicleSpeed;
 
-	@JsonProperty("HeadwayMedioSecondi")
+	@JsonProperty("headwayMedioSecondi")
 	private Double headway;
 
-	@JsonProperty("VarianzaHeadwayMedioSecondi")
+	@JsonProperty("varianzaHeadwayMedioSecondi")
 	private Double headwayVariance;
 
-	@JsonProperty("GapMedioSecondi")
+	@JsonProperty("gapMedioSecondi")
 	private Double gap;
 
-	@JsonProperty("VarianzaGapMedioSecondi")
+	@JsonProperty("varianzaGapMedioSecondi")
 	private Double gapVariance;
 
 	private final Map<String, Object> otherFields = new HashMap<>();

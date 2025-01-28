@@ -13,13 +13,13 @@ import java.util.Map;
 
 public class PassagesDataDto {
 
-	@JsonProperty("IdPostazione")
+	@JsonProperty("idPostazione")
 	private int id;
 
-	@JsonProperty("Data")
+	@JsonProperty("data")
 	private String date;
 
-	@JsonProperty("IdVeicolo")
+	@JsonProperty("idVeicolo")
 	private String idVehicle;
 
 	private final Map<String, Object> passages = new HashMap<>();

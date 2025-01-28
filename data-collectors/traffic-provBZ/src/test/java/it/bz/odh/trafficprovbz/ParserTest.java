@@ -28,10 +28,10 @@ class ParserTest {
 	void checkIfCreationOfStationWorks() throws JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		String metadata = "[{ \"Id\": 1, \"Nome\": \"4\",\"GeoInfo\": {\"Latitudine\": 46.4497009548582, \"Longitudine\":11.3448734664564, \"Regione\":\"Trentino-Alto Adige\", \"Provincia\":\"Bolzano\", \"Comune\":\"Laives\"},\"StradaInfo\": {\"Nome\": \"SS 12 dell'Abetone e del Brennero\", \"Chilometrica\": 432.69},\"Direzioni\": [{\"Tipo\": \"ascendente\",\"Descrizione\": \"Verso Bolzano\"},{\"Tipo\": \"discendente\", \"Descrizione\": \"Verso Trento\"}], \"SchemaDiClassificazione\": 1,\"NumeroCorsie\": 2,\"CorsieInfo\": [{\"Id\": 1,\"Descrizione\": \"verso Bolzano\", \"SensoDiMarcia\": \"ascendente\"},{\"Id\": 2,\"Descrizione\": \"verso Trento\",\"SensoDiMarcia\": \"discendente\"}]}]";
+		String metadata = "[{ \"id\": 1, \"nome\": \"4\",\"geoInfo\": {\"latitudine\": 46.4497009548582, \"longitudine\":11.3448734664564, \"regione\":\"Trentino-Alto Adige\", \"provincia\":\"Bolzano\", \"comune\":\"Laives\"},\"stradaInfo\": {\"nome\": \"SS 12 dell'Abetone e del Brennero\", \"chilometrica\": 432.69},\"direzioni\": [{\"tipo\": \"ascendente\",\"descrizione\": \"Verso Bolzano\"},{\"tipo\": \"discendente\", \"descrizione\": \"Verso Trento\"}], \"schemaDiClassificazione\": 1,\"numeroCorsie\": 2,\"corsieInfo\": [{\"id\": 1,\"descrizione\": \"verso Bolzano\", \"sensoDiMarcia\": \"ascendente\"},{\"id\": 2,\"descrizione\": \"verso Trento\",\"sensoDiMarcia\": \"discendente\"}]}]";
 		MetadataDto[] stationsUnderTest = objectMapper.readValue(metadata, MetadataDto[].class);
 		JSONObject otherFields = new JSONObject(stationsUnderTest[0].getOtherFields());
-		ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.CorsieInfo");
+		ArrayList<LinkedHashMap<String, String>> lanes = JsonPath.read(otherFields, "$.corsieInfo");
 
 		for (LinkedHashMap<String, String> lane : lanes) {
 			StationDto stationUnderTest = Parser.createStation(stationsUnderTest[0], otherFields, lane,
@@ -48,7 +48,7 @@ class ParserTest {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Integer period = 300;
 
-		String aggregatedData = "[{\"IdPostazione\": 3, \"Data\": \"2021-12-02T11:10:00Z\", \"Corsia\": 0, \"Direzione\": \"ascendente\", \"TotaleVeicoli\": 64, \"TotaliPerClasseVeicolare\": { \"2\": 59, \"4\": 5 }, \"MediaArmonicaVelocita\": 79.3, \"HeadwayMedioSecondi\": 4.68, \"VarianzaHeadwayMedioSecondi\": 26.01, \"GapMedioSecondi\": 4.42, \"VarianzaGapMedioSecondi\": 26.12}]";
+		String aggregatedData = "[{\"idPostazione\": 3, \"data\": \"2021-12-02T11:10:00Z\", \"corsia\": 0, \"direzione\": \"ascendente\", \"totaleVeicoli\": 64, \"totaliPerClasseVeicolare\": { \"2\": 59, \"4\": 5 }, \"mediaArmonicaVelocita\": 79.3, \"headwayMedioSecondi\": 4.68, \"varianzaHeadwayMedioSecondi\": 26.01, \"gapMedioSecondi\": 4.42, \"varianzaGapMedioSecondi\": 26.12}]";
 		AggregatedDataDto[] aggregatedDataDtos = objectMapper.readValue(aggregatedData, AggregatedDataDto[].class);
 
 		DataMapDto<RecordDtoImpl> rootMap = new DataMapDto<>();

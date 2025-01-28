@@ -21,7 +21,11 @@ import java.util.*;
 
 public class Parser {
 
-	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	static{
+		// The API provides inconsistent date patterns. Sometimes they have the Z at the end, sometimes not, but we assume that they are always in UTC
+		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+	}
 
 	/**
 	 * This is a function to create a station, either of type traffic or bluetooth
@@ -38,16 +42,16 @@ public class Parser {
 	 */
 	public static StationDto createStation(MetadataDto metadataDto, JSONObject otherFields,
 			LinkedHashMap<String, String> lanes, String stationType) {
-		Double lat = JsonPath.read(otherFields, "$.GeoInfo.Latitudine");
-		Double lon = JsonPath.read(otherFields, "$.GeoInfo.Longitudine");
+		Double lat = JsonPath.read(otherFields, "$.geoInfo.latitudine");
+		Double lon = JsonPath.read(otherFields, "$.geoInfo.longitudine");
 
 		String stationId = metadataDto.getName();
 		String stationName = metadataDto.getName();
 		Integer laneId = null;
 		if (lanes != null) {
-			String description = JsonPath.read(lanes, "$.Descrizione");
-			String direction = JsonPath.read(lanes, "$.SensoDiMarcia");
-			laneId = JsonPath.read(lanes, "$.Id");
+			String description = JsonPath.read(lanes, "$.descrizione");
+			String direction = JsonPath.read(lanes, "$.sensoDiMarcia");
+			laneId = JsonPath.read(lanes, "$.id");
 
 			stationId = metadataDto.getName() + ":" + description;
 			stationName = metadataDto.getName() + ":" + description;
@@ -92,9 +96,9 @@ public class Parser {
 				addMeasurementToMap(metricMaps[0],
 						new SimpleRecordDto(timestamp, aggregatedDataDto.getTotalTransits(), period));
 
-				if (otherFields.containsKey("TotaliPerClasseVeicolare")) {
+				if (otherFields.containsKey("totaliPerClasseVeicolare")) {
 
-					LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.TotaliPerClasseVeicolare");
+					LinkedHashMap<String, Integer> classes = JsonPath.read(otherFields, "$.totaliPerClasseVeicolare");
 					Set<String> keys = classes.keySet();
 					for (String key : keys) {
 						addMeasurementToMap(metricMaps[Integer.parseInt(key)],
@@ -165,16 +169,16 @@ public class Parser {
 	private static Map<String, Object> createMetadata(JSONObject otherFields, Integer laneId) {
 		Map<String, Object> metadata = new HashMap<>();
 
-		metadata.put("municipality", JsonPath.read(otherFields, "$.GeoInfo.Comune"));
-		metadata.put("region", JsonPath.read(otherFields, "$.GeoInfo.Regione"));
+		metadata.put("municipality", JsonPath.read(otherFields, "$.geoInfo.comune"));
+		metadata.put("region", JsonPath.read(otherFields, "$.geoInfo.regione"));
 
 		if (laneId != null)
 			metadata.put("direction",
-					JsonPath.read(otherFields, "$.CorsieInfo[?(@.Id == " + laneId + ")].Descrizione"));
+					JsonPath.read(otherFields, "$.corsieInfo[?(@.id == " + laneId + ")].descrizione"));
 
-		metadata.put("street_name", JsonPath.read(otherFields, "$.StradaInfo.Nome"));
-		metadata.put("kilometric", JsonPath.read(otherFields, "$.StradaInfo.Chilometrica"));
-		metadata.put("total_lanes", JsonPath.read(otherFields, "$.NumeroCorsie"));
+		metadata.put("street_name", JsonPath.read(otherFields, "$.stradaInfo.nome"));
+		metadata.put("kilometric", JsonPath.read(otherFields, "$.stradaInfo.chilometrica"));
+		metadata.put("total_lanes", JsonPath.read(otherFields, "$.numeroCorsie"));
 
 		return metadata;
 	}
