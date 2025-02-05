@@ -128,18 +128,19 @@ public class JobScheduler {
                 forecast.getValue().entrySet().forEach(value -> {
                     // time windows are always 6 hours, so use middle of 3 hours
                     Long threeHours = 10800000L;
+                    Long sixHours = 2*threeHours;
                     Long timestamp = value.getKey();
 
                     timestamp += threeHours;
                     SimpleRecordDto record0to6 = new SimpleRecordDto(timestamp,
                             mapTrafficValue(value.getValue().value0to6), period);
-                    timestamp += threeHours;
+                    timestamp += sixHours;
                     SimpleRecordDto record6to12 = new SimpleRecordDto(timestamp,
                             mapTrafficValue(value.getValue().value6to12), period);
-                    timestamp += threeHours;
+                    timestamp += sixHours;
                     SimpleRecordDto record12to18 = new SimpleRecordDto(timestamp,
                             mapTrafficValue(value.getValue().value12to18), period);
-                    timestamp += threeHours;
+                    timestamp += sixHours;
                     SimpleRecordDto record18to24 = new SimpleRecordDto(timestamp,
                             mapTrafficValue(value.getValue().value18to24), period);
 
