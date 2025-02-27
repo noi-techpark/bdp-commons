@@ -70,7 +70,7 @@ jobs:
           # Data Origin Configuration
           X_A22DB_USER: a22user
           X_A22DB_PASSWORD: ${{ secrets.TRAFFIC_A22_ELABORATIONS_A22DB_PWD_TEST }}
-          X_A22DB_HOST: test-pg-bdp.co90ybcr8iim.eu-west-1.rds.amazonaws.com
+          X_A22DB_HOST: test-pg-misc.co90ybcr8iim.eu-west-1.rds.amazonaws.com
           X_A22DB_PORT: 5432
           X_A22DB_DBNAME: a22db
 
