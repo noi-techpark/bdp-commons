@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
 package com.opendatahub.bdp.flightdata_realtime;
 
 import org.slf4j.LoggerFactory;
