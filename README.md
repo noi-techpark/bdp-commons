@@ -106,6 +106,22 @@ mvn clean test
 Please, refer to the `README.md` inside that folder for further details, and
 report any incidence to `help@opendatahub.com`.
 
+If both the Data Collector and the Open Datahub Mobility Writer are run as Docker instances during development, an additional manual Docker network must be set up to enable communication between the containers:
+
+```
+docker network create collector-dev-network
+```
+
+This network must be included in both docker-compose.yaml files and configured for use by the two services:
+
+```yaml
+networks:
+  collector-dev-network:
+    external: true
+```
+
+All endpoints and occurrences of localhost in the Data Collector must then be replaced by the bdp-service "bdp".
+
 #### VSCode: Start a debug session
 
 Copy this file to `.vsode/launch.json`:
