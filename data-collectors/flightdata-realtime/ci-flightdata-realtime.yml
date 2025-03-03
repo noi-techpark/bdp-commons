@@ -70,7 +70,6 @@ jobs:
           X_SCHEDULER_CRON_A: "0 */15 * * * *"
           X_SCHEDULER_POOL_SIZE: 10
 
-          # AGOTODO: check/transmit secrets
           X_ODH_CLIENT_ENDPOINT: ${{ secrets.FLIGHTDATA_REALTIME_ENDPOINT }}
           X_ODH_CLIENT_TOKEN: ${{ secrets.FLIGHTDATA_REALTIME_BEARERTOKEN }}
 
