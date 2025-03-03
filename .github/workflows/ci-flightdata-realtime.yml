@@ -67,13 +67,10 @@ jobs:
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
+          # TODO: Add your env vars here, prefixed with X_
           X_SCHEDULER_CRON_A: "* * * */10 * *"
           X_SCHEDULER_CRON_B: "* * * */10 * *"
           X_SCHEDULER_POOL_SIZE: 10
-
-          # AGOTODO: check/transmit secrets
-          X_ODH_CLIENT_ENDPOINT: ${{ secrets.FLIGHTDATA_REALTIME_ENDPOINT }}
-          X_ODH_CLIENT_TOKEN: ${{ secrets.FLIGHTDATA_REALTIME_BEARERTOKEN }}
 
 
       - name: Build project
@@ -139,13 +136,10 @@ jobs:
           X_provenance_name: ${{ env.PROJECT_NAME }}
           X_provenance_version: ${{ github.sha }}
 
+          # TODO: Add your env vars here, prefixed with X_
           X_SCHEDULER_CRON_A: "* * * */10 * *"
           X_SCHEDULER_CRON_B: "* * * */10 * *"
           X_SCHEDULER_POOL_SIZE: 10
-
-          # AGOTODO: check/transmit secrets
-          X_ODH_CLIENT_ENDPOINT: ${{ secrets.FLIGHTDATA_REALTIME_ENDPOINT }}
-          X_ODH_CLIENT_TOKEN: ${{ secrets.FLIGHTDATA_REALTIME_BEARERTOKEN }}
 
 
       - name: Build project
