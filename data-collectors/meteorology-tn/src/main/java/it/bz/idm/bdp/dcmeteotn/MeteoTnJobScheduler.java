@@ -22,10 +22,6 @@ import it.bz.idm.bdp.dto.DataTypeDto;
 import it.bz.idm.bdp.dto.RecordDtoImpl;
 import it.bz.idm.bdp.dto.StationList;
 
-/**
- * Cronjob configuration can be found under src/main/resources/META-INF/spring/applicationContext.xml
- * XXX Do not forget to configure it!
- */
 @Component
 public class MeteoTnJobScheduler {
 
