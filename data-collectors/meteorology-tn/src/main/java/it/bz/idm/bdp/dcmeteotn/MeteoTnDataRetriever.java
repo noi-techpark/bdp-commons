@@ -54,94 +54,23 @@ public class MeteoTnDataRetriever {
 
     private static final Logger LOG = LoggerFactory.getLogger(MeteoTnDataRetriever.class.getName());
 
-    @Value("${endpoint.stations.method}")
-    private String strEndpointMethod;
+    @Value("${endpoint.stations.url}")
+    private String serviceUrlStations;
 
-    @Value("${endpoint.stations.protocol}")
-    private String strEndpointProtocol;
+    @Value("${endpoint.measurements.url}")
+    private String serviceUrlMeasurements;
 
-    @Value("${endpoint.stations.host}")
-    private String strEndpointHost;
-
-    @Value("${endpoint.stations.port}")
-    private String strEndpointPort;
-
-    @Value("${endpoint.stations.path}")
-    private String strEndpointPath;
-
-    @Value("${endpoint.measurements.param.param_name}")
-    private String paramName;
-
-    @Value("${endpoint.measurements.param.station_attr_name}")
-    private String attrName;
+    private String paramName = "codice";
+    private String attrName = "code";
 
     @Autowired
     private MeteoTnDataConverter converter;
 
-    private HttpClientBuilder builderStations = HttpClients.custom();
-    private HttpClientBuilder builderMeasurements = HttpClients.custom();
-    private CloseableHttpClient clientStations;
-    private CloseableHttpClient clientMeasurements;
+    private CloseableHttpClient httpClient = HttpClients.createDefault();
     private XmlMapper mapper = new XmlMapper();
-
-    private String endpointMethodStations;
-    private String serviceUrlStations;
-
-    private String endpointMethodMeasurements;
-    private String serviceUrlMeasurements;
 
     public MeteoTnDataRetriever() {
         LOG.debug("Create instance");
-    }
-
-    @PostConstruct
-    private void initClient() {
-        LOG.debug("Init");
-        if (clientStations == null) {
-
-            LOG.debug("Read config:" +
-                    "  endpoint.stations.protocol='" + strEndpointProtocol + "'" +
-                    "  endpoint.stations.method='" + strEndpointMethod + "'" +
-                    "  endpoint.stations.host='" + strEndpointHost + "'" +
-                    "  endpoint.stations.port='" + strEndpointPort + "'" +
-                    "  endpoint.stations.path='" + strEndpointPath + "'");
-
-            // Create HTTP Client
-            endpointMethodStations = DCUtils.allowNulls(strEndpointMethod).trim();
-            String endpointProtocol = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "http"
-                    : "https";
-            String defaultPort = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "80" : "443";
-            String endpointHost = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointHost).trim());
-            String endpointPath = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointPath).trim());
-            Integer endpointPort = DCUtils.convertStringToInteger(DCUtils.defaultNulls(strEndpointPort, defaultPort));
-            serviceUrlStations = endpointProtocol + "://" + endpointHost + ":" + endpointPort + "/" + endpointPath;
-
-            clientStations = builderStations.build();
-
-            LOG.debug("Http Client Stations created");
-        }
-        if (clientMeasurements == null) {
-            LOG.debug("Read config:" +
-                    "  endpoint.measurements.protocol='" + strEndpointProtocol + "'" +
-                    "  endpoint.measurements.method='" + strEndpointMethod + "'" +
-                    "  endpoint.measurements.host='" + strEndpointHost + "'" +
-                    "  endpoint.measurements.port='" + strEndpointPort + "'" +
-                    "  endpoint.measurements.path='" + strEndpointPath + "'");
-
-            // Create HTTP Client
-            endpointMethodMeasurements = DCUtils.allowNulls(strEndpointMethod).trim();
-            String endpointProtocol = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "http"
-                    : "https";
-            String defaultPort = "http".equalsIgnoreCase(DCUtils.allowNulls(strEndpointProtocol).trim()) ? "80" : "443";
-            String endpointHost = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointHost).trim());
-            String endpointPath = DCUtils.mustNotEndWithSlash(DCUtils.allowNulls(strEndpointPath).trim());
-            Integer endpointPort = DCUtils.convertStringToInteger(DCUtils.defaultNulls(strEndpointPort, defaultPort));
-            serviceUrlMeasurements = endpointProtocol + "://" + endpointHost + ":" + endpointPort + "/" + endpointPath;
-
-            clientMeasurements = builderMeasurements.build();
-
-            LOG.debug("Http Client Measurements created");
-        }
     }
 
     /**
@@ -151,26 +80,10 @@ public class MeteoTnDataRetriever {
      * @return
      * @throws Exception
      */
-    private String callRemoteService(CloseableHttpClient client, String serviceUrl, String endpointMethod,
-            List<NameValuePair> endpointParams) throws Exception {
-        String url = serviceUrl;
-        LOG.debug("Start call to service: " + url);
+    private String callRemoteService(CloseableHttpClient client, String serviceUrl, List<NameValuePair> endpointParams) throws Exception {
+        LOG.debug("Start call to service: " + serviceUrl);
 
-        // In our case it is not necessary to set particular headers
-        // String xcallerHeader = env.getProperty("app.callerId");
-        // String apikey = env.getProperty("app.apikey");
-        // if (xcallerHeader != null)
-        // get.setHeader("X-Caller-ID",xcallerHeader);
-        // if (apikey != null)
-        // get.setHeader("apikey",apikey);
-        // get.setHeader("Accept","application/json");
-
-        HttpRequestBase request = null;
-        if ("GET".equalsIgnoreCase(endpointMethod)) {
-            request = new HttpGet(url);
-        } else {
-            request = new HttpPost(url);
-        }
+        HttpRequestBase request = new HttpGet(serviceUrl);
 
         URIBuilder uriBuilder = new URIBuilder(request.getURI());
         if (endpointParams != null && endpointParams.size() > 0) {
@@ -453,7 +366,7 @@ public class MeteoTnDataRetriever {
             StringBuffer err = new StringBuffer();
 
             // Call service that retrieves the list of stations
-            String responseString = callRemoteService(clientStations, serviceUrlStations, endpointMethodStations, null);
+            String responseString = callRemoteService(httpClient, serviceUrlStations, null);
             List<MeteoTnDto> stations = convertStationsResponseToInternalDTO(responseString);
 
             // Call service that retrieves the measurements for each station
@@ -502,7 +415,7 @@ public class MeteoTnDataRetriever {
             StringBuffer err = new StringBuffer();
 
             // Call service that retrieves the list of stations
-            String responseString = callRemoteService(clientStations, serviceUrlStations, endpointMethodStations, null);
+            String responseString = callRemoteService(httpClient, serviceUrlStations, null);
 
             // Convert to internal representation
             dtoList = convertStationsResponseToInternalDTO(responseString);
@@ -530,8 +443,7 @@ public class MeteoTnDataRetriever {
         List<NameValuePair> endpointParams = new ArrayList<NameValuePair>();
         endpointParams.add(new BasicNameValuePair(paramName, station.get(attrName)));
 
-        String responseString = callRemoteService(clientMeasurements, serviceUrlMeasurements,
-                endpointMethodMeasurements, endpointParams);
+        String responseString = callRemoteService(httpClient, serviceUrlMeasurements, endpointParams);
         extDto = convertMeasurementsResponseToInternalDTO(responseString, station);
         int size = extDto != null && extDto.getMeasurementsByType() != null ? extDto.getMeasurementsByType().size()
                 : -1;
@@ -539,5 +451,4 @@ public class MeteoTnDataRetriever {
         LOG.debug("END.fetchDataByStation(" + station + ")");
         return extDto;
     }
-
 }
