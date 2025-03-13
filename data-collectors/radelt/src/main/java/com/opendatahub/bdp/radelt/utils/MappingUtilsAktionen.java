@@ -111,6 +111,8 @@ public class MappingUtilsAktionen {
 		stationDto.getMetaData().put("type", challengeDtoGer.getType());
 		stationDto.getMetaData().put("isExternal", challengeDtoGer.isExternal());
 		stationDto.getMetaData().put("canOrganisationsSignup", challengeDtoGer.isCanOrganisationsSignup());
+		stationDto.getMetaData().put("detailsText", challengeDtoGer.getDetailsText());
+		stationDto.getMetaData().put("termsandconditionsText", challengeDtoGer.getTermsandconditionsText());
 
 		// Additional
 		stationDto.setOrigin(DATA_ORIGIN);

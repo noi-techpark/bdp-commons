@@ -5,10 +5,6 @@
 package com.opendatahub.bdp.radelt.dto.aktionen;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class RadeltChallengeDto {
     private int id;
@@ -22,12 +18,14 @@ public class RadeltChallengeDto {
     private String registrationEnd;
     private String entryEnd;
     private String type;
-	@JsonProperty("isExternal")
+    @JsonProperty("isExternal")
     private boolean isExternal;
-	@JsonProperty("canOrganisationsSignup")
+    @JsonProperty("canOrganisationsSignup")
     private boolean canOrganisationsSignup;
     private RadeltStatisticDto statistics;
-	private String subType;
+    private String subType;
+    private String termsandconditionsText;
+    private String detailsText;
 
     // Getters and Setters
     public int getId() {
@@ -67,39 +65,39 @@ public class RadeltChallengeDto {
     }
 
     public void setStart(String start) {
-		this.start = start;
+        this.start = start;
     }
 
-	public String getEntryStart() {
-		return entryStart;
-	}
+    public String getEntryStart() {
+        return entryStart;
+    }
 
-	public void setEntryStart(String entryStart) {
-		this.entryStart = entryStart;
-	}
+    public void setEntryStart(String entryStart) {
+        this.entryStart = entryStart;
+    }
 
     public String getEnd() {
         return end;
     }
 
     public void setEnd(String end) {
-		this.end = end;
+        this.end = end;
     }
 
-	public String getEntryEnd() {
-		return entryEnd;
-	}
+    public String getEntryEnd() {
+        return entryEnd;
+    }
 
-	public void setEntryEnd(String entryEnd) {
-		this.registrationStart = registrationStart;
-	}
+    public void setEntryEnd(String entryEnd) {
+        this.registrationStart = registrationStart;
+    }
 
     public String getRegistrationStart() {
         return registrationStart;
     }
 
     public void setRegistrationStart(String registrationStart) {
-		this.registrationStart = registrationStart;
+        this.registrationStart = registrationStart;
     }
 
     public String getRegistrationEnd() {
@@ -107,7 +105,7 @@ public class RadeltChallengeDto {
     }
 
     public void setRegistrationEnd(String registrationEnd) {
-		this.registrationEnd = registrationEnd;
+        this.registrationEnd = registrationEnd;
     }
 
     public String getType() {
@@ -142,11 +140,28 @@ public class RadeltChallengeDto {
         this.statistics = statistics;
     }
 
-	public void setSubType(String subType) {
-		this.subType = subType;
-	}
+    public void setSubType(String subType) {
+        this.subType = subType;
+    }
 
-	public String getSubType() {
-		return subType;
-	}
+    public String getSubType() {
+        return subType;
+    }
+
+    public String getTermsandconditionsText() {
+        return termsandconditionsText;
+    }
+
+    public void setTermsandconditionsText(String termsandconditionsText) {
+        this.termsandconditionsText = termsandconditionsText;
+    }
+
+    public String getDetailsText() {
+        return detailsText;
+    }
+
+    public void setDetailsText(String detailsText) {
+        this.detailsText = detailsText;
+    }
+
 }
